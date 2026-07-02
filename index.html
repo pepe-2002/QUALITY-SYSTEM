@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Royal Air Quality Management System</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A2342'/%3E%3Cpath d='M12 44 L32 14 L52 44 L44 44 L32 26 L20 44 Z' fill='%230056D2'/%3E%3Cpath d='M24 44 L32 32 L40 44 Z' fill='%23fff'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div class="login-page" id="loginPage">
+  <div class="login-card">
+    <div class="login-logo" id="loginLogo"></div>
+    <h1>Royal Air Quality Management System</h1>
+    <div class="sub">Gestion documentaire réglementaire — ANACM · OACI · ISO 9001:2015</div>
+    <div class="login-error" id="loginError">Nom d'utilisateur ou mot de passe incorrect.</div>
+    <form id="loginForm" autocomplete="off">
+      <div class="field">
+        <label for="loginUser">Nom d'utilisateur</label>
+        <input id="loginUser" type="text" placeholder="ex. nayam" required>
+      </div>
+      <div class="field">
+        <label for="loginPass">Mot de passe</label>
+        <input id="loginPass" type="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn-primary">Connexion</button>
+    </form>
+    <div class="login-links"><a href="#" id="forgotLink">Mot de passe oublié ?</a></div>
+    <div class="login-hint">
+      Comptes de démonstration : <code>nayam / Qualite2026</code> · <code>admin / RoyalAir2026</code> · <code>wahidi / Direction2026</code> · <code>invite / Invite2026</code>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APPLICATION ================= -->
+<div id="app">
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" title="Menu" style="display:none"></button>
+    <div class="brand" id="brandLogo"></div>
+    <div class="search-wrap">
+      <span class="icon" id="searchIcon"></span>
+      <input type="search" id="globalSearch" placeholder="Recherche instantanée : numéro, titre, auteur, département…">
+      <div class="search-results" id="searchResults"></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="top-actions">
+      <span id="cloudChip" title="État de la base de données"></span>
+      <button class="icon-btn" id="themeBtn" title="Mode clair / sombre"></button>
+      <button class="icon-btn" id="notifBtn" title="Notifications"><span class="badge" id="notifBadge">0</span></button>
+      <div class="userchip">
+        <div class="avatar" id="userAvatar">?</div>
+        <div><div class="uname" id="userName">—</div><div class="urole" id="userRole">—</div></div>
+      </div>
+      <button class="icon-btn" id="logoutBtn" title="Déconnexion"></button>
+    </div>
+  </header>
+
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <main class="main" id="main"></main>
+
+  <!-- Notifications drawer -->
+  <aside class="drawer" id="drawer">
+    <div class="d-head">
+      <h3>Notifications</h3>
+      <button class="m-close" id="drawerClose">✕</button>
+    </div>
+    <div class="d-body" id="drawerBody"></div>
+  </aside>
+
+  <!-- Modal -->
+  <div class="modal-back" id="modalBack">
+    <div class="modal" id="modalBox"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

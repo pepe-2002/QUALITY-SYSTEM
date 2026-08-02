@@ -99,6 +99,9 @@ comoriennes → versions 720p ~3-5 Mo.
 - Polices : API Google Fonts via curl (UA navigateur) → woff2 latin locaux.
   ⚠️ Dans le CSS importé, les url() se résolvent relativement AU FICHIER CSS.
 - QR code : python `qrcode` (fill #0a2550, ERROR_CORRECT_H).
+- RETOURS PATRON sur les flyers : PAS d'emojis → icônes SVG dessinées (traits
+  #facc15 sur badge arrondi) ; vedette orientée VERS Hoani et alignée sur la
+  ligne ; logo Facebook OFFICIEL (f blanc sur #1877F2), pas l'emoji livre.
 - GitHub raw (github.com/google/fonts) est bloqué par la session — passer par
   fonts.googleapis.com/css2.
 

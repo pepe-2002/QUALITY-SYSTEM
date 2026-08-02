@@ -1,0 +1,27 @@
+{
+  "name": "MoheliGo",
+  "short_name": "MoheliGo",
+  "description": "Réservation de traversées maritimes en vedette entre les îles des Comores — paiement MVola, billets QR, météo mer et suivi des vedettes.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F5F7FB",
+  "theme_color": "#0F2A5C",
+  "lang": "fr",
+  "categories": ["travel", "navigation"],
+  "shortcuts": [
+    {
+      "name": "Administration",
+      "short_name": "Admin",
+      "description": "Ouvrir l'espace d'administration (mot de passe requis)",
+      "url": "/?admin=1",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192", "type": "image/png" }]
+    }
+  ],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://moheligo.com/sitemap.xml

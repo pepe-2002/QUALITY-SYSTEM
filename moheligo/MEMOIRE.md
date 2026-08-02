@@ -38,7 +38,7 @@ Tout est dans `moheligo/pub/` :
 | `textes-publications.md` | Légendes FB/WhatsApp + conseils de diffusion | — | — |
 | `photos/` | 6 photos réelles de Mohéli fournies par le patron | — | — |
 | `scenario-film.txt` | Script voix du film Amina | — | — |
-| `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux + app (« cap sur Hoani ») | 48 s | 4,1 Mo |
+| `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux, carte satellite interactive + app (Ouroveni → Hoani) | 54 s | 4,4 Mo |
 | `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
@@ -122,6 +122,12 @@ comoriennes → versions 720p ~3-5 Mo.
   = sites maoris de Nouvelle-Zélande. « Moheli d (21).jpg » = une policière (piège).
 - Toujours archiver les crédits (CC BY / BY-SA) dans `pub/photos-cc/CREDITS.md`
   et les afficher sur l'écran final.
+- ⚠️ RETENU DU PATRON : le départ des vedettes est **OUROVENI** (pas Chindini) ;
+  pas de « Embarquez » à la fin — sobre : « MoheliGo point com ».
+- Carte touristique satellite filmable : Chromium ne sort PAS par le proxy
+  (ERR_CONNECTION_RESET) → intercepter unpkg/maptiler/arcgis avec ctx.route et
+  fulfill via curl (execFileSync + cache). Précharger 14 s + pan aller-retour
+  avant la fenêtre filmée, sinon tuiles blanches (le patron l'a repéré).
 
 ## 6. Journal des sessions
 

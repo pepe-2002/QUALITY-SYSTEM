@@ -1,0 +1,85 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter'; color:#fff; overflow:hidden; }
+.flyer { position:relative; width:1080px; height:1350px; background:#071c3d; }
+
+.hero { position:absolute; inset:0 0 46% 0; overflow:hidden; }
+.hero img { width:100%; height:100%; object-fit:cover; object-position:center 60%; filter:saturate(1.15) brightness(1.02); }
+.hero::after { content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(7,28,61,.30) 0%, rgba(7,28,61,0) 30%, rgba(7,28,61,.55) 78%, #071c3d 100%); }
+
+.top { position:absolute; top:44px; left:56px; right:56px; display:flex; align-items:center; gap:20px; z-index:5; }
+.appicon { width:92px; height:92px; border-radius:24px; background:#fff; box-shadow:0 12px 30px rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center; }
+.appicon img { width:74px; height:74px; object-fit:contain; }
+.brand b { font-family:'Montserrat'; font-weight:900; font-size:44px; letter-spacing:-.5px;
+  text-shadow:0 2px 14px rgba(0,0,0,.45); }
+.brand b em { font-style:normal; color:#facc15; }
+.brand small { display:block; font-size:16.5px; font-weight:600; letter-spacing:3.5px; color:#dbeafe;
+  text-shadow:0 1px 8px rgba(0,0,0,.5); margin-top:4px; }
+
+.headline { position:absolute; top:540px; left:56px; z-index:5; }
+.headline h1 { font-family:'Montserrat'; font-weight:900; font-size:100px; line-height:1.02; letter-spacing:-2px;
+  text-shadow:0 6px 30px rgba(0,0,0,.45); }
+.headline h1 span { color:#facc15; }
+.headline p { margin-top:18px; font-size:29px; font-weight:600; color:#e2ecfb; max-width:760px; line-height:1.4;
+  text-shadow:0 2px 10px rgba(0,0,0,.4); }
+
+.route { position:absolute; top:842px; left:56px; right:56px; z-index:5;
+  background:rgba(255,255,255,.09); border:1.5px solid rgba(255,255,255,.22); border-radius:26px;
+  backdrop-filter:blur(8px); padding:26px 40px; display:flex; align-items:center; justify-content:space-between; }
+.port { text-align:center; }
+.port small { font-size:16px; letter-spacing:3px; color:#93c5fd; font-weight:600; }
+.port b { display:block; font-family:'Montserrat'; font-weight:800; font-size:38px; margin-top:2px; }
+.port span { font-size:17px; color:#cbd5e1; }
+.arrow { flex:1; display:flex; align-items:center; margin:0 30px; position:relative; }
+.arrow .line { flex:1; height:3px; background:repeating-linear-gradient(90deg,#facc15 0 14px,transparent 14px 26px); border-radius:2px; }
+.arrow .boat { position:absolute; left:50%; transform:translateX(-50%); font-size:40px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.4)); }
+
+.chips { position:absolute; top:1002px; left:56px; right:56px; display:grid; grid-template-columns:1fr 1fr; gap:18px; z-index:5; }
+.chip { background:rgba(255,255,255,.07); border:1.5px solid rgba(255,255,255,.16); border-radius:22px;
+  padding:17px 26px; display:flex; align-items:center; gap:16px; }
+.chip .ic { font-size:34px; }
+.chip b { font-size:23.5px; font-weight:600; color:#f1f5f9; }
+
+.bottom { position:absolute; left:0; right:0; bottom:0; height:150px; background:#fff; z-index:6;
+  display:flex; align-items:center; padding:0 56px; gap:28px; }
+.qr { width:118px; height:118px; border-radius:16px; }
+.cta { flex:1; }
+.cta b { font-family:'Montserrat'; font-weight:900; font-size:40px; color:#0a2550; letter-spacing:-.5px; }
+.cta small { display:block; font-size:19px; color:#475569; font-weight:600; margin-top:3px; }
+.fb { text-align:right; color:#0a2550; }
+.fb b { font-size:21px; font-weight:600; display:block; }
+.fb span { display:inline-block; margin-top:6px; background:#0a2550; color:#fff; font-weight:600;
+  font-size:18px; padding:9px 18px; border-radius:999px; }
+</style></head><body>
+<div class="flyer">
+  <div class="hero"><img src="photo.jpg"></div>
+  <div class="top">
+    <div class="appicon"><img src="logo.png"></div>
+    <div class="brand"><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
+  </div>
+  <div class="headline">
+    <h1>L'OCÉAN<br><span>VOUS ATTEND.</span></h1>
+    <p>Réservez votre traversée en 2 minutes — billet QR instantané, sans file d'attente.</p>
+  </div>
+  <div class="route">
+    <div class="port"><small>DÉPART</small><b>Ouroveni</b><span>Grande Comore</span></div>
+    <div class="arrow"><div class="line"></div><div class="boat">🚤</div></div>
+    <div class="port"><small>ARRIVÉE</small><b>Hoani</b><span>Mohéli</span></div>
+  </div>
+  <div class="chips">
+    <div class="chip"><span class="ic">🎫</span><b>Billet QR instantané</b></div>
+    <div class="chip"><span class="ic">💳</span><b>Paiement MVola sécurisé</b></div>
+    <div class="chip"><span class="ic">🌊</span><b>Météo mer officielle 7 jours</b></div>
+    <div class="chip"><span class="ic">🛰️</span><b>Suivi des vedettes en direct</b></div>
+  </div>
+  <div class="bottom">
+    <img class="qr" src="qr-moheligo.png">
+    <div class="cta"><b>moheligo.com</b><small>Scannez le code &amp; réservez votre place</small></div>
+    <div class="fb"><b>Suivez-nous</b><span>📘 MoheliGo</span></div>
+  </div>
+</div>
+</body></html>

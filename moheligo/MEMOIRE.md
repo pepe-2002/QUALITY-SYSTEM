@@ -39,6 +39,7 @@ Tout est dans `moheligo/pub/` :
 | `photos/` | 6 photos réelles de Mohéli fournies par le patron | — | — |
 | `scenario-film.txt` | Script voix du film Amina | — | — |
 | `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux, carte satellite interactive + app (Ouroveni → Hoani) | 54 s | 4,4 Mo |
+| `flyers/` | Flyer premium 2160×2700 (HTML source + PNG) — QR vers moheligo.com | — | — |
 | `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
@@ -91,6 +92,15 @@ comoriennes → versions 720p ~3-5 Mo.
   jour : vrai enregistrement, jamais du bruit filtré.
 - Compression diffusion : 720×1280, crf 26, preset slow, aac 80k mono,
   `+faststart` → ~3-5 Mo/min, qualité nickel sur téléphone.
+
+### Flyers (acquis)
+- Méthode : HTML/CSS + capture Chromium (deviceScaleFactor 2) = design premium
+  (glassmorphism, dégradés) en 2160×2700. Source dans `pub/flyers/flyer1.html`.
+- Polices : API Google Fonts via curl (UA navigateur) → woff2 latin locaux.
+  ⚠️ Dans le CSS importé, les url() se résolvent relativement AU FICHIER CSS.
+- QR code : python `qrcode` (fill #0a2550, ERROR_CORRECT_H).
+- GitHub raw (github.com/google/fonts) est bloqué par la session — passer par
+  fonts.googleapis.com/css2.
 
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 

@@ -2,7 +2,7 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **02/08/2026** (session de nomination).
+> Dernière mise à jour : **02/08/2026** (v5 Destination Mohéli).
 
 ---
 
@@ -38,6 +38,8 @@ Tout est dans `moheligo/pub/` :
 | `textes-publications.md` | Légendes FB/WhatsApp + conseils de diffusion | — | — |
 | `photos/` | 6 photos réelles de Mohéli fournies par le patron | — | — |
 | `scenario-film.txt` | Script voix du film Amina | — | — |
+| `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux + app (« cap sur Hoani ») | 48 s | 4,1 Mo |
+| `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -113,8 +115,19 @@ comoriennes → versions 720p ~3-5 Mo.
 - [ ] Vérifier si le patron veut brancher les pubs sur le site
       (videos.moheligo.com).
 
+### Recherche d'images libres (acquis)
+- Openverse API (`api.openverse.org/v1/images/?q=...`) et l'API Wikimedia
+  Commons fonctionnent via curl + proxy. Flickr : suffixe `_b` = 1024 px.
+- ⚠️ AUCUNE photo/vidéo libre du port de Hoani n'existe. « Hoani » sur Commons
+  = sites maoris de Nouvelle-Zélande. « Moheli d (21).jpg » = une policière (piège).
+- Toujours archiver les crédits (CC BY / BY-SA) dans `pub/photos-cc/CREDITS.md`
+  et les afficher sur l'écran final.
+
 ## 6. Journal des sessions
 
+- **02/08/2026 (suite)** — v5 « Destination Mohéli » : recherche d'images CC
+  (pas de photo libre de Hoani → utilisé satellite, tortues, dauphin, corail,
+  plages CC + nos photos), montage 48 s, crédits en règle.
 - **02/08/2026** — Session fondatrice. Récupéré le site depuis moheligo.com
   (le code n'était sur aucun dépôt) → sauvegardé dans `moheligo/`. Produit
   4 pubs vidéo + textes de publication. Itérations selon retours patron

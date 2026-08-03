@@ -4,9 +4,11 @@
 #  ⚠️ Ne publie QUE le dossier nous/. Le reste du dépôt — RA-QDMS,
 #  MoheliGo — n'est pas touché et n'est pas mis en ligne par ici.
 #
-#  Rien à régler à la main : le robot active Pages lui-même au premier
-#  passage (enablement: true). Ensuite, chaque modification de nous/ sur
-#  la branche principale remet le site à jour tout seul.
+#  Deux travaux, et ce n'est pas un caprice : la première fois, Pages
+#  n'est pas encore activé, donc l'environnement « github-pages »
+#  n'existe pas — un travail qui le réclame échoue avant même de
+#  démarrer. Le premier travail active donc Pages (enablement: true) et
+#  prépare le paquet ; le second, qui vient après, publie.
 # ════════════════════════════════════════════════════════════════════
 
 name: Nous — mise en ligne
@@ -26,19 +28,15 @@ permissions:
 
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  publier:
+  # ── 1. Activer Pages (si besoin) et préparer le paquet ──
+  preparer:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploiement.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
-      # enablement: true → GitHub active Pages tout seul la première fois.
-      # Aucun interrupteur à basculer à la main.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
@@ -48,5 +46,13 @@ jobs:
         with:
           path: nous
 
+  # ── 2. Publier ──
+  publier:
+    needs: preparer
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploiement.outputs.page_url }}
+    steps:
       - id: deploiement
         uses: actions/deploy-pages@v4

@@ -330,6 +330,18 @@ const MALADIES = [
   {nom:"le diabète", cout:800, degats:6},
   {nom:"l'hypertension", cout:600, degats:5},
 ];
+const DIFFICULTES = {
+  facile:    {nom:"Facile",    ico:"🌴", depart:5000, vie:0.7, maladie:0.5, embauche:15, marge:1.3, frais:0.05,
+              desc:"5 000 € au départ, vie moins chère, on trouve du travail facilement."},
+  normal:    {nom:"Normal",    ico:"⚖️", depart:0,    vie:1,   maladie:1,   embauche:0,  marge:1,   frais:0.10,
+              desc:"L'équilibre : tu pars de rien, comme tout le monde."},
+  difficile: {nom:"Difficile", ico:"🔥", depart:0,    vie:1.4, maladie:1.6, embauche:-15, marge:0.75, frais:0.20,
+              desc:"Vie chère, maladies fréquentes, embauche difficile, affaires risquées, 20 % de frais de succession."},
+  survie:    {nom:"Survie",    ico:"💀", depart:0,    vie:1.8, maladie:2.2, embauche:-28, marge:0.55, frais:0.30,
+              desc:"Famille pauvre, santé fragile, presque rien ne te sera donné. Pour les vrais."},
+};
+function diff(){ return DIFFICULTES[etat.difficulte] || DIFFICULTES.normal; }
+
 const POSTES = [
   {nom:"Directeur adjoint", req:70, mult:2.2},
   {nom:"Comptable", req:55, mult:1.6},
@@ -411,6 +423,7 @@ function charger(){
           if(!e.employes) e.employes = [];
         }
         if(etat.compPro==null) etat.compPro = 10;
+        if(!etat.difficulte) etat.difficulte = "normal";
         if(etat.monde) for(const n in etat.monde){
           const p = etat.monde[n];
           if(p.edu==null) p.edu = p.dev;
@@ -433,11 +446,15 @@ function nouvelleVie(opts){
   const [ville, paysNom] = opts.lieu || parmi(VILLES);
   const monde = {};
   for(const p in PAYS_DEF) monde[p] = {...PAYS_DEF[p]};
+  const dif = DIFFICULTES[opts.difficulte] ? opts.difficulte : "normal";
+  const D = DIFFICULTES[dif];
   etat = {
+    difficulte: dif,
     prenom, nom, genre, ville, pays:paysNom, age:0, generation:1,
-    sante: 70+alea(31), bonheur: 70+alea(31),
+    sante: Math.round((70+alea(31)) * (dif==="survie"?0.8:dif==="difficile"?0.9:1)),
+    bonheur: 70+alea(31),
     intel: 30+alea(51), look: 30+alea(51), celebrite: 0, compPro: 5+alea(10), mba:false, anda:false,
-    argent:0, emploi:null, filiere:null,
+    argent: D.depart, emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome:false,
     entreprises:[], politique:null, royaume:null,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null,
@@ -450,6 +467,8 @@ function nouvelleVie(opts){
   nouvelleAnnee();
   ecrire(`Je m'appelle ${prenom} ${nom}. Je suis née${genre==="F"?"":""} ${genre==="F"?"fille":"garçon"} à ${ville}, ${paysNom}.`.replace("née g","né g"), "bon");
   ecrire(`Ma mère est ${nomMere} et mon père est ${nomPere}.`);
+  ecrire(`${D.ico} Mode ${D.nom} — ${D.desc}`, "info");
+  if(D.depart) ecrire(`Ma famille m'a ouvert un livret avec ${euros(D.depart)}.`, "argent");
   sauver(); toutAfficher();
   $("plein").classList.remove("ouvert");
 }
@@ -572,7 +591,7 @@ function vieillir(){
     });
 
     // chiffre du fonds de commerce + production des employés
-    const marge = (alea(41)-15) + e.niveau*3 + (pays().eco-50)/5;
+    const marge = ((alea(41)-15) + e.niveau*3 + (pays().eco-50)/5) * diff().marge;
     const chiffre = Math.round(e.valeur * marge/100);
     let prod = 0;
     const demissionnaires = [];
@@ -661,11 +680,12 @@ function vieillir(){
 
   /* ----- dépenses ----- */
   if(etat.age >= 18){
-    depenses += 2000; // vie courante
+    const V = diff().vie;
+    depenses += Math.round(2000*V); // vie courante
     const logements = etat.biens.filter(b=>b.type==="immobilier" && !b.loue);
-    if(etat.age >= 20 && !logements.length) depenses += 3000; // locataire soi-même
+    if(etat.age >= 20 && !logements.length) depenses += Math.round(3000*V); // locataire soi-même
     for(const b of etat.biens) if(b.type==="immobilier") depenses += Math.round(b.valeur*0.01); // entretien
-    depenses += enfants().filter(e=>e.age<18).length * 1000;
+    depenses += Math.round(enfants().filter(e=>e.age<18).length * 1000 * V);
     if(etat.etude==="universite") depenses += 1500;
   }
 
@@ -859,39 +879,209 @@ function politiqueAnnuelle(){
 
 /* ---------------- la vie des enfants ---------------- */
 
+const NIVEAUX_POL_PROCHE = ["conseiller municipal","maire","député","ministre","président"];
+
 function vieEnfants(){
-  for(const e of etat.relations){
-    if(e.type!=="enfant" || !e.vivant) continue;
-    e.argent = e.argent||0;
-    if(e.age===18){
-      if(alea(5)<3){ e.statut="étudiant"; ecrire(`🎒 ${e.nom} entre à l'université.`, "bon"); }
-      else e.statut="cherche";
-    }
-    if(e.statut==="étudiant" && e.age>=22){
-      e.statut="diplômé";
-      ecrire(`🎓 ${e.nom} décroche son diplôme universitaire !`, "bon");
-    }
-    if(e.age>=18 && !e.metier && e.statut!=="étudiant" && alea(3)>0){
-      const dispo = EMPLOIS.filter(x => e.statut==="diplômé" || !x.diplome);
-      const m = parmi(dispo);
-      e.metier = m.titre; e.salaire = m.salaire;
-      ecrire(`💼 ${e.nom} a été embauché${e.genre==="F"?"e":""} comme ${m.titre.toLowerCase()} (${euros(m.salaire)}/an).`, "bon");
-    }
-    if(e.metier){
-      e.argent += Math.round(e.salaire*0.35);
-      // pas d'augmentation automatique si c'est moi qui fixe son salaire dans mon entreprise
-      if(alea(8)===0 && !employeDe(e.nom)) e.salaire = Math.round(e.salaire*1.1);
-    }
-    if(e.age>=25 && !e.marie && alea(8)===0){
-      e.marie = true;
-      ecrire(`💍 ${e.nom} s'est marié${e.genre==="F"?"e":""} ! Belle fête de famille.`, "bon");
-    }
-    if(e.marie && alea(6)===0){
-      etat.petitsEnfants = (etat.petitsEnfants||0)+1;
-      etat.bonheur = borne(etat.bonheur+6);
-      ecrire(`👶 ${e.nom} m'a donné un petit-enfant ! (${etat.petitsEnfants} au total)`, "bon");
+  for(const r of etat.relations){
+    if(!r.vivant) continue;
+    if(r.type==="enfant") vieEnfant(r);
+    else if(r.type==="frere" || r.type==="soeur" || r.type==="ami") vieProche(r);
+  }
+  reunionFamiliale();
+}
+
+/* --- un enfant vit sa vie tout seul : études, métier, entreprise, politique,
+       mariage, enfants, réussite… ou la rue --- */
+function vieEnfant(e){
+  e.argent = e.argent||0;
+  e.enfants = e.enfants||0;
+  const g = e.genre==="F";
+  const comp = competence(e);
+
+  if(e.age===18){
+    if(alea(100) < 30 + comp/3){ e.statut="étudiant"; ecrire(`🎒 ${e.nom} entre à l'université.`, "bon"); }
+    else { e.statut="cherche"; ecrire(`${e.nom} a fini l'école et cherche du travail.`); }
+  }
+  if(e.statut==="étudiant" && e.age>=22){
+    e.statut="diplômé"; e.competence = Math.min(95, comp+10);
+    ecrire(`🎓 ${e.nom} décroche son diplôme universitaire !`, "bon");
+  }
+
+  // chercher du travail — l'échec répété mène à la précarité
+  if(e.age>=18 && !e.metier && !e.entreprise && e.statut!=="étudiant"){
+    const chance = 35 + comp/2 + diff().embauche;
+    if(alea(100) < chance){
+      const dispo = EMPLOIS.filter(x => (e.statut==="diplômé" || !x.diplome) && (x.intel||0) <= comp+15);
+      const m = parmi(dispo.length?dispo:EMPLOIS.slice(0,3));
+      e.metier = m.titre; e.salaire = m.salaire; e.echecs = 0;
+      if(e.sdf){ e.sdf=false; ecrire(`🙏 ${e.nom} a retrouvé du travail (${m.titre.toLowerCase()}) et un toit. Quel soulagement.`, "bon"); }
+      else ecrire(`💼 ${e.nom} a été embauché${g?"e":""} comme ${m.titre.toLowerCase()} (${euros(m.salaire)}/an).`, "bon");
+    } else {
+      e.echecs = (e.echecs||0)+1;
+      if(e.echecs===3 && !e.sdf) ecrire(`😟 ${e.nom} enchaîne les refus et commence à désespérer.`, "mauvais");
+      if(e.echecs>=5 && !e.sdf && e.argent<500){
+        e.sdf = true; etat.bonheur = borne(etat.bonheur-15);
+        ecrire(`💔 ${e.nom} est à la rue. Sans travail ni économies, ${g?"elle":"il"} dort chez des connaissances. Aide-${g?"la":"le"} !`, "mauvais");
+      }
     }
   }
+
+  // revenus du travail
+  if(e.metier){
+    e.argent += Math.round(e.salaire*0.35);
+    if(alea(8)===0 && !employeDe(e.nom)){
+      e.salaire = Math.round(e.salaire*1.1);
+      if(alea(3)===0) ecrire(`📈 ${e.nom} a été augmenté${g?"e":""} : ${euros(e.salaire)}/an.`, "bon");
+    }
+    // licenciement si compétence faible
+    if(!employeDe(e.nom) && comp<35 && alea(14)===0){
+      ecrire(`${e.nom} a perdu son poste de ${e.metier.toLowerCase()}. La vie est dure.`, "mauvais");
+      e.metier = null; e.salaire = 0;
+    }
+  }
+
+  // créer sa propre entreprise
+  if(e.age>=24 && !e.entreprise && !e.sdf && comp>=50 && e.argent>=12000 && alea(9)===0){
+    const t = parmi(TYPES_ENTREPRISE);
+    e.entreprise = {type:t.type, ico:t.ico, nom:e.nom.split(" ")[0]+" "+parmi(["& Fils","Group","Océan","Invest"]), valeur:10000};
+    e.argent -= 10000; e.metier = "Patron·ne — "+t.type; e.salaire = 0;
+    etat.bonheur = borne(etat.bonheur+8);
+    ecrire(`🏭 ${e.nom} a créé sa propre entreprise : ${t.ico} « ${e.entreprise.nom} » (${t.type}) ! Quelle fierté.`, "bon");
+  }
+  if(e.entreprise){
+    const res = Math.round(e.entreprise.valeur * ((alea(45)-12) + comp/4) / 100 * diff().marge);
+    e.entreprise.valeur = Math.max(2000, e.entreprise.valeur + Math.round(res*0.4));
+    e.argent += Math.max(0, Math.round(res*0.6));
+    if(res>0 && alea(3)===0) ecrire(`💰 L'entreprise de ${e.nom} tourne bien : ${euros(res)} de bénéfices cette année.`, "argent");
+    if(res<0 && alea(3)===0) ecrire(`📉 L'entreprise de ${e.nom} traverse une mauvaise passe (${euros(res)}).`, "mauvais");
+    if(e.entreprise.valeur<=2500 && alea(3)===0){
+      ecrire(`${e.nom} a dû fermer « ${e.entreprise.nom} ». ${g?"Elle":"Il"} repart de zéro.`, "mauvais");
+      e.entreprise = null; e.metier = null;
+    }
+    // voyage d'affaires
+    if(alea(7)===0) ecrire(`✈️ ${e.nom} est parti${g?"e":""} en voyage d'affaires à ${parmi(["Dubaï","Nairobi","Istanbul","Paris","Dar es Salam"])} pour développer son business.`);
+  }
+
+  // richesse remarquable
+  if(!e.riche && e.argent>=200000){
+    e.riche = true; etat.bonheur = borne(etat.bonheur+12);
+    ecrire(`🌟 ${e.nom} est devenu${g?"e":""} riche par ${g?"elle":"lui"}-même : plus de ${euros(e.argent)} de fortune personnelle !`, "bon");
+  }
+
+  // carrière politique autonome
+  if(e.age>=25 && !e.sdf && comp>=55 && alea(11)===0){
+    e.polit = (e.polit==null) ? 0 : Math.min(4, e.polit+1);
+    const titre = NIVEAUX_POL_PROCHE[e.polit];
+    e.metier = titre.charAt(0).toUpperCase()+titre.slice(1);
+    e.salaire = [8000,15000,30000,45000,80000][e.polit];
+    etat.celebrite = borne(etat.celebrite + (e.polit>=3?6:2));
+    if(e.polit===4){
+      const p = pays();
+      p.peuple = Math.min(95,(p.peuple||50)+3);
+      ecrire(`🏛️🎉 ${e.nom} A ÉTÉ ÉLU${g?"E":""} PRÉSIDENT${g?"E":""} DE ${etat.pays.toUpperCase()} ! Mon enfant dirige le pays.`, "bon");
+      etat.bonheur = borne(etat.bonheur+25);
+    } else ecrire(`🏛️ ${e.nom} est devenu${g?"e":""} ${titre} !`, "bon");
+  }
+
+  // mariage et petits-enfants, sans que j'aie mon mot à dire
+  if(e.age>=24 && !e.marie && !e.sdf && alea(7)===0){
+    e.marie = true; e.conjoint = parmi(e.genre==="F"?PRENOMS_M:PRENOMS_F)+" "+parmi(NOMS);
+    etat.bonheur = borne(etat.bonheur+10);
+    ecrire(`💍 ${e.nom} s'est marié${g?"e":""} avec ${e.conjoint} ! Grande fête de famille.`, "bon");
+  }
+  if(e.marie && e.enfants<4 && alea(6)===0){
+    e.enfants++; etat.petitsEnfants = (etat.petitsEnfants||0)+1;
+    etat.bonheur = borne(etat.bonheur+6);
+    ecrire(`👶 ${e.nom} m'a donné un petit-enfant ! (${etat.petitsEnfants} au total)`, "bon");
+  }
+
+  // l'enfant rend à ses parents
+  if(e.argent>=30000 && e.barre>50 && alea(6)===0){
+    const don = Math.round(Math.min(e.argent*0.1, 8000));
+    e.argent -= don; etat.argent += don;
+    etat.bonheur = borne(etat.bonheur+8);
+    ecrire(`❤️ ${e.nom} m'a envoyé ${euros(don)} : « Tiens ${etat.genre==="F"?"maman":"papa"}, c'est grâce à toi. »`, "argent");
+  }
+  if(e.argent>=60000 && e.barre>60 && etat.age>=50 && alea(9)===0){
+    const cout = 3000; e.argent -= cout;
+    etat.bonheur = borne(etat.bonheur+15); etat.sante = borne(etat.sante+3);
+    ecrire(`✈️ ${e.nom} m'a offert un voyage à ${parmi(["La Mecque","Dubaï","Paris","Zanzibar","Maurice"])} — tout payé. Des larmes de joie.`, "bon");
+  }
+  if(e.entreprise && etat.age>=60 && e.barre>55 && alea(12)===0){
+    etat.bonheur = borne(etat.bonheur+10);
+    ecrire(`🏡 ${e.nom} a fait construire une maison pour la famille au village. Le nom ${etat.nom} est respecté.`, "bon");
+  }
+}
+
+/* --- frères, sœurs et amis vivent aussi leur vie --- */
+function vieProche(r){
+  r.argent = r.argent||0;
+  const g = r.genre==="F";
+  if(r.age>=20 && !r.metier && alea(4)===0){
+    const m = parmi(EMPLOIS);
+    r.metier = m.titre; r.salaire = m.salaire;
+  }
+  if(r.metier && !employeDe(r.nom)) r.argent += Math.round(r.salaire*0.3);
+  if(!r.riche && r.argent>=150000){
+    r.riche = true;
+    ecrire(`🌟 ${r.nom} (${LIBELLE_REL[r.type].toLowerCase()}) a fait fortune : ${g?"elle":"il"} est aujourd'hui riche.`, "bon");
+  }
+  // un proche riche peut aider… ou pas
+  if(r.riche && alea(9)===0){
+    if(r.barre>55){
+      const don = 2000+alea(6000); r.argent -= don; etat.argent += don;
+      ecrire(`💵 ${r.nom} m'a aidé${g?"e":""} : ${euros(don)} pour la famille.`, "argent");
+    } else if(alea(2)===0){
+      ecrire(`${r.nom} roule sur l'or mais ne partage rien. « Chacun sa route. »`, "mauvais");
+      etat.bonheur = borne(etat.bonheur-4);
+    }
+  }
+  // décès d'un proche : héritage seulement s'il vous aimait
+  if(r.age>60 && alea(100) < (r.age-58)){
+    r.vivant = false;
+    etat.bonheur = borne(etat.bonheur-15);
+    if(r.riche && r.barre>50){
+      const leg = Math.round(r.argent*0.5);
+      etat.argent += leg;
+      ecrire(`${r.nom} nous a quittés à ${r.age} ans. ${g?"Elle":"Il"} m'a légué ${euros(leg)} par testament. 🕊️`, "argent");
+    } else if(r.riche){
+      ecrire(`${r.nom} est décédé${g?"e":""} à ${r.age} ans, riche — mais tout est allé à d'autres. Nous n'étions pas assez proches.`, "mauvais");
+    } else {
+      ecrire(`${r.nom} nous a quittés à ${r.age} ans. Repose en paix. 🕊️`, "mauvais");
+    }
+  }
+}
+
+/* --- réunion de famille : tout le clan se retrouve, et ça a un impact --- */
+function reunionFamiliale(){
+  if(etat.age<25 || etat.age%5!==0) return;
+  const clan = etat.relations.filter(x=>x.vivant);
+  if(clan.length<3) return;
+  const riches = clan.filter(x=>x.riche).length;
+  const cout = 1500 + clan.length*200;
+  fileEvenements.push({
+    titre:"🍲 Réunion de famille",
+    texte:`Tout le clan ${etat.nom} se retrouve : ${clan.length} personnes, dont ${riches} qui ont réussi. On attend de toi que tu prennes ta part. Repas et frais : ${euros(cout)}.`,
+    choix:[
+      {label:`Tout payer et recevoir dignement (${euros(cout)})`, effet(){
+        etat.argent -= cout;
+        for(const x of clan) x.barre = borne(x.barre+14);
+        etat.bonheur = borne(etat.bonheur+12);
+        ecrire("J'ai reçu toute la famille : marmites, nattes, rires jusqu'au bout de la nuit. Le clan est soudé.", "bon");
+      }},
+      {label:"Partager les frais avec les autres", effet(){
+        etat.argent -= Math.round(cout/3);
+        for(const x of clan) x.barre = borne(x.barre+5);
+        etat.bonheur = borne(etat.bonheur+5);
+        ecrire("Chacun a mis sa part pour la réunion de famille. Correct, sans plus.");
+      }},
+      {label:"Ne pas venir cette année", effet(){
+        for(const x of clan) x.barre = borne(x.barre-12);
+        etat.bonheur = borne(etat.bonheur-6);
+        ecrire("Je ne suis pas allé à la réunion de famille. On en a parlé dans mon dos toute l'année.", "mauvais");
+      }},
+    ]
+  });
 }
 
 /* ---------------- royaume ---------------- */
@@ -955,7 +1145,7 @@ function evenementsAleatoires(){
   const a = etat.age;
 
   // attraper une maladie (risque plus élevé dans un pays peu développé)
-  if(a>=5 && !etat.maladie && alea(100) < 4 + (60-pays().dev)/8){
+  if(a>=5 && !etat.maladie && alea(100) < (4 + (60-pays().dev)/8) * diff().maladie){
     etat.maladie = {...parmi(MALADIES), annees:0};
     ecrire(`🦟 J'ai attrapé ${etat.maladie.nom}. Direction l'hôpital (${euros(etat.maladie.cout)}) avant que ça ne s'aggrave.`, "mauvais");
   }
@@ -1066,12 +1256,13 @@ function mourir(cause){
   const patrimoine = valeurPatrimoine();
   // les biens sont vendus et partagés ; les entreprises passent en nature à l'héritier choisi
   const patrimoineBiens = etat.biens.reduce((s,b)=>s+b.valeur,0);
-  const succession = Math.max(0, Math.round((Math.max(0,etat.argent) + patrimoineBiens) * 0.9)); // 10 % de frais
+  const fraisSucc = diff().frais;
+  const succession = Math.max(0, Math.round((Math.max(0,etat.argent) + patrimoineBiens) * (1-fraisSucc)));
   const part = heritiers.length ? Math.round(succession / heritiers.length) : 0;
 
   let htmlHeritiers = "";
   if(heritiers.length){
-    htmlHeritiers = `<div class="fiche">🪙 Succession (après 10 % de frais) : <b>${euros(succession)}</b><br>
+    htmlHeritiers = `<div class="fiche">🪙 Succession (après ${Math.round(fraisSucc*100)} % de frais) : <b>${euros(succession)}</b><br>
       👪 Partagée entre <b>${heritiers.length}</b> héritier${heritiers.length>1?"s":""} : <b>${euros(part)}</b> chacun</div>
       <div class="sous">Continuer la dynastie ${etat.nom} (génération ${etat.generation+1}) avec :</div>` +
       heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${(etat.entreprises||[]).length?" + 🏭 "+(etat.entreprises.length>1?"les entreprises":"l'entreprise"):""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
@@ -1092,6 +1283,9 @@ function mourir(cause){
         ${etat.politique&&etat.politique.niveau>0 ? "🏛️ Carrière politique : <b>"+NIVEAUX_POL[etat.politique.niveau]+"</b><br>" : ""}
         ${etat.royaume ? "👑 Souverain·e de <b>"+etat.royaume.nom+"</b> ("+etat.royaume.sujets.toLocaleString("fr-FR")+" sujets)<br>" : ""}
         👶 Enfants : <b>${heritiers.length}</b>${etat.petitsEnfants?" · Petits-enfants : <b>"+etat.petitsEnfants+"</b>":""}
+        ${heritiers.filter(h=>h.riche).length?"<br>🌟 Enfants devenus riches par eux-mêmes : <b>"+heritiers.filter(h=>h.riche).length+"</b>":""}
+        ${heritiers.some(h=>h.polit===4)?"<br>🏛️ Un de mes enfants a été <b>président·e</b> !":""}
+        <br>${diff().ico} Mode : <b>${diff().nom}</b>
       </div>
       ${htmlHeritiers}
       <button class="grand ${heritiers.length?"secondaire":""}" id="btn-renaitre">🌱 Nouvelle vie (recommencer à zéro)</button>
@@ -1116,6 +1310,7 @@ function continuerAvec(h, heritage){
     sante: 70+alea(31), bonheur: 60+alea(31),
     intel: borne(parent.intel*0.5 + 20+alea(35)),
     look: borne(parent.look*0.5 + 20+alea(35)),
+    difficulte: parent.difficulte,
     celebrite: 0, compPro: h.metier ? 15+alea(15) : 5+alea(10), mba:false, anda:false,
     argent: heritage + (h.argent||0), emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
@@ -1265,7 +1460,7 @@ function feuilleTravail(){
         <div class="detail">${euros(e.salaire)}/an brut${e.diplome?" · Diplôme requis":""}${e.intel?" · Intelligence "+e.intel+"+ conseillée":""}</div>
         <div class="actions"></div>`);
       action(c, okDiplome ? "Postuler" : "Diplôme requis", "", () => {
-        const chance = 40 + (etat.intel - (e.intel||0)) + Math.round((etat.compPro||0)/4);
+        const chance = 40 + (etat.intel - (e.intel||0)) + Math.round((etat.compPro||0)/4) + diff().embauche;
         if(alea(100) < chance){
           etat.emploi = {titre:e.titre, salaire:e.salaire, annees:0};
           if(etat.etude==="universite"){ etat.etude="fini"; ecrire("J'abandonne mes études pour ce poste."); }
@@ -1702,7 +1897,7 @@ function feuilleActifs(){
   const patrimoine = valeurPatrimoine();
   carte(`<div class="titre">Patrimoine — Génération ${etat.generation}</div>
     <div class="detail">Banque : ${euros(etat.argent)} · Biens et entreprise : ${euros(patrimoine)} · Total : <b>${euros(etat.argent+patrimoine)}</b><br>
-    À ta mort, la succession (moins 10 % de frais) sera partagée entre tes enfants.</div>`);
+    À ta mort, la succession (moins ${Math.round(diff().frais*100)} % de frais) sera partagée entre tes enfants.</div>`);
 
   section("Mes biens");
   if(!etat.biens.length) carte(`<div class="detail">Aucun bien pour l'instant.</div>`);
@@ -1776,13 +1971,22 @@ function feuilleRelations(){
     if(!r.vivant) continue;
     let detail = LIBELLE_REL[r.type]+" · "+r.age+" an"+(r.age>1?"s":"");
     if(r.type==="enfant"){
-      const situation = r.age<3 ? "bébé"
+      const situation = r.sdf ? "💔 sans domicile, en grande difficulté"
+        : r.age<3 ? "bébé"
         : r.age<18 ? "à l'école"
         : r.statut==="étudiant" ? "à l'université"
-        : r.metier ? r.metier + " (" + euros(r.salaire) + "/an)"
+        : r.entreprise ? `${r.entreprise.ico} patron·ne de « ${r.entreprise.nom} » (${euros(r.entreprise.valeur)})`
+        : r.metier ? r.metier + (r.salaire ? " (" + euros(r.salaire) + "/an)" : "")
         : r.statut==="diplômé" ? "diplômé·e, cherche un emploi"
         : "cherche un emploi";
-      detail += `<br>📌 ${situation}${r.marie ? " · marié·e" : ""}<br>💰 Fortune personnelle : <b>${euros(r.argent||0)}</b>`;
+      detail += `<br>📌 ${situation}`;
+      if(r.marie) detail += `<br>💍 marié·e${r.conjoint?" à "+r.conjoint:""}${r.enfants?" · "+r.enfants+" enfant"+(r.enfants>1?"s":""):""}`;
+      detail += `<br>💰 Fortune personnelle : <b>${euros(r.argent||0)}</b>`;
+      if(r.riche) detail += ` <span class="badge">🌟 A réussi seul·e</span>`;
+      if(r.competence!=null) detail += `<br>🛠️ Compétence : ${r.competence}/100`;
+    }
+    if((r.type==="frere"||r.type==="soeur"||r.type==="ami") && (r.metier||r.riche)){
+      detail += `<br>📌 ${r.metier||"—"}${r.riche?" · 🌟 fortune faite ("+euros(r.argent||0)+")":""}`;
     }
     if(r.type==="conjoint" && r.metier)
       detail += `<br>💼 ${r.metier} · ${euros(r.salaire)}/an (contribue 30 % au ménage)`;
@@ -1796,6 +2000,27 @@ function feuilleRelations(){
         ecrire(`J'ai donné 1 000 € à ${r.nom} pour l'aider dans la vie.`, "argent");
         fermerFeuille();
       }, etat.argent<1000);
+      if(r.sdf){
+        action(c, "Le sortir de la rue (5 000 €)", "rouge", () => {
+          etat.argent -= 5000; r.sdf = false; r.echecs = 0;
+          r.argent = (r.argent||0)+2000; r.barre = borne(r.barre+30);
+          r.competence = Math.min(95, competence(r)+8);
+          etat.bonheur = borne(etat.bonheur+12);
+          ecrire(`J'ai sorti ${r.nom} de la rue : un toit, des vêtements propres, une formation. ${r.genre==="F"?"Elle":"Il"} repart du bon pied.`, "bon");
+          fermerFeuille();
+        }, etat.argent<5000);
+      }
+      if(r.age>=22 && !r.entreprise && !r.sdf){
+        action(c, "Financer son entreprise (15 000 €)", "or", () => {
+          etat.argent -= 15000;
+          const t = parmi(TYPES_ENTREPRISE);
+          r.entreprise = {type:t.type, ico:t.ico, nom:r.nom.split(" ")[0]+" "+parmi(["& Fils","Group","Océan","Invest"]), valeur:15000};
+          r.metier = "Patron·ne — "+t.type; r.salaire = 0; r.barre = borne(r.barre+20);
+          etat.bonheur = borne(etat.bonheur+10);
+          ecrire(`J'ai financé l'entreprise de ${r.nom} : ${t.ico} « ${r.entreprise.nom} ». À ${r.genre==="F"?"elle":"lui"} de jouer.`, "argent");
+          fermerFeuille();
+        }, etat.argent<15000);
+      }
     }
     action(c, "Passer du temps", "gris", () => {
       r.barre = borne(r.barre+12); etat.bonheur = borne(etat.bonheur+4);
@@ -1988,7 +2213,7 @@ function ecranAccueil(){
     <div class="cadre">
       <div class="embleme">🌺</div>
       <h1>Maisha</h1>
-      <div class="sous">Le simulateur de vie et de dynastie.<br>Étudie, travaille, entreprends, deviens star ou président… puis transmets ton héritage à tes enfants.</div>
+      <div class="sous">Le simulateur de vie et de dynastie.<br>Étudie, travaille, entreprends, deviens star, président ou roi. Ta famille vit sa propre vie : tes enfants réussiront — ou pas — sans te demander ton avis.</div>
       <div class="champ">
         <label>Ton prénom (laisser vide = au hasard)</label>
         <input id="in-prenom" maxlength="20" placeholder="Ex. : Nayam">
@@ -2008,9 +2233,18 @@ function ecranAccueil(){
           ${VILLES.map((v,i)=>`<option value="${i}">${v[0]}, ${v[1]}</option>`).join("")}
         </select>
       </div>
+      <div class="champ">
+        <label>Difficulté</label>
+        <select id="in-diff">
+          ${Object.keys(DIFFICULTES).map(k=>`<option value="${k}"${k==="normal"?" selected":""}>${DIFFICULTES[k].ico} ${DIFFICULTES[k].nom}</option>`).join("")}
+        </select>
+        <div class="detail" id="diff-desc" style="color:var(--ink-dim); font-size:12px; margin-top:6px; line-height:1.45"></div>
+      </div>
       <button class="grand" id="btn-commencer">🍼 Commencer une vie</button>
     </div>`;
   $("plein").classList.add("ouvert");
+  const majDiff = () => { $("diff-desc").textContent = DIFFICULTES[$("in-diff").value].desc; };
+  $("in-diff").onchange = majDiff; majDiff();
   choixGenre = "";
   const majGenres = () => {
     $("g-f").classList.toggle("actif", choixGenre==="F");
@@ -2026,6 +2260,7 @@ function ecranAccueil(){
       genre: choixGenre || null,
       prenom: $("in-prenom").value,
       lieu: iLieu==="" ? null : VILLES[+iLieu],
+      difficulte: $("in-diff").value,
     });
   };
 }

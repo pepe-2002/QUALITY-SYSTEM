@@ -17,6 +17,15 @@ Six onglets : **Travail** (emploi, entreprises, recrutement), **Actifs**
 régional, construire pour son pays, politique & royaume), **+ Âge**,
 **Relations** et **Vie** (quotidien, formations, carrière de star, risques).
 
+## Modes de difficulté
+
+Choisis à la création : **🌴 Facile** (5 000 € au départ, vie moins chère,
+embauche facile), **⚖️ Normal**, **🔥 Difficile** (vie chère, maladies
+fréquentes, embauche dure, marges faibles, 20 % de frais de succession) ou
+**💀 Survie** (santé fragile, presque rien ne t'est donné, 30 % de frais).
+La difficulté agit sur le coût de la vie, le risque de maladie, les chances
+d'embauche, les marges des entreprises et l'héritage.
+
 ## Systèmes du jeu
 
 - **Stats** : Santé, Bonheur, Intelligence, Apparence, Célébrité et
@@ -73,10 +82,20 @@ régional, construire pour son pays, politique & royaume), **+ Âge**,
   égales entre les enfants ; on continue avec l'héritier de son choix, qui
   retrouve son parent survivant, ses frères et sœurs, son métier et ses
   économies personnelles.
-- **Les enfants vivent leur vie** : université ou recherche d'emploi à 18 ans,
-  diplôme, embauche, salaire, épargne, mariage, petits-enfants — leur fortune
-  et leur situation sont visibles dans l'onglet Relations, et on peut leur
-  donner de l'argent.
+- **Les enfants vivent leur vie sans te demander ton avis** : université ou
+  recherche d'emploi, diplôme, embauche, licenciement, **création de leur
+  propre entreprise**, voyages d'affaires, fortune personnelle (ils peuvent
+  devenir **riches avant l'héritage**), **carrière politique** jusqu'à la
+  présidence, mariage et petits-enfants décidés par eux… ou la chute : refus
+  en série, précarité et **rue** s'ils échouent. Ils te rendent ce que tu leur
+  as donné : envois d'argent, voyage offert à leurs parents, maison bâtie au
+  village. Tu peux les aider (don, financer leur entreprise, les sortir de la
+  rue) — leur situation complète est visible dans l'onglet Relations.
+- **La famille élargie compte** : frères, sœurs et amis mènent leur carrière,
+  certains font fortune. Un proche riche et proche de toi t'aide ou te **lègue
+  la moitié de sa fortune** à sa mort ; un proche riche mais distant ne te
+  laisse rien. Tous les 5 ans, une **réunion de famille** : tout payer et
+  souder le clan, partager les frais, ou ne pas venir (et être jugé).
 - **Royaumes 👑** : proclame la monarchie en tant que président populaire
   (coup risqué !) ou achète une île (400 000 €) pour fonder ton royaume.
   Sujets, trésor royal, prestige, liste civile annuelle, décisions royales

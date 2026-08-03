@@ -36,12 +36,31 @@ Six onglets : **Travail** (emploi, entreprises, recrutement), **Actifs**
 régional, construire pour son pays, politique & royaume), **+ Âge**,
 **Relations** et **Vie** (quotidien, formations, carrière de star, risques).
 
+## Ce qui se passe tout seul
+
+Ta vie avance sans que tu aies à cliquer : tu **rencontres quelqu'un**, tu
+**te maries** et tes **enfants naissent** au fil des années. Tes entreprises
+tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
+Tous les boutons restent là si tu veux forcer les choses, mais tu peux
+traverser une vie entière en appuyant seulement sur **+ Âge**.
+
+## Voyages
+
+Sept destinations, du week-end à Mohéli au tour du monde, en passant par
+Zanzibar, Istanbul, La Mecque, Paris et Dubaï : chacune donne du bonheur, et
+les plus lointaines de la santé, de l'intelligence, de l'allure ou de la
+célébrité — et rapprochent toute la famille. Avec une entreprise, le
+**voyage d'affaires** fait monter la réputation de toutes tes sociétés et
+peut décrocher un contrat.
+
 ## Rythme du jeu
 
 On ne devient pas riche en trois ans. Une entreprise met des décennies à
-bâtir une fortune : sur 15 ans dirigée par un bon PDG sans que le joueur
-touche à rien, une PME survit dans 85 % des cas et dégage un gain médian
-d'environ 21 000 € — les grandes réussites existent, mais elles se méritent.
+bâtir une fortune. Mesuré sur des dizaines de vies simulées : une PME
+confiée à un PDG rapporte environ **50 000 € nets sur 15 ans**, et il faut
+une trentaine d'années pour que le patrimoine décolle vraiment. Les grandes
+entreprises subissent des **rendements décroissants** — grossir demande de
+fusionner et d'entrer en bourse, pas d'attendre.
 Les styles de dirigeant se distinguent : le bâtisseur d'équipe et le
 gestionnaire prudent ne coulent presque jamais, le développeur agressif ne
 survit qu'à 60 % mais peut rapporter beaucoup plus.
@@ -98,6 +117,18 @@ d'embauche, les marges des entreprises et l'héritage.
     d'administration** te consulte tous les deux ans pour la seule vraie
     décision d'actionnaire (réinvestir, exiger un dividende, changer de cap,
     augmenter le PDG) ;
+  - **fusion d'entreprises** : absorber une de tes autres sociétés coûte
+    22 % de la valorisation combinée, mais le nouvel ensemble vaut 15 % de
+    plus que la somme des parties, cumule équipes et trésoreries et monte
+    d'un palier de taille ;
+  - **introduction en bourse** : réservée aux Groupes valant plus de
+    600 000 € et bien réputés. Frais lourds, mais on lève 45 % de la
+    valorisation d'un coup et le cours grimpe chaque année bénéficiaire —
+    au prix d'une chute de 12 % à chaque exercice dans le rouge ;
+  - **nommer son enfant PDG** : un fils ou une fille majeure prend la tête
+    de l'affaire pour un salaire familial bien plus bas qu'un dirigeant du
+    marché, gagne en compétence chaque année aux commandes, et reprendra
+    naturellement l'empire ;
   - **réseau d'affaires** : déjeuners avec les patrons de la place (contrats,
     partenariats, conseils… et parfois une rencontre amoureuse), rachat de
     concurrents. À la mort, les entreprises ne

@@ -495,6 +495,7 @@ function normaliserEntreprise(e){
   if(e.produits==null) e.produits = [];
   if(e.dernier==null) e.dernier = null;
   if(e.pdg===undefined) e.pdg = null;
+  if(e.cotee==null) e.cotee = false;
   return e;
 }
 
@@ -559,8 +560,15 @@ function actionsDuPDG(e){
     }
   }
 
+  // 5ter. un enfant aux commandes apprend vite le métier
+  if(P.famille){
+    P.competence = Math.min(95, P.competence + 1);
+    const h = etat.relations.find(x => x.nom === P.nom && x.vivant);
+    if(h){ h.competence = P.competence; h.salaire = P.salaire; }
+  }
+
   // 6. dividende remonté au propriétaire
-  const garde = 15000 + e.valeur*0.15;
+  const garde = 12000 + assietteCA(e.valeur)*0.12;
   if((e.caisse||0) > garde){
     const taux = P.style==="finance" ? 0.55 : P.style==="croissance" ? 0.20 : 0.35;
     const div = Math.round(((e.caisse||0) - garde) * taux);
@@ -572,6 +580,53 @@ function actionsDuPDG(e){
   }
   if(actes.length)
     ecrire(`👔 ${P.nom}, PDG de « ${e.nom} », a ${actes.join(", ")}.`, "info");
+}
+
+/* --- ma vie amoureuse et familiale avance toute seule --- */
+function vieAmoureuse(){
+  if(etat.age < 18 || etat.prison > 0) return;
+  const g = etat.genre === "F";
+  const partenaire = etat.relations.find(r => r.vivant && r.type === "partenaire");
+  const conjoint   = etat.relations.find(r => r.vivant && r.type === "conjoint");
+
+  // rencontre spontanée
+  if(!partenaire && !conjoint && alea(100) < 22 + etat.look/5 + etat.celebrite/6){
+    const gp = g ? "M" : "F";
+    const nom = parmi(gp==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS);
+    const pr = rel("partenaire", nom, Math.max(18, etat.age + alea(9) - 4), gp);
+    const m = parmi(EMPLOIS.slice(0,8));
+    pr.metier = m.titre; pr.salaire = m.salaire;
+    etat.relations.push(pr);
+    etat.bonheur = borne(etat.bonheur + 10);
+    ecrire(`💘 J'ai rencontré ${nom} (${m.titre.toLowerCase()}). Nous sommes en couple.`, "bon");
+    return;
+  }
+  // demande en mariage spontanée
+  if(partenaire && partenaire.barre > 55 && alea(100) < 30){
+    partenaire.type = "conjoint";
+    partenaire.barre = borne(partenaire.barre + 12);
+    etat.bonheur = borne(etat.bonheur + 18);
+    etat.argent -= 2000;
+    if(!partenaire.metier){ const m = parmi(EMPLOIS.slice(0,7)); partenaire.metier = m.titre; partenaire.salaire = m.salaire; }
+    ecrire(`💍 ${partenaire.nom} et moi nous sommes mariés ! Grande fête à ${etat.ville} (2 000 €).`, "bon");
+    return;
+  }
+  // rupture si la relation s'effondre
+  if(partenaire && partenaire.barre < 18 && alea(3) === 0){
+    ecrire(`💔 ${partenaire.nom} et moi nous sommes séparés. Ça ne marchait plus.`, "mauvais");
+    etat.relations = etat.relations.filter(x => x !== partenaire);
+    etat.bonheur = borne(etat.bonheur - 10);
+    return;
+  }
+  // enfants : ça arrive tout seul
+  const c = conjoint || (partenaire && partenaire.type === "conjoint" ? partenaire : null);
+  if(c && etat.age < 48 && enfants().length < 6 && alea(100) < 28){
+    const gb = alea(2) ? "F" : "M";
+    const bb = parmi(gb==="F"?PRENOMS_F:PRENOMS_M) + " " + etat.nom;
+    etat.relations.push(rel("enfant", bb, 0, gb));
+    etat.bonheur = borne(etat.bonheur + 16);
+    ecrire(`👶 Naissance de ${gb==="F"?"ma fille":"mon fils"} ${bb} ! La famille s'agrandit.`, "bon");
+  }
 }
 
 /* --- une fois par an, le conseil te demande une décision --- */
@@ -610,6 +665,12 @@ function conseilAdministration(){
   });
 }
 function tailleEnt(e){ return TAILLES[e.taille||0]; }
+// une grande entreprise ne rapporte pas proportionnellement plus qu'une petite
+function assietteCA(v){
+  if(v <= 250000) return v;
+  if(v <= 900000) return 250000 + (v-250000)*0.70;
+  return 250000 + 650000*0.70 + (v-900000)*0.40;
+}
 function employeDe(nom){ return (etat.entreprises||[]).some(e => (e.employes||[]).some(x=>x.nom===nom)); }
 function libererEmployes(e){
   for(const emp of (e.employes||[])){
@@ -835,7 +896,7 @@ function vieillir(){
     const facteurRepu = 0.6 + e.reputation/100;      // 0.6 → 1.6
     const facteurQual = 0.7 + e.qualite/160;         // 0.7 → 1.3
     const marge = Math.max(0.5, (alea(18)-6) + e.niveau*2.5 + (pays().eco-50)/6) * diff().marge * S.marge;
-    const chiffre = Math.round(e.valeur * marge/100 * 2.2 * S.ca * facteurRepu * facteurQual * tauxAct * (e.pdg ? 1 + e.pdg.competence/140 : 1));
+    const chiffre = Math.round(assietteCA(e.valeur) * marge/100 * 2.2 * S.ca * facteurRepu * facteurQual * tauxAct * (e.pdg ? 1 + e.pdg.competence/140 : 1));
     let prod = 0;
     const demissionnaires = [];
     for(const emp of e.employes){
@@ -883,6 +944,19 @@ function vieillir(){
 
     // l'entreprise capitalise si elle est bénéficiaire (surtout en expansion)
     if(resultat > 0) e.valeur += Math.round(resultat * (e.strategie==="expansion" ? 0.22 : 0.10));
+
+    // société cotée : le marché sanctionne ou récompense
+    if(e.cotee){
+      if(resultat > 0){
+        const bonus = Math.round(resultat * 0.20 + assietteCA(e.valeur) * 0.03);
+        e.valeur += bonus;
+        ecrire(`📈 Le cours de « ${e.nom} » progresse : +${euros(bonus)} de capitalisation.`, "argent");
+      } else {
+        const chute = Math.round(e.valeur * 0.12);
+        e.valeur = Math.max(20000, e.valeur - chute);
+        ecrire(`📉 Exercice dans le rouge : l'action « ${e.nom} » chute, −${euros(chute)} de capitalisation.`, "mauvais");
+      }
+    }
 
     if(e.pdg) actionsDuPDG(e);
     e.dernier = {ca, masse, interets, resultat, caisse:e.caisse};
@@ -973,6 +1047,9 @@ function vieillir(){
       ecrire(`${r.nom}, ${r.type==="mere"?"ma mère":"mon père"}, est décédé${r.type==="mere"?"e":""} à ${r.age} ans. Repose en paix.`, "mauvais");
     }
   }
+
+  // ma vie sentimentale et familiale avance seule
+  vieAmoureuse();
 
   // conseil d'administration des entreprises dirigées par un PDG
   conseilAdministration();
@@ -1816,8 +1893,8 @@ function feuilleTravail(){
   for(const e of (etat.age>=18 ? etat.entreprises : [])){
     normaliserEntreprise(e);
     const d = e.dernier;
-    const c = carte(`<div class="titre">${e.ico} ${e.nom} <span class="badge">${tailleEnt(e).ico} ${tailleEnt(e).nom}</span></div>
-      <div class="detail">${e.type} · ${STRATEGIES[e.strategie].ico} ${STRATEGIES[e.strategie].nom}${e.pertes?" · ⚠️ trésorerie négative ("+e.pertes+"/3)":""}</div>
+    const c = carte(`<div class="titre">${e.ico} ${e.nom} <span class="badge">${tailleEnt(e).ico} ${tailleEnt(e).nom}</span>${e.cotee?' <span class="badge">📈 Cotée</span>':''}</div>
+      <div class="detail">${e.type} · ${STRATEGIES[e.strategie].ico} ${STRATEGIES[e.strategie].nom}${e.pdg?" · 👔 "+e.pdg.nom:" · ⚠️ sans dirigeant"}${e.pertes?" · ⚠️ trésorerie négative ("+e.pertes+"/3)":""}</div>
       <div class="kpis">
         <div class="kpi"><span>Trésorerie</span><b class="${(e.caisse||0)>=0?"or":"neg"}">${euros(e.caisse||0)}</b></div>
         <div class="kpi"><span>Résultat N-1</span><b class="${d&&d.resultat>=0?"pos":"neg"}">${d?euros(d.resultat):"—"}</b></div>
@@ -1898,6 +1975,24 @@ function feuilleEntreprise(e){
         return {nom: parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS), genre:g, titre:p.titre, style:p.style,
                 competence: comp, salaire: Math.round(comp*p.coef*250/1000)*1000, moral:70, annees:0};
       })};
+    }
+    // nommer un de ses enfants à la tête de l'entreprise
+    const heritiers = etat.relations.filter(r => r.vivant && r.type==="enfant" && r.age>=18 && !r.sdf && !employeDe(r.nom));
+    for(const h of heritiers){
+      const comp = competence(h);
+      const sal = Math.round(comp*160/1000)*1000;
+      const c = carte(`<div class="titre">${h.genre==="F"?"👧":"👦"} ${h.nom} <span class="badge">Ton enfant</span></div>
+        <div class="detail">${h.age} ans · Compétence <b>${comp}/100</b> · Salaire familial <b>${euros(sal)}/an</b> (bien moins cher qu'un PDG du marché)<br>
+        Un enfant à la tête de l'affaire apprend le métier : sa compétence grimpe chaque année, et il reprendra naturellement l'empire.</div>
+        <div class="actions"></div>`);
+      action(c, "Le nommer PDG", "or", () => {
+        e.pdg = {nom:h.nom, genre:h.genre, titre:"Héritier·ère du groupe", style:"croissance",
+                 competence:comp, salaire:sal, moral:85, annees:0, famille:true};
+        h.metier = "PDG — "+e.nom; h.salaire = sal; h.barre = borne(h.barre+25);
+        etat.pdgProposes = null; etat.bonheur = borne(etat.bonheur+10);
+        ecrire(`👔 J'ai nommé ${h.nom} PDG de « ${e.nom} ». ${h.genre==="F"?"Elle":"Il"} prend les rênes de l'affaire familiale.`, "bon");
+        rafraichirFeuille();
+      }, (e.caisse||0) < sal);
     }
     for(const cand of etat.pdgProposes.liste){
       const prof = PROFILS_PDG.find(x=>x.style===cand.style);
@@ -2045,10 +2140,64 @@ function feuilleEntreprise(e){
     rafraichirFeuille();
   });
 
-  /* --- croissance --- */
+  /* --- croissance, fusion, bourse --- */
+  section("Croissance & haut de bilan", false);
+
+  // introduction en bourse
+  if(!e.cotee){
+    const okT = (e.taille||0) >= 2, okV = e.valeur >= 600000, okR = e.reputation >= 60;
+    const frais = Math.round(e.valeur*0.12);
+    const cI = carte(`<div class="titre">📈 Introduire en bourse</div>
+      <div class="ligne-info"><span>Être au moins un Groupe</span><b>${okT?"✅":"❌"} ${tailleEnt(e).nom}</b></div>
+      <div class="ligne-info"><span>Valorisation ≥ 600 000 €</span><b>${okV?"✅":"❌"} ${euros(e.valeur)}</b></div>
+      <div class="ligne-info"><span>Réputation ≥ 60</span><b>${okR?"✅":"❌"} ${e.reputation}</b></div>
+      <div class="ligne-info"><span>Frais d'introduction</span><b>${euros(frais)}</b></div>
+      <div class="detail" style="margin-top:6px">L'entrée en bourse lève des capitaux massifs et fait croître la valorisation bien plus vite. Mais les actionnaires exigent des résultats : une année de pertes fait plonger le cours.</div>
+      <div class="actions"></div>`);
+    action(cI, "Entrer en bourse", "or", () => {
+      e.caisse -= frais;
+      const leve = Math.round(e.valeur*0.45);
+      e.caisse += leve; e.cotee = true; e.reputation = borne(e.reputation+10);
+      etat.celebrite = borne(etat.celebrite+10);
+      ecrire(`📈🔔 « ${e.nom} » entre en bourse ! ${euros(leve)} levés auprès des investisseurs (frais : ${euros(frais)}). La cloche a sonné.`, "argent");
+      rafraichirFeuille();
+    }, !okT || !okV || !okR || (e.caisse||0) < frais);
+  } else {
+    carte(`<div class="titre">📈 Société cotée</div>
+      <div class="detail">« ${e.nom} » est cotée en bourse : la valorisation grimpe plus vite chaque année bénéficiaire, mais un exercice dans le rouge fait chuter le cours de 12 %.</div>`);
+  }
+
+  // fusion avec une autre de mes entreprises
+  const autres = (etat.entreprises||[]).filter(x => x !== e);
+  for(const o of autres){
+    const cout = Math.round((e.valeur + o.valeur) * 0.22);
+    const cF = carte(`<div class="titre">🔗 Fusionner avec « ${o.nom} »</div>
+      <div class="ligne-info"><span>Valorisation combinée</span><b>${euros(e.valeur + o.valeur)}</b></div>
+      <div class="ligne-info"><span>Coût de l'opération</span><b>${euros(cout)}</b></div>
+      <div class="detail" style="margin-top:6px">Banquiers, avocats, restructuration : la fusion coûte très cher, mais le nouvel ensemble vaut 15 % de plus que la somme des parties, cumule les équipes et les trésoreries, et monte d'un palier de taille.</div>
+      <div class="actions"></div>`);
+    action(cF, "Fusionner", "or", () => {
+      etat.argent -= cout;
+      e.valeur = Math.round((e.valeur + o.valeur) * 1.15);
+      e.caisse = (e.caisse||0) + (o.caisse||0);
+      e.dette = (e.dette||0) + (o.dette||0);
+      e.employes = e.employes.concat(o.employes||[]);
+      e.reputation = borne(Math.round((e.reputation + o.reputation)/2) + 8);
+      e.qualite = borne(Math.round((e.qualite + o.qualite)/2) + 4);
+      e.stock = Math.min(100, Math.round((e.stock + o.stock)/2) + 10);
+      e.taille = Math.min(3, Math.max(e.taille||0, o.taille||0) + 1);
+      e.niveau = Math.min(5, Math.max(e.niveau, o.niveau));
+      e.produits = (e.produits||[]).concat(o.produits||[]);
+      if(!e.pdg && o.pdg) e.pdg = o.pdg;
+      etat.entreprises = etat.entreprises.filter(x => x !== o);
+      etat.celebrite = borne(etat.celebrite+6);
+      ecrire(`🔗 FUSION : « ${o.nom} » absorbe et rejoint « ${e.nom} » pour ${euros(cout)}. Le nouvel ensemble pèse ${euros(e.valeur)} et devient ${tailleEnt(e).nom}.`, "argent");
+      rafraichirFeuille();
+    }, etat.argent < cout);
+  }
+
   const suivante = TAILLES[(e.taille||0)+1];
   if(suivante){
-    section("Croissance");
     const okEmp = e.employes.length >= suivante.emp, okVal = e.valeur >= suivante.valeur;
     const cc = carte(`<div class="titre">${suivante.ico} Passer en ${suivante.nom}</div>
       <div class="ligne-info"><span>Valorisation requise</span><b>${okVal?"✅":"❌"} ${euros(e.valeur)} / ${euros(suivante.valeur)}</b></div>
@@ -2811,6 +2960,50 @@ function feuilleVie(){
   for(const [titre, detail, cout, fn] of A){
     const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
     action(c, "Y aller", "", () => { if(cout) etat.argent -= cout; fn(); fermerFeuille(); }, cout>etat.argent && cout>0);
+  }
+
+  if(etat.age>=16){
+    section("✈️ Voyages", false);
+    const DESTINATIONS = [
+      ["🏝️ Mohéli, week-end", 250, {bonheur:8, sante:2}, "Plage de Nioumachoua, tortues et silence."],
+      ["🌶️ Zanzibar", 700, {bonheur:12, sante:3}, "Stone Town, les épices et l'océan turquoise."],
+      ["🕌 Istanbul", 1600, {bonheur:14, intel:3}, "Bosphore, bazars et mosquées."],
+      ["🕋 La Mecque (Omra)", 2600, {bonheur:22, sante:4}, "Le voyage d'une vie. La famille en parle encore."],
+      ["🗼 Paris", 2200, {bonheur:14, look:4}, "Musées, vitrines et cafés."],
+      ["🏙️ Dubaï", 3200, {bonheur:16, look:5, celebrite:4}, "Gratte-ciel, or et démesure."],
+      ["🌍 Tour du monde", 12000, {bonheur:30, intel:6, look:5, celebrite:8}, "Six mois, quatre continents. Une autre personne au retour."],
+    ];
+    for(const [titre, cout, effets, desc] of DESTINATIONS){
+      const c = carte(`<div class="titre">${titre}</div>
+        <div class="detail">${euros(cout)} · ${desc}</div><div class="actions"></div>`);
+      action(c, "Partir", "", () => {
+        if(dejaFait("voyage")){ ecrire("Un grand voyage par an, il faut aussi travailler."); fermerFeuille(); return; }
+        etat.argent -= cout;
+        for(const k in effets) etat[k] = borne((etat[k]||0) + effets[k]);
+        for(const r of etat.relations) if(r.vivant && (r.type==="conjoint"||r.type==="enfant")) r.barre = borne(r.barre+6);
+        ecrire(`${titre.replace(/^\S+\s/,"✈️ Voyage : ")} — ${desc} (${euros(cout)})`, "bon");
+        fermerFeuille();
+      }, etat.argent < cout);
+    }
+    // voyage d'affaires si j'ai une entreprise
+    if((etat.entreprises||[]).length){
+      const c = carte(`<div class="titre">💼 Voyage d'affaires</div>
+        <div class="detail">3 000 € · Salons, clients étrangers, fournisseurs : la réputation de tes entreprises grimpe et des contrats peuvent tomber.</div>
+        <div class="actions"></div>`);
+      action(c, "Partir en mission", "or", () => {
+        if(dejaFait("affaires")){ ecrire("J'ai déjà fait ma tournée commerciale cette année."); fermerFeuille(); return; }
+        etat.argent -= 3000;
+        for(const e of etat.entreprises) e.reputation = borne(e.reputation + 5);
+        if(alea(100) < 45 + (etat.compPro||0)/3){
+          const e = parmi(etat.entreprises);
+          const contrat = 6000 + alea(28000);
+          e.caisse += contrat;
+          ecrire(`💼 Voyage d'affaires fructueux : un contrat de ${euros(contrat)} signé pour « ${e.nom} ».`, "argent");
+        } else ecrire("💼 Voyage d'affaires : beaucoup de cartes de visite, peu de résultats immédiats.");
+        etat.compPro = borne((etat.compPro||0)+2);
+        fermerFeuille();
+      }, etat.argent < 3000);
+    }
   }
 
   if(etat.age>=15){

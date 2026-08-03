@@ -45,9 +45,23 @@ d'embauche, les marges des entreprises et l'héritage.
   les grosses actions rémunératrices sont limitées à une fois par an.
 - **Carrière** : petits boulots dès 15 ans, 11 métiers salariés, promotions,
   augmentations.
-- **Entreprendre et gérer** : 5 types d'entreprises (boutique, restaurant,
-  import-export, compagnie maritime, startup), et jusqu'à **3 entreprises en
-  même temps**, chacune avec sa gestion propre. À la mort, les entreprises ne
+- **Vrai jeu de gestion d'entreprise** : 7 types d'entreprises (boutique,
+  restaurant, import-export, compagnie maritime, startup tech, BTP, banque
+  d'affaires), jusqu'à **3 en même temps**. On **entre dans son entreprise**
+  via un écran dédié avec tableau de bord (trésorerie, valorisation, dette,
+  CA, masse salariale, résultat) et jauges de **stock, qualité, réputation** :
+  - **5 stratégies** (prix bas, équilibrée, premium, expansion, innovation)
+    qui changent chiffre d'affaires, marges, qualité et réputation ;
+  - **approvisionnement** : sans stock, l'activité tombe à 35 % ;
+  - **marketing** (pub locale / nationale / internationale), **lancement de
+    produits** et **développement d'applications** qui peuvent rapporter gros ;
+  - **finance** : salaire de dirigeant, dividendes taxés, renflouement,
+    emprunt bancaire à 8 % ;
+  - **croissance** PME → Société → Groupe → **Multinationale**, sous
+    conditions de valorisation et d'effectif ;
+  - **réseau d'affaires** : déjeuners avec les patrons de la place (contrats,
+    partenariats, conseils… et parfois une rencontre amoureuse), rachat de
+    concurrents. À la mort, les entreprises ne
   sont pas vendues : elles sont **transmises à l'héritier choisi** (qui en
   devient le patron, employés compris). L'entreprise a sa **caisse** :
   chiffre d'affaires + production des employés − masse salariale = résultat.
@@ -70,10 +84,23 @@ d'embauche, les marges des entreprises et l'héritage.
 - **Star** : chanter aux mariages, poster des clips, single, tournée
   régionale, contrats pub — la célébrité monte, retombe, et attire paparazzi
   et bad buzz.
-- **Politique** : adhère à un parti puis gravis les échelons — maire, député,
-  ministre, **président**. Campagnes payantes, popularité à entretenir. Une
-  fois au pouvoir : budget annuel (éducation, infrastructures, anticorruption…
-  ou détournement de fonds, au risque de la destitution et de la prison).
+- **Politique et gouvernement** : adhère à un parti puis gravis les échelons —
+  maire, député, ministre, **président**. Une fois élu, un **écran
+  Gouvernement** permet de diriger réellement le pays : répartition du
+  **budget national** entre éducation, santé, infrastructures, **IA &
+  numérique**, sécurité et fonction publique ; **salaire minimum** ; **salaires
+  des ministres** (les réduire nourrit la corruption, les augmenter indigne le
+  peuple) ; **pression fiscale** (que tu paies aussi) ; **grands projets**
+  (port en eau profonde, université nationale, institut d'IA, centrale
+  solaire, hôpital central) ; et le détournement de fonds, au risque de la
+  destitution et de la prison.
+- **Monarchie exigeante** : proclamer la monarchie demande 75 de popularité,
+  15 ans de carrière politique, un peuple acquis et 500 000 € ; acheter une
+  île souveraine demande 2 M€ de liquidités, 1 M€ de patrimoine, 40 de
+  célébrité et de diriger au moins un Groupe.
+- **Éducation des enfants** : école publique, école privée (2 500 €/an) ou
+  études à l'étranger (9 000 €/an), plus des cours de soutien — ce que tu
+  paies détermine leur compétence, donc leur réussite d'adulte.
 - **Le pays vit** : chaque pays a ses stats (Développement, Économie,
   Corruption) qui évoluent, affichées avec badges « Pays développé »,
   « Très corrompu »… Crises, cyclones, booms touristiques ; le taux d'impôt

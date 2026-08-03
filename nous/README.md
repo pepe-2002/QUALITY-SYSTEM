@@ -29,17 +29,36 @@ navigateur** (base intégrée, IndexedDB). Rien ne sort de la machine.
 ## 2. La mettre sur le téléphone, et parler à deux
 
 ### a) Lui donner une adresse à elle
-Le dossier `nous/` est un site statique : aucun serveur, aucun build.
-Deux façons, au choix, **sans jamais toucher à MoheliGo** :
 
-- **Netlify Drop** : aller sur `app.netlify.com/drop`, glisser le dossier
-  `nous/`. On obtient une adresse en `https` en quinze secondes.
-- **Cloudflare Pages** : nouveau projet → dossier `nous/`. Si vous voulez
-  une adresse à vous, prenez un sous-domaine séparé — jamais la racine de
-  moheligo.com.
+**Le plus simple : GitHub le fait, gratuitement, sans nouveau compte.**
+Tout est déjà préparé (`.github/workflows/nous-pages.yml`). Il reste
+**un seul interrupteur à basculer**, une fois pour toutes :
 
-Sur le téléphone, ouvrir cette adresse puis « Ajouter à l'écran
-d'accueil » : ça devient une vraie application.
+> GitHub → dépôt `QUALITY-SYSTEM` → **Settings** → **Pages** →
+> *Build and deployment* → **Source : GitHub Actions** → *Save*.
+
+Dès que le dossier `nous/` est sur la branche principale, le site se
+publie tout seul sur :
+
+```
+https://pepe-2002.github.io/QUALITY-SYSTEM/
+```
+
+⚠️ Ce robot ne met en ligne **que le dossier `nous/`**. RA-QDMS et
+MoheliGo ne partent pas là-dedans et ne bougent pas.
+
+*Sans attendre de fusionner la branche :* onglet **Actions** →
+« Nous — mise en ligne » → **Run workflow** → choisir la branche
+`claude/messagerie-gestion-temps-cjf4nq` → *Run*. Le site est en ligne
+deux minutes plus tard.
+
+*Autres options, si un jour vous préférez :* **Netlify Drop**
+(`app.netlify.com/drop`, on glisse le dossier `nous/`, adresse `https` en
+quinze secondes) ou **Cloudflare Pages** — dans ce cas, un projet et un
+sous-domaine séparés, jamais la racine de moheligo.com.
+
+Sur le téléphone, ouvrir l'adresse puis « Ajouter à l'écran d'accueil » :
+ça devient une vraie application.
 
 ### b) Sa propre base de données (pour que deux téléphones se parlent)
 Tant que vous êtes seul sur un appareil, il n'y a **rien à faire** : la
@@ -47,8 +66,11 @@ base est dans le téléphone. Pour que votre femme voie vos messages, il
 faut un point de rendez-vous entre les deux appareils. On lui en crée un
 **à elle, séparé** :
 
-1. `supabase.com` → **New project** → nom : `nous`.
-   ⚠️ Un **nouveau** projet. Pas celui de MoheliGo, jamais.
+1. `supabase.com` → vous avez **déjà un compte** (celui de MoheliGo) :
+   pas de compte à créer. → **New project** → nom : `nous`.
+   ⚠️ Un **nouveau projet**. Pas celui de MoheliGo, jamais. Deux projets
+   dans le même compte ne se voient pas : bases, clés et mots de passe
+   sont séparés.
 2. Dans ce projet : `SQL Editor` → coller tout `SQL-nous.sql` → **Run**.
 3. `Settings` → `API` : copier **Project URL** et la clé **anon public**,
    les coller dans `nous-config.js` (les deux lignes du haut).

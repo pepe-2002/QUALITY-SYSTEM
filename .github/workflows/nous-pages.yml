@@ -1,0 +1,49 @@
+# ════════════════════════════════════════════════════════════════════
+#  Met en ligne « Nous » (dossier nous/) sur GitHub Pages.
+#
+#  ⚠️ Ne publie QUE le dossier nous/. Le reste du dépôt — RA-QDMS,
+#  MoheliGo — n'est pas touché et n'est pas mis en ligne par ici.
+#
+#  À faire une seule fois, côté GitHub :
+#    Settings → Pages → Build and deployment → Source : « GitHub Actions »
+#  Ensuite, chaque modification de nous/ sur la branche principale
+#  remet le site à jour tout seul.
+# ════════════════════════════════════════════════════════════════════
+
+name: Nous — mise en ligne
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "nous/**"
+      - ".github/workflows/nous-pages.yml"
+  workflow_dispatch:        # bouton « Run workflow » pour publier à la demande
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploiement.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # Seul le dossier de l'application part en ligne.
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: nous
+
+      - id: deploiement
+        uses: actions/deploy-pages@v4

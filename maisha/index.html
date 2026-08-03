@@ -2776,7 +2776,52 @@ function feuilleGouvernement(){
 /* ----- relations ----- */
 const LIBELLE_REL ={mere:"Mère", pere:"Père", frere:"Frère", soeur:"Sœur", ami:"Ami(e)", partenaire:"Partenaire", conjoint:"Époux/Épouse", enfant:"Enfant"};
 
+function fortuneDe(r){
+  let v = r.argent || 0;
+  if(r.entreprise) v += Math.round(r.entreprise.valeur * 0.9);
+  return v;
+}
+
 function feuilleRelations(){
+  /* --- classement des fortunes de tout le monde --- */
+  section("💰 Fortunes du clan");
+  const gens = [{nom: etat.prenom+" "+etat.nom, det:"Moi", moi:true,
+                 f: etat.argent + valeurPatrimoine(),
+                 sit: (etat.entreprises||[]).length
+                      ? (etat.entreprises.length>1 ? etat.entreprises.length+" entreprises" : "Patron·ne")
+                      : (etat.emploi ? etat.emploi.titre : etat.pension ? "Retraité·e" : "Sans emploi")}]
+    .concat(etat.relations.filter(r=>r.vivant).map(r => ({
+      nom: r.nom, det: LIBELLE_REL[r.type], f: fortuneDe(r), r,
+      sit: r.sdf ? "💔 à la rue"
+         : r.entreprise ? r.entreprise.ico+" patron·ne de « "+r.entreprise.nom+" »"
+         : r.metier ? r.metier
+         : r.statut === "étudiant" ? "à l'université"
+         : r.age < 18 ? "à l'école" : "sans emploi"
+    })));
+  gens.sort((a,b) => b.f - a.f);
+  const maxF = Math.max(1, ...gens.map(g => g.f));
+  const total = gens.reduce((s,g) => s + g.f, 0);
+  const medailles = ["🥇","🥈","🥉"];
+
+  carte(`<div class="titre">Patrimoine total de la famille</div>
+    <div class="kpis">
+      <div class="kpi"><span>Clan entier</span><b class="or">${euros(total)}</b></div>
+      <div class="kpi"><span>Ma part</span><b>${Math.round(gens.find(g=>g.moi).f / Math.max(1,total) * 100)} %</b></div>
+      <div class="kpi"><span>Mon rang</span><b>${gens.findIndex(g=>g.moi)+1}ᵉ / ${gens.length}</b></div>
+    </div>`);
+
+  for(const [i,g] of gens.entries()){
+    const c = carte(`<div class="ligne-info">
+        <span>${medailles[i] || (i+1)+"ᵉ"} <b>${g.nom}</b>${g.moi ? ' <span class="badge">⭐ moi</span>' : ""}</span>
+        <b class="${g.f>0?"":"neg"}">${euros(g.f)}</b>
+      </div>
+      <div class="mini-jauge"><i style="width:${Math.max(2, Math.round(Math.max(0,g.f)/maxF*100))}%;background:${g.moi?"var(--accent)":"var(--money)"}"></i></div>
+      <div class="detail">${g.det} · ${g.sit}${g.r && g.r.riche ? " · 🌟 fortune faite seul·e" : ""}</div>`);
+    if(g.r && g.r.type==="enfant" && g.f > (etat.argent||0) && g.f > 100000)
+      c.insertAdjacentHTML("beforeend", `<div class="detail" style="color:var(--accent)">Plus riche que moi. La relève est assurée.</div>`);
+  }
+
+  section("Ma famille et mes proches");
   if(etat.age>=18 && !etat.relations.some(r=>r.vivant && (r.type==="partenaire"||r.type==="conjoint"))){
     const c = carte(`<div class="titre">💘 Célibataire</div><div class="detail">Envie de rencontrer quelqu'un ?</div><div class="actions"></div>`);
     action(c, "Rencontrer quelqu'un", "", () => {

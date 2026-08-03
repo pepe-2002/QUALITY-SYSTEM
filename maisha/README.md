@@ -44,6 +44,16 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Fortunes du clan 💰
+
+En tête de l'onglet **Relations**, un **classement des fortunes** de tout le
+monde : toi, ton conjoint, tes enfants, tes frères et sœurs, tes amis — triés
+du plus riche au plus pauvre, avec médailles, barres proportionnelles, le
+patrimoine total de la famille, ta part et ton rang. Chaque ligne indique la
+situation réelle de la personne (patron·ne de sa société, médecin, à
+l'université, à la rue…). Quand un de tes enfants devient plus riche que toi,
+le jeu te le dit : *« Plus riche que moi. La relève est assurée. »*
+
 ## Voyages
 
 Sept destinations, du week-end à Mohéli au tour du monde, en passant par

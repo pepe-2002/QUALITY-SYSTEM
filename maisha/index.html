@@ -259,7 +259,7 @@
    héritage partagé entre enfants et continuation sur une génération.
    ===================================================================== */
 
-const CLE = "maisha-sauvegarde-v2";
+const CLE = "maisha-sauvegarde-v3";
 const $ = id => document.getElementById(id);
 const alea = n => Math.floor(Math.random() * n);
 const parmi = t => t[alea(t.length)];
@@ -320,6 +320,13 @@ const IMMOBILIER = [
 ];
 const NIVEAUX_POL = ["Militant", "Maire", "Député", "Ministre", "Président"];
 const SALAIRES_POL = [0, 15000, 30000, 45000, 80000];
+const MALADIES = [
+  {nom:"le paludisme", cout:400, degats:8},
+  {nom:"la typhoïde", cout:500, degats:10},
+  {nom:"la dengue", cout:450, degats:9},
+  {nom:"le diabète", cout:800, degats:6},
+  {nom:"l'hypertension", cout:600, degats:5},
+];
 
 let etat = null;
 let fileEvenements = [];
@@ -327,7 +334,8 @@ let fileEvenements = [];
 /* ---------------- utilitaires d'état ---------------- */
 
 function rel(type, nom, age, genre){
-  return {type, nom, age, genre: genre || (alea(2)?"F":"M"), barre: 60+alea(41), vivant:true};
+  return {type, nom, age, genre: genre || (alea(2)?"F":"M"), barre: 60+alea(41), vivant:true,
+          argent:0, metier:null, salaire:0, statut:null, marie:false};
 }
 function pays(){ return etat.monde[etat.pays]; }
 function tauxImpot(){ return (10 + pays().dev/4) / 100; }
@@ -362,7 +370,8 @@ function nouvelleVie(opts){
     intel: 30+alea(51), look: 30+alea(51), celebrite: 0,
     argent:0, emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome:false,
-    entreprise:null, politique:null,
+    entreprise:null, politique:null, royaume:null,
+    pension:0, maladie:null, petitsEnfants:0, anneesTravail:0,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
@@ -395,7 +404,11 @@ function afficherJournal(){
 
 function libelleEtat(){
   if(etat.prison>0) return "En prison ("+etat.prison+" an"+(etat.prison>1?"s":"")+" restants)";
+  if(etat.royaume) return etat.age>=18
+    ? (etat.genre==="F"?"Reine":"Roi")+" — "+etat.royaume.nom
+    : (etat.genre==="F"?"Princesse héritière":"Prince héritier");
   if(etat.politique && etat.politique.niveau>0) return NIVEAUX_POL[etat.politique.niveau];
+  if(etat.pension && !etat.emploi) return "Retraité"+(etat.genre==="F"?"e":"");
   if(etat.emploi) return etat.emploi.titre;
   if(etat.entreprise) return "Patron·ne · "+etat.entreprise.type;
   if(etat.celebrite>=50) return "Star ⭐";
@@ -433,6 +446,13 @@ function vieillir(){
   if(etat.age > 30) etat.look = borne(etat.look - alea(2));
   if(etat.celebrite > 0) etat.celebrite = borne(etat.celebrite - (3+alea(4)));
 
+  // maladie non soignée
+  if(etat.maladie){
+    etat.maladie.annees = (etat.maladie.annees||0)+1;
+    etat.sante = borne(etat.sante - etat.maladie.degats);
+    ecrire(`Je souffre toujours de ${etat.maladie.nom}. Il faut me soigner à l'hôpital (${euros(etat.maladie.cout)}).`, "mauvais");
+  }
+
   // le monde évolue
   evolutionMonde();
 
@@ -451,10 +471,18 @@ function vieillir(){
   let revenus = 0, depenses = 0;
   const imp = tauxImpot();
 
+  // retraite à 65 ans
+  if(etat.age>=65 && etat.emploi && !etat.emploi.politique){
+    etat.pension = Math.round(etat.emploi.salaire * (etat.anneesTravail>=10 ? 0.4 : 0.25));
+    ecrire(`À 65 ans, je prends ma retraite de ${etat.emploi.titre}. Pension : ${euros(etat.pension)}/an.`, "bon");
+    etat.emploi = null;
+  }
+  if(etat.pension && !etat.emploi) revenus += Math.round(etat.pension*(1-imp/2));
+
   if(etat.emploi){
     const brut = etat.emploi.salaire;
     revenus += Math.round(brut*(1-imp));
-    depenses += 0;
+    etat.anneesTravail++;
     etat.emploi.annees++;
     if(!etat.emploi.politique && etat.emploi.annees % 4 === 0 && alea(2)){
       const augm = Math.round(brut * 0.12);
@@ -501,6 +529,22 @@ function vieillir(){
     }
   }
 
+  // salaire du conjoint : contribution de 30 % au ménage
+  const cj = etat.relations.find(r=>r.vivant && r.type==="conjoint");
+  if(cj && cj.salaire){
+    revenus += Math.round(cj.salaire*0.3);
+  }
+
+  // royaume : impôts du royaume, trésor et liste civile du souverain
+  if(etat.royaume && etat.age>=18){
+    const R = etat.royaume;
+    R.tresor += R.sujets*2;
+    const liste = Math.min(R.tresor, 30000 + R.prestige*300);
+    R.tresor -= liste;
+    revenus += liste;
+    ecrire(`👑 Liste civile de la couronne : ${euros(liste)} (trésor royal : ${euros(R.tresor)}).`, "argent");
+  }
+
   /* ----- dépenses ----- */
   if(etat.age >= 18){
     depenses += 2000; // vie courante
@@ -540,8 +584,14 @@ function vieillir(){
     }
   }
 
+  // la vie de mes enfants
+  vieEnfants();
+
   // politique : vie du mandat
   politiqueAnnuelle();
+
+  // royaume : la couronne gouverne
+  royauteAnnuelle();
 
   // événements aléatoires
   evenementsAleatoires();
@@ -684,11 +734,97 @@ function politiqueAnnuelle(){
   }
 }
 
+/* ---------------- la vie des enfants ---------------- */
+
+function vieEnfants(){
+  for(const e of etat.relations){
+    if(e.type!=="enfant" || !e.vivant) continue;
+    e.argent = e.argent||0;
+    if(e.age===18){
+      if(alea(5)<3){ e.statut="étudiant"; ecrire(`🎒 ${e.nom} entre à l'université.`, "bon"); }
+      else e.statut="cherche";
+    }
+    if(e.statut==="étudiant" && e.age>=22){
+      e.statut="diplômé";
+      ecrire(`🎓 ${e.nom} décroche son diplôme universitaire !`, "bon");
+    }
+    if(e.age>=18 && !e.metier && e.statut!=="étudiant" && alea(3)>0){
+      const dispo = EMPLOIS.filter(x => e.statut==="diplômé" || !x.diplome);
+      const m = parmi(dispo);
+      e.metier = m.titre; e.salaire = m.salaire;
+      ecrire(`💼 ${e.nom} a été embauché${e.genre==="F"?"e":""} comme ${m.titre.toLowerCase()} (${euros(m.salaire)}/an).`, "bon");
+    }
+    if(e.metier){
+      e.argent += Math.round(e.salaire*0.35);
+      if(alea(8)===0) e.salaire = Math.round(e.salaire*1.1);
+    }
+    if(e.age>=25 && !e.marie && alea(8)===0){
+      e.marie = true;
+      ecrire(`💍 ${e.nom} s'est marié${e.genre==="F"?"e":""} ! Belle fête de famille.`, "bon");
+    }
+    if(e.marie && alea(6)===0){
+      etat.petitsEnfants = (etat.petitsEnfants||0)+1;
+      etat.bonheur = borne(etat.bonheur+6);
+      ecrire(`👶 ${e.nom} m'a donné un petit-enfant ! (${etat.petitsEnfants} au total)`, "bon");
+    }
+  }
+}
+
+/* ---------------- royaume ---------------- */
+
+function royauteAnnuelle(){
+  if(!etat.royaume) return;
+  const R = etat.royaume;
+  R.annees++;
+  if(etat.age < 18){
+    ecrire(`👑 Le conseil de régence gouverne ${R.nom} en attendant ma majorité.`);
+    return;
+  }
+  R.prestige = borne(R.prestige + alea(3)-1);
+  R.sujets = Math.max(1000, Math.round(R.sujets * (1 + (R.prestige-40)/500)));
+
+  if(R.prestige < 15 && alea(2)){
+    ecrire(`RÉVOLUTION ! Le peuple de ${R.nom} renverse la couronne. Je pars en exil, dépouillé${etat.genre==="F"?"e":""} du trône.`, "mauvais");
+    etat.royaume = null;
+    etat.bonheur = borne(etat.bonheur-30);
+    return;
+  }
+
+  fileEvenements.push({
+    titre:`👑 ${R.nom} — an ${R.annees} de règne`,
+    texte:`Sujets : ${R.sujets.toLocaleString("fr-FR")} · Prestige : ${R.prestige}/100 · Trésor royal : ${euros(R.tresor)}. Que décide la couronne cette année ?`,
+    choix:[
+      {label:"🏗️ Bâtir écoles et hôpitaux", effet(){
+        const c = Math.min(R.tresor, 50000); R.tresor -= c;
+        R.prestige = borne(R.prestige+4); R.sujets = Math.round(R.sujets*1.03);
+        ecrire(`J'ai fait bâtir écoles et hôpitaux pour ${euros(c)}. Le royaume prospère et attire de nouveaux sujets.`, "bon"); }},
+      {label:"🎉 Grande fête royale", effet(){
+        const c = Math.min(R.tresor, 20000); R.tresor -= c;
+        R.prestige = borne(R.prestige+2); etat.bonheur = borne(etat.bonheur+8);
+        ecrire("Fête royale somptueuse : trois jours de tambours, de festins et de feux d'artifice.", "bon"); }},
+      {label:"💰 Alourdir l'impôt royal", effet(){
+        const g = Math.round(R.sujets*1.5); etat.argent += g;
+        R.prestige = borne(R.prestige-6);
+        ecrire(`J'ai alourdi l'impôt royal : ${euros(g)} pour ma cassette personnelle. Le peuple gronde.`, "argent"); }},
+      {label:"🕊️ Année de clémence fiscale", effet(){
+        R.tresor = Math.max(0, R.tresor - R.sujets);
+        R.prestige = borne(R.prestige+5);
+        ecrire("J'ai allégé les impôts du royaume. Les sujets bénissent leur souverain.", "bon"); }},
+    ]
+  });
+}
+
 /* ---------------- événements aléatoires ---------------- */
 
 function evenementsAleatoires(){
   const E = [];
   const a = etat.age;
+
+  // attraper une maladie (risque plus élevé dans un pays peu développé)
+  if(a>=5 && !etat.maladie && alea(100) < 4 + (60-pays().dev)/8){
+    etat.maladie = {...parmi(MALADIES), annees:0};
+    ecrire(`🦟 J'ai attrapé ${etat.maladie.nom}. Direction l'hôpital (${euros(etat.maladie.cout)}) avant que ça ne s'aggrave.`, "mauvais");
+  }
 
   if(a>=1 && a<=4) E.push(
     ()=>ecrire("J'ai fait mes premiers pas sur la plage devant toute la famille.", "bon"),
@@ -777,7 +913,7 @@ function mourir(cause){
     htmlHeritiers = `<div class="fiche">🪙 Succession (après 10 % de frais) : <b>${euros(succession)}</b><br>
       👪 Partagée entre <b>${heritiers.length}</b> héritier${heritiers.length>1?"s":""} : <b>${euros(part)}</b> chacun</div>
       <div class="sous">Continuer la dynastie ${etat.nom} (génération ${etat.generation+1}) avec :</div>` +
-      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""} (hérite ${euros(part)})</button>`).join("");
+      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
   }
 
   $("plein").innerHTML = `
@@ -793,7 +929,8 @@ function mourir(cause){
         ${etat.entreprise ? "🏭 Entreprise : <b>"+etat.entreprise.nom+"</b><br>" : ""}
         ${etat.celebrite>=50 ? "⭐ Mort·e célèbre (célébrité "+etat.celebrite+")<br>" : ""}
         ${etat.politique&&etat.politique.niveau>0 ? "🏛️ Carrière politique : <b>"+NIVEAUX_POL[etat.politique.niveau]+"</b><br>" : ""}
-        👶 Enfants : <b>${heritiers.length}</b>
+        ${etat.royaume ? "👑 Souverain·e de <b>"+etat.royaume.nom+"</b> ("+etat.royaume.sujets.toLocaleString("fr-FR")+" sujets)<br>" : ""}
+        👶 Enfants : <b>${heritiers.length}</b>${etat.petitsEnfants?" · Petits-enfants : <b>"+etat.petitsEnfants+"</b>":""}
       </div>
       ${htmlHeritiers}
       <button class="grand ${heritiers.length?"secondaire":""}" id="btn-renaitre">🌱 Nouvelle vie (recommencer à zéro)</button>
@@ -819,14 +956,18 @@ function continuerAvec(h, heritage){
     intel: borne(parent.intel*0.5 + 20+alea(35)),
     look: borne(parent.look*0.5 + 20+alea(35)),
     celebrite: 0,
-    argent: heritage, emploi:null, filiere:null,
-    etude:"aucune", anneesEtude:0, diplome:false,
-    entreprise:null, politique:null,
+    argent: heritage + (h.argent||0), emploi:null, filiere:null,
+    etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
+    entreprise:null, politique:null, royaume: parent.royaume,
+    pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   // scolarité selon l'âge
   const a = etat.age;
   etat.etude = a>=18 ? "fini" : a>=15 ? "lycee" : a>=11 ? "college" : a>=6 ? "primaire" : a>=3 ? "maternelle" : "aucune";
+  if(a>=18 && h.statut==="étudiant"){ etat.etude="universite"; etat.filiere=parmi(FILIERES); etat.anneesEtude=Math.max(0,a-18); }
+  // l'héritier garde son métier
+  if(h.metier) etat.emploi = {titre:h.metier, salaire:h.salaire, annees:1};
 
   // famille : le parent survivant + frères et sœurs
   if(conjointSurvivant){
@@ -839,7 +980,11 @@ function continuerAvec(h, heritage){
 
   nouvelleAnnee();
   ecrire(`Je suis ${etat.prenom} ${etat.nom}, génération ${etat.generation} de la famille.`, "bon");
-  ecrire(`Mon ${parent.genre==="F"?"ma mère":"père"} ${parent.prenom} nous a quittés. J'hérite de ${euros(heritage)} (part sur ${freresSoeurs.length+1} enfant${freresSoeurs.length?"s":""}).`.replace("Mon ma","Ma"), "argent");
+  ecrire(`Mon ${parent.genre==="F"?"ma mère":"père"} ${parent.prenom} nous a quittés. J'hérite de ${euros(heritage)} (part sur ${freresSoeurs.length+1} enfant${freresSoeurs.length?"s":""})${h.argent?", en plus de mes "+euros(h.argent)+" d'économies personnelles":""}.`.replace("Mon ma","Ma"), "argent");
+  if(etat.royaume){
+    if(etat.age>=18) ecrire(`👑 COURONNEMENT ! Je monte sur le trône : me voilà ${etat.genre==="F"?"Reine":"Roi"} de ${etat.royaume.nom}.`, "bon");
+    else ecrire(`👑 J'hérite du trône de ${etat.royaume.nom}. Le conseil de régence gouvernera jusqu'à mes 18 ans.`, "bon");
+  }
   sauver(); toutAfficher();
   $("plein").classList.remove("ouvert");
 }
@@ -999,8 +1144,8 @@ function feuilleCarriere(){
     carte(`<div class="detail">Créer une entreprise sera possible à 18 ans.</div>`);
   }
 
-  /* --- politique --- */
-  section("Politique");
+  /* --- politique & royaume --- */
+  section("Politique & Royaume");
   const p = pays();
   carte(`<div class="titre">🌍 ${etat.pays}</div>
     <div class="pays-stat"><label>Développement</label><div class="jauge"><i style="width:${p.dev}%;background:var(--intel)"></i></div><b>${p.dev}</b></div>
@@ -1009,7 +1154,34 @@ function feuilleCarriere(){
     <div>${libellePays(p).map(x=>`<span class="badge">${x}</span>`).join("")}</div>
     <div class="detail" style="margin-top:6px">Taux d'imposition : ${Math.round(tauxImpot()*100)} %</div>`);
 
-  if(!etat.politique){
+  if(etat.royaume){
+    const R = etat.royaume;
+    const c = carte(`<div class="titre">👑 ${R.nom}</div>
+      <div class="detail">${etat.age>=18 ? (etat.genre==="F"?"Reine":"Roi")+" depuis "+R.annees+" an"+(R.annees>1?"s":"") : "Sous régence jusqu'à tes 18 ans"} ·
+        ${R.sujets.toLocaleString("fr-FR")} sujets · Trésor royal : ${euros(R.tresor)}</div>
+      <div class="pays-stat"><label>Prestige</label><div class="jauge"><i style="width:${R.prestige}%;background:var(--celeb)"></i></div><b>${R.prestige}</b></div>
+      <div class="detail" style="margin-top:6px">Chaque année : le trésor encaisse les impôts, la couronne touche sa liste civile, et tu prends les grandes décisions du royaume. Le trône se transmet à tes héritiers. Si le prestige s'effondre, gare à la révolution…</div>
+      <div class="actions"></div>`);
+    if(etat.age>=18){
+      action(c, "Don au peuple (5 000 €)", "", () => {
+        if(dejaFait("donpeuple")){ ecrire("J'ai déjà fait une largesse royale cette année."); fermerFeuille(); return; }
+        etat.argent -= 5000; R.prestige = borne(R.prestige+4);
+        ecrire("Largesse royale : vivres et étoffes distribués au peuple. Mon prestige grandit.", "bon");
+        fermerFeuille();
+      }, etat.argent<5000);
+      action(c, "Puiser dans le trésor (20 000 €)", "gris", () => {
+        if(dejaFait("puiser")){ ecrire("Le chambellan refuse d'ouvrir le trésor deux fois la même année."); fermerFeuille(); return; }
+        const g = Math.min(R.tresor, 20000);
+        R.tresor -= g; etat.argent += g; R.prestige = borne(R.prestige-3);
+        ecrire(`J'ai puisé ${euros(g)} dans le trésor royal pour mes dépenses personnelles.`, "argent");
+        fermerFeuille();
+      }, R.tresor<=0);
+      action(c, "Abdiquer", "rouge", () => {
+        ecrire(`J'abdique. ${R.nom} redevient une république et la couronne entre dans l'histoire.`, "mauvais");
+        etat.royaume = null; fermerFeuille();
+      });
+    }
+  } else if(!etat.politique){
     if(etat.age>=18){
       const c = carte(`<div class="titre">🏛️ Entrer en politique</div>
         <div class="detail">Adhère à un parti et gravis les échelons : maire, député, ministre… jusqu'à la présidence de ${etat.pays}.</div>
@@ -1075,6 +1247,21 @@ function feuilleCarriere(){
         fermerFeuille();
       });
     }
+    if(P.niveau===4){
+      action(c, "👑 Proclamer la monarchie", "or", () => {
+        if(P.pop < 60){ ecrire("Mes conseillers me le déconseillent : il faut au moins 60 de popularité pour oser un tel coup.", "mauvais"); fermerFeuille(); return; }
+        if(alea(100) < P.pop){
+          etat.royaume = {nom:"Royaume "+etat.nom, tresor:150000, prestige:55, sujets:250000+alea(400000), annees:0};
+          etat.politique = null; etat.emploi = null;
+          ecrire(`👑 COUP DE TONNERRE : j'ai proclamé la monarchie ! ${etat.pays} devient le ${etat.royaume.nom}, et moi ${etat.genre==="F"?"sa première Reine":"son premier Roi"}. La couronne se transmettra à mes héritiers.`, "bon");
+        } else {
+          etat.prison = 4+alea(4); etat.politique = null; etat.emploi = null;
+          etat.bonheur = borne(etat.bonheur-30);
+          ecrire(`Coup de force raté : l'armée refuse de suivre. Destitution et ${etat.prison} ans de prison.`, "mauvais");
+        }
+        fermerFeuille();
+      });
+    }
     if(P.niveau===3){
       action(c, "Présidentielle (20 000 €)", "or", () => {
         etat.argent -= 20000;
@@ -1093,6 +1280,20 @@ function feuilleCarriere(){
       if(etat.emploi && etat.emploi.politique) etat.emploi = null;
       fermerFeuille();
     });
+  }
+
+  // fonder un royaume par la fortune : acheter une île
+  if(!etat.royaume && etat.age>=25){
+    const c = carte(`<div class="titre">🏝️ Fonder ton propre royaume</div>
+      <div class="detail">Achète une île de l'archipel (400 000 €) et proclame ton royaume : sujets, trésor royal, prestige… et un trône transmissible à tes enfants, de génération en génération.</div>
+      <div class="actions"></div>`);
+    action(c, "Fonder mon royaume (400 000 €)", "or", () => {
+      etat.argent -= 400000;
+      etat.royaume = {nom:"Royaume "+etat.nom, tresor:30000, prestige:45, sujets:8000+alea(20000), annees:0};
+      if(etat.politique){ etat.politique = null; if(etat.emploi && etat.emploi.politique) etat.emploi = null; }
+      ecrire(`🏝️👑 J'ai acheté une île et proclamé le ${etat.royaume.nom} ! ${etat.royaume.sujets.toLocaleString("fr-FR")} sujets vivent désormais sous ma couronne.`, "bon");
+      fermerFeuille();
+    }, etat.argent < 400000);
   }
 }
 
@@ -1174,10 +1375,29 @@ function feuilleRelations(){
   }
   for(const r of etat.relations){
     if(!r.vivant) continue;
+    let detail = LIBELLE_REL[r.type]+" · "+r.age+" an"+(r.age>1?"s":"");
+    if(r.type==="enfant"){
+      const situation = r.age<3 ? "bébé"
+        : r.age<18 ? "à l'école"
+        : r.statut==="étudiant" ? "à l'université"
+        : r.metier ? r.metier + " (" + euros(r.salaire) + "/an)"
+        : r.statut==="diplômé" ? "diplômé·e, cherche un emploi"
+        : "cherche un emploi";
+      detail += `<br>📌 ${situation}${r.marie ? " · marié·e" : ""}<br>💰 Fortune personnelle : <b>${euros(r.argent||0)}</b>`;
+    }
+    if(r.type==="conjoint" && r.metier)
+      detail += `<br>💼 ${r.metier} · ${euros(r.salaire)}/an (contribue 30 % au ménage)`;
     const c = carte(`<div class="titre">${r.nom}</div>
-      <div class="detail">${LIBELLE_REL[r.type]} · ${r.age} an${r.age>1?"s":""}</div>
+      <div class="detail">${detail}</div>
       <div class="mini-jauge"><i style="width:${r.barre}%"></i></div>
       <div class="actions"></div>`);
+    if(r.type==="enfant" && etat.age>=18){
+      action(c, "Donner 1 000 €", "or", () => {
+        etat.argent -= 1000; r.argent = (r.argent||0)+1000; r.barre = borne(r.barre+10);
+        ecrire(`J'ai donné 1 000 € à ${r.nom} pour l'aider dans la vie.`, "argent");
+        fermerFeuille();
+      }, etat.argent<1000);
+    }
     action(c, "Passer du temps", "gris", () => {
       r.barre = borne(r.barre+12); etat.bonheur = borne(etat.bonheur+4);
       ecrire(`Bon moment passé avec ${r.nom}.`, "bon"); fermerFeuille();
@@ -1191,7 +1411,10 @@ function feuilleRelations(){
         if(r.barre>50 || alea(2)){
           r.type="conjoint"; r.barre=borne(r.barre+15); etat.bonheur=borne(etat.bonheur+20);
           etat.argent -= 2000;
+          const m = parmi(EMPLOIS.slice(0,7));
+          r.metier = m.titre; r.salaire = m.salaire;
           ecrire(`${r.nom} a dit OUI ! Grand mariage à ${etat.ville} (2 000 € de festivités). 💍`, "bon");
+          ecrire(`Mon ${r.genre==="F"?"épouse":"époux"} travaille comme ${m.titre.toLowerCase()} et contribue au ménage.`);
         } else {
           etat.bonheur=borne(etat.bonheur-15);
           ecrire(`${r.nom} a refusé ma demande en mariage…`, "mauvais");
@@ -1223,6 +1446,23 @@ function feuilleRelations(){
 /* ----- activités : quotidien, star, risques ----- */
 
 function feuilleActivites(){
+  if(etat.maladie){
+    section("🏥 Urgent — Santé");
+    const m = etat.maladie;
+    const c = carte(`<div class="titre">🏥 Soigner ${m.nom}</div>
+      <div class="detail">Traitement à l'hôpital : ${euros(m.cout)}. Sans soin, la maladie ronge la santé chaque année (−${m.degats}/an).</div>
+      <div class="actions"></div>`);
+    action(c, `Se faire soigner (${euros(m.cout)})`, "", () => {
+      etat.argent -= m.cout;
+      if(alea(100) < 85){
+        etat.maladie = null; etat.sante = borne(etat.sante+10);
+        ecrire(`Guéri${etat.genre==="F"?"e":""} de ${m.nom} après un bon traitement à l'hôpital.`, "bon");
+      } else {
+        ecrire(`Le traitement contre ${m.nom} n'a pas suffi. Il faudra retenter l'an prochain.`, "mauvais");
+      }
+      fermerFeuille();
+    }, etat.argent < m.cout);
+  }
   section("Quotidien");
   const A = [];
   A.push(["📚 Bibliothèque", "Gratuit · +Intelligence", 0, () => {

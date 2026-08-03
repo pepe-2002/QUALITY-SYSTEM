@@ -39,7 +39,21 @@ l'un d'eux (génération 2, 3, 4…).
   dépend du développement.
 - **Héritage** : à la mort, succession (moins 10 % de frais) partagée à parts
   égales entre les enfants ; on continue avec l'héritier de son choix, qui
-  retrouve son parent survivant et ses frères et sœurs.
+  retrouve son parent survivant, ses frères et sœurs, son métier et ses
+  économies personnelles.
+- **Les enfants vivent leur vie** : université ou recherche d'emploi à 18 ans,
+  diplôme, embauche, salaire, épargne, mariage, petits-enfants — leur fortune
+  et leur situation sont visibles dans l'onglet Relations, et on peut leur
+  donner de l'argent.
+- **Royaumes 👑** : proclame la monarchie en tant que président populaire
+  (coup risqué !) ou achète une île (400 000 €) pour fonder ton royaume.
+  Sujets, trésor royal, prestige, liste civile annuelle, décisions royales
+  (bâtir, festoyer, pressurer le peuple, clémence fiscale), largesses,
+  ponctions dans le trésor, abdication… et révolution si le prestige
+  s'effondre. Le trône se transmet aux héritiers, avec régence avant 18 ans.
+- **Vraie vie** : retraite à 65 ans avec pension, maladies réelles (paludisme,
+  typhoïde, dengue…) à soigner à l'hôpital sous peine de perdre sa santé
+  chaque année, salaire du conjoint qui contribue au ménage.
 
 ## Technique
 

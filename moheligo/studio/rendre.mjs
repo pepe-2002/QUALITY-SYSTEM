@@ -178,6 +178,12 @@ async function dessiner(env, total, apercu) {
   await page.goto("file://" + path.join(ICI, "engine/index.html"));
   await page.evaluate(() => window.pretes());
   const propre = JSON.parse(JSON.stringify(EP, (k, v) => (k === "_pcm" ? undefined : v)));
+  /* les photos de décor : chemins relatifs au dossier studio/ → file:// */
+  if (propre.images) {
+    for (const cle of Object.keys(propre.images)) {
+      propre.images[cle] = "file://" + path.resolve(ICI, propre.images[cle]);
+    }
+  }
   const info = await page.evaluate(([e, v]) => window.chargerEpisode(e, v), [propre, env]);
   log(`épisode chargé : ${info.plans} plans, ${info.duree.toFixed(1)} s`);
 

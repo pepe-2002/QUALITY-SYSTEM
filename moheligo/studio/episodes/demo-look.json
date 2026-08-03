@@ -1,0 +1,165 @@
+{
+  "titre": "Démo — trois niveaux d'image",
+  "fichier": "demo-look",
+  "fps": 25,
+  "largeur": 1080,
+  "hauteur": 1920,
+  "images": {
+    "plage-vedettes": "../pub/photos/plage-vedettes.jpg",
+    "mer-bateau": "../pub/photos/mer-bateau.jpg",
+    "horizon": "../pub/photos/horizon.jpg",
+    "moheli-beach": "../pub/photos-cc/moheli-beach.jpg"
+  },
+  "personnages": {
+    "amina": {
+      "voix": "fr-FR-DeniseNeural",
+      "rate": "-6%",
+      "look": {
+        "peau": "#8d5524",
+        "tenue": "#e94f6a",
+        "motif": "#ffd75e",
+        "coiffe": "shiromani",
+        "coifCouleur": "#f6bc1c"
+      }
+    },
+    "said": {
+      "voix": "fr-FR-HenriNeural",
+      "rate": "-6%",
+      "look": {
+        "peau": "#6b3f16",
+        "tenue": "#2a6fd4",
+        "coiffe": "kofia",
+        "robe": false
+      }
+    }
+  },
+  "plans": [
+    {
+      "decor": "village_matin",
+      "etalonnage": 0,
+      "halo": 0,
+      "grain": false,
+      "rayons": false,
+      "particules": false,
+      "flouFond": 0,
+      "camera": {
+        "zoom": [
+          1.0,
+          1.02
+        ],
+        "focus": [
+          0.5,
+          0.7
+        ]
+      },
+      "acteurs": [
+        {
+          "qui": "amina",
+          "x": 0.36,
+          "y": 0.93,
+          "h": 760,
+          "dir": 1
+        },
+        {
+          "qui": "said",
+          "x": 0.68,
+          "y": 0.94,
+          "h": 800,
+          "dir": -1
+        }
+      ],
+      "titre": "1 · à plat",
+      "duree_min": 3
+    },
+    {
+      "decor": "village_matin",
+      "camera": {
+        "zoom": [
+          1.0,
+          1.04
+        ],
+        "focus": [
+          0.5,
+          0.7
+        ]
+      },
+      "lumiere": {
+        "dir": 1,
+        "force": 0.7
+      },
+      "acteurs": [
+        {
+          "qui": "amina",
+          "x": 0.36,
+          "y": 0.93,
+          "h": 760,
+          "dir": 1
+        },
+        {
+          "qui": "said",
+          "x": 0.68,
+          "y": 0.94,
+          "h": 800,
+          "dir": -1
+        }
+      ],
+      "titre": "2 · réaliste",
+      "duree_min": 3,
+      "style": "realiste"
+    },
+    {
+      "decor": "photo:plage-vedettes",
+      "photoFlou": 3,
+      "photoAssombri": 0.18,
+      "photoZoom": 1.12,
+      "camera": {
+        "zoom": [
+          1.0,
+          1.05
+        ],
+        "focus": [
+          0.5,
+          0.6
+        ]
+      },
+      "lumiere": {
+        "dir": -1,
+        "force": 0.8
+      },
+      "acteurs": [
+        {
+          "qui": "amina",
+          "x": 0.36,
+          "y": 0.97,
+          "h": 1000,
+          "dir": 1,
+          "bras": "valise"
+        },
+        {
+          "qui": "said",
+          "x": 0.7,
+          "y": 0.98,
+          "h": 1050,
+          "dir": -1
+        }
+      ],
+      "titre": "3 · réaliste + vraie photo",
+      "duree_min": 3,
+      "style": "realiste"
+    },
+    {
+      "decor": "photo:mer-bateau",
+      "photoFlou": 0,
+      "photoAssombri": 0.12,
+      "photoZoom": 1.1,
+      "camera": {
+        "zoom": [
+          1.0,
+          1.06
+        ]
+      },
+      "titre": "3 bis · photo seule",
+      "duree_min": 3
+    }
+  ]
+}

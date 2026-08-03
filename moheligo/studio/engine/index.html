@@ -12,6 +12,7 @@
 <body>
 <canvas id="scene" width="1080" height="1920"></canvas>
 <script src="dessin.js"></script>
+<script src="personnes.js"></script>
 <script src="moteur.js"></script>
 <script>
 /* Le programme de rendu (rendre.mjs) appelle :
@@ -23,11 +24,24 @@ var cv = document.getElementById("scene"), cx = cv.getContext("2d", { alpha: fal
 window._logo = new Image();
 window._logo.src = "../../MoheliGo-logo.png";
 
+window._img = {};   /* photos réelles utilisables comme décors */
+
 window.chargerEpisode = function (episode, enveloppe) {
   cv.width = episode.largeur || 1080;
   cv.height = episode.hauteur || 1920;
   MG.init(episode, enveloppe);
-  return { duree: MG.EP._duree, plans: MG.EP.plans.length };
+  var images = episode.images || {};
+  var attentes = Object.keys(images).map(function (cle) {
+    return new Promise(function (r) {
+      var im = new Image();
+      im.onload = function () { window._img[cle] = im; r(true); };
+      im.onerror = function () { console.error("image introuvable : " + images[cle]); r(false); };
+      im.src = images[cle];
+    });
+  });
+  return Promise.all(attentes).then(function () {
+    return { duree: MG.EP._duree, plans: MG.EP.plans.length, images: Object.keys(window._img).length };
+  });
 };
 window.image = function (t) {
   cx.setTransform(1, 0, 0, 1, 0, 0);

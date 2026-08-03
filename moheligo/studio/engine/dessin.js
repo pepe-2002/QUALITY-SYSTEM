@@ -42,6 +42,15 @@
     stops.forEach(function (s) { g.addColorStop(s[0], s[1]); });
     return g;
   }
+  /* éclaircir / assombrir une couleur #rrggbb (pour le volume des tissus) */
+  function teinte(hex, k) {
+    var m = /^#?([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(hex || "");
+    if (!m) return hex;
+    var v = [1, 2, 3].map(function (i) {
+      return clamp(Math.round(parseInt(m[i], 16) * k), 0, 255);
+    });
+    return "rgb(" + v[0] + "," + v[1] + "," + v[2] + ")";
+  }
   /* capsule (bras, jambes) */
   function capsule(c, x0, y0, x1, y1, ep, couleur) {
     c.strokeStyle = couleur; c.lineWidth = ep; c.lineCap = "round";
@@ -278,8 +287,12 @@
       capsule(c, x + dir * h * 0.13, yBassin + h * 0.02, x + dir * h * 0.15, yPied, h * 0.05, "#4a392f");
     }
 
-    /* corps : robe (femme) ou chemise+pantalon (homme) */
-    c.fillStyle = tissu;
+    /* corps : robe (femme) ou chemise+pantalon (homme) — avec volume */
+    var gTissu = c.createLinearGradient(x, yEpaule - h * 0.02, x, yBassin + h * 0.18);
+    gTissu.addColorStop(0, teinte(tissu, 1.12));
+    gTissu.addColorStop(0.55, tissu);
+    gTissu.addColorStop(1, teinte(tissu, 0.72));
+    c.fillStyle = gTissu;
     if (p.robe !== false) {
       c.beginPath();
       c.moveTo(x - largeEp, yEpaule);
@@ -383,12 +396,22 @@
       c.lineTo(x + tete * 0.9, yTete + tete * 1.5);
       c.lineTo(x - tete * 0.9, yTete + tete * 1.5); c.closePath(); c.fill();
     } else if (coif === "kofia") {
-      c.fillStyle = "#fdfdf5";
-      rrect.call(c, x - tete * 0.72, yTete - tete * 1.12, tete * 1.44, tete * 0.52, tete * 0.14); c.fill();
-      c.fillStyle = "#d9c98f";
-      for (var q = 0; q < 5; q++) { c.beginPath(); c.arc(x - tete * 0.5 + q * tete * 0.25, yTete - tete * 0.86, tete * 0.06, 0, 7); c.fill(); }
+      /* cheveux courts d'abord, PUIS le kofia posé dessus */
       c.fillStyle = "#1a1310";
-      c.beginPath(); c.ellipse(x, yTete - tete * 0.5, tete * 0.88, tete * 0.42, 0, Math.PI, 0); c.fill();
+      c.beginPath(); c.ellipse(x, yTete - tete * 0.12, tete * 0.90, tete * 0.78, 0, Math.PI, 0); c.fill();
+      c.fillStyle = "#fdfdf5";
+      c.beginPath();
+      c.moveTo(x - tete * 0.80, yTete - tete * 0.58);
+      c.lineTo(x + tete * 0.80, yTete - tete * 0.58);
+      c.quadraticCurveTo(x + tete * 0.76, yTete - tete * 1.14, x, yTete - tete * 1.14);
+      c.quadraticCurveTo(x - tete * 0.76, yTete - tete * 1.14, x - tete * 0.80, yTete - tete * 0.58);
+      c.closePath(); c.fill();
+      c.fillStyle = "#d9c98f";
+      for (var q = 0; q < 5; q++) {
+        c.beginPath(); c.arc(x - tete * 0.5 + q * tete * 0.25, yTete - tete * 0.74, tete * 0.055, 0, 7); c.fill();
+      }
+      c.fillStyle = "rgba(0,0,0,.14)";
+      c.fillRect(x - tete * 0.80, yTete - tete * 0.62, tete * 1.60, tete * 0.05);
     } else {
       c.fillStyle = p.coifCouleur || "#1a1310";
       c.beginPath(); c.ellipse(x, yTete - tete * 0.22, tete * 0.94, tete * 0.86, 0, Math.PI, 0); c.fill();
@@ -406,6 +429,17 @@
     [-1, 1].forEach(function (s) {
       c.beginPath(); c.ellipse(x + s * ex + dir * tete * 0.03, ey, tete * 0.085, tete * 0.1 * ouvert + 0.5, 0, 0, 7); c.fill();
     });
+    /* reflet dans l'œil : c'est ce qui rend un regard vivant */
+    if (ouvert > 0.4) {
+      c.fillStyle = "rgba(255,255,255,.9)";
+      [-1, 1].forEach(function (s) {
+        c.beginPath();
+        c.arc(x + s * ex + dir * tete * 0.055, ey - tete * 0.045, tete * 0.028 * ouvert, 0, 7); c.fill();
+      });
+    }
+    /* ombre douce sous le menton */
+    c.fillStyle = "rgba(60,30,10,.16)";
+    c.beginPath(); c.ellipse(x, yTete + tete * 0.92, tete * 0.5, tete * 0.16, 0, 0, 7); c.fill();
     /* sourcils */
     c.strokeStyle = "#1a1310"; c.lineWidth = tete * 0.055; c.lineCap = "round";
     [-1, 1].forEach(function (s) {
@@ -564,7 +598,249 @@
     }
   }
 
+  /* ================================================================
+     🎥 QUALITÉ D'IMAGE — la couche « cinéma »
+     Éclairage des personnages, profondeur de champ, étalonnage,
+     halo lumineux, grain. C'est ce qui fait la différence entre un
+     dessin à plat et une image de film.
+     ================================================================ */
+  var _tampons = {};
+  function tampon(nom, w, h) {
+    var t = _tampons[nom];
+    if (!t) { t = _tampons[nom] = { cv: document.createElement("canvas") }; t.cx = t.cv.getContext("2d"); }
+    if (t.cv.width !== w || t.cv.height !== h) { t.cv.width = w; t.cv.height = h; }
+    t.cx.setTransform(1, 0, 0, 1, 0, 0); t.cx.clearRect(0, 0, w, h);
+    return t;
+  }
+
+  /* le personnage, dessiné à part puis éclairé : ombre douce du côté
+     opposé à la lumière + liseré lumineux sur le côté éclairé */
+  function personnageEclaire(c, p, t, lum) {
+    lum = lum || {};
+    var dirL = lum.dir === undefined ? -1 : lum.dir;      // -1 : lumière venant de la gauche
+    var force = lum.force === undefined ? 0.55 : lum.force;
+    var h = p.h, bw = Math.ceil(h * 1.9), bh = Math.ceil(h * 1.55);
+    var bx = p.x - bw / 2, by = p.y - h * 1.32;
+    var T = tampon("perso", bw, bh);
+    T.cx.translate(-bx, -by);
+    personnage(T.cx, p, t);
+    T.cx.setTransform(1, 0, 0, 1, 0, 0);
+    T.cx.globalCompositeOperation = "source-atop";
+    /* les dégradés doivent couvrir LE CORPS, pas tout le tampon —
+       sinon le modelé est invisible (erreur commise au 1er essai). */
+    var mil = bw / 2, larg = h * 0.34;
+    var xL = mil - larg, xR = mil + larg;
+    var gA = dirL < 0 ? xL : xR, gB = dirL < 0 ? xR : xL;
+    var g1 = T.cx.createLinearGradient(gA, 0, gB, 0);
+    g1.addColorStop(0, "rgba(255,238,205," + (0.30 * force).toFixed(3) + ")");
+    g1.addColorStop(0.42, "rgba(0,0,0,0)");
+    g1.addColorStop(1, "rgba(10,24,56," + (0.62 * force).toFixed(3) + ")");
+    T.cx.fillStyle = g1; T.cx.fillRect(0, 0, bw, bh);
+    /* liseré de contre-jour sur le bord éclairé */
+    var g2 = T.cx.createLinearGradient(gA, 0, gA + (dirL < 0 ? 1 : -1) * larg * 0.42, 0);
+    g2.addColorStop(0, (lum.couleur || "rgba(255,226,168,") + (0.75 * force).toFixed(3) + ")");
+    g2.addColorStop(1, "rgba(0,0,0,0)");
+    T.cx.fillStyle = g2; T.cx.fillRect(0, 0, bw, bh);
+    /* occlusion : les pieds et le bas de la robe s'enfoncent dans l'ombre */
+    var g3 = T.cx.createLinearGradient(0, bh - h * 0.34, 0, bh - h * 0.03);
+    g3.addColorStop(0, "rgba(0,0,0,0)");
+    g3.addColorStop(1, "rgba(8,18,40," + (0.42 * force).toFixed(3) + ")");
+    T.cx.fillStyle = g3; T.cx.fillRect(0, 0, bw, bh);
+    T.cx.globalCompositeOperation = "source-over";
+
+    /* ombre portée au sol, allongée du côté opposé à la lumière */
+    c.save();
+    c.fillStyle = "rgba(6,16,36,.24)";
+    c.beginPath();
+    c.ellipse(p.x - dirL * h * 0.10, p.y + 6, h * 0.24, h * 0.030, 0, 0, 7);
+    c.fill(); c.restore();
+
+    c.drawImage(T.cv, bx, by);
+  }
+
+  /* décor lointain adouci : la profondeur de champ d'un objectif */
+  function profondeur(c, dessin, flou) {
+    if (!flou) { dessin(c); return; }
+    c.save(); c.filter = "blur(" + flou + "px)"; dessin(c); c.restore();
+  }
+
+  /* halo lumineux : les hautes lumières « bavent », comme sur pellicule */
+  function halo(c, W, H, force) {
+    var pw = Math.max(1, Math.round(W / 5)), ph = Math.max(1, Math.round(H / 5));
+    var T = tampon("halo", pw, ph);
+    T.cx.filter = "blur(7px) brightness(1.25) saturate(1.1)";
+    T.cx.drawImage(c.canvas, 0, 0, pw, ph);
+    c.save(); c.globalCompositeOperation = "lighter"; c.globalAlpha = force === undefined ? 0.16 : force;
+    c.drawImage(T.cv, 0, 0, W, H); c.restore();
+  }
+
+  /* étalonnage : hautes lumières chaudes, ombres bleutées, vignettage */
+  function etalonnage(c, W, H, force) {
+    force = force === undefined ? 1 : force;
+    c.save();
+    c.globalCompositeOperation = "soft-light";
+    var g = grad(c, 0, 0, 0, H, [[0, "rgba(255,196,120," + (0.42 * force).toFixed(3) + ")"],
+      [0.55, "rgba(255,255,255,0)"], [1, "rgba(30,70,150," + (0.40 * force).toFixed(3) + ")"]]);
+    c.fillStyle = g; c.fillRect(0, 0, W, H);
+    c.globalCompositeOperation = "source-over";
+    var v = c.createRadialGradient(W / 2, H * 0.46, H * 0.20, W / 2, H * 0.5, H * 0.78);
+    v.addColorStop(0, "rgba(0,0,0,0)");
+    v.addColorStop(1, "rgba(4,10,26," + (0.46 * force).toFixed(3) + ")");
+    c.fillStyle = v; c.fillRect(0, 0, W, H);
+    c.restore();
+  }
+
+  /* grain argentique (tuile fabriquée une fois, décalée à chaque image) */
+  var _grain = null;
+  function grain(c, W, H, image, force) {
+    if (!_grain) {
+      _grain = document.createElement("canvas"); _grain.width = _grain.height = 256;
+      var gc = _grain.getContext("2d"), d = gc.createImageData(256, 256), r = rng(1234);
+      for (var i = 0; i < d.data.length; i += 4) {
+        var v = 118 + Math.round(r() * 74);
+        d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255;
+      }
+      gc.putImageData(d, 0, 0);
+    }
+    var dx = (image * 71) % 256, dy = (image * 137) % 256;
+    c.save();
+    c.globalCompositeOperation = "overlay";
+    c.globalAlpha = force === undefined ? 0.055 : force;
+    var m = c.createPattern(_grain, "repeat");
+    c.translate(-dx, -dy); c.fillStyle = m; c.fillRect(0, 0, W + 256, H + 256);
+    c.restore();
+  }
+
+  /* rayons de lumière (soleil bas, poussière dans l'air) */
+  function rayons(c, W, H, t, sx, sy, force) {
+    c.save(); c.globalCompositeOperation = "lighter";
+    for (var i = 0; i < 7; i++) {
+      var a = -1.15 + i * 0.16 + Math.sin(t * 0.25 + i) * 0.015, L = H * 1.25;
+      var larg = W * (0.05 + (i % 3) * 0.02);
+      c.save(); c.translate(sx, sy); c.rotate(a);
+      var g = c.createLinearGradient(0, 0, 0, L);
+      g.addColorStop(0, "rgba(255,226,170," + (0.16 * (force === undefined ? 1 : force)).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(255,226,170,0)");
+      c.fillStyle = g;
+      c.beginPath(); c.moveTo(-larg * 0.15, 0); c.lineTo(larg, L); c.lineTo(-larg * 1.6, L); c.closePath(); c.fill();
+      c.restore();
+    }
+    c.restore();
+  }
+
+  /* poussière / embruns qui flottent dans le champ */
+  function particules(c, W, H, t, nb, couleur) {
+    var r = rng(777);
+    c.save();
+    for (var i = 0; i < (nb || 30); i++) {
+      var bx = r() * W, by = r() * H, vit = 6 + r() * 18, ph = r() * 6.3, taille = 1.5 + r() * 4;
+      var x = (bx + Math.sin(t * 0.4 + ph) * 40) % W;
+      var y = (by - t * vit) % H; if (y < 0) y += H;
+      c.fillStyle = (couleur || "rgba(255,240,205,") + (0.10 + 0.28 * (0.5 + 0.5 * Math.sin(t * 1.7 + ph))).toFixed(3) + ")";
+      c.beginPath(); c.arc(x, y, taille, 0, 7); c.fill();
+    }
+    c.restore();
+  }
+
+  /* photo réelle en fond, cadrée « cover », avec flou et assombrissement */
+  function photoFond(c, img, W, H, opts) {
+    if (!img || !img.complete || !img.naturalWidth) return false;
+    opts = opts || {};
+    var e = Math.max(W / img.naturalWidth, H / img.naturalHeight) * (opts.zoom || 1.06);
+    var w = img.naturalWidth * e, h = img.naturalHeight * e;
+    var x = (W - w) / 2 + (opts.dx || 0) * W, y = (H - h) / 2 + (opts.dy || 0) * H;
+    c.save();
+    if (opts.flou) c.filter = "blur(" + opts.flou + "px) saturate(1.05)";
+    c.drawImage(img, x, y, w, h);
+    c.restore();
+    if (opts.assombri) {
+      c.fillStyle = "rgba(6,18,42," + opts.assombri + ")";
+      c.fillRect(0, 0, W, H);
+    }
+    return true;
+  }
+
+  /* ================================================================
+     🎞️ PHOTO VIVANTE — transformer une VRAIE photo en plan filmé
+     La mer est redécoupée en bandes qui ondulent, le ciel dérive,
+     la lumière scintille. Rien n'est dessiné : ce sont les vrais
+     pixels de la photo qui bougent. C'est ce qui donne l'image
+     « comme un film » sans aucun modèle d'IA.
+     ================================================================ */
+  function photoVivante(c, img, W, H, t, cfg) {
+    if (!img || !img.complete || !img.naturalWidth) return false;
+    cfg = cfg || {};
+    var nw = img.naturalWidth, nh = img.naturalHeight;
+    var e = Math.max(W / nw, H / nh) * (cfg.zoom || 1.10);
+    var dw = nw * e, dh = nh * e;
+    var x0 = (W - dw) / 2 + (cfg.dx || 0) * W, y0 = (H - dh) / 2 + (cfg.dy || 0) * H;
+    var hor = cfg.horizon === undefined ? 0.42 : cfg.horizon;   // ligne d'horizon (fraction de la photo)
+    var yh = y0 + dh * hor;
+
+    /* 1 · la photo entière : ciel, terre, tout ce qui ne bouge pas */
+    c.drawImage(img, x0, y0, dw, dh);
+
+    /* 2 · le ciel dérive doucement (les nuages ne sont jamais figés) */
+    if (cfg.ciel !== false && hor > 0.04) {
+      var glis = Math.sin(t * 0.055) * (cfg.cielAmpl || 16);
+      c.save();
+      c.beginPath(); c.rect(0, 0, W, Math.max(0, yh)); c.clip();
+      c.drawImage(img, 0, 0, nw, nh * hor, x0 + glis, y0, dw, dh * hor + 1);
+      c.restore();
+    }
+
+    /* 3 · la mer : bandes horizontales qui ondulent (proche = plus ample) */
+    if (cfg.mer !== false && yh < H) {
+      var n = cfg.bandes || 100;
+      var hautM = Math.max(yh, -dh), basM = y0 + dh;
+      var hb = (basM - hautM) / n;
+      var ampl = cfg.amplitude === undefined ? 15 : cfg.amplitude;
+      var vit = cfg.vitesse === undefined ? 1.15 : cfg.vitesse;
+      for (var i = 0; i < n; i++) {
+        var k = i / n;
+        var a = ampl * Math.pow(k, 1.7) + 0.3;
+        var ph = t * vit + k * 8.5;
+        var ondX = Math.sin(ph) * a + Math.sin(ph * 0.47 + 1.9) * a * 0.5;
+        var ondY = Math.cos(ph * 0.9) * a * 0.20;
+        var sy = (hautM - y0 + i * hb) / e;
+        var sh = hb / e;
+        if (sy < 0 || sy + sh > nh) continue;
+        c.drawImage(img, 0, sy, nw, sh + 0.8 / e,
+          x0 + ondX, hautM + i * hb + ondY, dw, hb + 1.4);
+      }
+      /* 4 · scintillement du soleil sur l'eau */
+      var r = rng(cfg.graine || 91), nb = cfg.eclats === undefined ? 90 : cfg.eclats;
+      c.save(); c.globalCompositeOperation = "lighter";
+      c.beginPath(); c.rect(0, Math.max(0, yh), W, H); c.clip();
+      for (var j = 0; j < nb; j++) {
+        var kk = Math.pow(r(), 0.7);
+        var ex2 = r() * W, ey2 = yh + kk * (H - yh), pha = r() * 6.3;
+        var al = 0.10 + 0.34 * Math.pow(Math.max(0, Math.sin(t * 3.1 + pha)), 3);
+        c.fillStyle = "rgba(255,252,235," + al.toFixed(3) + ")";
+        c.beginPath();
+        c.ellipse(ex2 + Math.sin(t * 1.2 + pha) * 6, ey2, 5 + kk * 26, 1.2 + kk * 2.6, 0, 0, 7);
+        c.fill();
+      }
+      c.restore();
+    }
+    return true;
+  }
+
+  /* caméra portée à l'épaule : le micro-tremblement qui fait « filmé » */
+  function camPortee(t, force) {
+    var f = force === undefined ? 1 : force;
+    return {
+      x: (Math.sin(t * 1.7) * 2.6 + Math.sin(t * 3.9 + 1.2) * 1.5 + Math.sin(t * 0.7) * 3.2) * f,
+      y: (Math.cos(t * 1.4) * 2.2 + Math.sin(t * 4.6 + 0.5) * 1.1) * f,
+      a: (Math.sin(t * 0.9 + 0.4) * 0.0016 + Math.sin(t * 2.3) * 0.0008) * f
+    };
+  }
+
   global.D = {
+    photoVivante: photoVivante, camPortee: camPortee,
+    personnageEclaire: personnageEclaire, profondeur: profondeur, halo: halo,
+    etalonnage: etalonnage, grain: grain, rayons: rayons, particules: particules,
+    photoFond: photoFond, tampon: tampon,
     C: C, lerp: lerp, clamp: clamp, ease: ease, rng: rng, rrect: rrect, grad: grad,
     ciel: ciel, nuage: nuage, mer: mer, ile: ile, palmier: palmier, maison: maison,
     vedette: vedette, personnage: personnage, telephone: telephone, quai: quai, railBateau: railBateau

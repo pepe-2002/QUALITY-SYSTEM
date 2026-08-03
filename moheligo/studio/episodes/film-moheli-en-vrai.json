@@ -1,0 +1,76 @@
+{
+  "titre": "MoheliGo — « En vrai » (photos réelles animées)",
+  "fichier": "film-moheli-en-vrai",
+  "fps": 25,
+  "largeur": 1080,
+  "hauteur": 1920,
+  "fondu": 0.6,
+
+  "images": {
+    "vedette-mer": "../pub/photos/vedette-mer.jpg",
+    "mer-bateau": "../pub/photos/mer-bateau.jpg",
+    "horizon": "../pub/photos/horizon.jpg",
+    "plage-vedettes": "../pub/photos/plage-vedettes.jpg",
+    "rochers": "../pub/photos/rochers.jpg",
+    "ilot": "../pub/photos/ilot.jpg"
+  },
+
+  "photos": {
+    "vedette-mer": { "horizon": 0.185, "amplitude": 16, "vitesse": 1.0, "eclats": 110, "zoom": 1.12 },
+    "mer-bateau": { "horizon": 0.30, "amplitude": 14, "vitesse": 1.1, "eclats": 90, "zoom": 1.10 },
+    "horizon": { "horizon": 0.34, "amplitude": 13, "vitesse": 0.95, "eclats": 80, "zoom": 1.12 },
+    "plage-vedettes": { "horizon": 0.30, "amplitude": 9, "vitesse": 1.25, "eclats": 55, "zoom": 1.10 },
+    "rochers": { "horizon": 0.30, "amplitude": 11, "vitesse": 1.35, "eclats": 60, "zoom": 1.08 },
+    "ilot": { "horizon": 0.52, "amplitude": 12, "vitesse": 1.05, "eclats": 70, "zoom": 1.08 }
+  },
+
+  "personnages": {
+    "narrateur": { "voix": "fr-FR-HenriNeural", "rate": "-8%" }
+  },
+
+  "plans": [
+    {
+      "decor": "vivant:vedette-mer",
+      "camera": { "zoom": [1.0, 1.07], "focus": [0.5, 0.35] },
+      "replique": { "qui": "narrateur", "texte": "Entre Grande Comore et Mohéli, il y a l'océan." },
+      "duree_min": 5
+    },
+    {
+      "decor": "vivant:horizon",
+      "camera": { "zoom": [1.06, 1.0], "focus": [0.5, 0.5] },
+      "replique": { "qui": "narrateur", "texte": "Deux heures de mer, deux fois par jour." },
+      "duree_min": 4.5
+    },
+    {
+      "decor": "vivant:rochers",
+      "camera": { "zoom": [1.0, 1.08], "focus": [0.45, 0.6] },
+      "replique": { "qui": "narrateur", "texte": "Avant, on venait au port et on attendait." },
+      "duree_min": 4.5
+    },
+    {
+      "decor": "vivant:plage-vedettes",
+      "camera": { "zoom": [1.08, 1.0], "focus": [0.5, 0.55] },
+      "replique": { "qui": "narrateur", "texte": "Aujourd'hui, on réserve sa place avant de partir." },
+      "duree_min": 4.5
+    },
+    {
+      "decor": "vivant:mer-bateau",
+      "camera": { "zoom": [1.0, 1.06], "focus": [0.55, 0.45] },
+      "replique": { "qui": "narrateur", "texte": "Horaires, prix, météo de la mer, billet avec QR code." },
+      "duree_min": 5
+    },
+    {
+      "decor": "vivant:ilot",
+      "camera": { "zoom": [1.0, 1.08], "focus": [0.5, 0.5] },
+      "replique": { "qui": "narrateur", "texte": "Mohéli n'a jamais été aussi proche." },
+      "duree_min": 4.5
+    },
+    {
+      "decor": "carton",
+      "logo": true,
+      "portee": 0.4,
+      "replique": { "qui": "narrateur", "texte": "", "dit": "MoheliGo. Réserve ta traversée. moheligo point com." },
+      "duree_min": 5.5
+    }
+  ]
+}

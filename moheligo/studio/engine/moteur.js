@@ -204,9 +204,45 @@
     var px = cam.pan ? D.lerp(cam.pan[0], cam.pan[1], k) : 0;
     var py = cam.panY ? D.lerp(cam.panY[0], cam.panY[1], k) : 0;
     var fx = (cam.focus ? cam.focus[0] : 0.5) * W, fy = (cam.focus ? cam.focus[1] : 0.5) * H;
-    c.translate(fx, fy); c.scale(z, z); c.translate(-fx + px * W, -fy + py * H);
+    /* caméra portée : le plan n'est jamais parfaitement immobile */
+    var tremble = (plan.portee === false || EP.portee === false) ? { x: 0, y: 0, a: 0 }
+      : D.camPortee(tGlobal, plan.portee === undefined ? (EP.portee === undefined ? 1 : EP.portee) : plan.portee);
+    c.translate(fx + tremble.x, fy + tremble.y); c.rotate(tremble.a); c.scale(z, z);
+    c.translate(-fx + px * W, -fy + py * H);
 
-    (DECORS[plan.decor] || DECORS.carton)(c, tGlobal);
+    /* le décor est dessiné à part : ça permet la profondeur de champ
+       (fond adouci, personnages nets — comme un vrai objectif) */
+    var flou = plan.flouFond === undefined ? (plan.acteurs && plan.acteurs.length ? 3.5 : 0) : plan.flouFond;
+    var TD = D.tampon("decor", W, H);
+    if (plan.decor && plan.decor.indexOf("vivant:") === 0) {
+      /* VRAIE PHOTO ANIMÉE : la mer ondule, le ciel dérive */
+      var cle = plan.decor.slice(7);
+      var ph = (EP.photos || {})[cle] || {};
+      var imgV = (global._img || {})[cle];
+      if (!D.photoVivante(TD.cx, imgV, W, H, tGlobal, {
+        horizon: plan.horizon === undefined ? ph.horizon : plan.horizon,
+        zoom: plan.photoZoom || ph.zoom || 1.10,
+        dx: plan.photoDx || ph.dx || 0, dy: plan.photoDy || ph.dy || 0,
+        amplitude: plan.amplitude === undefined ? ph.amplitude : plan.amplitude,
+        vitesse: plan.vitesse === undefined ? ph.vitesse : plan.vitesse,
+        eclats: plan.eclats === undefined ? ph.eclats : plan.eclats,
+        ciel: ph.ciel, mer: ph.mer, graine: (cle.charCodeAt(0) * 37) % 900
+      })) DECORS.carton(TD.cx, tGlobal);
+    } else if (plan.decor && plan.decor.indexOf("photo:") === 0) {
+      var img = (global._img || {})[plan.decor.slice(6)];
+      var ok = D.photoFond(TD.cx, img, W, H, {
+        flou: plan.photoFlou === undefined ? 2 : plan.photoFlou,
+        assombri: plan.photoAssombri === undefined ? 0.22 : plan.photoAssombri,
+        zoom: plan.photoZoom || 1.06, dx: plan.photoDx || 0, dy: plan.photoDy || 0
+      });
+      if (!ok) DECORS.carton(TD.cx, tGlobal);
+    } else {
+      (DECORS[plan.decor] || DECORS.carton)(TD.cx, tGlobal);
+    }
+    c.save();
+    if (flou) c.filter = "blur(" + flou + "px)";
+    c.drawImage(TD.cv, 0, 0);
+    c.restore();
 
     /* mode « insert » : le décor s'efface derrière l'objet montré en gros */
     if (plan.insert) {
@@ -219,6 +255,12 @@
       lueur.addColorStop(1, "rgba(0,0,0,0)");
       c.fillStyle = lueur; c.fillRect(-W, -H, W * 3, H * 3);
     }
+
+    /* rayons de soleil : DERRIÈRE les personnages, sinon ça leur passe dessus */
+    var sol = plan.soleil || (plan.decor === "village_matin" ? [0.74, 0.29]
+      : plan.decor === "hoani" ? [0.28, 0.29] : null);
+    if (sol && plan.rayons !== false && !plan.insert)
+      D.rayons(c, W, H, tGlobal, W * sol[0], H * sol[1], plan.rayonsForce === undefined ? 0.5 : plan.rayonsForce);
 
     /* acteurs, du plus lointain au plus proche */
     (plan.acteurs || []).slice().sort(function (a, b) { return (a.h || 700) - (b.h || 700); })
@@ -234,18 +276,31 @@
         var clign = cyc < 130 ? Math.sin(cyc / 130 * Math.PI) : 0;
         var entree = a.entre ? D.ease(D.clamp((tl - (a.entre[0] || 0)) / (a.entre[1] || 1), 0, 1)) : 1;
         var x = W * (a.xFin !== undefined ? D.lerp(a.x, a.xFin, D.ease(D.clamp(tl / plan._duree, 0, 1))) : a.x);
-        D.personnage(c, {
+        var style = a.style || plan.style || EP.style || "dessin";
+        var dessinePerso = style === "realiste" ? D.personneRealiste : D.personnageEclaire;
+        dessinePerso(c, {
           x: x, y: H * (a.y || 0.86), h: (a.h || 700),
           peau: look.peau, tenue: look.tenue, motif: look.motif, coiffe: look.coiffe,
           coifCouleur: look.coifCouleur, robe: look.robe,
           dir: a.dir || 1, pose: a.pose || "debout", bras: a.bras || "repos",
           bouche: amp, clign: clign, sourire: a.sourire === undefined ? 0.4 : a.sourire,
           sourcils: a.sourcils || 0, graine: g
-        }, tGlobal * entree);
+        }, tGlobal * entree, plan.lumiere || EP.lumiere);
       });
 
     objets(c, plan, tl, k);
     c.restore();
+
+    /* ---- couche cinéma : rayons, poussière, halo, étalonnage ---- */
+    var soleil = plan.soleil || (plan.decor === "village_matin" ? [0.74, 0.29]
+      : plan.decor === "hoani" ? [0.28, 0.29] : null);
+    if (soleil && plan.rayons !== false)
+      D.rayons(c, W, H, tGlobal, W * soleil[0], H * soleil[1], plan.rayonsForce);
+    if (plan.particules !== false && !plan.insert)
+      D.particules(c, W, H, tGlobal, plan.particules || 26);
+    D.halo(c, W, H, plan.halo === undefined ? 0.15 : plan.halo);
+    D.etalonnage(c, W, H, plan.etalonnage === undefined ? 1 : plan.etalonnage);
+
     /* habillage hors caméra */
     if (plan.logo) logoFinal(c, tl);
     titre(c, plan, tl);
@@ -267,6 +322,9 @@
       dessinerPlan(cxBase, suiv, tl - plan._duree, t);
       cx.save(); cx.globalAlpha = a; cx.drawImage(cvBase, 0, 0); cx.restore();
     }
+    /* grain argentique, sur l'image entière */
+    if (EP.grain !== false) D.grain(cx, W, H, Math.round(t * EP.fps), EP.grain || 0.05);
+
     /* ouverture / fermeture au noir */
     var ouv = 0.6;
     if (t < ouv) { cx.fillStyle = "rgba(0,0,0," + (1 - D.ease(t / ouv)) + ")"; cx.fillRect(0, 0, W, H); }

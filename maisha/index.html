@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Maisha — Simulateur de vie</title>
+<style>
+  :root{
+    --bg:#0d1b2a; --panel:#13263a; --panel2:#0f2032; --line:#1e3a55;
+    --ink:#eaf2f8; --ink-dim:#8fa8bc;
+    --accent:#18b89b; --accent-ink:#062b24;
+    --money:#ffb74a; --danger:#ff6b6b;
+    --sante:#ff6b81; --bonheur:#ffc14a; --intel:#4aa8ff; --look:#c77dff;
+    --sheet:#112438; --shadow:0 -8px 30px rgba(0,0,0,.45);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#eef4f2; --panel:#ffffff; --panel2:#f2f7f5; --line:#d8e4e0;
+      --ink:#122b33; --ink-dim:#5b7480;
+      --accent:#0e9e85; --accent-ink:#ffffff;
+      --money:#c07f00; --danger:#d94848;
+      --sheet:#ffffff; --shadow:0 -8px 30px rgba(20,40,50,.18);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d1b2a; --panel:#13263a; --panel2:#0f2032; --line:#1e3a55;
+    --ink:#eaf2f8; --ink-dim:#8fa8bc;
+    --accent:#18b89b; --accent-ink:#062b24;
+    --money:#ffb74a; --danger:#ff6b6b;
+    --sheet:#112438; --shadow:0 -8px 30px rgba(0,0,0,.45);
+  }
+  :root[data-theme="light"]{
+    --bg:#eef4f2; --panel:#ffffff; --panel2:#f2f7f5; --line:#d8e4e0;
+    --ink:#122b33; --ink-dim:#5b7480;
+    --accent:#0e9e85; --accent-ink:#ffffff;
+    --money:#c07f00; --danger:#d94848;
+    --sheet:#ffffff; --shadow:0 -8px 30px rgba(20,40,50,.18);
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display:flex; justify-content:center; overflow:hidden;
+  }
+  #app{
+    width:100%; max-width:480px; height:100dvh;
+    display:flex; flex-direction:column; position:relative;
+    background:var(--bg);
+  }
+  /* ---------- entête ---------- */
+  header{
+    background:var(--panel); border-bottom:1px solid var(--line);
+    padding:10px 14px; display:flex; align-items:center; gap:12px; flex:0 0 auto;
+  }
+  #avatar{
+    width:46px; height:46px; border-radius:50%; flex:0 0 auto;
+    background:var(--accent); color:var(--accent-ink);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px; font-weight:800;
+  }
+  #who{flex:1 1 auto; min-width:0}
+  #who .nom{font-weight:800; font-size:16px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  #who .sub{color:var(--ink-dim); font-size:12px; margin-top:2px}
+  #bank{text-align:right}
+  #bank .argent{color:var(--money); font-weight:800; font-size:16px; font-variant-numeric:tabular-nums}
+  #bank .sub{color:var(--ink-dim); font-size:11px; text-transform:uppercase; letter-spacing:.08em}
+  /* ---------- journal ---------- */
+  #journal{
+    flex:1 1 auto; overflow-y:auto; padding:14px 14px 90px;
+    scroll-behavior:smooth;
+  }
+  .annee{margin-bottom:14px}
+  .annee h3{
+    font-size:12px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.1em;
+    margin-bottom:6px; display:flex; align-items:center; gap:8px;
+  }
+  .annee h3::after{content:""; flex:1; height:1px; background:var(--line)}
+  .annee p{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:9px 12px; font-size:14px; line-height:1.45; margin-bottom:6px;
+  }
+  .annee p.bon{border-left:3px solid var(--accent)}
+  .annee p.mauvais{border-left:3px solid var(--danger)}
+  .annee p.argent{border-left:3px solid var(--money)}
+  /* ---------- pied : stats + nav ---------- */
+  footer{
+    flex:0 0 auto; background:var(--panel); border-top:1px solid var(--line);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+  }
+  #stats{display:grid; grid-template-columns:1fr 1fr; gap:5px 14px; padding:2px 4px 8px}
+  .stat{display:flex; align-items:center; gap:8px; font-size:11px}
+  .stat label{width:74px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.05em; flex:0 0 auto}
+  .jauge{flex:1; height:8px; background:var(--panel2); border-radius:99px; overflow:hidden}
+  .jauge i{display:block; height:100%; border-radius:99px; transition:width .4s}
+  .stat b{width:26px; text-align:right; font-variant-numeric:tabular-nums; font-size:11px}
+  #nav{display:flex; align-items:center; gap:6px}
+  #nav button{
+    flex:1; background:var(--panel2); color:var(--ink); border:1px solid var(--line);
+    border-radius:12px; padding:9px 2px 7px; font-size:11px; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+  }
+  #nav button span.ico{font-size:18px; line-height:1}
+  #nav #btn-age{
+    flex:0 0 76px; height:64px; border-radius:50%/40%;
+    background:var(--accent); color:var(--accent-ink); border:none;
+    font-weight:800; font-size:15px; box-shadow:0 4px 14px rgba(24,184,155,.35);
+  }
+  #nav #btn-age:active{transform:scale(.95)}
+  /* ---------- feuilles (bottom sheets) ---------- */
+  #voile{
+    position:absolute; inset:0; background:rgba(0,0,0,.55);
+    opacity:0; pointer-events:none; transition:opacity .25s; z-index:20;
+  }
+  #voile.ouvert{opacity:1; pointer-events:auto}
+  .feuille{
+    position:absolute; left:0; right:0; bottom:0; z-index:21;
+    background:var(--sheet); border-radius:18px 18px 0 0; box-shadow:var(--shadow);
+    max-height:78%; display:flex; flex-direction:column;
+    transform:translateY(105%); transition:transform .28s ease;
+  }
+  .feuille.ouvert{transform:translateY(0)}
+  .feuille .tete{
+    padding:14px 16px 10px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; flex:0 0 auto;
+  }
+  .feuille .tete h2{font-size:16px; font-weight:800; letter-spacing:.2px}
+  .feuille .tete button{
+    background:none; border:none; color:var(--ink-dim); font-size:22px; cursor:pointer; padding:0 4px;
+  }
+  .feuille .corps{overflow-y:auto; padding:12px 14px calc(16px + env(safe-area-inset-bottom))}
+  .carte{
+    background:var(--panel); border:1px solid var(--line); border-radius:12px;
+    padding:11px 13px; margin-bottom:9px;
+  }
+  .carte .titre{font-weight:700; font-size:14px}
+  .carte .detail{color:var(--ink-dim); font-size:12px; margin-top:2px; line-height:1.4}
+  .carte .actions{display:flex; flex-wrap:wrap; gap:7px; margin-top:9px}
+  .bouton{
+    background:var(--accent); color:var(--accent-ink); border:none; border-radius:9px;
+    padding:7px 12px; font-size:12px; font-weight:700; cursor:pointer;
+  }
+  .bouton.gris{background:var(--panel2); color:var(--ink); border:1px solid var(--line)}
+  .bouton.rouge{background:var(--danger); color:#fff}
+  .bouton:disabled{opacity:.4; cursor:default}
+  .mini-jauge{height:6px; background:var(--panel2); border-radius:99px; overflow:hidden; margin-top:8px}
+  .mini-jauge i{display:block; height:100%; background:var(--accent)}
+  /* ---------- modale événement ---------- */
+  #modale{
+    position:absolute; inset:0; z-index:30; display:none;
+    align-items:center; justify-content:center; padding:22px;
+    background:rgba(0,0,0,.6);
+  }
+  #modale.ouvert{display:flex}
+  #modale .boite{
+    background:var(--sheet); border:1px solid var(--line); border-radius:16px;
+    padding:20px 18px; width:100%; max-width:360px; max-height:80%; overflow-y:auto;
+  }
+  #modale h2{font-size:17px; margin-bottom:8px; text-wrap:balance}
+  #modale .texte{font-size:14px; line-height:1.5; color:var(--ink); margin-bottom:16px}
+  #modale .choix{display:flex; flex-direction:column; gap:8px}
+  #modale .choix button{
+    background:var(--panel); border:1px solid var(--line); color:var(--ink);
+    border-radius:10px; padding:11px 12px; font-size:14px; text-align:left; cursor:pointer;
+  }
+  #modale .choix button:hover{border-color:var(--accent)}
+  /* ---------- écran mort / accueil ---------- */
+  #plein{
+    position:absolute; inset:0; z-index:40; display:none;
+    background:var(--bg); overflow-y:auto; padding:34px 24px;
+  }
+  #plein.ouvert{display:block}
+  #plein .cadre{max-width:360px; margin:0 auto; text-align:center}
+  #plein .embleme{font-size:52px; margin-bottom:12px}
+  #plein h1{font-size:26px; margin-bottom:4px; letter-spacing:.3px}
+  #plein .sous{color:var(--ink-dim); font-size:14px; margin-bottom:22px; line-height:1.5}
+  #plein .fiche{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:16px; text-align:left; margin-bottom:22px; font-size:14px; line-height:1.9;
+  }
+  #plein .fiche b{font-variant-numeric:tabular-nums}
+  #plein .grand{
+    width:100%; background:var(--accent); color:var(--accent-ink); border:none;
+    border-radius:12px; padding:14px; font-size:16px; font-weight:800; cursor:pointer;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important; scroll-behavior:auto !important}
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <header>
+    <div id="avatar">?</div>
+    <div id="who"><div class="nom">—</div><div class="sub">—</div></div>
+    <div id="bank"><div class="argent">0 €</div><div class="sub">Banque</div></div>
+  </header>
+
+  <main id="journal"></main>
+
+  <footer>
+    <div id="stats">
+      <div class="stat"><label>Santé</label><div class="jauge"><i id="j-sante" style="background:var(--sante)"></i></div><b id="v-sante">0</b></div>
+      <div class="stat"><label>Bonheur</label><div class="jauge"><i id="j-bonheur" style="background:var(--bonheur)"></i></div><b id="v-bonheur">0</b></div>
+      <div class="stat"><label>Intelligence</label><div class="jauge"><i id="j-intel" style="background:var(--intel)"></i></div><b id="v-intel">0</b></div>
+      <div class="stat"><label>Apparence</label><div class="jauge"><i id="j-look" style="background:var(--look)"></i></div><b id="v-look">0</b></div>
+    </div>
+    <div id="nav">
+      <button data-sheet="emploi"><span class="ico">💼</span>Emploi</button>
+      <button data-sheet="actifs"><span class="ico">🏠</span>Actifs</button>
+      <button id="btn-age">+ Âge</button>
+      <button data-sheet="relations"><span class="ico">❤️</span>Relations</button>
+      <button data-sheet="activites"><span class="ico">🎯</span>Activités</button>
+    </div>
+  </footer>
+
+  <div id="voile"></div>
+  <section class="feuille" id="feuille">
+    <div class="tete"><h2 id="feuille-titre">—</h2><button id="feuille-fermer" aria-label="Fermer">✕</button></div>
+    <div class="corps" id="feuille-corps"></div>
+  </section>
+
+  <div id="modale"><div class="boite"><h2 id="mod-titre"></h2><div class="texte" id="mod-texte"></div><div class="choix" id="mod-choix"></div></div></div>
+
+  <div id="plein"></div>
+</div>
+
+<script>
+"use strict";
+/* =====================================================================
+   MAISHA — simulateur de vie (façon BitLife), 100% hors-ligne.
+   ===================================================================== */
+
+const CLE = "maisha-sauvegarde-v1";
+const $ = id => document.getElementById(id);
+const alea = n => Math.floor(Math.random() * n);
+const parmi = t => t[alea(t.length)];
+const borne = v => Math.max(0, Math.min(100, Math.round(v)));
+const euros = n => (n<0?"-":"") + Math.abs(Math.round(n)).toLocaleString("fr-FR") + " €";
+
+const PRENOMS_F = ["Amina","Faïza","Nadjma","Zaïnaba","Halima","Echat","Mariama","Salima","Rahma","Fatima","Anziza","Moinaécha"];
+const PRENOMS_M = ["Saïd","Moussa","Ali","Ibrahim","Ahmed","Nayamdine","Soilihi","Youssouf","Abdou","Karim","Mohamed","Anli"];
+const NOMS = ["Madi","Abdallah","Soilih","Mohamed","Bacar","Ahamada","Attoumane","Saandi","Djoumbé","Combo","Mzé","Halidi"];
+const VILLES = [["Moroni","Comores"],["Fomboni","Comores"],["Mutsamudu","Comores"],["Mamoudzou","Mayotte"],["Marseille","France"],["Paris","France"],["Antananarivo","Madagascar"],["Dar es Salam","Tanzanie"]];
+
+const FILIERES = ["Médecine","Droit","Informatique","Commerce","Ingénierie","Lettres"];
+
+const PETITS_BOULOTS = [
+  {titre:"Baby-sitter", salaire:1200, ageMin:15},
+  {titre:"Vendeur au marché", salaire:1500, ageMin:15},
+  {titre:"Aide-pêcheur", salaire:1600, ageMin:15},
+];
+const EMPLOIS = [
+  {titre:"Agent d'entretien", salaire:9000, intel:0, diplome:false},
+  {titre:"Chauffeur de taxi-brousse", salaire:11000, intel:20, diplome:false},
+  {titre:"Serveur de restaurant", salaire:10000, intel:15, diplome:false},
+  {titre:"Marin sur ferry", salaire:14000, intel:30, diplome:false},
+  {titre:"Commercial", salaire:20000, intel:45, diplome:false},
+  {titre:"Comptable", salaire:26000, intel:55, diplome:true},
+  {titre:"Professeur", salaire:24000, intel:60, diplome:true},
+  {titre:"Ingénieur", salaire:38000, intel:70, diplome:true},
+  {titre:"Développeur web", salaire:34000, intel:65, diplome:true},
+  {titre:"Médecin", salaire:52000, intel:80, diplome:true},
+  {titre:"Pilote de ligne", salaire:60000, intel:85, diplome:true},
+];
+const BIENS = [
+  {nom:"Scooter", prix:2500, ico:"🛵"},
+  {nom:"Voiture d'occasion", prix:9000, ico:"🚗"},
+  {nom:"Voiture neuve", prix:28000, ico:"🚙"},
+  {nom:"Barque de pêche", prix:6000, ico:"🛶"},
+  {nom:"Vedette rapide", prix:75000, ico:"🚤"},
+  {nom:"Petite maison", prix:60000, ico:"🏠"},
+  {nom:"Villa vue mer", prix:250000, ico:"🏖️"},
+];
+
+let etat = null;          // état de la partie
+let fileEvenements = [];  // modales en attente
+
+/* ---------------- création / sauvegarde ---------------- */
+
+function nouvelleVie(){
+  const genre = alea(2) ? "F" : "M";
+  const prenom = parmi(genre==="F" ? PRENOMS_F : PRENOMS_M);
+  const nom = parmi(NOMS);
+  const [ville, pays] = parmi(VILLES);
+  etat = {
+    prenom, nom, genre, ville, pays, age:0,
+    sante: 70+alea(31), bonheur: 70+alea(31),
+    intel: 30+alea(51), look: 30+alea(51),
+    argent:0, emploi:null, filiere:null,
+    etude:"aucune", anneesEtude:0, diplome:false,
+    prison:0, relations:[], biens:[], journal:[], mort:false
+  };
+  const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
+  etat.relations.push(rel("mere", nomMere, 20+alea(18)));
+  etat.relations.push(rel("pere", nomPere, 22+alea(20)));
+  if(alea(2)) etat.relations.push(rel(alea(2)?"frere":"soeur", parmi(alea(2)?PRENOMS_M:PRENOMS_F)+" "+nom, alea(10)));
+  nouvelleAnnee();
+  ecrire(`Je m'appelle ${prenom} ${nom}. Je suis né${genre==="F"?"e":""} ${genre==="F"?"fille":"garçon"} à ${ville}, ${pays}.`, "bon");
+  ecrire(`Ma mère est ${nomMere} et mon père est ${nomPere}.`);
+  sauver(); toutAfficher();
+  $("plein").classList.remove("ouvert");
+}
+
+function rel(type, nom, age){
+  return {type, nom, age, barre: 60+alea(41), vivant:true};
+}
+
+function sauver(){ try{ localStorage.setItem(CLE, JSON.stringify(etat)); }catch(e){} }
+function charger(){
+  try{
+    const brut = localStorage.getItem(CLE);
+    if(brut){ etat = JSON.parse(brut); return true; }
+  }catch(e){}
+  return false;
+}
+
+/* ---------------- journal ---------------- */
+
+function nouvelleAnnee(){ etat.journal.push({age: etat.age, lignes: []}); }
+function ecrire(txt, classe){
+  etat.journal[etat.journal.length-1].lignes.push({txt, classe: classe||""});
+}
+
+function afficherJournal(){
+  const J = $("journal");
+  J.innerHTML = etat.journal.map(an => `
+    <div class="annee">
+      <h3>${an.age === 0 ? "Naissance" : an.age + " an" + (an.age>1?"s":"")}</h3>
+      ${an.lignes.map(l => `<p class="${l.classe}">${l.txt}</p>`).join("")}
+    </div>`).join("");
+  J.scrollTop = J.scrollHeight;
+}
+
+/* ---------------- affichage global ---------------- */
+
+function libelleEtat(){
+  if(etat.prison>0) return "En prison — reste "+etat.prison+" an"+(etat.prison>1?"s":"");
+  if(etat.emploi) return etat.emploi.titre+" · "+euros(etat.emploi.salaire)+"/an";
+  if(etat.etude==="universite") return "Étudiant"+(etat.genre==="F"?"e":"")+" en "+etat.filiere;
+  if(etat.etude!=="aucune" && etat.age<18) return "Scolarisé"+(etat.genre==="F"?"e":"");
+  return "Sans emploi";
+}
+
+function toutAfficher(){
+  $("avatar").textContent = etat.prenom[0];
+  document.querySelector("#who .nom").textContent = etat.prenom+" "+etat.nom;
+  document.querySelector("#who .sub").textContent = etat.age+" an"+(etat.age>1?"s":"")+" · "+etat.ville+" · "+libelleEtat();
+  document.querySelector("#bank .argent").textContent = euros(etat.argent);
+  for(const [cle,id] of [["sante","sante"],["bonheur","bonheur"],["intel","intel"],["look","look"]]){
+    $("j-"+id).style.width = etat[cle]+"%";
+    $("v-"+id).textContent = etat[cle];
+  }
+  afficherJournal();
+}
+
+/* ---------------- moteur : vieillir d'un an ---------------- */
+
+function vieillir(){
+  if(etat.mort) return;
+  etat.age++;
+  nouvelleAnnee();
+
+  // dérive naturelle des stats
+  etat.bonheur = borne(etat.bonheur + alea(7) - 3);
+  if(etat.age > 45) etat.sante = borne(etat.sante - (1 + alea(Math.max(1,(etat.age-45)/8))));
+  if(etat.age > 30) etat.look = borne(etat.look - alea(2));
+
+  // prison
+  if(etat.prison > 0){
+    etat.prison--;
+    etat.bonheur = borne(etat.bonheur - 8);
+    ecrire("J'ai passé l'année derrière les barreaux."+(etat.prison===0?" Je suis enfin libre !":""), "mauvais");
+    finDeTour(); return;
+  }
+
+  // scolarité automatique
+  ecole();
+
+  // salaire
+  if(etat.emploi){
+    etat.argent += etat.emploi.salaire;
+    etat.emploi.annees++;
+    if(etat.emploi.annees % 4 === 0 && alea(2)){
+      const augm = Math.round(etat.emploi.salaire * 0.15);
+      etat.emploi.salaire += augm;
+      ecrire(`Promotion au travail ! Mon salaire augmente de ${euros(augm)}.`, "argent");
+    }
+  }
+
+  // relations qui vieillissent
+  for(const r of etat.relations){
+    if(!r.vivant) continue;
+    r.age++;
+    r.barre = borne(r.barre - alea(4));
+    if((r.type==="mere"||r.type==="pere") && r.age > 60 && alea(100) < (r.age-55)){
+      r.vivant = false;
+      etat.bonheur = borne(etat.bonheur - 25);
+      ecrire(`${r.nom}, ${r.type==="mere"?"ma mère":"mon père"}, est décédé${r.type==="mere"?"e":""} à ${r.age} ans. Repose en paix.`, "mauvais");
+    }
+  }
+
+  // événements aléatoires
+  evenementsAleatoires();
+
+  // mortalité
+  if(etat.sante <= 0){ mourir("de maladie"); return; }
+  if(etat.age > 60){
+    const risque = (etat.age-60) * (etat.sante < 30 ? 2.4 : 1.1);
+    if(alea(100) < risque){ mourir("de vieillesse"); return; }
+  }
+
+  finDeTour();
+}
+
+function finDeTour(){
+  sauver(); toutAfficher(); prochaineModale();
+}
+
+/* ---------------- scolarité ---------------- */
+
+function ecole(){
+  const g = etat.genre==="F";
+  if(etat.age===3){ etat.etude="maternelle"; ecrire("Première rentrée à l'école maternelle."); }
+  if(etat.age===6){ etat.etude="primaire"; ecrire("J'entre à l'école primaire."); }
+  if(etat.age===11){ etat.etude="college"; ecrire("Direction le collège !"); }
+  if(etat.age===15){ etat.etude="lycee"; ecrire("Me voilà au lycée."); }
+  if(etat.age===18 && etat.etude==="lycee"){
+    const reussite = etat.intel > 35 || alea(3)>0;
+    if(reussite){
+      etat.etude="bac"; ecrire("J'ai obtenu mon baccalauréat !", "bon");
+      fileEvenements.push({
+        titre:"Et maintenant ?",
+        texte:"Le bac en poche, il faut choisir la suite.",
+        choix: FILIERES.slice(0,4).map(f => ({label:"Étudier : "+f, effet(){
+          etat.etude="universite"; etat.filiere=f; etat.anneesEtude=0;
+          ecrire("Je m'inscris à l'université en "+f+".", "bon");
+        }})).concat([{label:"Travailler directement", effet(){
+          etat.etude="fini"; ecrire("Pas d'études pour moi, je cherche du travail.");
+        }}])
+      });
+    } else {
+      etat.etude="fini";
+      ecrire("J'ai raté le bac… La vie active commence plus tôt que prévu.", "mauvais");
+    }
+  }
+  if(etat.etude==="universite"){
+    etat.anneesEtude++;
+    etat.intel = borne(etat.intel + 2 + alea(3));
+    if(etat.anneesEtude>=4){
+      etat.etude="fini"; etat.diplome=true;
+      ecrire(`Diplômé${g?"e":""} de l'université en ${etat.filiere} ! 🎓`, "bon");
+    }
+  }
+  if(etat.etude!=="aucune" && etat.age>=3 && etat.age<18){
+    etat.intel = borne(etat.intel + 1 + alea(2));
+  }
+}
+
+/* ---------------- événements aléatoires ---------------- */
+
+function evenementsAleatoires(){
+  const E = [];
+  const a = etat.age;
+
+  // petite enfance
+  if(a>=1 && a<=4) E.push(
+    ()=>ecrire("J'ai fait mes premiers pas sur la plage devant toute la famille.", "bon"),
+    ()=>{ etat.sante=borne(etat.sante-6); ecrire("Grosse fièvre cette année. Le médecin m'a soigné"+(etat.genre==="F"?"e":"")+".", "mauvais"); },
+    ()=>ecrire("Ma grand-mère m'a appris mes premières comptines.")
+  );
+  // enfance
+  if(a>=5 && a<=11) E.push(
+    ()=>{ etat.bonheur=borne(etat.bonheur+8); ecrire("J'ai gagné le tournoi de foot du quartier !", "bon"); },
+    ()=>{ etat.intel=borne(etat.intel+5); ecrire("La maîtresse dit que je suis très doué"+(etat.genre==="F"?"e":"")+" à l'école.", "bon"); },
+    ()=>ajouterAmi(),
+    ()=>{ etat.sante=borne(etat.sante-8); ecrire("Je suis tombé"+(etat.genre==="F"?"e":"")+" d'un manguier. Bras cassé !", "mauvais"); }
+  );
+  // adolescence
+  if(a>=12 && a<=17) E.push(
+    ()=>ajouterAmi(),
+    ()=>{ etat.bonheur=borne(etat.bonheur-10); ecrire("Dispute avec mes parents, ambiance tendue à la maison.", "mauvais"); },
+    ()=>{ etat.look=borne(etat.look+6); ecrire("On me dit que j'ai bien grandi cet été.", "bon"); },
+    ()=>fileEvenements.push({
+      titre:"Sèche-t-on les cours ?",
+      texte:"Des amis proposent de sécher les cours pour aller à la plage.",
+      choix:[
+        {label:"J'y vais ! 🏖️", effet(){ etat.bonheur=borne(etat.bonheur+10); etat.intel=borne(etat.intel-4);
+          ecrire("J'ai séché les cours pour la plage. Aucun regret (ou presque)."); }},
+        {label:"Non, je reste en classe", effet(){ etat.intel=borne(etat.intel+4);
+          ecrire("J'ai refusé de sécher. Le devoir surprise m'a donné raison.", "bon"); }}
+      ]
+    })
+  );
+  // adulte
+  if(a>=18) E.push(
+    ()=>{ const g=200+alea(800); etat.argent+=g; ecrire(`Un oncle généreux m'a donné ${euros(g)}.`, "argent"); },
+    ()=>{ etat.sante=borne(etat.sante-10); ecrire("Accident de scooter. Plus de peur que de mal, mais quand même.", "mauvais"); },
+    ()=>{ etat.bonheur=borne(etat.bonheur+9); ecrire("Superbe traversée en mer vers Mohéli, dauphins au rendez-vous. 🐬", "bon"); },
+    ()=>{ if(etat.argent>500){ const p=100+alea(Math.min(2000,etat.argent/4)); etat.argent-=p;
+      ecrire(`On m'a volé ${euros(p)} au marché. Rageant.`, "mauvais"); } },
+    ()=>fileEvenements.push({
+      titre:"Billet de loterie",
+      texte:"Un vendeur te propose un billet de loterie à 20 €.",
+      choix:[
+        {label:"Acheter le billet", effet(){ etat.argent-=20;
+          if(alea(20)===0){ const g=5000+alea(45000); etat.argent+=g; ecrire(`INCROYABLE ! Billet gagnant : ${euros(g)} ! 🎉`, "argent"); }
+          else ecrire("Billet perdant. Évidemment."); }},
+        {label:"Refuser poliment", effet(){ ecrire("J'ai gardé mes 20 €. La sagesse même."); }}
+      ]
+    })
+  );
+  if(a>=25) E.push(
+    ()=>{ etat.sante=borne(etat.sante+6); ecrire("Grande remise en forme cette année : footing sur la corniche chaque matin.", "bon"); },
+    ()=>{ etat.bonheur=borne(etat.bonheur-8); ecrire("Année morose, la motivation n'y était pas.", "mauvais"); }
+  );
+  if(a>=40) E.push(
+    ()=>fileEvenements.push({
+      titre:"Bilan de santé",
+      texte:"Ton médecin recommande un bilan complet (300 €).",
+      choix:[
+        {label:"Faire le bilan (300 €)", effet(){ etat.argent-=300; etat.sante=borne(etat.sante+10);
+          ecrire("Bilan de santé fait : quelques soucis pris à temps.", "bon"); }},
+        {label:"Pas besoin, je suis solide", effet(){ if(alea(3)===0){ etat.sante=borne(etat.sante-14);
+            ecrire("J'ai ignoré le bilan… une maladie s'est installée en silence.", "mauvais"); }
+          else ecrire("Pas de bilan, et pourtant tout va bien. Cette fois."); }}
+      ]
+    })
+  );
+
+  // 1 événement sûr + 1 chance sur 2 d'en avoir un deuxième
+  if(E.length){ parmi(E)(); if(alea(2) && E.length>1) parmi(E)(); }
+}
+
+function ajouterAmi(){
+  const g = alea(2);
+  const nom = parmi(g?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS);
+  etat.relations.push(rel("ami", nom, etat.age + alea(5) - 2));
+  ecrire(`Je me suis fait un nouvel ami : ${nom}.`, "bon");
+}
+
+/* ---------------- la mort ---------------- */
+
+function mourir(cause){
+  etat.mort = true;
+  ecrire(`Je suis mort${etat.genre==="F"?"e":""} ${cause} à ${etat.age} ans.`, "mauvais");
+  sauver(); toutAfficher();
+  const patrimoine = etat.biens.reduce((s,b)=>s+b.prix,0);
+  const enfants = etat.relations.filter(r=>r.type==="enfant").length;
+  $("plein").innerHTML = `
+    <div class="cadre">
+      <div class="embleme">🪦</div>
+      <h1>${etat.prenom} ${etat.nom}</h1>
+      <div class="sous">${etat.ville}, ${etat.pays}<br>Décès ${cause} à ${etat.age} ans</div>
+      <div class="fiche">
+        💰 Argent au décès : <b>${euros(etat.argent)}</b><br>
+        🏠 Patrimoine : <b>${euros(patrimoine)}</b><br>
+        ${etat.diplome ? "🎓 Diplôme : <b>"+etat.filiere+"</b><br>" : ""}
+        ${etat.emploi ? "💼 Dernier emploi : <b>"+etat.emploi.titre+"</b><br>" : ""}
+        👶 Enfants : <b>${enfants}</b><br>
+        ❤️ ${etat.relations.some(r=>r.type==="conjoint") ? "Marié"+(etat.genre==="F"?"e":"") : "Célibataire"}
+      </div>
+      <button class="grand" id="btn-renaitre">🌱 Nouvelle vie</button>
+    </div>`;
+  $("plein").classList.add("ouvert");
+  $("btn-renaitre").onclick = () => nouvelleVie();
+}
+
+/* ---------------- modales d'événements ---------------- */
+
+function prochaineModale(){
+  if(!fileEvenements.length) return;
+  const ev = fileEvenements.shift();
+  $("mod-titre").textContent = ev.titre;
+  $("mod-texte").textContent = ev.texte;
+  const box = $("mod-choix");
+  box.innerHTML = "";
+  for(const c of ev.choix){
+    const b = document.createElement("button");
+    b.textContent = c.label;
+    b.onclick = () => {
+      $("modale").classList.remove("ouvert");
+      c.effet();
+      sauver(); toutAfficher();
+      prochaineModale();
+    };
+    box.appendChild(b);
+  }
+  $("modale").classList.add("ouvert");
+}
+
+/* ---------------- feuilles (onglets) ---------------- */
+
+function ouvrirFeuille(nom){
+  if(etat.mort) return;
+  const titres = {emploi:"💼 Emploi", actifs:"🏠 Actifs", relations:"❤️ Relations", activites:"🎯 Activités"};
+  $("feuille-titre").textContent = titres[nom];
+  $("feuille-corps").innerHTML = "";
+  ({emploi:feuilleEmploi, actifs:feuilleActifs, relations:feuilleRelations, activites:feuilleActivites})[nom]();
+  $("voile").classList.add("ouvert");
+  $("feuille").classList.add("ouvert");
+}
+function fermerFeuille(){
+  $("voile").classList.remove("ouvert");
+  $("feuille").classList.remove("ouvert");
+}
+function carte(html){
+  const d = document.createElement("div");
+  d.className = "carte";
+  d.innerHTML = html;
+  $("feuille-corps").appendChild(d);
+  return d;
+}
+function action(parent, label, classe, fn, desactive){
+  const b = document.createElement("button");
+  b.className = "bouton "+(classe||"");
+  b.textContent = label;
+  if(desactive) b.disabled = true;
+  b.onclick = () => { fn(); sauver(); toutAfficher(); };
+  parent.querySelector(".actions").appendChild(b);
+  return b;
+}
+
+/* ----- emploi ----- */
+function feuilleEmploi(){
+  if(etat.prison>0){ carte(`<div class="titre">🔒 En prison</div><div class="detail">Impossible de travailler pour le moment.</div>`); return; }
+  if(etat.emploi){
+    const c = carte(`<div class="titre">${etat.emploi.titre}</div>
+      <div class="detail">Salaire : ${euros(etat.emploi.salaire)}/an · Ancienneté : ${etat.emploi.annees} an${etat.emploi.annees>1?"s":""}</div>
+      <div class="actions"></div>`);
+    action(c, "Travailler dur", "", () => {
+      etat.bonheur = borne(etat.bonheur-5);
+      if(alea(2)){ const aug = Math.round(etat.emploi.salaire*0.08); etat.emploi.salaire += aug;
+        ecrire(`À force de travail acharné, j'ai décroché ${euros(aug)} d'augmentation.`, "argent"); }
+      else ecrire("J'ai redoublé d'efforts au travail… sans récompense pour l'instant.");
+      fermerFeuille();
+    });
+    action(c, "Demander une augmentation", "gris", () => {
+      if(etat.emploi.annees>=2 && alea(3)===0){ const aug=Math.round(etat.emploi.salaire*0.12); etat.emploi.salaire+=aug;
+        ecrire(`Augmentation accordée : +${euros(aug)}/an !`, "argent"); }
+      else ecrire("Augmentation refusée. Le patron a « d'autres priorités ».", "mauvais");
+      fermerFeuille();
+    });
+    action(c, "Démissionner", "rouge", () => {
+      ecrire(`J'ai démissionné de mon poste de ${etat.emploi.titre}.`);
+      etat.emploi = null; fermerFeuille();
+    });
+    return;
+  }
+  if(etat.age < 15){ carte(`<div class="titre">Trop jeune</div><div class="detail">Reviens à 15 ans pour les petits boulots, 18 ans pour un vrai emploi.</div>`); return; }
+  const liste = etat.age < 18 ? PETITS_BOULOTS : EMPLOIS;
+  for(const e of liste){
+    const okDiplome = !e.diplome || etat.diplome;
+    const c = carte(`<div class="titre">${e.titre}</div>
+      <div class="detail">${euros(e.salaire)}/an${e.diplome?" · Diplôme requis":""}${e.intel?" · Intelligence "+e.intel+"+ conseillée":""}</div>
+      <div class="actions"></div>`);
+    action(c, okDiplome ? "Postuler" : "Diplôme requis", "", () => {
+      const chance = 40 + (etat.intel - (e.intel||0));
+      if(alea(100) < chance){
+        etat.emploi = {titre:e.titre, salaire:e.salaire, annees:0};
+        if(etat.etude==="universite"){ etat.etude="fini"; ecrire("J'abandonne mes études pour ce poste."); }
+        ecrire(`Embauché${etat.genre==="F"?"e":""} comme ${e.titre} pour ${euros(e.salaire)}/an !`, "bon");
+      } else ecrire(`Candidature refusée pour le poste de ${e.titre}.`, "mauvais");
+      fermerFeuille();
+    }, !okDiplome);
+  }
+}
+
+/* ----- actifs ----- */
+function feuilleActifs(){
+  const patrimoine = etat.biens.reduce((s,b)=>s+b.prix,0);
+  carte(`<div class="titre">Patrimoine</div>
+    <div class="detail">Banque : ${euros(etat.argent)} · Biens : ${euros(patrimoine)} · Total : <b>${euros(etat.argent+patrimoine)}</b></div>`);
+  for(const [i,b] of etat.biens.entries()){
+    const c = carte(`<div class="titre">${b.ico} ${b.nom}</div><div class="detail">Valeur : ${euros(b.prix)}</div><div class="actions"></div>`);
+    action(c, "Vendre ("+euros(Math.round(b.prix*0.8))+")", "gris", () => {
+      etat.argent += Math.round(b.prix*0.8);
+      ecrire(`J'ai vendu ${b.nom.toLowerCase()} pour ${euros(Math.round(b.prix*0.8))}.`, "argent");
+      etat.biens.splice(i,1); fermerFeuille();
+    });
+  }
+  if(etat.age>=18){
+    for(const b of BIENS){
+      if(etat.biens.some(x=>x.nom===b.nom)) continue;
+      const c = carte(`<div class="titre">${b.ico} ${b.nom}</div><div class="detail">Prix : ${euros(b.prix)}</div><div class="actions"></div>`);
+      action(c, "Acheter", "", () => {
+        etat.argent -= b.prix;
+        etat.biens.push({...b});
+        etat.bonheur = borne(etat.bonheur+8);
+        ecrire(`Gros achat : ${b.nom.toLowerCase()} pour ${euros(b.prix)} ! ${b.ico}`, "argent");
+        fermerFeuille();
+      }, etat.argent < b.prix);
+    }
+  } else if(!etat.biens.length){
+    carte(`<div class="detail">Les achats seront possibles à 18 ans.</div>`);
+  }
+}
+
+/* ----- relations ----- */
+const LIBELLE_REL = {mere:"Mère", pere:"Père", frere:"Frère", soeur:"Sœur", ami:"Ami(e)", partenaire:"Partenaire", conjoint:"Époux/Épouse", enfant:"Enfant"};
+
+function feuilleRelations(){
+  if(etat.age>=18 && !etat.relations.some(r=>r.vivant && (r.type==="partenaire"||r.type==="conjoint"))){
+    const c = carte(`<div class="titre">💘 Célibataire</div><div class="detail">Envie de rencontrer quelqu'un ?</div><div class="actions"></div>`);
+    action(c, "Rencontrer quelqu'un", "", () => {
+      if(alea(100) < 35 + etat.look/2){
+        const g = etat.genre==="F";
+        const nom = parmi(g?PRENOMS_M:PRENOMS_F)+" "+parmi(NOMS);
+        etat.relations.push(rel("partenaire", nom, Math.max(18, etat.age+alea(7)-3)));
+        ecrire(`Je suis en couple avec ${nom} ! ❤️`, "bon");
+      } else ecrire("Rencontre ratée… ce n'était pas la bonne personne.", "mauvais");
+      fermerFeuille();
+    });
+  }
+  for(const r of etat.relations){
+    if(!r.vivant) continue;
+    const c = carte(`<div class="titre">${r.nom}</div>
+      <div class="detail">${LIBELLE_REL[r.type]} · ${r.age} an${r.age>1?"s":""}</div>
+      <div class="mini-jauge"><i style="width:${r.barre}%"></i></div>
+      <div class="actions"></div>`);
+    action(c, "Passer du temps", "gris", () => {
+      r.barre = borne(r.barre+12); etat.bonheur = borne(etat.bonheur+4);
+      ecrire(`Bon moment passé avec ${r.nom}.`, "bon"); fermerFeuille();
+    });
+    action(c, "Cadeau (100 €)", "gris", () => {
+      etat.argent -= 100; r.barre = borne(r.barre+18);
+      ecrire(`J'ai offert un cadeau à ${r.nom}.`); fermerFeuille();
+    }, etat.argent<100);
+    if(r.type==="partenaire" && etat.age>=18){
+      action(c, "Demander en mariage 💍", "", () => {
+        if(r.barre>50 || alea(2)){
+          r.type="conjoint"; r.barre=borne(r.barre+15); etat.bonheur=borne(etat.bonheur+20);
+          ecrire(`${r.nom} a dit OUI ! Grand mariage à ${etat.ville}. 💍`, "bon");
+        } else {
+          etat.bonheur=borne(etat.bonheur-15);
+          ecrire(`${r.nom} a refusé ma demande en mariage…`, "mauvais");
+        }
+        fermerFeuille();
+      });
+      action(c, "Rompre", "rouge", () => {
+        ecrire(`J'ai rompu avec ${r.nom}.`);
+        etat.relations = etat.relations.filter(x=>x!==r);
+        etat.bonheur=borne(etat.bonheur-8); fermerFeuille();
+      });
+    }
+    if(r.type==="conjoint"){
+      action(c, "Faire un enfant 👶", "", () => {
+        if(alea(2)){
+          const g = alea(2);
+          const bb = parmi(g?PRENOMS_F:PRENOMS_M)+" "+etat.nom;
+          etat.relations.push(rel("enfant", bb, 0));
+          etat.bonheur=borne(etat.bonheur+18);
+          ecrire(`Naissance de ${g?"ma fille":"mon fils"} ${bb} ! 👶`, "bon");
+        } else ecrire("Pas de bébé cette année, on garde espoir.");
+        fermerFeuille();
+      });
+    }
+  }
+}
+
+/* ----- activités ----- */
+function feuilleActivites(){
+  const A = [];
+  A.push(["📚 Bibliothèque", "Gratuit · +Intelligence", 0, () => {
+    etat.intel = borne(etat.intel+4);
+    ecrire("J'ai passé du temps à la bibliothèque. Je me sens plus intelligent"+(etat.genre==="F"?"e":"")+".", "bon");
+  }]);
+  A.push(["🏖️ Journée plage", "Gratuit · +Bonheur", 0, () => {
+    etat.bonheur = borne(etat.bonheur+7);
+    ecrire("Journée parfaite à la plage, l'océan Indien à perte de vue.", "bon");
+  }]);
+  if(etat.age>=12) A.push(["🏋️ Salle de sport", "50 € · +Santé +Apparence", 50, () => {
+    etat.sante = borne(etat.sante+5); etat.look = borne(etat.look+4);
+    ecrire("Séances de sport régulières : je suis en pleine forme.", "bon");
+  }]);
+  if(etat.age>=15) A.push(["🎬 Cinéma", "15 € · +Bonheur", 15, () => {
+    etat.bonheur = borne(etat.bonheur+5);
+    ecrire("Bonne soirée cinéma.");
+  }]);
+  A.push(["🩺 Médecin", "150 € · Soigne la santé", 150, () => {
+    etat.sante = borne(etat.sante+15);
+    ecrire("Visite chez le médecin : traitement efficace, je vais mieux.", "bon");
+  }]);
+  if(etat.age>=16) A.push(["🕶️ Vol à l'étalage", "Risqué…", 0, () => {
+    if(alea(100)<45){
+      const g = 50+alea(300); etat.argent += g;
+      ecrire(`Vol à l'étalage réussi : ${euros(g)}. Pas très fier${etat.genre==="F"?"ère":""} de moi.`, "argent");
+    } else {
+      etat.prison = 1+alea(2); etat.bonheur = borne(etat.bonheur-20);
+      ecrire(`Pris en flagrant délit de vol ! Condamné${etat.genre==="F"?"e":""} à ${etat.prison} an${etat.prison>1?"s":""} de prison.`, "mauvais");
+    }
+  }]);
+  for(const [titre, detail, cout, fn] of A){
+    const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
+    action(c, "Y aller", "", () => { if(cout) etat.argent -= cout; fn(); fermerFeuille(); }, cout>etat.argent);
+  }
+}
+
+/* ---------------- écran d'accueil ---------------- */
+
+function accueil(){
+  $("plein").innerHTML = `
+    <div class="cadre">
+      <div class="embleme">🌺</div>
+      <h1>Maisha</h1>
+      <div class="sous">Le simulateur de vie.<br>Nais quelque part entre Moroni et Paris, grandis, étudie, travaille, aime… et vois jusqu'où la vie te mène. Chaque pression sur <b>+ Âge</b> fait passer un an.</div>
+      <button class="grand" id="btn-commencer">🍼 Commencer une vie</button>
+    </div>`;
+  $("plein").classList.add("ouvert");
+  $("btn-commencer").onclick = () => nouvelleVie();
+}
+
+/* ---------------- branchements ---------------- */
+
+$("btn-age").onclick = () => { fermerFeuille(); vieillir(); };
+$("voile").onclick = fermerFeuille;
+$("feuille-fermer").onclick = fermerFeuille;
+for(const b of document.querySelectorAll("#nav button[data-sheet]")){
+  b.onclick = () => ouvrirFeuille(b.dataset.sheet);
+}
+
+if(charger() && etat && !etat.mort){
+  toutAfficher();
+} else {
+  accueil();
+}
+</script>
+</body>
+</html>

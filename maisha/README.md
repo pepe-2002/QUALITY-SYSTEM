@@ -44,15 +44,34 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Pilote automatique 🤖
+
+Le bouton **🤖** dans l'en-tête met ton personnage en pilote automatique : il
+prend alors ses décisions tout seul chaque année — se soigner, chercher du
+travail, se former (jusqu'au MBA), acheter son logement puis investir dans la
+pierre, créer une entreprise, la renflouer, lui **nommer un PDG**, réinvestir
+dedans, entretenir son moral et ses liens, et même sortir un enfant de la rue.
+Les décisions qui apparaissent en fenêtre sont tranchées par le personnage
+lui-même. Tu n'as plus qu'à appuyer sur **+ Âge** et regarder la vie se
+dérouler — et tu peux reprendre les commandes à tout moment.
+
+Mesure sur une vie entière en pilote automatique : pilote de ligne, MBA,
+compétence pro au maximum, cinq biens immobiliers, trois entreprises dirigées
+par des PDG (719 000 €, 484 000 € et 458 000 € de valorisation), six enfants,
+et près d'un million d'euros en banque à 60 ans.
+
 ## Fortunes du clan 💰
 
 En tête de l'onglet **Relations**, un **classement des fortunes** de tout le
-monde : toi, ton conjoint, tes enfants, tes frères et sœurs, tes amis — triés
+monde : toi, ton conjoint, tes enfants, tes frères et sœurs, tes amis, mais
+aussi **tes PDG et tes employés** — triés
 du plus riche au plus pauvre, avec médailles, barres proportionnelles, le
 patrimoine total de la famille, ta part et ton rang. Chaque ligne indique la
 situation réelle de la personne (patron·ne de sa société, médecin, à
 l'université, à la rue…). Quand un de tes enfants devient plus riche que toi,
-le jeu te le dit : *« Plus riche que moi. La relève est assurée. »*
+le jeu te le dit : *« Plus riche que moi. La relève est assurée. »* Chaque PDG
+et chaque employé accumule sa propre fortune grâce au salaire que tu lui verses
+— elle est affichée sur sa fiche dans l'écran de l'entreprise.
 
 ## Voyages
 

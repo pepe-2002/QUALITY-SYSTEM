@@ -62,6 +62,12 @@
   #who{flex:1 1 auto; min-width:0}
   #who .nom{font-weight:800; font-size:15px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   #who .sub{color:var(--ink-dim); font-size:11.5px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  #btn-auto{
+    flex:0 0 auto; background:var(--panel2); color:var(--ink-dim);
+    border:1px solid var(--line); border-radius:9px; font-size:15px;
+    padding:5px 7px; cursor:pointer; line-height:1; margin-right:2px;
+  }
+  #btn-auto.actif{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
   #bank{text-align:right; flex:0 0 auto}
   #bank .argent{color:var(--money); font-weight:800; font-size:15px; font-variant-numeric:tabular-nums}
   #bank .argent.negatif{color:var(--danger)}
@@ -273,6 +279,7 @@
   <header>
     <div id="avatar">?</div>
     <div id="who"><div class="nom">—</div><div class="sub">—</div></div>
+    <button id="btn-auto" type="button" title="Pilote automatique">🤖</button>
     <div id="bank"><div class="argent">0 €</div><div class="sub">Banque</div></div>
   </header>
 
@@ -561,10 +568,11 @@ function actionsDuPDG(e){
   }
 
   // 5ter. un enfant aux commandes apprend vite le métier
+  P.argent = (P.argent||0) + Math.round(P.salaire*0.4);
   if(P.famille){
     P.competence = Math.min(95, P.competence + 1);
     const h = etat.relations.find(x => x.nom === P.nom && x.vivant);
-    if(h){ h.competence = P.competence; h.salaire = P.salaire; }
+    if(h){ h.competence = P.competence; h.salaire = P.salaire; h.argent = (h.argent||0) + Math.round(P.salaire*0.4); }
   }
 
   // 6. dividende remonté au propriétaire
@@ -580,6 +588,135 @@ function actionsDuPDG(e){
   }
   if(actes.length)
     ecrire(`👔 ${P.nom}, PDG de « ${e.nom} », a ${actes.join(", ")}.`, "info");
+}
+
+/* --- PILOTE AUTOMATIQUE : mon personnage mène sa vie tout seul --- */
+function pilotageAuto(){
+  if(!etat.auto || etat.prison > 0 || etat.age < 15) return;
+  const actes = [];
+
+  // 1. la santé d'abord
+  if(etat.maladie && etat.argent >= etat.maladie.cout){
+    const m = etat.maladie;
+    etat.argent -= m.cout;
+    if(alea(100) < 85){ etat.maladie = null; etat.sante = borne(etat.sante+10); actes.push(`soigné ${m.nom}`); }
+    else actes.push(`tenté de soigner ${m.nom}, sans succès`);
+  } else if(etat.sante < 55 && etat.argent >= 150){
+    etat.argent -= 150; etat.sante = borne(etat.sante+15); actes.push("consulté un médecin");
+  }
+
+  // 2. trouver du travail si je n'ai ni emploi ni entreprise
+  if(!etat.emploi && !(etat.entreprises||[]).length && etat.age >= 18 && etat.etude !== "universite" && !etat.pension){
+    const dispo = EMPLOIS.filter(e => (!e.diplome || etat.diplome) && (e.intel||0) <= etat.intel + 12)
+                         .sort((a,b) => b.salaire - a.salaire);
+    const cible = dispo[0] || EMPLOIS[0];
+    if(alea(100) < 45 + (etat.intel - (cible.intel||0)) + Math.round((etat.compPro||0)/4) + diff().embauche){
+      etat.emploi = {titre:cible.titre, salaire:cible.salaire, annees:0};
+      actes.push(`décroché un poste de ${cible.titre.toLowerCase()}`);
+    } else actes.push("cherché du travail sans succès");
+  }
+
+  // 3. se former quand j'en ai les moyens
+  if(etat.age >= 16 && (etat.compPro||0) < 80 && etat.argent > 12000){
+    if(etat.diplome && !etat.mba && etat.argent > 45000){
+      etat.argent -= 10000; etat.mba = true;
+      etat.compPro = borne((etat.compPro||0)+12); etat.intel = borne(etat.intel+4);
+      actes.push("décroché un MBA");
+    } else if(etat.argent > 18000){
+      etat.argent -= 3000;
+      etat.intel = borne(etat.intel+6); etat.compPro = borne((etat.compPro||0)+6);
+      actes.push("suivi un bootcamp numérique & IA");
+    } else {
+      etat.argent -= 1500; etat.compPro = borne((etat.compPro||0)+8);
+      actes.push("suivi une formation professionnelle");
+    }
+  }
+
+  // 4. se loger, puis investir dans la pierre
+  const logements = (etat.biens||[]).filter(b => b.type === "immobilier");
+  if(etat.age >= 22){
+    const achetable = IMMOBILIER.filter(m => !etat.biens.some(b => b.nom === m.nom) && etat.argent > m.prix * 2.2)
+                                .sort((a,b) => b.prix - a.prix)[0];
+    if(achetable && (!logements.length || etat.argent > achetable.prix * 3)){
+      etat.argent -= achetable.prix;
+      etat.biens.push({nom:achetable.nom, ico:achetable.ico, valeur:achetable.prix, type:"immobilier",
+                       loue: logements.length > 0});
+      etat.bonheur = borne(etat.bonheur+8);
+      actes.push(`acheté ${achetable.nom.toLowerCase()}${logements.length ? " et l'ai mise en location" : ""}`);
+    }
+  }
+
+  // 5. entreprendre puis déléguer
+  const mesEnt = etat.entreprises || [];
+  const toutesDirigees = mesEnt.length > 0 && mesEnt.every(x => x.pdg);
+  // on n'ouvre une nouvelle affaire que si la précédente tourne toute seule
+  if(etat.age >= 22 && mesEnt.length < 3 &&
+     (mesEnt.length === 0 || (toutesDirigees && etat.argent > 250000))){
+    const t = TYPES_ENTREPRISE.filter(x => (!x.intel || etat.intel >= x.intel) && etat.argent > x.capital * 3)
+                              .sort((a,b) => b.capital - a.capital)[0];
+    if(t){
+      etat.argent -= t.capital;
+      const nomE = etat.nom + " " + parmi(["& Co","Business","Services","Trading","Océan"]);
+      etat.entreprises.push(normaliserEntreprise({type:t.type, ico:t.ico, nom:nomE, valeur:t.capital,
+                                                  niveau:1, pertes:0, caisse:Math.round(t.capital*0.5)}));
+      etat.argent -= Math.round(t.capital*0.5);
+      actes.push(`créé l'entreprise « ${nomE} »`);
+    }
+  }
+  for(const e of (etat.entreprises||[])){
+    // renflouer pour pouvoir s'offrir un dirigeant
+    if(!e.pdg && (e.caisse||0) < 32000 && etat.argent > 90000){
+      etat.argent -= 30000; e.caisse = (e.caisse||0) + 30000;
+      actes.push(`renfloué « ${e.nom} » pour lui trouver un dirigeant`);
+    }
+    // faire grossir une affaire déjà dirigée plutôt que d'en ouvrir une autre
+    if(e.pdg && etat.argent > 180000 && e.valeur < 400000){
+      etat.argent -= 60000; e.valeur += 55000; e.caisse = (e.caisse||0) + 5000;
+      actes.push(`investi 60 000 € dans « ${e.nom} »`);
+    }
+    if(!e.pdg && (e.caisse||0) > 30000){
+      const prof = parmi(PROFILS_PDG);
+      const comp = prof.compMin + alea(prof.compMax - prof.compMin + 1);
+      const g = alea(2) ? "F" : "M";
+      e.pdg = {nom: parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS), genre:g, titre:prof.titre,
+               style:prof.style, competence:comp, salaire:Math.round(comp*prof.coef*250/1000)*1000,
+               moral:70, annees:0, argent:0};
+      actes.push(`nommé ${e.pdg.nom} à la tête de « ${e.nom} »`);
+    }
+    if(!e.pdg){ // sans dirigeant, je m'occupe au moins du stock
+      if(e.stock < 45 && (e.caisse||0) > Math.round(e.valeur*0.06)+1000){
+        const c = Math.round(e.valeur*0.06)+1000;
+        e.caisse -= c; e.stock = Math.min(100, e.stock+30);
+        actes.push(`réapprovisionné « ${e.nom} »`);
+      }
+      if(!e.monSalaire && (e.caisse||0) > 60000){ e.monSalaire = 24000; actes.push("fixé mon salaire de dirigeant"); }
+    }
+  }
+
+  // 6. entretenir le moral et les liens
+  if(etat.bonheur < 55){
+    if(etat.argent > 3000 && !dejaFait("voyage")){
+      etat.argent -= 700; etat.bonheur = borne(etat.bonheur+12); etat.sante = borne(etat.sante+3);
+      actes.push("pris quelques jours à Zanzibar");
+    } else { etat.bonheur = borne(etat.bonheur+7); actes.push("passé la journée à la plage"); }
+  }
+  if(etat.age >= 25 && etat.argent > 8000 && alea(3) === 0){
+    const proche = etat.relations.filter(r => r.vivant).sort((a,b) => a.barre - b.barre)[0];
+    if(proche && proche.barre < 60){
+      etat.argent -= 100; proche.barre = borne(proche.barre+18);
+      actes.push(`renoué avec ${proche.nom}`);
+    }
+  }
+  // aider un enfant à la rue
+  const perdu = etat.relations.find(r => r.vivant && r.type === "enfant" && r.sdf);
+  if(perdu && etat.argent > 20000){
+    etat.argent -= 5000; perdu.sdf = false; perdu.echecs = 0;
+    perdu.argent = (perdu.argent||0)+2000; perdu.barre = borne(perdu.barre+30);
+    perdu.competence = Math.min(95, competence(perdu)+8);
+    actes.push(`sorti ${perdu.nom} de la rue`);
+  }
+
+  if(actes.length) ecrire(`🤖 Pilote automatique : j'ai ${actes.join(", ")}.`, "info");
 }
 
 /* --- ma vie amoureuse et familiale avance toute seule --- */
@@ -745,7 +882,7 @@ function nouvelleVie(opts){
     argent: D.depart, emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome:false,
     entreprises:[], politique:null, royaume:null,
-    pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null,
+    pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null, auto:false,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
@@ -807,6 +944,8 @@ function toutAfficher(){
   }
   $("ligne-celeb").style.display = etat.celebrite>0 ? "flex" : "none";
   $("ligne-comppro").style.display = (etat.compPro||0)>15 ? "flex" : "none";
+  $("btn-auto").classList.toggle("actif", !!etat.auto);
+  $("btn-age").textContent = etat.auto ? "🤖 Auto" : "+ Âge";
   afficherJournal();
   if(window.majMonde3D) window.majMonde3D();
 }
@@ -905,8 +1044,9 @@ function vieillir(){
       const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
       const alaHauteur = comp >= poste.req;
       prod += Math.round(comp * 205 * poste.mult * (alaHauteur ? 1 : 0.45));
-      // l'expérience fait progresser la compétence
+      // l'expérience fait progresser la compétence et la fortune personnelle
       emp.exp = (emp.exp||0)+1;
+      emp.argent = (emp.argent||0) + Math.round(emp.salaire*0.32);
       if(emp.exp % 3 === 0){
         if(emp.externe) emp.competence = Math.min(95, emp.competence+1);
         else if(r) r.competence = Math.min(95, competence(r)+1);
@@ -1047,6 +1187,9 @@ function vieillir(){
       ecrire(`${r.nom}, ${r.type==="mere"?"ma mère":"mon père"}, est décédé${r.type==="mere"?"e":""} à ${r.age} ans. Repose en paix.`, "mauvais");
     }
   }
+
+  // mon personnage gère sa vie tout seul si le pilote auto est activé
+  pilotageAuto();
 
   // ma vie sentimentale et familiale avance seule
   vieAmoureuse();
@@ -1686,7 +1829,7 @@ function continuerAvec(h, heritage){
     argent: heritage + (h.argent||0), emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
     entreprises: parent.entreprises || [], politique:null, royaume: parent.royaume,
-    pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0, candidats:null,
+    pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0, candidats:null, auto: parent.auto||false,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   // scolarité selon l'âge
@@ -1730,6 +1873,14 @@ function continuerAvec(h, heritage){
 function prochaineModale(){
   if(!fileEvenements.length) return;
   const ev = fileEvenements.shift();
+  // en pilote automatique, le personnage tranche lui-même
+  if(etat.auto){
+    const dispo = ev.choix.filter(c => !/annuler/i.test(c.label));
+    const c = dispo.length ? dispo[alea(Math.min(2, dispo.length))] : ev.choix[0];
+    c.effet();
+    if(!etat.mort){ sauver(); toutAfficher(); prochaineModale(); }
+    return;
+  }
   $("mod-titre").textContent = ev.titre;
   $("mod-texte").textContent = ev.texte;
   const box = $("mod-choix");
@@ -1953,6 +2104,7 @@ function feuilleEntreprise(e){
     const P = e.pdg;
     const cP = carte(`<div class="titre">👔 ${P.nom}</div>
       <div class="detail">${P.titre} · Compétence <b>${P.competence}/100</b> · ${euros(P.salaire)}/an · ${P.annees||0} an${(P.annees||0)>1?"s":""} en poste · Moral ${P.moral||70}/100<br>
+      💰 Fortune personnelle : <b>${euros(P.argent||0)}</b> (bâtie grâce à toi)<br>
       ${PROFILS_PDG.find(x=>x.style===P.style).desc}<br><br>
       <b>${P.genre==="F"?"Elle":"Il"} gère tout à ta place</b> : stock, publicité, recrutement, formation, et te remonte des dividendes chaque année. Tu n'as plus qu'à voter au conseil d'administration.</div>
       <div class="actions"></div>`);
@@ -2221,8 +2373,9 @@ function feuilleEntreprise(e){
     const comp = emp.externe ? emp.competence : competence(r);
     const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
     const ok = comp >= poste.req;
+    const fortEmp = emp.externe ? (emp.argent||0) : ((r && r.argent)||0);
     const cE = carte(`<div class="titre">${emp.nom} ${emp.externe?"":"<span class=\"badge\">👪 famille</span>"}</div>
-      <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence ${comp}/100 ${ok?"✅":"⚠️ requis "+poste.req}${emp.salaire < comp*120 ? " · 😠 sous-payé·e" : ""} · ${emp.exp||0} an${(emp.exp||0)>1?"s":""} d'ancienneté</div>`);
+      <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence ${comp}/100 ${ok?"✅":"⚠️ requis "+poste.req}${emp.salaire < comp*120 ? " · 😠 sous-payé·e" : ""} · ${emp.exp||0} an${(emp.exp||0)>1?"s":""} d'ancienneté<br>💰 Fortune personnelle : <b>${euros(fortEmp)}</b></div>`);
     const gE = grille(cE);
     btn(gE, "Augmenter +20 %", "", () => {
       emp.salaire = Math.round(emp.salaire*1.2);
@@ -2798,6 +2951,15 @@ function feuilleRelations(){
          : r.statut === "étudiant" ? "à l'université"
          : r.age < 18 ? "à l'école" : "sans emploi"
     })));
+  // mes PDG et mes employés extérieurs comptent aussi dans le classement
+  for(const ent of (etat.entreprises||[])){
+    if(ent.pdg && !ent.pdg.famille)
+      gens.push({nom: ent.pdg.nom, det:"👔 Mon PDG", f: ent.pdg.argent||0,
+                 sit:`PDG de « ${ent.nom} » · ${euros(ent.pdg.salaire)}/an`});
+    for(const emp of (ent.employes||[])) if(emp.externe)
+      gens.push({nom: emp.nom, det:"🧾 Mon employé·e", f: emp.argent||0,
+                 sit:`${emp.poste} chez « ${ent.nom} » · ${euros(emp.salaire)}/an`});
+  }
   gens.sort((a,b) => b.f - a.f);
   const maxF = Math.max(1, ...gens.map(g => g.f));
   const total = gens.reduce((s,g) => s + g.f, 0);
@@ -3208,6 +3370,13 @@ $("btn-age").onclick = () => { fermerFeuille(); vieillir(); };
 $("voile").onclick = fermerFeuille;
 $("feuille-fermer").onclick = fermerFeuille;
 $("feuille-retour").onclick = retourFeuille;
+$("btn-auto").onclick = () => {
+  etat.auto = !etat.auto;
+  ecrire(etat.auto
+    ? "🤖 Pilote automatique activé : je prends désormais mes décisions tout seul — travail, formations, achats, entreprises, santé. Appuie sur + Âge et regarde ma vie se dérouler."
+    : "🤖 Pilote automatique désactivé : je reprends les commandes de ma vie.", "info");
+  sauver(); toutAfficher();
+};
 for(const b of document.querySelectorAll("#nav button[data-sheet]")){
   b.onclick = () => ouvrirFeuille(b.dataset.sheet);
 }

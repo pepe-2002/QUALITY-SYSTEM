@@ -10,7 +10,7 @@
     --ink:#eaf2f8; --ink-dim:#8fa8bc;
     --accent:#18b89b; --accent-ink:#062b24;
     --money:#ffb74a; --danger:#ff6b6b;
-    --sante:#ff6b81; --bonheur:#ffc14a; --intel:#4aa8ff; --look:#c77dff;
+    --sante:#ff6b81; --bonheur:#ffc14a; --intel:#4aa8ff; --look:#c77dff; --celeb:#ffd700;
     --sheet:#112438; --shadow:0 -8px 30px rgba(0,0,0,.45);
   }
   @media (prefers-color-scheme: light){
@@ -18,7 +18,7 @@
       --bg:#eef4f2; --panel:#ffffff; --panel2:#f2f7f5; --line:#d8e4e0;
       --ink:#122b33; --ink-dim:#5b7480;
       --accent:#0e9e85; --accent-ink:#ffffff;
-      --money:#c07f00; --danger:#d94848;
+      --money:#c07f00; --danger:#d94848; --celeb:#b8860b;
       --sheet:#ffffff; --shadow:0 -8px 30px rgba(20,40,50,.18);
     }
   }
@@ -26,14 +26,14 @@
     --bg:#0d1b2a; --panel:#13263a; --panel2:#0f2032; --line:#1e3a55;
     --ink:#eaf2f8; --ink-dim:#8fa8bc;
     --accent:#18b89b; --accent-ink:#062b24;
-    --money:#ffb74a; --danger:#ff6b6b;
+    --money:#ffb74a; --danger:#ff6b6b; --celeb:#ffd700;
     --sheet:#112438; --shadow:0 -8px 30px rgba(0,0,0,.45);
   }
   :root[data-theme="light"]{
     --bg:#eef4f2; --panel:#ffffff; --panel2:#f2f7f5; --line:#d8e4e0;
     --ink:#122b33; --ink-dim:#5b7480;
     --accent:#0e9e85; --accent-ink:#ffffff;
-    --money:#c07f00; --danger:#d94848;
+    --money:#c07f00; --danger:#d94848; --celeb:#b8860b;
     --sheet:#ffffff; --shadow:0 -8px 30px rgba(20,40,50,.18);
   }
   *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
@@ -60,16 +60,14 @@
     font-size:22px; font-weight:800;
   }
   #who{flex:1 1 auto; min-width:0}
-  #who .nom{font-weight:800; font-size:16px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  #who .sub{color:var(--ink-dim); font-size:12px; margin-top:2px}
-  #bank{text-align:right}
-  #bank .argent{color:var(--money); font-weight:800; font-size:16px; font-variant-numeric:tabular-nums}
-  #bank .sub{color:var(--ink-dim); font-size:11px; text-transform:uppercase; letter-spacing:.08em}
+  #who .nom{font-weight:800; font-size:15px; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  #who .sub{color:var(--ink-dim); font-size:11.5px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  #bank{text-align:right; flex:0 0 auto}
+  #bank .argent{color:var(--money); font-weight:800; font-size:15px; font-variant-numeric:tabular-nums}
+  #bank .argent.negatif{color:var(--danger)}
+  #bank .sub{color:var(--ink-dim); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em}
   /* ---------- journal ---------- */
-  #journal{
-    flex:1 1 auto; overflow-y:auto; padding:14px 14px 90px;
-    scroll-behavior:smooth;
-  }
+  #journal{flex:1 1 auto; overflow-y:auto; padding:14px 14px 90px; scroll-behavior:smooth}
   .annee{margin-bottom:14px}
   .annee h3{
     font-size:12px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.1em;
@@ -83,6 +81,7 @@
   .annee p.bon{border-left:3px solid var(--accent)}
   .annee p.mauvais{border-left:3px solid var(--danger)}
   .annee p.argent{border-left:3px solid var(--money)}
+  .annee p.info{border-left:3px solid var(--intel); font-size:12.5px; color:var(--ink-dim)}
   /* ---------- pied : stats + nav ---------- */
   footer{
     flex:0 0 auto; background:var(--panel); border-top:1px solid var(--line);
@@ -94,6 +93,7 @@
   .jauge{flex:1; height:8px; background:var(--panel2); border-radius:99px; overflow:hidden}
   .jauge i{display:block; height:100%; border-radius:99px; transition:width .4s}
   .stat b{width:26px; text-align:right; font-variant-numeric:tabular-nums; font-size:11px}
+  #ligne-celeb{display:none; grid-column:1 / -1}
   #nav{display:flex; align-items:center; gap:6px}
   #nav button{
     flex:1; background:var(--panel2); color:var(--ink); border:1px solid var(--line);
@@ -116,7 +116,7 @@
   .feuille{
     position:absolute; left:0; right:0; bottom:0; z-index:21;
     background:var(--sheet); border-radius:18px 18px 0 0; box-shadow:var(--shadow);
-    max-height:78%; display:flex; flex-direction:column;
+    max-height:80%; display:flex; flex-direction:column;
     transform:translateY(105%); transition:transform .28s ease;
   }
   .feuille.ouvert{transform:translateY(0)}
@@ -125,26 +125,39 @@
     display:flex; align-items:center; justify-content:space-between; flex:0 0 auto;
   }
   .feuille .tete h2{font-size:16px; font-weight:800; letter-spacing:.2px}
-  .feuille .tete button{
-    background:none; border:none; color:var(--ink-dim); font-size:22px; cursor:pointer; padding:0 4px;
-  }
+  .feuille .tete button{background:none; border:none; color:var(--ink-dim); font-size:22px; cursor:pointer; padding:0 4px}
   .feuille .corps{overflow-y:auto; padding:12px 14px calc(16px + env(safe-area-inset-bottom))}
+  .section-titre{
+    font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.1em;
+    margin:14px 2px 8px; display:flex; align-items:center; gap:8px;
+  }
+  .section-titre::after{content:""; flex:1; height:1px; background:var(--line)}
+  .section-titre:first-child{margin-top:2px}
   .carte{
     background:var(--panel); border:1px solid var(--line); border-radius:12px;
     padding:11px 13px; margin-bottom:9px;
   }
   .carte .titre{font-weight:700; font-size:14px}
-  .carte .detail{color:var(--ink-dim); font-size:12px; margin-top:2px; line-height:1.4}
+  .carte .detail{color:var(--ink-dim); font-size:12px; margin-top:2px; line-height:1.5}
   .carte .actions{display:flex; flex-wrap:wrap; gap:7px; margin-top:9px}
+  .carte .actions:empty{display:none}
   .bouton{
     background:var(--accent); color:var(--accent-ink); border:none; border-radius:9px;
     padding:7px 12px; font-size:12px; font-weight:700; cursor:pointer;
   }
   .bouton.gris{background:var(--panel2); color:var(--ink); border:1px solid var(--line)}
   .bouton.rouge{background:var(--danger); color:#fff}
+  .bouton.or{background:var(--money); color:#3a2500}
   .bouton:disabled{opacity:.4; cursor:default}
   .mini-jauge{height:6px; background:var(--panel2); border-radius:99px; overflow:hidden; margin-top:8px}
   .mini-jauge i{display:block; height:100%; background:var(--accent)}
+  .pays-stat{display:flex; align-items:center; gap:8px; font-size:11px; margin-top:7px}
+  .pays-stat label{width:104px; color:var(--ink-dim); flex:0 0 auto}
+  .pays-stat b{width:26px; text-align:right; font-variant-numeric:tabular-nums}
+  .badge{
+    display:inline-block; font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:99px;
+    background:var(--panel2); border:1px solid var(--line); margin:6px 4px 0 0;
+  }
   /* ---------- modale événement ---------- */
   #modale{
     position:absolute; inset:0; z-index:30; display:none;
@@ -157,32 +170,42 @@
     padding:20px 18px; width:100%; max-width:360px; max-height:80%; overflow-y:auto;
   }
   #modale h2{font-size:17px; margin-bottom:8px; text-wrap:balance}
-  #modale .texte{font-size:14px; line-height:1.5; color:var(--ink); margin-bottom:16px}
+  #modale .texte{font-size:14px; line-height:1.5; margin-bottom:16px}
   #modale .choix{display:flex; flex-direction:column; gap:8px}
   #modale .choix button{
     background:var(--panel); border:1px solid var(--line); color:var(--ink);
     border-radius:10px; padding:11px 12px; font-size:14px; text-align:left; cursor:pointer;
   }
   #modale .choix button:hover{border-color:var(--accent)}
-  /* ---------- écran mort / accueil ---------- */
-  #plein{
-    position:absolute; inset:0; z-index:40; display:none;
-    background:var(--bg); overflow-y:auto; padding:34px 24px;
-  }
+  /* ---------- écrans pleins (accueil / mort) ---------- */
+  #plein{position:absolute; inset:0; z-index:40; display:none; background:var(--bg); overflow-y:auto; padding:30px 24px}
   #plein.ouvert{display:block}
-  #plein .cadre{max-width:360px; margin:0 auto; text-align:center}
-  #plein .embleme{font-size:52px; margin-bottom:12px}
+  #plein .cadre{max-width:380px; margin:0 auto; text-align:center}
+  #plein .embleme{font-size:50px; margin-bottom:10px}
   #plein h1{font-size:26px; margin-bottom:4px; letter-spacing:.3px}
-  #plein .sous{color:var(--ink-dim); font-size:14px; margin-bottom:22px; line-height:1.5}
+  #plein .sous{color:var(--ink-dim); font-size:14px; margin-bottom:20px; line-height:1.5}
   #plein .fiche{
     background:var(--panel); border:1px solid var(--line); border-radius:14px;
-    padding:16px; text-align:left; margin-bottom:22px; font-size:14px; line-height:1.9;
+    padding:14px 16px; text-align:left; margin-bottom:14px; font-size:14px; line-height:1.9;
   }
   #plein .fiche b{font-variant-numeric:tabular-nums}
   #plein .grand{
     width:100%; background:var(--accent); color:var(--accent-ink); border:none;
-    border-radius:12px; padding:14px; font-size:16px; font-weight:800; cursor:pointer;
+    border-radius:12px; padding:13px; font-size:15px; font-weight:800; cursor:pointer; margin-bottom:10px;
   }
+  #plein .grand.secondaire{background:var(--panel2); color:var(--ink); border:1px solid var(--line)}
+  #plein .champ{margin-bottom:12px; text-align:left}
+  #plein .champ label{display:block; font-size:11px; color:var(--ink-dim); text-transform:uppercase; letter-spacing:.08em; margin-bottom:5px}
+  #plein input, #plein select{
+    width:100%; background:var(--panel); color:var(--ink); border:1px solid var(--line);
+    border-radius:10px; padding:11px 12px; font-size:15px;
+  }
+  #plein .genres{display:flex; gap:8px}
+  #plein .genres button{
+    flex:1; background:var(--panel); color:var(--ink); border:1px solid var(--line);
+    border-radius:10px; padding:11px 6px; font-size:14px; cursor:pointer;
+  }
+  #plein .genres button.actif{background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:700}
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important; animation:none !important; scroll-behavior:auto !important}
   }
@@ -205,9 +228,10 @@
       <div class="stat"><label>Bonheur</label><div class="jauge"><i id="j-bonheur" style="background:var(--bonheur)"></i></div><b id="v-bonheur">0</b></div>
       <div class="stat"><label>Intelligence</label><div class="jauge"><i id="j-intel" style="background:var(--intel)"></i></div><b id="v-intel">0</b></div>
       <div class="stat"><label>Apparence</label><div class="jauge"><i id="j-look" style="background:var(--look)"></i></div><b id="v-look">0</b></div>
+      <div class="stat" id="ligne-celeb"><label>Célébrité</label><div class="jauge"><i id="j-celeb" style="background:var(--celeb)"></i></div><b id="v-celeb">0</b></div>
     </div>
     <div id="nav">
-      <button data-sheet="emploi"><span class="ico">💼</span>Emploi</button>
+      <button data-sheet="carriere"><span class="ico">💼</span>Carrière</button>
       <button data-sheet="actifs"><span class="ico">🏠</span>Actifs</button>
       <button id="btn-age">+ Âge</button>
       <button data-sheet="relations"><span class="ico">❤️</span>Relations</button>
@@ -229,21 +253,30 @@
 <script>
 "use strict";
 /* =====================================================================
-   MAISHA — simulateur de vie (façon BitLife), 100% hors-ligne.
+   MAISHA v2 — simulateur de vie et de dynastie (façon BitLife).
+   Économie réaliste (impôts, coût de la vie, découvert), entreprise,
+   immobilier locatif, célébrité, politique et gestion du pays,
+   héritage partagé entre enfants et continuation sur une génération.
    ===================================================================== */
 
-const CLE = "maisha-sauvegarde-v1";
+const CLE = "maisha-sauvegarde-v2";
 const $ = id => document.getElementById(id);
 const alea = n => Math.floor(Math.random() * n);
 const parmi = t => t[alea(t.length)];
 const borne = v => Math.max(0, Math.min(100, Math.round(v)));
-const euros = n => (n<0?"-":"") + Math.abs(Math.round(n)).toLocaleString("fr-FR") + " €";
+const euros = n => (n<0?"−":"") + Math.abs(Math.round(n)).toLocaleString("fr-FR") + " €";
 
 const PRENOMS_F = ["Amina","Faïza","Nadjma","Zaïnaba","Halima","Echat","Mariama","Salima","Rahma","Fatima","Anziza","Moinaécha"];
 const PRENOMS_M = ["Saïd","Moussa","Ali","Ibrahim","Ahmed","Nayamdine","Soilihi","Youssouf","Abdou","Karim","Mohamed","Anli"];
 const NOMS = ["Madi","Abdallah","Soilih","Mohamed","Bacar","Ahamada","Attoumane","Saandi","Djoumbé","Combo","Mzé","Halidi"];
 const VILLES = [["Moroni","Comores"],["Fomboni","Comores"],["Mutsamudu","Comores"],["Mamoudzou","Mayotte"],["Marseille","France"],["Paris","France"],["Antananarivo","Madagascar"],["Dar es Salam","Tanzanie"]];
-
+const PAYS_DEF = {
+  "Comores":    {dev:35, eco:40, corr:55},
+  "Mayotte":    {dev:55, eco:50, corr:35},
+  "France":     {dev:85, eco:72, corr:18},
+  "Madagascar": {dev:30, eco:35, corr:60},
+  "Tanzanie":   {dev:42, eco:50, corr:48},
+};
 const FILIERES = ["Médecine","Droit","Informatique","Commerce","Ingénierie","Lettres"];
 
 const PETITS_BOULOTS = [
@@ -264,64 +297,89 @@ const EMPLOIS = [
   {titre:"Médecin", salaire:52000, intel:80, diplome:true},
   {titre:"Pilote de ligne", salaire:60000, intel:85, diplome:true},
 ];
-const BIENS = [
+const TYPES_ENTREPRISE = [
+  {type:"Boutique de quartier", capital:5000, ico:"🛍️"},
+  {type:"Restaurant", capital:15000, ico:"🍽️"},
+  {type:"Import-export", capital:25000, ico:"📦"},
+  {type:"Compagnie maritime", capital:40000, ico:"⛴️"},
+  {type:"Startup tech", capital:12000, ico:"💻", intel:60},
+];
+const VEHICULES = [
   {nom:"Scooter", prix:2500, ico:"🛵"},
   {nom:"Voiture d'occasion", prix:9000, ico:"🚗"},
   {nom:"Voiture neuve", prix:28000, ico:"🚙"},
   {nom:"Barque de pêche", prix:6000, ico:"🛶"},
   {nom:"Vedette rapide", prix:75000, ico:"🚤"},
-  {nom:"Petite maison", prix:60000, ico:"🏠"},
-  {nom:"Villa vue mer", prix:250000, ico:"🏖️"},
 ];
+const IMMOBILIER = [
+  {nom:"Studio en ville", prix:35000, ico:"🚪"},
+  {nom:"Petite maison", prix:60000, ico:"🏠"},
+  {nom:"Maison familiale", prix:120000, ico:"🏡"},
+  {nom:"Immeuble de rapport", prix:200000, ico:"🏢"},
+  {nom:"Villa vue mer", prix:300000, ico:"🏖️"},
+];
+const NIVEAUX_POL = ["Militant", "Maire", "Député", "Ministre", "Président"];
+const SALAIRES_POL = [0, 15000, 30000, 45000, 80000];
 
-let etat = null;          // état de la partie
-let fileEvenements = [];  // modales en attente
+let etat = null;
+let fileEvenements = [];
 
-/* ---------------- création / sauvegarde ---------------- */
+/* ---------------- utilitaires d'état ---------------- */
 
-function nouvelleVie(){
-  const genre = alea(2) ? "F" : "M";
-  const prenom = parmi(genre==="F" ? PRENOMS_F : PRENOMS_M);
-  const nom = parmi(NOMS);
-  const [ville, pays] = parmi(VILLES);
+function rel(type, nom, age, genre){
+  return {type, nom, age, genre: genre || (alea(2)?"F":"M"), barre: 60+alea(41), vivant:true};
+}
+function pays(){ return etat.monde[etat.pays]; }
+function tauxImpot(){ return (10 + pays().dev/4) / 100; }
+function dejaFait(cle){
+  if(etat.faits[cle]) return true;
+  etat.faits[cle] = true;
+  return false;
+}
+function charisme(){ return Math.round((etat.look + etat.intel)/2); }
+function estPolitique(){ return !!etat.politique; }
+function enfants(){ return etat.relations.filter(r=>r.type==="enfant" && r.vivant); }
+
+function sauver(){ try{ localStorage.setItem(CLE, JSON.stringify(etat)); }catch(e){} }
+function charger(){
+  try{ const brut = localStorage.getItem(CLE); if(brut){ etat = JSON.parse(brut); return true; } }catch(e){}
+  return false;
+}
+
+/* ---------------- création d'une vie ---------------- */
+
+function nouvelleVie(opts){
+  opts = opts || {};
+  const genre = opts.genre || (alea(2) ? "F" : "M");
+  const prenom = (opts.prenom && opts.prenom.trim()) || parmi(genre==="F" ? PRENOMS_F : PRENOMS_M);
+  const nom = opts.nom || parmi(NOMS);
+  const [ville, paysNom] = opts.lieu || parmi(VILLES);
+  const monde = {};
+  for(const p in PAYS_DEF) monde[p] = {...PAYS_DEF[p]};
   etat = {
-    prenom, nom, genre, ville, pays, age:0,
+    prenom, nom, genre, ville, pays:paysNom, age:0, generation:1,
     sante: 70+alea(31), bonheur: 70+alea(31),
-    intel: 30+alea(51), look: 30+alea(51),
+    intel: 30+alea(51), look: 30+alea(51), celebrite: 0,
     argent:0, emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome:false,
-    prison:0, relations:[], biens:[], journal:[], mort:false
+    entreprise:null, politique:null,
+    prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
-  etat.relations.push(rel("mere", nomMere, 20+alea(18)));
-  etat.relations.push(rel("pere", nomPere, 22+alea(20)));
-  if(alea(2)) etat.relations.push(rel(alea(2)?"frere":"soeur", parmi(alea(2)?PRENOMS_M:PRENOMS_F)+" "+nom, alea(10)));
+  etat.relations.push(rel("mere", nomMere, 20+alea(18), "F"));
+  etat.relations.push(rel("pere", nomPere, 22+alea(20), "M"));
+  if(alea(2)){ const g = alea(2)?"F":"M"; etat.relations.push(rel(g==="F"?"soeur":"frere", parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+nom, alea(10), g)); }
   nouvelleAnnee();
-  ecrire(`Je m'appelle ${prenom} ${nom}. Je suis né${genre==="F"?"e":""} ${genre==="F"?"fille":"garçon"} à ${ville}, ${pays}.`, "bon");
+  ecrire(`Je m'appelle ${prenom} ${nom}. Je suis née${genre==="F"?"":""} ${genre==="F"?"fille":"garçon"} à ${ville}, ${paysNom}.`.replace("née g","né g"), "bon");
   ecrire(`Ma mère est ${nomMere} et mon père est ${nomPere}.`);
   sauver(); toutAfficher();
   $("plein").classList.remove("ouvert");
 }
 
-function rel(type, nom, age){
-  return {type, nom, age, barre: 60+alea(41), vivant:true};
-}
-
-function sauver(){ try{ localStorage.setItem(CLE, JSON.stringify(etat)); }catch(e){} }
-function charger(){
-  try{
-    const brut = localStorage.getItem(CLE);
-    if(brut){ etat = JSON.parse(brut); return true; }
-  }catch(e){}
-  return false;
-}
-
 /* ---------------- journal ---------------- */
 
-function nouvelleAnnee(){ etat.journal.push({age: etat.age, lignes: []}); }
-function ecrire(txt, classe){
-  etat.journal[etat.journal.length-1].lignes.push({txt, classe: classe||""});
-}
+function nouvelleAnnee(){ etat.journal.push({age: etat.age, lignes: []}); if(etat.journal.length>90) etat.journal.shift(); }
+function ecrire(txt, classe){ etat.journal[etat.journal.length-1].lignes.push({txt, classe: classe||""}); }
 
 function afficherJournal(){
   const J = $("journal");
@@ -336,8 +394,11 @@ function afficherJournal(){
 /* ---------------- affichage global ---------------- */
 
 function libelleEtat(){
-  if(etat.prison>0) return "En prison — reste "+etat.prison+" an"+(etat.prison>1?"s":"");
-  if(etat.emploi) return etat.emploi.titre+" · "+euros(etat.emploi.salaire)+"/an";
+  if(etat.prison>0) return "En prison ("+etat.prison+" an"+(etat.prison>1?"s":"")+" restants)";
+  if(etat.politique && etat.politique.niveau>0) return NIVEAUX_POL[etat.politique.niveau];
+  if(etat.emploi) return etat.emploi.titre;
+  if(etat.entreprise) return "Patron·ne · "+etat.entreprise.type;
+  if(etat.celebrite>=50) return "Star ⭐";
   if(etat.etude==="universite") return "Étudiant"+(etat.genre==="F"?"e":"")+" en "+etat.filiere;
   if(etat.etude!=="aucune" && etat.age<18) return "Scolarisé"+(etat.genre==="F"?"e":"");
   return "Sans emploi";
@@ -345,13 +406,16 @@ function libelleEtat(){
 
 function toutAfficher(){
   $("avatar").textContent = etat.prenom[0];
-  document.querySelector("#who .nom").textContent = etat.prenom+" "+etat.nom;
+  document.querySelector("#who .nom").textContent = etat.prenom+" "+etat.nom+"  ·  Gén. "+etat.generation;
   document.querySelector("#who .sub").textContent = etat.age+" an"+(etat.age>1?"s":"")+" · "+etat.ville+" · "+libelleEtat();
-  document.querySelector("#bank .argent").textContent = euros(etat.argent);
-  for(const [cle,id] of [["sante","sante"],["bonheur","bonheur"],["intel","intel"],["look","look"]]){
-    $("j-"+id).style.width = etat[cle]+"%";
-    $("v-"+id).textContent = etat[cle];
+  const elArgent = document.querySelector("#bank .argent");
+  elArgent.textContent = euros(etat.argent);
+  elArgent.classList.toggle("negatif", etat.argent < 0);
+  for(const [cle,id] of [["sante","sante"],["bonheur","bonheur"],["intel","intel"],["look","look"],["celebrite","celeb"]]){
+    $("j-"+id).style.width = borne(etat[cle])+"%";
+    $("v-"+id).textContent = borne(etat[cle]);
   }
+  $("ligne-celeb").style.display = etat.celebrite>0 ? "flex" : "none";
   afficherJournal();
 }
 
@@ -360,14 +424,19 @@ function toutAfficher(){
 function vieillir(){
   if(etat.mort) return;
   etat.age++;
+  etat.faits = {};
   nouvelleAnnee();
 
-  // dérive naturelle des stats
+  // dérive naturelle
   etat.bonheur = borne(etat.bonheur + alea(7) - 3);
   if(etat.age > 45) etat.sante = borne(etat.sante - (1 + alea(Math.max(1,(etat.age-45)/8))));
   if(etat.age > 30) etat.look = borne(etat.look - alea(2));
+  if(etat.celebrite > 0) etat.celebrite = borne(etat.celebrite - (3+alea(4)));
 
-  // prison
+  // le monde évolue
+  evolutionMonde();
+
+  // prison : année blanche
   if(etat.prison > 0){
     etat.prison--;
     etat.bonheur = borne(etat.bonheur - 8);
@@ -375,21 +444,91 @@ function vieillir(){
     finDeTour(); return;
   }
 
-  // scolarité automatique
+  // scolarité
   ecole();
 
-  // salaire
+  /* ----- revenus ----- */
+  let revenus = 0, depenses = 0;
+  const imp = tauxImpot();
+
   if(etat.emploi){
-    etat.argent += etat.emploi.salaire;
+    const brut = etat.emploi.salaire;
+    revenus += Math.round(brut*(1-imp));
+    depenses += 0;
     etat.emploi.annees++;
-    if(etat.emploi.annees % 4 === 0 && alea(2)){
-      const augm = Math.round(etat.emploi.salaire * 0.15);
+    if(!etat.emploi.politique && etat.emploi.annees % 4 === 0 && alea(2)){
+      const augm = Math.round(brut * 0.12);
       etat.emploi.salaire += augm;
-      ecrire(`Promotion au travail ! Mon salaire augmente de ${euros(augm)}.`, "argent");
+      ecrire(`Promotion au travail : +${euros(augm)} brut/an.`, "argent");
     }
   }
 
-  // relations qui vieillissent
+  if(etat.entreprise){
+    const e = etat.entreprise;
+    const marge = (alea(41)-15) + e.niveau*3 + (pays().eco-50)/5;
+    let profit = Math.round(e.valeur * marge/100);
+    if(profit > 0){
+      const net = Math.round(profit*(1-imp));
+      revenus += net;
+      e.pertes = 0;
+      ecrire(`${e.ico} ${e.type} « ${e.nom} » : bénéfice de ${euros(net)} (après impôts).`, "argent");
+    } else if(profit < 0){
+      depenses += -profit;
+      e.pertes = (e.pertes||0)+1;
+      ecrire(`${e.ico} « ${e.nom} » a perdu ${euros(-profit)} cette année.`, "mauvais");
+      if(e.pertes >= 3){
+        ecrire(`Faillite de « ${e.nom} » après ${e.pertes} années de pertes. L'entreprise est liquidée.`, "mauvais");
+        etat.argent += Math.round(e.valeur*0.3);
+        etat.entreprise = null;
+        etat.bonheur = borne(etat.bonheur-15);
+      }
+    }
+  }
+
+  // loyers des biens mis en location
+  for(const b of etat.biens){
+    if(b.type==="immobilier"){
+      b.valeur = Math.max(5000, Math.round(b.valeur * (1 + (alea(9)-3 + (pays().eco-50)/10)/100)));
+      if(b.loue){
+        if(alea(100) < 18){
+          ecrire(`${b.ico} ${b.nom} : pas de locataire cette année.`, "mauvais");
+        } else {
+          const loyer = Math.round(b.valeur*0.05*(1-imp));
+          revenus += loyer;
+          ecrire(`${b.ico} Loyers de ${b.nom.toLowerCase()} : ${euros(loyer)} (net).`, "argent");
+        }
+      }
+    }
+  }
+
+  /* ----- dépenses ----- */
+  if(etat.age >= 18){
+    depenses += 2000; // vie courante
+    const logements = etat.biens.filter(b=>b.type==="immobilier" && !b.loue);
+    if(etat.age >= 20 && !logements.length) depenses += 3000; // locataire soi-même
+    for(const b of etat.biens) if(b.type==="immobilier") depenses += Math.round(b.valeur*0.01); // entretien
+    depenses += enfants().filter(e=>e.age<18).length * 1000;
+    if(etat.etude==="universite") depenses += 1500;
+  }
+
+  etat.argent += revenus - depenses;
+  if(etat.age>=18 && (revenus||depenses))
+    ecrire(`💶 Bilan de l'année : +${euros(revenus)} de revenus, −${euros(depenses)} de dépenses (impôts ${Math.round(imp*100)} %).`, "info");
+
+  // découvert
+  if(etat.argent < 0){
+    const agios = Math.round(-etat.argent*0.10);
+    etat.argent -= agios;
+    etat.bonheur = borne(etat.bonheur-6);
+    ecrire(`Compte à découvert : la banque prélève ${euros(agios)} d'agios.`, "mauvais");
+    if(etat.argent < -10000 && etat.biens.length){
+      const saisi = etat.biens.shift();
+      etat.argent += Math.round(saisi.valeur*0.7);
+      ecrire(`L'huissier a saisi ${saisi.nom.toLowerCase()} pour éponger mes dettes.`, "mauvais");
+    }
+  }
+
+  // relations
   for(const r of etat.relations){
     if(!r.vivant) continue;
     r.age++;
@@ -400,6 +539,9 @@ function vieillir(){
       ecrire(`${r.nom}, ${r.type==="mere"?"ma mère":"mon père"}, est décédé${r.type==="mere"?"e":""} à ${r.age} ans. Repose en paix.`, "mauvais");
     }
   }
+
+  // politique : vie du mandat
+  politiqueAnnuelle();
 
   // événements aléatoires
   evenementsAleatoires();
@@ -414,8 +556,36 @@ function vieillir(){
   finDeTour();
 }
 
-function finDeTour(){
-  sauver(); toutAfficher(); prochaineModale();
+function finDeTour(){ sauver(); toutAfficher(); prochaineModale(); }
+
+/* ---------------- le monde ---------------- */
+
+function evolutionMonde(){
+  for(const nomP in etat.monde){
+    const p = etat.monde[nomP];
+    p.eco = Math.max(5, Math.min(95, p.eco + alea(7)-3));
+    p.dev = Math.max(5, Math.min(95, p.dev + (p.eco > p.dev ? 1 : (alea(3)===0 ? -1 : 0))));
+    p.corr = Math.max(5, Math.min(95, p.corr + alea(5)-2));
+  }
+  const p = pays();
+  if(alea(12)===0){
+    const evs = [
+      ()=>{ p.eco = Math.max(5,p.eco-10); ecrire(`📰 Crise économique en ${etat.pays} : les affaires tournent au ralenti.`, "mauvais"); },
+      ()=>{ p.eco = Math.min(95,p.eco+8); ecrire(`📰 Boom touristique en ${etat.pays}, l'économie repart !`, "bon"); },
+      ()=>{ p.corr = Math.min(95,p.corr+8); ecrire(`📰 Scandale de corruption au sommet de l'État en ${etat.pays}.`, "mauvais"); },
+    ];
+    if(etat.pays==="Comores"||etat.pays==="Mayotte"||etat.pays==="Madagascar")
+      evs.push(()=>{ p.eco=Math.max(5,p.eco-6); p.dev=Math.max(5,p.dev-2); ecrire("📰 Un cyclone a frappé l'archipel. Reconstruction en cours.", "mauvais"); });
+    parmi(evs)();
+  }
+}
+
+function libellePays(p){
+  const b = [];
+  b.push(p.dev>=70 ? "Pays développé" : p.dev>=45 ? "En développement" : "Peu développé");
+  b.push(p.corr>=60 ? "Très corrompu" : p.corr>=40 ? "Corruption notable" : "Institutions saines");
+  b.push(p.eco>=65 ? "Économie florissante" : p.eco>=40 ? "Économie stable" : "Économie fragile");
+  return b;
 }
 
 /* ---------------- scolarité ---------------- */
@@ -432,12 +602,12 @@ function ecole(){
       etat.etude="bac"; ecrire("J'ai obtenu mon baccalauréat !", "bon");
       fileEvenements.push({
         titre:"Et maintenant ?",
-        texte:"Le bac en poche, il faut choisir la suite.",
+        texte:"Le bac en poche, il faut choisir la suite. L'université coûte 1 500 € par an.",
         choix: FILIERES.slice(0,4).map(f => ({label:"Étudier : "+f, effet(){
           etat.etude="universite"; etat.filiere=f; etat.anneesEtude=0;
           ecrire("Je m'inscris à l'université en "+f+".", "bon");
         }})).concat([{label:"Travailler directement", effet(){
-          etat.etude="fini"; ecrire("Pas d'études pour moi, je cherche du travail.");
+          etat.etude="fini"; ecrire("Pas d'études pour moi, je me lance dans la vie active.");
         }}])
       });
     } else {
@@ -453,8 +623,64 @@ function ecole(){
       ecrire(`Diplômé${g?"e":""} de l'université en ${etat.filiere} ! 🎓`, "bon");
     }
   }
-  if(etat.etude!=="aucune" && etat.age>=3 && etat.age<18){
-    etat.intel = borne(etat.intel + 1 + alea(2));
+  if(etat.etude!=="aucune" && etat.age>=3 && etat.age<18) etat.intel = borne(etat.intel + 1 + alea(2));
+}
+
+/* ---------------- politique ---------------- */
+
+function politiqueAnnuelle(){
+  if(!etat.politique) return;
+  const P = etat.politique, p = pays();
+  P.annees++;
+  // popularité : suit la santé du pays
+  P.pop = borne(P.pop + (p.eco-50)/10 - 1 + alea(5)-2);
+
+  if(P.niveau === 4){ // Président : gouverner
+    P.anneesMandat++;
+    fileEvenements.push({
+      titre:`Gouverner ${etat.pays} — an ${P.anneesMandat}`,
+      texte:`Développement ${p.dev} · Économie ${p.eco} · Corruption ${p.corr}. Quelle est la priorité du budget cette année ?`,
+      choix:[
+        {label:"🏫 Éducation et santé", effet(){ p.dev=Math.min(95,p.dev+3); P.pop=borne(P.pop+4);
+          ecrire("J'ai investi le budget dans les écoles et les hôpitaux. Le pays progresse.", "bon"); }},
+        {label:"🛣️ Grands travaux d'infrastructure", effet(){ p.eco=Math.min(95,p.eco+4); p.dev=Math.min(95,p.dev+2); P.pop=borne(P.pop+2);
+          ecrire("Routes, port, électricité : les grands chantiers sont lancés.", "bon"); }},
+        {label:"⚖️ Lutte anticorruption", effet(){ p.corr=Math.max(5,p.corr-7); P.pop=borne(P.pop+3);
+          ecrire("Opération mains propres : plusieurs ministres limogés, le peuple applaudit.", "bon"); }},
+        {label:"💰 Détourner des fonds publics", effet(){
+          const detour = 30000+alea(70000);
+          etat.argent += detour; p.corr=Math.min(95,p.corr+8); P.pop=borne(P.pop-4);
+          ecrire(`J'ai discrètement détourné ${euros(detour)} des caisses de l'État…`, "argent");
+          if(alea(100) < p.corr/2){
+            etat.prison = 3+alea(5);
+            etat.politique = null; etat.emploi = null;
+            etat.bonheur = borne(etat.bonheur-30);
+            ecrire(`SCANDALE ! Le détournement est révélé : destitution et ${etat.prison} ans de prison.`, "mauvais");
+          }
+        }},
+      ]
+    });
+    if(P.anneesMandat >= 5){
+      P.anneesMandat = 0;
+      fileEvenements.push({
+        titre:"Élection présidentielle",
+        texte:`Fin du mandat. Popularité : ${P.pop}/100. Se représenter coûte 10 000 € de campagne.`,
+        choix:[
+          {label:"Se représenter (10 000 €)", effet(){
+            etat.argent -= 10000;
+            if(alea(100) < P.pop){ ecrire("RÉÉLU·E à la présidence ! Le peuple m'a renouvelé sa confiance.", "bon"); }
+            else {
+              ecrire("Battu·e dans les urnes. Je quitte le palais présidentiel la tête haute.", "mauvais");
+              P.niveau = 2; etat.emploi = {titre:"Député", salaire:SALAIRES_POL[2], annees:0, politique:true};
+            }
+          }},
+          {label:"Se retirer de la vie politique", effet(){
+            ecrire("Je me retire après mon mandat présidentiel. Place à la relève.");
+            etat.politique = null; etat.emploi = null;
+          }},
+        ]
+      });
+    }
   }
 }
 
@@ -464,20 +690,17 @@ function evenementsAleatoires(){
   const E = [];
   const a = etat.age;
 
-  // petite enfance
   if(a>=1 && a<=4) E.push(
     ()=>ecrire("J'ai fait mes premiers pas sur la plage devant toute la famille.", "bon"),
     ()=>{ etat.sante=borne(etat.sante-6); ecrire("Grosse fièvre cette année. Le médecin m'a soigné"+(etat.genre==="F"?"e":"")+".", "mauvais"); },
     ()=>ecrire("Ma grand-mère m'a appris mes premières comptines.")
   );
-  // enfance
   if(a>=5 && a<=11) E.push(
     ()=>{ etat.bonheur=borne(etat.bonheur+8); ecrire("J'ai gagné le tournoi de foot du quartier !", "bon"); },
-    ()=>{ etat.intel=borne(etat.intel+5); ecrire("La maîtresse dit que je suis très doué"+(etat.genre==="F"?"e":"")+" à l'école.", "bon"); },
+    ()=>{ etat.intel=borne(etat.intel+5); ecrire("Le maître dit que je suis très doué"+(etat.genre==="F"?"e":"")+" à l'école.", "bon"); },
     ()=>ajouterAmi(),
     ()=>{ etat.sante=borne(etat.sante-8); ecrire("Je suis tombé"+(etat.genre==="F"?"e":"")+" d'un manguier. Bras cassé !", "mauvais"); }
   );
-  // adolescence
   if(a>=12 && a<=17) E.push(
     ()=>ajouterAmi(),
     ()=>{ etat.bonheur=borne(etat.bonheur-10); ecrire("Dispute avec mes parents, ambiance tendue à la maison.", "mauvais"); },
@@ -493,27 +716,19 @@ function evenementsAleatoires(){
       ]
     })
   );
-  // adulte
   if(a>=18) E.push(
-    ()=>{ const g=200+alea(800); etat.argent+=g; ecrire(`Un oncle généreux m'a donné ${euros(g)}.`, "argent"); },
     ()=>{ etat.sante=borne(etat.sante-10); ecrire("Accident de scooter. Plus de peur que de mal, mais quand même.", "mauvais"); },
     ()=>{ etat.bonheur=borne(etat.bonheur+9); ecrire("Superbe traversée en mer vers Mohéli, dauphins au rendez-vous. 🐬", "bon"); },
-    ()=>{ if(etat.argent>500){ const p=100+alea(Math.min(2000,etat.argent/4)); etat.argent-=p;
-      ecrire(`On m'a volé ${euros(p)} au marché. Rageant.`, "mauvais"); } },
-    ()=>fileEvenements.push({
-      titre:"Billet de loterie",
-      texte:"Un vendeur te propose un billet de loterie à 20 €.",
-      choix:[
-        {label:"Acheter le billet", effet(){ etat.argent-=20;
-          if(alea(20)===0){ const g=5000+alea(45000); etat.argent+=g; ecrire(`INCROYABLE ! Billet gagnant : ${euros(g)} ! 🎉`, "argent"); }
-          else ecrire("Billet perdant. Évidemment."); }},
-        {label:"Refuser poliment", effet(){ ecrire("J'ai gardé mes 20 €. La sagesse même."); }}
-      ]
-    })
+    ()=>{ if(etat.argent>500){ const perte=100+alea(Math.min(2000,Math.max(200,etat.argent/4))); etat.argent-=perte;
+      ecrire(`On m'a volé ${euros(perte)} au marché. Rageant.`, "mauvais"); } },
+    ()=>{ etat.bonheur=borne(etat.bonheur-8); ecrire("Année morose, la motivation n'y était pas.", "mauvais"); }
   );
   if(a>=25) E.push(
-    ()=>{ etat.sante=borne(etat.sante+6); ecrire("Grande remise en forme cette année : footing sur la corniche chaque matin.", "bon"); },
-    ()=>{ etat.bonheur=borne(etat.bonheur-8); ecrire("Année morose, la motivation n'y était pas.", "mauvais"); }
+    ()=>{ etat.sante=borne(etat.sante+6); ecrire("Grande remise en forme : footing sur la corniche chaque matin.", "bon"); }
+  );
+  if(etat.celebrite>=30) E.push(
+    ()=>{ etat.bonheur=borne(etat.bonheur-6); ecrire("Les paparazzi ont publié des photos volées de moi. Pénible.", "mauvais"); },
+    ()=>{ etat.celebrite=borne(etat.celebrite+8); ecrire("Une de mes vidéos est devenue virale dans tout l'océan Indien !", "bon"); }
   );
   if(a>=40) E.push(
     ()=>fileEvenements.push({
@@ -529,45 +744,107 @@ function evenementsAleatoires(){
     })
   );
 
-  // 1 événement sûr + 1 chance sur 2 d'en avoir un deuxième
   if(E.length){ parmi(E)(); if(alea(2) && E.length>1) parmi(E)(); }
 }
 
 function ajouterAmi(){
-  const g = alea(2);
-  const nom = parmi(g?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS);
-  etat.relations.push(rel("ami", nom, etat.age + alea(5) - 2));
+  const g = alea(2)?"F":"M";
+  const nom = parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS);
+  etat.relations.push(rel("ami", nom, Math.max(1,etat.age + alea(5) - 2), g));
   ecrire(`Je me suis fait un nouvel ami : ${nom}.`, "bon");
 }
 
-/* ---------------- la mort ---------------- */
+/* ---------------- mort & héritage ---------------- */
+
+function valeurPatrimoine(){
+  let v = etat.biens.reduce((s,b)=>s+b.valeur,0);
+  if(etat.entreprise) v += Math.round(etat.entreprise.valeur*0.9);
+  return v;
+}
 
 function mourir(cause){
   etat.mort = true;
   ecrire(`Je suis mort${etat.genre==="F"?"e":""} ${cause} à ${etat.age} ans.`, "mauvais");
   sauver(); toutAfficher();
-  const patrimoine = etat.biens.reduce((s,b)=>s+b.prix,0);
-  const enfants = etat.relations.filter(r=>r.type==="enfant").length;
+
+  const heritiers = enfants();
+  const patrimoine = valeurPatrimoine();
+  const succession = Math.max(0, Math.round((Math.max(0,etat.argent) + patrimoine) * 0.9)); // 10 % de frais
+  const part = heritiers.length ? Math.round(succession / heritiers.length) : 0;
+
+  let htmlHeritiers = "";
+  if(heritiers.length){
+    htmlHeritiers = `<div class="fiche">🪙 Succession (après 10 % de frais) : <b>${euros(succession)}</b><br>
+      👪 Partagée entre <b>${heritiers.length}</b> héritier${heritiers.length>1?"s":""} : <b>${euros(part)}</b> chacun</div>
+      <div class="sous">Continuer la dynastie ${etat.nom} (génération ${etat.generation+1}) avec :</div>` +
+      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""} (hérite ${euros(part)})</button>`).join("");
+  }
+
   $("plein").innerHTML = `
     <div class="cadre">
       <div class="embleme">🪦</div>
       <h1>${etat.prenom} ${etat.nom}</h1>
-      <div class="sous">${etat.ville}, ${etat.pays}<br>Décès ${cause} à ${etat.age} ans</div>
+      <div class="sous">Génération ${etat.generation} · ${etat.ville}, ${etat.pays}<br>Décès ${cause} à ${etat.age} ans</div>
       <div class="fiche">
         💰 Argent au décès : <b>${euros(etat.argent)}</b><br>
         🏠 Patrimoine : <b>${euros(patrimoine)}</b><br>
         ${etat.diplome ? "🎓 Diplôme : <b>"+etat.filiere+"</b><br>" : ""}
-        ${etat.emploi ? "💼 Dernier emploi : <b>"+etat.emploi.titre+"</b><br>" : ""}
-        👶 Enfants : <b>${enfants}</b><br>
-        ❤️ ${etat.relations.some(r=>r.type==="conjoint") ? "Marié"+(etat.genre==="F"?"e":"") : "Célibataire"}
+        ${etat.emploi ? "💼 Dernier poste : <b>"+etat.emploi.titre+"</b><br>" : ""}
+        ${etat.entreprise ? "🏭 Entreprise : <b>"+etat.entreprise.nom+"</b><br>" : ""}
+        ${etat.celebrite>=50 ? "⭐ Mort·e célèbre (célébrité "+etat.celebrite+")<br>" : ""}
+        ${etat.politique&&etat.politique.niveau>0 ? "🏛️ Carrière politique : <b>"+NIVEAUX_POL[etat.politique.niveau]+"</b><br>" : ""}
+        👶 Enfants : <b>${heritiers.length}</b>
       </div>
-      <button class="grand" id="btn-renaitre">🌱 Nouvelle vie</button>
+      ${htmlHeritiers}
+      <button class="grand ${heritiers.length?"secondaire":""}" id="btn-renaitre">🌱 Nouvelle vie (recommencer à zéro)</button>
     </div>`;
   $("plein").classList.add("ouvert");
-  $("btn-renaitre").onclick = () => nouvelleVie();
+  $("btn-renaitre").onclick = () => ecranAccueil();
+  for(const b of document.querySelectorAll("#plein .heritier")){
+    b.onclick = () => continuerAvec(heritiers[+b.dataset.i], part);
+  }
 }
 
-/* ---------------- modales d'événements ---------------- */
+function continuerAvec(h, heritage){
+  const parent = etat;
+  const freresSoeurs = enfants().filter(x => x !== h);
+  const conjointSurvivant = parent.relations.find(r => r.vivant && r.type==="conjoint");
+  const monde = parent.monde;
+
+  etat = {
+    prenom: h.nom.split(" ")[0], nom: parent.nom, genre: h.genre,
+    ville: parent.ville, pays: parent.pays,
+    age: Math.max(0, h.age), generation: parent.generation+1,
+    sante: 70+alea(31), bonheur: 60+alea(31),
+    intel: borne(parent.intel*0.5 + 20+alea(35)),
+    look: borne(parent.look*0.5 + 20+alea(35)),
+    celebrite: 0,
+    argent: heritage, emploi:null, filiere:null,
+    etude:"aucune", anneesEtude:0, diplome:false,
+    entreprise:null, politique:null,
+    prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
+  };
+  // scolarité selon l'âge
+  const a = etat.age;
+  etat.etude = a>=18 ? "fini" : a>=15 ? "lycee" : a>=11 ? "college" : a>=6 ? "primaire" : a>=3 ? "maternelle" : "aucune";
+
+  // famille : le parent survivant + frères et sœurs
+  if(conjointSurvivant){
+    etat.relations.push({type: conjointSurvivant.genre==="F"?"mere":"pere", nom: conjointSurvivant.nom,
+      age: conjointSurvivant.age, genre: conjointSurvivant.genre, barre: 70+alea(31), vivant:true});
+  }
+  for(const f of freresSoeurs){
+    etat.relations.push({type: f.genre==="F"?"soeur":"frere", nom: f.nom, age: f.age, genre: f.genre, barre: 60+alea(41), vivant:true});
+  }
+
+  nouvelleAnnee();
+  ecrire(`Je suis ${etat.prenom} ${etat.nom}, génération ${etat.generation} de la famille.`, "bon");
+  ecrire(`Mon ${parent.genre==="F"?"ma mère":"père"} ${parent.prenom} nous a quittés. J'hérite de ${euros(heritage)} (part sur ${freresSoeurs.length+1} enfant${freresSoeurs.length?"s":""}).`.replace("Mon ma","Ma"), "argent");
+  sauver(); toutAfficher();
+  $("plein").classList.remove("ouvert");
+}
+
+/* ---------------- modales ---------------- */
 
 function prochaineModale(){
   if(!fileEvenements.length) return;
@@ -582,8 +859,7 @@ function prochaineModale(){
     b.onclick = () => {
       $("modale").classList.remove("ouvert");
       c.effet();
-      sauver(); toutAfficher();
-      prochaineModale();
+      if(!etat.mort){ sauver(); toutAfficher(); prochaineModale(); }
     };
     box.appendChild(b);
   }
@@ -594,16 +870,22 @@ function prochaineModale(){
 
 function ouvrirFeuille(nom){
   if(etat.mort) return;
-  const titres = {emploi:"💼 Emploi", actifs:"🏠 Actifs", relations:"❤️ Relations", activites:"🎯 Activités"};
+  const titres = {carriere:"💼 Carrière", actifs:"🏠 Actifs", relations:"❤️ Relations", activites:"🎯 Activités"};
   $("feuille-titre").textContent = titres[nom];
   $("feuille-corps").innerHTML = "";
-  ({emploi:feuilleEmploi, actifs:feuilleActifs, relations:feuilleRelations, activites:feuilleActivites})[nom]();
+  ({carriere:feuilleCarriere, actifs:feuilleActifs, relations:feuilleRelations, activites:feuilleActivites})[nom]();
   $("voile").classList.add("ouvert");
   $("feuille").classList.add("ouvert");
 }
 function fermerFeuille(){
   $("voile").classList.remove("ouvert");
   $("feuille").classList.remove("ouvert");
+}
+function section(titre){
+  const d = document.createElement("div");
+  d.className = "section-titre";
+  d.textContent = titre;
+  $("feuille-corps").appendChild(d);
 }
 function carte(html){
   const d = document.createElement("div");
@@ -617,28 +899,36 @@ function action(parent, label, classe, fn, desactive){
   b.className = "bouton "+(classe||"");
   b.textContent = label;
   if(desactive) b.disabled = true;
-  b.onclick = () => { fn(); sauver(); toutAfficher(); };
+  b.onclick = () => { fn(); if(!etat.mort){ sauver(); toutAfficher(); } };
   parent.querySelector(".actions").appendChild(b);
   return b;
 }
 
-/* ----- emploi ----- */
-function feuilleEmploi(){
+/* ----- carrière : emploi, entreprise, politique ----- */
+
+function feuilleCarriere(){
   if(etat.prison>0){ carte(`<div class="titre">🔒 En prison</div><div class="detail">Impossible de travailler pour le moment.</div>`); return; }
-  if(etat.emploi){
+
+  /* --- emploi salarié --- */
+  section("Emploi");
+  if(etat.emploi && etat.emploi.politique){
+    carte(`<div class="titre">${etat.emploi.titre}</div><div class="detail">Fonction politique · Indemnité : ${euros(etat.emploi.salaire)}/an brut. Gérée dans la section Politique ci-dessous.</div>`);
+  } else if(etat.emploi){
     const c = carte(`<div class="titre">${etat.emploi.titre}</div>
-      <div class="detail">Salaire : ${euros(etat.emploi.salaire)}/an · Ancienneté : ${etat.emploi.annees} an${etat.emploi.annees>1?"s":""}</div>
+      <div class="detail">Salaire brut : ${euros(etat.emploi.salaire)}/an (impôts ${Math.round(tauxImpot()*100)} %) · Ancienneté : ${etat.emploi.annees} an${etat.emploi.annees>1?"s":""}</div>
       <div class="actions"></div>`);
     action(c, "Travailler dur", "", () => {
+      if(dejaFait("bosser")){ ecrire("J'ai déjà tout donné au travail cette année."); fermerFeuille(); return; }
       etat.bonheur = borne(etat.bonheur-5);
       if(alea(2)){ const aug = Math.round(etat.emploi.salaire*0.08); etat.emploi.salaire += aug;
-        ecrire(`À force de travail acharné, j'ai décroché ${euros(aug)} d'augmentation.`, "argent"); }
+        ecrire(`À force de travail acharné : +${euros(aug)} brut/an.`, "argent"); }
       else ecrire("J'ai redoublé d'efforts au travail… sans récompense pour l'instant.");
       fermerFeuille();
     });
     action(c, "Demander une augmentation", "gris", () => {
+      if(dejaFait("augmentation")){ ecrire("Le patron m'a déjà reçu cette année. N'abusons pas."); fermerFeuille(); return; }
       if(etat.emploi.annees>=2 && alea(3)===0){ const aug=Math.round(etat.emploi.salaire*0.12); etat.emploi.salaire+=aug;
-        ecrire(`Augmentation accordée : +${euros(aug)}/an !`, "argent"); }
+        ecrire(`Augmentation accordée : +${euros(aug)} brut/an !`, "argent"); }
       else ecrire("Augmentation refusée. Le patron a « d'autres priorités ».", "mauvais");
       fermerFeuille();
     });
@@ -646,53 +936,222 @@ function feuilleEmploi(){
       ecrire(`J'ai démissionné de mon poste de ${etat.emploi.titre}.`);
       etat.emploi = null; fermerFeuille();
     });
-    return;
+  } else if(etat.age < 15){
+    carte(`<div class="titre">Trop jeune</div><div class="detail">Petits boulots à 15 ans, vrai emploi à 18 ans.</div>`);
+  } else {
+    const liste = etat.age < 18 ? PETITS_BOULOTS : EMPLOIS;
+    for(const e of liste){
+      const okDiplome = !e.diplome || etat.diplome;
+      const c = carte(`<div class="titre">${e.titre}</div>
+        <div class="detail">${euros(e.salaire)}/an brut${e.diplome?" · Diplôme requis":""}${e.intel?" · Intelligence "+e.intel+"+ conseillée":""}</div>
+        <div class="actions"></div>`);
+      action(c, okDiplome ? "Postuler" : "Diplôme requis", "", () => {
+        const chance = 40 + (etat.intel - (e.intel||0));
+        if(alea(100) < chance){
+          etat.emploi = {titre:e.titre, salaire:e.salaire, annees:0};
+          if(etat.etude==="universite"){ etat.etude="fini"; ecrire("J'abandonne mes études pour ce poste."); }
+          ecrire(`Embauché${etat.genre==="F"?"e":""} comme ${e.titre} (${euros(e.salaire)}/an brut) !`, "bon");
+        } else ecrire(`Candidature refusée pour le poste de ${e.titre}.`, "mauvais");
+        fermerFeuille();
+      }, !okDiplome);
+    }
   }
-  if(etat.age < 15){ carte(`<div class="titre">Trop jeune</div><div class="detail">Reviens à 15 ans pour les petits boulots, 18 ans pour un vrai emploi.</div>`); return; }
-  const liste = etat.age < 18 ? PETITS_BOULOTS : EMPLOIS;
-  for(const e of liste){
-    const okDiplome = !e.diplome || etat.diplome;
-    const c = carte(`<div class="titre">${e.titre}</div>
-      <div class="detail">${euros(e.salaire)}/an${e.diplome?" · Diplôme requis":""}${e.intel?" · Intelligence "+e.intel+"+ conseillée":""}</div>
+
+  /* --- entreprendre --- */
+  section("Entreprendre");
+  if(etat.entreprise){
+    const e = etat.entreprise;
+    const c = carte(`<div class="titre">${e.ico} ${e.nom}</div>
+      <div class="detail">${e.type} · Valeur : ${euros(e.valeur)} · Niveau ${e.niveau}/5${e.pertes?" · ⚠️ "+e.pertes+" année(s) de pertes":""}</div>
       <div class="actions"></div>`);
-    action(c, okDiplome ? "Postuler" : "Diplôme requis", "", () => {
-      const chance = 40 + (etat.intel - (e.intel||0));
-      if(alea(100) < chance){
-        etat.emploi = {titre:e.titre, salaire:e.salaire, annees:0};
-        if(etat.etude==="universite"){ etat.etude="fini"; ecrire("J'abandonne mes études pour ce poste."); }
-        ecrire(`Embauché${etat.genre==="F"?"e":""} comme ${e.titre} pour ${euros(e.salaire)}/an !`, "bon");
-      } else ecrire(`Candidature refusée pour le poste de ${e.titre}.`, "mauvais");
+    action(c, "Investir 5 000 €", "", () => {
+      etat.argent -= 5000; e.valeur += 5000;
+      ecrire(`J'ai réinjecté 5 000 € dans « ${e.nom} ».`);
       fermerFeuille();
-    }, !okDiplome);
+    }, etat.argent < 5000);
+    const coutNiv = Math.round(e.valeur*0.2);
+    action(c, `Moderniser (${euros(coutNiv)})`, "gris", () => {
+      etat.argent -= coutNiv; e.niveau = Math.min(5, e.niveau+1);
+      ecrire(`« ${e.nom} » passe au niveau ${e.niveau} : meilleure rentabilité.`, "bon");
+      fermerFeuille();
+    }, etat.argent < coutNiv || e.niveau>=5);
+    action(c, `Vendre (${euros(Math.round(e.valeur*0.85))})`, "rouge", () => {
+      const v = Math.round(e.valeur*0.85);
+      etat.argent += v;
+      ecrire(`J'ai vendu « ${e.nom} » pour ${euros(v)}.`, "argent");
+      etat.entreprise = null; fermerFeuille();
+    });
+  } else if(etat.age>=18){
+    for(const t of TYPES_ENTREPRISE){
+      const okIntel = !t.intel || etat.intel>=t.intel;
+      const c = carte(`<div class="titre">${t.ico} ${t.type}</div>
+        <div class="detail">Capital de départ : ${euros(t.capital)}${t.intel?" · Intelligence "+t.intel+"+ requise":""} · Bénéfices selon l'économie du pays, risque de pertes réel.</div>
+        <div class="actions"></div>`);
+      action(c, "Créer l'entreprise", "", () => {
+        etat.argent -= t.capital;
+        const nomE = etat.nom + " " + parmi(["& Co","Business","Services","Trading","Océan"]);
+        etat.entreprise = {type:t.type, ico:t.ico, nom:nomE, valeur:t.capital, niveau:1, pertes:0};
+        ecrire(`J'ai créé mon entreprise : ${t.ico} « ${nomE} » (${t.type}), avec ${euros(t.capital)} de capital.`, "bon");
+        fermerFeuille();
+      }, etat.argent < t.capital || !okIntel);
+    }
+  } else {
+    carte(`<div class="detail">Créer une entreprise sera possible à 18 ans.</div>`);
+  }
+
+  /* --- politique --- */
+  section("Politique");
+  const p = pays();
+  carte(`<div class="titre">🌍 ${etat.pays}</div>
+    <div class="pays-stat"><label>Développement</label><div class="jauge"><i style="width:${p.dev}%;background:var(--intel)"></i></div><b>${p.dev}</b></div>
+    <div class="pays-stat"><label>Économie</label><div class="jauge"><i style="width:${p.eco}%;background:var(--accent)"></i></div><b>${p.eco}</b></div>
+    <div class="pays-stat"><label>Corruption</label><div class="jauge"><i style="width:${p.corr}%;background:var(--danger)"></i></div><b>${p.corr}</b></div>
+    <div>${libellePays(p).map(x=>`<span class="badge">${x}</span>`).join("")}</div>
+    <div class="detail" style="margin-top:6px">Taux d'imposition : ${Math.round(tauxImpot()*100)} %</div>`);
+
+  if(!etat.politique){
+    if(etat.age>=18){
+      const c = carte(`<div class="titre">🏛️ Entrer en politique</div>
+        <div class="detail">Adhère à un parti et gravis les échelons : maire, député, ministre… jusqu'à la présidence de ${etat.pays}.</div>
+        <div class="actions"></div>`);
+      action(c, "Adhérer à un parti", "", () => {
+        etat.politique = {niveau:0, pop: borne(15 + charisme()/3), annees:0, anneesMandat:0};
+        ecrire(`Je m'engage en politique : me voilà militant${etat.genre==="F"?"e":""} de parti.`, "bon");
+        fermerFeuille();
+      });
+    } else {
+      carte(`<div class="detail">La politique sera accessible à 18 ans.</div>`);
+    }
+  } else {
+    const P = etat.politique;
+    const c = carte(`<div class="titre">🏛️ ${NIVEAUX_POL[P.niveau]}${P.niveau>0?" — "+(P.niveau===1?etat.ville:etat.pays):""}</div>
+      <div class="detail">Popularité : ${P.pop}/100 · Charisme : ${charisme()}/100 · ${P.annees} an${P.annees>1?"s":""} en politique</div>
+      <div class="mini-jauge"><i style="width:${P.pop}%"></i></div>
+      <div class="actions"></div>`);
+    action(c, "Meeting de campagne (500 €)", "gris", () => {
+      if(dejaFait("meeting")){ ecrire("J'ai déjà fait le tour des places publiques cette année."); fermerFeuille(); return; }
+      etat.argent -= 500;
+      P.pop = borne(P.pop + 3 + Math.round(charisme()/25));
+      ecrire("Grand meeting : les militants sont chauds, ma popularité grimpe.", "bon");
+      fermerFeuille();
+    }, etat.argent<500);
+    action(c, "Don caritatif (1 000 €)", "gris", () => {
+      if(dejaFait("don")){ ecrire("Déjà fait un grand don cette année."); fermerFeuille(); return; }
+      etat.argent -= 1000;
+      P.pop = borne(P.pop+4); etat.bonheur = borne(etat.bonheur+4);
+      ecrire("Don aux orphelinats et aux écoles : le geste est remarqué.", "bon");
+      fermerFeuille();
+    }, etat.argent<1000);
+
+    if(P.niveau===0){
+      action(c, "Municipales (2 000 €)", "", () => {
+        etat.argent -= 2000;
+        if(alea(100) < 25 + P.pop/2 + charisme()/5){
+          P.niveau=1; etat.emploi={titre:"Maire de "+etat.ville, salaire:SALAIRES_POL[1], annees:0, politique:true};
+          ecrire(`ÉLU·E maire de ${etat.ville} ! Indemnité : ${euros(SALAIRES_POL[1])}/an.`, "bon");
+          P.pop = borne(P.pop+10);
+        } else { P.pop=borne(P.pop-5); ecrire("Défaite aux municipales. Il faudra retravailler le terrain.", "mauvais"); }
+        fermerFeuille();
+      }, etat.argent<2000);
+    }
+    if(P.niveau===1){
+      action(c, "Législatives (5 000 €)", "", () => {
+        etat.argent -= 5000;
+        if(alea(100) < 15 + P.pop/2 + charisme()/6){
+          P.niveau=2; etat.emploi={titre:"Député", salaire:SALAIRES_POL[2], annees:0, politique:true};
+          ecrire("ÉLU·E député ! Direction l'Assemblée nationale.", "bon");
+          P.pop = borne(P.pop+8);
+        } else { P.pop=borne(P.pop-5); ecrire("Battu·e aux législatives. Je reste maire.", "mauvais"); }
+        fermerFeuille();
+      }, etat.argent<5000);
+    }
+    if(P.niveau===2){
+      action(c, "Briguer un ministère", "", () => {
+        if(dejaFait("ministere")){ ecrire("Le président ne me recevra pas deux fois la même année."); fermerFeuille(); return; }
+        if(P.pop>=50 && alea(3)>0){
+          P.niveau=3; etat.emploi={titre:"Ministre", salaire:SALAIRES_POL[3], annees:0, politique:true};
+          ecrire("Nommé·e MINISTRE ! J'entre au gouvernement.", "bon");
+        } else ecrire("Pas de maroquin cette fois : il faut plus de popularité (50+).", "mauvais");
+        fermerFeuille();
+      });
+    }
+    if(P.niveau===3){
+      action(c, "Présidentielle (20 000 €)", "or", () => {
+        etat.argent -= 20000;
+        if(alea(100) < P.pop*0.8 + charisme()/8){
+          P.niveau=4; P.anneesMandat=0;
+          etat.emploi={titre:"Président·e de "+etat.pays, salaire:SALAIRES_POL[4], annees:0, politique:true};
+          ecrire(`🎉 ÉLU·E PRÉSIDENT·E de ${etat.pays} ! Le destin du pays est entre mes mains.`, "bon");
+          P.pop = borne(P.pop+10);
+        } else { P.pop=borne(P.pop-8); ecrire("Défaite à la présidentielle. Le suffrage est cruel.", "mauvais"); }
+        fermerFeuille();
+      }, etat.argent<20000);
+    }
+    action(c, "Quitter la politique", "rouge", () => {
+      ecrire("Je me retire de la vie politique.");
+      etat.politique = null;
+      if(etat.emploi && etat.emploi.politique) etat.emploi = null;
+      fermerFeuille();
+    });
   }
 }
 
-/* ----- actifs ----- */
+/* ----- actifs : patrimoine, immobilier, véhicules ----- */
+
 function feuilleActifs(){
-  const patrimoine = etat.biens.reduce((s,b)=>s+b.prix,0);
-  carte(`<div class="titre">Patrimoine</div>
-    <div class="detail">Banque : ${euros(etat.argent)} · Biens : ${euros(patrimoine)} · Total : <b>${euros(etat.argent+patrimoine)}</b></div>`);
-  for(const [i,b] of etat.biens.entries()){
-    const c = carte(`<div class="titre">${b.ico} ${b.nom}</div><div class="detail">Valeur : ${euros(b.prix)}</div><div class="actions"></div>`);
-    action(c, "Vendre ("+euros(Math.round(b.prix*0.8))+")", "gris", () => {
-      etat.argent += Math.round(b.prix*0.8);
-      ecrire(`J'ai vendu ${b.nom.toLowerCase()} pour ${euros(Math.round(b.prix*0.8))}.`, "argent");
-      etat.biens.splice(i,1); fermerFeuille();
+  const patrimoine = valeurPatrimoine();
+  carte(`<div class="titre">Patrimoine — Génération ${etat.generation}</div>
+    <div class="detail">Banque : ${euros(etat.argent)} · Biens et entreprise : ${euros(patrimoine)} · Total : <b>${euros(etat.argent+patrimoine)}</b><br>
+    À ta mort, la succession (moins 10 % de frais) sera partagée entre tes enfants.</div>`);
+
+  section("Mes biens");
+  if(!etat.biens.length) carte(`<div class="detail">Aucun bien pour l'instant.</div>`);
+  for(const b of etat.biens){
+    const estImmo = b.type==="immobilier";
+    const c = carte(`<div class="titre">${b.ico} ${b.nom}${b.loue?" · 🔑 En location":""}</div>
+      <div class="detail">Valeur actuelle : ${euros(b.valeur)}${estImmo? " · Entretien 1 %/an" + (b.loue? " · Loyer ≈ "+euros(Math.round(b.valeur*0.05))+"/an brut" : "") : ""}</div>
+      <div class="actions"></div>`);
+    if(estImmo){
+      action(c, b.loue ? "Reprendre le logement" : "Mettre en location", b.loue?"gris":"", () => {
+        b.loue = !b.loue;
+        ecrire(b.loue ? `J'ai mis ${b.nom.toLowerCase()} en location (≈ 5 % de rendement).` : `J'ai repris ${b.nom.toLowerCase()} pour y habiter.`);
+        fermerFeuille();
+      });
+    }
+    action(c, "Vendre ("+euros(Math.round(b.valeur*0.85))+")", "gris", () => {
+      etat.argent += Math.round(b.valeur*0.85);
+      ecrire(`J'ai vendu ${b.nom.toLowerCase()} pour ${euros(Math.round(b.valeur*0.85))}.`, "argent");
+      etat.biens = etat.biens.filter(x=>x!==b);
+      fermerFeuille();
     });
   }
+
   if(etat.age>=18){
-    for(const b of BIENS){
-      if(etat.biens.some(x=>x.nom===b.nom)) continue;
-      const c = carte(`<div class="titre">${b.ico} ${b.nom}</div><div class="detail">Prix : ${euros(b.prix)}</div><div class="actions"></div>`);
+    section("Acheter — Immobilier");
+    for(const m of IMMOBILIER){
+      if(etat.biens.some(x=>x.nom===m.nom)) continue;
+      const c = carte(`<div class="titre">${m.ico} ${m.nom}</div><div class="detail">Prix : ${euros(m.prix)} · Peut être habité ou mis en location.</div><div class="actions"></div>`);
       action(c, "Acheter", "", () => {
-        etat.argent -= b.prix;
-        etat.biens.push({...b});
+        etat.argent -= m.prix;
+        etat.biens.push({nom:m.nom, ico:m.ico, valeur:m.prix, type:"immobilier", loue:false});
         etat.bonheur = borne(etat.bonheur+8);
-        ecrire(`Gros achat : ${b.nom.toLowerCase()} pour ${euros(b.prix)} ! ${b.ico}`, "argent");
+        ecrire(`Achat immobilier : ${m.nom.toLowerCase()} pour ${euros(m.prix)}. ${m.ico}`, "argent");
         fermerFeuille();
-      }, etat.argent < b.prix);
+      }, etat.argent < m.prix);
     }
-  } else if(!etat.biens.length){
+    section("Acheter — Véhicules & bateaux");
+    for(const v of VEHICULES){
+      if(etat.biens.some(x=>x.nom===v.nom)) continue;
+      const c = carte(`<div class="titre">${v.ico} ${v.nom}</div><div class="detail">Prix : ${euros(v.prix)}</div><div class="actions"></div>`);
+      action(c, "Acheter", "", () => {
+        etat.argent -= v.prix;
+        etat.biens.push({nom:v.nom, ico:v.ico, valeur:Math.round(v.prix*0.9), type:"vehicule"});
+        etat.bonheur = borne(etat.bonheur+6);
+        ecrire(`Nouvel achat : ${v.nom.toLowerCase()} pour ${euros(v.prix)}. ${v.ico}`, "argent");
+        fermerFeuille();
+      }, etat.argent < v.prix);
+    }
+  } else {
     carte(`<div class="detail">Les achats seront possibles à 18 ans.</div>`);
   }
 }
@@ -704,10 +1163,10 @@ function feuilleRelations(){
   if(etat.age>=18 && !etat.relations.some(r=>r.vivant && (r.type==="partenaire"||r.type==="conjoint"))){
     const c = carte(`<div class="titre">💘 Célibataire</div><div class="detail">Envie de rencontrer quelqu'un ?</div><div class="actions"></div>`);
     action(c, "Rencontrer quelqu'un", "", () => {
-      if(alea(100) < 35 + etat.look/2){
-        const g = etat.genre==="F";
-        const nom = parmi(g?PRENOMS_M:PRENOMS_F)+" "+parmi(NOMS);
-        etat.relations.push(rel("partenaire", nom, Math.max(18, etat.age+alea(7)-3)));
+      if(alea(100) < 35 + etat.look/2 + etat.celebrite/4){
+        const g = etat.genre==="F" ? "M" : "F";
+        const nom = parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS);
+        etat.relations.push(rel("partenaire", nom, Math.max(18, etat.age+alea(7)-3), g));
         ecrire(`Je suis en couple avec ${nom} ! ❤️`, "bon");
       } else ecrire("Rencontre ratée… ce n'était pas la bonne personne.", "mauvais");
       fermerFeuille();
@@ -731,7 +1190,8 @@ function feuilleRelations(){
       action(c, "Demander en mariage 💍", "", () => {
         if(r.barre>50 || alea(2)){
           r.type="conjoint"; r.barre=borne(r.barre+15); etat.bonheur=borne(etat.bonheur+20);
-          ecrire(`${r.nom} a dit OUI ! Grand mariage à ${etat.ville}. 💍`, "bon");
+          etat.argent -= 2000;
+          ecrire(`${r.nom} a dit OUI ! Grand mariage à ${etat.ville} (2 000 € de festivités). 💍`, "bon");
         } else {
           etat.bonheur=borne(etat.bonheur-15);
           ecrire(`${r.nom} a refusé ma demande en mariage…`, "mauvais");
@@ -746,12 +1206,13 @@ function feuilleRelations(){
     }
     if(r.type==="conjoint"){
       action(c, "Faire un enfant 👶", "", () => {
+        if(dejaFait("bebe")){ ecrire("Un heureux événement à la fois : on verra l'an prochain."); fermerFeuille(); return; }
         if(alea(2)){
-          const g = alea(2);
-          const bb = parmi(g?PRENOMS_F:PRENOMS_M)+" "+etat.nom;
-          etat.relations.push(rel("enfant", bb, 0));
+          const g = alea(2)?"F":"M";
+          const bb = parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+etat.nom;
+          etat.relations.push(rel("enfant", bb, 0, g));
           etat.bonheur=borne(etat.bonheur+18);
-          ecrire(`Naissance de ${g?"ma fille":"mon fils"} ${bb} ! 👶`, "bon");
+          ecrire(`Naissance de ${g==="F"?"ma fille":"mon fils"} ${bb} ! 👶 (un enfant coûte 1 000 €/an)`, "bon");
         } else ecrire("Pas de bébé cette année, on garde espoir.");
         fermerFeuille();
       });
@@ -759,8 +1220,10 @@ function feuilleRelations(){
   }
 }
 
-/* ----- activités ----- */
+/* ----- activités : quotidien, star, risques ----- */
+
 function feuilleActivites(){
+  section("Quotidien");
   const A = [];
   A.push(["📚 Bibliothèque", "Gratuit · +Intelligence", 0, () => {
     etat.intel = borne(etat.intel+4);
@@ -782,33 +1245,119 @@ function feuilleActivites(){
     etat.sante = borne(etat.sante+15);
     ecrire("Visite chez le médecin : traitement efficace, je vais mieux.", "bon");
   }]);
-  if(etat.age>=16) A.push(["🕶️ Vol à l'étalage", "Risqué…", 0, () => {
-    if(alea(100)<45){
-      const g = 50+alea(300); etat.argent += g;
-      ecrire(`Vol à l'étalage réussi : ${euros(g)}. Pas très fier${etat.genre==="F"?"ère":""} de moi.`, "argent");
-    } else {
-      etat.prison = 1+alea(2); etat.bonheur = borne(etat.bonheur-20);
-      ecrire(`Pris en flagrant délit de vol ! Condamné${etat.genre==="F"?"e":""} à ${etat.prison} an${etat.prison>1?"s":""} de prison.`, "mauvais");
-    }
-  }]);
   for(const [titre, detail, cout, fn] of A){
     const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
-    action(c, "Y aller", "", () => { if(cout) etat.argent -= cout; fn(); fermerFeuille(); }, cout>etat.argent);
+    action(c, "Y aller", "", () => { if(cout) etat.argent -= cout; fn(); fermerFeuille(); }, cout>etat.argent && cout>0);
+  }
+
+  if(etat.age>=14){
+    section("⭐ Carrière de star");
+    const S = [];
+    S.push(["🎤 Chanter aux mariages", "1×/an · Petit cachet + célébrité", "mariages", 0, () => {
+      const gain = 150+alea(350); etat.argent += gain;
+      etat.celebrite = borne(etat.celebrite+3);
+      ecrire(`J'ai animé des mariages : ${euros(gain)} de cachets et un début de réputation.`, "argent");
+    }]);
+    S.push(["📱 Poster des clips en ligne", "1×/an · +Célébrité (selon l'apparence)", "clips", 0, () => {
+      if(alea(100) < 30 + etat.look/2){
+        etat.celebrite = borne(etat.celebrite + 6 + Math.round(etat.look/12));
+        ecrire("Mes clips cartonnent en ligne, les abonnés affluent !", "bon");
+      } else { etat.bonheur=borne(etat.bonheur-4); ecrire("Mes clips ont fait un bide. Les commentaires piquent.", "mauvais"); }
+    }]);
+    if(etat.celebrite>=20) S.push(["💿 Sortir un single", "1 500 € de studio · 1×/an", "single", 1500, () => {
+      if(alea(100) < 25 + etat.celebrite/2 + etat.look/4){
+        const gain = Math.round(etat.celebrite*80); etat.argent += gain;
+        etat.celebrite = borne(etat.celebrite+10);
+        ecrire(`Mon single est un tube ! ${euros(gain)} de royalties.`, "argent");
+      } else ecrire("Le single est passé inaperçu. 1 500 € de studio envolés.", "mauvais");
+    }]);
+    if(etat.celebrite>=40) S.push(["🎫 Tournée régionale", "8 000 € de production · 1×/an", "tournee", 8000, () => {
+      const gain = Math.round(etat.celebrite*350*(0.7+alea(60)/100));
+      etat.argent += gain; etat.sante = borne(etat.sante-6);
+      etat.celebrite = borne(etat.celebrite+8);
+      ecrire(`Tournée Moroni–Mamoudzou–Tana : ${euros(gain)} de recettes, mais quelle fatigue.`, "argent");
+    }]);
+    if(etat.celebrite>=60) S.push(["📺 Contrat publicitaire", "1×/an · Gros cachet", "pub", 0, () => {
+      const gain = Math.round(etat.celebrite*250); etat.argent += gain;
+      ecrire(`Une marque m'a payé ${euros(gain)} pour une campagne de pub.`, "argent");
+    }]);
+    for(const [titre, detail, cle, cout, fn] of S){
+      const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
+      action(c, "Le faire", "or", () => {
+        if(dejaFait(cle)){ ecrire("Déjà fait cette année. La suite l'an prochain."); fermerFeuille(); return; }
+        if(cout) etat.argent -= cout;
+        fn(); fermerFeuille();
+      }, cout>etat.argent && cout>0);
+    }
+  }
+
+  if(etat.age>=16){
+    section("Zone à risque");
+    const c = carte(`<div class="titre">🕶️ Vol à l'étalage</div><div class="detail">1×/an · Risqué : la prison n'est jamais loin.</div><div class="actions"></div>`);
+    action(c, "Tenter le coup", "rouge", () => {
+      if(dejaFait("vol")){ ecrire("Ne tentons pas le diable deux fois la même année."); fermerFeuille(); return; }
+      if(alea(100)<45){
+        const g = 50+alea(300); etat.argent += g;
+        ecrire(`Vol à l'étalage réussi : ${euros(g)}. Pas très fier${etat.genre==="F"?"ère":""} de moi.`, "argent");
+      } else {
+        etat.prison = 1+alea(2); etat.bonheur = borne(etat.bonheur-20);
+        if(etat.politique){ ecrire("Ma carrière politique s'effondre avec ce délit.", "mauvais"); etat.politique=null; if(etat.emploi&&etat.emploi.politique) etat.emploi=null; }
+        ecrire(`Pris en flagrant délit de vol ! Condamné${etat.genre==="F"?"e":""} à ${etat.prison} an${etat.prison>1?"s":""} de prison.`, "mauvais");
+      }
+      fermerFeuille();
+    });
   }
 }
 
-/* ---------------- écran d'accueil ---------------- */
+/* ---------------- écran d'accueil (choix du personnage) ---------------- */
 
-function accueil(){
+let choixGenre = "";
+
+function ecranAccueil(){
   $("plein").innerHTML = `
     <div class="cadre">
       <div class="embleme">🌺</div>
       <h1>Maisha</h1>
-      <div class="sous">Le simulateur de vie.<br>Nais quelque part entre Moroni et Paris, grandis, étudie, travaille, aime… et vois jusqu'où la vie te mène. Chaque pression sur <b>+ Âge</b> fait passer un an.</div>
+      <div class="sous">Le simulateur de vie et de dynastie.<br>Étudie, travaille, entreprends, deviens star ou président… puis transmets ton héritage à tes enfants.</div>
+      <div class="champ">
+        <label>Ton prénom (laisser vide = au hasard)</label>
+        <input id="in-prenom" maxlength="20" placeholder="Ex. : Nayam">
+      </div>
+      <div class="champ">
+        <label>Fille ou garçon ?</label>
+        <div class="genres">
+          <button id="g-f">👧 Fille</button>
+          <button id="g-m">👦 Garçon</button>
+          <button id="g-a" class="actif">🎲 Au hasard</button>
+        </div>
+      </div>
+      <div class="champ">
+        <label>Lieu de naissance</label>
+        <select id="in-lieu">
+          <option value="">🎲 Au hasard</option>
+          ${VILLES.map((v,i)=>`<option value="${i}">${v[0]}, ${v[1]}</option>`).join("")}
+        </select>
+      </div>
       <button class="grand" id="btn-commencer">🍼 Commencer une vie</button>
     </div>`;
   $("plein").classList.add("ouvert");
-  $("btn-commencer").onclick = () => nouvelleVie();
+  choixGenre = "";
+  const majGenres = () => {
+    $("g-f").classList.toggle("actif", choixGenre==="F");
+    $("g-m").classList.toggle("actif", choixGenre==="M");
+    $("g-a").classList.toggle("actif", choixGenre==="");
+  };
+  $("g-f").onclick = () => { choixGenre="F"; majGenres(); };
+  $("g-m").onclick = () => { choixGenre="M"; majGenres(); };
+  $("g-a").onclick = () => { choixGenre="";  majGenres(); };
+  $("btn-commencer").onclick = () => {
+    const iLieu = $("in-lieu").value;
+    nouvelleVie({
+      genre: choixGenre || null,
+      prenom: $("in-prenom").value,
+      lieu: iLieu==="" ? null : VILLES[+iLieu],
+    });
+  };
 }
 
 /* ---------------- branchements ---------------- */
@@ -820,10 +1369,10 @@ for(const b of document.querySelectorAll("#nav button[data-sheet]")){
   b.onclick = () => ouvrirFeuille(b.dataset.sheet);
 }
 
-if(charger() && etat && !etat.mort){
+if(charger() && etat && !etat.mort && etat.monde){
   toutAfficher();
 } else {
-  accueil();
+  ecranAccueil();
 }
 </script>
 </body>

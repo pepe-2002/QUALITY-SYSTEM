@@ -1,8 +1,15 @@
 -- ══════════════════════════════════════════════════════════════════════
 --  « Nous » — messagerie privée : base de données
---  À COLLER UNE SEULE FOIS dans Supabase → SQL Editor → Run.
+--
+--  À COLLER UNE SEULE FOIS dans VOTRE PROPRE projet Supabase
+--  (SQL Editor → Run). ⚠️ Un projet créé exprès pour « Nous » —
+--  JAMAIS celui de MoheliGo : les deux applications ne partagent rien.
 --  (On peut le relancer sans risque : tout est « if not exists » /
 --   « create or replace ».)
+--
+--  Utile seulement si vous voulez relier DEUX téléphones. Sur un seul
+--  appareil, l'application se sert de sa base intégrée et n'a besoin
+--  de rien de tout ça.
 --
 --  PRINCIPE DE CONFIDENTIALITÉ
 --  Le serveur ne stocke que :

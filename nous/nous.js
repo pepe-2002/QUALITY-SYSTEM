@@ -35,7 +35,9 @@ const dec = new TextDecoder();
 let SALON = null;        // {sid, code, nom, moi, cree}
 let CLE   = null;        // CryptoKey du salon actif
 let MSGS  = [];          // messages déchiffrés du salon actif
-let NUAGE = true;        // false → mode local (base en ligne absente)
+/* Une base de rendez-vous est-elle configurée ? Sinon on vit très bien
+   sans : tout reste dans le téléphone (voir nous-config.js). */
+let NUAGE = !!(CFG.SUPABASE_URL && CFG.SUPABASE_KEY);
 let VUE   = "fil";
 let DEV   = "";          // identifiant de cet appareil (pour savoir qui parle)
 let SYNC_T = null, DERNIER_RATTRAPAGE = 0, DERNIER_ETAT = 0, EN_SYNC = false;
@@ -453,7 +455,7 @@ function majStatut(){
 function majBandeau(){
   const b = $("fil-prog");
   const att = MSGS.filter(m => !m.id && m.etat === "att" && !m.prog).length;
-  if(!NUAGE){ b.textContent = "Mode local : ce salon vit sur ce téléphone (voir SQL-nous.sql)."; b.classList.remove("cache"); }
+  if(!NUAGE){ b.textContent = "Base dans le téléphone : ce salon reste ici (README § 2 pour le partager)."; b.classList.remove("cache"); }
   else if(att){ b.textContent = att + " message(s) en attente de réseau…"; b.classList.remove("cache"); }
   else b.classList.add("cache");
 }
@@ -794,7 +796,8 @@ function rendreTemps(){
 
   $("rg-etat").textContent = NUAGE
     ? "Synchronisé et chiffré · " + (MSGS.length) + " messages sur ce téléphone."
-    : "Mode local : la base en ligne n'est pas installée (SQL-nous.sql). Les messages restent sur ce téléphone.";
+    : "Base intégrée au téléphone — c'est le mode le plus privé, mais un seul "
+      + "appareil. Pour relier un 2e téléphone : nous-config.js + SQL-nous.sql (README § 2).";
 }
 function finDeJournee(h){
   const d = new Date(); d.setHours(h, 0, 0, 0);
@@ -1226,14 +1229,15 @@ function rendreFilSiEcheance(){
 async function demarrer(){
   if(!window.crypto || !crypto.subtle){
     document.body.innerHTML = '<div class="ecran plein"><div class="centre"><h1>Adresse non sécurisée</h1>'
-      + '<p class="sous">Le chiffrement a besoin d\'une adresse en https. Ouvrez '
-      + "https://moheligo.com/nous/</p></div></div>";
+      + '<p class="sous">Le chiffrement a besoin d\'une adresse en <b>https</b> '
+      + "(ou de <b>localhost</b> pour un essai). Ouvrez l'application depuis son "
+      + "adresse en https.</p></div></div>";
     return;
   }
   DEV = ls("nous_dev") || ls("nous_dev", uid());
   try{ DB = await dbOuvrir(); }catch(e){ toast("Mémoire du téléphone indisponible."); }
 
-  /* Un lien partagé : https://moheligo.com/nous/#c=nous-XXXX-… */
+  /* Un lien partagé : <adresse de l'app>#c=nous-XXXX-… */
   const lien = (location.hash || "").match(/c=([^&]+)/);
   let codeLien = "";
   if(lien){
@@ -1299,8 +1303,11 @@ $("nv-rejoindre").addEventListener("click", async ()=>{
 
 /* Partage du code */
 $("pt-partager").addEventListener("click", ()=>{
-  const txt = "Notre messagerie privée : https://moheligo.com/nous/\nLe code du salon : "
-    + SALON.code + "\n(à garder pour soi)";
+  /* L'adresse est celle d'où l'application est ouverte : elle n'est écrite
+     nulle part dans le code, donc rien à changer si elle déménage. */
+  const adresse = location.origin + location.pathname.replace(/index\.html$/, "");
+  const txt = "Notre messagerie privée : " + adresse
+    + "\nLe code du salon : " + SALON.code + "\n(à garder pour soi)";
   if(navigator.share) navigator.share({ text: txt }).catch(()=>{});
   else window.open("https://wa.me/?text=" + encodeURIComponent(txt), "_blank", "noopener");
 });

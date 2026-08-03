@@ -1,5 +1,5 @@
 /* « Nous » — service worker.
-   Même principe que celui de MoheliGo : la PAGE est demandée au réseau
+   La PAGE est demandée au réseau
    d'abord (jamais de version périmée après un déploiement), le reste est
    servi depuis le cache. Les appels à la base ne sont jamais interceptés :
    une conversation ne doit jamais sortir d'un cache. */

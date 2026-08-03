@@ -36,6 +36,16 @@ Six onglets : **Travail** (emploi, entreprises, recrutement), **Actifs**
 régional, construire pour son pays, politique & royaume), **+ Âge**,
 **Relations** et **Vie** (quotidien, formations, carrière de star, risques).
 
+## Rythme du jeu
+
+On ne devient pas riche en trois ans. Une entreprise met des décennies à
+bâtir une fortune : sur 15 ans dirigée par un bon PDG sans que le joueur
+touche à rien, une PME survit dans 85 % des cas et dégage un gain médian
+d'environ 21 000 € — les grandes réussites existent, mais elles se méritent.
+Les styles de dirigeant se distinguent : le bâtisseur d'équipe et le
+gestionnaire prudent ne coulent presque jamais, le développeur agressif ne
+survit qu'à 60 % mais peut rapporter beaucoup plus.
+
 ## Modes de difficulté
 
 Choisis à la création : **🌴 Facile** (5 000 € au départ, vie moins chère,
@@ -78,6 +88,16 @@ d'embauche, les marges des entreprises et l'héritage.
     emprunt bancaire à 8 % ;
   - **croissance** PME → Société → Groupe → **Multinationale**, sous
     conditions de valorisation et d'effectif ;
+  - **embaucher un PDG** : trois candidats se présentent (gestionnaire
+    prudent, développeur agressif, financier, bâtisseur d'équipe), chacun
+    avec sa compétence et ses prétentions. Une fois en poste, **il gère tout
+    seul** — réapprovisionnement, publicité, recrutement, formation,
+    licenciements de redressement — et te **remonte des dividendes** chaque
+    année. Tu peux alors ne plus rien faire de ton temps : ouvrir d'autres
+    affaires, faire de la politique, ou simplement vivre. Un **conseil
+    d'administration** te consulte tous les deux ans pour la seule vraie
+    décision d'actionnaire (réinvestir, exiger un dividende, changer de cap,
+    augmenter le PDG) ;
   - **réseau d'affaires** : déjeuners avec les patrons de la place (contrats,
     partenariats, conseils… et parfois une rencontre amoureuse), rachat de
     concurrents. À la mort, les entreprises ne

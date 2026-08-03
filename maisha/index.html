@@ -94,19 +94,20 @@
   .jauge i{display:block; height:100%; border-radius:99px; transition:width .4s}
   .stat b{width:26px; text-align:right; font-variant-numeric:tabular-nums; font-size:11px}
   #ligne-celeb{display:none; grid-column:1 / -1}
-  #nav{display:flex; align-items:center; gap:6px}
+  #nav{display:flex; align-items:center; gap:5px}
   #nav button{
     flex:1; background:var(--panel2); color:var(--ink); border:1px solid var(--line);
-    border-radius:12px; padding:9px 2px 7px; font-size:11px; cursor:pointer;
-    display:flex; flex-direction:column; align-items:center; gap:3px;
+    border-radius:11px; padding:7px 1px 6px; font-size:9.5px; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:2px; min-width:0;
   }
-  #nav button span.ico{font-size:18px; line-height:1}
+  #nav button span.ico{font-size:16px; line-height:1}
   #nav #btn-age{
-    flex:0 0 76px; height:64px; border-radius:50%/40%;
+    flex:0 0 64px; height:58px; border-radius:50%/40%;
     background:var(--accent); color:var(--accent-ink); border:none;
-    font-weight:800; font-size:15px; box-shadow:0 4px 14px rgba(24,184,155,.35);
+    font-weight:800; font-size:14px; box-shadow:0 4px 14px rgba(24,184,155,.35);
   }
   #nav #btn-age:active{transform:scale(.95)}
+  #ligne-comppro{display:none; grid-column:1 / -1}
   /* ---------- feuilles (bottom sheets) ---------- */
   #voile{
     position:absolute; inset:0; background:rgba(0,0,0,.55);
@@ -229,13 +230,15 @@
       <div class="stat"><label>Intelligence</label><div class="jauge"><i id="j-intel" style="background:var(--intel)"></i></div><b id="v-intel">0</b></div>
       <div class="stat"><label>Apparence</label><div class="jauge"><i id="j-look" style="background:var(--look)"></i></div><b id="v-look">0</b></div>
       <div class="stat" id="ligne-celeb"><label>Célébrité</label><div class="jauge"><i id="j-celeb" style="background:var(--celeb)"></i></div><b id="v-celeb">0</b></div>
+      <div class="stat" id="ligne-comppro"><label>Compét. pro</label><div class="jauge"><i id="j-comppro" style="background:var(--accent)"></i></div><b id="v-comppro">0</b></div>
     </div>
     <div id="nav">
-      <button data-sheet="carriere"><span class="ico">💼</span>Carrière</button>
+      <button data-sheet="travail"><span class="ico">💼</span>Travail</button>
       <button data-sheet="actifs"><span class="ico">🏠</span>Actifs</button>
+      <button data-sheet="pays"><span class="ico">🏛️</span>Pays</button>
       <button id="btn-age">+ Âge</button>
       <button data-sheet="relations"><span class="ico">❤️</span>Relations</button>
-      <button data-sheet="activites"><span class="ico">🎯</span>Activités</button>
+      <button data-sheet="vie"><span class="ico">🌴</span>Vie</button>
     </div>
   </footer>
 
@@ -271,11 +274,11 @@ const PRENOMS_M = ["Saïd","Moussa","Ali","Ibrahim","Ahmed","Nayamdine","Soilihi
 const NOMS = ["Madi","Abdallah","Soilih","Mohamed","Bacar","Ahamada","Attoumane","Saandi","Djoumbé","Combo","Mzé","Halidi"];
 const VILLES = [["Moroni","Comores"],["Fomboni","Comores"],["Mutsamudu","Comores"],["Mamoudzou","Mayotte"],["Marseille","France"],["Paris","France"],["Antananarivo","Madagascar"],["Dar es Salam","Tanzanie"]];
 const PAYS_DEF = {
-  "Comores":    {dev:35, eco:40, corr:55},
-  "Mayotte":    {dev:55, eco:50, corr:35},
-  "France":     {dev:85, eco:72, corr:18},
-  "Madagascar": {dev:30, eco:35, corr:60},
-  "Tanzanie":   {dev:42, eco:50, corr:48},
+  "Comores":    {dev:35, eco:40, corr:55, edu:40, peuple:55},
+  "Mayotte":    {dev:55, eco:50, corr:35, edu:55, peuple:52},
+  "France":     {dev:85, eco:72, corr:18, edu:85, peuple:50},
+  "Madagascar": {dev:30, eco:35, corr:60, edu:35, peuple:48},
+  "Tanzanie":   {dev:42, eco:50, corr:48, edu:45, peuple:53},
 };
 const FILIERES = ["Médecine","Droit","Informatique","Commerce","Ingénierie","Lettres"];
 
@@ -407,6 +410,12 @@ function charger(){
           if(e.monSalaire==null) e.monSalaire = 0;
           if(!e.employes) e.employes = [];
         }
+        if(etat.compPro==null) etat.compPro = 10;
+        if(etat.monde) for(const n in etat.monde){
+          const p = etat.monde[n];
+          if(p.edu==null) p.edu = p.dev;
+          if(p.peuple==null) p.peuple = 50;
+        }
       }
       return true;
     }
@@ -427,7 +436,7 @@ function nouvelleVie(opts){
   etat = {
     prenom, nom, genre, ville, pays:paysNom, age:0, generation:1,
     sante: 70+alea(31), bonheur: 70+alea(31),
-    intel: 30+alea(51), look: 30+alea(51), celebrite: 0,
+    intel: 30+alea(51), look: 30+alea(51), celebrite: 0, compPro: 5+alea(10), mba:false, anda:false,
     argent:0, emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome:false,
     entreprises:[], politique:null, royaume:null,
@@ -485,11 +494,12 @@ function toutAfficher(){
   const elArgent = document.querySelector("#bank .argent");
   elArgent.textContent = euros(etat.argent);
   elArgent.classList.toggle("negatif", etat.argent < 0);
-  for(const [cle,id] of [["sante","sante"],["bonheur","bonheur"],["intel","intel"],["look","look"],["celebrite","celeb"]]){
-    $("j-"+id).style.width = borne(etat[cle])+"%";
-    $("v-"+id).textContent = borne(etat[cle]);
+  for(const [cle,id] of [["sante","sante"],["bonheur","bonheur"],["intel","intel"],["look","look"],["celebrite","celeb"],["compPro","comppro"]]){
+    $("j-"+id).style.width = borne(etat[cle]||0)+"%";
+    $("v-"+id).textContent = borne(etat[cle]||0);
   }
   $("ligne-celeb").style.display = etat.celebrite>0 ? "flex" : "none";
+  $("ligne-comppro").style.display = (etat.compPro||0)>15 ? "flex" : "none";
   afficherJournal();
 }
 
@@ -544,6 +554,7 @@ function vieillir(){
     const brut = etat.emploi.salaire;
     revenus += Math.round(brut*(1-imp));
     etat.anneesTravail++;
+    etat.compPro = borne((etat.compPro||0) + 1); // l'expérience forge la compétence
     etat.emploi.annees++;
     if(!etat.emploi.politique && etat.emploi.annees % 4 === 0 && alea(2)){
       const augm = Math.round(brut * 0.12);
@@ -571,6 +582,12 @@ function vieillir(){
       const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
       const alaHauteur = comp >= poste.req;
       prod += Math.round(comp * 260 * poste.mult * (alaHauteur ? 1 : 0.45));
+      // l'expérience fait progresser la compétence
+      emp.exp = (emp.exp||0)+1;
+      if(emp.exp % 3 === 0){
+        if(emp.externe) emp.competence = Math.min(95, emp.competence+1);
+        else if(r) r.competence = Math.min(95, competence(r)+1);
+      }
       if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre + 2); }
       if(!alaHauteur && alea(3)===0)
         ecrire(`⚠️ ${emp.nom} n'a pas le niveau pour le poste de ${emp.poste.toLowerCase()} (compétence ${comp}, requis ${poste.req}) : la production s'en ressent.`, "mauvais");
@@ -713,6 +730,8 @@ function evolutionMonde(){
     p.eco = Math.max(5, Math.min(95, p.eco + alea(7)-3));
     p.dev = Math.max(5, Math.min(95, p.dev + (p.eco > p.dev ? 1 : (alea(3)===0 ? -1 : 0))));
     p.corr = Math.max(5, Math.min(95, p.corr + alea(5)-2));
+    p.edu = Math.max(5, Math.min(95, (p.edu==null?p.dev:p.edu) + (p.dev > p.edu ? 1 : 0) - (alea(4)===0 ? 1 : 0)));
+    p.peuple = Math.max(5, Math.min(95, Math.round((p.peuple==null?50:p.peuple) + (p.eco-50)/15 + (45-p.corr)/25 + alea(5)-2)));
   }
   const p = pays();
   if(alea(12)===0){
@@ -732,8 +751,11 @@ function libellePays(p){
   b.push(p.dev>=70 ? "Pays développé" : p.dev>=45 ? "En développement" : "Peu développé");
   b.push(p.corr>=60 ? "Très corrompu" : p.corr>=40 ? "Corruption notable" : "Institutions saines");
   b.push(p.eco>=65 ? "Économie florissante" : p.eco>=40 ? "Économie stable" : "Économie fragile");
+  b.push((p.edu||50)>=70 ? "Peuple très éduqué" : (p.edu||50)>=45 ? "Éducation moyenne" : "Éducation faible");
+  b.push((p.peuple||50)>=65 ? "😊 Peuple heureux" : (p.peuple||50)<=35 ? "😠 Peuple en colère" : "😐 Peuple partagé");
   return b;
 }
+function scorePays(p){ return p.dev + p.eco + (p.edu||50) - p.corr; }
 
 /* ---------------- scolarité ---------------- */
 
@@ -779,24 +801,28 @@ function politiqueAnnuelle(){
   if(!etat.politique) return;
   const P = etat.politique, p = pays();
   P.annees++;
-  // popularité : suit la santé du pays
-  P.pop = borne(P.pop + (p.eco-50)/10 - 1 + alea(5)-2);
+  // popularité : suit la santé du pays et le moral du peuple
+  P.pop = borne(P.pop + (p.eco-50)/12 + ((p.peuple||50)-50)/10 - 1 + alea(5)-2);
 
   if(P.niveau === 4){ // Président : gouverner
     P.anneesMandat++;
     fileEvenements.push({
       titre:`Gouverner ${etat.pays} — an ${P.anneesMandat}`,
-      texte:`Développement ${p.dev} · Économie ${p.eco} · Corruption ${p.corr}. Quelle est la priorité du budget cette année ?`,
+      texte:`Développement ${p.dev} · Économie ${p.eco} · Éducation ${p.edu||50} · Corruption ${p.corr} · Moral du peuple ${p.peuple||50}. Quelle est la priorité du budget cette année ?`,
       choix:[
-        {label:"🏫 Éducation et santé", effet(){ p.dev=Math.min(95,p.dev+3); P.pop=borne(P.pop+4);
-          ecrire("J'ai investi le budget dans les écoles et les hôpitaux. Le pays progresse.", "bon"); }},
-        {label:"🛣️ Grands travaux d'infrastructure", effet(){ p.eco=Math.min(95,p.eco+4); p.dev=Math.min(95,p.dev+2); P.pop=borne(P.pop+2);
-          ecrire("Routes, port, électricité : les grands chantiers sont lancés.", "bon"); }},
-        {label:"⚖️ Lutte anticorruption", effet(){ p.corr=Math.max(5,p.corr-7); P.pop=borne(P.pop+3);
+        {label:"🏫 Écoles et hôpitaux", effet(){ p.dev=Math.min(95,p.dev+3); p.edu=Math.min(95,(p.edu||50)+3); p.peuple=Math.min(95,(p.peuple||50)+3); P.pop=borne(P.pop+4);
+          ecrire("J'ai investi le budget dans les écoles et les hôpitaux. Le pays progresse et le peuple respire.", "bon"); }},
+        {label:"🛣️ Grands travaux (routes, port, électricité)", effet(){ p.eco=Math.min(95,p.eco+4); p.dev=Math.min(95,p.dev+2); p.peuple=Math.min(95,(p.peuple||50)+1); P.pop=borne(P.pop+2);
+          ecrire("Les grands chantiers sont lancés : routes, port, électricité pour tous.", "bon"); }},
+        {label:"🎓 Universités et recherche", effet(){ p.edu=Math.min(95,(p.edu||50)+5); p.dev=Math.min(95,p.dev+2); P.pop=borne(P.pop+3);
+          ecrire("Nouvelles universités, bourses, laboratoires : la jeunesse du pays s'élève.", "bon"); }},
+        {label:"🤖 Plan national IA & numérique", effet(){ p.edu=Math.min(95,(p.edu||50)+4); p.eco=Math.min(95,p.eco+4); P.pop=borne(P.pop+2);
+          ecrire("Lancement du plan national IA & numérique : formation massive, fibre, startups. Le pays entre dans le futur.", "bon"); }},
+        {label:"⚖️ Lutte anticorruption", effet(){ p.corr=Math.max(5,p.corr-7); p.peuple=Math.min(95,(p.peuple||50)+3); P.pop=borne(P.pop+3);
           ecrire("Opération mains propres : plusieurs ministres limogés, le peuple applaudit.", "bon"); }},
         {label:"💰 Détourner des fonds publics", effet(){
           const detour = 30000+alea(70000);
-          etat.argent += detour; p.corr=Math.min(95,p.corr+8); P.pop=borne(P.pop-4);
+          etat.argent += detour; p.corr=Math.min(95,p.corr+8); p.peuple=Math.max(5,(p.peuple||50)-5); P.pop=borne(P.pop-4);
           ecrire(`J'ai discrètement détourné ${euros(detour)} des caisses de l'État…`, "argent");
           if(alea(100) < p.corr/2){
             etat.prison = 3+alea(5);
@@ -888,25 +914,35 @@ function royauteAnnuelle(){
     return;
   }
 
+  const pR = pays();
   fileEvenements.push({
     titre:`👑 ${R.nom} — an ${R.annees} de règne`,
-    texte:`Sujets : ${R.sujets.toLocaleString("fr-FR")} · Prestige : ${R.prestige}/100 · Trésor royal : ${euros(R.tresor)}. Que décide la couronne cette année ?`,
+    texte:`Sujets : ${R.sujets.toLocaleString("fr-FR")} · Prestige : ${R.prestige}/100 · Trésor royal : ${euros(R.tresor)} · Moral du peuple : ${pR.peuple||50}/100. Que décide la couronne cette année ?`,
     choix:[
       {label:"🏗️ Bâtir écoles et hôpitaux", effet(){
         const c = Math.min(R.tresor, 50000); R.tresor -= c;
         R.prestige = borne(R.prestige+4); R.sujets = Math.round(R.sujets*1.03);
+        pR.edu = Math.min(95,(pR.edu||50)+3); pR.dev = Math.min(95,pR.dev+2); pR.peuple = Math.min(95,(pR.peuple||50)+3);
         ecrire(`J'ai fait bâtir écoles et hôpitaux pour ${euros(c)}. Le royaume prospère et attire de nouveaux sujets.`, "bon"); }},
+      {label:"🤖 Cité royale du numérique & IA", effet(){
+        const c = Math.min(R.tresor, 60000); R.tresor -= c;
+        R.prestige = borne(R.prestige+3);
+        pR.edu = Math.min(95,(pR.edu||50)+4); pR.eco = Math.min(95,pR.eco+4);
+        ecrire(`J'ai investi ${euros(c)} dans une cité du numérique : formation IA, fibre, jeunes codeurs du royaume.`, "bon"); }},
       {label:"🎉 Grande fête royale", effet(){
         const c = Math.min(R.tresor, 20000); R.tresor -= c;
         R.prestige = borne(R.prestige+2); etat.bonheur = borne(etat.bonheur+8);
+        pR.peuple = Math.min(95,(pR.peuple||50)+2);
         ecrire("Fête royale somptueuse : trois jours de tambours, de festins et de feux d'artifice.", "bon"); }},
       {label:"💰 Alourdir l'impôt royal", effet(){
         const g = Math.round(R.sujets*1.5); etat.argent += g;
         R.prestige = borne(R.prestige-6);
+        pR.peuple = Math.max(5,(pR.peuple||50)-5);
         ecrire(`J'ai alourdi l'impôt royal : ${euros(g)} pour ma cassette personnelle. Le peuple gronde.`, "argent"); }},
       {label:"🕊️ Année de clémence fiscale", effet(){
         R.tresor = Math.max(0, R.tresor - R.sujets);
         R.prestige = borne(R.prestige+5);
+        pR.peuple = Math.min(95,(pR.peuple||50)+4);
         ecrire("J'ai allégé les impôts du royaume. Les sujets bénissent leur souverain.", "bon"); }},
     ]
   });
@@ -922,6 +958,24 @@ function evenementsAleatoires(){
   if(a>=5 && !etat.maladie && alea(100) < 4 + (60-pays().dev)/8){
     etat.maladie = {...parmi(MALADIES), annees:0};
     ecrire(`🦟 J'ai attrapé ${etat.maladie.nom}. Direction l'hôpital (${euros(etat.maladie.cout)}) avant que ça ne s'aggrave.`, "mauvais");
+  }
+
+  // le Grand Mariage comorien (anda)
+  if(etat.pays==="Comores" && a>=30 && !etat.anda && etat.argent>=15000 &&
+     etat.relations.some(r=>r.vivant && r.type==="conjoint") && alea(3)===0){
+    fileEvenements.push({
+      titre:"Le Grand Mariage (anda) 🥁",
+      texte:"La famille insiste : il est temps d'organiser ton Grand Mariage, comme le veut la tradition. Neuf jours de fêtes, tout le village invité. Coût : 15 000 €.",
+      choix:[
+        {label:"Organiser le Grand Mariage (15 000 €)", effet(){
+          etat.argent -= 15000; etat.anda = true;
+          etat.bonheur = borne(etat.bonheur+20); etat.celebrite = borne(etat.celebrite+8);
+          for(const r of etat.relations) if(r.vivant) r.barre = borne(r.barre+12);
+          ecrire("Mon Grand Mariage restera dans les mémoires : neuf jours de fêtes, twarab, tenues brodées d'or. Me voilà notable. 🥁", "bon");
+        }},
+        {label:"Plus tard, l'argent d'abord", effet(){ ecrire("J'ai repoussé le Grand Mariage. La famille fait la moue."); }}
+      ]
+    });
   }
 
   if(a>=1 && a<=4) E.push(
@@ -955,7 +1009,14 @@ function evenementsAleatoires(){
     ()=>{ etat.bonheur=borne(etat.bonheur+9); ecrire("Superbe traversée en mer vers Mohéli, dauphins au rendez-vous. 🐬", "bon"); },
     ()=>{ if(etat.argent>500){ const perte=100+alea(Math.min(2000,Math.max(200,etat.argent/4))); etat.argent-=perte;
       ecrire(`On m'a volé ${euros(perte)} au marché. Rageant.`, "mauvais"); } },
-    ()=>{ etat.bonheur=borne(etat.bonheur-8); ecrire("Année morose, la motivation n'y était pas.", "mauvais"); }
+    ()=>{ etat.bonheur=borne(etat.bonheur-8); ecrire("Année morose, la motivation n'y était pas.", "mauvais"); },
+    ()=>{ if(etat.argent>=600){ etat.argent-=600; etat.bonheur=borne(etat.bonheur+12);
+      ecrire("Voyage à Zanzibar : épices, ruelles de pierre et couchers de soleil (600 €). Des souvenirs pour la vie.", "bon"); } },
+    ()=>{ if(etat.argent>=100){ etat.argent-=100; etat.bonheur=borne(etat.bonheur+6);
+      ecrire("Mariage d'un ami : belle fête, beau boubou, 100 € dans l'enveloppe."); } },
+    ()=>{ if(etat.biens.some(b=>b.type==="vehicule") && etat.argent>=300){ etat.argent-=300;
+      ecrire("Panne de véhicule : 300 € chez le mécanicien du coin.", "mauvais"); } },
+    ()=>{ etat.bonheur=borne(etat.bonheur+7); ecrire("Grande fête de l'Aïd en famille : la maison sentait le pilaou et les brochettes jusqu'au soir. 🌙", "bon"); }
   );
   if(a>=25) E.push(
     ()=>{ etat.sante=borne(etat.sante+6); ecrire("Grande remise en forme : footing sur la corniche chaque matin.", "bon"); }
@@ -1013,7 +1074,7 @@ function mourir(cause){
     htmlHeritiers = `<div class="fiche">🪙 Succession (après 10 % de frais) : <b>${euros(succession)}</b><br>
       👪 Partagée entre <b>${heritiers.length}</b> héritier${heritiers.length>1?"s":""} : <b>${euros(part)}</b> chacun</div>
       <div class="sous">Continuer la dynastie ${etat.nom} (génération ${etat.generation+1}) avec :</div>` +
-      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${(etat.entreprises||[]).length?" + 🏭 le"+(etat.entreprises.length>1?"s":"")+" entreprise"+(etat.entreprises.length>1?"s":""):""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
+      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${(etat.entreprises||[]).length?" + 🏭 "+(etat.entreprises.length>1?"les entreprises":"l'entreprise"):""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
   }
 
   $("plein").innerHTML = `
@@ -1055,7 +1116,7 @@ function continuerAvec(h, heritage){
     sante: 70+alea(31), bonheur: 60+alea(31),
     intel: borne(parent.intel*0.5 + 20+alea(35)),
     look: borne(parent.look*0.5 + 20+alea(35)),
-    celebrite: 0,
+    celebrite: 0, compPro: h.metier ? 15+alea(15) : 5+alea(10), mba:false, anda:false,
     argent: heritage + (h.argent||0), emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
     entreprises: parent.entreprises || [], politique:null, royaume: parent.royaume,
@@ -1124,10 +1185,10 @@ function prochaineModale(){
 
 function ouvrirFeuille(nom){
   if(etat.mort) return;
-  const titres = {carriere:"💼 Carrière", actifs:"🏠 Actifs", relations:"❤️ Relations", activites:"🎯 Activités"};
+  const titres = {travail:"💼 Travail & Entreprises", actifs:"🏠 Actifs", pays:"🏛️ Mon pays", relations:"❤️ Relations", vie:"🌴 Vie & Formations"};
   $("feuille-titre").textContent = titres[nom];
   $("feuille-corps").innerHTML = "";
-  ({carriere:feuilleCarriere, actifs:feuilleActifs, relations:feuilleRelations, activites:feuilleActivites})[nom]();
+  ({travail:feuilleTravail, actifs:feuilleActifs, pays:feuillePays, relations:feuilleRelations, vie:feuilleVie})[nom]();
   $("voile").classList.add("ouvert");
   $("feuille").classList.add("ouvert");
 }
@@ -1158,10 +1219,13 @@ function action(parent, label, classe, fn, desactive){
   return b;
 }
 
-/* ----- carrière : emploi, entreprise, politique ----- */
+/* ----- travail : emploi & entreprises ----- */
 
-function feuilleCarriere(){
+function feuilleTravail(){
   if(etat.prison>0){ carte(`<div class="titre">🔒 En prison</div><div class="detail">Impossible de travailler pour le moment.</div>`); return; }
+  carte(`<div class="titre">Mon profil professionnel</div>
+    <div class="detail">🛠️ Compétence pro : <b>${borne(etat.compPro||0)}/100</b> · 📈 Expérience : ${etat.anneesTravail||0} an${(etat.anneesTravail||0)>1?"s":""} de travail${etat.diplome?" · 🎓 "+etat.filiere:""}${etat.mba?" · 🎖️ MBA":""}<br>
+    La compétence pro augmente avec l'expérience et les formations (onglet Vie) : elle aide à décrocher les postes, les augmentations et à mieux gérer tes entreprises.</div>`);
 
   /* --- emploi salarié --- */
   section("Emploi");
@@ -1174,15 +1238,16 @@ function feuilleCarriere(){
     action(c, "Travailler dur", "", () => {
       if(dejaFait("bosser")){ ecrire("J'ai déjà tout donné au travail cette année."); fermerFeuille(); return; }
       etat.bonheur = borne(etat.bonheur-5);
+      etat.compPro = borne((etat.compPro||0)+2);
       if(alea(2)){ const aug = Math.round(etat.emploi.salaire*0.08); etat.emploi.salaire += aug;
-        ecrire(`À force de travail acharné : +${euros(aug)} brut/an.`, "argent"); }
-      else ecrire("J'ai redoublé d'efforts au travail… sans récompense pour l'instant.");
+        ecrire(`À force de travail acharné : +${euros(aug)} brut/an, et un vrai savoir-faire en plus.`, "argent"); }
+      else ecrire("J'ai redoublé d'efforts au travail… pas de prime, mais l'expérience reste.");
       fermerFeuille();
     });
     action(c, "Demander une augmentation", "gris", () => {
       if(dejaFait("augmentation")){ ecrire("Le patron m'a déjà reçu cette année. N'abusons pas."); fermerFeuille(); return; }
-      if(etat.emploi.annees>=2 && alea(3)===0){ const aug=Math.round(etat.emploi.salaire*0.12); etat.emploi.salaire+=aug;
-        ecrire(`Augmentation accordée : +${euros(aug)} brut/an !`, "argent"); }
+      if(etat.emploi.annees>=2 && alea(100) < 20 + (etat.compPro||0)/2){ const aug=Math.round(etat.emploi.salaire*0.12); etat.emploi.salaire+=aug;
+        ecrire(`Augmentation accordée : +${euros(aug)} brut/an ! Ma compétence a pesé dans la balance.`, "argent"); }
       else ecrire("Augmentation refusée. Le patron a « d'autres priorités ».", "mauvais");
       fermerFeuille();
     });
@@ -1200,7 +1265,7 @@ function feuilleCarriere(){
         <div class="detail">${euros(e.salaire)}/an brut${e.diplome?" · Diplôme requis":""}${e.intel?" · Intelligence "+e.intel+"+ conseillée":""}</div>
         <div class="actions"></div>`);
       action(c, okDiplome ? "Postuler" : "Diplôme requis", "", () => {
-        const chance = 40 + (etat.intel - (e.intel||0));
+        const chance = 40 + (etat.intel - (e.intel||0)) + Math.round((etat.compPro||0)/4);
         if(alea(100) < chance){
           etat.emploi = {titre:e.titre, salaire:e.salaire, annees:0};
           if(etat.etude==="universite"){ etat.etude="fini"; ecrire("J'abandonne mes études pour ce poste."); }
@@ -1289,8 +1354,18 @@ function feuilleCarriere(){
       const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
       const ok = comp >= poste.req;
       const cE = carte(`<div class="titre">${emp.nom}${emp.externe?" · 🧾 recruté·e":" · 👪 famille/ami"}</div>
-        <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence : ${comp}/100 ${ok?"✅ à la hauteur":"⚠️ dépassé·e (requis "+poste.req+")"}${emp.salaire < comp*120 ? " · 😠 s'estime sous-payé·e" : ""}</div>
+        <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence : ${comp}/100 · Expérience : ${emp.exp||0} an${(emp.exp||0)>1?"s":""} ${ok?"✅ à la hauteur":"⚠️ dépassé·e (requis "+poste.req+")"}${emp.salaire < comp*120 ? " · 😠 s'estime sous-payé·e" : ""}</div>
         <div class="actions"></div>`);
+      action(cE, "Former (2 000 €)", "or", () => {
+        if(dejaFait("form_"+emp.nom)){ ecrire(`${emp.nom} a déjà suivi sa formation cette année.`); fermerFeuille(); return; }
+        etat.argent -= 2000;
+        const gain = 4+alea(5);
+        if(emp.externe) emp.competence = Math.min(95, emp.competence+gain);
+        else if(r) r.competence = Math.min(95, competence(r)+gain);
+        if(r) r.barre = borne(r.barre+6);
+        ecrire(`J'ai envoyé ${emp.nom} en formation (+${gain} de compétence). Un employé formé, une entreprise plus forte.`, "bon");
+        fermerFeuille();
+      }, etat.argent < 2000);
       action(cE, "Augmenter (+20 %)", "", () => {
         emp.salaire = Math.round(emp.salaire*1.2);
         if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre+8); }
@@ -1415,18 +1490,70 @@ function feuilleCarriere(){
     }
   }
   if(etat.age<18) carte(`<div class="detail">Créer une entreprise sera possible à 18 ans.</div>`);
+}
 
-  /* --- politique & royaume --- */
-  section("Politique & Royaume");
+/* ----- pays : état de la nation, classement, politique & royaume ----- */
+
+function feuillePays(){
   const p = pays();
+  section("État de la nation");
   carte(`<div class="titre">🌍 ${etat.pays}</div>
     <div class="pays-stat"><label>Développement</label><div class="jauge"><i style="width:${p.dev}%;background:var(--intel)"></i></div><b>${p.dev}</b></div>
     <div class="pays-stat"><label>Économie</label><div class="jauge"><i style="width:${p.eco}%;background:var(--accent)"></i></div><b>${p.eco}</b></div>
+    <div class="pays-stat"><label>Éducation</label><div class="jauge"><i style="width:${p.edu||50}%;background:var(--look)"></i></div><b>${p.edu||50}</b></div>
+    <div class="pays-stat"><label>Moral du peuple</label><div class="jauge"><i style="width:${p.peuple||50}%;background:var(--bonheur)"></i></div><b>${p.peuple||50}</b></div>
     <div class="pays-stat"><label>Corruption</label><div class="jauge"><i style="width:${p.corr}%;background:var(--danger)"></i></div><b>${p.corr}</b></div>
     <div>${libellePays(p).map(x=>`<span class="badge">${x}</span>`).join("")}</div>
     <div class="detail" style="margin-top:6px">Taux d'imposition : ${Math.round(tauxImpot()*100)} %</div>`);
 
-  if(etat.royaume){
+  const rangs = Object.keys(etat.monde).map(n => ({n, s: scorePays(etat.monde[n])})).sort((a,b)=>b.s-a.s);
+  const medailles = ["🥇","🥈","🥉","4ᵉ","5ᵉ","6ᵉ"];
+  carte(`<div class="titre">🏆 Classement régional des pays</div>
+    <div class="detail">Score = développement + économie + éducation − corruption.</div>` +
+    rangs.map((r,i)=>`<div class="pays-stat"><label>${medailles[i]||i+1+"ᵉ"} ${r.n}${r.n===etat.pays?" ⭐":""}</label>
+      <div class="jauge"><i style="width:${Math.max(4,Math.min(100,Math.round(r.s/2.6)))}%;background:${r.n===etat.pays?"var(--accent)":"var(--line)"}"></i></div><b>${r.s}</b></div>`).join(""));
+
+  if(etat.age>=18){
+    const cI = carte(`<div class="titre">🏗️ Construire pour mon pays</div>
+      <div class="detail">Investis ta fortune personnelle dans le développement du pays. Le peuple s'en souvient${etat.politique?" (et les électeurs aussi)":""}${etat.royaume?" (le prestige de la couronne grandit)":""}.</div>
+      <div class="actions"></div>`);
+    action(cI, "École (10 000 €)", "", () => {
+      if(dejaFait("investEcole")){ ecrire("L'école financée cette année est déjà en chantier."); fermerFeuille(); return; }
+      etat.argent -= 10000;
+      p.edu = Math.min(95,(p.edu||50)+2); p.peuple = Math.min(95,(p.peuple||50)+1);
+      etat.bonheur = borne(etat.bonheur+5);
+      if(etat.politique) etat.politique.pop = borne(etat.politique.pop+6);
+      if(etat.royaume) etat.royaume.prestige = borne(etat.royaume.prestige+4);
+      ecrire(`J'ai financé la construction d'une école (10 000 €). L'éducation du pays progresse.`, "bon");
+      fermerFeuille();
+    }, etat.argent < 10000);
+    action(cI, "Dispensaire (15 000 €)", "", () => {
+      if(dejaFait("investDisp")){ ecrire("Le dispensaire de cette année est déjà en construction."); fermerFeuille(); return; }
+      etat.argent -= 15000;
+      p.dev = Math.min(95,p.dev+2); p.peuple = Math.min(95,(p.peuple||50)+2);
+      etat.bonheur = borne(etat.bonheur+5);
+      if(etat.politique) etat.politique.pop = borne(etat.politique.pop+7);
+      if(etat.royaume) etat.royaume.prestige = borne(etat.royaume.prestige+5);
+      ecrire(`J'ai financé un dispensaire (15 000 €). Les familles du quartier me bénissent.`, "bon");
+      fermerFeuille();
+    }, etat.argent < 15000);
+    action(cI, "Centre numérique & IA (25 000 €)", "or", () => {
+      if(dejaFait("investIA")){ ecrire("Le centre numérique financé cette année sort déjà de terre."); fermerFeuille(); return; }
+      etat.argent -= 25000;
+      p.edu = Math.min(95,(p.edu||50)+3); p.eco = Math.min(95,p.eco+2);
+      etat.intel = borne(etat.intel+2); etat.bonheur = borne(etat.bonheur+5);
+      if(etat.politique) etat.politique.pop = borne(etat.politique.pop+8);
+      if(etat.royaume) etat.royaume.prestige = borne(etat.royaume.prestige+6);
+      ecrire(`J'ai financé un centre de formation numérique & IA (25 000 €). La jeunesse code, le pays avance.`, "bon");
+      fermerFeuille();
+    }, etat.argent < 25000);
+  }
+
+  /* --- politique & royaume --- */
+  section("Politique & Royaume");
+  if(etat.prison>0){
+    carte(`<div class="titre">🔒 En prison</div><div class="detail">Pas de politique depuis une cellule.</div>`);
+  } else if(etat.royaume){
     const R = etat.royaume;
     const c = carte(`<div class="titre">👑 ${R.nom}</div>
       <div class="detail">${etat.age>=18 ? (etat.genre==="F"?"Reine":"Roi")+" depuis "+R.annees+" an"+(R.annees>1?"s":"") : "Sous régence jusqu'à tes 18 ans"} ·
@@ -1555,7 +1682,7 @@ function feuilleCarriere(){
   }
 
   // fonder un royaume par la fortune : acheter une île
-  if(!etat.royaume && etat.age>=25){
+  if(!etat.royaume && etat.age>=25 && etat.prison<=0){
     const c = carte(`<div class="titre">🏝️ Fonder ton propre royaume</div>
       <div class="detail">Achète une île de l'archipel (400 000 €) et proclame ton royaume : sujets, trésor royal, prestige… et un trône transmissible à tes enfants, de génération en génération.</div>
       <div class="actions"></div>`);
@@ -1715,9 +1842,9 @@ function feuilleRelations(){
   }
 }
 
-/* ----- activités : quotidien, star, risques ----- */
+/* ----- vie : quotidien, formations, star, risques ----- */
 
-function feuilleActivites(){
+function feuilleVie(){
   if(etat.maladie){
     section("🏥 Urgent — Santé");
     const m = etat.maladie;
@@ -1760,6 +1887,37 @@ function feuilleActivites(){
   for(const [titre, detail, cout, fn] of A){
     const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
     action(c, "Y aller", "", () => { if(cout) etat.argent -= cout; fn(); fermerFeuille(); }, cout>etat.argent && cout>0);
+  }
+
+  if(etat.age>=15){
+    section("🎓 Formations & compétences");
+    carte(`<div class="detail">🛠️ Compétence pro actuelle : <b>${borne(etat.compPro||0)}/100</b> · Expérience : ${etat.anneesTravail||0} an${(etat.anneesTravail||0)>1?"s":""}. Se former aide à décrocher les meilleurs postes, les augmentations, et à mieux gérer ses entreprises.</div>`);
+    const F = [];
+    F.push(["📖 Cours du soir", "500 € · 1×/an · +4 Intelligence", "coursSoir", 500, () => {
+      etat.intel = borne(etat.intel+4);
+      ecrire("Cours du soir toute l'année : je me sens plus affûté"+(etat.genre==="F"?"e":"")+".", "bon");
+    }]);
+    F.push(["🛠️ Formation professionnelle", "1 500 € · 1×/an · +8 Compétence pro", "formPro", 1500, () => {
+      etat.compPro = borne((etat.compPro||0)+8);
+      ecrire("Formation professionnelle validée : mon savoir-faire progresse nettement.", "bon");
+    }]);
+    if(etat.age>=16) F.push(["🤖 Bootcamp numérique & IA", "3 000 € · 1×/an · +6 Intelligence +6 Compétence pro", "bootcamp", 3000, () => {
+      etat.intel = borne(etat.intel+6); etat.compPro = borne((etat.compPro||0)+6);
+      ecrire("Bootcamp numérique & IA terminé : code, données, intelligence artificielle… je parle le futur couramment.", "bon");
+    }]);
+    if(etat.diplome && !etat.mba) F.push(["🎖️ MBA de gestion", "10 000 € · une seule fois · +12 Compétence pro +4 Intelligence", "mba", 10000, () => {
+      etat.mba = true;
+      etat.compPro = borne((etat.compPro||0)+12); etat.intel = borne(etat.intel+4);
+      ecrire("MBA de gestion en poche ! Stratégie, finance, management : me voilà redoutable en affaires. 🎖️", "bon");
+    }]);
+    for(const [titre, detail, cle, cout, fn] of F){
+      const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
+      action(c, "Se former", "", () => {
+        if(dejaFait(cle)){ ecrire("Une formation à la fois : celle-ci attendra l'an prochain."); fermerFeuille(); return; }
+        etat.argent -= cout;
+        fn(); fermerFeuille();
+      }, cout > etat.argent);
+    }
   }
 
   if(etat.age>=14){

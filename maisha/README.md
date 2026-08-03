@@ -10,9 +10,26 @@ chaque pression sur **+ Âge** fait passer un an, jusqu'à la mort… et au-del�
 la succession est partagée entre tes enfants et tu continues la dynastie avec
 l'un d'eux (génération 2, 3, 4…).
 
+## Interface
+
+Six onglets : **Travail** (emploi, entreprises, recrutement), **Actifs**
+(patrimoine, immobilier, véhicules), **Pays** (état de la nation, classement
+régional, construire pour son pays, politique & royaume), **+ Âge**,
+**Relations** et **Vie** (quotidien, formations, carrière de star, risques).
+
 ## Systèmes du jeu
 
-- **Stats** : Santé, Bonheur, Intelligence, Apparence, Célébrité (0–100).
+- **Stats** : Santé, Bonheur, Intelligence, Apparence, Célébrité et
+  **Compétence pro** (0–100) — la compétence pro monte avec l'expérience,
+  le travail acharné et les **formations** (cours du soir, formation
+  professionnelle, bootcamp numérique & IA, MBA) et améliore embauches,
+  augmentations et gestion d'entreprise. Les **employés** gagnent aussi de
+  l'expérience chaque année et peuvent être envoyés en formation (2 000 €).
+- **Le pays vit vraiment** : 5 stats par pays (Développement, Économie,
+  Éducation, Moral du peuple, Corruption), **classement régional** des pays,
+  et tu peux **construire pour ton pays** avec ta fortune (école, dispensaire,
+  centre numérique & IA). Président ou monarque, tes budgets annuels incluent
+  universités & recherche et **plan national IA & numérique**.
 - **Économie réaliste** : impôts selon le pays, coût de la vie, loyer si tu
   n'es pas propriétaire, frais d'université, coût des enfants, agios en cas de
   découvert, saisie par huissier si les dettes explosent. Pas d'argent facile :

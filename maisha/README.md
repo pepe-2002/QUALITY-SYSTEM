@@ -44,6 +44,57 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Rubans de fin de vie 🏆
+
+À ta mort, le jeu résume ta vie en un **ruban** — 20 titres possibles, du plus
+glorieux au plus cruel : **Légende**, **Souverain**, **Chef d'État**,
+**Magnat**, **Fortune**, **Patriarche**, **Star**, **Bienfaiteur**, **Érudit**,
+**Bâtisseur**, **Voyageur**, **Athlète**, **Vénérable**, **Scandaleux**,
+**Hors-la-loi**, **Repenti**, **Amoureux**, **Cœur brisé**, **Fauché**,
+**Discret**. Le ruban dépend de tout ce que tu as vécu : fortune, karma,
+couronne, descendance, délits, voyages, divorces.
+
+## Karma ☯️
+
+Une jauge cachée de 0 à 100 qui retient tes actes. Le bénévolat, l'adoption
+d'un animal, la construction d'écoles et d'hôpitaux la font monter ; les
+délits, l'infidélité et le divorce la font chuter. Elle décide de ton ruban
+final et pèse sur ta justice — un condamné au bon karma obtient plus
+facilement gain de cause en appel.
+
+## Esprit, corps et beauté
+
+**Méditation**, régime, **arts martiaux** (qui aident à fuir la police et à
+survivre en prison), lecture, **bénévolat**. Côté beauté : coiffeur,
+blanchiment des dents, **rhinoplastie**, **lifting** — avec un vrai risque
+d'échec, et la possibilité d'**attaquer le praticien en justice** pour
+dommages et intérêts.
+
+## Casino 🎰
+
+Machines à sous, **blackjack**, courses de chevaux, roulette : quatre jeux aux
+mises et probabilités différentes, une soirée par an. La maison gagne
+souvent — mais pas toujours.
+
+## Crime et prison ⛓️
+
+Cinq délits du pickpocket au **braquage de banque**, chacun avec son butin,
+son taux de réussite et sa peine. En cas d'échec, tu peux **fuir la police**.
+Une fois derrière les barreaux, la prison est vivante : **tenter l'évasion**,
+filer doux pour une remise de peine, **se battre** dans la cour, ou payer un
+**ténor du barreau** pour faire appel.
+
+## Animaux 🐾
+
+Chat, chien, chèvre, perroquet, cheval : jusqu'à trois compagnons qui donnent
+du bonheur chaque année, avec qui on peut jouer… et qu'il faudra pleurer.
+
+## Amour et ruptures
+
+Ton personnage rencontre, se marie et fait des enfants tout seul, mais tu peux
+aussi **divorcer** (avec prestation compensatoire) ou **avoir une aventure**,
+au risque du scandale, de la chute du karma et d'un divorce imposé.
+
 ## Pilote automatique 🤖
 
 Le bouton **🤖** dans l'en-tête met ton personnage en pilote automatique : il

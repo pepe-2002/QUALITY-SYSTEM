@@ -394,6 +394,55 @@ const TAILLES = [
   {nom:"Groupe",         emp:5,  valeur:800000,   ico:"🏛️"},
   {nom:"Multinationale", emp:9,  valeur:5000000,  ico:"🌍"},
 ];
+/* ---- rubans de fin de vie (le titre que mérite ta vie) ---- */
+const RUBANS = [
+  {nom:"Légende",      ico:"🏆", desc:"Une vie qui entrera dans les livres d'histoire.",
+   test:s => s.royaume && s.fortune >= 5000000},
+  {nom:"Souverain",    ico:"👑", desc:"Tu as porté une couronne jusqu'à ton dernier souffle.", test:s => s.royaume},
+  {nom:"Chef d'État",  ico:"🏛️", desc:"Tu as dirigé une nation.", test:s => s.polMax >= 4},
+  {nom:"Magnat",       ico:"💎", desc:"Un empire économique bâti de tes mains.",
+   test:s => s.fortune >= 3000000 || s.entMax >= 3},
+  {nom:"Fortune",      ico:"💰", desc:"Riche à millions.", test:s => s.fortune >= 1000000},
+  {nom:"Patriarche",   ico:"🌳", desc:"Une descendance nombreuse et un clan soudé.",
+   test:s => s.enfants >= 5 && s.petitsEnfants >= 4},
+  {nom:"Star",         ico:"⭐", desc:"Le monde entier connaissait ton nom.", test:s => s.celebrite >= 70},
+  {nom:"Bienfaiteur",  ico:"🕊️", desc:"Tu as donné plus que tu n'as pris.", test:s => s.karma >= 75},
+  {nom:"Érudit",       ico:"🎓", desc:"Un esprit hors du commun.", test:s => s.intel >= 90 && s.diplome},
+  {nom:"Bâtisseur",    ico:"🏗️", desc:"Tu as fait grandir ton pays.", test:s => s.constructions >= 3},
+  {nom:"Voyageur",     ico:"🌍", desc:"Le monde était ta maison.", test:s => s.voyages >= 6},
+  {nom:"Athlète",      ico:"💪", desc:"Une santé de fer jusqu'au bout.", test:s => s.age >= 85 && s.sante >= 60},
+  {nom:"Vénérable",    ico:"🧓", desc:"Une très longue vie.", test:s => s.age >= 95},
+  {nom:"Scandaleux",   ico:"🔥", desc:"Ta vie fut un feuilleton. Karma catastrophique.",
+   test:s => s.karma <= 25 || s.anneesPrison >= 8},
+  {nom:"Hors-la-loi",  ico:"🚨", desc:"La loi et toi, ça faisait deux.", test:s => s.crimes >= 8},
+  {nom:"Repenti",      ico:"⛓️", desc:"Tu as connu la prison, puis tu t'es relevé.",
+   test:s => s.anneesPrison > 0 && s.karma >= 60},
+  {nom:"Amoureux",     ico:"❤️", desc:"Une vie de couple exemplaire.", test:s => s.marie && s.divorces === 0 && s.age >= 70},
+  {nom:"Cœur brisé",   ico:"💔", desc:"Beaucoup d'histoires, aucune n'a tenu.", test:s => s.divorces >= 2},
+  {nom:"Fauché",       ico:"🪙", desc:"Tu meurs comme tu es né : sans rien.", test:s => s.fortune <= 0},
+  {nom:"Discret",      ico:"🍃", desc:"Une vie tranquille, sans éclat ni scandale.", test:() => true},
+];
+const ANIMAUX = [
+  {nom:"Chat", ico:"🐈", prix:80, bonheur:6},
+  {nom:"Chien", ico:"🐕", prix:200, bonheur:9},
+  {nom:"Chèvre", ico:"🐐", prix:150, bonheur:5},
+  {nom:"Perroquet", ico:"🦜", prix:400, bonheur:7},
+  {nom:"Cheval", ico:"🐎", prix:4000, bonheur:12},
+];
+const CRIMES = [
+  {nom:"Pickpocket au marché", ico:"👛", gain:[40,250], reussite:60, peine:[1,1], karma:-5},
+  {nom:"Vol à l'étalage", ico:"🕶️", gain:[50,300], reussite:55, peine:[1,2], karma:-6},
+  {nom:"Cambriolage d'une villa", ico:"🏚️", gain:[2000,15000], reussite:38, peine:[2,4], karma:-14},
+  {nom:"Vol de voiture", ico:"🚗", gain:[5000,25000], reussite:32, peine:[3,5], karma:-16},
+  {nom:"Braquage de banque", ico:"🏦", gain:[40000,180000], reussite:18, peine:[6,12], karma:-30},
+];
+const CHIRURGIES = [
+  {nom:"Coiffeur & barbier", ico:"💈", prix:60, look:3, risque:0},
+  {nom:"Blanchiment des dents", ico:"🦷", prix:600, look:6, risque:5},
+  {nom:"Rhinoplastie", ico:"👃", prix:5000, look:12, risque:22},
+  {nom:"Lifting complet", ico:"✨", prix:12000, look:20, risque:30},
+];
+
 const PROFILS_PDG = [
   {titre:"Gestionnaire prudent",  style:"prudence", compMin:45, compMax:65, coef:1.0,
    desc:"Garde le stock plein et la trésorerie saine. Croissance lente mais sûre."},
@@ -849,6 +898,10 @@ function charger(){
         for(const e of etat.entreprises) normaliserEntreprise(e);
         if(etat.compPro==null) etat.compPro = 10;
         if(!etat.difficulte) etat.difficulte = "normal";
+        if(etat.karma==null) etat.karma = 60;
+        if(!etat.animaux) etat.animaux = [];
+        for(const k of ["crimes","anneesPrison","divorces","voyages","constructions","polMax","entMax"])
+          if(etat[k]==null) etat[k] = 0;
         if(etat.monde) for(const n in etat.monde){
           const p = etat.monde[n];
           if(p.edu==null) p.edu = p.dev;
@@ -883,6 +936,7 @@ function nouvelleVie(opts){
     etude:"aucune", anneesEtude:0, diplome:false,
     entreprises:[], politique:null, royaume:null,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null, auto:false,
+    karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
@@ -971,11 +1025,28 @@ function vieillir(){
     ecrire(`Je souffre toujours de ${etat.maladie.nom}. Il faut me soigner à l'hôpital (${euros(etat.maladie.cout)}).`, "mauvais");
   }
 
+  // suivi des records de vie
+  if(etat.politique) etat.polMax = Math.max(etat.polMax||0, etat.politique.niveau);
+  for(const e of (etat.entreprises||[])) etat.entMax = Math.max(etat.entMax||0, (e.taille||0)+1);
+  // les animaux vieillissent et réconfortent
+  for(const a of (etat.animaux||[])){
+    a.age = (a.age||0)+1;
+    etat.bonheur = borne(etat.bonheur + 1);
+    if(a.age > 12 + alea(6)){
+      etat.bonheur = borne(etat.bonheur - 12);
+      ecrire(`${a.ico} ${a.nom} (${a.espece}) est mort${a.age} à ${a.age} ans. Toute la maison est triste.`.replace(String(a.age)+" à", " à"), "mauvais");
+      etat.animaux = etat.animaux.filter(x => x !== a);
+    }
+  }
+  // le karma dérive doucement vers la moyenne
+  etat.karma = borne((etat.karma||60) + (etat.karma < 50 ? 1 : etat.karma > 70 ? -1 : 0));
+
   // le monde évolue
   evolutionMonde();
 
   // prison : année blanche
   if(etat.prison > 0){
+    etat.anneesPrison = (etat.anneesPrison||0)+1;
     etat.prison--;
     etat.bonheur = borne(etat.bonheur - 8);
     ecrire("J'ai passé l'année derrière les barreaux."+(etat.prison===0?" Je suis enfin libre !":""), "mauvais");
@@ -1782,10 +1853,28 @@ function mourir(cause){
       heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${(etat.entreprises||[]).length?" + 🏭 "+(etat.entreprises.length>1?"les entreprises":"l'entreprise"):""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
   }
 
+  // le ruban : le titre que mérite cette vie
+  const bilanVie = {
+    age: etat.age, fortune: etat.argent + patrimoine, karma: etat.karma||60,
+    celebrite: etat.celebrite, intel: etat.intel, sante: etat.sante, diplome: etat.diplome,
+    royaume: !!etat.royaume, polMax: etat.polMax||0, entMax: etat.entMax||0,
+    enfants: heritiers.length, petitsEnfants: etat.petitsEnfants||0,
+    crimes: etat.crimes||0, anneesPrison: etat.anneesPrison||0, divorces: etat.divorces||0,
+    voyages: etat.voyages||0, constructions: etat.constructions||0,
+    marie: etat.relations.some(r => r.type === "conjoint"),
+  };
+  const ruban = RUBANS.find(r => { try{ return r.test(bilanVie); }catch(e){ return false; } }) || RUBANS[RUBANS.length-1];
+  etat.dernierRuban = ruban.nom;
+
   $("plein").innerHTML = `
     <div class="cadre">
       <div class="embleme">🪦</div>
       <h1>${etat.prenom} ${etat.nom}</h1>
+      <div class="fiche" style="text-align:center; border-color:var(--accent)">
+        <div style="font-size:40px">${ruban.ico}</div>
+        <div style="font-size:20px; font-weight:800; letter-spacing:.5px">Ruban « ${ruban.nom} »</div>
+        <div style="color:var(--ink-dim); font-size:13px; line-height:1.5">${ruban.desc}</div>
+      </div>
       <div class="sous">Génération ${etat.generation} · ${etat.ville}, ${etat.pays}<br>Décès ${cause} à ${etat.age} ans</div>
       <div class="fiche">
         💰 Argent au décès : <b>${euros(etat.argent)}</b><br>
@@ -1797,6 +1886,8 @@ function mourir(cause){
         ${etat.politique&&etat.politique.niveau>0 ? "🏛️ Carrière politique : <b>"+NIVEAUX_POL[etat.politique.niveau]+"</b><br>" : ""}
         ${etat.royaume ? "👑 Souverain·e de <b>"+etat.royaume.nom+"</b> ("+etat.royaume.sujets.toLocaleString("fr-FR")+" sujets)<br>" : ""}
         👶 Enfants : <b>${heritiers.length}</b>${etat.petitsEnfants?" · Petits-enfants : <b>"+etat.petitsEnfants+"</b>":""}
+        <br>☯️ Karma : <b>${etat.karma||60}/100</b>${(etat.crimes||0)?" · 🚨 Délits : <b>"+etat.crimes+"</b>":""}${(etat.anneesPrison||0)?" · ⛓️ Prison : <b>"+etat.anneesPrison+" an(s)</b>":""}
+        ${(etat.voyages||0)?"<br>✈️ Voyages : <b>"+etat.voyages+"</b>":""}${(etat.constructions||0)?" · 🏗️ Bâti pour le pays : <b>"+etat.constructions+"</b>":""}
         ${heritiers.filter(h=>h.riche).length?"<br>🌟 Enfants devenus riches par eux-mêmes : <b>"+heritiers.filter(h=>h.riche).length+"</b>":""}
         ${heritiers.some(h=>h.polit===4)?"<br>🏛️ Un de mes enfants a été <b>président·e</b> !":""}
         <br>${diff().ico} Mode : <b>${diff().nom}</b>
@@ -1830,6 +1921,7 @@ function continuerAvec(h, heritage){
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
     entreprises: parent.entreprises || [], politique:null, royaume: parent.royaume,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0, candidats:null, auto: parent.auto||false,
+    karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   // scolarité selon l'âge
@@ -2571,7 +2663,7 @@ function feuillePays(){
       if(dejaFait("investEcole")){ ecrire("L'école financée cette année est déjà en chantier."); fermerFeuille(); return; }
       etat.argent -= 10000;
       p.edu = Math.min(95,(p.edu||50)+2); p.peuple = Math.min(95,(p.peuple||50)+1);
-      etat.bonheur = borne(etat.bonheur+5);
+      etat.bonheur = borne(etat.bonheur+5); etat.karma = borne((etat.karma||60)+6); etat.constructions = (etat.constructions||0)+1;
       if(etat.politique) etat.politique.pop = borne(etat.politique.pop+6);
       if(etat.royaume) etat.royaume.prestige = borne(etat.royaume.prestige+4);
       ecrire(`J'ai financé la construction d'une école (10 000 €). L'éducation du pays progresse.`, "bon");
@@ -2581,7 +2673,7 @@ function feuillePays(){
       if(dejaFait("investDisp")){ ecrire("Le dispensaire de cette année est déjà en construction."); fermerFeuille(); return; }
       etat.argent -= 15000;
       p.dev = Math.min(95,p.dev+2); p.peuple = Math.min(95,(p.peuple||50)+2);
-      etat.bonheur = borne(etat.bonheur+5);
+      etat.bonheur = borne(etat.bonheur+5); etat.karma = borne((etat.karma||60)+7); etat.constructions = (etat.constructions||0)+1;
       if(etat.politique) etat.politique.pop = borne(etat.politique.pop+7);
       if(etat.royaume) etat.royaume.prestige = borne(etat.royaume.prestige+5);
       ecrire(`J'ai financé un dispensaire (15 000 €). Les familles du quartier me bénissent.`, "bon");
@@ -2591,7 +2683,7 @@ function feuillePays(){
       if(dejaFait("investIA")){ ecrire("Le centre numérique financé cette année sort déjà de terre."); fermerFeuille(); return; }
       etat.argent -= 25000;
       p.edu = Math.min(95,(p.edu||50)+3); p.eco = Math.min(95,p.eco+2);
-      etat.intel = borne(etat.intel+2); etat.bonheur = borne(etat.bonheur+5);
+      etat.intel = borne(etat.intel+2); etat.bonheur = borne(etat.bonheur+5); etat.karma = borne((etat.karma||60)+8); etat.constructions = (etat.constructions||0)+1;
       if(etat.politique) etat.politique.pop = borne(etat.politique.pop+8);
       if(etat.royaume) etat.royaume.prestige = borne(etat.royaume.prestige+6);
       ecrire(`J'ai financé un centre de formation numérique & IA (25 000 €). La jeunesse code, le pays avance.`, "bon");
@@ -3107,6 +3199,37 @@ function feuilleRelations(){
       });
     }
     if(r.type==="conjoint"){
+      action(c, "Divorcer", "rouge", () => {
+        const pension = Math.round(Math.max(0, etat.argent) * 0.35);
+        etat.argent -= pension;
+        etat.divorces = (etat.divorces||0)+1;
+        etat.bonheur = borne(etat.bonheur-18);
+        etat.karma = borne((etat.karma||60)-4);
+        for(const e of etat.relations) if(e.type==="enfant" && e.vivant) e.barre = borne(e.barre-12);
+        ecrire(`⚖️ Divorce prononcé d'avec ${r.nom}. La prestation compensatoire me coûte ${euros(pension)}.`, "mauvais");
+        etat.relations = etat.relations.filter(x => x !== r);
+        fermerFeuille();
+      });
+      action(c, "Avoir une aventure", "gris", () => {
+        if(dejaFait("aventure")){ ecrire("Déjà assez joué avec le feu cette année."); fermerFeuille(); return; }
+        etat.karma = borne((etat.karma||60)-10);
+        if(alea(100) < 45 + etat.look/4){
+          etat.bonheur = borne(etat.bonheur+8);
+          ecrire("J'ai eu une aventure. Personne n'en sait rien… pour l'instant.");
+        } else {
+          r.barre = borne(r.barre-40); etat.bonheur = borne(etat.bonheur-15);
+          etat.celebrite = borne(etat.celebrite+3);
+          ecrire(`💥 ${r.nom} a découvert mon infidélité ! Scandale à la maison, la confiance est brisée.`, "mauvais");
+          if(alea(2)){
+            etat.divorces = (etat.divorces||0)+1;
+            const p = Math.round(Math.max(0, etat.argent) * 0.4);
+            etat.argent -= p;
+            ecrire(`${r.nom} demande le divorce et obtient ${euros(p)}.`, "mauvais");
+            etat.relations = etat.relations.filter(x => x !== r);
+          }
+        }
+        fermerFeuille();
+      });
       action(c, "Faire un enfant 👶", "", () => {
         if(dejaFait("bebe")){ ecrire("Un heureux événement à la fois : on verra l'an prochain."); fermerFeuille(); return; }
         if(alea(2)){
@@ -3125,6 +3248,71 @@ function feuilleRelations(){
 /* ----- vie : quotidien, formations, star, risques ----- */
 
 function feuilleVie(){
+  if(etat.prison > 0){
+    section("⛓️ En prison");
+    carte(`<div class="titre">Peine en cours</div>
+      <div class="detail">Il me reste <b>${etat.prison} an${etat.prison>1?"s":""}</b> à purger. Karma : ${etat.karma||60}/100.<br>
+      Derrière les barreaux, tout se joue sur trois choix : filer doux, se battre pour survivre, ou tenter le mur.</div>`);
+    const cE = carte(`<div class="titre">🪜 Tenter l'évasion</div>
+      <div class="detail">Risqué : en cas d'échec, la peine s'alourdit. La forme physique et les arts martiaux aident.</div>
+      <div class="actions"></div>`);
+    action(cE, "S'évader", "rouge", () => {
+      if(dejaFait("evasion")){ ecrire("Les gardiens sont sur les dents, pas deux fois la même année."); fermerFeuille(); return; }
+      const ch = 22 + Math.round(etat.sante/6) + (etat.arts ? 12 : 0) + Math.round((etat.intel-50)/8);
+      if(alea(100) < ch){
+        etat.prison = 0; etat.bonheur = borne(etat.bonheur+15);
+        etat.karma = borne((etat.karma||60)-5);
+        ecrire("🪜 ÉVASION RÉUSSIE ! Par les toits, dans la nuit. Je suis libre.", "bon");
+      } else {
+        etat.prison += 1 + alea(3); etat.sante = borne(etat.sante-10); etat.bonheur = borne(etat.bonheur-15);
+        ecrire("Évasion ratée : rattrapé au grillage, tabassé, et la peine s'allonge.", "mauvais");
+      }
+      fermerFeuille();
+    });
+    const cB = carte(`<div class="titre">😇 Bonne conduite</div>
+      <div class="detail">Se tenir tranquille, travailler à l'atelier : la peine peut être réduite.</div>
+      <div class="actions"></div>`);
+    action(cB, "Filer doux", "", () => {
+      if(dejaFait("conduite")){ ecrire("Déjà fait cette année."); fermerFeuille(); return; }
+      etat.karma = borne((etat.karma||60)+6);
+      etat.compPro = borne((etat.compPro||0)+2);
+      if(alea(100) < 40){
+        etat.prison = Math.max(0, etat.prison-1);
+        ecrire("Bonne conduite récompensée : un an de remise de peine !", "bon");
+      } else ecrire("Je me tiens à carreau. L'atelier m'apprend même un métier.");
+      fermerFeuille();
+    });
+    const cF = carte(`<div class="titre">👊 Se battre</div>
+      <div class="detail">La cour de promenade a ses règles. Gagner impose le respect, perdre coûte cher.</div>
+      <div class="actions"></div>`);
+    action(cF, "Répondre aux coups", "gris", () => {
+      if(dejaFait("bagarre")){ ecrire("Une bagarre par an, sinon c'est le mitard."); fermerFeuille(); return; }
+      if(alea(100) < 40 + (etat.arts?25:0) + Math.round(etat.sante/8)){
+        etat.bonheur = borne(etat.bonheur+6); etat.look = borne(etat.look-2);
+        ecrire("👊 J'ai gagné la bagarre : on me laisse tranquille désormais.", "bon");
+      } else {
+        etat.sante = borne(etat.sante-14); etat.look = borne(etat.look-5); etat.prison += 1;
+        ecrire("👊 Passage à tabac dans la cour. Blessé, et un an de plus au mitard.", "mauvais");
+      }
+      fermerFeuille();
+    });
+    if(etat.argent >= 8000){
+      const cA = carte(`<div class="titre">⚖️ Payer un bon avocat (8 000 €)</div>
+        <div class="detail">Un ténor du barreau peut faire réviser ta peine en appel.</div>
+        <div class="actions"></div>`);
+      action(cA, "Faire appel", "or", () => {
+        if(dejaFait("appel")){ ecrire("Un appel par an, la cour ne suivrait pas."); fermerFeuille(); return; }
+        etat.argent -= 8000;
+        if(alea(100) < 45 + Math.round((etat.karma||60)/5)){
+          const remise = 1 + alea(3);
+          etat.prison = Math.max(0, etat.prison - remise);
+          ecrire(`⚖️ Appel gagné : ${remise} an${remise>1?"s":""} de moins à purger${etat.prison===0?" — je sors aujourd'hui !":"."}`, "bon");
+        } else ecrire("⚖️ Appel rejeté. 8 000 € d'honoraires pour rien.", "mauvais");
+        fermerFeuille();
+      });
+    }
+    return;
+  }
   if(etat.maladie){
     section("🏥 Urgent — Santé");
     const m = etat.maladie;
@@ -3187,6 +3375,7 @@ function feuilleVie(){
         if(dejaFait("voyage")){ ecrire("Un grand voyage par an, il faut aussi travailler."); fermerFeuille(); return; }
         etat.argent -= cout;
         for(const k in effets) etat[k] = borne((etat[k]||0) + effets[k]);
+        etat.voyages = (etat.voyages||0)+1;
         for(const r of etat.relations) if(r.vivant && (r.type==="conjoint"||r.type==="enfant")) r.barre = borne(r.barre+6);
         ecrire(`${titre.replace(/^\S+\s/,"✈️ Voyage : ")} — ${desc} (${euros(cout)})`, "bon");
         fermerFeuille();
@@ -3285,21 +3474,167 @@ function feuilleVie(){
     }
   }
 
-  if(etat.age>=16){
-    section("Zone à risque", false);
-    const c = carte(`<div class="titre">🕶️ Vol à l'étalage</div><div class="detail">1×/an · Risqué : la prison n'est jamais loin.</div><div class="actions"></div>`);
-    action(c, "Tenter le coup", "rouge", () => {
-      if(dejaFait("vol")){ ecrire("Ne tentons pas le diable deux fois la même année."); fermerFeuille(); return; }
-      if(alea(100)<45){
-        const g = 50+alea(300); etat.argent += g;
-        ecrire(`Vol à l'étalage réussi : ${euros(g)}. Pas très fier${etat.genre==="F"?"ère":""} de moi.`, "argent");
-      } else {
-        etat.prison = 1+alea(2); etat.bonheur = borne(etat.bonheur-20);
-        if(etat.politique){ ecrire("Ma carrière politique s'effondre avec ce délit.", "mauvais"); etat.politique=null; if(etat.emploi&&etat.emploi.politique) etat.emploi=null; }
-        ecrire(`Pris en flagrant délit de vol ! Condamné${etat.genre==="F"?"e":""} à ${etat.prison} an${etat.prison>1?"s":""} de prison.`, "mauvais");
+  /* --- esprit & corps --- */
+  if(etat.age>=10){
+    section("🧘 Esprit & corps", false);
+    const MB = [
+      ["🧘 Méditation", "Gratuit · +Bonheur +Santé", 0, () => {
+        etat.bonheur = borne(etat.bonheur+6); etat.sante = borne(etat.sante+3);
+        etat.karma = borne((etat.karma||60)+2);
+        ecrire("Une année de méditation quotidienne : l'esprit clair, le cœur léger.", "bon"); }],
+      ["🥗 Régime & alimentation saine", "300 € · +Santé +Apparence", 300, () => {
+        etat.sante = borne(etat.sante+7); etat.look = borne(etat.look+3);
+        ecrire("J'ai mangé sainement toute l'année : je me sens neuf.", "bon"); }],
+      ["🥋 Arts martiaux", "500 € · +Santé, utile en cas de pépin", 500, () => {
+        etat.sante = borne(etat.sante+5); etat.look = borne(etat.look+2); etat.arts = true;
+        ecrire("Entraînement d'arts martiaux : discipline du corps et de l'esprit.", "bon"); }],
+      ["📖 Lire des livres", "Gratuit · +Intelligence", 0, () => {
+        etat.intel = borne(etat.intel+3);
+        ecrire("J'ai dévoré des livres toute l'année."); }],
+      ["🤝 Bénévolat", "Gratuit · +Karma +Bonheur", 0, () => {
+        etat.karma = borne((etat.karma||60)+10); etat.bonheur = borne(etat.bonheur+5);
+        ecrire("J'ai donné de mon temps aux autres. Le quartier me le rend en respect.", "bon"); }],
+    ];
+    for(const [titre, detail, cout, fn] of MB){
+      const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
+      action(c, "Le faire", "gris", () => {
+        if(dejaFait("mb_"+titre)){ ecrire("Déjà fait cette année."); fermerFeuille(); return; }
+        if(cout) etat.argent -= cout;
+        fn(); fermerFeuille();
+      }, cout > etat.argent);
+    }
+  }
+
+  /* --- beauté --- */
+  if(etat.age>=14){
+    section("💈 Beauté & chirurgie", false);
+    for(const ch of CHIRURGIES){
+      const c = carte(`<div class="titre">${ch.ico} ${ch.nom}</div>
+        <div class="detail">${euros(ch.prix)} · +${ch.look} d'apparence${ch.risque?` · ⚠️ ${ch.risque} % de risque d'échec`:""}</div>
+        <div class="actions"></div>`);
+      action(c, "Y aller", "", () => {
+        if(dejaFait("beaute")){ ecrire("Une intervention par an, laissons le corps respirer."); fermerFeuille(); return; }
+        etat.argent -= ch.prix;
+        if(alea(100) < ch.risque){
+          etat.look = borne(etat.look - Math.round(ch.look*0.7));
+          etat.sante = borne(etat.sante - 8); etat.bonheur = borne(etat.bonheur - 10);
+          etat.plainte = ch;
+          ecrire(`💥 ${ch.nom} ratée ! Le résultat est catastrophique. Je peux porter plainte contre le praticien.`, "mauvais");
+        } else {
+          etat.look = borne(etat.look + ch.look); etat.bonheur = borne(etat.bonheur + 4);
+          ecrire(`${ch.ico} ${ch.nom} réussie : je me trouve nettement mieux (apparence ${etat.look}).`, "bon");
+        }
+        fermerFeuille();
+      }, etat.argent < ch.prix);
+    }
+    if(etat.plainte){
+      const c = carte(`<div class="titre">⚖️ Porter plainte contre le praticien</div>
+        <div class="detail">Avocat : 2 000 €. Une intervention ratée peut valoir de gros dommages et intérêts.</div>
+        <div class="actions"></div>`);
+      action(c, "Attaquer en justice", "rouge", () => {
+        etat.argent -= 2000;
+        if(alea(100) < 45 + etat.intel/4){
+          const dom = 15000 + alea(60000);
+          etat.argent += dom; etat.plainte = null;
+          ecrire(`⚖️ Procès gagné ! Le praticien me verse ${euros(dom)} de dommages et intérêts.`, "argent");
+        } else { etat.plainte = null; ecrire("⚖️ Procès perdu. 2 000 € d'avocat pour rien.", "mauvais"); }
+        fermerFeuille();
+      }, etat.argent < 2000);
+    }
+  }
+
+  /* --- animaux --- */
+  if(etat.age>=8){
+    section("🐾 Animaux", false);
+    for(const a of (etat.animaux||[])){
+      const c = carte(`<div class="titre">${a.ico} ${a.nom}</div>
+        <div class="detail">${a.espece} · ${a.age||0} an${(a.age||0)>1?"s":""} · Un compagnon fidèle (+1 bonheur par an)</div>
+        <div class="actions"></div>`);
+      action(c, "Jouer avec lui", "gris", () => {
+        etat.bonheur = borne(etat.bonheur+5);
+        ecrire(`${a.ico} Bon moment passé avec ${a.nom}.`, "bon"); fermerFeuille();
+      });
+    }
+    if((etat.animaux||[]).length < 3){
+      for(const an of ANIMAUX){
+        const c = carte(`<div class="titre">${an.ico} Adopter un ${an.nom.toLowerCase()}</div>
+          <div class="detail">${euros(an.prix)} · +${an.bonheur} de bonheur à l'adoption</div>
+          <div class="actions"></div>`);
+        action(c, "Adopter", "", () => {
+          etat.argent -= an.prix;
+          const g = alea(2) ? "F" : "M";
+          const nom = parmi(g==="F" ? PRENOMS_F : PRENOMS_M).split(" ")[0];
+          etat.animaux.push({nom, espece:an.nom, ico:an.ico, age:0});
+          etat.bonheur = borne(etat.bonheur + an.bonheur);
+          etat.karma = borne((etat.karma||60)+3);
+          ecrire(`${an.ico} J'ai adopté un ${an.nom.toLowerCase()} : je l'appelle ${nom}.`, "bon");
+          fermerFeuille();
+        }, etat.argent < an.prix);
       }
-      fermerFeuille();
-    });
+    }
+  }
+
+  /* --- casino --- */
+  if(etat.age>=18){
+    section("🎰 Casino", false);
+    carte(`<div class="detail">Le casino de la corniche. On peut y gagner gros… et tout y perdre. Une soirée par an.</div>`);
+    for(const [titre, mise, chance, gainMult, desc] of [
+      ["🎰 Machines à sous", 100, 22, 4, "Petite mise, gain modeste, mais ça arrive souvent."],
+      ["🃏 Blackjack", 1000, 44, 2, "Presque une chance sur deux, mise sérieuse."],
+      ["🐎 Courses de chevaux", 500, 25, 5, "Le favori paye peu, l'outsider paye gros."],
+      ["🎲 Roulette — tout sur le rouge", 5000, 47, 2, "Le grand frisson."],
+    ]){
+      const c = carte(`<div class="titre">${titre}</div>
+        <div class="detail">Mise : ${euros(mise)} · ${chance} % de chances · Gain ×${gainMult} · ${desc}</div>
+        <div class="actions"></div>`);
+      action(c, "Jouer", "or", () => {
+        if(dejaFait("casino")){ ecrire("Le videur me connaît : une soirée par an, ça suffit."); fermerFeuille(); return; }
+        etat.argent -= mise;
+        if(alea(100) < chance){
+          const g = mise * gainMult;
+          etat.argent += g; etat.bonheur = borne(etat.bonheur+8);
+          ecrire(`🎉 ${titre} : j'ai gagné ${euros(g - mise)} nets au casino !`, "argent");
+        } else {
+          etat.bonheur = borne(etat.bonheur-6);
+          ecrire(`${titre} : ${euros(mise)} envolés au casino. La maison gagne toujours.`, "mauvais");
+        }
+        fermerFeuille();
+      }, etat.argent < mise);
+    }
+  }
+
+  /* --- crime --- */
+  if(etat.age>=14){
+    section("🚨 Zone à risque", false);
+    carte(`<div class="detail">Karma actuel : <b>${etat.karma||60}/100</b>. Chaque délit l'abîme un peu plus — et le karma finit toujours par se rappeler à toi.</div>`);
+    for(const cr of CRIMES){
+      const chance = cr.reussite + Math.round((etat.intel-50)/6) + (etat.arts ? 5 : 0);
+      const c = carte(`<div class="titre">${cr.ico} ${cr.nom}</div>
+        <div class="detail">Butin : ${euros(cr.gain[0])} à ${euros(cr.gain[1])} · ${Math.max(5,Math.min(90,chance))} % de réussite · ${cr.peine[0]} à ${cr.peine[1]} ans de prison si tu te fais prendre</div>
+        <div class="actions"></div>`);
+      action(c, "Tenter le coup", "rouge", () => {
+        if(dejaFait("crime")){ ecrire("Un coup par an. Ne tentons pas le diable."); fermerFeuille(); return; }
+        etat.crimes = (etat.crimes||0)+1;
+        etat.karma = borne((etat.karma||60) + cr.karma);
+        if(alea(100) < chance){
+          const g = cr.gain[0] + alea(cr.gain[1]-cr.gain[0]);
+          etat.argent += g;
+          ecrire(`${cr.ico} ${cr.nom} : réussi. ${euros(g)} dans la poche, et personne n'a rien vu.`, "argent");
+        } else {
+          // une chance de fuir
+          if(alea(100) < 20 + (etat.arts?15:0) + Math.round(etat.sante/8)){
+            ecrire(`🏃 ${cr.nom} qui tourne mal — mais j'ai semé la police dans les ruelles !`, "mauvais");
+          } else {
+            etat.prison = cr.peine[0] + alea(cr.peine[1]-cr.peine[0]+1);
+            etat.bonheur = borne(etat.bonheur-20);
+            if(etat.politique){ ecrire("Ma carrière politique s'effondre avec ce délit.", "mauvais"); etat.politique=null; if(etat.emploi&&etat.emploi.politique) etat.emploi=null; }
+            if(etat.emploi){ etat.emploi = null; }
+            ecrire(`🚔 Arrêté${etat.genre==="F"?"e":""} pour ${cr.nom.toLowerCase()} ! Condamné${etat.genre==="F"?"e":""} à ${etat.prison} an${etat.prison>1?"s":""} de prison.`, "mauvais");
+          }
+        }
+        fermerFeuille();
+      });
+    }
   }
 }
 

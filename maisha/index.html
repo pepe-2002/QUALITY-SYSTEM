@@ -66,6 +66,32 @@
   #bank .argent{color:var(--money); font-weight:800; font-size:15px; font-variant-numeric:tabular-nums}
   #bank .argent.negatif{color:var(--danger)}
   #bank .sub{color:var(--ink-dim); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em}
+  /* ---------- monde 3D ---------- */
+  #monde-wrap{
+    position:relative; flex:0 0 auto; height:min(34vh,238px);
+    background:#0d1b2a; overflow:hidden; border-bottom:1px solid var(--line);
+    transition:height .3s ease;
+  }
+  #monde-wrap.replie{height:32px}
+  #monde-wrap.replie #monde, #monde-wrap.replie #monde-info{opacity:0}
+  #monde{display:block; width:100%; height:100%; touch-action:none; cursor:grab; transition:opacity .2s}
+  #monde:active{cursor:grabbing}
+  #monde-toggle{
+    position:absolute; top:6px; right:8px; z-index:3; cursor:pointer;
+    background:rgba(0,0,0,.42); color:#fff; border:1px solid rgba(255,255,255,.28);
+    border-radius:8px; font-size:11px; padding:4px 9px; font-family:inherit;
+  }
+  #monde-info{
+    position:absolute; left:8px; bottom:8px; z-index:2; max-width:72%;
+    background:rgba(0,0,0,.58); color:#fff; font-size:11.5px; padding:5px 10px;
+    border-radius:8px; opacity:0; transition:opacity .25s; pointer-events:none;
+  }
+  #monde-info.visible{opacity:1}
+  #monde-aide{
+    position:absolute; left:8px; top:8px; z-index:2;
+    background:rgba(0,0,0,.35); color:rgba(255,255,255,.85); font-size:10.5px;
+    padding:4px 9px; border-radius:8px; pointer-events:none; transition:opacity .5s;
+  }
   /* ---------- journal ---------- */
   #journal{flex:1 1 auto; overflow-y:auto; padding:14px 14px 90px; scroll-behavior:smooth}
   .annee{margin-bottom:14px}
@@ -244,6 +270,13 @@
     <div id="who"><div class="nom">—</div><div class="sub">—</div></div>
     <div id="bank"><div class="argent">0 €</div><div class="sub">Banque</div></div>
   </header>
+
+  <div id="monde-wrap">
+    <canvas id="monde"></canvas>
+    <div id="monde-aide">Fais glisser pour tourner · touche un bâtiment</div>
+    <div id="monde-info"></div>
+    <button id="monde-toggle" type="button">▾</button>
+  </div>
 
   <main id="journal"></main>
 
@@ -586,6 +619,7 @@ function toutAfficher(){
   $("ligne-celeb").style.display = etat.celebrite>0 ? "flex" : "none";
   $("ligne-comppro").style.display = (etat.compPro||0)>15 ? "flex" : "none";
   afficherJournal();
+  if(window.majMonde3D) window.majMonde3D();
 }
 
 /* ---------------- moteur : vieillir d'un an ---------------- */
@@ -2761,6 +2795,546 @@ if(charger() && etat && !etat.mort && etat.monde){
 } else {
   ecranAccueil();
 }
+</script>
+
+<script>
+/* =====================================================================
+   MONDE 3D — moteur WebGL autonome (aucune dépendance externe).
+   L'île de ta vie : ta maison, tes entreprises, ton palais poussent au
+   fil des années. Tourne la caméra au doigt, clique un bâtiment.
+   ===================================================================== */
+(function(){
+"use strict";
+
+const cv = document.getElementById("monde");
+const wrap = document.getElementById("monde-wrap");
+const info = document.getElementById("monde-info");
+if(!cv || !wrap) return;
+
+let gl = null;
+try{ gl = cv.getContext("webgl", {antialias:true, alpha:false, powerPreference:"low-power"})
+         || cv.getContext("experimental-webgl"); }catch(e){}
+if(!gl){ wrap.style.display = "none"; return; }
+
+/* ---------------- maths 4×4 (column-major) ---------------- */
+const M4 = {
+  mul(a,b){
+    const o = new Float32Array(16);
+    for(let i=0;i<4;i++) for(let j=0;j<4;j++){
+      let s=0; for(let k=0;k<4;k++) s += a[k*4+j]*b[i*4+k];
+      o[i*4+j] = s;
+    }
+    return o;
+  },
+  translation(x,y,z){ return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]); },
+  scale(x,y,z){ return new Float32Array([x,0,0,0, 0,y,0,0, 0,0,z,0, 0,0,0,1]); },
+  rotY(a){ const c=Math.cos(a), s=Math.sin(a);
+    return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]); },
+  rotZ(a){ const c=Math.cos(a), s=Math.sin(a);
+    return new Float32Array([c,s,0,0, -s,c,0,0, 0,0,1,0, 0,0,0,1]); },
+  persp(fov, asp, near, far){
+    const f = 1/Math.tan(fov/2), nf = 1/(near-far);
+    return new Float32Array([f/asp,0,0,0, 0,f,0,0, 0,0,(far+near)*nf,-1, 0,0,2*far*near*nf,0]);
+  },
+  lookAt(e,c,u){
+    let z0=e[0]-c[0], z1=e[1]-c[1], z2=e[2]-c[2];
+    let l = Math.hypot(z0,z1,z2)||1; z0/=l; z1/=l; z2/=l;
+    let x0 = u[1]*z2-u[2]*z1, x1 = u[2]*z0-u[0]*z2, x2 = u[0]*z1-u[1]*z0;
+    l = Math.hypot(x0,x1,x2)||1; x0/=l; x1/=l; x2/=l;
+    const y0 = z1*x2-z2*x1, y1 = z2*x0-z0*x2, y2 = z0*x1-z1*x0;
+    return new Float32Array([
+      x0,y0,z0,0, x1,y1,z1,0, x2,y2,z2,0,
+      -(x0*e[0]+x1*e[1]+x2*e[2]), -(y0*e[0]+y1*e[1]+y2*e[2]), -(z0*e[0]+z1*e[1]+z2*e[2]), 1]);
+  },
+};
+const mat = (x,y,z, ry, sx,sy,sz, rz) =>
+  M4.mul(M4.translation(x,y,z),
+    M4.mul(M4.rotY(ry||0), M4.mul(rz?M4.rotZ(rz):IDENT, M4.scale(sx,sy,sz))));
+const IDENT = new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1]);
+
+/* ---------------- shaders ---------------- */
+const VS = `
+attribute vec3 aPos; attribute vec3 aNor;
+uniform mat4 uProj, uView, uModel; uniform vec3 uInvScale;
+uniform float uTime, uWave;
+varying vec3 vNor; varying float vY; varying float vDist;
+void main(){
+  vec3 p = aPos;
+  if(uWave > 0.5){
+    p.y += sin(p.x*2.2 + uTime*1.6)*0.055 + cos(p.z*1.9 - uTime*1.15)*0.055;
+  }
+  vec4 world = uModel * vec4(p,1.0);
+  vNor = normalize(mat3(uModel) * (aNor * uInvScale));
+  vY = world.y;
+  vec4 eye = uView * world;
+  vDist = -eye.z;
+  gl_Position = uProj * eye;
+}`;
+const FS = `
+precision mediump float;
+varying vec3 vNor; varying float vY; varying float vDist;
+uniform vec3 uColor, uLightDir, uAmbient, uFog;
+void main(){
+  float d = max(dot(normalize(vNor), normalize(uLightDir)), 0.0);
+  vec3 c = uColor * (uAmbient + vec3(1.0,0.97,0.9) * d * 0.85);
+  float f = clamp((vDist - 14.0) / 22.0, 0.0, 0.75);
+  gl_FragColor = vec4(mix(c, uFog, f), 1.0);
+}`;
+
+function compile(type, src){
+  const s = gl.createShader(type);
+  gl.shaderSource(s, src); gl.compileShader(s);
+  if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+  return s;
+}
+let prog;
+try{
+  prog = gl.createProgram();
+  gl.attachShader(prog, compile(gl.VERTEX_SHADER, VS));
+  gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog);
+  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+}catch(e){ wrap.style.display = "none"; return; }
+gl.useProgram(prog);
+
+const A = {pos: gl.getAttribLocation(prog,"aPos"), nor: gl.getAttribLocation(prog,"aNor")};
+const U = {};
+for(const n of ["uProj","uView","uModel","uColor","uLightDir","uAmbient","uFog","uInvScale","uTime","uWave"])
+  U[n] = gl.getUniformLocation(prog, n);
+
+/* ---------------- géométries ---------------- */
+function buffer(verts, idx){
+  const vb = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
+  const ib = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ib);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(idx), gl.STATIC_DRAW);
+  return {vb, ib, n: idx.length};
+}
+// cube unité : x,z ∈ [-.5,.5], y ∈ [0,1]
+function geoCube(){
+  const v = [], i = [];
+  const faces = [
+    [[0,0,1],[-.5,0,.5],[.5,0,.5],[.5,1,.5],[-.5,1,.5]],
+    [[0,0,-1],[.5,0,-.5],[-.5,0,-.5],[-.5,1,-.5],[.5,1,-.5]],
+    [[1,0,0],[.5,0,.5],[.5,0,-.5],[.5,1,-.5],[.5,1,.5]],
+    [[-1,0,0],[-.5,0,-.5],[-.5,0,.5],[-.5,1,.5],[-.5,1,-.5]],
+    [[0,1,0],[-.5,1,.5],[.5,1,.5],[.5,1,-.5],[-.5,1,-.5]],
+    [[0,-1,0],[-.5,0,-.5],[.5,0,-.5],[.5,0,.5],[-.5,0,.5]],
+  ];
+  for(const f of faces){
+    const n = f[0], b = v.length/6;
+    for(let k=1;k<5;k++) v.push(f[k][0],f[k][1],f[k][2], n[0],n[1],n[2]);
+    i.push(b,b+1,b+2, b,b+2,b+3);
+  }
+  return buffer(v,i);
+}
+// pyramide (toit) : base 1×1 en y=0, sommet y=1
+function geoPyr(){
+  const v = [], i = [];
+  const b = [[-.5,0,.5],[.5,0,.5],[.5,0,-.5],[-.5,0,-.5]], top=[0,1,0];
+  for(let k=0;k<4;k++){
+    const p1=b[k], p2=b[(k+1)%4];
+    const ux=p2[0]-p1[0], uy=p2[1]-p1[1], uz=p2[2]-p1[2];
+    const wx=top[0]-p1[0], wy=top[1]-p1[1], wz=top[2]-p1[2];
+    let nx=uy*wz-uz*wy, ny=uz*wx-ux*wz, nz=ux*wy-uy*wx;
+    const l=Math.hypot(nx,ny,nz)||1; nx/=l; ny/=l; nz/=l;
+    const s=v.length/6;
+    v.push(p1[0],p1[1],p1[2],nx,ny,nz, p2[0],p2[1],p2[2],nx,ny,nz, top[0],top[1],top[2],nx,ny,nz);
+    i.push(s,s+1,s+2);
+  }
+  const s=v.length/6;
+  for(const p of b) v.push(p[0],p[1],p[2], 0,-1,0);
+  i.push(s,s+1,s+2, s,s+2,s+3);
+  return buffer(v,i);
+}
+// cylindre : rayon .5, y ∈ [0,1]
+function geoCyl(seg){
+  const v=[], i=[];
+  for(let k=0;k<seg;k++){
+    const a1=k/seg*Math.PI*2, a2=(k+1)/seg*Math.PI*2;
+    const x1=Math.cos(a1)*.5, z1=Math.sin(a1)*.5, x2=Math.cos(a2)*.5, z2=Math.sin(a2)*.5;
+    const s=v.length/6;
+    v.push(x1,0,z1, Math.cos(a1),0,Math.sin(a1), x2,0,z2, Math.cos(a2),0,Math.sin(a2),
+           x2,1,z2, Math.cos(a2),0,Math.sin(a2), x1,1,z1, Math.cos(a1),0,Math.sin(a1));
+    i.push(s,s+1,s+2, s,s+2,s+3);
+  }
+  const c=v.length/6; v.push(0,1,0, 0,1,0);
+  for(let k=0;k<=seg;k++){ const a=k/seg*Math.PI*2; v.push(Math.cos(a)*.5,1,Math.sin(a)*.5, 0,1,0); }
+  for(let k=0;k<seg;k++) i.push(c, c+1+k, c+2+k);
+  return buffer(v,i);
+}
+// plan subdivisé (mer / sol)
+function geoPlan(n){
+  const v=[], i=[];
+  for(let z=0;z<=n;z++) for(let x=0;x<=n;x++) v.push(x/n-.5, 0, z/n-.5, 0,1,0);
+  for(let z=0;z<n;z++) for(let x=0;x<n;x++){
+    const a=z*(n+1)+x;
+    i.push(a,a+n+1,a+n+2, a,a+n+2,a+1);
+  }
+  return buffer(v,i);
+}
+const CUBE = geoCube(), PYR = geoPyr(), CYL = geoCyl(10), MER = geoPlan(28), DISQUE = geoCyl(26);
+
+function dessiner(geo, m, col, invS, wave){
+  gl.bindBuffer(gl.ARRAY_BUFFER, geo.vb);
+  gl.vertexAttribPointer(A.pos, 3, gl.FLOAT, false, 24, 0);
+  gl.vertexAttribPointer(A.nor, 3, gl.FLOAT, false, 24, 12);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, geo.ib);
+  gl.uniformMatrix4fv(U.uModel, false, m);
+  gl.uniform3fv(U.uColor, col);
+  gl.uniform3fv(U.uInvScale, invS || [1,1,1]);
+  gl.uniform1f(U.uWave, wave ? 1 : 0);
+  gl.drawElements(gl.TRIANGLES, geo.n, gl.UNSIGNED_SHORT, 0);
+}
+
+/* ---------------- palette ---------------- */
+const C = {
+  sable:[.93,.85,.66], herbe:[.42,.66,.36], herbe2:[.35,.58,.31],
+  mer:[.14,.55,.68], merNuit:[.06,.20,.34],
+  mur:[.94,.92,.86], murTerre:[.78,.60,.44], toit:[.72,.32,.24], toitTole:[.55,.58,.62],
+  bois:[.48,.34,.22], feuille:[.24,.55,.30], feuille2:[.30,.62,.34],
+  or:[.92,.76,.26], marbre:[.97,.96,.93], verre:[.42,.68,.80],
+  boutique:[.24,.66,.60], usine:[.55,.55,.62], banque:[.35,.42,.58],
+  peau:[.65,.45,.32], habitA:[.90,.35,.35], habitB:[.25,.45,.80],
+  habitC:[.95,.70,.25], habitD:[.55,.30,.70], route:[.55,.52,.48],
+};
+
+/* ---------------- construction de la scène ---------------- */
+let objets = [];      // {geo, m, col, invS}
+let cibles = [];      // {x,y,z, label, action}
+let persos = [];      // {r, vitesse, phase, col, taille}
+let ciel = [0.36,0.60,0.78], lumiere = [0.5,1.0,0.42], ambiant = [0.45,0.46,0.50];
+
+function box(x,y,z, sx,sy,sz, col, ry){
+  objets.push({geo:CUBE, m:mat(x,y,z, ry||0, sx,sy,sz), col, invS:[1/sx,1/sy,1/sz]});
+}
+function toit(x,y,z, sx,sy,sz, col, ry){
+  objets.push({geo:PYR, m:mat(x,y,z, ry||0, sx,sy,sz), col, invS:[1/sx,1/sy,1/sz]});
+}
+function cyl(x,y,z, sx,sy,sz, col, ry, rz){
+  objets.push({geo:CYL, m:mat(x,y,z, ry||0, sx,sy,sz, rz), col, invS:[1/sx,1/sy,1/sz]});
+}
+
+function palmier(x,z, h){
+  cyl(x, 0, z, .16,h,.16, C.bois);
+  for(let k=0;k<6;k++){
+    const a = k/6*Math.PI*2;
+    objets.push({geo:CUBE, m:M4.mul(M4.translation(x, h, z),
+      M4.mul(M4.rotY(a), M4.mul(M4.rotZ(-0.45), M4.mul(M4.translation(.42,0,0), M4.scale(.95,.05,.28))))),
+      col: k%2 ? C.feuille : C.feuille2, invS:[1/.95,1/.05,1/.28]});
+  }
+  cyl(x, h-.05, z, .3,.12,.3, C.feuille2);
+}
+
+function caseTraditionnelle(x,z, ry){
+  box(x, 0, z, 1.5,.85,1.2, C.murTerre, ry);
+  toit(x, .85, z, 1.85,.6,1.5, C.toit, ry);
+  box(x + Math.cos(ry||0)*0, .02, z + .62, .34,.5,.06, C.bois, ry);
+}
+function maison(x,z, taille, ry, couleurToit){
+  const s = taille;
+  box(x, 0, z, 1.6*s, .95*s, 1.3*s, C.mur, ry);
+  toit(x, .95*s, z, 1.95*s, .7*s, 1.6*s, couleurToit||C.toit, ry);
+  box(x, .25*s, z + .66*s, .3*s,.42*s,.05, C.bois, ry);
+}
+function immeuble(x,z, etages, col, ry){
+  const h = .75 + etages*.62;
+  box(x, 0, z, 1.35, h, 1.15, col, ry);
+  for(let e=0;e<etages;e++){
+    box(x, .55 + e*.62, z + .58, 1.0, .3, .04, C.verre, ry);
+    box(x + .69, .55 + e*.62, z, .04, .3, .82, C.verre, ry);
+  }
+  box(x, h, z, 1.5, .1, 1.3, col, ry);
+}
+function palais(x,z, royal){
+  const mur = royal ? C.marbre : C.mur;
+  box(x, 0, z, 3.4, 1.25, 2.0, mur);
+  box(x, 1.25, z, 3.7, .16, 2.2, royal ? C.or : C.toitTole);
+  for(const dx of [-1.35,-.45,.45,1.35]) cyl(x+dx, 0, z+1.05, .22,1.25,.22, mur);
+  toit(x, 1.41, z, 2.0, .95, 1.6, royal ? C.or : C.toit);
+  if(royal){ cyl(x, 2.36, z, .12,.5,.12, C.or); box(x, 2.86, z, .3,.3,.3, C.or, Math.PI/4); }
+  box(x, 0, z + 1.35, 1.2, .1, .8, C.marbre);
+}
+function bateau(x,z, taille, ry){
+  box(x, .05, z, 1.5*taille, .3*taille, .55*taille, C.mur, ry);
+  box(x, .35*taille, z, .7*taille, .35*taille, .45*taille, C.mur, ry);
+  cyl(x, .7*taille, z, .06,.7*taille,.06, C.bois, ry);
+}
+function jet(x,z, ry){
+  box(x, .35, z, 2.2,.34,.42, C.marbre, ry);
+  box(x, .38, z, .6,.1,2.4, C.marbre, ry);
+  box(x-.95, .55, z, .5,.5,.1, C.marbre, ry);
+  cyl(x, .1, z, .1,.3,.1, C.route, ry);
+}
+
+/* --- reconstruit tout le monde à partir de l'état du jeu --- */
+function construire(){
+  if(typeof etat === "undefined" || !etat) return;
+  objets = []; cibles = []; persos = [];
+
+  const jour = Math.max(0, Math.min(1, 1 - Math.abs(etat.age - 38) / 55));
+  ciel    = [0.12 + jour*0.38, 0.30 + jour*0.42, 0.45 + jour*0.40];
+  lumiere = [0.5, 0.75 + jour*0.35, 0.42];
+  ambiant = [0.34 + jour*0.16, 0.35 + jour*0.16, 0.40 + jour*0.14];
+
+  // mer + île
+  objets.push({geo:MER, m:mat(0,-0.16,0, 0, 60,1,60), col: jour>0.4?C.mer:C.merNuit, invS:[1/60,1,1/60], wave:true});
+  objets.push({geo:DISQUE, m:mat(0,-0.55,0, 0, 17,.6,17), col:C.sable, invS:[1/17,1/.6,1/17]});
+  objets.push({geo:DISQUE, m:mat(0,-0.02,0, 0, 14.4,.08,14.4), col:C.herbe, invS:[1/14.4,1/.08,1/14.4]});
+  objets.push({geo:DISQUE, m:mat(-2,0.04,1, 0, 7.5,.05,9), col:C.herbe2, invS:[1/7.5,1/.05,1/9]});
+  // chemin
+  for(let k=0;k<9;k++) box(-4.2+k*1.05, .04, 3.4 - k*0.12, .9,.03,.55, C.route, 0.06);
+
+  // décor fixe
+  const arbres = [[-6.2,-4.4,1.9],[6.4,-3.6,2.1],[-6.8,3.2,1.7],[6.9,4.2,1.8],[0.4,-6.6,2.0],
+                  [-3.4,6.3,1.6],[4.2,6.6,1.8],[-8.1,0.6,1.5],[8.0,1.2,1.6]];
+  for(const [x,z,h] of arbres) palmier(x,z,h);
+  // ponton
+  for(let k=0;k<5;k++) box(-9.0 - k*0.9, -0.02, 6.6, .8,.08,1.0, C.bois);
+
+  /* --- maison de famille : toujours là --- */
+  caseTraditionnelle(-4.6, 2.4, 0.15);
+  cibles.push({x:-4.6, y:1.2, z:2.4, label:"Maison familiale", action:()=>ouvrirFeuille("relations")});
+
+  /* --- école --- */
+  if(etat.age >= 6){
+    box(4.6, 0, -4.4, 2.6, .85, 1.3, [.96,.94,.80], -0.2);
+    box(4.6, .85, -4.4, 2.8, .12, 1.5, C.toitTole, -0.2);
+    box(4.6, .3, -3.75, .35,.5,.06, C.bois, -0.2);
+    cyl(3.1, 0, -3.6, .08,1.5,.08, C.mur); box(3.1, 1.2, -3.35, .5,.3,.04, [.2,.5,.9]);
+    cibles.push({x:4.6, y:1.2, z:-4.4, label:"École", action:()=>ouvrirFeuille("vie")});
+  }
+
+  /* --- mes logements achetés --- */
+  const immo = (etat.biens||[]).filter(b=>b.type==="immobilier");
+  const posMaisons = [[-1.6,4.6],[1.9,4.9],[-3.9,-2.2],[3.4,3.0],[-0.4,-3.0],[5.6,1.4],[-6.4,-1.2]];
+  immo.forEach((b,k) => {
+    const [x,z] = posMaisons[k % posMaisons.length];
+    const grand = /Villa|Manoir|Domaine|Résidence/.test(b.nom);
+    const tresGrand = /Manoir|Domaine/.test(b.nom);
+    if(tresGrand){
+      box(x, 0, z, 3.0, 1.15, 1.9, C.marbre, 0.1);
+      box(x, 1.15, z, 3.3, .14, 2.1, C.or, 0.1);
+      toit(x, 1.29, z, 2.2, .8, 1.5, C.toit, 0.1);
+      for(const dx of [-1.15,1.15]) cyl(x+dx, 0, z+1.0, .18,1.15,.18, C.marbre);
+    } else if(grand){
+      maison(x, z, 1.35, 0.1, C.toitTole);
+      box(x+1.5, .02, z+.3, 1.2,.06,1.0, C.verre); // piscine
+    } else if(b.nom.indexOf("Immeuble")>=0){
+      immeuble(x, z, 4, [.85,.83,.78], 0.1);
+    } else {
+      maison(x, z, b.nom.indexOf("Studio")>=0 ? .75 : 1.0, 0.1);
+    }
+    cibles.push({x, y:1.3, z, label:b.nom, action:()=>ouvrirFeuille("actifs")});
+  });
+
+  /* --- mes entreprises --- */
+  const posEnt = [[-7.0,-2.6],[7.2,-1.0],[0.2,-6.0]];
+  (etat.entreprises||[]).forEach((e,k) => {
+    const [x,z] = posEnt[k % posEnt.length];
+    const t = e.taille || 0;
+    const coul = e.type==="Banque d'affaires" ? C.banque
+      : e.type==="Startup tech" ? [.30,.45,.72]
+      : e.type==="Compagnie maritime" ? [.25,.52,.60]
+      : e.type==="Société de BTP" ? [.72,.55,.28]
+      : e.type==="Restaurant" ? [.78,.40,.32] : C.boutique;
+    if(t >= 3){
+      immeuble(x, z, 9, coul, 0.12);
+      cyl(x, 6.3, z, .08,1.2,.08, C.mur);
+      box(x+2.0, 0, z+1.4, 1.4, 2.2, 1.2, coul, 0.12);
+    } else if(t === 2){
+      immeuble(x, z, 5, coul, 0.12);
+      box(x+1.9, 0, z+1.2, 1.2, 1.2, 1.0, coul, 0.12);
+    } else if(t === 1){
+      immeuble(x, z, 2, coul, 0.12);
+    } else {
+      box(x, 0, z, 1.9, .8, 1.2, coul, 0.12);
+      box(x, .8, z, 2.15, .1, 1.45, C.toitTole, 0.12);
+      box(x, .55, z+.68, 1.3, .25, .05, [1,1,1], 0.12);
+    }
+    if(e.type==="Compagnie maritime") bateau(x-1.9, z+1.9, .9, 0.4);
+    cibles.push({x, y:1.6+t*0.8, z, label:e.nom+" ("+(TAILLES[t]?TAILLES[t].nom:"PME")+")",
+                 action:()=>ouvrirFeuille("entreprise", e, "travail")});
+  });
+
+  /* --- palais : président ou roi --- */
+  if(etat.royaume){
+    palais(0.4, -1.9, true);
+    cibles.push({x:0.4, y:2.6, z:-1.9, label:"Palais royal — "+etat.royaume.nom, action:()=>ouvrirFeuille("pays")});
+  } else if(etat.politique && etat.politique.niveau >= 3){
+    palais(0.4, -1.9, false);
+    cibles.push({x:0.4, y:2.2, z:-1.9, label:"Palais présidentiel", action:()=>ouvrirFeuille("pays")});
+  } else if(etat.politique && etat.politique.niveau >= 1){
+    box(0.4, 0, -1.9, 2.2, .9, 1.3, C.mur);
+    box(0.4, .9, -1.9, 2.5, .12, 1.5, C.toitTole);
+    box(0.4, 1.02, -1.9, .35,.45,.35, [.2,.45,.8]);
+    cibles.push({x:0.4, y:1.4, z:-1.9, label:"Mairie", action:()=>ouvrirFeuille("pays")});
+  }
+
+  /* --- ce que j'ai construit pour le pays --- */
+  const dev = pays().dev;
+  if(dev >= 50){ box(-2.4, 0, -5.2, 2.0,.9,1.1, [.95,.95,.97], 0.3); box(-2.4,.9,-5.2, 2.2,.12,1.3, C.toitTole, 0.3);
+                 box(-2.4, .95, -5.2, .18,.5,.18, [.9,.25,.25]); box(-2.4, 1.2, -5.2, .5,.16,.16, [.9,.25,.25]); }
+  if((pays().edu||50) >= 60){ immeuble(7.4, 3.4, 3, [.62,.55,.80], -0.3); }
+
+  /* --- véhicules & luxe --- */
+  const noms = (etat.biens||[]).map(b=>b.nom);
+  if(noms.some(n=>/Scooter|Voiture/.test(n))){
+    const lux = noms.some(n=>/luxe/.test(n));
+    box(-3.0, .12, 3.6, .95,.28,.45, lux?C.or:C.habitB, 0.1);
+    box(-3.05, .40, 3.6, .5,.22,.42, C.verre, 0.1);
+    cyl(-3.35, .0, 3.42, .22,.12,.22, [.1,.1,.1], 0, Math.PI/2);
+    cyl(-2.65, .0, 3.42, .22,.12,.22, [.1,.1,.1], 0, Math.PI/2);
+  }
+  if(noms.some(n=>/Barque|Vedette/.test(n))) bateau(-10.6, 6.6, .8, 0.1);
+  if(noms.some(n=>/Yacht/.test(n))) bateau(-12.4, 5.0, 1.9, 0.2);
+  if(noms.some(n=>/Jet privé/.test(n))){
+    for(let k=0;k<7;k++) box(6.0+k*1.2, 0, 7.4, 1.1,.04,2.2, C.route);
+    jet(8.4, 7.4, 0.0);
+  }
+
+  /* --- les habitants : moi et ma famille --- */
+  const famille = (etat.relations||[]).filter(r=>r.vivant).slice(0,7);
+  const cols = [C.habitA, C.habitB, C.habitC, C.habitD];
+  persos.push({r:2.1, v:0.30, ph:0, col:C.habitA, h:0.62, cx:-4.6, cz:2.4});
+  famille.forEach((r,k) => {
+    persos.push({r: 1.4 + (k%3)*0.75, v: 0.20 + (k%4)*0.07, ph: k*1.5,
+                 col: cols[k%4], h: r.age<14 ? 0.38 : 0.56,
+                 cx: r.type==="enfant" ? -1.0 : -4.6, cz: r.type==="enfant" ? 3.6 : 2.4});
+  });
+}
+
+/* ---------------- caméra & interactions ---------------- */
+let angle = 0.7, hauteur = 0.38, dist = 17.5, autoRot = true;
+let drag = null, dpr = 1, W = 1, H = 1;
+let dernierProj = null, dernierView = null;
+
+function redim(){
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = wrap.clientWidth; H = wrap.clientHeight;
+  cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+  cv.style.width = W+"px"; cv.style.height = H+"px";
+  gl.viewport(0,0,cv.width,cv.height);
+}
+window.addEventListener("resize", redim);
+
+function pointeur(ev){
+  const t = ev.touches ? ev.touches[0] : ev;
+  const r = cv.getBoundingClientRect();
+  return {x: t.clientX - r.left, y: t.clientY - r.top};
+}
+const aide = document.getElementById('monde-aide');
+setTimeout(()=>{ if(aide) aide.style.opacity = '0'; }, 7000);
+function debut(ev){ const p = pointeur(ev); drag = {...p, x0:p.x, y0:p.y, bouge:false}; autoRot = false; if(aide) aide.style.opacity='0'; }
+function bouge(ev){
+  if(!drag) return;
+  const p = pointeur(ev);
+  const dx = p.x - drag.x, dy = p.y - drag.y;
+  if(Math.abs(p.x-drag.x0) + Math.abs(p.y-drag.y0) > 6) drag.bouge = true;
+  angle -= dx * 0.011;
+  hauteur = Math.max(0.16, Math.min(1.15, hauteur + dy * 0.006));
+  drag.x = p.x; drag.y = p.y;
+  if(ev.cancelable) ev.preventDefault();
+}
+function fin(ev){
+  if(drag && !drag.bouge) clic(drag.x0, drag.y0);
+  drag = null;
+  setTimeout(()=>{ autoRot = true; }, 4000);
+}
+cv.addEventListener("mousedown", debut);
+window.addEventListener("mousemove", bouge);
+window.addEventListener("mouseup", fin);
+cv.addEventListener("touchstart", debut, {passive:true});
+cv.addEventListener("touchmove", bouge, {passive:false});
+cv.addEventListener("touchend", fin);
+cv.addEventListener("wheel", e => { dist = Math.max(9, Math.min(30, dist + e.deltaY*0.02)); e.preventDefault(); }, {passive:false});
+
+function projeter(x,y,z){
+  if(!dernierProj) return null;
+  const v = dernierView, p = dernierProj;
+  const ex = v[0]*x + v[4]*y + v[8]*z + v[12];
+  const ey = v[1]*x + v[5]*y + v[9]*z + v[13];
+  const ez = v[2]*x + v[6]*y + v[10]*z + v[14];
+  const cw = -ez;
+  if(cw <= 0.2) return null;
+  const cx = p[0]*ex, cy = p[5]*ey;
+  return {sx: (cx/cw*0.5 + 0.5) * W, sy: (0.5 - cy/cw*0.5) * H};
+}
+function clic(sx, sy){
+  let best = null, bd = 46;
+  for(const c of cibles){
+    const p = projeter(c.x, c.y, c.z);
+    if(!p) continue;
+    const d = Math.hypot(p.sx - sx, p.sy - sy);
+    if(d < bd){ bd = d; best = c; }
+  }
+  if(best){
+    info.textContent = best.label;
+    info.classList.add("visible");
+    clearTimeout(info._t);
+    info._t = setTimeout(()=>info.classList.remove("visible"), 2600);
+    try{ best.action(); }catch(e){}
+  }
+}
+
+/* ---------------- boucle de rendu ---------------- */
+gl.enable(gl.DEPTH_TEST);
+gl.enableVertexAttribArray(A.pos);
+gl.enableVertexAttribArray(A.nor);
+
+let t0 = 0, actif = true;
+function rendu(ms){
+  requestAnimationFrame(rendu);
+  if(!actif || wrap.classList.contains("replie")) return;
+  const t = ms * 0.001;
+  if(autoRot) angle += (t - t0) * 0.055;
+  t0 = t;
+  if(cv.width !== Math.round(W*dpr) || W !== wrap.clientWidth) redim();
+
+  gl.clearColor(ciel[0], ciel[1], ciel[2], 1);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+  const asp = cv.width / Math.max(1, cv.height);
+  const proj = M4.persp(0.85, asp, 0.5, 90);
+  const ey = 3.0 + hauteur * 13;
+  const view = M4.lookAt([Math.sin(angle)*dist, ey, Math.cos(angle)*dist], [0, 1.1, 0], [0,1,0]);
+  dernierProj = proj; dernierView = view;
+
+  gl.uniformMatrix4fv(U.uProj, false, proj);
+  gl.uniformMatrix4fv(U.uView, false, view);
+  gl.uniform3fv(U.uLightDir, lumiere);
+  gl.uniform3fv(U.uAmbient, ambiant);
+  gl.uniform3fv(U.uFog, ciel);
+  gl.uniform1f(U.uTime, t);
+
+  for(const o of objets) dessiner(o.geo, o.m, o.col, o.invS, o.wave);
+
+  // habitants animés
+  for(const p of persos){
+    const a = t * p.v + p.ph;
+    const x = p.cx + Math.cos(a) * p.r, z = p.cz + Math.sin(a) * p.r;
+    const saut = Math.abs(Math.sin(a * 7)) * 0.045;
+    dessiner(CUBE, mat(x, saut, z, -a, .17, p.h, .17), p.col, [1/.17, 1/p.h, 1/.17]);
+    dessiner(CUBE, mat(x, p.h + saut, z, -a, .19, .19, .19), C.peau, [1/.19,1/.19,1/.19]);
+  }
+}
+requestAnimationFrame(rendu);
+
+/* ---------------- branchements ---------------- */
+document.addEventListener("visibilitychange", ()=>{ actif = !document.hidden; });
+const btnToggle = document.getElementById("monde-toggle");
+if(btnToggle) btnToggle.onclick = () => {
+  wrap.classList.toggle("replie");
+  btnToggle.textContent = wrap.classList.contains("replie") ? "🌍 Voir mon île" : "▾";
+  if(!wrap.classList.contains("replie")) redim();
+};
+
+redim();
+window.majMonde3D = construire;
+construire();
+})();
 </script>
 </body>
 </html>

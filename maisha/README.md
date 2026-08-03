@@ -10,6 +10,25 @@ chaque pression sur **+ Âge** fait passer un an, jusqu'à la mort… et au-del�
 la succession est partagée entre tes enfants et tu continues la dynastie avec
 l'un d'eux (génération 2, 3, 4…).
 
+## Monde 3D 🌍
+
+En haut de l'écran, **ton île en 3D temps réel** (WebGL écrit à la main, sans
+aucune bibliothèque externe) : mer animée, plage, palmiers, et surtout **tes
+constructions qui poussent au fil de ta vie** — la case familiale, l'école, tes
+maisons achetées (studio → villa avec piscine → manoir à colonnes), tes
+entreprises dont le bâtiment grandit avec leur taille (échoppe → immeuble →
+tour de multinationale), la mairie, le palais présidentiel, le **palais royal
+doré** si tu es couronné, l'hôpital et l'université quand ton pays se
+développe, et tes véhicules (voiture, barque, yacht, **jet privé sur sa
+piste**). Ta famille se promène dans le décor.
+
+- **Fais glisser** pour tourner la caméra, molette pour zoomer.
+- **Touche un bâtiment** pour ouvrir l'écran correspondant (une entreprise
+  ouvre sa gestion, le palais ouvre le gouvernement, la maison les relations).
+- La lumière change avec l'âge : aube dans l'enfance, plein jour à la force de
+  l'âge, couchant à la vieillesse.
+- Bouton **▾** pour replier la vue si tu préfères lire le journal.
+
 ## Interface
 
 Six onglets : **Travail** (emploi, entreprises, recrutement), **Actifs**

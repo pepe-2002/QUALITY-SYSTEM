@@ -4,11 +4,12 @@
 #  ⚠️ Ne publie QUE le dossier nous/. Le reste du dépôt — RA-QDMS,
 #  MoheliGo — n'est pas touché et n'est pas mis en ligne par ici.
 #
-#  Deux travaux, et ce n'est pas un caprice : la première fois, Pages
-#  n'est pas encore activé, donc l'environnement « github-pages »
-#  n'existe pas — un travail qui le réclame échoue avant même de
-#  démarrer. Le premier travail active donc Pages (enablement: true) et
-#  prépare le paquet ; le second, qui vient après, publie.
+#  ⚠️ À FAIRE UNE SEULE FOIS, ET SEUL LE PROPRIÉTAIRE PEUT LE FAIRE :
+#     Settings → Pages → Build and deployment → Source : « GitHub Actions »
+#  GitHub interdit à un robot de créer le site lui-même (l'API répond
+#  « Resource not accessible by integration »). Une fois l'interrupteur
+#  basculé, tout le reste est automatique et il n'y a plus jamais rien
+#  à toucher : chaque modification de nous/ remet le site à jour.
 # ════════════════════════════════════════════════════════════════════
 
 name: Nous — mise en ligne
@@ -31,15 +32,13 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # ── 1. Activer Pages (si besoin) et préparer le paquet ──
+  # ── 1. Préparer le paquet ──
   preparer:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       # Seul le dossier de l'application part en ligne.
       - uses: actions/upload-pages-artifact@v3

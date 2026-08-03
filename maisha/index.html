@@ -364,15 +364,30 @@ function competence(r){
   }
   return r.competence;
 }
-function employeDe(nom){ return etat.entreprise && (etat.entreprise.employes||[]).some(x=>x.nom===nom); }
-function libererEmployes(){
-  const e = etat.entreprise;
-  if(!e || !e.employes) return;
-  for(const emp of e.employes){
+function employeDe(nom){ return (etat.entreprises||[]).some(e => (e.employes||[]).some(x=>x.nom===nom)); }
+function libererEmployes(e){
+  for(const emp of (e.employes||[])){
+    if(emp.externe) continue;
     const r = etat.relations.find(x=>x.nom===emp.nom);
     if(r){ r.metier = null; r.salaire = 0; }
   }
   e.employes = [];
+}
+function candidatsDuJour(){
+  if(!etat.candidats || etat.candidats.age !== etat.age){
+    const liste = [];
+    for(let i=0;i<3;i++){
+      const g = alea(2)?"F":"M";
+      const comp = 25+alea(70);
+      liste.push({
+        nom: parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS),
+        genre:g, age:20+alea(30), competence:comp,
+        pretention: Math.round((comp*130 + alea(3000))/500)*500
+      });
+    }
+    etat.candidats = {age: etat.age, liste};
+  }
+  return etat.candidats.liste;
 }
 function estPolitique(){ return !!etat.politique; }
 function enfants(){ return etat.relations.filter(r=>r.type==="enfant" && r.vivant); }
@@ -384,11 +399,14 @@ function charger(){
     if(brut){
       etat = JSON.parse(brut);
       // migration des anciennes sauvegardes
-      if(etat && etat.entreprise){
-        const e = etat.entreprise;
-        if(e.caisse==null) e.caisse = 0;
-        if(e.monSalaire==null) e.monSalaire = 0;
-        if(!e.employes) e.employes = [];
+      if(etat){
+        if(etat.entreprise){ etat.entreprises = [etat.entreprise]; delete etat.entreprise; }
+        if(!etat.entreprises) etat.entreprises = [];
+        for(const e of etat.entreprises){
+          if(e.caisse==null) e.caisse = 0;
+          if(e.monSalaire==null) e.monSalaire = 0;
+          if(!e.employes) e.employes = [];
+        }
       }
       return true;
     }
@@ -412,8 +430,8 @@ function nouvelleVie(opts){
     intel: 30+alea(51), look: 30+alea(51), celebrite: 0,
     argent:0, emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome:false,
-    entreprise:null, politique:null, royaume:null,
-    pension:0, maladie:null, petitsEnfants:0, anneesTravail:0,
+    entreprises:[], politique:null, royaume:null,
+    pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
@@ -452,7 +470,8 @@ function libelleEtat(){
   if(etat.politique && etat.politique.niveau>0) return NIVEAUX_POL[etat.politique.niveau];
   if(etat.pension && !etat.emploi) return "Retraité"+(etat.genre==="F"?"e":"");
   if(etat.emploi) return etat.emploi.titre;
-  if(etat.entreprise) return "Patron·ne · "+etat.entreprise.type;
+  if(etat.entreprises && etat.entreprises.length)
+    return "Patron·ne · "+(etat.entreprises.length>1 ? etat.entreprises.length+" entreprises" : etat.entreprises[0].type);
   if(etat.celebrite>=50) return "Star ⭐";
   if(etat.etude==="universite") return "Étudiant"+(etat.genre==="F"?"e":"")+" en "+etat.filiere;
   if(etat.etude!=="aucune" && etat.age<18) return "Scolarisé"+(etat.genre==="F"?"e":"");
@@ -533,9 +552,10 @@ function vieillir(){
     }
   }
 
-  if(etat.entreprise){
-    const e = etat.entreprise;
+  const faillites = [];
+  for(const e of (etat.entreprises||[])){
     e.employes = (e.employes||[]).filter(emp => {
+      if(emp.externe) return true;
       const r = etat.relations.find(x=>x.nom===emp.nom);
       return r && r.vivant;
     });
@@ -546,23 +566,22 @@ function vieillir(){
     let prod = 0;
     const demissionnaires = [];
     for(const emp of e.employes){
-      const r = etat.relations.find(x=>x.nom===emp.nom);
-      const comp = competence(r);
+      const r = emp.externe ? null : etat.relations.find(x=>x.nom===emp.nom);
+      const comp = emp.externe ? emp.competence : competence(r);
       const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
       const alaHauteur = comp >= poste.req;
       prod += Math.round(comp * 260 * poste.mult * (alaHauteur ? 1 : 0.45));
-      r.salaire = emp.salaire;
-      r.barre = borne(r.barre + 2);
+      if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre + 2); }
       if(!alaHauteur && alea(3)===0)
         ecrire(`⚠️ ${emp.nom} n'a pas le niveau pour le poste de ${emp.poste.toLowerCase()} (compétence ${comp}, requis ${poste.req}) : la production s'en ressent.`, "mauvais");
       if(emp.salaire < comp*120){
-        r.barre = borne(r.barre - 10);
+        if(r) r.barre = borne(r.barre - 10);
         if(alea(3)===0) demissionnaires.push(emp);
       }
     }
     for(const emp of demissionnaires){
-      const r = etat.relations.find(x=>x.nom===emp.nom);
-      ecrire(`${emp.nom} claque la porte de « ${e.nom} » : trop mal payé${r&&r.genre==="F"?"e":""} pour ses compétences.`, "mauvais");
+      const r = emp.externe ? null : etat.relations.find(x=>x.nom===emp.nom);
+      ecrire(`${emp.nom} claque la porte de « ${e.nom} » : trop mal payé${(r?r.genre:emp.genre)==="F"?"e":""} pour ses compétences.`, "mauvais");
       if(r){ r.metier = null; r.salaire = 0; r.barre = borne(r.barre-8); }
       e.employes = e.employes.filter(x=>x!==emp);
     }
@@ -582,13 +601,14 @@ function vieillir(){
       ecrire(`⚠️ La caisse de « ${e.nom} » est dans le rouge (${e.pertes}/3 avant la faillite). Renfloue, ajuste les salaires ou licencie !`, "mauvais");
       if(e.pertes >= 3){
         ecrire(`Faillite de « ${e.nom} ». L'entreprise est liquidée et les employés remerciés.`, "mauvais");
-        libererEmployes();
+        libererEmployes(e);
         etat.argent += Math.max(0, Math.round(e.valeur*0.3) + e.caisse);
-        etat.entreprise = null;
+        faillites.push(e);
         etat.bonheur = borne(etat.bonheur-15);
       }
     } else e.pertes = 0;
   }
+  if(faillites.length) etat.entreprises = etat.entreprises.filter(x=>!faillites.includes(x));
 
   // loyers des biens mis en location
   for(const b of etat.biens){
@@ -972,7 +992,7 @@ function ajouterAmi(){
 
 function valeurPatrimoine(){
   let v = etat.biens.reduce((s,b)=>s+b.valeur,0);
-  if(etat.entreprise) v += Math.round(etat.entreprise.valeur*0.9) + Math.max(0, etat.entreprise.caisse||0);
+  for(const e of (etat.entreprises||[])) v += Math.round(e.valeur*0.9) + Math.max(0, e.caisse||0);
   return v;
 }
 
@@ -983,7 +1003,9 @@ function mourir(cause){
 
   const heritiers = enfants();
   const patrimoine = valeurPatrimoine();
-  const succession = Math.max(0, Math.round((Math.max(0,etat.argent) + patrimoine) * 0.9)); // 10 % de frais
+  // les biens sont vendus et partagés ; les entreprises passent en nature à l'héritier choisi
+  const patrimoineBiens = etat.biens.reduce((s,b)=>s+b.valeur,0);
+  const succession = Math.max(0, Math.round((Math.max(0,etat.argent) + patrimoineBiens) * 0.9)); // 10 % de frais
   const part = heritiers.length ? Math.round(succession / heritiers.length) : 0;
 
   let htmlHeritiers = "";
@@ -991,7 +1013,7 @@ function mourir(cause){
     htmlHeritiers = `<div class="fiche">🪙 Succession (après 10 % de frais) : <b>${euros(succession)}</b><br>
       👪 Partagée entre <b>${heritiers.length}</b> héritier${heritiers.length>1?"s":""} : <b>${euros(part)}</b> chacun</div>
       <div class="sous">Continuer la dynastie ${etat.nom} (génération ${etat.generation+1}) avec :</div>` +
-      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
+      heritiers.map((h,i)=>`<button class="grand heritier" data-i="${i}">${h.genre==="F"?"👧":"👦"} ${h.nom} — ${h.age} an${h.age>1?"s":""}<br><small>hérite ${euros(part)}${h.argent?" + "+euros(h.argent)+" d'économies":""}${(etat.entreprises||[]).length?" + 🏭 le"+(etat.entreprises.length>1?"s":"")+" entreprise"+(etat.entreprises.length>1?"s":""):""}${etat.royaume?" + 👑 le trône":""}</small></button>`).join("");
   }
 
   $("plein").innerHTML = `
@@ -1004,7 +1026,7 @@ function mourir(cause){
         🏠 Patrimoine : <b>${euros(patrimoine)}</b><br>
         ${etat.diplome ? "🎓 Diplôme : <b>"+etat.filiere+"</b><br>" : ""}
         ${etat.emploi ? "💼 Dernier poste : <b>"+etat.emploi.titre+"</b><br>" : ""}
-        ${etat.entreprise ? "🏭 Entreprise : <b>"+etat.entreprise.nom+"</b><br>" : ""}
+        ${(etat.entreprises||[]).map(e=>"🏭 Entreprise transmise : <b>"+e.nom+"</b> (caisse "+euros(Math.max(0,e.caisse||0))+")<br>").join("")}
         ${etat.celebrite>=50 ? "⭐ Mort·e célèbre (célébrité "+etat.celebrite+")<br>" : ""}
         ${etat.politique&&etat.politique.niveau>0 ? "🏛️ Carrière politique : <b>"+NIVEAUX_POL[etat.politique.niveau]+"</b><br>" : ""}
         ${etat.royaume ? "👑 Souverain·e de <b>"+etat.royaume.nom+"</b> ("+etat.royaume.sujets.toLocaleString("fr-FR")+" sujets)<br>" : ""}
@@ -1036,8 +1058,8 @@ function continuerAvec(h, heritage){
     celebrite: 0,
     argent: heritage + (h.argent||0), emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
-    entreprise:null, politique:null, royaume: parent.royaume,
-    pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0,
+    entreprises: parent.entreprises || [], politique:null, royaume: parent.royaume,
+    pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0, candidats:null,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   // scolarité selon l'âge
@@ -1046,6 +1068,13 @@ function continuerAvec(h, heritage){
   if(a>=18 && h.statut==="étudiant"){ etat.etude="universite"; etat.filiere=parmi(FILIERES); etat.anneesEtude=Math.max(0,a-18); }
   // l'héritier garde son métier
   if(h.metier) etat.emploi = {titre:h.metier, salaire:h.salaire, annees:1};
+  // les entreprises familiales passent à l'héritier : il n'y est plus salarié, il en est le patron
+  for(const e of etat.entreprises){
+    const avant = (e.employes||[]).length;
+    e.employes = (e.employes||[]).filter(x=>x.nom!==h.nom);
+    if(avant !== e.employes.length) etat.emploi = null;
+    e.monSalaire = 0;
+  }
 
   // famille : le parent survivant + frères et sœurs
   if(conjointSurvivant){
@@ -1059,6 +1088,8 @@ function continuerAvec(h, heritage){
   nouvelleAnnee();
   ecrire(`Je suis ${etat.prenom} ${etat.nom}, génération ${etat.generation} de la famille.`, "bon");
   ecrire(`Mon ${parent.genre==="F"?"ma mère":"père"} ${parent.prenom} nous a quittés. J'hérite de ${euros(heritage)} (part sur ${freresSoeurs.length+1} enfant${freresSoeurs.length?"s":""})${h.argent?", en plus de mes "+euros(h.argent)+" d'économies personnelles":""}.`.replace("Mon ma","Ma"), "argent");
+  for(const e of etat.entreprises)
+    ecrire(`🏭 Je reprends l'entreprise familiale « ${e.nom} » (${e.type}, caisse : ${euros(e.caisse||0)}). À moi de la faire prospérer.`, "argent");
   if(etat.royaume){
     if(etat.age>=18) ecrire(`👑 COURONNEMENT ! Je monte sur le trône : me voilà ${etat.genre==="F"?"Reine":"Roi"} de ${etat.royaume.nom}.`, "bon");
     else ecrire(`👑 J'hérite du trône de ${etat.royaume.nom}. Le conseil de régence gouvernera jusqu'à mes 18 ans.`, "bon");
@@ -1182,8 +1213,7 @@ function feuilleCarriere(){
 
   /* --- entreprendre --- */
   section("Entreprendre");
-  if(etat.entreprise){
-    const e = etat.entreprise;
+  for(const e of (etat.age>=18 ? etat.entreprises : [])){
     const masse = (e.monSalaire||0) + (e.employes||[]).reduce((s,x)=>s+x.salaire,0);
     const c = carte(`<div class="titre">${e.ico} ${e.nom}</div>
       <div class="detail">${e.type} · Valeur : ${euros(e.valeur)} · Niveau ${e.niveau}/5${e.pertes?" · ⚠️ caisse dans le rouge ("+e.pertes+"/3)":""}<br>
@@ -1243,32 +1273,34 @@ function feuilleCarriere(){
     }, etat.argent < coutNiv || e.niveau>=5);
     action(c, `Vendre (${euros(Math.round(e.valeur*0.85) + Math.max(0,e.caisse||0))})`, "rouge", () => {
       const v = Math.round(e.valeur*0.85) + Math.max(0, e.caisse||0);
-      libererEmployes();
+      libererEmployes(e);
       etat.argent += v;
       ecrire(`J'ai vendu « ${e.nom} » (caisse comprise) pour ${euros(v)}.`, "argent");
-      etat.entreprise = null; fermerFeuille();
+      etat.entreprises = etat.entreprises.filter(x=>x!==e); fermerFeuille();
     });
 
     /* --- employés --- */
     section("Employés de « "+e.nom+" »");
     if(!(e.employes||[]).length) carte(`<div class="detail">Personne pour l'instant. Recrute ta famille et tes amis ci-dessous : à toi de choisir leur poste et leur salaire selon leurs compétences et le budget.</div>`);
     for(const emp of (e.employes||[])){
-      const r = etat.relations.find(x=>x.nom===emp.nom);
-      if(!r) continue;
-      const comp = competence(r);
+      const r = emp.externe ? null : etat.relations.find(x=>x.nom===emp.nom);
+      if(!emp.externe && !r) continue;
+      const comp = emp.externe ? emp.competence : competence(r);
       const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
       const ok = comp >= poste.req;
-      const cE = carte(`<div class="titre">${emp.nom}</div>
+      const cE = carte(`<div class="titre">${emp.nom}${emp.externe?" · 🧾 recruté·e":" · 👪 famille/ami"}</div>
         <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence : ${comp}/100 ${ok?"✅ à la hauteur":"⚠️ dépassé·e (requis "+poste.req+")"}${emp.salaire < comp*120 ? " · 😠 s'estime sous-payé·e" : ""}</div>
         <div class="actions"></div>`);
       action(cE, "Augmenter (+20 %)", "", () => {
-        emp.salaire = Math.round(emp.salaire*1.2); r.salaire = emp.salaire; r.barre = borne(r.barre+8);
+        emp.salaire = Math.round(emp.salaire*1.2);
+        if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre+8); }
         ecrire(`J'ai augmenté ${emp.nom} : ${euros(emp.salaire)}/an désormais.`, "argent");
         fermerFeuille();
       });
       action(cE, "Baisser (−20 %)", "gris", () => {
-        emp.salaire = Math.round(emp.salaire*0.8); r.salaire = emp.salaire; r.barre = borne(r.barre-12);
-        ecrire(`J'ai baissé le salaire de ${emp.nom} à ${euros(emp.salaire)}/an. Ambiance glaciale au repas de famille.`, "mauvais");
+        emp.salaire = Math.round(emp.salaire*0.8);
+        if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre-12); }
+        ecrire(`J'ai baissé le salaire de ${emp.nom} à ${euros(emp.salaire)}/an.${r?" Ambiance glaciale au repas de famille.":""}`, "mauvais");
         fermerFeuille();
       });
       action(cE, "Changer de poste", "gris", () => {
@@ -1276,7 +1308,7 @@ function feuilleCarriere(){
           titre:"Nouveau poste pour "+emp.nom,
           texte:`Compétence : ${comp}/100. Choisis son nouveau poste :`,
           choix: POSTES.map(p => ({label:`${p.nom}${comp<p.req?" ⚠️ (requis "+p.req+")":""}`, effet(){
-            emp.poste = p.nom; r.metier = p.nom+" — "+e.nom;
+            emp.poste = p.nom; if(r) r.metier = p.nom+" — "+e.nom;
             ecrire(`${emp.nom} devient ${p.nom.toLowerCase()} chez « ${e.nom} ».`);
           }})).concat([{label:"Annuler", effet(){}}])
         });
@@ -1284,8 +1316,8 @@ function feuilleCarriere(){
       });
       action(cE, "Licencier", "rouge", () => {
         e.employes = e.employes.filter(x=>x!==emp);
-        r.metier = null; r.salaire = 0; r.barre = borne(r.barre-20);
-        ecrire(`J'ai licencié ${emp.nom} de « ${e.nom} ». ${r.type==="conjoint"||r.type==="enfant"?"Ça va barder à la maison…":""}`, "mauvais");
+        if(r){ r.metier = null; r.salaire = 0; r.barre = borne(r.barre-20); }
+        ecrire(`J'ai licencié ${emp.nom} de « ${e.nom} ».${r && (r.type==="conjoint"||r.type==="enfant") ? " Ça va barder à la maison…" : ""}`, "mauvais");
         fermerFeuille();
       });
     }
@@ -1295,7 +1327,7 @@ function feuilleCarriere(){
       r.vivant && r.age>=16 && !employeDe(r.nom) &&
       ["ami","conjoint","enfant","frere","soeur"].includes(r.type));
     if(candidats.length){
-      section("Recruter (famille & amis)");
+      section("Recruter famille & amis — "+e.nom);
       for(const r of candidats){
         const comp = competence(r);
         const cR = carte(`<div class="titre">${r.nom}</div>
@@ -1321,7 +1353,52 @@ function feuilleCarriere(){
         });
       }
     }
-  } else if(etat.age>=18){
+
+    /* --- candidatures externes --- */
+    const cands = candidatsDuJour();
+    if(cands.length){
+      section("Candidatures reçues — "+e.nom);
+      for(const cand of cands){
+        const rabais = Math.round(cand.pretention*0.8/100)*100;
+        const cC = carte(`<div class="titre">${cand.nom}</div>
+          <div class="detail">${cand.age} ans · Compétence : <b>${cand.competence}/100</b> · Prétention : ${euros(cand.pretention)}/an</div>
+          <div class="actions"></div>`);
+        action(cC, "Embaucher", "", () => {
+          fileEvenements.push({
+            titre:"Embaucher "+cand.nom,
+            texte:`Compétence : ${cand.competence}/100 · Prétention : ${euros(cand.pretention)}/an. Quel poste lui proposer ?`,
+            choix: POSTES.map(p => ({label:`${p.nom}${cand.competence<p.req?" ⚠️ (requis "+p.req+")":""}`, effet(){
+              fileEvenements.unshift({
+                titre:"Négociation avec "+cand.nom,
+                texte:`Poste : ${p.nom}. ${cand.nom} demande ${euros(cand.pretention)}/an. Caisse : ${euros(e.caisse||0)}.`,
+                choix:[
+                  {label:"Accepter sa prétention ("+euros(cand.pretention)+"/an)", effet(){
+                    e.employes.push({nom:cand.nom, genre:cand.genre, poste:p.nom, salaire:cand.pretention, competence:cand.competence, externe:true});
+                    etat.candidats.liste = etat.candidats.liste.filter(x=>x!==cand);
+                    ecrire(`J'ai embauché ${cand.nom} comme ${p.nom.toLowerCase()} chez « ${e.nom} » à ${euros(cand.pretention)}/an.`, "bon");
+                  }},
+                  {label:"Négocier à "+euros(rabais)+"/an (risque de refus)", effet(){
+                    etat.candidats.liste = etat.candidats.liste.filter(x=>x!==cand);
+                    if(alea(2)){
+                      e.employes.push({nom:cand.nom, genre:cand.genre, poste:p.nom, salaire:rabais, competence:cand.competence, externe:true});
+                      ecrire(`Bien négocié : ${cand.nom} accepte ${euros(rabais)}/an comme ${p.nom.toLowerCase()} chez « ${e.nom} ».`, "bon");
+                    } else {
+                      ecrire(`${cand.nom} a refusé mon offre au rabais et est allé voir la concurrence.`, "mauvais");
+                    }
+                  }},
+                  {label:"Annuler", effet(){}}
+                ]
+              });
+            }})).concat([{label:"Annuler", effet(){}}])
+          });
+          fermerFeuille(); prochaineModale();
+        });
+      }
+    }
+  }
+
+  if(etat.age>=18 && etat.entreprises.length<3){
+    if(etat.entreprises.length) section("Créer une autre entreprise ("+etat.entreprises.length+"/3)");
     for(const t of TYPES_ENTREPRISE){
       const okIntel = !t.intel || etat.intel>=t.intel;
       const c = carte(`<div class="titre">${t.ico} ${t.type}</div>
@@ -1330,15 +1407,14 @@ function feuilleCarriere(){
       action(c, "Créer l'entreprise", "", () => {
         etat.argent -= t.capital;
         const nomE = etat.nom + " " + parmi(["& Co","Business","Services","Trading","Océan"]);
-        etat.entreprise = {type:t.type, ico:t.ico, nom:nomE, valeur:t.capital, niveau:1, pertes:0,
-                           caisse:0, monSalaire:0, employes:[]};
+        etat.entreprises.push({type:t.type, ico:t.ico, nom:nomE, valeur:t.capital, niveau:1, pertes:0,
+                               caisse:0, monSalaire:0, employes:[]});
         ecrire(`J'ai créé mon entreprise : ${t.ico} « ${nomE} » (${t.type}), avec ${euros(t.capital)} de capital. À moi de fixer mon salaire, de recruter et de gérer la caisse.`, "bon");
         fermerFeuille();
       }, etat.argent < t.capital || !okIntel);
     }
-  } else {
-    carte(`<div class="detail">Créer une entreprise sera possible à 18 ans.</div>`);
   }
+  if(etat.age<18) carte(`<div class="detail">Créer une entreprise sera possible à 18 ans.</div>`);
 
   /* --- politique & royaume --- */
   section("Politique & Royaume");

@@ -20,7 +20,10 @@ l'un d'eux (génération 2, 3, 4…).
 - **Carrière** : petits boulots dès 15 ans, 11 métiers salariés, promotions,
   augmentations.
 - **Entreprendre et gérer** : 5 types d'entreprises (boutique, restaurant,
-  import-export, compagnie maritime, startup). L'entreprise a sa **caisse** :
+  import-export, compagnie maritime, startup), et jusqu'à **3 entreprises en
+  même temps**, chacune avec sa gestion propre. À la mort, les entreprises ne
+  sont pas vendues : elles sont **transmises à l'héritier choisi** (qui en
+  devient le patron, employés compris). L'entreprise a sa **caisse** :
   chiffre d'affaires + production des employés − masse salariale = résultat.
   Tu fixes **ton salaire de dirigeant**, tu récupères des **dividendes**
   (taxés 15 %), tu renfloues, investis, modernises, revends… Faillite après
@@ -32,6 +35,9 @@ l'un d'eux (génération 2, 3, 4…).
   **salaire selon le budget**. Incompétent pour le poste → production divisée
   par deux ; sous-payé → il finit par démissionner ; tu peux augmenter,
   baisser, muter ou licencier (au risque de fâcher la famille).
+- **Candidatures externes** : chaque année, des inconnus envoient leur CV
+  (âge, compétence, prétention salariale). Tu peux accepter leur prétention
+  ou négocier −20 % — au risque qu'ils partent à la concurrence.
 - **Immobilier** : 5 biens achetables, à habiter ou **mettre en location**
   (~5 %/an de rendement, vacance locative possible, entretien 1 %/an, valeur
   qui suit l'économie).

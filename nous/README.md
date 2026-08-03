@@ -31,14 +31,10 @@ navigateur** (base intégrée, IndexedDB). Rien ne sort de la machine.
 ### a) Lui donner une adresse à elle
 
 **Le plus simple : GitHub le fait, gratuitement, sans nouveau compte.**
-Tout est déjà préparé (`.github/workflows/nous-pages.yml`). Il reste
-**un seul interrupteur à basculer**, une fois pour toutes :
-
-> GitHub → dépôt `QUALITY-SYSTEM` → **Settings** → **Pages** →
-> *Build and deployment* → **Source : GitHub Actions** → *Save*.
-
-Dès que le dossier `nous/` est sur la branche principale, le site se
-publie tout seul sur :
+Tout est préparé dans `.github/workflows/nous-pages.yml` — le robot
+active Pages lui-même au premier passage, il n'y a aucun réglage à
+toucher. Dès que le dossier `nous/` est sur la branche principale, le
+site se publie tout seul sur :
 
 ```
 https://pepe-2002.github.io/QUALITY-SYSTEM/
@@ -47,10 +43,9 @@ https://pepe-2002.github.io/QUALITY-SYSTEM/
 ⚠️ Ce robot ne met en ligne **que le dossier `nous/`**. RA-QDMS et
 MoheliGo ne partent pas là-dedans et ne bougent pas.
 
-*Sans attendre de fusionner la branche :* onglet **Actions** →
-« Nous — mise en ligne » → **Run workflow** → choisir la branche
-`claude/messagerie-gestion-temps-cjf4nq` → *Run*. Le site est en ligne
-deux minutes plus tard.
+⚠️ GitHub n'accepte de publier Pages que depuis la **branche
+principale** (`main`) : c'est sa règle, pas un choix de l'app. Le
+dossier `nous/` doit donc y être fusionné pour que le lien existe.
 
 *Autres options, si un jour vous préférez :* **Netlify Drop**
 (`app.netlify.com/drop`, on glisse le dossier `nous/`, adresse `https` en

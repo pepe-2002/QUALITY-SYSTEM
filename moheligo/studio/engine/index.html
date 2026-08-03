@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Studio MoheliGo — scène</title>
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+  html,body{margin:0;background:#000;overflow:hidden}
+  canvas{display:block}
+</style>
+</head>
+<body>
+<canvas id="scene" width="1080" height="1920"></canvas>
+<script src="dessin.js"></script>
+<script src="moteur.js"></script>
+<script>
+/* Le programme de rendu (rendre.mjs) appelle :
+   1. window.chargerEpisode(episode, enveloppe)
+   2. window.image(t)  → dessine l'image du temps t
+   Rien n'est aléatoire : la même seconde donne toujours la même image. */
+var cv = document.getElementById("scene"), cx = cv.getContext("2d", { alpha: false });
+
+window._logo = new Image();
+window._logo.src = "../../MoheliGo-logo.png";
+
+window.chargerEpisode = function (episode, enveloppe) {
+  cv.width = episode.largeur || 1080;
+  cv.height = episode.hauteur || 1920;
+  MG.init(episode, enveloppe);
+  return { duree: MG.EP._duree, plans: MG.EP.plans.length };
+};
+window.image = function (t) {
+  cx.setTransform(1, 0, 0, 1, 0, 0);
+  cx.fillStyle = "#000"; cx.fillRect(0, 0, cv.width, cv.height);
+  MG.rendre(cx, t);
+};
+window.pretes = function () {
+  return document.fonts.ready.then(function () {
+    return new Promise(function (r) {
+      if (window._logo.complete) return r(true);
+      window._logo.onload = window._logo.onerror = function () { r(true); };
+    });
+  });
+};
+</script>
+</body>
+</html>

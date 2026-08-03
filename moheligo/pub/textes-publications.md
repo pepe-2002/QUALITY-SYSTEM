@@ -4,6 +4,26 @@
 
 ---
 
+## 🎨 serie/ep1 — « Le billet d'Amina » (dessin animé, 86 s)
+
+MoheliGo, la série. Épisode 1 : le billet d'Amina. 🎬
+
+Amina doit rejoindre sa mère à Mohéli. Avant, c'était : aller au port, attendre,
+espérer. Maintenant : Ouroveni → Hoani, elle choisit son horaire, elle paie avec
+MVola, et son billet QR est déjà dans son téléphone. ✅
+
+Il ne se perd pas. Il ne se mouille pas. Il est à l'heure.
+
+🚤 Réservez votre traversée sur moheligo.com
+💙 Abonnez-vous à la page MoheliGo — l'épisode 2 arrive.
+
+#MoheliGo #Comores #Mohéli #Traversée #BilletQR #MVola
+
+> Astuce diffusion : c'est le format à publier en **série** (un épisode par
+> semaine). Mettre le lien en 1er commentaire, pas dans le post.
+
+---
+
 ## 🎬 v4-film — « Amina » (le mini-film)
 
 Elle a réservé en 2 minutes. L'océan a fait le reste. 🌊

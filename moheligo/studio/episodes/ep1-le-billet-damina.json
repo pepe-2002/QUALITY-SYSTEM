@@ -1,0 +1,146 @@
+{
+  "titre": "MoheliGo — La série · Épisode 1 : Le billet d'Amina",
+  "fichier": "ep1-le-billet-damina",
+  "fps": 25,
+  "largeur": 1080,
+  "hauteur": 1920,
+  "fondu": 0.45,
+
+  "personnages": {
+    "narrateur": { "voix": "fr-FR-HenriNeural", "rate": "-8%" },
+    "amina": {
+      "voix": "fr-FR-DeniseNeural", "rate": "-6%",
+      "look": { "peau": "#8d5524", "tenue": "#e94f6a", "motif": "#ffd75e", "coiffe": "shiromani", "coifCouleur": "#f6bc1c" }
+    },
+    "said": {
+      "voix": "fr-FR-HenriNeural", "rate": "-6%",
+      "look": { "peau": "#6b3f16", "tenue": "#2a6fd4", "coiffe": "kofia", "robe": false }
+    },
+    "agent": {
+      "voix": "fr-FR-RemyMultilingualNeural", "rate": "-6%",
+      "look": { "peau": "#7a4a1d", "tenue": "#1fb6a6", "coiffe": "kofia", "robe": false }
+    },
+    "mama": {
+      "voix": "fr-FR-VivienneMultilingualNeural", "rate": "-10%",
+      "look": { "peau": "#a9682f", "tenue": "#7b4fd4", "motif": "#ffffff", "coiffe": "shiromani", "coifCouleur": "#1fb6a6" }
+    }
+  },
+
+  "plans": [
+    {
+      "decor": "carton",
+      "titre": "MoheliGo",
+      "sousTitre": "La série · Épisode 1 — Le billet d'Amina",
+      "replique": { "qui": "narrateur", "texte": "", "dit": "MoheliGo, la série. Épisode un : le billet d'Amina." },
+      "duree_min": 4.2
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.0, 1.06], "focus": [0.5, 0.7] },
+      "acteurs": [
+        { "qui": "amina", "x": 0.36, "y": 0.93, "h": 760, "dir": 1, "bras": "repos" },
+        { "qui": "said", "x": 0.68, "y": 0.94, "h": 800, "dir": -1, "bras": "repos" }
+      ],
+      "replique": { "qui": "amina", "texte": "Saïd ! Mama m'attend à Mohéli. Je dois traverser demain matin." }
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.06, 1.0], "focus": [0.62, 0.7] },
+      "acteurs": [
+        { "qui": "amina", "x": 0.36, "y": 0.93, "h": 760, "dir": 1 },
+        { "qui": "said", "x": 0.68, "y": 0.94, "h": 800, "dir": -1, "sourcils": 1, "sourire": 0.1 }
+      ],
+      "replique": { "qui": "said", "texte": "Demain ? Tu vas encore attendre des heures au port, sans savoir si la vedette part." }
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.0, 1.12], "focus": [0.4, 0.66] },
+      "acteurs": [
+        { "qui": "amina", "x": 0.36, "y": 0.93, "h": 760, "dir": 1, "bras": "telephone", "sourire": 0.9 },
+        { "qui": "said", "x": 0.72, "y": 0.94, "h": 800, "dir": -1 }
+      ],
+      "replique": { "qui": "amina", "texte": "Plus maintenant. Cette fois, je réserve avant de partir." }
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.14, 1.2], "focus": [0.5, 0.45] },
+      "insert": true,
+      "objets": [{ "type": "telephone", "x": 0.5, "y": 0.45, "taille": 1.5, "ecran": "recherche", "apparait": 0.1 }],
+      "replique": { "qui": "amina", "texte": "Ouroveni – Hoani, demain à sept heures et demie." }
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.2, 1.2], "focus": [0.5, 0.45] },
+      "insert": true,
+      "objets": [{ "type": "telephone", "x": 0.5, "y": 0.45, "taille": 1.5, "ecran": "resultats", "apparait": 0, "duree_prog": 1.2 }],
+      "replique": { "qui": "amina", "texte": "Mwezi Express, quinze mille francs. Une place." }
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.2, 1.24], "focus": [0.5, 0.45] },
+      "insert": true,
+      "objets": [{ "type": "telephone", "x": 0.5, "y": 0.45, "taille": 1.5, "ecran": "paiement", "apparait": 0, "duree_prog": 2.0 }],
+      "replique": { "qui": "amina", "texte": "Je paie avec MVola, sans bouger de la maison." },
+      "duree_min": 4.4
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.24, 1.18], "focus": [0.5, 0.45] },
+      "insert": true,
+      "objets": [{ "type": "telephone", "x": 0.5, "y": 0.45, "taille": 1.5, "ecran": "billet", "apparait": 0 }],
+      "replique": { "qui": "said", "texte": "Et ton billet, il est où ?" }
+    },
+    {
+      "decor": "village_matin",
+      "camera": { "zoom": [1.18, 1.1], "focus": [0.5, 0.45] },
+      "insert": true,
+      "objets": [{ "type": "telephone", "x": 0.5, "y": 0.45, "taille": 1.5, "ecran": "billet", "apparait": 0 }],
+      "replique": { "qui": "amina", "texte": "Là. Avec le QR code. Il ne se perd pas, il ne se mouille pas." }
+    },
+    {
+      "decor": "port_ouroveni",
+      "camera": { "zoom": [1.0, 1.08], "focus": [0.4, 0.75] },
+      "acteurs": [
+        { "qui": "amina", "x": 0.24, "xFin": 0.34, "y": 0.92, "h": 700, "dir": 1, "pose": "marche", "bras": "valise" },
+        { "qui": "agent", "x": 0.70, "y": 0.93, "h": 720, "dir": -1, "bras": "repos" }
+      ],
+      "replique": { "qui": "agent", "texte": "Bienvenue Amina. Ton QR est bon : tu peux embarquer." }
+    },
+    {
+      "decor": "mer_large",
+      "camera": { "zoom": [1.05, 1.0] },
+      "replique": { "qui": "narrateur", "texte": "Deux heures de mer — et la météo annoncée sept jours à l'avance." },
+      "duree_min": 5.0
+    },
+    {
+      "decor": "a_bord",
+      "camera": { "zoom": [1.0, 1.06], "focus": [0.45, 0.7] },
+      "acteurs": [{ "qui": "amina", "x": 0.42, "y": 0.88, "h": 680, "dir": 1, "pose": "assis", "sourire": 1 }],
+      "replique": { "qui": "amina", "texte": "La mer est calme. C'était écrit dans l'appli." }
+    },
+    {
+      "decor": "hoani",
+      "camera": { "zoom": [1.0, 1.1], "focus": [0.6, 0.75] },
+      "acteurs": [
+        { "qui": "amina", "x": 0.28, "xFin": 0.40, "y": 0.92, "h": 700, "dir": 1, "pose": "marche", "bras": "valise" },
+        { "qui": "mama", "x": 0.72, "y": 0.93, "h": 680, "dir": -1, "bras": "ouverts", "sourire": 1 }
+      ],
+      "replique": { "qui": "mama", "texte": "Amina ! Ma fille !" }
+    },
+    {
+      "decor": "hoani",
+      "camera": { "zoom": [1.1, 1.16], "focus": [0.55, 0.72] },
+      "acteurs": [
+        { "qui": "amina", "x": 0.44, "y": 0.92, "h": 700, "dir": 1, "bras": "salut", "sourire": 1 },
+        { "qui": "mama", "x": 0.66, "y": 0.93, "h": 680, "dir": -1, "bras": "ouverts", "sourire": 1 }
+      ],
+      "replique": { "qui": "amina", "texte": "Mama ! Je suis à l'heure, cette fois." }
+    },
+    {
+      "decor": "carton",
+      "logo": true,
+      "replique": { "qui": "narrateur", "texte": "", "dit": "MoheliGo. Réserve ta traversée, garde ton billet sur ton téléphone. moheligo point com." },
+      "duree_min": 5.5
+    }
+  ]
+}

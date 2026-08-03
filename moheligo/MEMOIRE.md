@@ -40,6 +40,7 @@ Tout est dans `moheligo/pub/` :
 | `scenario-film.txt` | Script voix du film Amina | — | — |
 | `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux, carte satellite interactive + app (Ouroveni → Hoani) | 54 s | 4,4 Mo |
 | `flyers/` | Flyer premium 2160×2700 (HTML source + PNG) — QR vers moheligo.com | — | — |
+| `serie/ep1-le-billet-damina(-leger).mp4` | **Dessin animé** — MoheliGo, la série, ép. 1 : Amina réserve, paie MVola, embarque avec son QR, retrouve sa mère à Hoani | 86 s | voir dossier |
 | `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
@@ -105,6 +106,35 @@ comoriennes → versions 720p ~3-5 Mo.
 - GitHub raw (github.com/google/fonts) est bloqué par la session — passer par
   fonts.googleapis.com/css2.
 
+### 🎬 Studio d'animation MoheliGo (LE gros acquis du 03/08/2026)
+
+`moheligo/studio/` — fabrique de dessins animés maison. Mode d'emploi complet
+dans `studio/README.md`. En résumé :
+
+- Un épisode = un fichier JSON (`studio/episodes/*.json`) : décors, acteurs,
+  répliques. **La durée des plans est calculée sur la voix**, rien à minuter.
+- `node rendre.mjs episodes/<ep>.json` → MP4 1080×1920 + version légère 720p
+  dans `pub/serie/`. `--apercu 3,12,40` sort des images fixes pour juger le
+  style sans attendre (indispensable avant un rendu complet).
+- Chaîne : edge-tts (voix) → mesure des durées → enveloppe du son (bouches
+  synchronisées) → Chromium dessine chaque image sur un canvas → ffmpeg.
+- Vitesse mesurée : **~21 images/s** → 86 s de film en ~2 min de calcul.
+- ⚠️ Chromium doit être lancé avec `--allow-file-access-from-files`, sinon le
+  logo en `file://` « salit » le canvas et `toDataURL` refuse d'exporter.
+- ⚠️ Ne jamais faire dépendre un mouvement de `t % N` (saut visible à chaque
+  boucle) — utiliser des sinus continus.
+- Personnages : Amina (voix Denise), Saïd son frère (Henri), l'agent
+  d'embarquement (Rémy), Mama (Vivienne). Réutilisables d'un épisode à l'autre.
+
+### Ce que je PEUX / NE PEUX PAS faire en vidéo (question du patron, 03/08)
+
+- ✅ Dessin animé 2D complet, personnages qui parlent, 5 minutes si besoin.
+- ✅ Montage de vraies images filmées par le patron.
+- ❌ Vidéo photoréaliste type Sora/Veo/Runway : aucun modèle vidéo ni GPU dans
+  la session, et pas d'accès à ces services (abonnement + clé API nécessaires,
+  facturés au clip de 5-10 s).
+- ❌ Avatars parlants à partir d'un vrai visage.
+
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 
 1. Lancement : publier v4 (film Amina) sur Facebook + statuts WhatsApp.
@@ -142,8 +172,25 @@ comoriennes → versions 720p ~3-5 Mo.
   fulfill via curl (execFileSync + cache). Précharger 14 s + pan aller-retour
   avant la fenêtre filmée, sinon tuiles blanches (le patron l'a repéré).
 
+### Série animée — suite possible
+- [ ] Ép. 2 : « La mer est agitée » (la météo 7 jours évite un voyage raté).
+- [ ] Ép. 3 : « Le commandant » (suivi GPS de la vedette, la famille suit
+      l'arrivée depuis le téléphone).
+- [ ] Formats : version 30 s pour les statuts WhatsApp, carré 1:1 pour le feed.
+- [ ] Décors à ajouter au studio : marché de Fomboni, intérieur de maison,
+      plage aux tortues (Itsamia).
+
 ## 6. Journal des sessions
 
+- **03/08/2026** — Le patron demande si je sais faire du dessin animé / des
+  vidéos de gens qui parlent, ou une appli qui les fabrique. Réponse : pas de
+  photoréalisme ici, mais oui pour l'animation 2D — et il choisit
+  **« studio + pilote dessin animé »**. Construit `moheligo/studio/` (moteur de
+  dessin, moteur de scènes, programme de rendu) et livré l'épisode 1 « Le billet
+  d'Amina » (86 s). Il avait aussi une question sur MoheliGo Life (le jeu façon
+  BitLife dans le site) : expliqué le mécanisme du mariage — le jeu ne marie
+  jamais tout seul, c'est l'événement « Une belle rencontre » + clic, et le
+  foyer coûte ensuite 14 000 KMF/mois.
 - **02/08/2026 (suite)** — v5 « Destination Mohéli » : recherche d'images CC
   (pas de photo libre de Hoani → utilisé satellite, tortues, dauphin, corail,
   plages CC + nos photos), montage 48 s, crédits en règle.

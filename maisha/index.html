@@ -327,6 +327,16 @@ const MALADIES = [
   {nom:"le diabète", cout:800, degats:6},
   {nom:"l'hypertension", cout:600, degats:5},
 ];
+const POSTES = [
+  {nom:"Directeur adjoint", req:70, mult:2.2},
+  {nom:"Comptable", req:55, mult:1.6},
+  {nom:"Commercial", req:40, mult:1.4},
+  {nom:"Vendeur", req:25, mult:1.1},
+  {nom:"Manutentionnaire", req:0, mult:0.9},
+  {nom:"Gardien", req:0, mult:0.7},
+];
+const SALAIRES_PROPOSES = [6000, 10000, 15000, 22000, 30000];
+const MES_SALAIRES = [0, 12000, 24000, 48000, 96000];
 
 let etat = null;
 let fileEvenements = [];
@@ -345,12 +355,44 @@ function dejaFait(cle){
   return false;
 }
 function charisme(){ return Math.round((etat.look + etat.intel)/2); }
+function competence(r){
+  if(r.competence==null){
+    let c = 30 + alea(45);
+    if(r.statut==="diplômé") c += 15;
+    if(r.type==="conjoint" && r.metier) c += 10;
+    r.competence = Math.min(95, c);
+  }
+  return r.competence;
+}
+function employeDe(nom){ return etat.entreprise && (etat.entreprise.employes||[]).some(x=>x.nom===nom); }
+function libererEmployes(){
+  const e = etat.entreprise;
+  if(!e || !e.employes) return;
+  for(const emp of e.employes){
+    const r = etat.relations.find(x=>x.nom===emp.nom);
+    if(r){ r.metier = null; r.salaire = 0; }
+  }
+  e.employes = [];
+}
 function estPolitique(){ return !!etat.politique; }
 function enfants(){ return etat.relations.filter(r=>r.type==="enfant" && r.vivant); }
 
 function sauver(){ try{ localStorage.setItem(CLE, JSON.stringify(etat)); }catch(e){} }
 function charger(){
-  try{ const brut = localStorage.getItem(CLE); if(brut){ etat = JSON.parse(brut); return true; } }catch(e){}
+  try{
+    const brut = localStorage.getItem(CLE);
+    if(brut){
+      etat = JSON.parse(brut);
+      // migration des anciennes sauvegardes
+      if(etat && etat.entreprise){
+        const e = etat.entreprise;
+        if(e.caisse==null) e.caisse = 0;
+        if(e.monSalaire==null) e.monSalaire = 0;
+        if(!e.employes) e.employes = [];
+      }
+      return true;
+    }
+  }catch(e){}
   return false;
 }
 
@@ -493,24 +535,59 @@ function vieillir(){
 
   if(etat.entreprise){
     const e = etat.entreprise;
+    e.employes = (e.employes||[]).filter(emp => {
+      const r = etat.relations.find(x=>x.nom===emp.nom);
+      return r && r.vivant;
+    });
+
+    // chiffre du fonds de commerce + production des employés
     const marge = (alea(41)-15) + e.niveau*3 + (pays().eco-50)/5;
-    let profit = Math.round(e.valeur * marge/100);
-    if(profit > 0){
-      const net = Math.round(profit*(1-imp));
-      revenus += net;
-      e.pertes = 0;
-      ecrire(`${e.ico} ${e.type} « ${e.nom} » : bénéfice de ${euros(net)} (après impôts).`, "argent");
-    } else if(profit < 0){
-      depenses += -profit;
+    const chiffre = Math.round(e.valeur * marge/100);
+    let prod = 0;
+    const demissionnaires = [];
+    for(const emp of e.employes){
+      const r = etat.relations.find(x=>x.nom===emp.nom);
+      const comp = competence(r);
+      const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
+      const alaHauteur = comp >= poste.req;
+      prod += Math.round(comp * 260 * poste.mult * (alaHauteur ? 1 : 0.45));
+      r.salaire = emp.salaire;
+      r.barre = borne(r.barre + 2);
+      if(!alaHauteur && alea(3)===0)
+        ecrire(`⚠️ ${emp.nom} n'a pas le niveau pour le poste de ${emp.poste.toLowerCase()} (compétence ${comp}, requis ${poste.req}) : la production s'en ressent.`, "mauvais");
+      if(emp.salaire < comp*120){
+        r.barre = borne(r.barre - 10);
+        if(alea(3)===0) demissionnaires.push(emp);
+      }
+    }
+    for(const emp of demissionnaires){
+      const r = etat.relations.find(x=>x.nom===emp.nom);
+      ecrire(`${emp.nom} claque la porte de « ${e.nom} » : trop mal payé${r&&r.genre==="F"?"e":""} pour ses compétences.`, "mauvais");
+      if(r){ r.metier = null; r.salaire = 0; r.barre = borne(r.barre-8); }
+      e.employes = e.employes.filter(x=>x!==emp);
+    }
+
+    const masse = (e.monSalaire||0) + e.employes.reduce((s,x)=>s+x.salaire,0);
+    let resultat = chiffre + prod - masse;
+    if(resultat > 0) resultat = Math.round(resultat*(1-imp));
+    e.caisse = (e.caisse||0) + resultat;
+
+    // mon salaire de dirigeant (versé par la caisse, imposé comme un salaire)
+    if(e.monSalaire) revenus += Math.round(e.monSalaire*(1-imp));
+
+    ecrire(`${e.ico} « ${e.nom} » : production ${euros(Math.max(0,chiffre)+prod)}, salaires ${euros(masse)}${e.monSalaire?" (dont le mien : "+euros(e.monSalaire)+")":""}, résultat ${resultat>=0?"+":""}${euros(resultat)} → caisse : ${euros(e.caisse)}.`, resultat>=0?"argent":"mauvais");
+
+    if(e.caisse < 0){
       e.pertes = (e.pertes||0)+1;
-      ecrire(`${e.ico} « ${e.nom} » a perdu ${euros(-profit)} cette année.`, "mauvais");
+      ecrire(`⚠️ La caisse de « ${e.nom} » est dans le rouge (${e.pertes}/3 avant la faillite). Renfloue, ajuste les salaires ou licencie !`, "mauvais");
       if(e.pertes >= 3){
-        ecrire(`Faillite de « ${e.nom} » après ${e.pertes} années de pertes. L'entreprise est liquidée.`, "mauvais");
-        etat.argent += Math.round(e.valeur*0.3);
+        ecrire(`Faillite de « ${e.nom} ». L'entreprise est liquidée et les employés remerciés.`, "mauvais");
+        libererEmployes();
+        etat.argent += Math.max(0, Math.round(e.valeur*0.3) + e.caisse);
         etat.entreprise = null;
         etat.bonheur = borne(etat.bonheur-15);
       }
-    }
+    } else e.pertes = 0;
   }
 
   // loyers des biens mis en location
@@ -756,7 +833,8 @@ function vieEnfants(){
     }
     if(e.metier){
       e.argent += Math.round(e.salaire*0.35);
-      if(alea(8)===0) e.salaire = Math.round(e.salaire*1.1);
+      // pas d'augmentation automatique si c'est moi qui fixe son salaire dans mon entreprise
+      if(alea(8)===0 && !employeDe(e.nom)) e.salaire = Math.round(e.salaire*1.1);
     }
     if(e.age>=25 && !e.marie && alea(8)===0){
       e.marie = true;
@@ -894,7 +972,7 @@ function ajouterAmi(){
 
 function valeurPatrimoine(){
   let v = etat.biens.reduce((s,b)=>s+b.valeur,0);
-  if(etat.entreprise) v += Math.round(etat.entreprise.valeur*0.9);
+  if(etat.entreprise) v += Math.round(etat.entreprise.valeur*0.9) + Math.max(0, etat.entreprise.caisse||0);
   return v;
 }
 
@@ -1106,12 +1184,55 @@ function feuilleCarriere(){
   section("Entreprendre");
   if(etat.entreprise){
     const e = etat.entreprise;
+    const masse = (e.monSalaire||0) + (e.employes||[]).reduce((s,x)=>s+x.salaire,0);
     const c = carte(`<div class="titre">${e.ico} ${e.nom}</div>
-      <div class="detail">${e.type} · Valeur : ${euros(e.valeur)} · Niveau ${e.niveau}/5${e.pertes?" · ⚠️ "+e.pertes+" année(s) de pertes":""}</div>
+      <div class="detail">${e.type} · Valeur : ${euros(e.valeur)} · Niveau ${e.niveau}/5${e.pertes?" · ⚠️ caisse dans le rouge ("+e.pertes+"/3)":""}<br>
+      🏦 Caisse : <b>${euros(e.caisse||0)}</b> · Masse salariale : ${euros(masse)}/an<br>
+      💼 Mon salaire de dirigeant : <b>${euros(e.monSalaire||0)}/an</b></div>
       <div class="actions"></div>`);
-    action(c, "Investir 5 000 €", "", () => {
+    action(c, "Ajuster mon salaire", "", () => {
+      fileEvenements.push({
+        titre:"Mon salaire de dirigeant",
+        texte:`Caisse : ${euros(e.caisse||0)} · Masse salariale actuelle : ${euros(masse)}/an. La caisse paie ton salaire chaque année : vise juste.`,
+        choix: MES_SALAIRES.map(s => ({label: s===0 ? "Aucun salaire (tout réinvestir)" : euros(s)+"/an", effet(){
+          e.monSalaire = s;
+          ecrire(s===0 ? `Je renonce à mon salaire chez « ${e.nom} » pour faire grandir la boîte.` :
+            `Je fixe mon salaire de dirigeant à ${euros(s)}/an chez « ${e.nom} ».`, "argent");
+        }})).concat([{label:"Annuler", effet(){}}])
+      });
+      fermerFeuille(); prochaineModale();
+    });
+    action(c, "Récupérer de l'argent", "or", () => {
+      const dispo = Math.max(0, e.caisse||0);
+      const paliers = [5000, 20000, 50000].filter(m => m <= dispo);
+      if(dispo < 1000){
+        ecrire(`La caisse de « ${e.nom} » est vide : rien à récupérer.`, "mauvais");
+        fermerFeuille(); return;
+      }
+      fileEvenements.push({
+        titre:"Dividendes",
+        texte:`Caisse disponible : ${euros(dispo)}. Combien retirer ? (15 % de taxe sur les dividendes)`,
+        choix: paliers.map(m => ({label: euros(m), effet(){
+          e.caisse -= m; etat.argent += Math.round(m*0.85);
+          ecrire(`J'ai retiré ${euros(m)} de la caisse de « ${e.nom} » (${euros(Math.round(m*0.85))} net).`, "argent");
+        }})).concat([
+          {label:"Toute la caisse ("+euros(dispo)+")", effet(){
+            e.caisse -= dispo; etat.argent += Math.round(dispo*0.85);
+            ecrire(`J'ai vidé la caisse de « ${e.nom} » : ${euros(Math.round(dispo*0.85))} net dans ma poche.`, "argent");
+          }},
+          {label:"Annuler", effet(){}}
+        ])
+      });
+      fermerFeuille(); prochaineModale();
+    });
+    action(c, "Renflouer la caisse (10 000 €)", "gris", () => {
+      etat.argent -= 10000; e.caisse = (e.caisse||0) + 10000;
+      ecrire(`J'ai renfloué la caisse de « ${e.nom} » avec 10 000 € de ma poche.`);
+      fermerFeuille();
+    }, etat.argent < 10000);
+    action(c, "Investir 5 000 €", "gris", () => {
       etat.argent -= 5000; e.valeur += 5000;
-      ecrire(`J'ai réinjecté 5 000 € dans « ${e.nom} ».`);
+      ecrire(`J'ai réinjecté 5 000 € dans le fonds de commerce de « ${e.nom} ».`);
       fermerFeuille();
     }, etat.argent < 5000);
     const coutNiv = Math.round(e.valeur*0.2);
@@ -1120,12 +1241,86 @@ function feuilleCarriere(){
       ecrire(`« ${e.nom} » passe au niveau ${e.niveau} : meilleure rentabilité.`, "bon");
       fermerFeuille();
     }, etat.argent < coutNiv || e.niveau>=5);
-    action(c, `Vendre (${euros(Math.round(e.valeur*0.85))})`, "rouge", () => {
-      const v = Math.round(e.valeur*0.85);
+    action(c, `Vendre (${euros(Math.round(e.valeur*0.85) + Math.max(0,e.caisse||0))})`, "rouge", () => {
+      const v = Math.round(e.valeur*0.85) + Math.max(0, e.caisse||0);
+      libererEmployes();
       etat.argent += v;
-      ecrire(`J'ai vendu « ${e.nom} » pour ${euros(v)}.`, "argent");
+      ecrire(`J'ai vendu « ${e.nom} » (caisse comprise) pour ${euros(v)}.`, "argent");
       etat.entreprise = null; fermerFeuille();
     });
+
+    /* --- employés --- */
+    section("Employés de « "+e.nom+" »");
+    if(!(e.employes||[]).length) carte(`<div class="detail">Personne pour l'instant. Recrute ta famille et tes amis ci-dessous : à toi de choisir leur poste et leur salaire selon leurs compétences et le budget.</div>`);
+    for(const emp of (e.employes||[])){
+      const r = etat.relations.find(x=>x.nom===emp.nom);
+      if(!r) continue;
+      const comp = competence(r);
+      const poste = POSTES.find(p=>p.nom===emp.poste) || POSTES[POSTES.length-1];
+      const ok = comp >= poste.req;
+      const cE = carte(`<div class="titre">${emp.nom}</div>
+        <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence : ${comp}/100 ${ok?"✅ à la hauteur":"⚠️ dépassé·e (requis "+poste.req+")"}${emp.salaire < comp*120 ? " · 😠 s'estime sous-payé·e" : ""}</div>
+        <div class="actions"></div>`);
+      action(cE, "Augmenter (+20 %)", "", () => {
+        emp.salaire = Math.round(emp.salaire*1.2); r.salaire = emp.salaire; r.barre = borne(r.barre+8);
+        ecrire(`J'ai augmenté ${emp.nom} : ${euros(emp.salaire)}/an désormais.`, "argent");
+        fermerFeuille();
+      });
+      action(cE, "Baisser (−20 %)", "gris", () => {
+        emp.salaire = Math.round(emp.salaire*0.8); r.salaire = emp.salaire; r.barre = borne(r.barre-12);
+        ecrire(`J'ai baissé le salaire de ${emp.nom} à ${euros(emp.salaire)}/an. Ambiance glaciale au repas de famille.`, "mauvais");
+        fermerFeuille();
+      });
+      action(cE, "Changer de poste", "gris", () => {
+        fileEvenements.push({
+          titre:"Nouveau poste pour "+emp.nom,
+          texte:`Compétence : ${comp}/100. Choisis son nouveau poste :`,
+          choix: POSTES.map(p => ({label:`${p.nom}${comp<p.req?" ⚠️ (requis "+p.req+")":""}`, effet(){
+            emp.poste = p.nom; r.metier = p.nom+" — "+e.nom;
+            ecrire(`${emp.nom} devient ${p.nom.toLowerCase()} chez « ${e.nom} ».`);
+          }})).concat([{label:"Annuler", effet(){}}])
+        });
+        fermerFeuille(); prochaineModale();
+      });
+      action(cE, "Licencier", "rouge", () => {
+        e.employes = e.employes.filter(x=>x!==emp);
+        r.metier = null; r.salaire = 0; r.barre = borne(r.barre-20);
+        ecrire(`J'ai licencié ${emp.nom} de « ${e.nom} ». ${r.type==="conjoint"||r.type==="enfant"?"Ça va barder à la maison…":""}`, "mauvais");
+        fermerFeuille();
+      });
+    }
+
+    /* --- recruter --- */
+    const candidats = etat.relations.filter(r =>
+      r.vivant && r.age>=16 && !employeDe(r.nom) &&
+      ["ami","conjoint","enfant","frere","soeur"].includes(r.type));
+    if(candidats.length){
+      section("Recruter (famille & amis)");
+      for(const r of candidats){
+        const comp = competence(r);
+        const cR = carte(`<div class="titre">${r.nom}</div>
+          <div class="detail">${LIBELLE_REL[r.type]} · ${r.age} ans · Compétence : <b>${comp}/100</b>${r.metier?" · travaille déjà : "+r.metier:""}</div>
+          <div class="actions"></div>`);
+        action(cR, "Recruter", "", () => {
+          fileEvenements.push({
+            titre:"Recruter "+r.nom,
+            texte:`Compétence : ${comp}/100. Quel poste lui confier ? (un poste au-dessus de ses compétences produira moitié moins)`,
+            choix: POSTES.map(p => ({label:`${p.nom}${comp<p.req?" ⚠️ (requis "+p.req+")":""}`, effet(){
+              fileEvenements.unshift({
+                titre:"Salaire de "+r.nom,
+                texte:`Poste : ${p.nom}. Caisse : ${euros(e.caisse||0)}. Quel salaire annuel ? (en dessous de ${euros(comp*120)}, il/elle risquera de démissionner)`,
+                choix: SALAIRES_PROPOSES.map(s => ({label: euros(s)+"/an", effet(){
+                  e.employes.push({nom:r.nom, poste:p.nom, salaire:s});
+                  r.metier = p.nom+" — "+e.nom; r.salaire = s; r.barre = borne(r.barre+10);
+                  ecrire(`J'ai recruté ${r.nom} comme ${p.nom.toLowerCase()} chez « ${e.nom} » à ${euros(s)}/an.`, "bon");
+                }})).concat([{label:"Annuler", effet(){}}])
+              });
+            }})).concat([{label:"Annuler", effet(){}}])
+          });
+          fermerFeuille(); prochaineModale();
+        });
+      }
+    }
   } else if(etat.age>=18){
     for(const t of TYPES_ENTREPRISE){
       const okIntel = !t.intel || etat.intel>=t.intel;
@@ -1135,8 +1330,9 @@ function feuilleCarriere(){
       action(c, "Créer l'entreprise", "", () => {
         etat.argent -= t.capital;
         const nomE = etat.nom + " " + parmi(["& Co","Business","Services","Trading","Océan"]);
-        etat.entreprise = {type:t.type, ico:t.ico, nom:nomE, valeur:t.capital, niveau:1, pertes:0};
-        ecrire(`J'ai créé mon entreprise : ${t.ico} « ${nomE} » (${t.type}), avec ${euros(t.capital)} de capital.`, "bon");
+        etat.entreprise = {type:t.type, ico:t.ico, nom:nomE, valeur:t.capital, niveau:1, pertes:0,
+                           caisse:0, monSalaire:0, employes:[]};
+        ecrire(`J'ai créé mon entreprise : ${t.ico} « ${nomE} » (${t.type}), avec ${euros(t.capital)} de capital. À moi de fixer mon salaire, de recruter et de gérer la caisse.`, "bon");
         fermerFeuille();
       }, etat.argent < t.capital || !okIntel);
     }

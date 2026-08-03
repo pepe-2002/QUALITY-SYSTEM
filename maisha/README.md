@@ -19,10 +19,19 @@ l'un d'eux (génération 2, 3, 4…).
   les grosses actions rémunératrices sont limitées à une fois par an.
 - **Carrière** : petits boulots dès 15 ans, 11 métiers salariés, promotions,
   augmentations.
-- **Entreprendre** : 5 types d'entreprises (boutique, restaurant,
-  import-export, compagnie maritime, startup) — capital de départ, bénéfices
-  liés à l'économie du pays, investissement, modernisation, revente… et
-  faillite après 3 années de pertes.
+- **Entreprendre et gérer** : 5 types d'entreprises (boutique, restaurant,
+  import-export, compagnie maritime, startup). L'entreprise a sa **caisse** :
+  chiffre d'affaires + production des employés − masse salariale = résultat.
+  Tu fixes **ton salaire de dirigeant**, tu récupères des **dividendes**
+  (taxés 15 %), tu renfloues, investis, modernises, revends… Faillite après
+  3 années de caisse dans le rouge.
+- **Recruter la famille et les amis** : femme, enfants (dès 16 ans), frères,
+  sœurs et amis ont chacun une **compétence** (0–100). Tu choisis leur poste
+  (directeur adjoint, comptable, commercial, vendeur, manutentionnaire,
+  gardien — chaque poste a son niveau requis et son rendement) et leur
+  **salaire selon le budget**. Incompétent pour le poste → production divisée
+  par deux ; sous-payé → il finit par démissionner ; tu peux augmenter,
+  baisser, muter ou licencier (au risque de fâcher la famille).
 - **Immobilier** : 5 biens achetables, à habiter ou **mettre en location**
   (~5 %/an de rendement, vacance locative possible, entretien 1 %/an, valeur
   qui suit l'économie).

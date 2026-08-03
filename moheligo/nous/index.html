@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<!-- Sécurité : on n'autorise que ce que l'app utilise vraiment.
+     Aucune bibliothèque extérieure, aucune police distante : tout est local. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' https://gnfodquywolxeeqpmzun.supabase.co; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Nous — messagerie privée</title>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#141026">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="nous.css?v=1">
+</head>
+<body>
+
+<!-- ══════════ 1. VERROU (code à 4 chiffres) ══════════ -->
+<section id="ec-verrou" class="ecran plein">
+  <div class="centre">
+    <div class="logo-c">❤</div>
+    <h1 id="vr-titre">Votre code</h1>
+    <p class="sous" id="vr-sous">Personne d'autre n'entre ici.</p>
+    <div class="pin-pts" id="vr-pts"><i></i><i></i><i></i><i></i></div>
+    <div class="pin-err" id="vr-err"></div>
+    <div class="pave">
+      <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+      <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+      <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+      <button class="vide" data-k="s">↺</button><button data-k="0">0</button><button data-k="x">⌫</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 2. BIENVENUE / CRÉATION DU SALON ══════════ -->
+<section id="ec-bienvenue" class="ecran plein cache">
+  <div class="centre large">
+    <div class="logo-c">❤</div>
+    <h1>Nous</h1>
+    <p class="sous">Une messagerie rien qu'à vous : messages, vocaux, photos,<br>
+       activités à deux et rappels quand la journée est trop courte.</p>
+
+    <div class="carte">
+      <label>Comment on appelle ce salon ?</label>
+      <input id="nv-nom" maxlength="30" placeholder="Nous deux" autocomplete="off">
+      <label>Votre prénom (ce qu'elle/il verra)</label>
+      <input id="nv-moi" maxlength="20" placeholder="Nayam" autocomplete="off">
+      <button class="btn" id="nv-creer">Créer notre salon</button>
+    </div>
+
+    <div class="ou">ou</div>
+
+    <div class="carte">
+      <label>On vous a envoyé un code ou un lien ?</label>
+      <input id="nv-code" placeholder="nous-XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
+      <input id="nv-moi2" maxlength="20" placeholder="Votre prénom" autocomplete="off">
+      <button class="btn fant" id="nv-rejoindre">Rejoindre le salon</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3. PARTAGE DU CODE ══════════ -->
+<section id="ec-partage" class="ecran plein cache">
+  <div class="centre large">
+    <div class="logo-c">🔑</div>
+    <h1>Le code du salon</h1>
+    <p class="sous">Envoyez-le à la personne concernée — <b>une seule fois</b>, par
+       WhatsApp ou de vive voix. Ce code est la clé : il ouvre et déchiffre le salon.</p>
+    <div class="code-box" id="pt-code">…</div>
+    <div class="rangee">
+      <button class="btn" id="pt-partager">Envoyer le code</button>
+      <button class="btn fant" id="pt-copier">Copier</button>
+    </div>
+    <p class="mini">⚠️ Gardez-le aussi quelque part pour vous : sans lui, impossible de
+       retrouver le salon depuis un autre téléphone. On ne peut pas le récupérer.</p>
+    <button class="btn plat" id="pt-suite">C'est fait, on entre</button>
+  </div>
+</section>
+
+<!-- ══════════ 4. APPLICATION ══════════ -->
+<main id="app" class="cache">
+
+  <!-- ─── En-tête ─── -->
+  <header class="tete">
+    <button class="tete-b" id="t-salons" aria-label="Changer de salon">☰</button>
+    <div class="tete-txt">
+      <b id="t-nom">Nous deux</b>
+      <small id="t-statut">chiffré de bout en bout</small>
+    </div>
+    <button class="tete-b" id="t-sync" aria-label="Synchroniser">⟳</button>
+  </header>
+
+  <!-- ─── Onglet FIL ─── -->
+  <section class="vue" id="v-fil">
+    <div class="fil" id="fil"></div>
+    <div class="prog-bandeau cache" id="fil-prog"></div>
+
+    <div class="barre">
+      <button class="b-icone" id="b-plus" aria-label="Ajouter">＋</button>
+      <input id="saisie" maxlength="1000" placeholder="Écrire un mot…" autocomplete="off">
+      <button class="b-envoi" id="b-envoi" aria-label="Envoyer">➤</button>
+    </div>
+
+    <!-- menu du + -->
+    <div class="feuille cache" id="feuille-plus">
+      <button data-a="photo">🖼️ <span>Une photo</span></button>
+      <button data-a="vocal">🎤 <span>Un vocal</span></button>
+      <button data-a="idee">💡 <span>Proposer une activité</span></button>
+      <button data-a="prog">⏰ <span>Écrire maintenant, envoyer plus tard</span></button>
+      <button data-a="ping">📞 <span>« Appelle-moi quand tu peux »</span></button>
+    </div>
+
+    <!-- enregistrement vocal -->
+    <div class="vocal-box cache" id="vocal-box">
+      <span class="pt-rouge"></span>
+      <b id="vocal-t">0:00</b>
+      <span class="vocal-aide">on vous écoute…</span>
+      <button class="btn fant p" id="vocal-stop">Envoyer</button>
+      <button class="btn plat p" id="vocal-annul">Annuler</button>
+    </div>
+  </section>
+
+  <!-- ─── Onglet NOUS ─── -->
+  <section class="vue cache" id="v-nous">
+    <div class="defile">
+      <div class="bloc">
+        <h2>L'idée du jour</h2>
+        <div class="idee-jour" id="idee-jour"></div>
+        <div class="rangee">
+          <button class="btn p" id="ij-proposer">Lui proposer</button>
+          <button class="btn fant p" id="ij-autre">Une autre idée</button>
+        </div>
+      </div>
+
+      <div class="bloc">
+        <h2>Nos rendez-vous</h2>
+        <div id="rdv-liste" class="liste"></div>
+      </div>
+
+      <div class="bloc">
+        <h2>Dates à ne jamais oublier</h2>
+        <div id="dates-liste" class="liste"></div>
+        <button class="btn fant p" id="date-add">＋ Ajouter une date</button>
+      </div>
+
+      <div class="bloc">
+        <h2>Toutes les idées</h2>
+        <div class="puces" id="idee-cats"></div>
+        <div id="idee-liste" class="liste"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Onglet FAMILLE ─── -->
+  <section class="vue cache" id="v-famille">
+    <div class="defile">
+      <div class="bloc">
+        <h2>Prendre des nouvelles</h2>
+        <p class="sous g">Qui n'a pas eu de vos nouvelles depuis trop longtemps ?
+           L'app compte les jours à votre place.</p>
+        <div id="fam-liste" class="liste"></div>
+        <button class="btn fant p" id="fam-add">＋ Ajouter quelqu'un</button>
+      </div>
+      <div class="bloc">
+        <h2>Les salons</h2>
+        <div id="fam-salons" class="liste"></div>
+        <button class="btn fant p" id="fam-salon-add">＋ Nouveau salon (famille, un proche…)</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Onglet MON TEMPS ─── -->
+  <section class="vue cache" id="v-temps">
+    <div class="defile">
+      <div class="bloc">
+        <h2>Je suis occupé</h2>
+        <p class="sous g">Elle/il voit tout de suite que vous n'êtes pas disparu —
+           juste pris. Un mot part automatiquement dans le fil.</p>
+        <div class="puces" id="occ-choix"></div>
+        <div id="occ-etat" class="etat"></div>
+      </div>
+
+      <div class="bloc">
+        <h2>Messages qui partiront plus tard</h2>
+        <p class="sous g">Écrivez cinq mots le dimanche, ils arrivent un par jour.
+           Elle/il ne les voit pas avant l'heure.</p>
+        <div id="prog-liste" class="liste"></div>
+        <button class="btn fant p" id="prog-add">＋ Programmer un message</button>
+      </div>
+
+      <div class="bloc">
+        <h2>Mes rappels</h2>
+        <p class="sous g">Un petit coup de coude à l'heure que vous choisissez.</p>
+        <div id="rap-liste" class="liste"></div>
+        <button class="btn fant p" id="rap-add">＋ Ajouter un rappel</button>
+      </div>
+
+      <div class="bloc">
+        <h2>Réglages</h2>
+        <div class="liste">
+          <button class="ligne" data-act="rg-code">🔑 <span>Revoir / partager le code du salon</span></button>
+          <button class="ligne" data-act="rg-nom">✏️ <span>Renommer ce salon / changer mon prénom</span></button>
+          <button class="ligne" data-act="rg-pin">🔒 <span>Changer le code d'ouverture</span></button>
+          <button class="ligne" data-act="rg-notif">🔔 <span>Autoriser les notifications</span></button>
+          <button class="ligne" data-act="rg-export">💾 <span>Sauvegarder la conversation</span></button>
+          <button class="ligne danger" data-act="rg-quitter">🚪 <span>Retirer ce salon de ce téléphone</span></button>
+        </div>
+        <p class="mini" id="rg-etat"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Navigation basse ─── -->
+  <nav class="nav">
+    <button data-v="fil" class="on"><i>💬</i>Fil<em class="pt" id="pt-fil"></em></button>
+    <button data-v="nous"><i>❤</i>Nous</button>
+    <button data-v="famille"><i>👪</i>Famille<em class="pt" id="pt-fam"></em></button>
+    <button data-v="temps"><i>⏳</i>Mon temps</button>
+  </nav>
+</main>
+
+<!-- ══════════ Boîte de dialogue générique ══════════ -->
+<div class="voile cache" id="voile">
+  <div class="modale" id="modale"></div>
+</div>
+<div class="toast cache" id="toast"></div>
+
+<input type="file" id="fichier" accept="image/*" class="cache-dur">
+
+<script src="nous-config.js?v=1"></script>
+<script src="nous.js?v=1"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **02/08/2026** (v5 Destination Mohéli).
+> Dernière mise à jour : **03/08/2026** (messagerie privée « Nous »).
 
 ---
 
@@ -142,8 +142,46 @@ comoriennes → versions 720p ~3-5 Mo.
   fulfill via curl (execFileSync + cache). Précharger 14 s + pan aller-retour
   avant la fenêtre filmée, sinon tuiles blanches (le patron l'a repéré).
 
+## 5 bis. « Nous » — messagerie privée du patron (03/08/2026)
+
+Demande personnelle, sans rapport avec le marketing : une messagerie **à
+part**, privée, pour son couple et sa famille, parce qu'il n'a pas toujours
+le temps de répondre et que des choses se perdent. Livrée dans
+`moheligo/nous/` → **https://moheligo.com/nous/** (aucun lien depuis le
+site, `noindex`). Mode d'emploi complet : `moheligo/nous/README.md`.
+
+- **Chiffrement de bout en bout** : le code du salon (`nous-XXXX-XXXX-XXXX`)
+  ne quitte jamais le téléphone. Il donne (a) l'identifiant du salon =
+  SHA-256 du code, (b) la clé AES-GCM 256 (PBKDF2, 120 000 tours). Le
+  serveur ne stocke que des blocs illisibles → **si le code est perdu, tout
+  est perdu**, le patron doit le garder.
+- **Base** : tables `nous_message` / `nous_etat` dans le MÊME projet
+  Supabase que MoheliGo, RLS fermée, tout passe par des fonctions
+  SECURITY DEFINER. ⚠️ `SQL-nous.sql` **reste à exécuter** dans Supabase —
+  tant que ce n'est pas fait, l'app tourne en mode local (un seul
+  téléphone) et le dit dans un bandeau.
+- **Gestion du temps** (le vrai besoin) : mode « je suis occupé jusqu'à… »
+  visible par l'autre ; messages écrits d'avance et livrés plus tard
+  (le serveur ne les sort pas avant l'heure) ; rappels quotidiens ;
+  60 idées d'activités à deux → proposition → rendez-vous ; compteur
+  « depuis combien de jours ce proche n'a pas eu de nouvelles ».
+- **Acquis technique** : pas de bibliothèque Supabase, appels RPC en `fetch`
+  direct ; IndexedDB pour l'offline + file d'attente ; CSP sans
+  `unsafe-inline` → zéro `onclick`, tout en délégation d'événements.
+  Piège trouvé et corrigé : un message programmé porte un petit numéro
+  d'ordre, donc `nous_lire` renvoie AUSSI les programmés devenus visibles
+  depuis moins de 3 minutes, sinon ils arrivaient avec 60 s de retard.
+- **Limites annoncées** : pas d'appels audio/vidéo en direct (vocaux +
+  bouton « Appelle-moi ») ; notifications seulement si l'app a été ouverte
+  (un vrai push demanderait un serveur d'envoi).
+
 ## 6. Journal des sessions
 
+- **03/08/2026** — Hors marketing : création de « Nous », la messagerie
+  privée couple + famille (voir 5 bis). Testée à deux téléphones
+  (Playwright) : envoi/réception chiffrés, photo, effacement des deux
+  côtés, message programmé livré à l'heure, statut « occupé » transmis.
+  Reste à faire côté patron : exécuter `SQL-nous.sql` dans Supabase.
 - **02/08/2026 (suite)** — v5 « Destination Mohéli » : recherche d'images CC
   (pas de photo libre de Hoani → utilisé satellite, tortues, dauphin, corail,
   plages CC + nos photos), montage 48 s, crédits en règle.

@@ -847,6 +847,66 @@ function actionsDuPDG(e){
     if(h){ h.competence = P.competence; h.salaire = P.salaire; h.argent = (h.argent||0) + Math.round(P.salaire*0.4); }
   }
 
+  // 6bis. le PDG pilote les filiales à l'étranger
+  for(const f of (e.filiales||[])){
+    // politique de rapatriement selon son style
+    f.rapatriement = P.style === "finance" ? 100 : P.style === "croissance" ? 25 : 50;
+    const pf = etat.monde[f.pays];
+    if(!pf) continue;
+    // un dirigeant compétent réinvestit sur place quand le marché local est porteur
+    if(P.style !== "finance" && (f.caisse||0) > 15000 && pf.eco > 55 && bon >= 55){
+      const m = Math.round((f.caisse||0) * 0.6);
+      f.caisse -= m;
+      f.valeur = Math.round((f.valeur||f.invest) + m*1.1);
+      f.invest += Math.round(m*0.7);
+      actes.push(`réinvesti ${euros(m)} dans la filiale de ${f.pays}`);
+    }
+    // et il rapatrie ce qui dort si le siège en a besoin
+    if((e.caisse||0) < 20000 && (f.caisse||0) > 8000){
+      const m = Math.round((f.caisse||0) * 0.8);
+      const taxe = Math.round(m * (0.05 + (pf.corr||40)/500));
+      f.caisse -= m; e.caisse += (m - taxe);
+      actes.push(`rapatrié ${euros(m-taxe)} depuis ${f.pays} pour renflouer le siège`);
+    }
+  }
+  // 6ter. il répond aux appels d'offres qu'il sait honorer
+  if(e.prospects && e.prospects.liste && e.prospects.liste.length){
+    const signables = e.prospects.liste.filter(ct =>
+      e.qualite >= ct.qualiteMin + 5 && e.reputation >= ct.reputationMin + 5
+      && e.employes.length >= ct.employesMin && e.stock >= 30);
+    const cible = P.style === "croissance" ? 2 : 1;
+    for(const ct of signables.slice(0, cible)){
+      e.contrats.push(ct);
+      e.prospects.liste = e.prospects.liste.filter(x => x !== ct);
+      e.reputation = borne(e.reputation + 3);
+      e.clients = (e.clients||0) + 1;
+      actes.push(`signé un contrat avec ${ct.client} (${euros(ct.montant)}/an)`);
+    }
+    // un dirigeant prudent écarte les marchés hors de portée
+    if(P.style === "prudence"){
+      const risques = e.prospects.liste.filter(ct => e.qualite < ct.qualiteMin || e.reputation < ct.reputationMin);
+      if(risques.length){
+        e.prospects.liste = e.prospects.liste.filter(x => !risques.includes(x));
+        actes.push(`écarté ${risques.length} appel(s) d'offres trop risqué(s)`);
+      }
+    }
+  }
+  // 6quater. un développeur agressif ouvre de nouveaux marchés
+  if(P.style === "croissance" && (e.filiales||[]).length < 3 && (e.caisse||0) > 250000 && bon >= 60){
+    const candidats = Object.keys(etat.monde)
+      .filter(n => n !== etat.pays && !(e.filiales||[]).some(f => f.pays === n))
+      .map(n => ({n, a: attractivite(etat.monde[n])}))
+      .sort((x,y) => y.a - x.a);
+    if(candidats.length){
+      const pays = candidats[0].n;
+      const cout = Math.min(Math.round((e.caisse||0)*0.4), Math.max(40000, Math.round(assietteCA(e.valeur)*0.5)));
+      e.caisse -= cout;
+      e.filiales.push({pays, invest:cout, valeur:cout, caisse:0, annees:0, rapatriement:25});
+      e.reputation = borne(e.reputation + 4);
+      actes.push(`ouvert une filiale en ${pays} pour ${euros(cout)}`);
+    }
+  }
+
   // 6. dividende remonté au propriétaire
   const garde = 12000 + assietteCA(e.valeur)*0.12;
   if((e.caisse||0) > garde){
@@ -1418,6 +1478,17 @@ function vieillir(){
     }
     // les clients suivent la réputation
     e.clients = Math.max(3, Math.round((e.clients||10) * (0.94 + e.reputation/900) + (e.contrats||[]).length));
+
+    /* --- les appels d'offres de l'année arrivent, que le joueur regarde ou non --- */
+    if(!e.prospects || e.prospects.age !== etat.age){
+      const nb = 1 + alea(2) + (e.reputation > 55 ? 1 : 0);
+      const liste = [];
+      for(let i=0;i<nb;i++){
+        const niv = e.reputation > 70 && (e.taille||0) >= 2 ? alea(3) : e.reputation > 45 ? alea(2) : 0;
+        liste.push(genererContrat(e, niv));
+      }
+      e.prospects = {age: etat.age, liste};
+    }
 
     /* --- les entreprises à qui JE donne des contrats --- */
     let coutFournisseurs = 0, bonusProd = 1, bonusMarge = 1;
@@ -2902,7 +2973,7 @@ function feuilleEntreprise(e){
       <div class="detail">${P.titre} · Compétence <b>${P.competence}/100</b> · ${euros(P.salaire)}/an · ${P.annees||0} an${(P.annees||0)>1?"s":""} en poste · Moral ${P.moral||70}/100<br>
       💰 Fortune personnelle : <b>${euros(P.argent||0)}</b> (bâtie grâce à toi)<br>
       ${PROFILS_PDG.find(x=>x.style===P.style).desc}<br><br>
-      <b>${P.genre==="F"?"Elle":"Il"} gère tout à ta place</b> : stock, publicité, recrutement, formation, et te remonte des dividendes chaque année. Tu n'as plus qu'à voter au conseil d'administration.</div>
+      <b>${P.genre==="F"?"Elle":"Il"} gère tout à ta place</b> : stock, publicité, recrutement, formation, <b>appels d'offres</b> et <b>filiales à l'étranger</b> (rapatriement, réinvestissement, ouverture de nouveaux marchés), et te remonte des dividendes chaque année. Tu n'as plus qu'à voter au conseil d'administration.</div>
       <div class="actions"></div>`);
     action(cP, "Fixer sa rémunération", "", () => {
       demanderMontant("Rémunération de " + P.nom,
@@ -3028,15 +3099,7 @@ function feuilleEntreprise(e){
   }
 
   /* --- appels d'offres --- */
-  if(!e.prospects || e.prospects.age !== etat.age){
-    const nb = 1 + alea(2) + (e.reputation > 55 ? 1 : 0);
-    const liste = [];
-    for(let i=0;i<nb;i++){
-      const niv = e.reputation > 70 && e.taille >= 2 ? alea(3) : e.reputation > 45 ? alea(2) : 0;
-      liste.push(genererContrat(e, niv));
-    }
-    e.prospects = {age: etat.age, liste};
-  }
+  if(!e.prospects){ e.prospects = {age: etat.age, liste: [genererContrat(e, 0)]}; }
   section(`🤝 Appels d'offres reçus (${e.prospects.liste.length})`, true);
   if(!e.prospects.liste.length) carte(`<div class="detail">Aucune proposition cette année. Fais de la prospection pour attirer des clients.</div>`);
   for(const ct of e.prospects.liste){

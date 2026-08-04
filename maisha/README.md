@@ -44,6 +44,30 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Le PDG gère aussi tout ça 👔
+
+Ton dirigeant ne s'occupe plus seulement du stock et des salaires : il pilote
+la compagnie entière, et **son style se voit dans ses décisions**.
+
+- **Les appels d'offres** — il signe les marchés qu'il sait honorer (le
+  développeur agressif en prend deux par an, les autres un) ; le
+  **gestionnaire prudent écarte** ceux qui dépassent les capacités de la
+  maison.
+- **Les filiales à l'étranger** — il règle lui-même la politique de
+  rapatriement : **100 %** pour le financier (tout remonte au siège), **25 %**
+  pour le développeur agressif (l'argent reste sur place pour financer la
+  croissance), 50 % pour les autres. Il **réinvestit** localement quand le
+  marché est porteur, et **rapatrie en urgence** si le siège manque de
+  trésorerie.
+- **L'ouverture de nouveaux marchés** — un développeur agressif compétent et
+  bien doté **ouvre de nouvelles filiales** dans les pays les plus attractifs,
+  tout seul.
+
+Mesuré sur 12 ans sans que le joueur touche à rien : le prudent signe des
+contrats et écarte six marchés trop risqués ; le développeur agressif ouvre
+deux filiales de plus et réinvestit dix fois sur place ; le financier fait
+tout remonter au siège.
+
 ## Gérer l'argent de tes filiales 🌍
 
 Chaque filiale à l'étranger a désormais sa **propre trésorerie**. Les

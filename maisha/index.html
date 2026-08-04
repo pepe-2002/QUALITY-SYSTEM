@@ -212,6 +212,20 @@
   .bouton.or{background:var(--money); color:#3a2500}
   .bouton:disabled{opacity:.4; cursor:default}
   .mini-jauge{height:6px; background:var(--panel2); border-radius:99px; overflow:hidden; margin-top:8px}
+  .saisie-montant{
+    width:100%; background:var(--panel); color:var(--ink); border:1px solid var(--line);
+    border-radius:10px; padding:12px 14px; font-size:20px; font-weight:700;
+    font-family:inherit; text-align:center; font-variant-numeric:tabular-nums; margin-top:4px;
+  }
+  .saisie-montant:focus{outline:2px solid var(--accent); outline-offset:-1px}
+  .raccourcis{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+  .raccourcis button{
+    flex:1 1 auto; min-width:64px; background:var(--panel2); color:var(--ink);
+    border:1px solid var(--line); border-radius:8px; padding:7px 6px; font-size:11.5px;
+    font-family:inherit; cursor:pointer;
+  }
+  .raccourcis button:hover{border-color:var(--accent)}
+  .aide-montant{font-size:12px; color:var(--ink-dim); margin-top:9px; line-height:1.5; text-align:center}
   .mini-jauge i{display:block; height:100%; background:var(--accent)}
   .pays-stat{display:flex; align-items:center; gap:8px; font-size:11px; margin-top:7px}
   .pays-stat label{width:104px; color:var(--ink-dim); flex:0 0 auto}
@@ -2366,6 +2380,59 @@ function continuerAvec(h, heritage){
   $("plein").classList.remove("ouvert");
 }
 
+/* ---------------- saisie libre d'un montant ---------------- */
+function demanderMontant(titre, texte, dispo, defaut, action, libelleAction){
+  const max = Math.max(0, Math.floor(dispo));
+  $("mod-titre").textContent = titre;
+  $("mod-texte").innerHTML = `
+    <div style="line-height:1.6; margin-bottom:12px">${texte}</div>
+    <input class="saisie-montant" id="sm-val" type="number" inputmode="numeric"
+           min="0" max="${max}" step="100" value="${Math.min(max, Math.max(0, Math.round(defaut||0)))}">
+    <div class="raccourcis" id="sm-rac"></div>
+    <div class="aide-montant" id="sm-aide"></div>`;
+  const box = $("mod-choix");
+  box.innerHTML = "";
+
+  const valider = document.createElement("button");
+  valider.textContent = libelleAction || "Valider";
+  valider.style.cssText = "background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:700; text-align:center";
+  valider.onclick = () => {
+    const v = Math.max(0, Math.min(max, Math.round(Number($("sm-val").value) || 0)));
+    $("modale").classList.remove("ouvert");
+    if(v > 0) action(v);
+    if(!etat.mort){ sauver(); toutAfficher(); if(ecranCourant) rafraichirFeuille(); }
+  };
+  const annuler = document.createElement("button");
+  annuler.textContent = "Annuler";
+  annuler.style.textAlign = "center";
+  annuler.onclick = () => { $("modale").classList.remove("ouvert"); };
+  box.appendChild(valider);
+  box.appendChild(annuler);
+
+  const champ = $("sm-val"), aide = $("sm-aide"), rac = $("sm-rac");
+  const maj = () => {
+    const v = Math.max(0, Math.min(max, Math.round(Number(champ.value) || 0)));
+    aide.innerHTML = `<b>${euros(v)}</b> · disponible : ${euros(max)}`;
+  };
+  for(const [lib, part] of [["25 %",0.25], ["50 %",0.5], ["75 %",0.75], ["Tout",1]]){
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = lib;
+    b.onclick = () => { champ.value = Math.round(max*part); maj(); };
+    rac.appendChild(b);
+  }
+  for(const m of [1000, 10000, 100000]){
+    if(m > max) continue;
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = "+ " + euros(m);
+    b.onclick = () => { champ.value = Math.min(max, (Number(champ.value)||0) + m); maj(); };
+    rac.appendChild(b);
+  }
+  champ.oninput = maj;
+  maj();
+  $("modale").classList.add("ouvert");
+  setTimeout(() => { try{ champ.focus(); champ.select(); }catch(e){} }, 60);
+}
+
 /* ---------------- modales ---------------- */
 
 function prochaineModale(){
@@ -2804,10 +2871,25 @@ function feuilleEntreprise(e){
       ${PROFILS_PDG.find(x=>x.style===P.style).desc}<br><br>
       <b>${P.genre==="F"?"Elle":"Il"} gère tout à ta place</b> : stock, publicité, recrutement, formation, et te remonte des dividendes chaque année. Tu n'as plus qu'à voter au conseil d'administration.</div>
       <div class="actions"></div>`);
-    action(cP, "Augmenter (+25 %)", "", () => {
-      P.salaire = Math.round(P.salaire*1.25); P.moral = Math.min(100,(P.moral||70)+15);
-      ecrire(`J'ai augmenté ${P.nom} : ${euros(P.salaire)}/an.`, "argent");
-      rafraichirFeuille();
+    action(cP, "Fixer sa rémunération", "", () => {
+      demanderMontant("Rémunération de " + P.nom,
+        `${P.titre} · compétence <b>${P.competence}/100</b> · ${P.annees||0} an(s) en poste · moral ${P.moral||70}/100.<br>
+         Rémunération actuelle : <b>${euros(P.salaire)}/an</b> · trésorerie : ${euros(e.caisse||0)}<br>
+         Bien payer son dirigeant fait monter son moral et sa compétence ; le sous-payer le démotive.`,
+        Math.max(300000, (e.caisse||0)), P.salaire,
+        m => {
+          const avant = P.salaire;
+          P.salaire = m;
+          P.moral = Math.min(100, Math.max(0, (P.moral||70) + (m > avant*1.1 ? 15 : m < avant*0.9 ? -18 : 0)));
+          if(m > avant*1.1) P.competence = Math.min(95, P.competence + 1);
+          const h = etat.relations.find(x => x.nom === P.nom && x.vivant);
+          if(h) h.salaire = m;
+          ecrire(m > avant ? `J'ai porté la rémunération de ${P.nom} à ${euros(m)}/an. ${P.genre==="F"?"Elle":"Il"} redouble d'efforts.`
+                           : m < avant ? `J'ai ramené la rémunération de ${P.nom} à ${euros(m)}/an. Ambiance tendue en réunion.`
+                                       : `Rémunération de ${P.nom} maintenue à ${euros(m)}/an.`,
+                 m >= avant ? "argent" : "mauvais");
+        },
+        "Fixer cette rémunération");
     });
     action(cP, "Le renvoyer", "rouge", () => {
       etat.argent -= Math.round(P.salaire*0.5);
@@ -3111,39 +3193,35 @@ function feuilleEntreprise(e){
   const cf = carte(`<div class="detail">Mon salaire de dirigeant : <b>${euros(e.monSalaire||0)}/an</b> (payé par la trésorerie). Dividendes taxés à 15 %. Emprunt : intérêts de 8 %/an, remboursement automatique de 15 %/an.</div>`);
   const gf = grille(cf);
   btn(gf, "Fixer mon salaire", "", () => {
-    fileEvenements.push({
-      titre:"Mon salaire de dirigeant",
-      texte:`Trésorerie : ${euros(e.caisse||0)}. C'est elle qui te paie chaque année.`,
-      choix: MES_SALAIRES.map(s => ({label: s===0 ? "Aucun salaire (tout réinvestir)" : euros(s)+"/an", effet(){
-        e.monSalaire = s;
-        ecrire(s===0 ? `Je renonce à mon salaire chez « ${e.nom} ».` : `Mon salaire de dirigeant chez « ${e.nom} » : ${euros(s)}/an.`, "argent");
-      }})).concat([{label:"Annuler", effet(){}}])
-    });
-    fermerFeuille(); prochaineModale();
+    demanderMontant("Mon salaire de dirigeant",
+      `Ce que « ${e.nom} » te versera chaque année. C'est la trésorerie qui paie.<br>
+       Trésorerie : <b>${euros(e.caisse||0)}</b> · salaire actuel : <b>${euros(e.monSalaire||0)}/an</b><br>
+       Mets 0 pour tout réinvestir dans l'entreprise.`,
+      Math.max(200000, (e.caisse||0)), e.monSalaire||24000,
+      m => { e.monSalaire = m;
+             ecrire(`Mon salaire de dirigeant chez « ${e.nom} » : ${euros(m)}/an.`, "argent"); },
+      "Fixer ce salaire");
   });
-  btn(gf, "Verser des dividendes", "or", () => {
+  btn(gf, "Retirer de l'argent", "or", () => {
     const dispo = Math.max(0, e.caisse||0);
-    if(dispo < 1000){ ecrire(`La trésorerie de « ${e.nom} » est vide.`, "mauvais"); return; }
-    fileEvenements.push({
-      titre:"Dividendes",
-      texte:`Trésorerie disponible : ${euros(dispo)}. Taxe de 25 % sur les dividendes.`,
-      choix: [5000,20000,50000].filter(m=>m<=dispo).map(m => ({label: euros(m), effet(){
-        e.caisse -= m; etat.argent += Math.round(m*0.75);
-        ecrire(`Dividendes de « ${e.nom} » : ${euros(Math.round(m*0.75))} net.`, "argent");
-      }})).concat([
-        {label:"Tout ("+euros(dispo)+")", effet(){
-          e.caisse -= dispo; etat.argent += Math.round(dispo*0.75);
-          ecrire(`J'ai vidé la trésorerie de « ${e.nom} » : ${euros(Math.round(dispo*0.75))} net.`, "argent"); }},
-        {label:"Annuler", effet(){}}
-      ])
-    });
-    fermerFeuille(); prochaineModale();
+    if(dispo < 500){ ecrire(`La trésorerie de « ${e.nom} » est vide.`, "mauvais"); return; }
+    demanderMontant("Retirer de « " + e.nom + " »",
+      `Combien veux-tu sortir de la trésorerie ? <b>25 % de taxe</b> sur les dividendes.<br>
+       Trésorerie : <b>${euros(dispo)}</b>`,
+      dispo, Math.round(dispo*0.5),
+      m => { e.caisse -= m; etat.argent += Math.round(m*0.75);
+             ecrire(`J'ai retiré ${euros(m)} de « ${e.nom} » : ${euros(Math.round(m*0.75))} net après taxe.`, "argent"); },
+      "Retirer");
   });
-  btn(gf, "Renflouer (10 000 €)", "gris", () => {
-    etat.argent -= 10000; e.caisse += 10000;
-    ecrire(`J'ai renfloué « ${e.nom} » avec 10 000 € de ma poche.`);
-    rafraichirFeuille();
-  }, etat.argent < 10000);
+  btn(gf, "Injecter de l'argent", "gris", () => {
+    demanderMontant("Injecter de l'argent dans « " + e.nom + " »",
+      `Tu vas verser de ta poche vers la trésorerie de l'entreprise.<br>
+       Ta banque : <b>${euros(etat.argent)}</b> · trésorerie actuelle : <b>${euros(e.caisse||0)}</b>`,
+      Math.max(0, etat.argent), Math.min(etat.argent, 20000),
+      m => { etat.argent -= m; e.caisse += m;
+             ecrire(`J'ai injecté ${euros(m)} de ma poche dans « ${e.nom} ».`, "argent"); },
+      "Injecter");
+  }, etat.argent <= 0);
   btn(gf, "Emprunter 50 000 €", "gris", () => {
     if((e.dette||0) > e.valeur){ ecrire("La banque refuse : l'entreprise est déjà trop endettée.", "mauvais"); return; }
     e.dette = (e.dette||0)+50000; e.caisse += 50000;
@@ -3388,17 +3466,24 @@ function feuilleEntreprise(e){
     const cE = carte(`<div class="titre">${emp.nom} ${emp.externe?"":"<span class=\"badge\">👪 famille</span>"}</div>
       <div class="detail">${emp.poste} · ${euros(emp.salaire)}/an · Compétence ${comp}/100 ${ok?"✅":"⚠️ requis "+poste.req}${emp.salaire < comp*120 ? " · 😠 sous-payé·e" : ""} · ${emp.exp||0} an${(emp.exp||0)>1?"s":""} d'ancienneté<br>💰 Fortune personnelle : <b>${euros(fortEmp)}</b></div>`);
     const gE = grille(cE);
-    btn(gE, "Augmenter +20 %", "", () => {
-      emp.salaire = Math.round(emp.salaire*1.2);
-      if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre+8); }
-      ecrire(`${emp.nom} est augmenté${(r?r.genre:emp.genre)==="F"?"e":""} : ${euros(emp.salaire)}/an.`, "argent");
-      rafraichirFeuille();
-    });
-    btn(gE, "Baisser −20 %", "gris", () => {
-      emp.salaire = Math.round(emp.salaire*0.8);
-      if(r){ r.salaire = emp.salaire; r.barre = borne(r.barre-12); }
-      ecrire(`Salaire de ${emp.nom} baissé à ${euros(emp.salaire)}/an.`, "mauvais");
-      rafraichirFeuille();
+    btn(gE, "Fixer son salaire", "", () => {
+      const attendu = comp*120;
+      demanderMontant("Salaire de " + emp.nom,
+        `${emp.poste} · compétence <b>${comp}/100</b> · ancienneté ${emp.exp||0} an(s).<br>
+         Salaire actuel : <b>${euros(emp.salaire)}/an</b> · trésorerie : ${euros(e.caisse||0)}<br>
+         En dessous de <b>${euros(attendu)}</b>, ${(r?r.genre:emp.genre)==="F"?"elle":"il"} se sentira sous-payé${(r?r.genre:emp.genre)==="F"?"e":""} et finira par partir.`,
+        Math.max(200000, (e.caisse||0)), emp.salaire,
+        m => {
+          const avant = emp.salaire;
+          emp.salaire = m;
+          if(r){ r.salaire = m; r.barre = borne(r.barre + (m > avant ? 8 : m < avant ? -12 : 0)); }
+          ecrire(m > avant
+            ? `${emp.nom} est augmenté${(r?r.genre:emp.genre)==="F"?"e":""} : ${euros(m)}/an.`
+            : m < avant ? `Salaire de ${emp.nom} ramené à ${euros(m)}/an.`
+                        : `Salaire de ${emp.nom} maintenu à ${euros(m)}/an.`,
+            m >= avant ? "argent" : "mauvais");
+        },
+        "Fixer ce salaire");
     });
     btn(gE, "Former (2 000 €)", "or", () => {
       if(dejaFait("form_"+emp.nom)){ ecrire(`${emp.nom} a déjà été formé${(r?r.genre:emp.genre)==="F"?"e":""} cette année.`); return; }
@@ -4380,11 +4465,20 @@ function feuilleRelations(){
       }, etat.argent<800);
     }
     if(r.type==="enfant" && etat.age>=18){
-      action(c, "Donner 1 000 €", "or", () => {
-        etat.argent -= 1000; r.argent = (r.argent||0)+1000; r.barre = borne(r.barre+10);
-        ecrire(`J'ai donné 1 000 € à ${r.nom} pour l'aider dans la vie.`, "argent");
-        fermerFeuille();
-      }, etat.argent<1000);
+      action(c, "Lui donner de l'argent", "or", () => {
+        demanderMontant("Donner à " + r.nom,
+          `${LIBELLE_REL[r.type]} · ${r.age} ans${r.metier ? " · "+r.metier : ""}<br>
+           Sa fortune actuelle : <b>${euros(r.argent||0)}</b> · ta banque : <b>${euros(etat.argent)}</b><br>
+           Un don généreux renforce durablement votre lien.`,
+          Math.max(0, etat.argent), Math.min(etat.argent, 5000),
+          m => {
+            etat.argent -= m; r.argent = (r.argent||0) + m;
+            r.barre = borne(r.barre + Math.min(30, 5 + Math.round(m/2000)));
+            etat.karma = borne((etat.karma||60) + Math.min(6, 1 + Math.round(m/10000)));
+            ecrire(`J'ai donné ${euros(m)} à ${r.nom}. ${r.genre==="F"?"Elle":"Il"} n'oubliera pas.`, "argent");
+          },
+          "Donner");
+      }, etat.argent <= 0);
       if(r.sdf){
         action(c, "Le sortir de la rue (5 000 €)", "rouge", () => {
           etat.argent -= 5000; r.sdf = false; r.echecs = 0;
@@ -4411,10 +4505,19 @@ function feuilleRelations(){
       r.barre = borne(r.barre+12); etat.bonheur = borne(etat.bonheur+4);
       ecrire(`Bon moment passé avec ${r.nom}.`, "bon"); fermerFeuille();
     });
-    action(c, "Cadeau (100 €)", "gris", () => {
-      etat.argent -= 100; r.barre = borne(r.barre+18);
-      ecrire(`J'ai offert un cadeau à ${r.nom}.`); fermerFeuille();
-    }, etat.argent<100);
+    action(c, "Offrir de l'argent", "gris", () => {
+      demanderMontant("Offrir à " + r.nom,
+        `${LIBELLE_REL[r.type]} · relation actuelle ${r.barre}/100<br>
+         Ta banque : <b>${euros(etat.argent)}</b>. Plus tu donnes, plus le lien se renforce.`,
+        Math.max(0, etat.argent), Math.min(etat.argent, 500),
+        m => {
+          etat.argent -= m; r.argent = (r.argent||0) + m;
+          r.barre = borne(r.barre + Math.min(30, 6 + Math.round(m/1500)));
+          etat.karma = borne((etat.karma||60) + Math.min(5, 1 + Math.round(m/8000)));
+          ecrire(`J'ai offert ${euros(m)} à ${r.nom}.`, "argent");
+        },
+        "Offrir");
+    }, etat.argent <= 0);
     if(r.type==="partenaire" && etat.age>=18){
       action(c, "Demander en mariage 💍", "", () => {
         if(r.barre>50 || alea(2)){

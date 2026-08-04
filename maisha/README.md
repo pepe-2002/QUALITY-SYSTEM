@@ -44,6 +44,25 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Tu fixes tes montants toi-même 💶
+
+Plus de boutons figés : partout où il y a de l'argent, un **clavier de saisie**
+s'ouvre avec le montant exact que tu veux, des raccourcis (25 %, 50 %, 75 %,
+tout, +1 000, +10 000, +100 000) et le disponible affiché en permanence.
+
+- **Injecter de l'argent** dans ton entreprise — le montant que tu veux,
+  depuis ta poche vers la trésorerie.
+- **Retirer de l'argent** — tu choisis combien sortir, la taxe de 25 % sur
+  les dividendes est calculée devant toi.
+- **Fixer ton salaire de dirigeant** — n'importe quel montant, 0 compris si
+  tu préfères tout réinvestir.
+- **Fixer la rémunération de ton PDG** — bien le payer fait monter son moral
+  et sa compétence, le sous-payer le démotive.
+- **Fixer le salaire de chaque employé** — l'écran te rappelle le seuil en
+  dessous duquel il se sentira sous-payé et finira par partir.
+- **Donner de l'argent à un proche** — le montant de ton choix : plus tu
+  donnes, plus le lien se renforce et plus ton karma monte.
+
 ## Ce que la génération suivante conserve 🧬
 
 Changer de génération ne remet rien à zéro du patrimoine ni du monde :

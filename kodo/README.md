@@ -53,6 +53,13 @@ Les niveaux 1 à 3 apprennent à **construire**. Les niveaux 4 à 6 apprennent �
 maîtriser les coûts — c'est là que se joue la différence entre un projet
 qui tient et un projet qu'on abandonne.
 
+**On ne reste jamais bloqué.** Premier essai raté : l'indice s'ouvre tout seul.
+Deuxième : le jeu propose de montrer la solution — la bonne réponse pour un QCM,
+le bon ordre pour un enchaînement, et pour un exercice de code, la solution
+écrite proprement, placée directement dans l'éditeur pour que tu puisses la
+modifier et la relancer. La leçon se valide dans tous les cas ; le bilan indique
+seulement ce que tu as réussi seul et ce que tu as fait avec la solution.
+
 Trois types d'exercices, tous corrigés sur-le-champ avec une explication :
 
 - **QCM** — on explique aussi pourquoi la mauvaise réponse est tentante ;
@@ -88,6 +95,7 @@ kodo.js             moteur de jeu, écrans, correcteur d'exercices
 cours-bases.js      niveaux 1-4 : « Le code » et « Le web »
 cours-tech.js       niveaux 1-4 : « Les serveurs » et « API & IA »
 cours-avance.js     niveaux 5 et 6 des quatre branches
+solutions.js        la solution de chaque exercice de code
 construire-page-unique.py   assemble tout en un seul fichier HTML
 kodo-en-ligne.html  le jeu en une seule page (produit par le script)
 manifest.webmanifest, sw.js   installation + fonctionnement hors ligne

@@ -483,7 +483,8 @@ function ouvrirLecon(id) {
   if (!S.fait[t.l.id] && S.energie < 1) {
     toast('Plus d\'énergie pour étudier. Termine la journée.', 'rouge'); return;
   }
-  ctx = { lecon: t.l, br: t.b, etape: 'cours', iExo: 0, reussis: 0, revision: !!S.fait[t.l.id] };
+  ctx = { lecon: t.l, br: t.b, etape: 'cours', iExo: 0, reussis: 0, aides: 0,
+          exoCourant: -1, essais: 0, revision: !!S.fait[t.l.id] };
   $('#panneau').hidden = false;
   document.body.style.overflow = 'hidden';
   rendrePanneau();
@@ -543,6 +544,9 @@ function testerCode(src, nom, tests) {
 
 function rendreExo() {
   const l = ctx.lecon, e = l.exos[ctx.iExo];
+  // Le compteur d'essais ne repart de zéro qu'en changeant d'exercice :
+  // c'est lui qui déclenche l'indice puis la solution.
+  if (ctx.exoCourant !== ctx.iExo) { ctx.exoCourant = ctx.iExo; ctx.essais = 0; }
   let h = `<div class="exo-tete"><span>Exercice ${ctx.iExo + 1} / ${l.exos.length}</span><span>${esc(ctx.br.nom)}</span></div>
     <div class="q">${e.q}</div>`;
 
@@ -600,59 +604,95 @@ function rendreExo() {
   ctx.corrige = false;
 }
 
-function verdict(bon, titre, texte) {
-  $('#verdict').innerHTML = `<div class="verdict ${bon ? 'bon' : 'mauv'}"><b>${titre}</b>${texte}</div>`;
-  ctx.corrige = bon;
-  if (bon) {
-    ctx.reussis++;
-    const dernier = ctx.iExo >= ctx.lecon.exos.length - 1;
-    $('#panneauPied').innerHTML = `<button class="btn vert" id="btnSuite">${dernier ? 'Terminer la leçon' : 'Exercice suivant'}</button>`;
-    $('#btnSuite').onclick = () => {
-      if (dernier) { ctx.etape = 'bilan'; }
-      else { ctx.iExo++; }
-      rendrePanneau();
-    };
+/* Fin d'exercice : réussi seul, ou compris grâce à la solution.
+   Dans les deux cas on avance — on ne reste jamais coincé. */
+function terminer(titre, texte, avecAide) {
+  $('#verdict').innerHTML = `<div class="verdict ${avecAide ? 'aide' : 'bon'}"><b>${titre}</b>${texte}</div>`;
+  ctx.corrige = true;
+  if (avecAide) ctx.aides++; else ctx.reussis++;
+  const dernier = ctx.iExo >= ctx.lecon.exos.length - 1;
+  $('#panneauPied').innerHTML =
+    `<button class="btn ${avecAide ? 'plein' : 'vert'}" id="btnSuite">${
+      dernier ? 'Terminer la leçon' : (avecAide ? 'J\'ai compris, continuer' : 'Exercice suivant')}</button>`;
+  $('#btnSuite').onclick = () => {
+    if (dernier) ctx.etape = 'bilan'; else ctx.iExo++;
+    rendrePanneau();
+  };
+}
+
+/* Échec : on montre pourquoi, puis on aide de plus en plus.
+   1er essai raté → l'indice apparaît. 2e → la solution est proposée. */
+function echec(titre, texte, reessayer, libelle) {
+  ctx.essais++;
+  $('#verdict').innerHTML = `<div class="verdict mauv"><b>${titre}</b>${texte}</div>`;
+  // L'indice se dévoile tout seul dès le premier essai raté.
+  const ind = $('#indice');
+  if (ind) { ind.hidden = false; if ($('#btnIndice')) $('#btnIndice').hidden = true; }
+
+  const aide = ctx.essais >= 2;
+  $('#panneauPied').innerHTML =
+    `<div class="pied-2">
+       <button class="btn or" id="btnRe">${libelle || 'Réessayer'}</button>
+       ${aide ? '<button class="btn" id="btnSol">Montrer la solution</button>' : ''}
+     </div>
+     ${aide ? '' : '<div class="pied-note">Encore un essai et je te montre la solution.</div>'}`;
+  $('#btnRe').onclick = reessayer;
+  if (aide) $('#btnSol').onclick = montrerSolution;
+}
+
+/* La solution, expliquée. L'exercice compte comme « fait avec aide ». */
+function montrerSolution() {
+  const e = ctx.lecon.exos[ctx.iExo];
+
+  if (e.type === 'qcm') {
+    $('#panneauCorps').querySelectorAll('.choix').forEach((b, i) => {
+      b.classList.remove('sel', 'mauv');
+      if (i === e.bon) b.classList.add('bon');
+    });
+    terminer('La bonne réponse était la ' + (e.bon + 1) + '.', e.expl, true);
+
+  } else if (e.type === 'ordre') {
+    $('#panneauCorps').querySelectorAll('.ordre-item').forEach(b => {
+      const r = +b.dataset.o;
+      b.classList.add('pris');
+      b.querySelector('.rang').textContent = r + 1;
+    });
+    terminer('Voici le bon ordre — les numéros sont remis en place.', e.expl, true);
+
+  } else {
+    const sol = (window.KODO_SOLUTIONS || {})[e.nom];
+    if (sol && $('#zoneCode')) $('#zoneCode').value = sol;
+    terminer('Voici la solution. Lis-la, elle est écrite pour être comprise.',
+      e.expl + (sol ? ' Elle est maintenant dans l\'éditeur : tu peux la modifier et la relancer pour voir ce qui change.' : ''),
+      true);
   }
 }
 
 function corrigerQcm(choisi) {
   const e = ctx.lecon.exos[ctx.iExo];
-  const btns = $('#panneauCorps').querySelectorAll('.choix');
-  btns.forEach((b, i) => {
+  $('#panneauCorps').querySelectorAll('.choix').forEach((b, i) => {
     b.classList.remove('sel');
     if (i === e.bon) b.classList.add('bon');
     else if (i === choisi) b.classList.add('mauv');
   });
-  if (choisi === e.bon) verdict(true, 'Exact.', e.expl);
-  else {
-    verdict(false, 'Pas tout à fait.', e.expl);
-    $('#panneauPied').innerHTML = `<button class="btn or" id="btnRe">Réessayer</button>`;
-    $('#btnRe').onclick = () => rendreExo();
-  }
+  if (choisi === e.bon) terminer('Exact.', e.expl, false);
+  else echec('Pas tout à fait.', e.expl, () => rendreExo());
 }
 
 function corrigerCode() {
   const e = ctx.lecon.exos[ctx.iExo];
-  const src = $('#zoneCode').value;
-  const res = testerCode(src, e.nom, e.tests);
-  if (res.ok) verdict(true, 'Ça marche, tous les cas passent.', e.expl);
-  else {
-    verdict(false, 'Pas encore.', res.msg);
-    $('#panneauPied').innerHTML = `<button class="btn or" id="btnRe">Corriger et revérifier</button>`;
-    $('#btnRe').onclick = () => corrigerCode();
-  }
+  const res = testerCode($('#zoneCode').value, e.nom, e.tests);
+  if (res.ok) terminer('Ça marche, tous les cas passent.', e.expl, false);
+  // Un seul clic pour relancer : on corrige son code, on revérifie.
+  else echec('Pas encore.', res.msg, () => corrigerCode(), 'Vérifier à nouveau');
 }
 
 function corrigerOrdre() {
   const e = ctx.lecon.exos[ctx.iExo];
   const attendu = e.items.map((_, i) => i);
-  const bon = JSON.stringify(ctx.ordre.choisis) === JSON.stringify(attendu);
-  if (bon) verdict(true, 'Dans le bon ordre.', e.expl);
-  else {
-    verdict(false, 'L\'ordre n\'est pas bon.', e.expl);
-    $('#panneauPied').innerHTML = `<button class="btn or" id="btnRe">Réessayer</button>`;
-    $('#btnRe').onclick = () => rendreExo();
-  }
+  if (JSON.stringify(ctx.ordre.choisis) === JSON.stringify(attendu))
+    terminer('Dans le bon ordre.', e.expl, false);
+  else echec('L\'ordre n\'est pas bon.', e.expl, () => rendreExo());
 }
 
 function rendreBilan() {
@@ -666,10 +706,12 @@ function rendreBilan() {
   const niv = niveau(ctx.br.id);
   const debloques = CONTRATS.filter(c => c.br === ctx.br.id && c.niv === niv).length;
 
+  const s = n => n > 1 ? 's' : '';
   $('#panneauCorps').innerHTML = `<div class="fin">
     <div class="gd">${premiere ? 'COMPÉTENCE ACQUISE' : 'RÉVISION FAITE'}</div>
     <p class="sous" style="margin:12px 0 18px">
-      ${esc(l.titre)} — ${ctx.reussis} exercice${ctx.reussis > 1 ? 's' : ''} réussi${ctx.reussis > 1 ? 's' : ''}.</p>
+      ${esc(l.titre)} — ${ctx.reussis} exercice${s(ctx.reussis)} réussi${s(ctx.reussis)} tout seul${
+        ctx.aides ? `, ${ctx.aides} avec la solution. Regarder la solution fait partie de l'apprentissage : refais la leçon plus tard, tu verras la différence.` : '.'}</p>
     ${premiere ? `<div class="carte" style="text-align:left">
       <div class="comp"><div class="n">${esc(ctx.br.nom)}</div>
         <div class="b"><i style="width:${niv / ctx.br.lecons.length * 100}%;background:${ctx.br.couleur}"></i></div>

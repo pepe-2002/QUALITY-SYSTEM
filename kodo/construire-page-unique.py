@@ -14,7 +14,8 @@ import os
 import re
 
 ICI = os.path.dirname(os.path.abspath(__file__))
-SCRIPTS = ('cours-bases.js', 'cours-tech.js', 'cours-avance.js', 'kodo.js')
+SCRIPTS = ('cours-bases.js', 'cours-tech.js', 'cours-avance.js',
+           'solutions.js', 'kodo.js')
 
 
 def lire(nom):

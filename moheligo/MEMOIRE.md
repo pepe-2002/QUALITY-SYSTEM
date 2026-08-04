@@ -167,8 +167,17 @@ données, surveillance et maintenance, comptes et mots de passe, coût d'une
 IA en production, évaluation d'une IA. Contrats jusqu'au niveau 6 en face
 (jusqu'à 7 M FC et 20 000 clients).
 Deux façons de l'ouvrir : le dossier complet (PWA installable, hors ligne),
-ou `kodo-en-ligne.html`, un fichier unique de 316 Ko avec les polices
+ou `kodo-en-ligne.html`, un fichier unique de 322 Ko avec les polices
 dedans, régénéré par `construire-page-unique.py`.
+
+⚠️ RETOUR DU PATRON (04/08) : « c'est trop dur et ça ne te corrige pas à un
+certain moment ». C'était un vrai défaut : aucune façon de voir la réponse,
+donc on restait coincé sur un exercice et la leçon ne pouvait plus se
+terminer. Corrigé : indice automatique au 1er échec, solution proposée au
+2e (`solutions.js`, 21 solutions vérifiées), la leçon se valide même avec
+aide, et le bilan distingue « réussi seul » de « fait avec la solution ».
+Leçon de conception à retenir pour tout ce qu'on construira ensuite : une
+impasse sans issue est un bug, pas un niveau de difficulté.
 Tout est expliqué dans `kodo/README.md`, y compris comment ajouter une leçon.
 **Aucun lien avec MoheliGo** — même règle que pour « Nous ».
 

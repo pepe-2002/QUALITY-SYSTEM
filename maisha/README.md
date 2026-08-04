@@ -44,6 +44,43 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## L'entreprise comme une vraie entreprise 🏢
+
+L'écran de gestion est devenu un poste de pilotage professionnel :
+
+**📑 Compte de résultat** — chiffre d'affaires (dont la part des contrats
+clients), achats et sous-traitance, masse salariale, charges financières,
+**résultat net** et **marge nette**, plus le nombre de clients, de contrats
+actifs et la valeur du carnet de commandes. Un **graphique d'évolution** sur
+les huit derniers exercices montre d'un coup d'œil les années bénéficiaires
+(vert) et déficitaires (rouge).
+
+**📄 Contrats clients** — chaque contrat affiche son client, son objet, son
+montant annuel, sa durée restante, et surtout ses **engagements** : qualité
+minimale, réputation minimale, effectif minimal. Un badge indique en
+permanence s'il est **Honoré** ou **En péril**. Si tu ne tiens pas tes
+engagements, le client **résilie et tu paies une pénalité** — avec une alerte
+l'année d'avant pour te laisser réagir.
+
+**🤝 Appels d'offres reçus** — chaque année, des clients réels (Comores
+Telecom, Ministère des Transports, Programme Alimentaire Mondial, chantiers
+navals, hôtels, banques…) te proposent des marchés. Tu vois le montant, la
+durée, le total, les exigences ✅/❌ et la pénalité, puis tu **signes** ou tu
+**refuses**. Plus ta réputation et ta taille montent, plus les marchés
+proposés sont gros.
+
+**📣 Développement commercial** — démarchage terrain, salon professionnel,
+ou réponse à un grand appel d'offres : trois façons de gagner des clients, de
+faire monter la réputation et d'attirer de plus gros marchés.
+
+## Offres d'emploi reçues 📬
+
+Quand ton profil devient bon (compétence pro, diplôme, MBA), les recruteurs
+viennent à toi : jusqu'à trois offres par an avec l'entreprise, le nom du
+recruteur, le salaire proposé, les avantages (voiture de fonction, 13ᵉ mois,
+télétravail…) et l'écart avec ton poste actuel. Tu peux **accepter**,
+**négocier +15 %** (au risque que l'offre soit retirée) ou **décliner**.
+
 ## Carrières spéciales ⭐
 
 Six voies hors du salariat, menées en parallèle du reste de ta vie, chacune

@@ -509,6 +509,35 @@ const CHIRURGIES = [
   {nom:"Lifting complet", ico:"✨", prix:12000, look:20, risque:30},
 ];
 
+/* ---- clients et contrats commerciaux ---- */
+const CLIENTS = [
+  "Comores Telecom","Ministère des Transports","Hôtel Retaj Moroni","Société Nationale des Ports",
+  "Coopérative des pêcheurs d'Anjouan","MoheliGo Traversées","Banque de l'Industrie","Croissant-Rouge Comorien",
+  "Groupe Karthala Import","Université des Comores","Compagnie Sucrière de Mayotte","Agence Française de Développement",
+  "Chantiers Navals de Mutsamudu","Chaîne hôtelière Ylang Resorts","Programme Alimentaire Mondial",
+];
+const OBJETS_CONTRAT = [
+  "Fourniture annuelle","Prestation de services","Maintenance et support","Approvisionnement logistique",
+  "Marché-cadre","Sous-traitance industrielle","Distribution exclusive","Accord de partenariat",
+];
+function genererContrat(e, niveau){
+  // niveau 0 = petit contrat, 2 = gros marché
+  const echelle = [0.25, 0.6, 1.4][niveau] || 0.5;
+  const base = Math.max(8000, Math.round(assietteCA(e.valeur) * 0.22 * echelle));
+  const montant = Math.round((base * (0.75 + alea(60)/100)) / 500) * 500;
+  const duree = 1 + alea(niveau === 2 ? 5 : 3);
+  return {
+    id: "C" + Date.now().toString(36) + alea(999),
+    client: parmi(CLIENTS), objet: parmi(OBJETS_CONTRAT),
+    montant, duree, restant: duree,
+    qualiteMin: 25 + niveau*20 + alea(12),
+    reputationMin: 20 + niveau*18 + alea(12),
+    employesMin: niveau,
+    penalite: Math.round(montant * (0.4 + niveau*0.25)),
+    stockCout: Math.round(6 + niveau*7),
+  };
+}
+
 const PROFILS_PDG = [
   {titre:"Gestionnaire prudent",  style:"prudence", compMin:45, compMax:65, coef:1.0,
    desc:"Garde le stock plein et la trésorerie saine. Croissance lente mais sûre."},
@@ -618,6 +647,10 @@ function normaliserEntreprise(e){
   if(e.dernier==null) e.dernier = null;
   if(e.pdg===undefined) e.pdg = null;
   if(e.cotee==null) e.cotee = false;
+  if(!e.contrats) e.contrats = [];
+  if(!e.prospects) e.prospects = {age:-1, liste:[]};
+  if(!e.histo) e.histo = [];
+  if(e.clients==null) e.clients = 8 + (e.taille||0)*12;
   return e;
 }
 
@@ -630,9 +663,19 @@ function actionsDuPDG(e){
   const peut = c => (e.caisse||0) > c*1.4;
 
   // 1. approvisionnement — un bon PDG ne tombe jamais en rupture
-  if(e.stock < 55){
+  const seuilStock = (e.contrats||[]).length ? 75 : 55;
+  if(e.stock < seuilStock){
     const cout = Math.round(e.valeur*0.06)+1000;
     if(peut(cout)){ e.caisse -= cout; e.stock = Math.min(100, e.stock + 25 + Math.round(bon/4)); actes.push("réapprovisionné"); }
+    if(e.stock < 40 && peut(cout)){ e.caisse -= cout; e.stock = Math.min(100, e.stock + 25); }
+  }
+  // un bon PDG protège les contrats en tenant la qualité
+  for(const ct of (e.contrats||[])){
+    if(e.qualite < ct.qualiteMin && peut(8000)){
+      e.caisse -= 8000; e.qualite = borne(e.qualite + 8);
+      actes.push(`remonté la qualité pour tenir le contrat ${ct.client}`);
+      break;
+    }
   }
   // 2. qualité / réputation
   if(e.reputation < 55 && bon >= 50){
@@ -1207,16 +1250,47 @@ function vieillir(){
       e.employes = e.employes.filter(x=>x!==emp);
     }
 
+    /* --- contrats commerciaux : le carnet de commandes --- */
+    let caContrats = 0, coutContrats = 0;
+    const perdus = [];
+    for(const ct of (e.contrats||[])){
+      const tenu = e.qualite >= ct.qualiteMin && e.reputation >= ct.reputationMin
+                   && e.employes.length >= ct.employesMin && e.stock >= 12;
+      if(tenu){
+        caContrats += ct.montant;
+        coutContrats += Math.round(ct.montant * 0.22);
+        e.stock = Math.max(0, e.stock - ct.stockCout);
+        ct.restant--;
+        if(ct.restant <= 0){
+          perdus.push(ct);
+          ecrire(`📄 Contrat « ${ct.objet} » avec ${ct.client} arrivé à terme (${euros(ct.montant)}/an). À renégocier.`, "info");
+        }
+      } else {
+        e.caisse -= ct.penalite;
+        e.reputation = borne(e.reputation - 8);
+        perdus.push(ct);
+        ecrire(`⚠️ ${ct.client} résilie le contrat « ${ct.objet} » : engagements non tenus. Pénalité de ${euros(ct.penalite)}.`, "mauvais");
+      }
+    }
+    if(perdus.length) e.contrats = e.contrats.filter(c => !perdus.includes(c));
+    // avertir avant la rupture
+    for(const ct of (e.contrats||[])){
+      const risque = e.stock < 25 || e.qualite < ct.qualiteMin + 4 || e.reputation < ct.reputationMin + 4;
+      if(risque) ecrire(`⚠️ Contrat ${ct.client} en danger pour l'an prochain (stock ${Math.round(e.stock)}, qualité ${e.qualite}, réputation ${e.reputation}). Agis avant la résiliation.`, "mauvais");
+    }
+    // les clients suivent la réputation
+    e.clients = Math.max(3, Math.round((e.clients||10) * (0.94 + e.reputation/900) + (e.contrats||[]).length));
+
     const masse = (e.monSalaire||0) + (e.pdg ? e.pdg.salaire : 0) + e.employes.reduce((s,x)=>s+x.salaire,0);
     prod = Math.round(prod * tauxAct * (e.pdg ? 1 + e.pdg.competence/110 : 1));
-    const ca = Math.max(0, chiffre) + prod;
+    const ca = Math.max(0, chiffre) + prod + caContrats;
     const interets = Math.round((e.dette||0) * 0.08);
     if(e.dette){
       const rembours = Math.min(e.dette, Math.round(e.dette*0.15));
       e.dette -= rembours;
       e.caisse -= rembours;
     }
-    let resultat = chiffre + prod - masse - interets;
+    let resultat = chiffre + prod + caContrats - coutContrats - masse - interets;
     if(resultat > 0) resultat = Math.round(resultat*(1-imp));
     e.caisse = (e.caisse||0) + resultat;
 
@@ -1240,8 +1314,10 @@ function vieillir(){
     }
 
     if(e.pdg) actionsDuPDG(e);
-    e.dernier = {ca, masse, interets, resultat, caisse:e.caisse};
-    ecrire(`${e.ico} « ${e.nom} » (${tailleEnt(e).nom}) : CA ${euros(ca)}, salaires ${euros(masse)}${interets?", intérêts "+euros(interets):""}, résultat ${resultat>=0?"+":""}${euros(resultat)} → trésorerie ${euros(e.caisse)}.`, resultat>=0?"argent":"mauvais");
+    e.dernier = {ca, masse, interets, resultat, caisse:e.caisse, caContrats, coutContrats,
+                 achats:coutContrats, marge: ca ? Math.round(resultat/ca*100) : 0};
+    e.histo = (e.histo||[]).concat([{age: etat.age, ca, resultat, valeur: e.valeur}]).slice(-12);
+    ecrire(`${e.ico} « ${e.nom} » (${tailleEnt(e).nom}) : CA ${euros(ca)}${caContrats?" dont "+euros(caContrats)+" de contrats":""}, salaires ${euros(masse)}${interets?", intérêts "+euros(interets):""}, résultat ${resultat>=0?"+":""}${euros(resultat)} → trésorerie ${euros(e.caisse)}.`, resultat>=0?"argent":"mauvais");
 
     if(e.caisse < 0){
       e.pertes = (e.pertes||0)+1;
@@ -2201,6 +2277,33 @@ function action(parent, label, classe, fn, desactive){
   return b;
 }
 
+/* --- offres d'emploi reçues (chasseurs de tête) --- */
+function offresRecues(){
+  if(!etat.offres || etat.offres.age !== etat.age){
+    const liste = [];
+    if(etat.age >= 18 && etat.prison <= 0){
+      const niveau = etat.intel + (etat.compPro||0)/2 + (etat.diplome ? 20 : 0) + (etat.mba ? 15 : 0);
+      const eligibles = EMPLOIS.filter(x => (!x.diplome || etat.diplome) && (x.intel||0) <= niveau/1.4);
+      const nb = niveau > 110 ? 3 : niveau > 75 ? 2 : niveau > 45 ? 1 : 0;
+      for(let i=0;i<nb && eligibles.length;i++){
+        const m = parmi(eligibles);
+        const prime = 1 + (alea(35) - 10)/100;                 // −10 % à +25 % du marché
+        const g = alea(2) ? "F" : "M";
+        liste.push({
+          titre: m.titre,
+          salaire: Math.round(m.salaire * prime * (1 + (etat.compPro||0)/220) / 500) * 500,
+          societe: parmi(CLIENTS),
+          recruteur: parmi(g==="F"?PRENOMS_F:PRENOMS_M) + " " + parmi(NOMS),
+          avantages: parmi(["voiture de fonction","logement de fonction","13ᵉ mois","télétravail partiel",
+                            "formation payée","mutuelle famille","prime de résultat"]),
+        });
+      }
+    }
+    etat.offres = {age: etat.age, liste};
+  }
+  return etat.offres.liste;
+}
+
 /* --- progression de palier dans une carrière spéciale --- */
 function monterRang(C, def){
   if(C.rang >= def.rangs.length-1) return;
@@ -2268,6 +2371,42 @@ function feuilleTravail(){
         } else ecrire(`Candidature refusée pour le poste de ${e.titre}.`, "mauvais");
         fermerFeuille();
       }, !okDiplome);
+    }
+  }
+
+  /* --- offres d'emploi reçues --- */
+  const offres = offresRecues();
+  if(offres.length){
+    section(`📬 Offres reçues (${offres.length})`, true);
+    carte(`<div class="detail">Ton profil circule : des recruteurs te contactent directement. Plus ta compétence pro et tes diplômes sont élevés, plus les offres sont nombreuses et bien payées.</div>`);
+    for(const o of offres){
+      const mieux = etat.emploi ? o.salaire - etat.emploi.salaire : o.salaire;
+      const c = carte(`<div class="titre">${o.titre} — ${o.societe}</div>
+        <div class="detail">Proposé par ${o.recruteur} · <b>${euros(o.salaire)}/an brut</b> · ${o.avantages}
+          ${etat.emploi ? `<br>${mieux>=0 ? `<b style="color:var(--accent)">+${euros(mieux)}</b> par rapport à ton poste actuel` : `<b style="color:var(--danger)">${euros(mieux)}</b> par rapport à ton poste actuel`}` : ""}</div>
+        <div class="actions"></div>`);
+      action(c, "Accepter le poste", "or", () => {
+        etat.emploi = {titre: o.titre + " — " + o.societe, salaire: o.salaire, annees: 0};
+        if(etat.etude === "universite"){ etat.etude = "fini"; ecrire("J'abandonne mes études pour ce poste."); }
+        etat.offres.liste = [];
+        ecrire(`📬 J'accepte l'offre de ${o.societe} : ${o.titre.toLowerCase()} à ${euros(o.salaire)}/an brut (${o.avantages}).`, "bon");
+        fermerFeuille();
+      });
+      action(c, "Négocier (+15 %)", "gris", () => {
+        if(alea(100) < 35 + (etat.compPro||0)/3){
+          o.salaire = Math.round(o.salaire * 1.15 / 500) * 500;
+          ecrire(`📬 ${o.recruteur} accepte de revoir l'offre à ${euros(o.salaire)}/an.`, "argent");
+        } else {
+          etat.offres.liste = etat.offres.liste.filter(x => x !== o);
+          ecrire(`📬 ${o.societe} n'a pas apprécié ma contre-proposition et retire son offre.`, "mauvais");
+        }
+        rafraichirFeuille();
+      });
+      action(c, "Décliner", "gris", () => {
+        etat.offres.liste = etat.offres.liste.filter(x => x !== o);
+        ecrire(`J'ai décliné l'offre de ${o.societe}.`);
+        rafraichirFeuille();
+      });
     }
   }
 
@@ -2512,6 +2651,132 @@ function feuilleEntreprise(e){
       }, (e.caisse||0) < cand.salaire);
     }
   }
+
+  /* --- compte de résultat --- */
+  section("📑 Compte de résultat", false);
+  const d2 = e.dernier;
+  if(d2){
+    carte(`<div class="titre">Exercice précédent</div>
+      <div class="ligne-info"><span>Chiffre d'affaires</span><b>${euros(d2.ca)}</b></div>
+      <div class="ligne-info"><span>&nbsp;&nbsp;dont contrats clients</span><b>${euros(d2.caContrats||0)}</b></div>
+      <div class="ligne-info"><span>Achats et sous-traitance</span><b>−${euros(d2.achats||0)}</b></div>
+      <div class="ligne-info"><span>Masse salariale</span><b>−${euros(d2.masse)}</b></div>
+      <div class="ligne-info"><span>Charges financières</span><b>−${euros(d2.interets||0)}</b></div>
+      <div class="ligne-info"><span><b>Résultat net</b></span><b style="color:${d2.resultat>=0?"var(--accent)":"var(--danger)"}">${d2.resultat>=0?"+":""}${euros(d2.resultat)}</b></div>
+      <div class="ligne-info"><span>Marge nette</span><b>${d2.marge||0} %</b></div>
+      <div class="kpis" style="margin-top:10px">
+        <div class="kpi"><span>Clients</span><b>${e.clients||0}</b></div>
+        <div class="kpi"><span>Contrats actifs</span><b>${(e.contrats||[]).length}</b></div>
+        <div class="kpi"><span>Carnet annuel</span><b class="or">${euros((e.contrats||[]).reduce((a,c)=>a+c.montant,0))}</b></div>
+      </div>`);
+    if((e.histo||[]).length > 1){
+      const h = e.histo.slice(-8);
+      const maxCA = Math.max(...h.map(x => Math.abs(x.ca) || 1));
+      carte(`<div class="titre">Évolution sur ${h.length} exercices</div>
+        <div style="display:flex; align-items:flex-end; gap:6px; height:86px; margin-top:10px">
+        ${h.map(x => `<div style="flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%">
+            <div style="width:100%; background:${x.resultat>=0?"var(--accent)":"var(--danger)"}; border-radius:4px 4px 0 0;
+                 height:${Math.max(4, Math.round(Math.abs(x.ca)/maxCA*66))}px" title="CA ${euros(x.ca)}"></div>
+            <div style="font-size:9.5px; color:var(--ink-dim); margin-top:4px">${x.age}a</div>
+          </div>`).join("")}
+        </div>
+        <div class="detail" style="margin-top:8px">Hauteur = chiffre d'affaires · vert = exercice bénéficiaire, rouge = déficitaire.</div>`);
+    }
+  } else carte(`<div class="detail">Le premier exercice n'est pas encore clôturé. Reviens après un passage d'année.</div>`);
+
+  /* --- contrats commerciaux --- */
+  section(`📄 Contrats clients (${(e.contrats||[]).length})`, true);
+  if(!(e.contrats||[]).length)
+    carte(`<div class="detail">Aucun contrat en portefeuille. Les contrats donnent un chiffre d'affaires garanti chaque année — mais il faut tenir tes engagements de qualité, de réputation et d'effectif, sinon le client résilie et tu paies une pénalité.</div>`);
+  for(const ct of (e.contrats||[])){
+    const tenu = e.qualite >= ct.qualiteMin && e.reputation >= ct.reputationMin
+                 && e.employes.length >= ct.employesMin && e.stock >= 12;
+    const c = carte(`<div class="titre">${ct.client}
+        <span class="badge ${tenu?"b-valide":"b-expire"}" style="${tenu?"background:var(--accent);color:var(--accent-ink)":"background:var(--danger);color:#fff"}">${tenu?"Honoré":"En péril"}</span></div>
+      <div class="detail">${ct.objet} · <b>${euros(ct.montant)}/an</b> · encore ${ct.restant} an${ct.restant>1?"s":""}</div>
+      <div class="ligne-info"><span>Qualité requise ${ct.qualiteMin}</span><b>${e.qualite >= ct.qualiteMin ? "✅" : "❌"} ${e.qualite}</b></div>
+      <div class="ligne-info"><span>Réputation requise ${ct.reputationMin}</span><b>${e.reputation >= ct.reputationMin ? "✅" : "❌"} ${e.reputation}</b></div>
+      <div class="ligne-info"><span>Effectif requis ${ct.employesMin}</span><b>${e.employes.length >= ct.employesMin ? "✅" : "❌"} ${e.employes.length}</b></div>
+      <div class="detail" style="margin-top:6px">Pénalité de rupture : ${euros(ct.penalite)}</div>
+      <div class="actions"></div>`);
+    action(c, "Résilier", "rouge", () => {
+      if(!confirm(`Résilier le contrat avec ${ct.client} ? Pénalité de ${euros(ct.penalite)}.`)) return;
+      e.caisse -= ct.penalite; e.reputation = borne(e.reputation-5);
+      e.contrats = e.contrats.filter(x => x !== ct);
+      ecrire(`J'ai résilié le contrat avec ${ct.client} (pénalité ${euros(ct.penalite)}).`, "mauvais");
+      rafraichirFeuille();
+    });
+  }
+
+  /* --- appels d'offres --- */
+  if(!e.prospects || e.prospects.age !== etat.age){
+    const nb = 1 + alea(2) + (e.reputation > 55 ? 1 : 0);
+    const liste = [];
+    for(let i=0;i<nb;i++){
+      const niv = e.reputation > 70 && e.taille >= 2 ? alea(3) : e.reputation > 45 ? alea(2) : 0;
+      liste.push(genererContrat(e, niv));
+    }
+    e.prospects = {age: etat.age, liste};
+  }
+  section(`🤝 Appels d'offres reçus (${e.prospects.liste.length})`, true);
+  if(!e.prospects.liste.length) carte(`<div class="detail">Aucune proposition cette année. Fais de la prospection pour attirer des clients.</div>`);
+  for(const ct of e.prospects.liste){
+    const peut = e.qualite >= ct.qualiteMin && e.reputation >= ct.reputationMin && e.employes.length >= ct.employesMin;
+    const c = carte(`<div class="titre">${ct.client}</div>
+      <div class="detail">${ct.objet} · <b>${euros(ct.montant)}/an</b> pendant <b>${ct.duree} an${ct.duree>1?"s":""}</b>
+        — soit ${euros(ct.montant*ct.duree)} au total</div>
+      <div class="ligne-info"><span>Qualité exigée</span><b>${e.qualite >= ct.qualiteMin ? "✅" : "❌"} ${ct.qualiteMin} (tu as ${e.qualite})</b></div>
+      <div class="ligne-info"><span>Réputation exigée</span><b>${e.reputation >= ct.reputationMin ? "✅" : "❌"} ${ct.reputationMin} (tu as ${e.reputation})</b></div>
+      <div class="ligne-info"><span>Effectif exigé</span><b>${e.employes.length >= ct.employesMin ? "✅" : "❌"} ${ct.employesMin} (tu as ${e.employes.length})</b></div>
+      <div class="detail" style="margin-top:6px">Pénalité si tu ne tiens pas : ${euros(ct.penalite)} · consomme ${ct.stockCout} de stock par an</div>
+      <div class="actions"></div>`);
+    action(c, peut ? "Signer le contrat" : "Signer quand même (risqué)", peut ? "or" : "rouge", () => {
+      e.contrats.push(ct);
+      e.prospects.liste = e.prospects.liste.filter(x => x !== ct);
+      e.reputation = borne(e.reputation + 3);
+      e.clients = (e.clients||0) + 1;
+      ecrire(`✍️ Contrat signé avec ${ct.client} : ${euros(ct.montant)}/an pendant ${ct.duree} an${ct.duree>1?"s":""}.`, "argent");
+      rafraichirFeuille();
+    });
+    action(c, "Refuser", "gris", () => {
+      e.prospects.liste = e.prospects.liste.filter(x => x !== ct);
+      ecrire(`J'ai décliné la proposition de ${ct.client}.`);
+      rafraichirFeuille();
+    });
+  }
+
+  /* --- prospection commerciale --- */
+  section("📣 Développement commercial", false);
+  const cp2 = carte(`<div class="detail">Plus ta réputation et ton portefeuille clients sont solides, plus les appels d'offres qui arrivent sont gros. La prospection coûte cher mais ouvre les portes.</div>`);
+  const gp2 = grille(cp2);
+  btn(gp2, "Démarchage terrain (2 000 €)", "gris", () => {
+    if(dejaFait("prospect_"+e.nom)){ ecrire("L'équipe commerciale a déjà fait sa tournée cette année."); return; }
+    e.caisse -= 2000;
+    const nouveaux = 2 + alea(5);
+    e.clients = (e.clients||0) + nouveaux; e.reputation = borne(e.reputation+2);
+    e.prospects.liste.push(genererContrat(e, 0));
+    ecrire(`📣 Démarchage : ${nouveaux} nouveaux clients pour « ${e.nom} » et une proposition sur la table.`, "argent");
+    rafraichirFeuille();
+  }, (e.caisse||0) < 2000);
+  btn(gp2, "Salon professionnel (9 000 €)", "gris", () => {
+    if(dejaFait("prospect_"+e.nom)){ ecrire("Un seul grand rendez-vous commercial par an."); return; }
+    e.caisse -= 9000;
+    e.reputation = borne(e.reputation+7); e.clients = (e.clients||0) + 6 + alea(10);
+    e.prospects.liste.push(genererContrat(e, 1));
+    etat.compPro = borne((etat.compPro||0)+2);
+    ecrire(`📣 Salon professionnel : stand remarqué, carnet d'adresses rempli, un marché sérieux en vue.`, "argent");
+    rafraichirFeuille();
+  }, (e.caisse||0) < 9000);
+  btn(gp2, "Répondre à un grand appel d'offres (25 000 €)", "or", () => {
+    if(dejaFait("prospect_"+e.nom)){ ecrire("Un dossier d'appel d'offres par an, c'est déjà lourd."); return; }
+    e.caisse -= 25000;
+    if(alea(100) < 30 + e.reputation/3 + (etat.compPro||0)/5){
+      const gros = genererContrat(e, 2);
+      e.prospects.liste.push(gros);
+      ecrire(`📣 Dossier retenu ! ${gros.client} nous propose un marché de ${euros(gros.montant)}/an.`, "bon");
+    } else ecrire("📣 Appel d'offres perdu. 25 000 € de dossier pour rien — c'est le métier.", "mauvais");
+    rafraichirFeuille();
+  }, (e.caisse||0) < 25000);
 
   /* --- stratégie --- */
   section("Stratégie commerciale", !e.pdg);

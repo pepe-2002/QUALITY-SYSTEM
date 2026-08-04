@@ -62,11 +62,67 @@ la compagnie entière, et **son style se voit dans ses décisions**.
 - **L'ouverture de nouveaux marchés** — un développeur agressif compétent et
   bien doté **ouvre de nouvelles filiales** dans les pays les plus attractifs,
   tout seul.
+- **Le recrutement d'expansion** — il ne recrute plus au hasard : il vise
+  l'**effectif du palier suivant** et celui qu'exigent les marchés en cours et
+  les appels d'offres à portée, tant que les comptes sont bénéficiaires et la
+  trésorerie suffisante.
+- **L'outil de production** — quand l'effectif est là mais que la valorisation
+  manque, il transforme la **trésorerie qui dort en capacité de production**
+  (l'outil vaut un peu moins que ce qu'il a coûté, mais il fait monter la
+  valorisation et la qualité).
+- **Le passage de palier** — dès que l'effectif et la valorisation sont
+  réunis, il fait franchir le palier à la maison, jusqu'à la
+  **multinationale**.
 
 Mesuré sur 12 ans sans que le joueur touche à rien : le prudent signe des
 contrats et écarte six marchés trop risqués ; le développeur agressif ouvre
 deux filiales de plus et réinvestit dix fois sur place ; le financier fait
-tout remonter au siège.
+tout remonter au siège. Sur 14 ans, une maison laissée entre les mains d'un
+développeur agressif passe de 1 à 9 salariés et de 700 000 € à plus de
+3 millions de valorisation.
+
+## Dividendes de la famille 👪
+
+Tu peux céder une **part du capital de ton entreprise** à ta femme et à tes
+enfants — **dès leur naissance**. Chaque année bénéficiaire, la trésorerie
+leur verse leur pourcentage du résultat (15 % de fiscalité) et cet argent va
+directement dans leur **fortune personnelle**.
+
+- Tu cèdes sur **ta propre part** : l'écran affiche en permanence ma part, la
+  part de la famille et celle des investisseurs, et refuse de dépasser 100 %.
+- Chaque part est **ajustable** et **révocable** à tout moment — mais on ne
+  retire pas une part sans que la relation en souffre.
+- Avant de valider, l'application montre **combien ça fait en euros par an**
+  sur le dernier exercice, et ce qu'il te resterait.
+- Les parts se voient aussi dans l'onglet Relations, sur la fiche de chaque
+  proche : pourcentage détenu, dividende de l'année, total perçu.
+- **La maison passe avant la famille** : le dividende n'est versé que sur ce
+  qui dépasse le fonds de roulement. Une année sans bénéfice, ou une
+  trésorerie trop juste, et le versement est suspendu — l'entreprise reste
+  viable. Vérifié sur 60 vies de 15 ans : céder 25 % du capital n'augmente pas
+  le taux de faillite (2/60 dans les deux cas).
+- Ta fortune ne compte plus que **ta part** de l'entreprise : ce que tu as
+  cédé ne t'appartient plus.
+- À ta mort, l'héritier récupère la compagnie et sa propre part disparaît
+  (il en est désormais le patron), mais **les parts de ses frères, sœurs et du
+  parent survivant continuent d'être servies** — la famille reste actionnaire
+  d'une génération à l'autre.
+
+Sur 14 ans avec 12 % pour la femme et 6 % pour chaque enfant, l'épouse s'est
+constitué 735 000 € et les enfants plus de 340 000 € chacun — sans jamais
+travailler.
+
+## Recrutement d'expansion 🧑‍💼
+
+Dans l'onglet Croissance, une carte dit exactement **ce qui manque pour
+grandir** : l'effectif actuel, celui qu'exige le palier suivant, celui
+qu'exigent les marchés signés et les appels d'offres, et les frais de
+recrutement par poste.
+
+Un bouton lance la **campagne complète** — cabinet, annonces, entretiens — et
+embauche d'un coup tout ce qui manque. Les profils recrutés sont d'autant
+meilleurs que la réputation de la maison est forte, et leurs salaires pèsent
+ensuite sur la masse salariale chaque année.
 
 ## Gérer l'argent de tes filiales 🌍
 
@@ -132,7 +188,10 @@ Changer de génération ne remet rien à zéro du patrimoine ni du monde :
   restent accessibles à l'héritier ;
 - **les entreprises arrivent complètes** : le **PDG reste en poste**, les
   contrats clients en cours continuent, les prestataires travaillent
-  toujours, les filiales à l'étranger et les participations sont conservées.
+  toujours, les filiales à l'étranger et les participations sont conservées ;
+- **l'actionnariat familial survit** : les frères, sœurs et le parent
+  survivant gardent leurs parts et leur fortune personnelle ; seule la part de
+  l'héritier disparaît, puisqu'il devient le patron.
 
 Le journal de l'héritier détaille exactement ce qu'il reprend en main.
 

@@ -765,8 +765,12 @@ function normaliserEntreprise(e){
   if(!e.participations) e.participations = [];
   if(e.partInvest==null) e.partInvest = 0;
   if(!e.emprunts) e.emprunts = [];
+  if(!e.actionnaires) e.actionnaires = [];
   return e;
 }
+/* --- capital : ce que détient la famille, ce qu'il me reste --- */
+function partsFamille(e){ return (e.actionnaires||[]).reduce((a,x) => a + (x.part||0), 0); }
+function maPart(e){ return Math.max(0, 100 - (e.partInvest||0) - partsFamille(e)); }
 
 /* --- le PDG gère l'entreprise tout seul pendant l'année --- */
 function actionsDuPDG(e){
@@ -799,12 +803,22 @@ function actionsDuPDG(e){
   if(P.style==="croissance" && e.qualite < 70 && peut(8000)){
     e.caisse -= 8000; e.qualite = borne(e.qualite + 5); actes.push("amélioré la qualité");
   }
-  // 3. recrutement
-  const cible = P.style==="equipe" ? 5 : P.style==="croissance" ? 4 : 2;
+  // 3. recrutement — le PDG recrute pour faire grandir l'entreprise
+  let cible = P.style==="equipe" ? 5 : P.style==="croissance" ? 4 : 2;
+  // il vise le palier suivant dès que la trésorerie et les comptes le permettent
+  const palier = TAILLES[(e.taille||0)+1];
+  if(palier && (e.caisse||0) > 60000 && (!e.dernier || e.dernier.resultat > 0))
+    cible = Math.max(cible, palier.emp);
+  // et il staffe de quoi honorer les contrats signés et ceux à portée de main
+  const exigences = (e.contrats||[]).concat(((e.prospects||{}).liste)||[])
+    .map(c => c.employesMin||0);
+  if(exigences.length && (e.caisse||0) > 30000)
+    cible = Math.max(cible, Math.max.apply(null, exigences));
   // il faut une equipe minimale, ensuite on ne recrute que si l'affaire est saine
   const sain = e.employes.length < 2 || !e.dernier
     || (e.dernier.resultat > 0 && e.dernier.masse < e.dernier.ca*0.6);
-  const aRecruter = e.employes.length < 2 ? 2 - e.employes.length : 1;
+  const aRecruter = e.employes.length < 2 ? 2 - e.employes.length
+    : Math.min(2, Math.max(0, cible - e.employes.length));
   for(let rec=0; rec<aRecruter; rec++)
   if(sain && e.employes.length < cible && peut(18000)){
     const comp = 25 + alea(Math.max(10, bon));
@@ -907,7 +921,32 @@ function actionsDuPDG(e){
     }
   }
 
-  // 6. dividende remonté au propriétaire
+  // 6sexies. la trésorerie qui dort part dans l'outil de production, pour viser le palier
+  const psuiv = TAILLES[(e.taille||0)+1];
+  if(psuiv && e.employes.length >= psuiv.emp && e.valeur < psuiv.valeur
+     && (e.caisse||0) > 120000 && bon >= 55 && (!e.dernier || e.dernier.resultat > 0)){
+    const inv = Math.round(Math.min((e.caisse||0)*0.4, (psuiv.valeur - e.valeur)*1.2));
+    if(inv > 20000){
+      e.caisse -= inv;
+      e.valeur += Math.round(inv*0.85);      // l'outil vaut un peu moins que ce qu'il a coûté
+      e.qualite = borne(e.qualite + 3);
+      actes.push(`investi ${euros(inv)} dans l'outil de production`);
+    }
+  }
+
+  // 6quinquies. il fait franchir à l'entreprise le palier supérieur dès qu'elle le mérite
+  const pas = TAILLES[(e.taille||0)+1];
+  if(pas && e.employes.length >= pas.emp && e.valeur >= pas.valeur){
+    e.taille++;
+    e.valeur = Math.round(e.valeur*1.15);
+    e.reputation = borne(e.reputation+8);
+    etat.celebrite = borne(etat.celebrite+4);
+    if((e.taille||0) > (etat.entMax||0)) etat.entMax = e.taille;
+    ecrire(`🏆 « ${e.nom} » passe ${pas.nom} ${pas.ico} — ${P.nom} a fait franchir le palier à l'entreprise.`, "bon");
+    actes.push(`fait passer la maison en ${pas.nom}`);
+  }
+
+  // 6. dividende remonté au propriétaire (la part de la famille a déjà été servie sur le résultat)
   const garde = 12000 + assietteCA(e.valeur)*0.12;
   if((e.caisse||0) > garde){
     const taux = P.style==="finance" ? 0.55 : P.style==="croissance" ? 0.20 : 0.35;
@@ -1571,6 +1610,40 @@ function vieillir(){
       const du = Math.round(resultat * e.partInvest/100);
       e.caisse -= du;
       ecrire(`🤝 Dividendes versés aux investisseurs de « ${e.nom} » (${e.partInvest} % du capital) : ${euros(du)}.`, "info");
+    }
+
+    // dividendes de l'actionnariat familial : ma femme, mes enfants, dès leur naissance
+    if((e.actionnaires||[]).length){
+      const restants = [];
+      let verseTotal = 0, servis = 0;
+      // on ne distribue jamais le fonds de roulement : la maison passe avant la famille
+      const reserve = 10000 + assietteCA(e.valeur)*0.08;
+      let distribuable = Math.max(0, (e.caisse||0) - reserve);
+      for(const ac of e.actionnaires){
+        const b = etat.relations.find(x => x.nom === ac.nom && x.vivant);
+        if(!b) continue;                       // l'actionnaire n'est plus de ce monde
+        restants.push(ac);
+        ac.dernier = 0;
+        if(resultat <= 0) continue;            // pas de bénéfice, pas de dividende
+        const brut = Math.min(Math.round(resultat * (ac.part||0)/100), Math.round(distribuable));
+        if(brut < 100) continue;
+        const net = Math.round(brut*0.85);     // 15 % de fiscalité
+        e.caisse -= brut;
+        distribuable -= brut;
+        b.argent = (b.argent||0) + net;
+        b.barre = borne(b.barre + 4);
+        ac.dernier = net;
+        ac.total = (ac.total||0) + net;
+        ac.versees = (ac.versees||0) + 1;
+        verseTotal += net; servis++;
+      }
+      e.actionnaires = restants;
+      if(verseTotal > 0)
+        ecrire(`👪 « ${e.nom} » verse ${euros(verseTotal)} de dividendes à ${servis} actionnaire${servis>1?"s":""} de la famille (${partsFamille(e)} % du capital).`, "argent");
+      else if(restants.length && resultat <= 0)
+        ecrire(`👪 Pas de dividende familial chez « ${e.nom} » cette année : l'exercice est sans bénéfice.`, "info");
+      else if(restants.length)
+        ecrire(`👪 Dividende familial suspendu chez « ${e.nom} » : la trésorerie doit d'abord tenir la maison.`, "info");
     }
 
     // l'entreprise capitalise si elle est bénéficiaire (surtout en expansion)
@@ -2329,7 +2402,9 @@ function ajouterAmi(){
 
 function valeurPatrimoine(){
   let v = etat.biens.reduce((s,b)=>s+b.valeur,0);
-  for(const e of (etat.entreprises||[])) v += Math.round(e.valeur*0.9) + Math.max(0, e.caisse||0);
+  // je ne compte que ma part du capital : ce que j'ai cédé à la famille ne m'appartient plus
+  for(const e of (etat.entreprises||[]))
+    v += Math.round((Math.round(e.valeur*0.9) + Math.max(0, e.caisse||0)) * maPart(e)/100);
   for(const cle in (etat.placements||{})) v += Math.max(0, (etat.placements[cle].montant)||0);
   return v;
 }
@@ -2451,15 +2526,20 @@ function continuerAvec(h, heritage){
     e.employes = (e.employes||[]).filter(x=>x.nom!==h.nom);
     if(avant !== e.employes.length) etat.emploi = null;
     e.monSalaire = 0;
+    // il est désormais le patron : sa part de dividendes familiaux retourne dans la sienne,
+    // celles de ses frères et sœurs (et du parent survivant) continuent d'être servies
+    e.actionnaires = (e.actionnaires||[]).filter(a => a.nom !== h.nom);
   }
 
   // famille : le parent survivant + frères et sœurs
   if(conjointSurvivant){
     etat.relations.push({type: conjointSurvivant.genre==="F"?"mere":"pere", nom: conjointSurvivant.nom,
-      age: conjointSurvivant.age, genre: conjointSurvivant.genre, barre: 70+alea(31), vivant:true});
+      age: conjointSurvivant.age, genre: conjointSurvivant.genre, barre: 70+alea(31), vivant:true,
+      argent: conjointSurvivant.argent||0, competence: conjointSurvivant.competence});
   }
   for(const f of freresSoeurs){
-    etat.relations.push({type: f.genre==="F"?"soeur":"frere", nom: f.nom, age: f.age, genre: f.genre, barre: 60+alea(41), vivant:true});
+    etat.relations.push({type: f.genre==="F"?"soeur":"frere", nom: f.nom, age: f.age, genre: f.genre,
+      barre: 60+alea(41), vivant:true, argent: f.argent||0, competence: f.competence});
   }
 
   nouvelleAnnee();
@@ -2531,6 +2611,58 @@ function demanderMontant(titre, texte, dispo, defaut, action, libelleAction){
     b.onclick = () => { champ.value = Math.min(max, (Number(champ.value)||0) + m); maj(); };
     rac.appendChild(b);
   }
+  champ.oninput = maj;
+  maj();
+  $("modale").classList.add("ouvert");
+  setTimeout(() => { try{ champ.focus(); champ.select(); }catch(e){} }, 60);
+}
+
+/* --- saisie libre d'un pourcentage (parts de capital) --- */
+function demanderPart(titre, texte, maxPart, defaut, action, libelleAction, apercu){
+  const max = Math.max(0, Math.floor(maxPart));
+  $("mod-titre").textContent = titre;
+  $("mod-texte").innerHTML = `
+    <div style="line-height:1.6; margin-bottom:12px">${texte}</div>
+    <input class="saisie-montant" id="sm-val" type="number" inputmode="numeric"
+           min="0" max="${max}" step="1" value="${Math.min(max, Math.max(0, Math.round(defaut||0)))}">
+    <div class="raccourcis" id="sm-rac"></div>
+    <div class="aide-montant" id="sm-aide"></div>`;
+  const box = $("mod-choix");
+  box.innerHTML = "";
+
+  const valider = document.createElement("button");
+  valider.textContent = libelleAction || "Valider";
+  valider.style.cssText = "background:var(--accent); color:var(--accent-ink); border-color:var(--accent); font-weight:700; text-align:center";
+  valider.onclick = () => {
+    const v = Math.max(0, Math.min(max, Math.round(Number($("sm-val").value) || 0)));
+    $("modale").classList.remove("ouvert");
+    action(v);
+    if(!etat.mort){ sauver(); toutAfficher(); if(ecranCourant) rafraichirFeuille(); }
+  };
+  const annuler = document.createElement("button");
+  annuler.textContent = "Annuler";
+  annuler.style.textAlign = "center";
+  annuler.onclick = () => { $("modale").classList.remove("ouvert"); };
+  box.appendChild(valider);
+  box.appendChild(annuler);
+
+  const champ = $("sm-val"), aide = $("sm-aide"), rac = $("sm-rac");
+  const maj = () => {
+    const v = Math.max(0, Math.min(max, Math.round(Number(champ.value) || 0)));
+    aide.innerHTML = `<b>${v} %</b> du capital · maximum cessible : ${max} %`
+      + (apercu ? "<br>" + apercu(v) : "");
+  };
+  for(const p of [1, 5, 10, 25]){
+    if(p > max) continue;
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = p + " %";
+    b.onclick = () => { champ.value = p; maj(); };
+    rac.appendChild(b);
+  }
+  const bt = document.createElement("button");
+  bt.type = "button"; bt.textContent = "Maximum (" + max + " %)";
+  bt.onclick = () => { champ.value = max; maj(); };
+  rac.appendChild(bt);
   champ.oninput = maj;
   maj();
   $("modale").classList.add("ouvert");
@@ -2973,7 +3105,7 @@ function feuilleEntreprise(e){
       <div class="detail">${P.titre} · Compétence <b>${P.competence}/100</b> · ${euros(P.salaire)}/an · ${P.annees||0} an${(P.annees||0)>1?"s":""} en poste · Moral ${P.moral||70}/100<br>
       💰 Fortune personnelle : <b>${euros(P.argent||0)}</b> (bâtie grâce à toi)<br>
       ${PROFILS_PDG.find(x=>x.style===P.style).desc}<br><br>
-      <b>${P.genre==="F"?"Elle":"Il"} gère tout à ta place</b> : stock, publicité, recrutement, formation, <b>appels d'offres</b> et <b>filiales à l'étranger</b> (rapatriement, réinvestissement, ouverture de nouveaux marchés), et te remonte des dividendes chaque année. Tu n'as plus qu'à voter au conseil d'administration.</div>
+      <b>${P.genre==="F"?"Elle":"Il"} gère tout à ta place</b> : stock, publicité, <b>recrutement d'expansion</b> (${P.genre==="F"?"elle":"il"} staffe pour le palier suivant et pour les marchés), formation, <b>appels d'offres</b>, <b>filiales à l'étranger</b> (rapatriement, réinvestissement, ouverture de nouveaux marchés), <b>passage de palier</b> jusqu'à la multinationale, et ${P.genre==="F"?"elle":"il"} remonte les dividendes chaque année — les tiens comme ceux de la famille actionnaire. Tu n'as plus qu'à voter au conseil d'administration.</div>
       <div class="actions"></div>`);
     action(cP, "Fixer sa rémunération", "", () => {
       demanderMontant("Rémunération de " + P.nom,
@@ -3325,6 +3457,77 @@ function feuilleEntreprise(e){
     rafraichirFeuille();
   });
 
+  /* --- actionnariat familial : les dividendes de ma femme et de mes enfants --- */
+  const actionnaires = (e.actionnaires||[]).filter(a => etat.relations.some(r => r.nom === a.nom && r.vivant));
+  const benefRef = (e.dernier && e.dernier.resultat > 0) ? e.dernier.resultat : 0;
+  const estim = pc => Math.round(benefRef * pc/100 * 0.85);
+  section(`👪 Dividendes de la famille (${actionnaires.length})`, actionnaires.length > 0);
+  carte(`<div class="detail">Donne une part du capital à ta femme et à tes enfants : chaque année bénéficiaire,
+    la trésorerie leur verse leur pourcentage du résultat (15 % de fiscalité), <b>même à un nouveau-né</b>.
+    Tu peux l'ajuster ou la révoquer quand tu veux. Plus l'entreprise grandit, plus ils s'enrichissent tout seuls.<br>
+    Ma part : <b>${maPart(e)} %</b> · famille : <b>${partsFamille(e)} %</b>${e.partInvest?` · investisseurs : <b>${e.partInvest} %</b>`:""}
+    · dernier bénéfice : <b>${euros(benefRef)}</b></div>`);
+  for(const ac of actionnaires){
+    const r = etat.relations.find(x => x.nom === ac.nom && x.vivant);
+    const cA = carte(`<div class="titre">${r.type==="conjoint"?"💍":"🧒"} ${ac.nom} — <b>${ac.part} %</b></div>
+      <div class="detail">${LIBELLE_REL[r.type]} · ${r.age} an${r.age>1?"s":""} · fortune personnelle <b>${euros(r.argent||0)}</b><br>
+        Sur le dernier exercice : <b>${euros(estim(ac.part))}/an</b>${ac.versees?` · déjà perçu ${euros(ac.total||0)} en ${ac.versees} an${ac.versees>1?"s":""}`:" · pas encore de versement"}</div>
+      <div class="actions"></div>`);
+    action(cA, "Ajuster sa part", "", () => {
+      const autres = partsFamille(e) - ac.part;            // ce que détiennent les autres membres
+      const plafond = ac.part + maPart(e);
+      demanderPart("Part de " + ac.nom + " dans « " + e.nom + " »",
+        `${LIBELLE_REL[r.type]}, ${r.age} an${r.age>1?"s":""}. Part actuelle : <b>${ac.part} %</b>.<br>
+         Ma part disponible : <b>${maPart(e)} %</b> · dernier bénéfice de l'entreprise : <b>${euros(benefRef)}</b>.`,
+        plafond, ac.part,
+        p => {
+          if(p <= 0){
+            e.actionnaires = e.actionnaires.filter(x => x !== ac);
+            r.barre = borne(r.barre - 12);
+            ecrire(`J'ai retiré sa part du capital de « ${e.nom} » à ${ac.nom}. ${r.genre==="F"?"Elle":"Il"} l'a très mal pris.`, "mauvais");
+            return;
+          }
+          const avant = ac.part;
+          ac.part = p;
+          r.barre = borne(r.barre + (p > avant ? 8 : p < avant ? -8 : 0));
+          ecrire(`👪 ${ac.nom} détient désormais ${p} % de « ${e.nom} » (environ ${euros(estim(p))}/an de dividendes).`,
+                 p >= avant ? "argent" : "mauvais");
+        },
+        "Fixer cette part",
+        p => `Environ <b>${euros(estim(p))}</b> par an pour ${ac.nom.split(" ")[0]} · il me resterait ${100 - (e.partInvest||0) - autres - p} %`);
+    });
+    action(cA, "Révoquer", "rouge", () => {
+      e.actionnaires = e.actionnaires.filter(x => x !== ac);
+      r.barre = borne(r.barre - 12);
+      ecrire(`J'ai révoqué la part de ${ac.nom} dans « ${e.nom} ». Les repas de famille vont être tendus.`, "mauvais");
+      rafraichirFeuille();
+    });
+  }
+  const aDoter = etat.relations.filter(r => r.vivant && ["conjoint","enfant"].includes(r.type)
+    && !(e.actionnaires||[]).some(a => a.nom === r.nom));
+  for(const r of aDoter){
+    if(maPart(e) <= 0) break;
+    const cD = carte(`<div class="titre">${r.type==="conjoint"?"💍":"🧒"} ${r.nom}</div>
+      <div class="detail">${LIBELLE_REL[r.type]} · ${r.age} an${r.age>1?"s":""} · fortune ${euros(r.argent||0)} · aucune part du capital</div>
+      <div class="actions"></div>`);
+    action(cD, "Lui donner une part", "or", () => {
+      demanderPart("Part de " + r.nom + " dans « " + e.nom + " »",
+        `Tu cèdes une part de <b>ta propre part</b> du capital (${maPart(e)} % disponibles).<br>
+         ${r.genre==="F"?"Elle":"Il"} touchera ce pourcentage du bénéfice chaque année, à vie, tant que tu ne le révoques pas.<br>
+         Dernier bénéfice de l'entreprise : <b>${euros(benefRef)}</b>.`,
+        maPart(e), Math.min(maPart(e), r.type==="conjoint" ? 10 : 5),
+        p => {
+          if(p <= 0) return;
+          e.actionnaires = (e.actionnaires||[]).concat([{nom:r.nom, part:p, depuis:etat.age, versees:0, total:0, dernier:0}]);
+          r.barre = borne(r.barre + 12);
+          etat.bonheur = borne(etat.bonheur + 3);
+          ecrire(`👪 ${r.nom} entre au capital de « ${e.nom} » avec ${p} % — environ ${euros(estim(p))}/an de dividendes.`, "bon");
+        },
+        "Céder cette part",
+        p => `Environ <b>${euros(estim(p))}</b> par an · il me resterait ${maPart(e) - p} %`);
+    });
+  }
+
   /* --- mes prestataires et participations --- */
   if((e.fournisseurs||[]).length || (e.participations||[]).length){
     section(`📋 Mes prestataires (${(e.fournisseurs||[]).length})`, false);
@@ -3594,9 +3797,48 @@ function feuilleEntreprise(e){
     action(cc, `Passer en ${suivante.nom}`, "or", () => {
       e.taille++; e.valeur = Math.round(e.valeur*1.15); e.reputation = borne(e.reputation+8);
       etat.celebrite = borne(etat.celebrite + 5);
+      if((e.taille||0) > (etat.entMax||0)) etat.entMax = e.taille;
       ecrire(`🏆 « ${e.nom} » devient ${suivante.nom} ${suivante.ico} ! Un nouveau palier pour la famille ${etat.nom}.`, "bon");
       rafraichirFeuille();
     }, !okEmp || !okVal);
+  }
+
+  /* --- recrutement d'expansion : embaucher tout ce qui manque pour grandir --- */
+  {
+    const besoinTaille = suivante ? Math.max(0, suivante.emp - e.employes.length) : 0;
+    const exig = (e.contrats||[]).concat(((e.prospects||{}).liste)||[]).map(c => c.employesMin||0);
+    const seuilCt = exig.length ? Math.max.apply(null, exig) : 0;
+    const besoinContrats = Math.max(0, seuilCt - e.employes.length);
+    const besoin = Math.max(besoinTaille, besoinContrats);
+    const fraisU = 6000 + Math.round(assietteCA(e.valeur)*0.012);
+    const cE = carte(`<div class="titre">🧑‍💼 Recrutement d'expansion</div>
+      <div class="ligne-info"><span>Effectif actuel</span><b>${e.employes.length} salarié${e.employes.length>1?"s":""}</b></div>
+      ${suivante?`<div class="ligne-info"><span>Effectif pour passer ${suivante.nom}</span><b>${besoinTaille?"❌ "+besoinTaille+" à recruter":"✅ au complet"}</b></div>`:""}
+      ${seuilCt?`<div class="ligne-info"><span>Effectif exigé par les marchés</span><b>${besoinContrats?"❌ "+besoinContrats+" à recruter":"✅ au complet"}</b></div>`:""}
+      <div class="ligne-info"><span>Frais de recrutement</span><b>${euros(fraisU)} par poste</b></div>
+      <div class="detail" style="margin-top:6px">${besoin
+        ? `Une campagne d'un coup : cabinet de recrutement, annonces, entretiens. Les profils recrutés sont d'autant meilleurs que la réputation de la maison est forte (${e.reputation}/100). Leurs salaires pèseront ensuite sur la masse salariale chaque année.`
+        : "L'effectif suffit pour le palier suivant et pour les marchés en cours. Fais plutôt monter la valorisation : contrats, filiales, qualité."}</div>
+      <div class="actions"></div>`);
+    if(besoin){
+      const coutC = besoin * fraisU;
+      action(cE, `Lancer la campagne (${besoin} poste${besoin>1?"s":""} · ${euros(coutC)})`, "or", () => {
+        e.caisse -= coutC;
+        const noms = [];
+        for(let i=0;i<besoin;i++){
+          const comp = Math.min(95, 30 + alea(30) + Math.round(e.reputation/5));
+          const g = alea(2)?"F":"M";
+          const sal = Math.round((comp*130)/500)*500;
+          const poste = POSTES.slice().reverse().find(p => comp >= p.req) || POSTES[POSTES.length-1];
+          const nom = parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS);
+          e.employes.push({nom, genre:g, poste:poste.nom, salaire:sal, competence:comp, externe:true, exp:0});
+          noms.push(nom.split(" ")[0]+" ("+poste.nom.toLowerCase()+")");
+        }
+        e.reputation = borne(e.reputation + 2);
+        ecrire(`🧑‍💼 Campagne de recrutement chez « ${e.nom} » : ${besoin} embauche${besoin>1?"s":""} pour ${euros(coutC)} — ${noms.join(", ")}.`, "bon");
+        rafraichirFeuille();
+      }, (e.caisse||0) < coutC);
+    }
   }
 
   /* --- équipe --- */
@@ -4608,6 +4850,14 @@ function feuilleRelations(){
     }
     if(r.type==="conjoint" && r.metier)
       detail += `<br>💼 ${r.metier} · ${euros(r.salaire)}/an (contribue 30 % au ménage)`;
+    if(r.type==="conjoint" && !r.metier) detail += `<br>💰 Fortune personnelle : <b>${euros(r.argent||0)}</b>`;
+    // parts qu'il ou elle détient dans mes entreprises
+    for(const en of (etat.entreprises||[])){
+      const ac = (en.actionnaires||[]).find(a => a.nom === r.nom);
+      if(ac) detail += `<br>📈 Actionnaire de « ${en.nom} » : <b>${ac.part} %</b>${ac.dernier?` · ${euros(ac.dernier)} de dividendes l'an dernier`:""}${ac.total?` · ${euros(ac.total)} perçus au total`:""}`;
+    }
+    const rt0 = (etat.rentes||[]).find(x => x.nom === r.nom);
+    if(rt0) detail += `<br>💵 Rente que je lui verse : <b>${euros(rt0.montant)}/an</b>`;
     const c = carte(`<div class="titre">${r.nom}</div>
       <div class="detail">${detail}</div>
       <div class="mini-jauge"><i style="width:${r.barre}%"></i></div>

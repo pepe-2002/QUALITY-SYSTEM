@@ -419,6 +419,20 @@ function genererConcurrents(paysNom, nb){
   return out;
 }
 
+/* ---- prestations que je peux commander à d'autres entreprises ---- */
+const PRESTATIONS = [
+  {cle:"production", nom:"Sous-traitance de production", ico:"🏭", ratio:0.022,
+   desc:"Ils produisent pour toi : ta capacité augmente de 25 %.", effet:"+25 % de production"},
+  {cle:"logistique", nom:"Logistique et approvisionnement", ico:"🚚", ratio:0.018,
+   desc:"Ils gèrent tes flux : ton stock ne descend presque plus.", effet:"stock préservé chaque année"},
+  {cle:"marketing",  nom:"Agence de communication", ico:"📣", ratio:0.015,
+   desc:"Ils portent ta marque : réputation en hausse continue.", effet:"+5 de réputation par an"},
+  {cle:"rd",         nom:"Recherche et développement", ico:"🔬", ratio:0.020,
+   desc:"Ils innovent pour toi : la qualité de tes produits monte.", effet:"+5 de qualité par an"},
+  {cle:"conseil",    nom:"Conseil en stratégie", ico:"🧭", ratio:0.013,
+   desc:"Ils optimisent ta gestion : meilleure marge sur tout ton chiffre.", effet:"+8 % de marge"},
+];
+
 /* ---- banques et investisseurs ---- */
 const BANQUES = [
   {nom:"Banque de l'Archipel",    ico:"🏦", taux:11, maxRatio:0.8, garantie:0,   desc:"La banque du coin. Chère, mais elle prête à tout le monde."},
@@ -733,6 +747,8 @@ function normaliserEntreprise(e){
   if(!e.histo) e.histo = [];
   if(e.clients==null) e.clients = 8 + (e.taille||0)*12;
   if(!e.filiales) e.filiales = [];
+  if(!e.fournisseurs) e.fournisseurs = [];
+  if(!e.participations) e.participations = [];
   if(e.partInvest==null) e.partInvest = 0;
   if(!e.emprunts) e.emprunts = [];
   return e;
@@ -1388,8 +1404,48 @@ function vieillir(){
     // les clients suivent la réputation
     e.clients = Math.max(3, Math.round((e.clients||10) * (0.94 + e.reputation/900) + (e.contrats||[]).length));
 
+    /* --- les entreprises à qui JE donne des contrats --- */
+    let coutFournisseurs = 0, bonusProd = 1, bonusMarge = 1;
+    const finis = [];
+    for(const fo of (e.fournisseurs||[])){
+      const k = (etat.concurrents||[]).find(x => x.id === fo.id);
+      coutFournisseurs += fo.cout;
+      fo.restant--;
+      // le prestataire grandit grâce à mon contrat
+      if(k){
+        k.valeur = Math.round(k.valeur + fo.cout * 0.55);
+        k.reputation = borne(k.reputation + 2);
+        k.relation = borne((k.relation||30) + 4);
+        k.employes += alea(2);
+      }
+      // effets sur mon entreprise
+      if(fo.type === "production") bonusProd = 1.25;
+      if(fo.type === "logistique") e.stock = Math.min(100, e.stock + 22);
+      if(fo.type === "marketing")  e.reputation = borne(e.reputation + 5);
+      if(fo.type === "rd")         e.qualite = borne(e.qualite + 5);
+      if(fo.type === "conseil")    bonusMarge = 1.08;
+      if(fo.restant <= 0){
+        finis.push(fo);
+        ecrire(`📄 Contrat de ${fo.nomPrest.toLowerCase()} avec ${fo.nom} arrivé à terme.`, "info");
+      }
+    }
+    if(finis.length) e.fournisseurs = e.fournisseurs.filter(f => !finis.includes(f));
+
+    /* --- mes participations dans d'autres entreprises --- */
+    let revParticipations = 0;
+    for(const pa of (e.participations||[])){
+      const k = (etat.concurrents||[]).find(x => x.id === pa.id);
+      if(!k){ pa.perdue = true; continue; }
+      const dividende = Math.round(k.valeur * 0.05 * pa.part/100);
+      revParticipations += dividende;
+      pa.valeur = Math.round(k.valeur * pa.part/100);
+      if(dividende > 1500)
+        ecrire(`🤝 Participation de ${pa.part} % dans ${k.nom} : ${euros(dividende)} de dividendes (part valorisée ${euros(pa.valeur)}).`, "argent");
+    }
+    e.participations = (e.participations||[]).filter(x => !x.perdue);
+
     const masse = (e.monSalaire||0) + (e.pdg ? e.pdg.salaire : 0) + e.employes.reduce((s,x)=>s+x.salaire,0);
-    prod = Math.round(prod * tauxAct * (e.pdg ? 1 + e.pdg.competence/110 : 1));
+    prod = Math.round(prod * tauxAct * bonusProd * (e.pdg ? 1 + e.pdg.competence/110 : 1));
     // filiales à l'étranger : chaque implantation rapporte selon l'économie locale
     let caFiliales = 0;
     for(const f of (e.filiales||[])){
@@ -1403,14 +1459,15 @@ function vieillir(){
       if(Math.abs(gain) > 3000)
         ecrire(`🌍 Filiale de « ${e.nom} » en ${f.pays} : ${gain>=0?"+":""}${euros(gain)} cette année.`, gain>=0?"argent":"mauvais");
     }
-    const ca = Math.max(0, chiffre) + prod + caContrats + Math.max(0, caFiliales);
+    const ca = Math.max(0, chiffre) + prod + caContrats + Math.max(0, caFiliales) + revParticipations;
     const interets = Math.round((e.dette||0) * ((e.tauxDette||8)/100));
     if(e.dette){
       const rembours = Math.min(e.dette, Math.round(e.dette*0.15));
       e.dette -= rembours;
       e.caisse -= rembours;
     }
-    let resultat = chiffre + prod + caContrats + caFiliales - coutContrats - masse - interets;
+    let resultat = Math.round((chiffre + prod + caContrats + caFiliales + revParticipations) * bonusMarge)
+                   - coutContrats - coutFournisseurs - masse - interets;
     if(resultat > 0) resultat = Math.round(resultat*(1-imp));
     e.caisse = (e.caisse||0) + resultat;
 
@@ -1442,7 +1499,7 @@ function vieillir(){
     e.dernier = {ca, masse, interets, resultat, caisse:e.caisse, caContrats, coutContrats,
                  achats:coutContrats, marge: ca ? Math.round(resultat/ca*100) : 0};
     e.histo = (e.histo||[]).concat([{age: etat.age, ca, resultat, valeur: e.valeur}]).slice(-12);
-    ecrire(`${e.ico} « ${e.nom} » (${tailleEnt(e).nom}) : CA ${euros(ca)}${caContrats?" dont "+euros(caContrats)+" de contrats":""}, salaires ${euros(masse)}${interets?", intérêts "+euros(interets):""}, résultat ${resultat>=0?"+":""}${euros(resultat)} → trésorerie ${euros(e.caisse)}.`, resultat>=0?"argent":"mauvais");
+    ecrire(`${e.ico} « ${e.nom} » (${tailleEnt(e).nom}) : CA ${euros(ca)}${caContrats?" dont "+euros(caContrats)+" de contrats":""}${coutFournisseurs?", prestataires −"+euros(coutFournisseurs):""}, salaires ${euros(masse)}${interets?", intérêts "+euros(interets):""}, résultat ${resultat>=0?"+":""}${euros(resultat)} → trésorerie ${euros(e.caisse)}.`, resultat>=0?"argent":"mauvais");
 
     if(e.caisse < 0){
       e.pertes = (e.pertes||0)+1;
@@ -3075,6 +3132,39 @@ function feuilleEntreprise(e){
     rafraichirFeuille();
   });
 
+  /* --- mes prestataires et participations --- */
+  if((e.fournisseurs||[]).length || (e.participations||[]).length){
+    section(`📋 Mes prestataires (${(e.fournisseurs||[]).length})`, false);
+    for(const fo of (e.fournisseurs||[])){
+      const pr = PRESTATIONS.find(x => x.cle === fo.type);
+      const k = (etat.concurrents||[]).find(x => x.id === fo.id);
+      const c = carte(`<div class="titre">${pr?pr.ico:"📋"} ${fo.nom}</div>
+        <div class="detail">${fo.nomPrest} · <b>${euros(fo.cout)}/an</b> · encore ${fo.restant} an${fo.restant>1?"s":""}
+          ${pr ? "<br>Apport : "+pr.effet : ""}${k ? " · leur valorisation : "+euros(k.valeur) : ""}</div>
+        <div class="actions"></div>`);
+      action(c, "Rompre", "rouge", () => {
+        e.fournisseurs = e.fournisseurs.filter(x => x !== fo);
+        if(k) k.relation = borne((k.relation||30) - 15);
+        ecrire(`📋 Contrat rompu avec ${fo.nom}.`, "mauvais");
+        rafraichirFeuille();
+      });
+    }
+    for(const pa of (e.participations||[])){
+      const k = (etat.concurrents||[]).find(x => x.id === pa.id);
+      const c = carte(`<div class="titre">📈 ${pa.part} % de ${pa.nom}</div>
+        <div class="detail">Valeur de la participation : <b>${euros(k ? Math.round(k.valeur*pa.part/100) : pa.valeur)}</b>
+          ${k ? " · leur valorisation totale : "+euros(k.valeur) : ""}</div>
+        <div class="actions"></div>`);
+      action(c, "Revendre la part", "gris", () => {
+        const v = k ? Math.round(k.valeur*pa.part/100 * 0.95) : pa.valeur;
+        etat.argent += v;
+        e.participations = e.participations.filter(x => x !== pa);
+        ecrire(`📈 J'ai revendu ma participation de ${pa.part} % dans ${pa.nom} pour ${euros(v)}.`, "argent");
+        rafraichirFeuille();
+      });
+    }
+  }
+
   /* --- financement bancaire --- */
   section("🏦 Financement bancaire", false);
   const detteTot = e.dette || 0;
@@ -4046,6 +4136,76 @@ function feuilleConcurrent(k){
       ecrire(`🎯 Le cadre de ${k.nom} a refusé mon offre, et ${k.patron} l'a appris.`, "mauvais"); }
     rafraichirFeuille();
   }, etat.argent < 25000);
+
+  /* --- LEUR DONNER DU TRAVAIL : je deviens leur client --- */
+  section("📋 Leur confier un contrat");
+  const dejaFournisseur = (e.fournisseurs||[]).find(f => f.id === k.id);
+  if(dejaFournisseur){
+    const c = carte(`<div class="titre">✅ ${k.nom} travaille déjà pour moi</div>
+      <div class="detail">${dejaFournisseur.nomPrest} · ${euros(dejaFournisseur.cout)}/an · encore ${dejaFournisseur.restant} an${dejaFournisseur.restant>1?"s":""}<br>
+        Chaque année versée les fait grandir : leur valorisation et leur réputation montent.</div>
+      <div class="actions"></div>`);
+    action(c, "Rompre le contrat", "rouge", () => {
+      e.fournisseurs = e.fournisseurs.filter(f => f !== dejaFournisseur);
+      k.relation = borne((k.relation||30) - 15);
+      ecrire(`📋 J'ai rompu le contrat de ${dejaFournisseur.nomPrest.toLowerCase()} qui me liait à ${k.nom}.`, "mauvais");
+      rafraichirFeuille();
+    });
+  } else {
+    carte(`<div class="detail">Tu peux être leur client : commande-leur une prestation, négocie le prix, et ils travailleront pour « ${e.nom} ». Un bon prestataire améliore durablement ton entreprise — et le contrat que tu lui donnes le fait grandir.</div>`);
+    for(const pr of PRESTATIONS){
+      const tarif = Math.max(4000, Math.round(assietteCA(e.valeur) * pr.ratio * (0.8 + k.reputation/150) / 500) * 500);
+      const remise = Math.round(tarif * (0.9 - (k.relation||30)/500) / 500) * 500;
+      const c = carte(`<div class="titre">${pr.ico} ${pr.nom}</div>
+        <div class="detail">${pr.desc}<br>Effet sur mon entreprise : <b>${pr.effet}</b><br>
+          Tarif demandé : <b>${euros(tarif)}/an</b> · durée 3 ans · total ${euros(tarif*3)}</div>
+        <div class="actions"></div>`);
+      action(c, `Commander (${euros(tarif)}/an)`, "or", () => {
+        e.fournisseurs.push({id:k.id, nom:k.nom, type:pr.cle, nomPrest:pr.nom, cout:tarif, restant:3});
+        k.relation = borne((k.relation||30) + 12);
+        k.valeur = Math.round(k.valeur * 1.03);
+        ecrire(`📋 J'ai confié ${pr.nom.toLowerCase()} à ${k.nom} : ${euros(tarif)}/an pendant 3 ans. ${k.patron} me remercie chaleureusement.`, "argent");
+        rafraichirFeuille();
+      }, (e.caisse||0) < tarif);
+      action(c, `Négocier à ${euros(remise)}`, "gris", () => {
+        if(dejaFait("negoPrest_"+k.id+pr.cle)){ ecrire("On a déjà discuté ce tarif cette année."); return; }
+        const chance = 30 + (k.relation||30)/2 + e.reputation/5 + (etat.compPro||0)/6;
+        if(alea(100) < chance){
+          e.fournisseurs.push({id:k.id, nom:k.nom, type:pr.cle, nomPrest:pr.nom, cout:remise, restant:3});
+          k.relation = borne((k.relation||30) + 6);
+          ecrire(`📋 Bien négocié : ${k.nom} accepte ${pr.nom.toLowerCase()} à ${euros(remise)}/an au lieu de ${euros(tarif)}.`, "argent");
+        } else {
+          k.relation = borne((k.relation||30) - 4);
+          ecrire(`📋 ${k.patron} refuse de descendre sous ${euros(tarif)}. « Nous avons nos coûts aussi. »`, "mauvais");
+        }
+        rafraichirFeuille();
+      }, (e.caisse||0) < remise);
+    }
+  }
+
+  /* --- prendre une part de leur capital --- */
+  section("📈 Entrer à leur capital", false);
+  const maPart = (e.participations||[]).find(x => x.id === k.id);
+  if(maPart){
+    carte(`<div class="titre">Tu détiens ${maPart.part} % de ${k.nom}</div>
+      <div class="detail">Valeur de ta part : <b>${euros(Math.round(k.valeur*maPart.part/100))}</b> · dividendes versés chaque année.</div>`);
+  }
+  for(const part of [10, 25, 40]){
+    if(maPart && maPart.part + part > 60) continue;
+    const cout = Math.round(k.valeur * part/100 * 1.15);
+    const c = carte(`<div class="titre">Acquérir ${part} % de ${k.nom}</div>
+      <div class="detail">Coût : <b>${euros(cout)}</b> · tu toucherais environ ${euros(Math.round(k.valeur*0.05*part/100))} de dividendes par an,
+        et ta part suit leur croissance.</div>
+      <div class="actions"></div>`);
+    action(c, "Prendre la participation", "", () => {
+      etat.argent -= cout;
+      if(maPart) maPart.part += part;
+      else e.participations.push({id:k.id, nom:k.nom, part, valeur:Math.round(k.valeur*part/100)});
+      k.relation = borne((k.relation||30) + 10);
+      ecrire(`📈 J'entre au capital de ${k.nom} à hauteur de ${part} % pour ${euros(cout)}.`, "argent");
+      rafraichirFeuille();
+    }, etat.argent < cout);
+  }
 
   const prix = Math.round(k.valeur * (1.35 - (k.relation||30)/400));
   const c4 = carte(`<div class="titre">💼 Racheter ${k.nom}</div>

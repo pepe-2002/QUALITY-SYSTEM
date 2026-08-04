@@ -44,6 +44,31 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Donner du travail aux autres entreprises 📋
+
+Tu n'es plus seulement fournisseur : tu peux devenir **client** des autres
+entreprises. Sur la fiche de n'importe quel concurrent, commande-lui une
+prestation sur trois ans :
+
+- **🏭 Sous-traitance de production** — +25 % de capacité
+- **🚚 Logistique et approvisionnement** — ton stock ne descend presque plus
+- **📣 Agence de communication** — +5 de réputation par an
+- **🔬 Recherche et développement** — +5 de qualité par an
+- **🧭 Conseil en stratégie** — +8 % de marge sur tout ton chiffre
+
+Chaque prestation se **négocie** : demande une remise, et ils acceptent ou
+refusent selon votre relation, ta réputation et ta compétence. Et surtout :
+**l'argent que tu leur verses les fait grandir** — leur valorisation, leur
+réputation, leurs effectifs et votre relation montent chaque année. Tu
+développes vraiment les entreprises avec qui tu travailles.
+
+## Entrer au capital des autres 📈
+
+Tu peux aussi acquérir **10, 25 ou 40 %** d'une entreprise concurrente : tu
+touches des dividendes chaque année, ta part suit leur croissance, et tu peux
+la revendre quand tu veux. Un moyen de profiter du succès des autres sans
+les racheter entièrement.
+
 ## Monde des affaires 🏙️
 
 Près de **150 entreprises concurrentes** peuplent les 36 pays, chacune avec

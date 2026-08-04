@@ -44,6 +44,43 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Carrières spéciales ⭐
+
+Six voies hors du salariat, menées en parallèle du reste de ta vie, chacune
+avec cinq à sept paliers à gravir :
+
+- **🎤 Musicien** — monte un groupe, enregistre des albums, pars en tournée.
+  D'amateur à légende de l'océan Indien.
+- **🎬 Acteur** — passe des auditions (l'apparence compte), de figurant à
+  icône du cinéma.
+- **⚽ Athlète professionnel** — saisons de compétition, primes et contrats,
+  avec un vrai risque de **blessure grave** et une retraite sportive à 34 ans.
+- **✍️ Écrivain** — publie des livres, vis de tes droits d'auteur, vise le
+  prix littéraire.
+- **📱 Influenceur** — publie, fais grandir ta communauté, décroche des
+  sponsors… ou subis l'algorithme.
+- **🎖️ Militaire** — engage-toi, grimpe de soldat à **général**, pars en
+  opération extérieure (citation ou blessure).
+
+Les revenus dépendent de ton **talent** (qui progresse à chaque œuvre) et de
+ta célébrité.
+
+## Placements 📈
+
+Quatre supports dans l'onglet Actifs, dont les cours évoluent chaque année :
+**actions** (tendance +6 %, volatilité 18 %), **or** (valeur refuge),
+**cryptomonnaie** (volatilité 65 % — peut doubler ou fondre de moitié) et
+**obligations d'État** (presque sans risque). Position, montant investi et
+plus-value affichés en permanence.
+
+## Succès 🏆
+
+Quatorze succès **conservés d'une vie à l'autre**, même après un nouveau
+départ : Premier million, Chef de l'État, Couronné, Multinationale, Coup de
+cloche (introduction en bourse), Célébrité mondiale, Dynastie (5ᵉ génération),
+Centenaire, Le mur (évasion réussie), Casse du siècle, Étoiles (général),
+Légende vivante, Cœur pur (90 de karma), Pari gagnant (100 000 € en crypto).
+
 ## Rubans de fin de vie 🏆
 
 À ta mort, le jeu résume ta vie en un **ruban** — 20 titres possibles, du plus

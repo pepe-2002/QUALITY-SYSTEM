@@ -422,6 +422,72 @@ const RUBANS = [
   {nom:"Fauché",       ico:"🪙", desc:"Tu meurs comme tu es né : sans rien.", test:s => s.fortune <= 0},
   {nom:"Discret",      ico:"🍃", desc:"Une vie tranquille, sans éclat ni scandale.", test:() => true},
 ];
+/* ---- carrières spéciales (hors salariat classique) ---- */
+const CARRIERES = [
+  {cle:"musique", nom:"Musicien", ico:"🎤", ageMin:14, statMin:{look:0},
+   rangs:["Amateur","Artiste local","Vedette régionale","Star de l'océan Indien","Légende"],
+   desc:"Monte un groupe, enregistre des albums, pars en tournée."},
+  {cle:"cinema", nom:"Acteur", ico:"🎬", ageMin:16, statMin:{look:55},
+   rangs:["Figurant","Second rôle","Premier rôle","Tête d'affiche","Icône du cinéma"],
+   desc:"Passe des auditions et grimpe jusqu'au haut de l'affiche."},
+  {cle:"sport", nom:"Athlète professionnel", ico:"⚽", ageMin:15, statMin:{sante:65},
+   rangs:["Espoir","Joueur de club","Titulaire","International","Star mondiale"],
+   desc:"Les essais, les clubs, la sélection… et les blessures."},
+  {cle:"ecriture", nom:"Écrivain", ico:"✍️", ageMin:16, statMin:{intel:55},
+   rangs:["Auteur inédit","Auteur publié","Auteur reconnu","Best-seller","Prix littéraire"],
+   desc:"Écris des livres et vis de tes droits d'auteur."},
+  {cle:"influence", nom:"Influenceur", ico:"📱", ageMin:13, statMin:{},
+   rangs:["Débutant","Créateur suivi","Influenceur","Star des réseaux","Phénomène mondial"],
+   desc:"Publie, fais grandir ta communauté, décroche des sponsors."},
+  {cle:"armee", nom:"Militaire", ico:"🎖️", ageMin:18, statMin:{sante:60},
+   rangs:["Soldat","Caporal","Sergent","Lieutenant","Capitaine","Colonel","Général"],
+   desc:"Engage-toi, grimpe les grades, pars en opération."},
+];
+const SOLDES_ARMEE = [9000, 12000, 16000, 24000, 34000, 50000, 75000];
+
+/* ---- investissements ---- */
+const PLACEMENTS = [
+  {cle:"actions", nom:"Actions — indice océan Indien", ico:"📈", vol:18, tend:6,  min:1000,
+   desc:"Rendement moyen solide, secousses régulières."},
+  {cle:"or",      nom:"Or", ico:"🥇", vol:9,  tend:3,  min:500,
+   desc:"Valeur refuge : monte lentement, protège des crises."},
+  {cle:"crypto",  nom:"Cryptomonnaie", ico:"🪙", vol:65, tend:9,  min:200,
+   desc:"Peut tripler ou fondre de moitié dans l'année. Pour les estomacs solides."},
+  {cle:"obligations", nom:"Obligations d'État", ico:"🏛️", vol:3, tend:2.5, min:2000,
+   desc:"Presque sans risque, presque sans gain."},
+];
+
+/* ---- succès (conservés d'une vie à l'autre) ---- */
+const SUCCES = [
+  {cle:"million",  nom:"Premier million",       ico:"💰", desc:"Atteindre 1 000 000 € de fortune."},
+  {cle:"president",nom:"Chef de l'État",        ico:"🏛️", desc:"Devenir président d'un pays."},
+  {cle:"roi",      nom:"Couronné",              ico:"👑", desc:"Monter sur un trône."},
+  {cle:"multi",    nom:"Multinationale",        ico:"🌍", desc:"Faire d'une entreprise une multinationale."},
+  {cle:"bourse",   nom:"Coup de cloche",        ico:"🔔", desc:"Introduire une société en bourse."},
+  {cle:"star",     nom:"Célébrité mondiale",    ico:"⭐", desc:"Atteindre 90 de célébrité."},
+  {cle:"gen5",     nom:"Dynastie",              ico:"🌳", desc:"Atteindre la 5ᵉ génération de la famille."},
+  {cle:"centenaire",nom:"Centenaire",           ico:"🎂", desc:"Vivre jusqu'à 100 ans."},
+  {cle:"evasion",  nom:"Le mur",                ico:"🪜", desc:"Réussir une évasion de prison."},
+  {cle:"braquage", nom:"Casse du siècle",       ico:"🏦", desc:"Réussir un braquage de banque."},
+  {cle:"general",  nom:"Étoiles",               ico:"🎖️", desc:"Devenir général."},
+  {cle:"legende",  nom:"Légende vivante",       ico:"🏆", desc:"Obtenir le ruban Légende."},
+  {cle:"saint",    nom:"Cœur pur",              ico:"🕊️", desc:"Finir sa vie avec 90 de karma."},
+  {cle:"crypto",   nom:"Pari gagnant",          ico:"🪙", desc:"Gagner plus de 100 000 € en cryptomonnaie."},
+];
+function debloquer(cle){
+  try{
+    const l = JSON.parse(localStorage.getItem("maisha-succes") || "[]");
+    if(l.includes(cle)) return;
+    l.push(cle);
+    localStorage.setItem("maisha-succes", JSON.stringify(l));
+    const s = SUCCES.find(x => x.cle === cle);
+    if(s && typeof ecrire === "function") ecrire(`${s.ico} SUCCÈS DÉBLOQUÉ : « ${s.nom} » — ${s.desc}`, "bon");
+  }catch(e){}
+}
+function succesObtenus(){
+  try{ return JSON.parse(localStorage.getItem("maisha-succes") || "[]"); }catch(e){ return []; }
+}
+
 const ANIMAUX = [
   {nom:"Chat", ico:"🐈", prix:80, bonheur:6},
   {nom:"Chien", ico:"🐕", prix:200, bonheur:9},
@@ -899,6 +965,9 @@ function charger(){
         if(etat.compPro==null) etat.compPro = 10;
         if(!etat.difficulte) etat.difficulte = "normal";
         if(etat.karma==null) etat.karma = 60;
+        if(etat.carriere===undefined) etat.carriere = null;
+        if(!etat.placements) etat.placements = {};
+        if(etat.gainCrypto==null) etat.gainCrypto = 0;
         if(!etat.animaux) etat.animaux = [];
         for(const k of ["crimes","anneesPrison","divorces","voyages","constructions","polMax","entMax"])
           if(etat[k]==null) etat[k] = 0;
@@ -937,6 +1006,7 @@ function nouvelleVie(opts){
     entreprises:[], politique:null, royaume:null,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null, auto:false,
     karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
+    carriere:null, placements:{}, gainCrypto:0,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
@@ -1264,6 +1334,61 @@ function vieillir(){
 
   // ma vie sentimentale et familiale avance seule
   vieAmoureuse();
+
+  // carrière spéciale : revenus et progression
+  if(etat.carriere && etat.prison <= 0){
+    const C = etat.carriere, def = CARRIERES.find(x => x.cle === C.cle);
+    C.annees = (C.annees||0)+1;
+    if(C.cle === "armee"){
+      const solde = SOLDES_ARMEE[C.rang] || SOLDES_ARMEE[0];
+      revenus += Math.round(solde*(1-imp));
+      etat.sante = borne(etat.sante - 1);
+      if(alea(100) < 22){
+        if(alea(100) < 78){
+          etat.compPro = borne((etat.compPro||0)+3); etat.karma = borne((etat.karma||60)+3);
+          ecrire("🎖️ Opération extérieure accomplie sans dommage. Citation à l'ordre du régiment.", "bon");
+        } else {
+          etat.sante = borne(etat.sante - (10+alea(15)));
+          ecrire("🎖️ Blessé au cours d'une opération. Longue convalescence.", "mauvais");
+        }
+      }
+      if(C.annees % 3 === 0 && C.rang < def.rangs.length-1 && alea(100) < 50 + (etat.compPro||0)/3){
+        C.rang++;
+        ecrire(`🎖️ Promotion : me voilà ${def.rangs[C.rang].toLowerCase()} (${euros(SOLDES_ARMEE[C.rang])}/an).`, "bon");
+        if(def.rangs[C.rang] === "Général") debloquer("general");
+      }
+    } else {
+      // revenus liés au rang, au talent et à la célébrité
+      const base = [1200, 6000, 22000, 70000, 200000][C.rang] || 1200;
+      const gain = Math.round(base * (0.55 + C.talent/110) * (1 + etat.celebrite/130));
+      revenus += Math.round(gain*(1-imp));
+      etat.celebrite = borne(etat.celebrite + (C.rang >= 2 ? 3 : 1));
+      if(gain > 3000) ecrire(`${def.ico} ${def.nom} (${def.rangs[C.rang]}) : ${euros(gain)} de revenus cette année.`, "argent");
+    }
+  }
+
+  // placements : les cours bougent chaque année
+  for(const cle in (etat.placements||{})){
+    const pl = etat.placements[cle], def = PLACEMENTS.find(x => x.cle === cle);
+    if(!pl || !def || pl.montant <= 0) continue;
+    const variation = (def.tend + (alea(def.vol*2+1) - def.vol)) / 100;
+    const avant = pl.montant;
+    pl.montant = Math.max(0, Math.round(pl.montant * (1 + variation)));
+    const delta = pl.montant - avant;
+    if(Math.abs(delta) > 200)
+      ecrire(`${def.ico} ${def.nom} : ${delta>=0?"+":""}${euros(delta)} (${Math.round(variation*100)} %) — portefeuille ${euros(pl.montant)}.`,
+             delta>=0 ? "argent" : "mauvais");
+  }
+
+  // succès
+  const fortuneT = etat.argent + valeurPatrimoine();
+  if(fortuneT >= 1000000) debloquer("million");
+  if(etat.politique && etat.politique.niveau >= 4) debloquer("president");
+  if(etat.royaume) debloquer("roi");
+  if(etat.celebrite >= 90) debloquer("star");
+  if(etat.generation >= 5) debloquer("gen5");
+  if(etat.age >= 100) debloquer("centenaire");
+  for(const e of (etat.entreprises||[])){ if((e.taille||0) >= 3) debloquer("multi"); if(e.cotee) debloquer("bourse"); }
 
   // conseil d'administration des entreprises dirigées par un PDG
   conseilAdministration();
@@ -1865,6 +1990,9 @@ function mourir(cause){
   };
   const ruban = RUBANS.find(r => { try{ return r.test(bilanVie); }catch(e){ return false; } }) || RUBANS[RUBANS.length-1];
   etat.dernierRuban = ruban.nom;
+  if(ruban.nom === "Légende") debloquer("legende");
+  if((etat.karma||60) >= 90) debloquer("saint");
+  if(etat.age >= 100) debloquer("centenaire");
 
   $("plein").innerHTML = `
     <div class="cadre">
@@ -1874,6 +2002,7 @@ function mourir(cause){
         <div style="font-size:40px">${ruban.ico}</div>
         <div style="font-size:20px; font-weight:800; letter-spacing:.5px">Ruban « ${ruban.nom} »</div>
         <div style="color:var(--ink-dim); font-size:13px; line-height:1.5">${ruban.desc}</div>
+        <div style="color:var(--ink-dim); font-size:12px; margin-top:8px">🏆 Succès débloqués : <b>${succesObtenus().length}/${SUCCES.length}</b></div>
       </div>
       <div class="sous">Génération ${etat.generation} · ${etat.ville}, ${etat.pays}<br>Décès ${cause} à ${etat.age} ans</div>
       <div class="fiche">
@@ -2072,6 +2201,19 @@ function action(parent, label, classe, fn, desactive){
   return b;
 }
 
+/* --- progression de palier dans une carrière spéciale --- */
+function monterRang(C, def){
+  if(C.rang >= def.rangs.length-1) return;
+  const seuils = [1, 3, 6, 10];
+  const requis = seuils[C.rang] || 99;
+  if((C.oeuvres||C.annees||0) >= requis && C.talent >= 30 + C.rang*15 && alea(100) < 55){
+    C.rang++;
+    etat.celebrite = borne(etat.celebrite + 8);
+    ecrire(`${def.ico} Nouveau palier : me voilà <b>${def.rangs[C.rang]}</b> !`.replace(/<\/?b>/g,""), "bon");
+    if(C.rang >= def.rangs.length-1) etat.celebrite = borne(etat.celebrite + 12);
+  }
+}
+
 /* ----- travail : emploi & entreprises ----- */
 
 function feuilleTravail(){
@@ -2126,6 +2268,125 @@ function feuilleTravail(){
         } else ecrire(`Candidature refusée pour le poste de ${e.titre}.`, "mauvais");
         fermerFeuille();
       }, !okDiplome);
+    }
+  }
+
+  /* --- carrières spéciales --- */
+  section("⭐ Carrière spéciale", !!etat.carriere);
+  if(etat.carriere){
+    const C = etat.carriere, def = CARRIERES.find(x => x.cle === C.cle);
+    const suivant = def.rangs[C.rang+1];
+    const c = carte(`<div class="titre">${def.ico} ${def.nom} — ${def.rangs[C.rang]}</div>
+      <div class="detail">${C.annees||0} an${(C.annees||0)>1?"s":""} de carrière${C.cle!=="armee"?` · Talent <b>${C.talent}/100</b>`:` · Solde ${euros(SOLDES_ARMEE[C.rang])}/an`}${C.oeuvres?` · ${C.oeuvres} œuvre(s) publiée(s)`:""}<br>
+      ${suivant ? `Prochain palier : <b>${suivant}</b>` : "Tu es au sommet de ta discipline."}</div>
+      <div class="actions"></div>`);
+
+    if(C.cle === "musique"){
+      action(c, "Enregistrer un album (3 000 €)", "or", () => {
+        if(dejaFait("carr")){ ecrire("Une grosse production par an, le public a besoin de respirer."); fermerFeuille(); return; }
+        etat.argent -= 3000;
+        const succes = alea(100) < 25 + C.talent/2 + etat.celebrite/4;
+        C.oeuvres = (C.oeuvres||0)+1;
+        if(succes){
+          const ventes = Math.round((8000 + C.talent*400) * (1 + etat.celebrite/80));
+          etat.argent += ventes; etat.celebrite = borne(etat.celebrite+10); C.talent = Math.min(100, C.talent+5);
+          ecrire(`🎤 Mon album cartonne : ${euros(ventes)} de ventes et de streaming !`, "argent");
+          monterRang(C, def);
+        } else { etat.celebrite = borne(etat.celebrite+2); C.talent = Math.min(100, C.talent+3);
+          ecrire("🎤 Album sorti, accueil poli. On progresse quand même."); }
+        fermerFeuille();
+      }, etat.argent < 3000);
+      action(c, "Partir en tournée (8 000 €)", "gris", () => {
+        if(dejaFait("carr")){ ecrire("Une seule grande opération par an."); fermerFeuille(); return; }
+        etat.argent -= 8000;
+        const recette = Math.round(etat.celebrite * 260 * (0.6 + C.talent/100));
+        etat.argent += recette; etat.sante = borne(etat.sante-5); etat.celebrite = borne(etat.celebrite+7);
+        ecrire(`🎤 Tournée Moroni–Mamoudzou–Dar es Salam : ${euros(recette)} de recettes. Épuisant, mais quelle ambiance.`, "argent");
+        monterRang(C, def); fermerFeuille();
+      }, etat.argent < 8000);
+    }
+    if(C.cle === "cinema"){
+      action(c, "Passer une audition", "", () => {
+        if(dejaFait("carr")){ ecrire("Les castings, c'est une fois par an dans la région."); fermerFeuille(); return; }
+        if(alea(100) < 30 + C.talent/2 + etat.look/4){
+          const cachet = Math.round((4000 + C.talent*500) * (1 + etat.celebrite/70));
+          etat.argent += cachet; C.talent = Math.min(100, C.talent+6); etat.celebrite = borne(etat.celebrite+8);
+          C.oeuvres = (C.oeuvres||0)+1;
+          ecrire(`🎬 Rôle décroché ! Cachet de ${euros(cachet)}.`, "argent");
+          monterRang(C, def);
+        } else { C.talent = Math.min(100, C.talent+2); ecrire("🎬 Audition ratée. Le réalisateur cherchait « autre chose »."); }
+        fermerFeuille();
+      });
+    }
+    if(C.cle === "sport"){
+      action(c, "Saison de compétition", "", () => {
+        if(dejaFait("carr")){ ecrire("Une saison par an, forcément."); fermerFeuille(); return; }
+        if(alea(100) < 12 + (60-etat.sante)/3){
+          etat.sante = borne(etat.sante-18);
+          ecrire("⚽ Blessure grave en pleine saison. Des mois de rééducation.", "mauvais");
+        } else {
+          const prime = Math.round((3000 + C.talent*450) * (1 + etat.celebrite/90));
+          etat.argent += prime; C.talent = Math.min(100, C.talent+5);
+          etat.celebrite = borne(etat.celebrite+6); etat.sante = borne(etat.sante-3);
+          ecrire(`⚽ Belle saison : ${euros(prime)} de primes et de contrats.`, "argent");
+          monterRang(C, def);
+        }
+        fermerFeuille();
+      });
+      if(etat.age >= 34){
+        action(c, "Prendre ma retraite sportive", "rouge", () => {
+          ecrire(`⚽ Je raccroche les crampons après ${C.annees} ans de carrière. Le corps a parlé.`);
+          etat.carriere = null; fermerFeuille();
+        });
+      }
+    }
+    if(C.cle === "ecriture"){
+      action(c, "Écrire et publier un livre", "", () => {
+        if(dejaFait("carr")){ ecrire("Un livre par an, sinon la plume s'épuise."); fermerFeuille(); return; }
+        C.oeuvres = (C.oeuvres||0)+1;
+        C.talent = Math.min(100, C.talent + 4);
+        if(alea(100) < 25 + C.talent/2 + etat.intel/5){
+          const droits = Math.round((3000 + C.talent*380) * (1 + etat.celebrite/100));
+          etat.argent += droits; etat.celebrite = borne(etat.celebrite+6); etat.intel = borne(etat.intel+2);
+          ecrire(`✍️ Mon livre trouve son public : ${euros(droits)} de droits d'auteur.`, "argent");
+          monterRang(C, def);
+        } else ecrire("✍️ Livre publié, ventes confidentielles. L'écriture est un métier de patience.");
+        fermerFeuille();
+      });
+    }
+    if(C.cle === "influence"){
+      action(c, "Publier toute l'année", "", () => {
+        if(dejaFait("carr")){ ecrire("J'ai déjà donné mon année de contenu."); fermerFeuille(); return; }
+        C.talent = Math.min(100, C.talent+5);
+        if(alea(100) < 35 + C.talent/2 + etat.look/5){
+          const sponsors = Math.round((1500 + C.talent*260) * (1 + etat.celebrite/60));
+          etat.argent += sponsors; etat.celebrite = borne(etat.celebrite+9);
+          ecrire(`📱 Mes contenus explosent : ${euros(sponsors)} de partenariats.`, "argent");
+          monterRang(C, def);
+        } else { etat.bonheur = borne(etat.bonheur-4); ecrire("📱 Une année sans percée. L'algorithme est cruel."); }
+        fermerFeuille();
+      });
+    }
+    if(C.cle !== "sport"){
+      action(c, "Quitter cette carrière", "rouge", () => {
+        ecrire(`Je tourne la page de ma carrière de ${def.nom.toLowerCase()}.`);
+        etat.carriere = null; fermerFeuille();
+      });
+    }
+  } else if(etat.prison <= 0){
+    carte(`<div class="detail">Au-delà du salariat, certaines vies prennent un autre chemin. Une carrière spéciale se mène en parallèle : elle rapporte selon ton talent et ta célébrité, et te fait grimper de palier en palier.</div>`);
+    for(const def of CARRIERES){
+      const okAge = etat.age >= def.ageMin;
+      const manque = Object.keys(def.statMin||{}).filter(k => (etat[k]||0) < def.statMin[k]);
+      const c = carte(`<div class="titre">${def.ico} ${def.nom}</div>
+        <div class="detail">${def.desc}<br>Dès ${def.ageMin} ans${manque.length ? ` · ⚠️ requis : ${Object.keys(def.statMin).map(k=>k+" "+def.statMin[k]+"+").join(", ")}` : ""}</div>
+        <div class="actions"></div>`);
+      action(c, "Se lancer", "", () => {
+        etat.carriere = {cle:def.cle, rang:0, talent: 20 + alea(35), annees:0, oeuvres:0};
+        if(def.cle === "armee"){ etat.emploi = null; etat.carriere.rang = 0; }
+        ecrire(`${def.ico} Je me lance comme ${def.nom.toLowerCase()} : ${def.rangs[0].toLowerCase()}. Tout commence maintenant.`, "bon");
+        fermerFeuille();
+      }, !okAge || manque.length > 0);
     }
   }
 
@@ -2887,6 +3148,40 @@ function feuilleActifs(){
   }
 
   if(etat.age>=18){
+    section("📈 Placements", false);
+    const pf = etat.placements || (etat.placements = {});
+    const totalPl = Object.values(pf).reduce((a,b) => a + (b.montant||0), 0);
+    carte(`<div class="detail">Portefeuille total : <b>${euros(totalPl)}</b>. Les cours évoluent chaque année : investis ce que tu peux laisser dormir.</div>`);
+    for(const def of PLACEMENTS){
+      const pos = pf[def.cle] || {montant:0, investi:0};
+      const pv = pos.montant - pos.investi;
+      const c = carte(`<div class="titre">${def.ico} ${def.nom}</div>
+        <div class="detail">${def.desc}<br>Volatilité ${def.vol} % · tendance +${def.tend} %/an · minimum ${euros(def.min)}
+        ${pos.montant ? `<br>Position : <b>${euros(pos.montant)}</b> · investi ${euros(pos.investi)} · <b style="color:${pv>=0?"var(--accent)":"var(--danger)"}">${pv>=0?"+":""}${euros(pv)}</b>` : ""}</div>
+        <div class="actions"></div>`);
+      for(const m of [def.min, def.min*5, def.min*20]){
+        action(c, "Investir " + euros(m), "gris", () => {
+          etat.argent -= m;
+          pf[def.cle] = {montant: (pos.montant||0) + m, investi: (pos.investi||0) + m};
+          ecrire(`${def.ico} J'ai placé ${euros(m)} en ${def.nom.toLowerCase()}.`, "argent");
+          fermerFeuille();
+        }, etat.argent < m);
+      }
+      if(pos.montant > 0){
+        action(c, "Tout vendre (" + euros(pos.montant) + ")", "or", () => {
+          etat.argent += pos.montant;
+          const gain = pos.montant - pos.investi;
+          if(def.cle === "crypto" && gain > 0){
+            etat.gainCrypto = (etat.gainCrypto||0) + gain;
+            if(etat.gainCrypto >= 100000) debloquer("crypto");
+          }
+          ecrire(`${def.ico} J'ai soldé ma position en ${def.nom.toLowerCase()} : ${euros(pos.montant)} récupérés (${gain>=0?"+":""}${euros(gain)}).`,
+                 gain>=0 ? "argent" : "mauvais");
+          delete pf[def.cle];
+          fermerFeuille();
+        });
+      }
+    }
     section("Acheter — Immobilier", false);
     for(const m of IMMOBILIER){
       if(etat.biens.some(x=>x.nom===m.nom)) continue;
@@ -3262,6 +3557,7 @@ function feuilleVie(){
       if(alea(100) < ch){
         etat.prison = 0; etat.bonheur = borne(etat.bonheur+15);
         etat.karma = borne((etat.karma||60)-5);
+        debloquer("evasion");
         ecrire("🪜 ÉVASION RÉUSSIE ! Par les toits, dans la nuit. Je suis libre.", "bon");
       } else {
         etat.prison += 1 + alea(3); etat.sante = borne(etat.sante-10); etat.bonheur = borne(etat.bonheur-15);
@@ -3355,6 +3651,18 @@ function feuilleVie(){
   for(const [titre, detail, cout, fn] of A){
     const c = carte(`<div class="titre">${titre}</div><div class="detail">${detail}</div><div class="actions"></div>`);
     action(c, "Y aller", "", () => { if(cout) etat.argent -= cout; fn(); fermerFeuille(); }, cout>etat.argent && cout>0);
+  }
+
+  {
+    const obtenus = succesObtenus();
+    section(`🏆 Succès (${obtenus.length}/${SUCCES.length})`, false);
+    carte(`<div class="detail">Les succès se conservent d'une vie à l'autre, même après un nouveau départ. À toi de tous les décrocher.</div>`);
+    for(const su of SUCCES){
+      const ok = obtenus.includes(su.cle);
+      carte(`<div class="titre" style="${ok?"":"opacity:.45"}">${ok ? su.ico : "🔒"} ${su.nom}
+        ${ok ? '<span class="badge b-valide" style="background:var(--accent);color:var(--accent-ink)">Débloqué</span>' : ""}</div>
+        <div class="detail" style="${ok?"":"opacity:.55"}">${su.desc}</div>`);
+    }
   }
 
   if(etat.age>=16){
@@ -3619,6 +3927,7 @@ function feuilleVie(){
         if(alea(100) < chance){
           const g = cr.gain[0] + alea(cr.gain[1]-cr.gain[0]);
           etat.argent += g;
+          if(cr.nom.indexOf("Braquage") === 0) debloquer("braquage");
           ecrire(`${cr.ico} ${cr.nom} : réussi. ${euros(g)} dans la poche, et personne n'a rien vu.`, "argent");
         } else {
           // une chance de fuir

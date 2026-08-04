@@ -44,6 +44,38 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Gérer l'argent de tes filiales 🌍
+
+Chaque filiale à l'étranger a désormais sa **propre trésorerie**. Les
+bénéfices s'y accumulent sur place, et tu décides de tout :
+
+- **Rapatrier des fonds** — le montant que tu veux, avec une **taxe de
+  rapatriement** qui dépend de la corruption du pays (affichée avant de
+  valider) ;
+- **Réinvestir sur place** — sans taxe, ce qui augmente la valeur de la
+  filiale et donc ses bénéfices futurs ;
+- **Injecter depuis le siège** — envoyer des fonds pour développer
+  l'implantation ;
+- **Régler le rapatriement automatique** — 0, 25, 50, 75 ou 100 % des
+  bénéfices remontent chaque année ; à 0 %, tout reste sur place pour
+  financer la croissance locale.
+
+À la cession, la trésorerie locale part avec la filiale.
+
+## Rentes familiales 💵
+
+Tu peux instituer une **rente annuelle** pour n'importe quel proche — femme,
+enfants, frères, sœurs, amis — **y compris pour un nouveau-né**. Elle est
+prélevée automatiquement chaque année, alimente sa fortune personnelle et
+renforce votre lien.
+
+Une section dédiée dans l'onglet Relations récapitule tous les bénéficiaires,
+le montant versé à chacun, le nombre de versements et le **total déjà versé**,
+avec l'engagement annuel total comparé à ta banque (et une alerte si tu ne
+pourras pas tout honorer). Chaque rente peut être **ajustée** ou **révoquée**
+à tout moment — mais une révocation blesse le bénéficiaire, et une année sans
+versement faute de fonds aussi.
+
 ## Tu fixes tes montants toi-même 💶
 
 Plus de boutons figés : partout où il y a de l'argent, un **clavier de saisie**

@@ -1127,6 +1127,7 @@ function charger(){
         if(etat.gainCrypto==null) etat.gainCrypto = 0;
         if(!etat.concurrents) etat.concurrents = [];
         if(!etat.visites) etat.visites = [];
+        if(!etat.rentes) etat.rentes = [];
         if(!etat.animaux) etat.animaux = [];
         for(const k of ["crimes","anneesPrison","divorces","voyages","constructions","polMax","entMax"])
           if(etat[k]==null) etat[k] = 0;
@@ -1165,7 +1166,7 @@ function nouvelleVie(opts){
     entreprises:[], politique:null, royaume:null,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null, auto:false,
     karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
-    carriere:null, placements:{}, gainCrypto:0, concurrents:[], visites:[],
+    carriere:null, placements:{}, gainCrypto:0, concurrents:[], visites:[], rentes:[],
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
@@ -1468,10 +1469,18 @@ function vieillir(){
       f.annees = (f.annees||0)+1;
       const rendement = (pf.eco - 45 + alea(24) - 10) / 100;
       const gain = Math.round(f.invest * rendement * 0.22);
-      caFiliales += gain;
+      f.caisse = (f.caisse||0) + gain;          // les bénéfices restent sur place
       f.valeur = Math.max(0, Math.round((f.valeur||f.invest) * (1 + rendement/2)));
-      if(Math.abs(gain) > 3000)
-        ecrire(`🌍 Filiale de « ${e.nom} » en ${f.pays} : ${gain>=0?"+":""}${euros(gain)} cette année.`, gain>=0?"argent":"mauvais");
+      // seule la part rapatriée remonte au siège
+      const auto = Math.max(0, Math.round((f.caisse||0) * ((f.rapatriement==null?50:f.rapatriement)/100)));
+      if(auto > 0){
+        const taxe = Math.round(auto * (0.05 + (pf.corr||40)/500));
+        f.caisse -= auto;
+        caFiliales += auto - taxe;
+      }
+      if(Math.abs(gain) > 3000 || auto > 3000)
+        ecrire(`🌍 Filiale de « ${e.nom} » en ${f.pays} : ${gain>=0?"+":""}${euros(gain)} de résultat${auto?`, ${euros(auto)} rapatriés`:""} · trésorerie locale ${euros(f.caisse||0)}.`,
+               gain>=0?"argent":"mauvais");
     }
     const ca = Math.max(0, chiffre) + prod + caContrats + Math.max(0, caFiliales) + revParticipations;
     const interets = Math.round((e.dette||0) * ((e.tauxDette||8)/100));
@@ -1603,6 +1612,30 @@ function vieillir(){
 
   // mon personnage gère sa vie tout seul si le pilote auto est activé
   pilotageAuto();
+
+  // rentes versées à la famille
+  if((etat.rentes||[]).length && etat.age >= 18){
+    const survivantes = [];
+    for(const rt of etat.rentes){
+      const b = etat.relations.find(x => x.nom === rt.nom && x.vivant);
+      if(!b) continue;                       // le bénéficiaire n'est plus là
+      if(etat.argent >= rt.montant){
+        etat.argent -= rt.montant;
+        b.argent = (b.argent||0) + rt.montant;
+        b.barre = borne(b.barre + 3);
+        rt.versees = (rt.versees||0) + 1;
+        rt.total = (rt.total||0) + rt.montant;
+        survivantes.push(rt);
+      } else {
+        b.barre = borne(b.barre - 8);
+        ecrire(`⚠️ Rente de ${euros(rt.montant)} à ${rt.nom} non versée : fonds insuffisants. ${b.genre==="F"?"Elle":"Il"} l'a mal pris.`, "mauvais");
+        survivantes.push(rt);
+      }
+    }
+    etat.rentes = survivantes;
+    const total = etat.rentes.reduce((a,x) => a + x.montant, 0);
+    if(total > 0) ecrire(`👪 Rentes familiales versées : ${euros(total)} à ${etat.rentes.length} bénéficiaire(s).`, "info");
+  }
 
   // ma vie sentimentale et familiale avance seule
   vieAmoureuse();
@@ -2329,7 +2362,7 @@ function continuerAvec(h, heritage){
     argent: heritage + (h.argent||0), emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
     entreprises: parent.entreprises || [], politique:null, royaume: parent.royaume,
-    concurrents: parent.concurrents || [], visites: parent.visites || [],
+    concurrents: parent.concurrents || [], visites: parent.visites || [], rentes: [],
     carriere:null, placements:{}, gainCrypto:0,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0, candidats:null, auto: parent.auto||false,
     karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
@@ -3329,15 +3362,65 @@ function feuilleEntreprise(e){
   carte(`<div class="detail">Ouvrir une filiale à l'étranger, c'est toucher un marché entier. Le rendement suit l'économie locale : un pays riche rapporte plus, un pays instable peut coûter cher.
     ${(e.filiales||[]).length ? `<br>Filiales actuelles : <b>${e.filiales.length}</b>` : ""}</div>`);
   for(const f of (e.filiales||[])){
-    const pf = etat.monde[f.pays];
+    const pf = etat.monde[f.pays] || {eco:50, corr:40};
+    const tauxRap = f.rapatriement==null ? 50 : f.rapatriement;
+    const taxeRap = Math.round((0.05 + (pf.corr||40)/500) * 100);
     const c = carte(`<div class="titre">🌍 Filiale — ${f.pays}</div>
-      <div class="detail">Investi ${euros(f.invest)} il y a ${f.annees||0} an(s) · valeur estimée <b>${euros(f.valeur||f.invest)}</b>
-        · économie locale ${pf ? pf.eco : "?"}/100</div>
+      <div class="kpis">
+        <div class="kpi"><span>Trésorerie locale</span><b class="or">${euros(f.caisse||0)}</b></div>
+        <div class="kpi"><span>Valeur de la filiale</span><b>${euros(f.valeur||f.invest)}</b></div>
+        <div class="kpi"><span>Ancienneté</span><b>${f.annees||0} an${(f.annees||0)>1?"s":""}</b></div>
+      </div>
+      <div class="ligne-info"><span>Investissement d'origine</span><b>${euros(f.invest)}</b></div>
+      <div class="ligne-info"><span>Économie locale</span><b>${pf.eco}/100</b></div>
+      <div class="ligne-info"><span>Rapatriement automatique</span><b>${tauxRap} % des bénéfices</b></div>
+      <div class="ligne-info"><span>Taxe de rapatriement</span><b>${taxeRap} % (corruption locale ${pf.corr})</b></div>
+      <div class="detail" style="margin-top:6px">Les bénéfices s'accumulent sur place. Tu choisis combien remonte au siège chaque année — le reste peut être réinvesti localement pour faire grandir la filiale.</div>
       <div class="actions"></div>`);
-    action(c, `Céder la filiale (${euros(Math.round((f.valeur||f.invest)*0.85))})`, "gris", () => {
-      e.caisse += Math.round((f.valeur||f.invest)*0.85);
+    action(c, "Rapatrier des fonds", "or", () => {
+      const dispo = Math.max(0, f.caisse||0);
+      if(dispo < 500){ ecrire(`La trésorerie de la filiale de ${f.pays} est vide.`, "mauvais"); return; }
+      demanderMontant("Rapatrier depuis " + f.pays,
+        `Trésorerie locale : <b>${euros(dispo)}</b><br>Taxe de rapatriement : <b>${taxeRap} %</b> (liée à la corruption locale).<br>
+         Le net arrivera dans la trésorerie de « ${e.nom} ».`,
+        dispo, dispo,
+        m => {
+          const taxe = Math.round(m * taxeRap/100);
+          f.caisse -= m; e.caisse += (m - taxe);
+          ecrire(`🌍 J'ai rapatrié ${euros(m)} depuis ${f.pays} : ${euros(m-taxe)} nets après ${euros(taxe)} de taxe.`, "argent");
+        }, "Rapatrier");
+    });
+    action(c, "Réinvestir sur place", "", () => {
+      const dispo = Math.max(0, f.caisse||0);
+      if(dispo < 500){ ecrire("Rien à réinvestir sur place."); return; }
+      demanderMontant("Réinvestir en " + f.pays,
+        `Trésorerie locale : <b>${euros(dispo)}</b><br>Chaque euro réinvesti augmente la valeur de la filiale et donc ses bénéfices futurs. Aucune taxe.`,
+        dispo, Math.round(dispo*0.5),
+        m => {
+          f.caisse -= m; f.valeur = Math.round((f.valeur||f.invest) + m*1.1); f.invest += Math.round(m*0.7);
+          ecrire(`🌍 J'ai réinvesti ${euros(m)} dans la filiale de ${f.pays} : elle vaut désormais ${euros(f.valeur)}.`, "bon");
+        }, "Réinvestir");
+    });
+    action(c, "Injecter depuis le siège", "gris", () => {
+      demanderMontant("Financer la filiale de " + f.pays,
+        `Trésorerie de « ${e.nom} » : <b>${euros(e.caisse||0)}</b><br>Envoyer des fonds pour développer l'implantation.`,
+        Math.max(0, e.caisse||0), Math.min(e.caisse||0, 50000),
+        m => {
+          e.caisse -= m; f.caisse = (f.caisse||0) + m;
+          ecrire(`🌍 J'ai envoyé ${euros(m)} à la filiale de ${f.pays}.`, "argent");
+        }, "Envoyer");
+    }, (e.caisse||0) <= 0);
+    action(c, `Rapatriement : ${tauxRap} %`, "gris", () => {
+      const ordre = [0, 25, 50, 75, 100];
+      const suivant = ordre[(ordre.indexOf(tauxRap) + 1) % ordre.length];
+      f.rapatriement = suivant;
+      ecrire(`🌍 Filiale de ${f.pays} : ${suivant} % des bénéfices seront rapatriés chaque année${suivant===0?" (tout reste sur place)":""}.`);
+      rafraichirFeuille();
+    });
+    action(c, `Céder (${euros(Math.round((f.valeur||f.invest)*0.85) + Math.max(0,f.caisse||0))})`, "rouge", () => {
+      e.caisse += Math.round((f.valeur||f.invest)*0.85) + Math.max(0, f.caisse||0);
       e.filiales = e.filiales.filter(x => x !== f);
-      ecrire(`🌍 J'ai cédé la filiale de « ${e.nom} » en ${f.pays}.`, "argent");
+      ecrire(`🌍 J'ai cédé la filiale de « ${e.nom} » en ${f.pays}, trésorerie locale comprise.`, "argent");
       rafraichirFeuille();
     });
   }
@@ -4398,6 +4481,34 @@ function feuilleRelations(){
       c.insertAdjacentHTML("beforeend", `<div class="detail" style="color:var(--accent)">Plus riche que moi. La relève est assurée.</div>`);
   }
 
+  if(etat.age >= 18){
+    const rentes = etat.rentes || [];
+    const totalR = rentes.reduce((a,x) => a + x.montant, 0);
+    section(`💵 Rentes versées à ma famille (${rentes.length})`, rentes.length > 0);
+    carte(`<div class="detail">Tu peux verser une <b>rente annuelle</b> à n'importe quel proche — y compris à un enfant dès sa naissance. Elle est prélevée automatiquement chaque année, alimente sa fortune personnelle et renforce votre lien. Tu peux l'ajuster ou la révoquer quand tu veux.
+      ${totalR ? `<br><br>Engagement annuel total : <b>${euros(totalR)}</b> · ta banque : ${euros(etat.argent)}${totalR > etat.argent ? ' · <b style="color:var(--danger)">⚠️ tu ne pourras pas tout honorer</b>' : ""}` : ""}</div>`);
+    for(const rt of rentes){
+      const b = etat.relations.find(x => x.nom === rt.nom && x.vivant);
+      const c = carte(`<div class="titre">${rt.nom}</div>
+        <div class="detail">${b ? LIBELLE_REL[b.type] + " · " + b.age + " ans" : "bénéficiaire disparu"} ·
+          <b>${euros(rt.montant)}/an</b> · versée ${rt.versees||0} fois · total déjà versé <b>${euros(rt.total||0)}</b></div>
+        <div class="actions"></div>`);
+      action(c, "Ajuster le montant", "", () => {
+        demanderMontant("Rente de " + rt.nom,
+          `Montant actuel : <b>${euros(rt.montant)}/an</b><br>Ta banque : <b>${euros(etat.argent)}</b> · engagement annuel total : ${euros(totalR)}`,
+          Math.max(500000, etat.argent), rt.montant,
+          m => { rt.montant = m; ecrire(`💵 Rente de ${rt.nom} ajustée à ${euros(m)}/an.`, "argent"); },
+          "Fixer la rente");
+      });
+      action(c, "Révoquer", "rouge", () => {
+        etat.rentes = etat.rentes.filter(x => x !== rt);
+        if(b) b.barre = borne(b.barre - 15);
+        ecrire(`💵 J'ai révoqué la rente de ${rt.nom}. ${b ? (b.genre==="F"?"Elle":"Il")+" ne comprend pas." : ""}`, "mauvais");
+        rafraichirFeuille();
+      });
+    }
+  }
+
   section("Ma famille et mes proches");
   if(etat.age>=18 && !etat.relations.some(r=>r.vivant && (r.type==="partenaire"||r.type==="conjoint"))){
     const c = carte(`<div class="titre">💘 Célibataire</div><div class="detail">Envie de rencontrer quelqu'un ?</div><div class="actions"></div>`);
@@ -4505,6 +4616,22 @@ function feuilleRelations(){
       r.barre = borne(r.barre+12); etat.bonheur = borne(etat.bonheur+4);
       ecrire(`Bon moment passé avec ${r.nom}.`, "bon"); fermerFeuille();
     });
+    if(etat.age >= 18 && !(etat.rentes||[]).some(x => x.nom === r.nom)){
+      action(c, "Lui verser une rente", "or", () => {
+        demanderMontant("Rente annuelle pour " + r.nom,
+          `${LIBELLE_REL[r.type]} · ${r.age} an${r.age>1?"s":""}${r.age < 1 ? " — tu peux commencer dès la naissance" : ""}<br>
+           Ce montant lui sera versé <b>chaque année</b>, automatiquement, tant que tu ne le révoques pas.<br>
+           Ta banque : <b>${euros(etat.argent)}</b>`,
+          Math.max(200000, etat.argent), Math.min(etat.argent, 3000),
+          m => {
+            etat.rentes.push({nom:r.nom, montant:m, depuis:etat.age, versees:0, total:0});
+            r.barre = borne(r.barre + 12);
+            etat.karma = borne((etat.karma||60) + 3);
+            ecrire(`💵 J'ai institué une rente de ${euros(m)}/an pour ${r.nom}${r.age < 3 ? ", dès son plus jeune âge" : ""}. ${r.genre==="F"?"Elle":"Il"} en vivra chaque année.`, "argent");
+          },
+          "Instituer la rente");
+      }, etat.argent <= 0);
+    }
     action(c, "Offrir de l'argent", "gris", () => {
       demanderMontant("Offrir à " + r.nom,
         `${LIBELLE_REL[r.type]} · relation actuelle ${r.barre}/100<br>

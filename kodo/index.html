@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kodo — l'école qui se joue</title>
+<meta name="description" content="Dirige ta startup tech. Pour signer un contrat, il faut la compétence : leçon courte, exercice corrigé, capacité débloquée. Apprends le code, les serveurs, les API et l'IA en jouant.">
+<meta name="theme-color" content="#0B1020">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="kodo.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ══ BARRE DE RESSOURCES ══ -->
+  <header class="hud" id="hud">
+    <div class="hud-marque">KODO</div>
+    <div class="hud-stats" id="hudStats"></div>
+  </header>
+
+  <!-- ══ ÉCRANS ══ -->
+  <main id="ecran"></main>
+
+  <!-- ══ NAVIGATION ══ -->
+  <nav class="nav" id="nav">
+    <button data-vue="bureau"   class="on"><span class="ico">▚</span>Bureau</button>
+    <button data-vue="ecole"><span class="ico">✦</span>École</button>
+    <button data-vue="boutique"><span class="ico">⬢</span>Boutique</button>
+    <button data-vue="profil"><span class="ico">◈</span>Profil</button>
+  </nav>
+
+</div>
+
+<!-- ══ PANNEAU PLEIN ÉCRAN (leçon / exercice) ══ -->
+<div class="panneau" id="panneau" hidden>
+  <div class="panneau-tete">
+    <button id="panneauFermer" aria-label="Fermer">✕</button>
+    <div id="panneauTitre"></div>
+  </div>
+  <div class="panneau-corps" id="panneauCorps"></div>
+  <div class="panneau-pied" id="panneauPied"></div>
+</div>
+
+<!-- ══ MESSAGES ══ -->
+<div id="toasts"></div>
+
+<!-- ══ ÉCRAN D'ACCUEIL ══ -->
+<div class="intro" id="intro">
+  <div class="intro-boite">
+    <div class="intro-logo">KODO</div>
+    <p class="intro-sous">L'école qui se joue</p>
+    <p class="intro-txt">Tu diriges une startup tech, depuis ta chambre. Pour signer un contrat, il te faut la compétence — alors tu l'apprends pour de vrai : une leçon courte, un exercice corrigé, et la capacité est débloquée.</p>
+    <p class="intro-txt intro-txt-2">Code · Web · Serveurs · API &amp; IA</p>
+    <button id="btnJouer">Commencer</button>
+    <button id="btnReprendre" hidden>Reprendre la partie</button>
+  </div>
+</div>
+
+<script src="cours-bases.js"></script>
+<script src="cours-tech.js"></script>
+<script src="kodo.js"></script>
+</body>
+</html>

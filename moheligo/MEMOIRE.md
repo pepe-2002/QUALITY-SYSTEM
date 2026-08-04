@@ -2,7 +2,7 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **03/08/2026** (messagerie privée « Nous »).
+> Dernière mise à jour : **04/08/2026** (jeu-école « Kodo »).
 
 ---
 
@@ -152,8 +152,27 @@ Donc : aucun partage de code, d'adresse, de projet Supabase ni de service
 worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
+## 5 ter. « Kodo » — l'école qui se joue (04/08/2026), HORS MoheliGo
+
+Le patron voulait apprendre la technologie (programmation, serveurs, API, IA)
+**vite et sans s'ennuyer**, et il aime les jeux de gestion. D'où : un jeu de
+gestion de startup où la seule façon de débloquer un contrat est d'apprendre
+pour de vrai la compétence qu'il exige. Dossier `kodo/` à la racine, autonome,
+hors ligne, aucune dépendance, aucune donnée qui sort du téléphone.
+Contenu : 4 branches, 12 leçons, 37 exercices corrigés automatiquement (dont
+des exercices de code réellement exécutés contre des cas de test).
+Tout est expliqué dans `kodo/README.md`, y compris comment ajouter une leçon.
+**Aucun lien avec MoheliGo** — même règle que pour « Nous ».
+
 ## 6. Journal des sessions
 
+- **04/08/2026** — Hors marketing : création de « Kodo » (voir 5 ter). Deux
+  idées écartées en cours de route à la demande du patron : un mini-jeu de
+  vedette (« je n'ai pas de vedettes ») et un studio d'affiches. Ce qu'il
+  voulait vraiment : apprendre la tech en jouant à un jeu de gestion.
+  Parcours complet testé au navigateur (29 vérifications : leçon, les trois
+  types d'exercices, contrat signé → développé → livré, fin de journée,
+  sauvegarde et reprise). **Rien à faire côté MoheliGo.**
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

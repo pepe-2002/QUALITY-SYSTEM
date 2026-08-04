@@ -1,0 +1,16 @@
+{
+  "name": "Kodo — l'école qui se joue",
+  "short_name": "Kodo",
+  "description": "Dirige ta startup tech et apprends pour de vrai : code, web, serveurs, API et IA.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B1020",
+  "theme_color": "#0B1020",
+  "lang": "fr",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -2,7 +2,7 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **03/08/2026** (messagerie privée « Nous »).
+> Dernière mise à jour : **04/08/2026** (MoheliGo Studio IA v1.0).
 
 ---
 
@@ -104,6 +104,44 @@ comoriennes → versions 720p ~3-5 Mo.
   ligne ; logo Facebook OFFICIEL (f blanc sur #1877F2), pas l'emoji livre.
 - GitHub raw (github.com/google/fonts) est bloqué par la session — passer par
   fonts.googleapis.com/css2.
+
+## 3 bis. MoheliGo Studio IA (04/08/2026) — `moheligo/studio/`
+
+Le patron a commandé un **studio IA privé à avatars réutilisables** (cahier des
+charges v1.0). Principe qu'il a lui-même posé : une troupe permanente de
+personnages plutôt qu'un nouveau visage à chaque pub → identité visuelle
+reconnaissable.
+
+**Ce qui existe et tourne :**
+- `bible/` — 26 avatars (identité anglaise figée + seed = cohérence du visage),
+  14 décors, 8 caméras, 16 actions, 8 expressions, casting vocal, charte.
+- `moteur/` — analyse d'un brief en français → scénario → prompts verrouillés →
+  voix edge-tts → SRT → animatique → exports multi-formats + versions légères.
+- `studio.py` — CLI : `casting`, `brief`, `produire`, `generer`, `monter`, `lister`.
+- Démo produite : `projets/demo-hoani-30s/` (l'exemple exact du cahier des charges,
+  10 plans, 3 formats).
+
+**Ce qui manque et ne peut pas être contourné :** aucun modèle de génération de
+visages photoréalistes ne tourne dans la session. Cette brique s'achète (fal.ai,
+Replicate, Runway, HeyGen). Les adaptateurs sont écrits dans
+`moteur/moteurs_video.py` : dès qu'une clé est posée en variable d'environnement,
+`studio.py generer` produit les rushes et `studio.py monter` remonte le film.
+Sans clé, le studio produit une **animatique** (storyboard animé avec le vrai son)
+— c'est l'étape de validation avant de payer la génération.
+
+**Décisions à faire remonter au patron :** (1) souscrire à un moteur — de l'ordre de
+5 à 10 € par pub de 30 s ; (2) enregistrer une banque de voix **shikomori humaines**
+(aucune synthèse shikomori n'existe, on approxime en swahili : bon pour une maquette,
+pas pour diffuser) ; (3) trouver de vraies ambiances sonores libres de droits.
+
+**Acquis techniques de la session :**
+- `edge-tts` veut `--rate=-6%` **collé** (sinon argparse prend `-6%` pour une option).
+- Conteneur neuf = pas de ffmpeg : `pip install imageio-ffmpeg` puis copier le binaire
+  dans `/usr/local/bin/ffmpeg`. Attention, **pas de ffprobe** dans ce paquet → mesurer
+  les durées en lisant la sortie de `ffmpeg -i`.
+- `zoompan` coûte plus d'une minute par plan en 1080p : remplacé par un **travelling
+  par recadrage** (`crop` animé sur une image composée 8 % plus grande) → quasi gratuit.
+  Corollaire : composer tout le texte dans une **zone sûre** de 4 % sur chaque bord.
 
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 

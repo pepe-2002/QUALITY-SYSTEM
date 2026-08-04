@@ -1,0 +1,71 @@
+{
+  "_doc": "Casting vocal du studio. Le moteur de synthèse est edge-tts (validé par le patron : voix Henri retenue le 02/08/2026, Piper abandonné). Le stock de voix françaises est limité (2 masculines, 2 féminines + 1 voix enfant) : on obtient des timbres distincts en jouant sur le DÉBIT (rate) et la HAUTEUR (pitch). Le couple (voix, rate, pitch) est l'empreinte vocale d'un avatar — elle est verrouillée comme son visage.",
+
+  "moteur": {
+    "outil": "edge-tts",
+    "appel": "SSL_CERT_FILE=/root/.ccr/ca-bundle.crt edge-tts --proxy \"$HTTPS_PROXY\" --voice <voix> --rate=<r> --pitch=<p> --text <texte> --write-media out.mp3",
+    "pieges": [
+      "toujours rediriger </dev/null dans une boucle shell, sinon edge-tts avale stdin",
+      "la sortie est à environ -22 dB : remonter de +5 dB au montage",
+      "le proxy et le CA bundle sont obligatoires dans cet environnement"
+    ]
+  },
+
+  "empreintes": {
+    "_doc": "avatar_id -> réglage. 'rate' en % (négatif = plus lent), 'pitch' en Hz.",
+    "AVA-001": {"rate": "-6%",  "pitch": "+0Hz",  "note": "Amina : posée, chaleureuse"},
+    "AVA-002": {"rate": "-4%",  "pitch": "+0Hz",  "note": "Nassim : rythme vif, assuré"},
+    "AVA-003": {"rate": "-2%",  "pitch": "-8Hz",  "note": "Toiwilou : plus grave, traînant"},
+    "AVA-004": {"rate": "-10%", "pitch": "-6Hz",  "note": "Saïd : lent, pondéré, père"},
+    "AVA-005": {"rate": "-6%",  "pitch": "+6Hz",  "note": "Hadidja : douce, un peu haute"},
+    "AVA-006": {"rate": "+4%",  "pitch": "+12Hz", "note": "Anfane : jeune, rapide"},
+    "AVA-007": {"rate": "+6%",  "pitch": "+14Hz", "note": "Chamsia : pétillante, réseaux"},
+    "AVA-008": {"rate": "-2%",  "pitch": "+4Hz",  "note": "Camille : française métropolitaine"},
+    "AVA-009": {"rate": "-8%",  "pitch": "-10Hz", "note": "Lukas : grave, accent posé"},
+    "AVA-010": {"rate": "-4%",  "pitch": "-6Hz",  "note": "Kwame : chaud, ample"},
+    "AVA-011": {"rate": "+2%",  "pitch": "+8Hz",  "note": "Aisha : énergique"},
+    "AVA-012": {"rate": "-14%", "pitch": "-12Hz", "note": "Commandant Baco : très lent et grave, autorité"},
+    "AVA-013": {"rate": "+2%",  "pitch": "+2Hz",  "note": "Momo : enjoué"},
+    "AVA-014": {"rate": "-6%",  "pitch": "+2Hz",  "note": "Fatima : accueil, articulée"},
+    "AVA-015": {"rate": "-10%", "pitch": "-4Hz",  "note": "Youssouf : hôtelier, calme"},
+    "AVA-016": {"rate": "+0%",  "pitch": "+10Hz", "note": "Moinaecha : forte, expressive"},
+    "AVA-017": {"rate": "+4%",  "pitch": "-2Hz",  "note": "Ibrahim : pressé"},
+    "AVA-018": {"rate": "-4%",  "pitch": "+2Hz",  "note": "Nadjat : guide, pédagogue"},
+    "AVA-019": {"rate": "-6%",  "pitch": "-8Hz",  "note": "Ali : marin, économe en mots"},
+    "AVA-020": {"rate": "-2%",  "pitch": "+4Hz",  "note": "Zainaba : service client, claire"},
+    "AVA-021": {"rate": "-2%",  "pitch": "-2Hz",  "note": "Abdou : quai, efficace"},
+    "AVA-022": {"rate": "-16%", "pitch": "+6Hz",  "note": "Farida : âgée, lente, tendre"},
+    "AVA-023": {"rate": "+2%",  "pitch": "-6Hz",  "note": "Djoumoi : chauffeur, jovial"},
+    "AVA-024": {"rate": "-2%",  "pitch": "+0Hz",  "note": "Roukia : cadre, nette"},
+    "AVA-025": {"interdit": true, "note": "mineur — aucune voix de synthèse"},
+    "AVA-026": {"interdit": true, "note": "mineur — aucune voix de synthèse"}
+  },
+
+  "narrateur": {
+    "_doc": "Voix off de marque (celle des pubs v1 à v5). À ne pas confondre avec les personnages.",
+    "fr": {"voix": "fr-FR-HenriNeural", "rate": "-8%", "pitch": "+0Hz", "statut": "VALIDÉE par le patron le 02/08/2026"},
+    "fr_feminin": {"voix": "fr-FR-DeniseNeural", "rate": "-6%", "pitch": "+0Hz"},
+    "en": {"voix": "en-US-GuyNeural", "rate": "-6%"},
+    "ar": {"voix": "ar-SA-HamedNeural", "rate": "-8%"}
+  },
+
+  "langues": {
+    "fr": {"nom": "Français", "statut": "complet", "voix_dispo": ["fr-FR-HenriNeural", "fr-FR-RemyMultilingualNeural", "fr-FR-DeniseNeural", "fr-FR-VivienneMultilingualNeural"]},
+    "en": {"nom": "Anglais", "statut": "complet", "voix_dispo": ["en-US-GuyNeural", "en-US-ChristopherNeural", "en-US-JennyNeural", "en-US-AriaNeural", "en-GB-SoniaNeural", "en-KE-AsiliaNeural"]},
+    "ar": {"nom": "Arabe", "statut": "complet", "voix_dispo": ["ar-SA-HamedNeural", "ar-EG-ShakirNeural", "ar-EG-SalmaNeural", "ar-SA-ZariyahNeural"]},
+    "shikomori": {
+      "nom": "Shikomori (shimwali / shingazidja)",
+      "statut": "APPROXIMATION — à faire valider par un locuteur",
+      "solution_actuelle": "voix swahili (sw-KE-RafikiNeural, sw-KE-ZuriNeural, sw-TZ-DaudiNeural, sw-TZ-RehemaNeural). Le swahili est la langue la plus proche disponible : la prononciation des voyelles et le rythme passent, mais ce n'est PAS du shikomori natif.",
+      "regle": "Ne JAMAIS diffuser une pub en 'shikomori' synthétique sans écoute préalable par un locuteur. Le studio génère la piste comme MAQUETTE de calage ; la version diffusée doit être enregistrée par une voix humaine.",
+      "recommandation": "enregistrer une banque de voix humaines shikomori (les 20 phrases de marque) une bonne fois — c'est peu de travail et ça règle le problème définitivement"
+    }
+  },
+
+  "sous_titres": {
+    "format": "SRT + incrustation optionnelle",
+    "regle_lisibilite": "42 caractères max par ligne, 2 lignes max, 1,2 s minimum à l'écran",
+    "style_incruste": "police grasse blanche, contour noir 4px, bas de cadre à 18% de la hauteur en 9:16 (au-dessus des boutons TikTok/Reels)",
+    "par_defaut": "TOUJOURS des sous-titres : la majorité des vues Facebook/TikTok se font sans le son"
+  }
+}

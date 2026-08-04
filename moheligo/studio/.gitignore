@@ -1,0 +1,11 @@
+# fichiers intermédiaires de rendu (regénérés par studio.py produire)
+projets/*/travail/
+*.brut.mp3
+
+# rushes reçus du moteur vidéo : trop lourds pour le dépôt, régénérables
+projets/*/rushes/
+
+# clés d'API : jamais dans le dépôt, uniquement en variables d'environnement
+.env
+__pycache__/
+*.pyc

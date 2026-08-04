@@ -1,0 +1,115 @@
+{
+  "_doc": "Grammaire du studio : caméras, actions (animations), expressions, ambiances sonores et musiques. Ces briques sont combinées par le moteur pour écrire un plan.",
+
+  "cameras": [
+    {
+      "id": "drone",
+      "nom": "Drone",
+      "prompt": "aerial drone shot, smooth forward push, 40 metres above, slight downward tilt, cinematic",
+      "duree_conseillee": [4, 8],
+      "usage": "ouverture, géographie, spectacle"
+    },
+    {
+      "id": "cinema",
+      "nom": "Plan cinématographique",
+      "prompt": "cinematic medium shot, 35mm lens, shallow depth of field, slow lateral dolly, golden natural light",
+      "duree_conseillee": [3, 6],
+      "usage": "dialogue, émotion, plan de référence"
+    },
+    {
+      "id": "selfie",
+      "nom": "Selfie",
+      "prompt": "selfie point of view, arm's length front camera, slight fisheye, handheld, subject looking into the lens",
+      "duree_conseillee": [2, 5],
+      "usage": "réseaux sociaux, TikTok, proximité"
+    },
+    {
+      "id": "fixe",
+      "nom": "Caméra fixe",
+      "prompt": "static locked-off shot on a tripod, eye level, balanced composition, no camera movement",
+      "duree_conseillee": [3, 6],
+      "usage": "dialogue posé, témoignage, démonstration d'écran"
+    },
+    {
+      "id": "aerien",
+      "nom": "Vue aérienne",
+      "prompt": "high altitude aerial view looking straight down, the boat wake drawing a white line on deep blue water",
+      "duree_conseillee": [3, 6],
+      "usage": "carte, itinéraire, transition entre les îles"
+    },
+    {
+      "id": "ralenti",
+      "nom": "Ralenti",
+      "prompt": "slow motion 120fps, water droplets suspended in the air, hair and fabric moving slowly",
+      "duree_conseillee": [2, 5],
+      "usage": "émotion forte, retrouvailles, éclaboussures"
+    },
+    {
+      "id": "timelapse",
+      "nom": "Timelapse",
+      "prompt": "timelapse, clouds racing across the sky, changing light, static frame",
+      "duree_conseillee": [2, 4],
+      "usage": "passage du temps, lever/coucher de soleil"
+    },
+    {
+      "id": "gros-plan",
+      "nom": "Gros plan",
+      "prompt": "close-up shot, 85mm lens, face filling the frame or hands on a phone screen, creamy bokeh",
+      "duree_conseillee": [2, 4],
+      "usage": "écran du téléphone, billet QR, regard"
+    }
+  ],
+
+  "actions": [
+    {"id": "marcher", "nom": "marcher", "prompt": "walking at a natural pace"},
+    {"id": "courir", "nom": "courir", "prompt": "running, light and joyful, not panicked"},
+    {"id": "parler", "nom": "parler", "prompt": "talking to the other person, natural lip movement and gestures"},
+    {"id": "sourire", "nom": "sourire", "prompt": "smiling warmly, eyes crinkling"},
+    {"id": "rire", "nom": "rire", "prompt": "laughing out loud, head slightly back"},
+    {"id": "serrer-main", "nom": "se serrer la main", "prompt": "shaking hands firmly, both looking at each other"},
+    {"id": "telephone", "nom": "utiliser un téléphone", "prompt": "holding a smartphone, thumb scrolling, eyes on the screen"},
+    {"id": "montrer-app", "nom": "montrer l'application", "prompt": "turning the smartphone screen towards the other person and pointing at it, the screen clearly visible",
+      "note": "l'écran de l'app est incrusté au montage à partir d'une capture réelle de moheligo.com — jamais inventé par le moteur"},
+    {"id": "monter-bord", "nom": "monter à bord d'une vedette", "prompt": "stepping onto a moored speedboat, one hand held by a crew member, bag on the shoulder"},
+    {"id": "selfie", "nom": "prendre un selfie", "prompt": "taking a selfie with an outstretched arm, leaning together"},
+    {"id": "saluer", "nom": "saluer", "prompt": "waving hello or goodbye with a raised hand"},
+    {"id": "embrasser-famille", "nom": "retrouvailles", "prompt": "hugging a family member on arrival, emotional reunion"},
+    {"id": "scanner-billet", "nom": "scanner le billet", "prompt": "presenting a phone QR ticket to a handheld scanner, agent nodding"},
+    {"id": "porter-bagage", "nom": "porter un bagage", "prompt": "carrying a travel bag or a woven basket"},
+    {"id": "regarder-mer", "nom": "regarder la mer", "prompt": "looking out at the sea, wind in the clothes, contemplative"},
+    {"id": "payer-mobile", "nom": "payer au mobile", "prompt": "confirming a mobile money payment on a phone, small satisfied nod"}
+  ],
+
+  "expressions": [
+    {"id": "heureux", "nom": "heureux", "prompt": "happy, genuine warm smile, relaxed eyes"},
+    {"id": "triste", "nom": "triste", "prompt": "sad, lowered gaze, downturned mouth, subdued"},
+    {"id": "etonne", "nom": "étonné", "prompt": "surprised, raised eyebrows, slightly open mouth, wide eyes"},
+    {"id": "inquiet", "nom": "inquiet", "prompt": "worried, furrowed brow, tense jaw, glancing aside"},
+    {"id": "en_colere", "nom": "en colère", "prompt": "angry, hard stare, tight lips, tense shoulders"},
+    {"id": "detendu", "nom": "détendu", "prompt": "relaxed, easy posture, half smile, calm breathing"},
+    {"id": "enthousiaste", "nom": "enthousiaste", "prompt": "enthusiastic, bright eyes, animated gestures, leaning forward"},
+    {"id": "serieux", "nom": "sérieux", "prompt": "serious, steady gaze, composed face, professional"}
+  ],
+
+  "ambiances": [
+    {"id": "port", "nom": "ambiance du port", "desc": "clapotis contre le quai, moteurs hors-bord au ralenti, voix lointaines, mouettes"},
+    {"id": "mer", "nom": "bruit de la mer", "desc": "coque fendant l'eau, vent, embruns"},
+    {"id": "plage", "nom": "plage", "desc": "vagues douces, palmes dans le vent"},
+    {"id": "plage_nuit", "nom": "plage de nuit", "desc": "ressac lent, insectes, silence"},
+    {"id": "vedette", "nom": "intérieur de vedette", "desc": "moteur régulier, coque qui tape, conversations feutrées"},
+    {"id": "marche", "nom": "marché", "desc": "voix, négociations, cageots"},
+    {"id": "restaurant", "nom": "restaurant", "desc": "couverts, conversations, mer en fond"},
+    {"id": "route", "nom": "route", "desc": "moteur de minibus, klaxon lointain"},
+    {"id": "nature", "nom": "nature", "desc": "oiseaux, feuillage, vent"},
+    {"id": "interieur_calme", "nom": "intérieur calme", "desc": "ventilateur, clavier, rue étouffée"},
+    {"id": "exterieur_calme", "nom": "extérieur calme", "desc": "vent léger, voix éparses"}
+  ],
+
+  "_regle_audio_ambiance": "AUCUNE nappe sonore synthétique (bruit filtré). Retour explicite du patron : ça s'entend comme un bug. Soit un vrai enregistrement libre de droits placé dans studio/audio/, soit le silence propre sous la voix off.",
+
+  "musiques": [
+    {"id": "aucune", "nom": "Aucune (voix seule)", "desc": "défaut : voix off nette sur silence propre — le patron préfère ça à une mauvaise musique"},
+    {"id": "locale", "nom": "Musique comorienne libre de droits", "desc": "à déposer dans studio/audio/musiques/ avec sa licence dans CREDITS.md ; idéal : gabusi, twarab acoustique"},
+    {"id": "cinematique", "nom": "Nappe cinématique libre de droits", "desc": "à déposer dans studio/audio/musiques/ ; utiliser -18 LUFS sous la voix"}
+  ]
+}

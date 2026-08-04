@@ -1,0 +1,155 @@
+{
+  "projet": "demo-hoani-30s",
+  "plans": [
+    {
+      "plan": 1,
+      "role": "accroche",
+      "duree": 3.3,
+      "seed": 210001,
+      "seeds_references": [
+        210001
+      ],
+      "prompt": "small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. aerial drone shot, smooth forward push, 40 metres above, slight downward tilt, cinematic. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 2,
+      "role": "situation",
+      "duree": 2.8,
+      "seed": 110324,
+      "seeds_references": [
+        110324,
+        110227,
+        210001
+      ],
+      "prompt": "Comorian man, 24 years old, dark brown skin, round friendly face, short dreadlocks tied back, light beard, stocky build, 1m72, gap between front teeth visible when laughing, wearing orange football jersey, black shorts, sandals, short dreadlocks tied back, talking to the other person, natural lip movement and gestures, relaxed, easy posture, half smile, calm breathing AND Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, smiling warmly, eyes crinkling, relaxed, easy posture, half smile, calm breathing. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. cinematic medium shot, 35mm lens, shallow depth of field, slow lateral dolly, golden natural light. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 3,
+      "role": "objection",
+      "duree": 2.8,
+      "seed": 110324,
+      "seeds_references": [
+        110324,
+        110227,
+        210001
+      ],
+      "prompt": "Comorian man, 24 years old, dark brown skin, round friendly face, short dreadlocks tied back, light beard, stocky build, 1m72, gap between front teeth visible when laughing, wearing orange football jersey, black shorts, sandals, short dreadlocks tied back, talking to the other person, natural lip movement and gestures, worried, furrowed brow, tense jaw, glancing aside AND Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, smiling warmly, eyes crinkling, relaxed, easy posture, half smile, calm breathing. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. cinematic medium shot, 35mm lens, shallow depth of field, slow lateral dolly, golden natural light. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 4,
+      "role": "solution",
+      "duree": 2.8,
+      "seed": 110227,
+      "seeds_references": [
+        110227,
+        110324,
+        210001
+      ],
+      "prompt": "Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, turning the smartphone screen towards the other person and pointing at it, the screen clearly visible, enthusiastic, bright eyes, animated gestures, leaning forward AND Comorian man, 24 years old, dark brown skin, round friendly face, short dreadlocks tied back, light beard, stocky build, 1m72, gap between front teeth visible when laughing, wearing orange football jersey, black shorts, sandals, short dreadlocks tied back, smiling warmly, eyes crinkling, surprised, raised eyebrows, slightly open mouth, wide eyes. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. cinematic medium shot, 35mm lens, shallow depth of field, slow lateral dolly, golden natural light. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 5,
+      "role": "demonstration",
+      "duree": 3.3,
+      "seed": 110227,
+      "seeds_references": [
+        110227,
+        210001
+      ],
+      "prompt": "Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, holding a smartphone, thumb scrolling, eyes on the screen, serious, steady gaze, composed face, professional. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. close-up shot, 85mm lens, face filling the frame or hands on a phone screen, creamy bokeh. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": "app:recherche",
+      "note": "L'écran de l'application n'est PAS généré par le moteur : filmer l'app réelle (moheligo.com) puis incruster l'écran dans le téléphone au montage. Procédé documenté dans MEMOIRE.md (Playwright, viewport 540x960)."
+    },
+    {
+      "plan": 6,
+      "role": "confirmation",
+      "duree": 2.8,
+      "seed": 110227,
+      "seeds_references": [
+        110227,
+        210001
+      ],
+      "prompt": "Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, confirming a mobile money payment on a phone, small satisfied nod, happy, genuine warm smile, relaxed eyes. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. close-up shot, 85mm lens, face filling the frame or hands on a phone screen, creamy bokeh. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": "app:billet-qr",
+      "note": "L'écran de l'application n'est PAS généré par le moteur : filmer l'app réelle (moheligo.com) puis incruster l'écran dans le téléphone au montage. Procédé documenté dans MEMOIRE.md (Playwright, viewport 540x960)."
+    },
+    {
+      "plan": 7,
+      "role": "adhesion",
+      "duree": 2.8,
+      "seed": 110324,
+      "seeds_references": [
+        110324,
+        110227,
+        210001
+      ],
+      "prompt": "Comorian man, 24 years old, dark brown skin, round friendly face, short dreadlocks tied back, light beard, stocky build, 1m72, gap between front teeth visible when laughing, wearing orange football jersey, black shorts, sandals, short dreadlocks tied back, talking to the other person, natural lip movement and gestures, enthusiastic, bright eyes, animated gestures, leaning forward AND Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, laughing out loud, head slightly back, happy, genuine warm smile, relaxed eyes. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. cinematic medium shot, 35mm lens, shallow depth of field, slow lateral dolly, golden natural light. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 8,
+      "role": "embarquement",
+      "duree": 3.1,
+      "seed": 110227,
+      "seeds_references": [
+        110227,
+        110324,
+        210001
+      ],
+      "prompt": "Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow, wearing white t-shirt, open light denim shirt, dark chinos, white sneakers, short black fade, stepping onto a moored speedboat, one hand held by a crew member, bag on the shoulder, enthusiastic, bright eyes, animated gestures, leaning forward AND Comorian man, 24 years old, dark brown skin, round friendly face, short dreadlocks tied back, light beard, stocky build, 1m72, gap between front teeth visible when laughing, wearing orange football jersey, black shorts, sandals, short dreadlocks tied back, stepping onto a moored speedboat, one hand held by a crew member, bag on the shoulder, happy, genuine warm smile, relaxed eyes. Location: small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light. golden hour, warm low sun, long shadows. cinematic medium shot, 35mm lens, shallow depth of field, slow lateral dolly, golden natural light. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/plage-vedettes.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 9,
+      "role": "traversee",
+      "duree": 3.3,
+      "seed": 210011,
+      "seeds_references": [
+        210011
+      ],
+      "prompt": "open Indian Ocean between Grande Comore and Mohéli: deep blue water, white wake of a fast speedboat, distant volcanic island silhouette, scattered clouds, strong tropical sunlight. golden hour, warm low sun, long shadows. aerial drone shot, smooth forward push, 40 metres above, slight downward tilt, cinematic. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": "../pub/photos/vedette-mer.jpg",
+      "incrustation": null,
+      "note": null
+    },
+    {
+      "plan": 10,
+      "role": "chute",
+      "duree": 3.0,
+      "seed": 0,
+      "seeds_references": [],
+      "prompt": "plain brand background, no location. golden hour, warm low sun, long shadows. static locked-off shot on a tripod, eye level, balanced composition, no camera movement. photorealistic, natural skin texture, realistic anatomy, documentary photography style, shot on a full-frame camera, high dynamic range.",
+      "negatif": "no text, no watermark, no logo, no subtitles, no distorted hands, no extra fingers, no plastic skin, no cartoon, no stock-photo smile, no snow, no western city",
+      "image_reference": null,
+      "incrustation": null,
+      "note": "Carton final composé par le studio (PIL/ffmpeg), pas par le moteur d'image."
+    }
+  ]
+}

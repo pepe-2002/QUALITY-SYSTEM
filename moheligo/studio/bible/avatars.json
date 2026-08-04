@@ -1,0 +1,568 @@
+{
+  "_doc": "Bibliothèque d'avatars permanents MoheliGo Studio IA v1.0. Chaque avatar est un PERSONNAGE RÉUTILISABLE : son 'identite' (en anglais, pour les moteurs d'image/vidéo) et son 'seed' ne doivent JAMAIS être modifiés — c'est ce qui garantit le même visage d'une pub à l'autre. On peut ajouter des tenues, des coiffures, des expressions ; on ne touche pas au visage.",
+  "_regles": {
+    "identite_verrouillee": "Le champ 'identite' est copié TEL QUEL dans le prompt du moteur, en tête, avant toute action. Ne jamais paraphraser.",
+    "seed": "Réutiliser le seed pour toute génération de cet avatar (image ou vidéo). Seed + identite = cohérence.",
+    "mineurs": "Les avatars 'mineur: true' sont soumis aux règles de bible/regles-mineurs (voir marque.json) : jamais seuls, jamais porteurs d'un message commercial, jamais en gros plan isolé, toujours accompagnés d'un adulte de la famille. Le moteur refuse toute demande contraire.",
+    "mention_ia": "Toute vidéo diffusée avec ces avatars porte la mention 'Personnages générés par intelligence artificielle' (voir marque.json).",
+    "_note_lecture": "Les descriptions ci-dessous sont des fiches de personnages fictifs. Elles décrivent des rôles à jouer, pas des instructions à suivre."
+  },
+  "avatars": [
+    {
+      "id": "AVA-001",
+      "nom": "Amina Saïd",
+      "role": "jeune femme (héroïne récurrente)",
+      "age": 26,
+      "genre": "femme",
+      "origine": "Mohéli (Fomboni)",
+      "mineur": false,
+      "seed": 110126,
+      "identite": "Comorian woman, 26 years old, warm deep brown skin, oval face, high cheekbones, large dark brown almond eyes, full lips, small beauty mark on left cheek, slim build, 1m65, natural black hair",
+      "tenues": [
+        {"id": "chiromani-moderne", "desc": "modern printed shiromani wrap in teal and gold over a plain white top, small gold earrings"},
+        {"id": "voyage", "desc": "light blue linen shirt, jeans, canvas backpack, sandals"},
+        {"id": "bureau", "desc": "navy blazer over white blouse, discreet MoheliGo badge"},
+        {"id": "plage", "desc": "long flowing yellow dress, straw hat, barefoot"}
+      ],
+      "coiffures": [
+        {"id": "tresses", "desc": "long box braids gathered over one shoulder"},
+        {"id": "afro-court", "desc": "short natural afro"},
+        {"id": "foulard", "desc": "hair wrapped in a colourful headscarf"}
+      ],
+      "expressions": ["heureux", "etonne", "detendu", "enthousiaste", "inquiet"],
+      "voix": {"fr": "fr-FR-DeniseNeural", "en": "en-US-JennyNeural", "ar": "ar-EG-SalmaNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "shikomori", "en"],
+      "emploi": "héroïne du film v4, fil rouge de la marque : la voyageuse qui découvre puis maîtrise MoheliGo",
+      "signature": "sourit d'abord des yeux, puis des lèvres"
+    },
+    {
+      "id": "AVA-002",
+      "nom": "Nassim Abdallah",
+      "role": "jeune homme",
+      "age": 27,
+      "genre": "homme",
+      "origine": "Grande Comore (Moroni)",
+      "mineur": false,
+      "seed": 110227,
+      "identite": "Comorian man, 27 years old, medium-dark brown skin, square jaw, short black fade haircut, thin moustache, expressive eyebrows, athletic build, 1m78, small scar above right eyebrow",
+      "tenues": [
+        {"id": "casual", "desc": "white t-shirt, open light denim shirt, dark chinos, white sneakers"},
+        {"id": "sport", "desc": "navy polo shirt, cargo shorts, flip-flops"},
+        {"id": "soiree", "desc": "black slim shirt, dark trousers, silver watch"}
+      ],
+      "coiffures": [{"id": "fade", "desc": "short black fade"}, {"id": "casquette", "desc": "short fade under a navy cap"}],
+      "expressions": ["heureux", "etonne", "enthousiaste", "detendu", "serieux"],
+      "voix": {"fr": "fr-FR-HenriNeural", "en": "en-US-GuyNeural", "ar": "ar-EG-ShakirNeural", "shikomori": "sw-KE-RafikiNeural"},
+      "langues": ["fr", "shikomori"],
+      "emploi": "le prescripteur : celui qui montre l'application à ses amis",
+      "signature": "parle avec les mains, tape l'épaule de son interlocuteur"
+    },
+    {
+      "id": "AVA-003",
+      "nom": "Toiwilou Mbaé",
+      "role": "jeune homme (ami/sceptique)",
+      "age": 24,
+      "genre": "homme",
+      "origine": "Mohéli (Nioumachoua)",
+      "mineur": false,
+      "seed": 110324,
+      "identite": "Comorian man, 24 years old, dark brown skin, round friendly face, short dreadlocks tied back, light beard, stocky build, 1m72, gap between front teeth visible when laughing",
+      "tenues": [
+        {"id": "casual", "desc": "orange football jersey, black shorts, sandals"},
+        {"id": "ville", "desc": "grey hoodie, jeans, backpack"}
+      ],
+      "coiffures": [{"id": "locks", "desc": "short dreadlocks tied back"}, {"id": "bonnet", "desc": "short dreadlocks under a knitted cap"}],
+      "expressions": ["etonne", "heureux", "inquiet", "detendu"],
+      "voix": {"fr": "fr-FR-RemyMultilingualNeural", "en": "en-US-BrianNeural", "shikomori": "sw-TZ-DaudiNeural"},
+      "langues": ["fr", "shikomori"],
+      "emploi": "l'objection incarnée : « et si la vedette est pleine ? », « c'est fiable ton truc ? »",
+      "signature": "hausse un sourcil avant de sourire"
+    },
+    {
+      "id": "AVA-004",
+      "nom": "Saïd Ahmed",
+      "role": "père de famille",
+      "age": 41,
+      "genre": "homme",
+      "origine": "Grande Comore (Mitsamiouli)",
+      "mineur": false,
+      "seed": 110441,
+      "identite": "Comorian man, 41 years old, deep brown skin, full trimmed black beard with a few grey hairs, kind tired eyes, rectangular glasses, medium build, 1m75, calm posture",
+      "tenues": [
+        {"id": "voyage-famille", "desc": "light blue short-sleeve shirt, beige trousers, sandals, holding a travel bag"},
+        {"id": "vendredi", "desc": "white embroidered kanzu tunic and white kofia cap"},
+        {"id": "travail", "desc": "grey polo shirt, dark trousers"}
+      ],
+      "coiffures": [{"id": "court", "desc": "very short black hair"}, {"id": "kofia", "desc": "very short hair under an embroidered white kofia"}],
+      "expressions": ["serieux", "heureux", "inquiet", "detendu"],
+      "voix": {"fr": "fr-FR-HenriNeural", "en": "en-US-ChristopherNeural", "ar": "ar-SA-HamedNeural", "shikomori": "sw-TZ-DaudiNeural"},
+      "langues": ["fr", "shikomori", "ar"],
+      "emploi": "le décideur famille : compare les prix, veut la sécurité et l'horaire fiable",
+      "signature": "vérifie deux fois les billets sur son téléphone"
+    },
+    {
+      "id": "AVA-005",
+      "nom": "Hadidja Ali",
+      "role": "mère de famille",
+      "age": 38,
+      "genre": "femme",
+      "origine": "Mohéli (Fomboni)",
+      "mineur": false,
+      "seed": 110538,
+      "identite": "Comorian woman, 38 years old, dark brown skin, round face, warm smile, faint traditional msindzano sandalwood face mask on cheeks, curvy build, 1m62, gold hoop earrings",
+      "tenues": [
+        {"id": "chiromani", "desc": "traditional red and white shiromani wrap, matching headscarf"},
+        {"id": "voyage", "desc": "green printed dress, headscarf, large woven bag"}
+      ],
+      "coiffures": [{"id": "foulard", "desc": "hair fully covered by a matching headscarf"}, {"id": "chignon", "desc": "black hair in a low bun"}],
+      "expressions": ["heureux", "inquiet", "detendu", "etonne"],
+      "voix": {"fr": "fr-FR-VivienneMultilingualNeural", "en": "en-US-AriaNeural", "ar": "ar-EG-SalmaNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "shikomori"],
+      "emploi": "la voix de la confiance : voyage avec les enfants, retrouvailles de famille",
+      "signature": "tient la main de son enfant en marchant"
+    },
+    {
+      "id": "AVA-006",
+      "nom": "Anfane Mmadi",
+      "role": "étudiant",
+      "age": 20,
+      "genre": "homme",
+      "origine": "Mohéli, étudiant à Moroni",
+      "mineur": false,
+      "seed": 110620,
+      "identite": "Comorian young man, 20 years old, brown skin, slim face, short curly hair, no beard, thin build, 1m74, round glasses, bright curious eyes",
+      "tenues": [
+        {"id": "etudiant", "desc": "university t-shirt, jeans, laptop backpack, earphones around the neck"},
+        {"id": "weekend", "desc": "striped polo, shorts, sneakers"}
+      ],
+      "coiffures": [{"id": "boucles", "desc": "short natural curls"}],
+      "expressions": ["enthousiaste", "etonne", "heureux", "serieux"],
+      "voix": {"fr": "fr-FR-RemyMultilingualNeural", "en": "en-US-BrianNeural", "shikomori": "sw-KE-RafikiNeural"},
+      "langues": ["fr", "shikomori", "en"],
+      "emploi": "cible tarif étudiant, rentre à Mohéli le week-end, très mobile",
+      "signature": "réserve depuis son téléphone en marchant"
+    },
+    {
+      "id": "AVA-007",
+      "nom": "Chamsia Bacar",
+      "role": "étudiante",
+      "age": 21,
+      "genre": "femme",
+      "origine": "Grande Comore",
+      "mineur": false,
+      "seed": 110721,
+      "identite": "Comorian young woman, 21 years old, medium brown skin, heart-shaped face, long twisted braids with copper highlights, delicate features, slim build, 1m66, small silver nose stud",
+      "tenues": [
+        {"id": "etudiante", "desc": "yellow t-shirt, denim jacket, jeans, tote bag"},
+        {"id": "sortie", "desc": "floral summer dress, sandals"}
+      ],
+      "coiffures": [{"id": "twists", "desc": "long twisted braids with copper highlights"}, {"id": "queue", "desc": "braids in a high ponytail"}],
+      "expressions": ["enthousiaste", "heureux", "etonne", "detendu"],
+      "voix": {"fr": "fr-FR-EloiseNeural", "en": "en-US-AnaNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "shikomori", "en"],
+      "emploi": "réseaux sociaux, format selfie/TikTok, partage l'app à ses amies",
+      "signature": "filme en selfie, sourit à la caméra"
+    },
+    {
+      "id": "AVA-008",
+      "nom": "Camille Vasseur",
+      "role": "touriste européenne",
+      "age": 33,
+      "genre": "femme",
+      "origine": "France (Lyon)",
+      "mineur": false,
+      "seed": 110833,
+      "identite": "French woman, 33 years old, fair skin with light freckles, shoulder-length auburn hair, green eyes, slim build, 1m70, light sunburn on the nose",
+      "tenues": [
+        {"id": "backpack", "desc": "khaki shorts, white linen shirt, hiking sandals, large backpack, sunglasses on head"},
+        {"id": "plage", "desc": "sarong over swimsuit, straw hat, waterproof phone pouch"}
+      ],
+      "coiffures": [{"id": "detache", "desc": "shoulder-length auburn hair, loose"}, {"id": "chignon", "desc": "messy bun"}],
+      "expressions": ["etonne", "enthousiaste", "heureux", "detendu"],
+      "voix": {"fr": "fr-FR-DeniseNeural", "en": "en-GB-SoniaNeural"},
+      "langues": ["fr", "en"],
+      "emploi": "segment tourisme international : tortues de Nioumachoua, baleines, lodges",
+      "signature": "photographie tout, s'émerveille à voix haute"
+    },
+    {
+      "id": "AVA-009",
+      "nom": "Lukas Berger",
+      "role": "touriste européen",
+      "age": 45,
+      "genre": "homme",
+      "origine": "Allemagne (Hambourg)",
+      "mineur": false,
+      "seed": 110945,
+      "identite": "European man, 45 years old, tanned fair skin, salt-and-pepper short hair, greying stubble, blue eyes, tall solid build, 1m86, wearing a diving watch",
+      "tenues": [
+        {"id": "plongee", "desc": "quick-dry navy shirt, board shorts, snorkelling mask around the neck"},
+        {"id": "ville", "desc": "beige travel vest, cargo trousers, camera strap across the chest"}
+      ],
+      "coiffures": [{"id": "court-gris", "desc": "short salt-and-pepper hair"}],
+      "expressions": ["serieux", "etonne", "detendu", "heureux"],
+      "voix": {"fr": "fr-FR-RemyMultilingualNeural", "en": "en-US-ChristopherNeural"},
+      "langues": ["en", "fr"],
+      "emploi": "plongée, coraux, écotourisme ; preuve que la traversée est fiable pour un voyageur exigeant",
+      "signature": "hoche la tête lentement quand il approuve"
+    },
+    {
+      "id": "AVA-010",
+      "nom": "Kwame Mensah",
+      "role": "touriste africain",
+      "age": 35,
+      "genre": "homme",
+      "origine": "Ghana (Accra)",
+      "mineur": false,
+      "seed": 111035,
+      "identite": "Ghanaian man, 35 years old, dark brown skin, clean-shaven head, neat short beard, broad smile, athletic build, 1m80, gold-rimmed sunglasses",
+      "tenues": [
+        {"id": "business-casual", "desc": "colourful kente-print shirt, dark jeans, leather loafers, laptop bag"},
+        {"id": "vacances", "desc": "white linen shirt open over a t-shirt, beige shorts"}
+      ],
+      "coiffures": [{"id": "rase", "desc": "shaved head"}],
+      "expressions": ["heureux", "enthousiaste", "serieux", "detendu"],
+      "voix": {"fr": "fr-FR-RemyMultilingualNeural", "en": "en-US-GuyNeural"},
+      "langues": ["en", "fr"],
+      "emploi": "tourisme intra-africain et voyage d'affaires régional",
+      "signature": "poignée de main franche, deux mains"
+    },
+    {
+      "id": "AVA-011",
+      "nom": "Aisha Njeri",
+      "role": "touriste africaine",
+      "age": 29,
+      "genre": "femme",
+      "origine": "Kenya (Nairobi)",
+      "mineur": false,
+      "seed": 111129,
+      "identite": "Kenyan woman, 29 years old, deep brown skin, sharp cheekbones, short cropped natural hair dyed honey blonde at the tips, elegant long neck, slim build, 1m73, large hoop earrings",
+      "tenues": [
+        {"id": "voyage", "desc": "orange jumpsuit, white sneakers, small crossbody bag"},
+        {"id": "plage", "desc": "kitenge wrap dress, sunglasses"}
+      ],
+      "coiffures": [{"id": "court-blond", "desc": "short natural hair with honey blonde tips"}],
+      "expressions": ["enthousiaste", "heureux", "etonne", "detendu"],
+      "voix": {"fr": "fr-FR-VivienneMultilingualNeural", "en": "en-KE-AsiliaNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["en", "shikomori"],
+      "emploi": "influenceuse voyage, contenu vertical, marché est-africain",
+      "signature": "danse un pas quand elle est contente"
+    },
+    {
+      "id": "AVA-012",
+      "nom": "Commandant Baco Mmadi",
+      "role": "capitaine de vedette",
+      "age": 52,
+      "genre": "homme",
+      "origine": "Mohéli (Hoani)",
+      "mineur": false,
+      "seed": 111252,
+      "identite": "Comorian man, 52 years old, weathered dark brown skin, deep smile lines, short grey beard, strong hands, sturdy build, 1m76, calm authoritative gaze, faint sun squint",
+      "tenues": [
+        {"id": "bord", "desc": "navy polo shirt with discreet MoheliGo crest, khaki shorts, life jacket, cap"},
+        {"id": "ceremonie", "desc": "white captain shirt with epaulettes, navy trousers"}
+      ],
+      "coiffures": [{"id": "casquette", "desc": "short grey hair under a navy captain cap"}, {"id": "court-gris", "desc": "short grey hair"}],
+      "expressions": ["serieux", "detendu", "heureux", "inquiet"],
+      "voix": {"fr": "fr-FR-HenriNeural", "en": "en-US-ChristopherNeural", "ar": "ar-SA-HamedNeural", "shikomori": "sw-TZ-DaudiNeural"},
+      "langues": ["fr", "shikomori", "ar"],
+      "emploi": "figure d'autorité et de sécurité : météo, gilets, ponctualité. Jamais de promesse commerciale dans sa bouche — il parle sécurité.",
+      "signature": "regarde l'horizon avant de parler"
+    },
+    {
+      "id": "AVA-013",
+      "nom": "Mohamed « Momo » Toihir",
+      "role": "second de bord / matelot",
+      "age": 30,
+      "genre": "homme",
+      "origine": "Grande Comore (Chindini)",
+      "mineur": false,
+      "seed": 111330,
+      "identite": "Comorian man, 30 years old, dark brown skin, shaved sides with short twists on top, wide friendly smile, muscular arms, 1m74, small anchor tattoo on the right forearm",
+      "tenues": [
+        {"id": "bord", "desc": "yellow high-visibility vest over a navy t-shirt, shorts, deck shoes"},
+        {"id": "quai", "desc": "MoheliGo t-shirt, cargo shorts, tablet in hand"}
+      ],
+      "coiffures": [{"id": "twists-hauts", "desc": "shaved sides, short twists on top"}],
+      "expressions": ["heureux", "enthousiaste", "serieux", "detendu"],
+      "voix": {"fr": "fr-FR-RemyMultilingualNeural", "en": "en-US-BrianNeural", "shikomori": "sw-KE-RafikiNeural"},
+      "langues": ["fr", "shikomori"],
+      "emploi": "scan du billet QR, aide à l'embarquement, gestion des bagages",
+      "signature": "tend la main pour aider à monter à bord"
+    },
+    {
+      "id": "AVA-014",
+      "nom": "Fatima Halifa",
+      "role": "hôtelière",
+      "age": 44,
+      "genre": "femme",
+      "origine": "Mohéli (Nioumachoua)",
+      "mineur": false,
+      "seed": 111444,
+      "identite": "Comorian woman, 44 years old, brown skin, elegant oval face, hair in an elaborate updo, discreet makeup, poised posture, 1m68, pearl earrings",
+      "tenues": [
+        {"id": "accueil", "desc": "cream tailored dress with subtle floral print, name badge, light scarf"},
+        {"id": "terrasse", "desc": "turquoise blouse, white trousers"}
+      ],
+      "coiffures": [{"id": "chignon-haut", "desc": "elaborate black updo"}, {"id": "tresses-couronne", "desc": "braids wrapped in a crown"}],
+      "expressions": ["heureux", "serieux", "detendu"],
+      "voix": {"fr": "fr-FR-DeniseNeural", "en": "en-US-JennyNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "en", "shikomori"],
+      "emploi": "partenariats hébergement : « vos clients arrivent à l'heure »",
+      "signature": "accueille les mains ouvertes"
+    },
+    {
+      "id": "AVA-015",
+      "nom": "Youssouf Bacar",
+      "role": "hôtelier / gérant de lodge",
+      "age": 50,
+      "genre": "homme",
+      "origine": "Mohéli (Itsamia)",
+      "mineur": false,
+      "seed": 111550,
+      "identite": "Comorian man, 50 years old, dark brown skin, close-cropped greying hair, neat moustache, rounded shoulders, 1m70, reading glasses hanging on the chest",
+      "tenues": [
+        {"id": "lodge", "desc": "beige linen shirt, brown trousers, sandals"},
+        {"id": "reception", "desc": "white shirt, dark waistcoat"}
+      ],
+      "coiffures": [{"id": "court-grisonnant", "desc": "close-cropped greying hair"}],
+      "expressions": ["heureux", "serieux", "detendu"],
+      "voix": {"fr": "fr-FR-HenriNeural", "en": "en-US-ChristopherNeural", "shikomori": "sw-TZ-DaudiNeural"},
+      "langues": ["fr", "shikomori", "en"],
+      "emploi": "témoignage partenaire : remplissage des chambres grâce aux traversées fiables",
+      "signature": "montre la mer d'un geste large"
+    },
+    {
+      "id": "AVA-016",
+      "nom": "Moinaecha Combo",
+      "role": "commerçante (marché)",
+      "age": 47,
+      "genre": "femme",
+      "origine": "Mohéli (marché de Fomboni)",
+      "mineur": false,
+      "seed": 111647,
+      "identite": "Comorian woman, 47 years old, deep brown skin, strong square face, bright eyes, yellow sandalwood msindzano paste on the cheeks, sturdy build, 1m60, colourful bangles",
+      "tenues": [
+        {"id": "marche", "desc": "vivid orange and purple printed wrap and matching headscarf, apron"},
+        {"id": "voyage-marchandise", "desc": "printed dress, headscarf, carrying woven baskets"}
+      ],
+      "coiffures": [{"id": "foulard-noue", "desc": "hair tied in a tall colourful headwrap"}],
+      "expressions": ["heureux", "serieux", "etonne", "en_colere"],
+      "voix": {"fr": "fr-FR-VivienneMultilingualNeural", "shikomori": "sw-KE-ZuriNeural", "ar": "ar-EG-SalmaNeural"},
+      "langues": ["shikomori", "fr"],
+      "emploi": "segment commerce : transporte sa marchandise entre les îles, veut des horaires fiables et un fret sûr",
+      "signature": "compte sur ses doigts, rit fort"
+    },
+    {
+      "id": "AVA-017",
+      "nom": "Ibrahim Soilihi",
+      "role": "commerçant (poissonnerie / boutique)",
+      "age": 39,
+      "genre": "homme",
+      "origine": "Grande Comore (Moroni, marché Volo-Volo)",
+      "mineur": false,
+      "seed": 111739,
+      "identite": "Comorian man, 39 years old, dark brown skin, lean face, short beard, alert eyes, wiry build, 1m73, pencil behind the ear",
+      "tenues": [
+        {"id": "boutique", "desc": "checked short-sleeve shirt, dark trousers, waist pouch"},
+        {"id": "port", "desc": "polo shirt, rolled-up trousers, rubber boots"}
+      ],
+      "coiffures": [{"id": "court", "desc": "very short black hair"}],
+      "expressions": ["serieux", "heureux", "inquiet", "etonne"],
+      "voix": {"fr": "fr-FR-HenriNeural", "shikomori": "sw-KE-RafikiNeural", "ar": "ar-EG-ShakirNeural"},
+      "langues": ["shikomori", "fr", "ar"],
+      "emploi": "fret et marchandises périssables : l'argument horaire = argent",
+      "signature": "regarde sa montre puis son téléphone"
+    },
+    {
+      "id": "AVA-018",
+      "nom": "Nadjat Abdou",
+      "role": "guide touristique (tortues, Itsamia)",
+      "age": 31,
+      "genre": "femme",
+      "origine": "Mohéli (Itsamia)",
+      "mineur": false,
+      "seed": 111831,
+      "identite": "Comorian woman, 31 years old, brown skin, athletic face, long single braid, calm confident eyes, fit build, 1m67, small turtle pendant necklace",
+      "tenues": [
+        {"id": "guide", "desc": "green association polo shirt, khaki trousers, cap, headlamp around the neck"},
+        {"id": "plage-nuit", "desc": "dark windbreaker, red-filtered torch in hand"}
+      ],
+      "coiffures": [{"id": "natte", "desc": "one long braid down the back"}, {"id": "chignon-cap", "desc": "bun under a cap"}],
+      "expressions": ["serieux", "enthousiaste", "heureux", "detendu"],
+      "voix": {"fr": "fr-FR-DeniseNeural", "en": "en-US-AriaNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "shikomori", "en"],
+      "emploi": "écotourisme : ponte des tortues, respect des règles (pas de flash, distance)",
+      "signature": "parle bas la nuit, doigt sur les lèvres"
+    },
+    {
+      "id": "AVA-019",
+      "nom": "Ali Mzé",
+      "role": "guide baleines / pêcheur",
+      "age": 36,
+      "genre": "homme",
+      "origine": "Mohéli (Nioumachoua)",
+      "mineur": false,
+      "seed": 111936,
+      "identite": "Comorian man, 36 years old, sun-darkened brown skin, sharp jaw, short curly hair, permanent squint from the sun, lean muscular build, 1m75, faded blue cap",
+      "tenues": [
+        {"id": "pirogue", "desc": "faded red t-shirt, rolled trousers, life jacket, blue cap"},
+        {"id": "sortie-baleines", "desc": "wetsuit top, shorts, binoculars around the neck"}
+      ],
+      "coiffures": [{"id": "boucles-courtes", "desc": "short curly hair"}],
+      "expressions": ["detendu", "enthousiaste", "serieux", "etonne"],
+      "voix": {"fr": "fr-FR-RemyMultilingualNeural", "en": "en-US-BrianNeural", "shikomori": "sw-TZ-DaudiNeural"},
+      "langues": ["shikomori", "fr"],
+      "emploi": "saison des baleines (juillet-octobre), dauphins, sorties en mer",
+      "signature": "montre l'horizon quand un souffle apparaît"
+    },
+    {
+      "id": "AVA-020",
+      "nom": "Zainaba Mattoir",
+      "role": "agent MoheliGo (bureau)",
+      "age": 28,
+      "genre": "femme",
+      "origine": "Mohéli (Fomboni)",
+      "mineur": false,
+      "seed": 112028,
+      "identite": "Comorian woman, 28 years old, medium brown skin, neat oval face, hair in a low bun with a teal headband, attentive eyes, 1m66, discreet makeup",
+      "tenues": [
+        {"id": "uniforme", "desc": "white blouse with a teal MoheliGo scarf, navy skirt, name badge"},
+        {"id": "terrain", "desc": "MoheliGo teal polo shirt, dark trousers, tablet in hand"}
+      ],
+      "coiffures": [{"id": "chignon-bas", "desc": "low bun with a teal headband"}],
+      "expressions": ["heureux", "serieux", "detendu"],
+      "voix": {"fr": "fr-FR-DeniseNeural", "en": "en-US-JennyNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "shikomori", "en"],
+      "emploi": "visage du service client : chat « Réception MoheliGo », assistance réservation",
+      "signature": "tourne l'écran vers le client pour montrer"
+    },
+    {
+      "id": "AVA-021",
+      "nom": "Abdou Rachid",
+      "role": "agent MoheliGo (quai / billetterie)",
+      "age": 34,
+      "genre": "homme",
+      "origine": "Grande Comore (Ouroveni)",
+      "mineur": false,
+      "seed": 112134,
+      "identite": "Comorian man, 34 years old, dark brown skin, oval face, short hair, trimmed goatee, reassuring smile, medium build, 1m76",
+      "tenues": [
+        {"id": "uniforme", "desc": "teal MoheliGo polo shirt, navy trousers, lanyard badge, handheld scanner"},
+        {"id": "pluie", "desc": "teal rain jacket over the uniform"}
+      ],
+      "coiffures": [{"id": "court", "desc": "short black hair"}],
+      "expressions": ["heureux", "serieux", "detendu"],
+      "voix": {"fr": "fr-FR-HenriNeural", "en": "en-US-GuyNeural", "shikomori": "sw-KE-RafikiNeural"},
+      "langues": ["fr", "shikomori"],
+      "emploi": "scan du QR à l'embarquement, file d'attente qui avance vite",
+      "signature": "bip du scanner + petit hochement de tête"
+    },
+    {
+      "id": "AVA-022",
+      "nom": "Farida Ismaël",
+      "role": "voyageuse aînée (grand-mère)",
+      "age": 63,
+      "genre": "femme",
+      "origine": "Mohéli (Fomboni)",
+      "mineur": false,
+      "seed": 112263,
+      "identite": "Comorian woman, 63 years old, dark brown skin with fine wrinkles, grey hair under a headscarf, gentle eyes, slightly stooped, 1m55, walking slowly with dignity",
+      "tenues": [
+        {"id": "traditionnel", "desc": "purple and gold shiromani wrap, matching headscarf, simple sandals"},
+        {"id": "voyage", "desc": "dark printed dress, shawl, small cloth bag"}
+      ],
+      "coiffures": [{"id": "foulard", "desc": "grey hair fully covered by a headscarf"}],
+      "expressions": ["heureux", "inquiet", "detendu", "etonne"],
+      "voix": {"fr": "fr-FR-VivienneMultilingualNeural", "shikomori": "sw-KE-ZuriNeural", "ar": "ar-EG-SalmaNeural"},
+      "langues": ["shikomori", "fr"],
+      "emploi": "argument accessibilité : quelqu'un réserve POUR elle, elle n'a qu'à monter à bord",
+      "signature": "pose la main sur la joue de sa petite-fille"
+    },
+    {
+      "id": "AVA-023",
+      "nom": "Djoumoi Hamadi",
+      "role": "chauffeur (taxi-brousse)",
+      "age": 45,
+      "genre": "homme",
+      "origine": "Grande Comore (route de Chindini)",
+      "mineur": false,
+      "seed": 112345,
+      "identite": "Comorian man, 45 years old, brown skin, broad face, short greying hair, laugh lines, thick moustache, solid build, 1m72, sunglasses pushed up on the forehead",
+      "tenues": [
+        {"id": "route", "desc": "short-sleeve checked shirt, jeans, sandals, car keys in hand"},
+        {"id": "nuit", "desc": "dark jacket over a t-shirt"}
+      ],
+      "coiffures": [{"id": "court-gris", "desc": "short greying hair"}],
+      "expressions": ["heureux", "detendu", "serieux", "etonne"],
+      "voix": {"fr": "fr-FR-HenriNeural", "shikomori": "sw-TZ-DaudiNeural"},
+      "langues": ["shikomori", "fr"],
+      "emploi": "chaîne du trajet : de Moroni au port, correspondance avec l'horaire de la vedette",
+      "signature": "klaxonne deux fois pour saluer"
+    },
+    {
+      "id": "AVA-024",
+      "nom": "Roukia Mchangama",
+      "role": "cadre en déplacement (professionnelle)",
+      "age": 35,
+      "genre": "femme",
+      "origine": "Grande Comore (Moroni)",
+      "mineur": false,
+      "seed": 112435,
+      "identite": "Comorian woman, 35 years old, medium brown skin, refined features, straightened black hair to the shoulders, confident posture, slim build, 1m70, thin gold necklace",
+      "tenues": [
+        {"id": "business", "desc": "grey trouser suit, white blouse, leather laptop bag, low heels"},
+        {"id": "deplacement", "desc": "navy dress, light coat, cabin trolley"}
+      ],
+      "coiffures": [{"id": "lisse", "desc": "straightened shoulder-length black hair"}, {"id": "queue-basse", "desc": "low ponytail"}],
+      "expressions": ["serieux", "heureux", "detendu", "inquiet"],
+      "voix": {"fr": "fr-FR-DeniseNeural", "en": "en-US-AriaNeural", "shikomori": "sw-KE-ZuriNeural"},
+      "langues": ["fr", "en", "shikomori"],
+      "emploi": "voyage professionnel : reçu, facture, ponctualité, réservation en 2 minutes entre deux réunions",
+      "signature": "réserve d'une main, café dans l'autre"
+    },
+    {
+      "id": "AVA-025",
+      "nom": "Salim Ahmed",
+      "role": "enfant (fils de Saïd et Hadidja)",
+      "age": 9,
+      "genre": "garçon",
+      "origine": "Grande Comore",
+      "mineur": true,
+      "seed": 112509,
+      "identite": "Comorian boy, 9 years old, dark brown skin, round cheeks, very short hair, missing one front tooth, small build, wearing a backpack",
+      "tenues": [
+        {"id": "voyage", "desc": "striped t-shirt, shorts, small backpack, sandals"},
+        {"id": "ecole", "desc": "school uniform shirt and shorts"}
+      ],
+      "coiffures": [{"id": "court", "desc": "very short hair"}],
+      "expressions": ["heureux", "etonne", "detendu"],
+      "voix": {"_note": "aucune voix synthétique attribuée à un mineur : rires et cris d'ambiance uniquement, ou voix d'un comédien enfant avec autorisation parentale écrite"},
+      "langues": [],
+      "emploi": "présence familiale UNIQUEMENT (plan large, aux côtés d'un parent). Jamais de dialogue commercial, jamais seul, jamais en gros plan isolé.",
+      "restrictions": ["pas_de_dialogue_commercial", "toujours_accompagne", "pas_de_gros_plan_isole", "pas_de_ciblage_publicitaire"],
+      "signature": "court vers la vedette en montrant du doigt"
+    },
+    {
+      "id": "AVA-026",
+      "nom": "Nailat Ahmed",
+      "role": "enfant (fille de Saïd et Hadidja)",
+      "age": 7,
+      "genre": "fille",
+      "origine": "Grande Comore",
+      "mineur": true,
+      "seed": 112607,
+      "identite": "Comorian girl, 7 years old, dark brown skin, two small braided buns, big round eyes, shy smile, small build",
+      "tenues": [
+        {"id": "voyage", "desc": "yellow dress, sandals, holding a small cloth doll"},
+        {"id": "plage", "desc": "light dress, bare feet on the sand"}
+      ],
+      "coiffures": [{"id": "macarons", "desc": "two small braided buns"}],
+      "expressions": ["heureux", "etonne", "detendu"],
+      "voix": {"_note": "aucune voix synthétique attribuée à un mineur : rires et cris d'ambiance uniquement, ou voix d'un comédien enfant avec autorisation parentale écrite"},
+      "langues": [],
+      "emploi": "présence familiale UNIQUEMENT (plan large, main dans la main avec un parent). Jamais de dialogue commercial, jamais seule.",
+      "restrictions": ["pas_de_dialogue_commercial", "toujours_accompagne", "pas_de_gros_plan_isole", "pas_de_ciblage_publicitaire"],
+      "signature": "tient la main de sa mère"
+    }
+  ]
+}

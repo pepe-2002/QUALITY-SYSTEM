@@ -1,0 +1,274 @@
+{
+  "projet": "demo-hoani-30s",
+  "titre": "MoheliGo — Port de Hoani",
+  "brief": "Fais une publicité de 30 secondes où deux amis discutent au port de Hoani. L'un montre MoheliGo sur son téléphone. Ils réservent leur traversée puis montent dans la vedette. Ajoute une voix en français et des sous-titres.",
+  "duree_cible": 30,
+  "langue": "fr",
+  "formats": [
+    "tiktok",
+    "facebook",
+    "youtube"
+  ],
+  "sous_titres": true,
+  "objectif": "notoriete",
+  "casting": [
+    {
+      "avatar": "AVA-002",
+      "nom": "Nassim Abdallah",
+      "tenue": "casual",
+      "coiffure": "fade"
+    },
+    {
+      "avatar": "AVA-003",
+      "nom": "Toiwilou Mbaé",
+      "tenue": "casual",
+      "coiffure": "locks"
+    }
+  ],
+  "plans": [
+    {
+      "n": 1,
+      "role": "accroche",
+      "duree": 3.3,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "drone",
+      "acteurs": [],
+      "dialogue": null,
+      "voix_off": "Entre la Grande Comore et Mohéli, il y a la mer.",
+      "incrustation": null,
+      "carton": false,
+      "debut": 0.0
+    },
+    {
+      "n": 2,
+      "role": "situation",
+      "duree": 2.8,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "cinema",
+      "acteurs": [
+        {
+          "avatar": "AVA-003",
+          "action": "parler",
+          "expression": "detendu"
+        },
+        {
+          "avatar": "AVA-002",
+          "action": "sourire",
+          "expression": "detendu"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-003",
+        "texte": "Tu descends à Mohéli ce week-end ?",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": null,
+      "carton": false,
+      "debut": 3.3
+    },
+    {
+      "n": 3,
+      "role": "objection",
+      "duree": 2.8,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "cinema",
+      "acteurs": [
+        {
+          "avatar": "AVA-003",
+          "action": "parler",
+          "expression": "inquiet"
+        },
+        {
+          "avatar": "AVA-002",
+          "action": "sourire",
+          "expression": "detendu"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-003",
+        "texte": "J'ai pas envie d'attendre pour rien.",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": null,
+      "carton": false,
+      "debut": 6.1
+    },
+    {
+      "n": 4,
+      "role": "solution",
+      "duree": 3.4,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "cinema",
+      "acteurs": [
+        {
+          "avatar": "AVA-002",
+          "action": "montrer-app",
+          "expression": "enthousiaste"
+        },
+        {
+          "avatar": "AVA-003",
+          "action": "sourire",
+          "expression": "etonne"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-002",
+        "texte": "Regarde. Tout est là : MoheliGo.",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": null,
+      "carton": false,
+      "debut": 8.9
+    },
+    {
+      "n": 5,
+      "role": "demonstration",
+      "duree": 3.7,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "gros-plan",
+      "acteurs": [
+        {
+          "avatar": "AVA-002",
+          "action": "telephone",
+          "expression": "serieux"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-002",
+        "texte": "Ton départ, ton horaire. C'est réservé.",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": "app:recherche",
+      "carton": false,
+      "debut": 12.3
+    },
+    {
+      "n": 6,
+      "role": "confirmation",
+      "duree": 2.8,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "gros-plan",
+      "acteurs": [
+        {
+          "avatar": "AVA-002",
+          "action": "payer-mobile",
+          "expression": "heureux"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-002",
+        "texte": "Voilà. Billet réservé.",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": "app:billet-qr",
+      "carton": false,
+      "debut": 16.0
+    },
+    {
+      "n": 7,
+      "role": "adhesion",
+      "duree": 2.8,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "cinema",
+      "acteurs": [
+        {
+          "avatar": "AVA-003",
+          "action": "parler",
+          "expression": "enthousiaste"
+        },
+        {
+          "avatar": "AVA-002",
+          "action": "rire",
+          "expression": "heureux"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-003",
+        "texte": "Sérieux ? Envoie-moi le lien.",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": null,
+      "carton": false,
+      "debut": 18.8
+    },
+    {
+      "n": 8,
+      "role": "embarquement",
+      "duree": 3.1,
+      "decor": "DEC-01",
+      "heure": "dore",
+      "camera": "cinema",
+      "acteurs": [
+        {
+          "avatar": "AVA-002",
+          "action": "monter-bord",
+          "expression": "enthousiaste"
+        },
+        {
+          "avatar": "AVA-003",
+          "action": "monter-bord",
+          "expression": "heureux"
+        }
+      ],
+      "dialogue": {
+        "avatar": "AVA-002",
+        "texte": "Elle part dans dix minutes.",
+        "langue": "fr"
+      },
+      "voix_off": null,
+      "incrustation": null,
+      "carton": false,
+      "debut": 21.6
+    },
+    {
+      "n": 9,
+      "role": "traversee",
+      "duree": 3.3,
+      "decor": "DEC-11",
+      "heure": "dore",
+      "camera": "drone",
+      "acteurs": [],
+      "dialogue": null,
+      "voix_off": "Et maintenant, il y a MoheliGo.",
+      "incrustation": null,
+      "carton": false,
+      "debut": 24.7
+    },
+    {
+      "n": 10,
+      "role": "chute",
+      "duree": 3.0,
+      "decor": null,
+      "heure": "dore",
+      "camera": "fixe",
+      "acteurs": [],
+      "dialogue": null,
+      "voix_off": null,
+      "incrustation": null,
+      "carton": true,
+      "debut": 28.0
+    }
+  ],
+  "carton_final": {
+    "logo": "MoheliGo",
+    "signature": "MoheliGo point com",
+    "site": "moheligo.com",
+    "mention_ia": "Personnages générés par intelligence artificielle"
+  },
+  "musique": "aucune",
+  "ambiance": "port",
+  "duree_reelle": 31.0
+}

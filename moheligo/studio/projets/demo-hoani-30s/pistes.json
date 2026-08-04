@@ -1,0 +1,110 @@
+[
+  {
+    "plan": 1,
+    "genre": "voix_off",
+    "avatar": null,
+    "texte": "Entre la Grande Comore et Mohéli, il y a la mer.",
+    "fichier": "audio/plan-01-vo.mp3",
+    "voix": "fr-FR-HenriNeural",
+    "rate": "-8%",
+    "pitch": "+0Hz",
+    "duree": 2.64,
+    "debut": 0.2
+  },
+  {
+    "plan": 2,
+    "genre": "dialogue",
+    "avatar": "AVA-003",
+    "texte": "Tu descends à Mohéli ce week-end ?",
+    "fichier": "audio/plan-02-dlg.mp3",
+    "voix": "fr-FR-RemyMultilingualNeural",
+    "rate": "-2%",
+    "pitch": "-8Hz",
+    "duree": 1.87,
+    "debut": 3.5
+  },
+  {
+    "plan": 3,
+    "genre": "dialogue",
+    "avatar": "AVA-003",
+    "texte": "J'ai pas envie d'attendre pour rien.",
+    "fichier": "audio/plan-03-dlg.mp3",
+    "voix": "fr-FR-RemyMultilingualNeural",
+    "rate": "-2%",
+    "pitch": "-8Hz",
+    "duree": 1.56,
+    "debut": 6.3
+  },
+  {
+    "plan": 4,
+    "genre": "dialogue",
+    "avatar": "AVA-002",
+    "texte": "Regarde. Tout est là : MoheliGo.",
+    "fichier": "audio/plan-04-dlg.mp3",
+    "voix": "fr-FR-HenriNeural",
+    "rate": "-4%",
+    "pitch": "+0Hz",
+    "duree": 2.93,
+    "debut": 9.1
+  },
+  {
+    "plan": 5,
+    "genre": "dialogue",
+    "avatar": "AVA-002",
+    "texte": "Ton départ, ton horaire. C'est réservé.",
+    "fichier": "audio/plan-05-dlg.mp3",
+    "voix": "fr-FR-HenriNeural",
+    "rate": "-4%",
+    "pitch": "+0Hz",
+    "duree": 3.22,
+    "debut": 12.5
+  },
+  {
+    "plan": 6,
+    "genre": "dialogue",
+    "avatar": "AVA-002",
+    "texte": "Voilà. Billet réservé.",
+    "fichier": "audio/plan-06-dlg.mp3",
+    "voix": "fr-FR-HenriNeural",
+    "rate": "-4%",
+    "pitch": "+0Hz",
+    "duree": 2.35,
+    "debut": 16.2
+  },
+  {
+    "plan": 7,
+    "genre": "dialogue",
+    "avatar": "AVA-003",
+    "texte": "Sérieux ? Envoie-moi le lien.",
+    "fichier": "audio/plan-07-dlg.mp3",
+    "voix": "fr-FR-RemyMultilingualNeural",
+    "rate": "-2%",
+    "pitch": "-8Hz",
+    "duree": 1.9,
+    "debut": 19.0
+  },
+  {
+    "plan": 8,
+    "genre": "dialogue",
+    "avatar": "AVA-002",
+    "texte": "Elle part dans dix minutes.",
+    "fichier": "audio/plan-08-dlg.mp3",
+    "voix": "fr-FR-HenriNeural",
+    "rate": "-4%",
+    "pitch": "+0Hz",
+    "duree": 1.18,
+    "debut": 21.8
+  },
+  {
+    "plan": 9,
+    "genre": "voix_off",
+    "avatar": null,
+    "texte": "Et maintenant, il y a MoheliGo.",
+    "fichier": "audio/plan-09-vo.mp3",
+    "voix": "fr-FR-HenriNeural",
+    "rate": "-8%",
+    "pitch": "+0Hz",
+    "duree": 1.85,
+    "debut": 24.9
+  }
+]

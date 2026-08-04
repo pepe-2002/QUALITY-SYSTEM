@@ -1,0 +1,302 @@
+{
+  "_doc": "Bibliothèque de décors réutilisables. Même principe que les avatars : le champ 'identite' est verrouillé et copié tel quel dans le prompt du moteur, avec le 'seed'. Un décor = un lieu reconnaissable d'une pub à l'autre.",
+  "_verite_terrain": "Rappel du terrain (retenu du patron) : les vedettes partent d'OUROVENI côté Grande Comore, pas de Chindini. Aucune photo libre de droits du port de Hoani n'existe — les décors portuaires sont donc générés, jamais présentés comme des photos documentaires.",
+  "decors": [
+    {
+      "id": "DEC-01",
+      "nom": "Port de Hoani",
+      "ile": "Mohéli",
+      "seed": 210001,
+      "identite": "small tropical island harbour at Hoani, Mohéli, Comoros: concrete jetty worn by salt, colourful wooden speedboats moored, turquoise shallow water, volcanic dark sand, coconut palms behind, low green hills in the background, Indian Ocean light",
+      "heures": [
+        "aube",
+        "matin",
+        "midi",
+        "dore",
+        "nuit"
+      ],
+      "ambiance_sonore": "port",
+      "plans_recommandes": [
+        "drone",
+        "cinema",
+        "fixe",
+        "selfie"
+      ],
+      "usage": "arrivée à Mohéli, embarquement retour, retrouvailles",
+      "photo_ref": [
+        "../pub/photos/plage-vedettes.jpg"
+      ]
+    },
+    {
+      "id": "DEC-02",
+      "nom": "Port d'Ouroveni",
+      "ile": "Grande Comore",
+      "seed": 210002,
+      "identite": "departure point at Ouroveni, southern Grande Comore, Comoros: black volcanic rock shoreline, small concrete landing, speedboats being loaded, travellers with bags on the slope, deep blue ocean, palm trees, mountainous coast",
+      "heures": [
+        "aube",
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "port",
+      "plans_recommandes": [
+        "cinema",
+        "fixe",
+        "drone"
+      ],
+      "usage": "DÉPART officiel des traversées côté Grande Comore",
+      "photo_ref": [
+        "../pub/photos/rochers.jpg"
+      ]
+    },
+    {
+      "id": "DEC-03",
+      "nom": "Port de Chindini",
+      "ile": "Grande Comore",
+      "seed": 210003,
+      "identite": "Chindini beach landing in southern Grande Comore, Comoros: pale sand beach, wooden boats pulled onto the shore, fishermen's nets, palm trees, view towards Mohéli island on the horizon",
+      "heures": [
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "plage",
+      "plans_recommandes": [
+        "cinema",
+        "drone"
+      ],
+      "usage": "point de vue sur Mohéli, pêche, secondaire — ne pas présenter comme le port de départ",
+      "photo_ref": [
+        "../pub/photos-cc/chindini.jpg"
+      ]
+    },
+    {
+      "id": "DEC-04",
+      "nom": "Port de Fomboni",
+      "ile": "Mohéli",
+      "seed": 210004,
+      "identite": "Fomboni main harbour, Mohéli, Comoros: longer concrete quay, cargo crates and sacks, minibuses waiting, small town buildings with tin roofs behind, busy but calm atmosphere",
+      "heures": [
+        "matin",
+        "midi",
+        "dore",
+        "nuit"
+      ],
+      "ambiance_sonore": "port",
+      "plans_recommandes": [
+        "fixe",
+        "cinema",
+        "drone"
+      ],
+      "usage": "chef-lieu, commerce, fret, correspondances"
+    },
+    {
+      "id": "DEC-05",
+      "nom": "Plage de Nioumachoua",
+      "ile": "Mohéli",
+      "seed": 210005,
+      "identite": "Nioumachoua beach, Mohéli, Comoros: crescent of pale sand, calm turquoise lagoon, the eight small Nioumachoua islets on the horizon, leaning coconut palms, no crowd, pristine",
+      "heures": [
+        "aube",
+        "matin",
+        "dore",
+        "nuit"
+      ],
+      "ambiance_sonore": "plage",
+      "plans_recommandes": [
+        "drone",
+        "cinema",
+        "ralenti",
+        "timelapse"
+      ],
+      "usage": "carte postale, tourisme, dauphins, îlots",
+      "photo_ref": [
+        "../pub/photos-cc/moheli-beach.jpg",
+        "../pub/photos/ilot.jpg"
+      ]
+    },
+    {
+      "id": "DEC-06",
+      "nom": "Plage d'Itsamia (tortues)",
+      "ile": "Mohéli",
+      "seed": 210006,
+      "identite": "Itsamia turtle nesting beach, Mohéli, Comoros: dark wide sand, tracks of a green sea turtle leading to the water, dense coastal vegetation, night scene under a starry sky or soft dawn light",
+      "heures": [
+        "nuit",
+        "aube"
+      ],
+      "ambiance_sonore": "plage_nuit",
+      "plans_recommandes": [
+        "fixe",
+        "cinema",
+        "ralenti"
+      ],
+      "usage": "écotourisme tortues — règle : pas de flash, distance respectée, guide présent",
+      "photo_ref": [
+        "../pub/photos-cc/tortues.jpg"
+      ]
+    },
+    {
+      "id": "DEC-07",
+      "nom": "Lodge / hôtel de Mohéli",
+      "ile": "Mohéli",
+      "seed": 210007,
+      "identite": "small eco-lodge on Mohéli, Comoros: bungalows with palm-thatch roofs, wooden terrace facing the lagoon, hammock, bougainvillea, simple elegant tropical hospitality",
+      "heures": [
+        "matin",
+        "midi",
+        "dore",
+        "nuit"
+      ],
+      "ambiance_sonore": "nature",
+      "plans_recommandes": [
+        "cinema",
+        "fixe",
+        "drone"
+      ],
+      "usage": "partenariats hébergement, séjour, arrivée du client"
+    },
+    {
+      "id": "DEC-08",
+      "nom": "Restaurant en bord de mer",
+      "ile": "Mohéli",
+      "seed": 210008,
+      "identite": "open-air seaside restaurant in the Comoros: wooden tables under a palm roof, grilled fish and rice plates, sea view through the posts, warm evening light, string lights",
+      "heures": [
+        "midi",
+        "dore",
+        "nuit"
+      ],
+      "ambiance_sonore": "restaurant",
+      "plans_recommandes": [
+        "fixe",
+        "cinema",
+        "selfie"
+      ],
+      "usage": "scène de conversation, témoignage client, ambiance détente"
+    },
+    {
+      "id": "DEC-09",
+      "nom": "Aéroport de Bandar-es-Salam (Mohéli)",
+      "ile": "Mohéli",
+      "seed": 210009,
+      "identite": "small island airport terminal in the Comoros: single-storey building, hand-painted sign, travellers waiting outside with luggage, small propeller aircraft on the apron, palm trees, heat haze",
+      "heures": [
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "exterieur_calme",
+      "plans_recommandes": [
+        "fixe",
+        "cinema"
+      ],
+      "usage": "comparaison avion/vedette, correspondance des visiteurs internationaux"
+    },
+    {
+      "id": "DEC-10",
+      "nom": "Intérieur d'une vedette",
+      "ile": "en mer",
+      "seed": 210010,
+      "identite": "interior of a fast passenger speedboat in the Indian Ocean: two rows of padded seats, low ceiling, salt-sprayed windows showing blue sea, orange life jackets stowed above, natural daylight, gentle motion",
+      "heures": [
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "vedette",
+      "plans_recommandes": [
+        "fixe",
+        "selfie",
+        "cinema"
+      ],
+      "usage": "traversée, confort, sécurité, sourires à bord",
+      "photo_ref": [
+        "../pub/photos/mer-bateau.jpg"
+      ]
+    },
+    {
+      "id": "DEC-11",
+      "nom": "Pleine mer entre les îles",
+      "ile": "en mer",
+      "seed": 210011,
+      "identite": "open Indian Ocean between Grande Comore and Mohéli: deep blue water, white wake of a fast speedboat, distant volcanic island silhouette, scattered clouds, strong tropical sunlight",
+      "heures": [
+        "aube",
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "mer",
+      "plans_recommandes": [
+        "drone",
+        "aerien",
+        "ralenti",
+        "cinema"
+      ],
+      "usage": "la traversée elle-même, plans d'ouverture spectaculaires",
+      "photo_ref": [
+        "../pub/photos/vedette-mer.jpg",
+        "../pub/photos/horizon.jpg",
+        "../pub/photos-cc/ile-aerienne.jpg"
+      ]
+    },
+    {
+      "id": "DEC-12",
+      "nom": "Marché de Fomboni",
+      "ile": "Mohéli",
+      "seed": 210012,
+      "identite": "open-air market in Fomboni, Mohéli: stalls of bananas, cassava, tomatoes and dried fish, women in colourful shiromani wraps, woven baskets, dappled shade under tarpaulins, lively but not crowded",
+      "heures": [
+        "matin",
+        "midi"
+      ],
+      "ambiance_sonore": "marche",
+      "plans_recommandes": [
+        "fixe",
+        "cinema",
+        "selfie"
+      ],
+      "usage": "vie locale, commerce, fret, authenticité"
+    },
+    {
+      "id": "DEC-13",
+      "nom": "Route côtière",
+      "ile": "Mohéli / Grande Comore",
+      "seed": 210013,
+      "identite": "narrow coastal road in the Comoros: worn tarmac, banana and coconut plantations on one side, ocean glimpses on the other, an old minibus and a scooter passing, green volcanic hills",
+      "heures": [
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "route",
+      "plans_recommandes": [
+        "drone",
+        "cinema",
+        "timelapse"
+      ],
+      "usage": "trajet vers le port, correspondance taxi, transition entre scènes"
+    },
+    {
+      "id": "DEC-14",
+      "nom": "Bureau MoheliGo",
+      "ile": "Mohéli (Fomboni)",
+      "seed": 210014,
+      "identite": "small modern travel office in the Comoros: teal and white MoheliGo branding on the wall, counter with a computer, printed schedule board, two chairs for customers, large window with harbour view, clean and bright",
+      "heures": [
+        "matin",
+        "midi",
+        "dore"
+      ],
+      "ambiance_sonore": "interieur_calme",
+      "plans_recommandes": [
+        "fixe",
+        "cinema"
+      ],
+      "usage": "service client, assistance, réservation accompagnée, recrutement"
+    }
+  ],
+  "_photos_ref": "Le champ 'photo_ref' pointe vers de vraies photos du dossier pub/ : elles servent (1) d'image de référence à donner au moteur vidéo en image-to-video, (2) de fond réel dans l'animatique. Chemins relatifs au dossier studio/."
+}

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RA-TMS — Gestion des formations · Royal Air</title>
+<style>
+/* ============================================================
+   RA-TMS — Training Management System
+   Charte RA-QDMS (Royal Air · Département Qualité)
+   ============================================================ */
+:root{
+  --navy:#0A2342; --royal:#0056D2; --royal-dark:#0043a6;
+  --bg:#F5F7FA; --surface:#FFFFFF; --surface-2:#EDF1F7;
+  --text:#17263B; --text-2:#5B6B82; --border:#E1E7F0;
+  --green:#1B9E4B; --green-bg:#E4F5EB;
+  --orange:#E58E00; --orange-bg:#FDF2DD;
+  --red:#D63031; --red-bg:#FCE8E8;
+  --blue-bg:#E7F0FE; --grey-bg:#EDF1F7;
+  --shadow:0 1px 3px rgba(10,35,66,.08), 0 4px 14px rgba(10,35,66,.06);
+  --shadow-lg:0 8px 30px rgba(10,35,66,.16);
+  --radius:12px; --sidebar-w:248px;
+}
+:root[data-theme="dark"]{
+  --bg:#0D1524; --surface:#14203a; --surface-2:#1B2A4A;
+  --text:#E8EEF7; --text-2:#93A3BC; --border:#24365C;
+  --green-bg:#12351f; --orange-bg:#3a2c10; --red-bg:#3a1616;
+  --blue-bg:#14294d; --grey-bg:#1B2A4A;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1524; --surface:#14203a; --surface-2:#1B2A4A;
+    --text:#E8EEF7; --text-2:#93A3BC; --border:#24365C;
+    --green-bg:#12351f; --orange-bg:#3a2c10; --red-bg:#3a1616;
+    --blue-bg:#14294d; --grey-bg:#1B2A4A;
+  }
+}
+*{box-sizing:border-box; margin:0; padding:0}
+body{
+  background:var(--bg); color:var(--text); font-size:14px;
+  font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+/* ---------- structure ---------- */
+#app{display:flex; min-height:100vh}
+#side{
+  width:var(--sidebar-w); flex:0 0 auto; background:var(--navy); color:#fff;
+  display:flex; flex-direction:column; position:sticky; top:0; height:100vh;
+}
+#side .marque{padding:20px 18px 16px; border-bottom:1px solid rgba(255,255,255,.12)}
+#side .marque h1{font-size:17px; letter-spacing:.4px; font-weight:800}
+#side .marque p{font-size:11px; color:#9FB6D6; margin-top:3px; letter-spacing:.06em; text-transform:uppercase}
+#side nav{padding:12px 10px; flex:1; overflow-y:auto}
+#side nav button{
+  width:100%; display:flex; align-items:center; gap:10px; background:none; border:none;
+  color:#C9D8EE; font:inherit; font-size:13.5px; text-align:left; padding:10px 12px;
+  border-radius:9px; cursor:pointer; margin-bottom:2px;
+}
+#side nav button:hover{background:rgba(255,255,255,.08); color:#fff}
+#side nav button.actif{background:var(--royal); color:#fff; font-weight:600}
+#side nav button .ic{width:18px; text-align:center; font-size:15px}
+#side .pied{padding:12px 14px; border-top:1px solid rgba(255,255,255,.12); font-size:11px; color:#8FA6C6}
+#side .pied button{background:none;border:1px solid rgba(255,255,255,.25);color:#C9D8EE;
+  border-radius:7px;padding:5px 9px;font:inherit;font-size:11px;cursor:pointer;margin-top:8px}
+main{flex:1; min-width:0; display:flex; flex-direction:column}
+header.top{
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:14px 22px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  position:sticky; top:0; z-index:20;
+}
+header.top h2{font-size:18px; font-weight:700; flex:1; min-width:150px}
+header.top .sub{font-size:12px; color:var(--text-2); font-weight:400; display:block; margin-top:2px}
+.contenu{padding:20px 22px 40px; flex:1}
+/* ---------- éléments ---------- */
+.grille-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:20px}
+.kpi{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:15px 16px; box-shadow:var(--shadow)}
+.kpi .lib{font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:var(--text-2)}
+.kpi .val{font-size:26px; font-weight:800; margin-top:5px; font-variant-numeric:tabular-nums}
+.kpi .det{font-size:12px; color:var(--text-2); margin-top:3px}
+.kpi.vert .val{color:var(--green)} .kpi.orange .val{color:var(--orange)} .kpi.rouge .val{color:var(--red)}
+.carte{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  box-shadow:var(--shadow); margin-bottom:18px; overflow:hidden}
+.carte > h3{
+  font-size:13px; font-weight:700; padding:13px 16px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:9px; letter-spacing:.02em;
+}
+.carte > h3 .compteur{margin-left:auto; font-weight:500; font-size:12px; color:var(--text-2)}
+.corps{padding:14px 16px}
+table{width:100%; border-collapse:collapse; font-size:13px}
+th{text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-2);
+  padding:9px 12px; border-bottom:1px solid var(--border); background:var(--surface-2); white-space:nowrap}
+td{padding:10px 12px; border-bottom:1px solid var(--border); vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--surface-2)}
+.scroll-x{overflow-x:auto}
+.badge{display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600;
+  padding:3px 9px; border-radius:99px; white-space:nowrap}
+.b-valide{background:var(--green-bg); color:var(--green)}
+.b-alerte{background:var(--orange-bg); color:var(--orange)}
+.b-expire{background:var(--red-bg); color:var(--red)}
+.b-absent{background:var(--grey-bg); color:var(--text-2)}
+.b-info{background:var(--blue-bg); color:var(--royal)}
+.btn{background:var(--royal); color:#fff; border:none; border-radius:8px; padding:8px 14px;
+  font:inherit; font-size:13px; font-weight:600; cursor:pointer}
+.btn:hover{background:var(--royal-dark)}
+.btn.sec{background:var(--surface-2); color:var(--text); border:1px solid var(--border)}
+.btn.dang{background:var(--red)}
+.btn.min{padding:5px 10px; font-size:12px}
+.btn:disabled{opacity:.45; cursor:default}
+.champ{margin-bottom:13px}
+.champ label{display:block; font-size:11.5px; font-weight:600; color:var(--text-2);
+  text-transform:uppercase; letter-spacing:.05em; margin-bottom:5px}
+input,select,textarea{
+  width:100%; background:var(--surface); color:var(--text); border:1px solid var(--border);
+  border-radius:8px; padding:9px 11px; font:inherit; font-size:13.5px;
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--royal); outline-offset:-1px; border-color:var(--royal)}
+.ligne2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.barre{display:flex; gap:9px; flex-wrap:wrap; align-items:center; margin-bottom:16px}
+.barre input,.barre select{width:auto; min-width:150px; flex:0 1 auto}
+.jauge{height:7px; background:var(--surface-2); border-radius:99px; overflow:hidden; margin-top:6px}
+.jauge i{display:block; height:100%; border-radius:99px; background:var(--green); transition:width .4s}
+.vide{padding:26px 16px; text-align:center; color:var(--text-2); font-size:13px}
+/* matrice */
+.matrice{font-size:12px}
+.matrice th.mat{writing-mode:vertical-rl; transform:rotate(180deg); height:130px; padding:8px 4px;
+  font-size:10.5px; letter-spacing:.03em; text-align:left; vertical-align:bottom}
+.matrice td.cell{text-align:center; padding:6px 4px; font-weight:700; font-size:11px; cursor:default}
+.matrice td.nom{position:sticky; left:0; background:var(--surface); font-weight:600; white-space:nowrap; z-index:2}
+.matrice tbody tr:hover td.nom{background:var(--surface-2)}
+.c-valide{background:var(--green-bg); color:var(--green)}
+.c-alerte{background:var(--orange-bg); color:var(--orange)}
+.c-expire{background:var(--red-bg); color:var(--red)}
+.c-absent{background:var(--grey-bg); color:var(--text-2)}
+.c-na{color:var(--border)}
+/* modale */
+#voile{position:fixed; inset:0; background:rgba(10,35,66,.55); z-index:60; display:none;
+  align-items:flex-start; justify-content:center; padding:26px 16px; overflow-y:auto}
+#voile.ouvert{display:flex}
+.modale{background:var(--surface); border-radius:14px; box-shadow:var(--shadow-lg);
+  width:100%; max-width:640px; overflow:hidden}
+.modale h3{font-size:15px; font-weight:700; padding:16px 20px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:9px}
+.modale h3 button{margin-left:auto; background:none; border:none; font-size:20px;
+  color:var(--text-2); cursor:pointer; line-height:1}
+.modale .mcorps{padding:18px 20px; max-height:65vh; overflow-y:auto}
+.modale .mpied{padding:13px 20px; border-top:1px solid var(--border); display:flex; gap:9px; justify-content:flex-end}
+.liste-part{border:1px solid var(--border); border-radius:9px; max-height:230px; overflow-y:auto}
+.liste-part label{display:flex; align-items:center; gap:9px; padding:8px 12px;
+  border-bottom:1px solid var(--border); font-size:13px; cursor:pointer}
+.liste-part label:last-child{border-bottom:none}
+.liste-part input{width:auto; flex:0 0 auto}
+.liste-part .fn{color:var(--text-2); font-size:11.5px; margin-left:auto}
+/* mobile */
+#burger{display:none; background:none; border:1px solid var(--border); border-radius:8px;
+  padding:6px 10px; font-size:16px; cursor:pointer; color:var(--text)}
+@media (max-width:860px){
+  #side{position:fixed; left:0; top:0; z-index:50; transform:translateX(-100%); transition:transform .25s}
+  #side.ouvert{transform:translateX(0)}
+  #burger{display:block}
+  .contenu{padding:16px 14px 40px}
+  header.top{padding:12px 14px}
+  .ligne2{grid-template-columns:1fr}
+}
+/* impression : attestation */
+#impression{display:none}
+@media print{
+  #side, header.top, #voile, .barre, .noprint{display:none !important}
+  body{background:#fff}
+  #impression{display:block; padding:0}
+  .contenu{display:none}
+}
+.attest{max-width:760px; margin:0 auto; padding:40px; color:#17263B; background:#fff}
+.attest .ent{display:flex; align-items:flex-start; border-bottom:3px solid #0A2342; padding-bottom:14px; margin-bottom:26px}
+.attest .ent h1{font-size:20px; color:#0A2342} .attest .ent p{font-size:12px; color:#5B6B82}
+.attest .ent .ref{margin-left:auto; text-align:right; font-size:11px; color:#5B6B82}
+.attest h2{font-size:17px; text-align:center; margin:22px 0; letter-spacing:1px; text-transform:uppercase}
+.attest table{margin:18px 0}
+.attest .sign{margin-top:60px; display:flex; justify-content:space-between; font-size:12px}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <aside id="side">
+    <div class="marque">
+      <h1>RA-TMS</h1>
+      <p>Formation &amp; Compétences</p>
+    </div>
+    <nav id="nav">
+      <button data-vue="tableau" class="actif"><span class="ic">▣</span> Tableau de bord</button>
+      <button data-vue="echeances"><span class="ic">⏱</span> Échéances</button>
+      <button data-vue="sessions"><span class="ic">🗓</span> Programmation</button>
+      <button data-vue="matrice"><span class="ic">▦</span> Matrice de conformité</button>
+      <button data-vue="personnel"><span class="ic">👤</span> Personnel</button>
+      <button data-vue="catalogue"><span class="ic">📚</span> Catalogue</button>
+    </nav>
+    <div class="pied">
+      Royal Air · Département Qualité<br>ANACM · OACI · ISO 9001
+      <button id="btn-theme" type="button">Basculer le thème</button>
+      <button id="btn-reset" type="button">Réinitialiser les données</button>
+    </div>
+  </aside>
+
+  <main>
+    <header class="top">
+      <button id="burger" type="button">☰</button>
+      <h2 id="titre">Tableau de bord<span class="sub" id="soustitre"></span></h2>
+      <div id="actions-top"></div>
+    </header>
+    <div class="contenu" id="contenu"></div>
+  </main>
+</div>
+
+<div id="voile"><div class="modale" id="modale"></div></div>
+<div id="impression"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   RA-TMS — Gestion et suivi des formations aéronautiques
+   Royal Air · flotte LET L-410 UVP-E20 · référentiel ANACM / OACI / ISO 9001
+   Application autonome : aucune dépendance, données en localStorage.
+   ===================================================================== */
+
+const CLE = "ra-tms-v1";
+const $ = id => document.getElementById(id);
+const AUJ = () => new Date();
+const JOUR = 86400000;
+
+/* ---------------- référentiel des formations ---------------- */
+const FONCTIONS = ["Commandant de bord","Officier pilote de ligne","Chef de cabine","Personnel navigant commercial",
+                   "Technicien de maintenance","Agent d'opérations (FOO)","Agent de piste","Agent de sûreté","Qualité / SGS"];
+const PNT = ["Commandant de bord","Officier pilote de ligne"];
+const PNC = ["Chef de cabine","Personnel navigant commercial"];
+const SOL = ["Technicien de maintenance","Agent d'opérations (FOO)","Agent de piste","Agent de sûreté","Qualité / SGS"];
+
+const CATALOGUE = [
+  {code:"CRM",    lib:"CRM — Gestion des ressources de l'équipage", mois:12, h:8,  ref:"OACI Annexe 6 · RAC-OPS 1.943", cible:[...PNT,...PNC]},
+  {code:"SGS",    lib:"SGS — Système de gestion de la sécurité",    mois:24, h:8,  ref:"OACI Annexe 19", cible:FONCTIONS},
+  {code:"DGR",    lib:"Marchandises dangereuses (DGR)",             mois:24, h:16, ref:"OACI Doc 9284 · IATA DGR", cible:[...PNT,...PNC,"Agent d'opérations (FOO)","Agent de piste","Technicien de maintenance"]},
+  {code:"AVSEC",  lib:"Sûreté de l'aviation civile (AVSEC)",        mois:24, h:8,  ref:"OACI Annexe 17", cible:FONCTIONS},
+  {code:"FH",     lib:"Facteurs humains",                           mois:24, h:8,  ref:"OACI Doc 9683 · Part-145", cible:FONCTIONS},
+  {code:"SEP",    lib:"Sécurité-sauvetage (SEP)",                   mois:12, h:8,  ref:"RAC-OPS 1.1015", cible:[...PNT,...PNC]},
+  {code:"SECOURS",lib:"Premiers secours",                           mois:36, h:8,  ref:"RAC-OPS 1.1005", cible:[...PNT,...PNC,"Agent de piste"]},
+  {code:"FEU",    lib:"Lutte contre l'incendie (feu réel)",         mois:36, h:4,  ref:"RAC-OPS 1.1015 (d)", cible:[...PNT,...PNC,"Agent de piste"]},
+  {code:"EVAC",   lib:"Évacuation d'urgence et amerrissage",        mois:36, h:4,  ref:"RAC-OPS 1.1015 (e)", cible:[...PNT,...PNC]},
+  {code:"PC",     lib:"Contrôle hors ligne (Proficiency check)",    mois:6,  h:3,  ref:"RAC-OPS 1.965", cible:PNT},
+  {code:"LC",     lib:"Contrôle en ligne (Line check)",             mois:12, h:3,  ref:"RAC-OPS 1.965 (c)", cible:PNT},
+  {code:"L410",   lib:"Qualification de type LET L-410 UVP-E20",    mois:12, h:24, ref:"OACI Annexe 1 · RAC-FCL", cible:[...PNT,"Technicien de maintenance"]},
+  {code:"SIM",    lib:"Entraînement périodique sur simulateur",     mois:6,  h:4,  ref:"RAC-OPS 1.965 (b)", cible:PNT},
+  {code:"MB",     lib:"Chargement et centrage (Mass & Balance)",    mois:24, h:6,  ref:"RAC-OPS 1 Subpart J", cible:[...PNT,"Agent d'opérations (FOO)","Agent de piste"]},
+  {code:"FUEL",   lib:"Politique carburant et gestion en vol",      mois:24, h:4,  ref:"RAC-OPS 1.255", cible:[...PNT,"Agent d'opérations (FOO)"]},
+  {code:"RT",     lib:"Radiotéléphonie et phraséologie",            mois:24, h:6,  ref:"OACI Annexe 10 Vol. II", cible:[...PNT,"Agent d'opérations (FOO)"]},
+  {code:"FOD",    lib:"Prévention FOD et conduite sur aire",        mois:12, h:3,  ref:"OACI Annexe 14", cible:["Agent de piste","Technicien de maintenance"]},
+  {code:"EWIS",   lib:"EWIS et sécurité des réservoirs",            mois:24, h:8,  ref:"Part-145 · AMC 20-21/22", cible:["Technicien de maintenance"]},
+  {code:"AUDIT",  lib:"Audit interne ISO 9001:2015",                mois:36, h:16, ref:"ISO 19011 · ISO 9001", cible:["Qualité / SGS","Agent d'opérations (FOO)"]},
+  {code:"GH",     lib:"Assistance en escale (Ground Handling)",     mois:24, h:8,  ref:"IATA AHM · OACI Annexe 6", cible:["Agent de piste","Agent d'opérations (FOO)"]},
+];
+const parCode = c => CATALOGUE.find(x => x.code === c);
+
+/* ---------------- données ---------------- */
+let D = null;   // {agents, sessions, seq}
+let vueCourante = "tableau";
+
+function iso(d){ return new Date(d).toISOString().slice(0,10); }
+function fdate(s){
+  if(!s) return "—";
+  const d = new Date(s);
+  return d.toLocaleDateString("fr-FR", {day:"2-digit", month:"short", year:"numeric"});
+}
+function ajouterMois(dateStr, mois){
+  const d = new Date(dateStr);
+  d.setMonth(d.getMonth() + mois);
+  return iso(d);
+}
+function joursRestants(echeance){
+  return Math.round((new Date(echeance) - AUJ()) / JOUR);
+}
+function statutQualif(q){
+  if(!q || !q.echeance) return {cle:"absent", lib:"Non réalisée", cls:"b-absent"};
+  const j = joursRestants(q.echeance);
+  if(j < 0)  return {cle:"expire", lib:"Expirée depuis "+Math.abs(j)+" j", cls:"b-expire", jours:j};
+  if(j <= 60) return {cle:"alerte", lib:"Échéance dans "+j+" j", cls:"b-alerte", jours:j};
+  return {cle:"valide", lib:"Valide", cls:"b-valide", jours:j};
+}
+function formationsDe(agent){ return CATALOGUE.filter(f => f.cible.includes(agent.fonction)); }
+
+function sauver(){ try{ localStorage.setItem(CLE, JSON.stringify(D)); }catch(e){} }
+function charger(){
+  try{
+    const b = localStorage.getItem(CLE);
+    if(b){ D = JSON.parse(b); return true; }
+  }catch(e){}
+  return false;
+}
+
+/* ---------------- jeu de données de démonstration ---------------- */
+function donneesDemo(){
+  const noms = [
+    ["Saïd Ahamada","Commandant de bord","PN-001"], ["Nadjma Abdallah","Officier pilote de ligne","PN-002"],
+    ["Ibrahim Soilih","Commandant de bord","PN-003"], ["Faïza Mohamed","Officier pilote de ligne","PN-004"],
+    ["Moussa Bacar","Commandant de bord","PN-005"],
+    ["Amina Attoumane","Chef de cabine","PC-001"], ["Halima Saandi","Personnel navigant commercial","PC-002"],
+    ["Zaïnaba Djoumbé","Personnel navigant commercial","PC-003"],
+    ["Ali Combo","Technicien de maintenance","MX-001"], ["Youssouf Mzé","Technicien de maintenance","MX-002"],
+    ["Abdou Halidi","Technicien de maintenance","MX-003"],
+    ["Karim Madi","Agent d'opérations (FOO)","OP-001"], ["Echat Bacar","Agent d'opérations (FOO)","OP-002"],
+    ["Anli Ahamada","Agent de piste","GH-001"], ["Soilihi Abdallah","Agent de piste","GH-002"],
+    ["Mariama Combo","Agent de sûreté","SEC-001"],
+    ["Nayamdine Wahidi","Qualité / SGS","QA-001"], ["Salima Mohamed","Qualité / SGS","QA-002"],
+  ];
+  // décalages en jours pour créer une situation réaliste (valides, alertes, expirés, manquants)
+  const motif = [300, 120, 40, -25, 700, 200, 15, -80, 500, 55, 250, -10, 900, 30, 400, 160, -45, 620];
+  const agents = noms.map((n, i) => {
+    const [nom, fonction, matricule] = n;
+    const a = {id:"A"+(i+1), nom, fonction, matricule, service: fonction.includes("pilote")||fonction.includes("Commandant") ? "Opérations aériennes"
+      : fonction.includes("cabine")||fonction.includes("navigant") ? "Cabine"
+      : fonction.includes("maintenance") ? "Maintenance"
+      : fonction.includes("FOO") ? "Exploitation" : fonction.includes("piste") ? "Escale"
+      : fonction.includes("sûreté") ? "Sûreté" : "Qualité",
+      embauche: iso(new Date(2018 + (i%6), (i*3)%12, 1+(i%25))), actif:true, qualifs:{}};
+    formationsDe(a).forEach((f, k) => {
+      // une formation sur six est volontairement absente
+      if((i + k) % 6 === 3) return;
+      const decal = motif[(i + k*3) % motif.length];
+      const echeance = iso(new Date(Date.now() + decal*JOUR));
+      a.qualifs[f.code] = {realisee: ajouterMois(echeance, -f.mois), echeance, formateur:"—", session:null};
+    });
+    return a;
+  });
+
+  // quelques sessions programmées
+  const dans = j => iso(new Date(Date.now() + j*JOUR));
+  const sessions = [
+    {id:"S1", code:"CRM",   date:dans(12), heure:"08:30", lieu:"Salle de formation — Moroni", formateur:"Cdt S. Ahamada",
+     participants:["A2","A4","A6","A7"], statut:"planifiee", notes:"Module périodique annuel."},
+    {id:"S2", code:"DGR",   date:dans(26), heure:"09:00", lieu:"Salle Qualité — Hahaya", formateur:"N. Wahidi",
+     participants:["A12","A13","A14","A15"], statut:"planifiee", notes:"Recyclage biennal IATA DGR."},
+    {id:"S3", code:"PC",    date:dans(5),  heure:"07:00", lieu:"Simulateur — Nairobi", formateur:"Examinateur ANACM",
+     participants:["A1","A3"], statut:"planifiee", notes:"Contrôle hors ligne semestriel."},
+    {id:"S4", code:"AVSEC", date:dans(-20),heure:"14:00", lieu:"Salle de formation — Moroni", formateur:"M. Combo",
+     participants:["A16","A17","A18"], statut:"realisee", notes:"Session réalisée, attestations émises."},
+  ];
+  return {agents, sessions, seq:{a:agents.length, s:sessions.length}};
+}
+
+/* ---------------- calculs de conformité ---------------- */
+function etatGlobal(){
+  let total = 0, valide = 0, alerte = 0, expire = 0, absent = 0;
+  for(const a of D.agents){
+    if(!a.actif) continue;
+    for(const f of formationsDe(a)){
+      total++;
+      const s = statutQualif(a.qualifs[f.code]).cle;
+      if(s==="valide") valide++; else if(s==="alerte") alerte++;
+      else if(s==="expire") expire++; else absent++;
+    }
+  }
+  return {total, valide, alerte, expire, absent, taux: total ? Math.round(valide/total*100) : 0};
+}
+function toutesEcheances(){
+  const out = [];
+  for(const a of D.agents){
+    if(!a.actif) continue;
+    for(const f of formationsDe(a)){
+      const q = a.qualifs[f.code];
+      const st = statutQualif(q);
+      if(st.cle === "valide") continue;
+      out.push({agent:a, form:f, qualif:q, st, jours: q && q.echeance ? joursRestants(q.echeance) : -9999});
+    }
+  }
+  // priorité : expirées d'abord (les plus anciennes), puis jamais réalisées, puis échéances proches
+  const rang = {expire:0, absent:1, alerte:2};
+  return out.sort((x,y) => (rang[x.st.cle] - rang[y.st.cle]) || (x.jours - y.jours));
+}
+
+/* ---------------- rendu ---------------- */
+function html(el, s){ el.innerHTML = s; }
+function aller(vue){
+  vueCourante = vue;
+  for(const b of document.querySelectorAll("#nav button")) b.classList.toggle("actif", b.dataset.vue === vue);
+  $("side").classList.remove("ouvert");
+  $("actions-top").innerHTML = "";
+  ({tableau:vueTableau, echeances:vueEcheances, sessions:vueSessions,
+    matrice:vueMatrice, personnel:vuePersonnel, catalogue:vueCatalogue})[vue]();
+  window.scrollTo(0,0);
+}
+function entete(titre, sous){ $("titre").innerHTML = titre + `<span class="sub">${sous||""}</span>`; }
+function bouton(label, fn, classe){
+  const b = document.createElement("button");
+  b.className = "btn " + (classe||"");
+  b.textContent = label;
+  b.onclick = fn;
+  $("actions-top").appendChild(b);
+  return b;
+}
+
+/* ----- tableau de bord ----- */
+function vueTableau(){
+  const g = etatGlobal();
+  const ech = toutesEcheances();
+  const urgent = ech.filter(e => e.st.cle === "expire");
+  const proche = ech.filter(e => e.st.cle === "alerte");
+  const manquant = ech.filter(e => e.st.cle === "absent");
+  const aVenir = D.sessions.filter(s => s.statut === "planifiee")
+                           .sort((a,b) => a.date.localeCompare(b.date));
+  entete("Tableau de bord", `Conformité formation · ${D.agents.filter(a=>a.actif).length} agents actifs · ${new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric"})}`);
+  bouton("+ Programmer une session", () => modaleSession());
+
+  html($("contenu"), `
+    <div class="grille-kpi">
+      <div class="kpi ${g.taux>=90?"vert":g.taux>=75?"orange":"rouge"}">
+        <div class="lib">Taux de conformité</div><div class="val">${g.taux} %</div>
+        <div class="jauge"><i style="width:${g.taux}%;background:${g.taux>=90?"var(--green)":g.taux>=75?"var(--orange)":"var(--red)"}"></i></div>
+        <div class="det">${g.valide} qualifications valides sur ${g.total}</div>
+      </div>
+      <div class="kpi rouge"><div class="lib">Qualifications expirées</div><div class="val">${g.expire}</div>
+        <div class="det">Interdiction d'exercice — à traiter d'urgence</div></div>
+      <div class="kpi orange"><div class="lib">Échéances sous 60 jours</div><div class="val">${g.alerte}</div>
+        <div class="det">À programmer sans tarder</div></div>
+      <div class="kpi"><div class="lib">Jamais réalisées</div><div class="val">${g.absent}</div>
+        <div class="det">Formations initiales à planifier</div></div>
+    </div>
+
+    <div class="carte">
+      <h3>⚠️ Priorités immédiates <span class="compteur">${urgent.length} expirée(s) · ${proche.length} sous 60 j</span></h3>
+      <div class="scroll-x">
+      ${ech.length ? `<table><thead><tr><th>Agent</th><th>Fonction</th><th>Formation</th><th>Échéance</th><th>Statut</th><th></th></tr></thead>
+        <tbody>${ech.slice(0,12).map(e => `
+          <tr><td><b>${e.agent.nom}</b><br><span style="color:var(--text-2);font-size:11.5px">${e.agent.matricule}</span></td>
+            <td style="color:var(--text-2)">${e.agent.fonction}</td>
+            <td>${e.form.code} — ${e.form.lib.replace(/^[A-Z0-9]+ — /,"")}</td>
+            <td>${e.qualif ? fdate(e.qualif.echeance) : "—"}</td>
+            <td><span class="badge ${e.st.cls}">${e.st.lib}</span></td>
+            <td><button class="btn min sec" onclick="modaleSession('${e.form.code}',['${e.agent.id}'])">Programmer</button></td></tr>`).join("")}
+        </tbody></table>` : `<div class="vide">Aucune échéance à traiter. Tout l'effectif est à jour.</div>`}
+      </div>
+    </div>
+
+    <div class="carte">
+      <h3>🗓 Prochaines sessions <span class="compteur">${aVenir.length} programmée(s)</span></h3>
+      <div class="scroll-x">
+      ${aVenir.length ? `<table><thead><tr><th>Date</th><th>Formation</th><th>Formateur</th><th>Lieu</th><th>Participants</th><th></th></tr></thead>
+        <tbody>${aVenir.slice(0,8).map(s => { const f = parCode(s.code); const j = joursRestants(s.date);
+          return `<tr><td><b>${fdate(s.date)}</b><br><span style="color:var(--text-2);font-size:11.5px">${s.heure} · ${j>=0?"dans "+j+" j":"dépassée"}</span></td>
+            <td>${f?f.lib:s.code}</td><td>${s.formateur}</td><td style="color:var(--text-2)">${s.lieu}</td>
+            <td>${s.participants.length}</td>
+            <td><button class="btn min" onclick="validerSession('${s.id}')">Valider</button></td></tr>`; }).join("")}
+        </tbody></table>` : `<div class="vide">Aucune session programmée.</div>`}
+      </div>
+    </div>
+
+    <div class="carte">
+      <h3>📊 Conformité par service</h3>
+      <div class="corps">
+        ${[...new Set(D.agents.filter(a=>a.actif).map(a=>a.service))].map(sv => {
+          const ags = D.agents.filter(a => a.actif && a.service === sv);
+          let t=0, v=0;
+          for(const a of ags) for(const f of formationsDe(a)){ t++; if(statutQualif(a.qualifs[f.code]).cle==="valide") v++; }
+          const p = t ? Math.round(v/t*100) : 0;
+          return `<div style="margin-bottom:12px">
+            <div style="display:flex;justify-content:space-between;font-size:12.5px">
+              <span><b>${sv}</b> <span style="color:var(--text-2)">· ${ags.length} agent(s)</span></span>
+              <b style="font-variant-numeric:tabular-nums">${p} %</b></div>
+            <div class="jauge"><i style="width:${p}%;background:${p>=90?"var(--green)":p>=75?"var(--orange)":"var(--red)"}"></i></div>
+          </div>`;
+        }).join("")}
+      </div>
+    </div>`);
+}
+
+/* ----- échéances ----- */
+function vueEcheances(){
+  entete("Échéances", "Toutes les qualifications à renouveler, du plus urgent au plus lointain");
+  bouton("Exporter en CSV", exporterEcheances, "sec");
+  const ech = toutesEcheances();
+  html($("contenu"), `
+    <div class="barre">
+      <select id="f-statut"><option value="">Tous les statuts</option>
+        <option value="expire">Expirées</option><option value="alerte">Sous 60 jours</option>
+        <option value="absent">Jamais réalisées</option></select>
+      <select id="f-service"><option value="">Tous les services</option>
+        ${[...new Set(D.agents.map(a=>a.service))].map(s=>`<option>${s}</option>`).join("")}</select>
+      <input id="f-rech" placeholder="Rechercher un agent…">
+    </div>
+    <div class="carte"><div class="scroll-x" id="tbl-ech"></div></div>`);
+
+  const dessiner = () => {
+    const fs = $("f-statut").value, fsv = $("f-service").value, fr = $("f-rech").value.toLowerCase();
+    const l = ech.filter(e => (!fs || e.st.cle === fs) && (!fsv || e.agent.service === fsv)
+                           && (!fr || e.agent.nom.toLowerCase().includes(fr) || e.agent.matricule.toLowerCase().includes(fr)));
+    html($("tbl-ech"), l.length ? `<table><thead><tr><th>Agent</th><th>Service</th><th>Formation</th><th>Réf. réglementaire</th>
+      <th>Dernière</th><th>Échéance</th><th>Statut</th><th></th></tr></thead><tbody>
+      ${l.map(e => `<tr>
+        <td><b>${e.agent.nom}</b><br><span style="color:var(--text-2);font-size:11.5px">${e.agent.matricule} · ${e.agent.fonction}</span></td>
+        <td style="color:var(--text-2)">${e.agent.service}</td>
+        <td>${e.form.lib}</td>
+        <td style="color:var(--text-2);font-size:11.5px">${e.form.ref}</td>
+        <td>${e.qualif ? fdate(e.qualif.realisee) : "—"}</td>
+        <td>${e.qualif ? fdate(e.qualif.echeance) : "—"}</td>
+        <td><span class="badge ${e.st.cls}">${e.st.lib}</span></td>
+        <td><button class="btn min sec" onclick="modaleSession('${e.form.code}',['${e.agent.id}'])">Programmer</button></td>
+      </tr>`).join("")}</tbody></table>` : `<div class="vide">Aucune échéance ne correspond à ces filtres.</div>`);
+  };
+  $("f-statut").onchange = $("f-service").onchange = dessiner;
+  $("f-rech").oninput = dessiner;
+  dessiner();
+}
+function exporterEcheances(){
+  const l = toutesEcheances();
+  const lignes = [["Matricule","Nom","Fonction","Service","Code","Formation","Reference","Derniere","Echeance","Statut"]];
+  for(const e of l) lignes.push([e.agent.matricule, e.agent.nom, e.agent.fonction, e.agent.service,
+    e.form.code, e.form.lib, e.form.ref, e.qualif?e.qualif.realisee:"", e.qualif?e.qualif.echeance:"", e.st.lib]);
+  const csv = lignes.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(";")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob(["﻿"+csv], {type:"text/csv;charset=utf-8"}));
+  a.download = "RA-TMS_echeances_" + iso(AUJ()) + ".csv";
+  a.click();
+}
+
+/* ----- programmation des sessions ----- */
+function vueSessions(){
+  entete("Programmation", "Planifier les sessions et enregistrer leur réalisation");
+  bouton("+ Programmer une session", () => modaleSession());
+  const tri = s => s.slice().sort((a,b) => b.date.localeCompare(a.date));
+  const bloc = (titre, list, actions) => `
+    <div class="carte"><h3>${titre}<span class="compteur">${list.length}</span></h3><div class="scroll-x">
+    ${list.length ? `<table><thead><tr><th>Date</th><th>Formation</th><th>Formateur</th><th>Lieu</th><th>Participants</th><th>Durée</th><th></th></tr></thead><tbody>
+      ${list.map(s => { const f = parCode(s.code);
+        return `<tr>
+          <td><b>${fdate(s.date)}</b><br><span style="color:var(--text-2);font-size:11.5px">${s.heure}</span></td>
+          <td>${f?f.lib:s.code}<br><span style="color:var(--text-2);font-size:11.5px">${f?f.ref:""}</span></td>
+          <td>${s.formateur}</td><td style="color:var(--text-2)">${s.lieu}</td>
+          <td>${s.participants.length} agent(s)</td><td>${f?f.h+" h":"—"}</td>
+          <td style="white-space:nowrap">${actions(s)}</td></tr>`; }).join("")}
+    </tbody></table>` : `<div class="vide">Aucune session.</div>`}</div></div>`;
+
+  html($("contenu"),
+    bloc("🗓 Sessions programmées", tri(D.sessions.filter(s=>s.statut==="planifiee")).reverse(),
+      s => `<button class="btn min" onclick="validerSession('${s.id}')">Valider</button>
+            <button class="btn min sec" onclick="modaleSession(null,null,'${s.id}')">Modifier</button>
+            <button class="btn min sec" onclick="supprimerSession('${s.id}')">✕</button>`) +
+    bloc("✅ Sessions réalisées", tri(D.sessions.filter(s=>s.statut==="realisee")),
+      s => `<button class="btn min sec" onclick="imprimerFeuille('${s.id}')">Feuille de présence</button>`));
+}
+
+function modaleSession(codePre, agentsPre, idModif){
+  const s = idModif ? D.sessions.find(x => x.id === idModif) : null;
+  const code = s ? s.code : (codePre || CATALOGUE[0].code);
+  const sel = new Set(s ? s.participants : (agentsPre || []));
+  ouvrirModale(`${s ? "Modifier la session" : "Programmer une session"}`, `
+    <div class="champ"><label>Formation</label>
+      <select id="m-code">${CATALOGUE.map(f => `<option value="${f.code}" ${f.code===code?"selected":""}>${f.lib} — ${f.mois} mois</option>`).join("")}</select>
+      <div style="font-size:11.5px;color:var(--text-2);margin-top:5px" id="m-ref"></div></div>
+    <div class="ligne2">
+      <div class="champ"><label>Date</label><input type="date" id="m-date" value="${s?s.date:iso(new Date(Date.now()+14*JOUR))}"></div>
+      <div class="champ"><label>Heure de début</label><input type="time" id="m-heure" value="${s?s.heure:"08:30"}"></div>
+    </div>
+    <div class="ligne2">
+      <div class="champ"><label>Formateur / examinateur</label><input id="m-form" value="${s?s.formateur:""}" placeholder="Nom du formateur"></div>
+      <div class="champ"><label>Lieu</label><input id="m-lieu" value="${s?s.lieu:"Salle de formation — Moroni"}"></div>
+    </div>
+    <div class="champ"><label>Participants convoqués <span id="m-nb"></span></label>
+      <div class="liste-part" id="m-part"></div></div>
+    <div class="champ"><label>Observations</label><textarea id="m-notes" rows="2">${s?s.notes||"":""}</textarea></div>
+  `, [
+    {label:"Annuler", classe:"sec", fn: fermerModale},
+    {label: s ? "Enregistrer" : "Programmer", fn: () => {
+      const obj = {
+        id: s ? s.id : "S" + (++D.seq.s) + "-" + Date.now().toString(36),
+        code: $("m-code").value, date: $("m-date").value, heure: $("m-heure").value,
+        lieu: $("m-lieu").value.trim() || "—", formateur: $("m-form").value.trim() || "—",
+        participants: [...sel], statut: s ? s.statut : "planifiee", notes: $("m-notes").value.trim(),
+      };
+      if(!obj.participants.length){ alert("Sélectionne au moins un participant."); return; }
+      if(s) Object.assign(s, obj); else D.sessions.push(obj);
+      sauver(); fermerModale(); aller(vueCourante);
+    }},
+  ]);
+
+  const majListe = () => {
+    const f = parCode($("m-code").value);
+    $("m-ref").textContent = f ? `${f.ref} · périodicité ${f.mois} mois · ${f.h} h` : "";
+    const concernes = D.agents.filter(a => a.actif && f && f.cible.includes(a.fonction));
+    $("m-part").innerHTML = concernes.map(a => {
+      const st = statutQualif(a.qualifs[f.code]);
+      return `<label><input type="checkbox" value="${a.id}" ${sel.has(a.id)?"checked":""}>
+        <span>${a.nom} <span style="color:var(--text-2);font-size:11.5px">· ${a.matricule}</span></span>
+        <span class="fn"><span class="badge ${st.cls}">${st.lib}</span></span></label>`;
+    }).join("") || `<div class="vide">Aucun agent concerné par cette formation.</div>`;
+    for(const cb of $("m-part").querySelectorAll("input")){
+      cb.onchange = () => { cb.checked ? sel.add(cb.value) : sel.delete(cb.value); majNb(); };
+    }
+    // ne garder que les participants réellement concernés
+    for(const id of [...sel]) if(!concernes.some(a => a.id === id)) sel.delete(id);
+    majNb();
+  };
+  const majNb = () => { $("m-nb").textContent = `— ${sel.size} sélectionné(s)`; };
+  $("m-code").onchange = majListe;
+  majListe();
+}
+
+function validerSession(id){
+  const s = D.sessions.find(x => x.id === id);
+  if(!s) return;
+  const f = parCode(s.code);
+  ouvrirModale("Enregistrer la réalisation", `
+    <p style="font-size:13.5px;line-height:1.6;margin-bottom:14px">
+      <b>${f.lib}</b><br><span style="color:var(--text-2)">${f.ref} · périodicité ${f.mois} mois</span></p>
+    <div class="champ"><label>Date de réalisation</label><input type="date" id="v-date" value="${s.date}"></div>
+    <div class="champ"><label>Participants présents</label>
+      <div class="liste-part">${s.participants.map(id => {
+        const a = D.agents.find(x => x.id === id);
+        return a ? `<label><input type="checkbox" value="${a.id}" checked>
+          <span>${a.nom}</span><span class="fn">${a.matricule}</span></label>` : "";
+      }).join("")}</div></div>
+    <p style="font-size:12.5px;color:var(--text-2);margin-top:12px">
+      La nouvelle échéance sera calculée automatiquement : date de réalisation + ${f.mois} mois.</p>
+  `, [
+    {label:"Annuler", classe:"sec", fn: fermerModale},
+    {label:"Enregistrer la réalisation", fn: () => {
+      const dateR = $("v-date").value;
+      const presents = [...document.querySelectorAll(".liste-part input:checked")].map(c => c.value);
+      for(const id of presents){
+        const a = D.agents.find(x => x.id === id);
+        if(!a) continue;
+        a.qualifs[s.code] = {realisee: dateR, echeance: ajouterMois(dateR, f.mois), formateur: s.formateur, session: s.id};
+      }
+      s.statut = "realisee"; s.date = dateR; s.presents = presents;
+      sauver(); fermerModale(); aller(vueCourante);
+    }},
+  ]);
+}
+function supprimerSession(id){
+  if(!confirm("Supprimer définitivement cette session ?")) return;
+  D.sessions = D.sessions.filter(s => s.id !== id);
+  sauver(); aller(vueCourante);
+}
+
+/* ----- matrice de conformité ----- */
+function vueMatrice(){
+  entete("Matrice de conformité", "Croisement agents × formations · vert valide, orange sous 60 jours, rouge expiré, gris jamais réalisé");
+  bouton("Imprimer", () => window.print(), "sec");
+  const agents = D.agents.filter(a => a.actif);
+  html($("contenu"), `
+    <div class="carte"><div class="scroll-x">
+      <table class="matrice"><thead><tr>
+        <th style="position:sticky;left:0;z-index:3">Agent</th>
+        ${CATALOGUE.map(f => `<th class="mat" title="${f.lib}">${f.code} · ${f.mois} m</th>`).join("")}
+      </tr></thead><tbody>
+      ${agents.map(a => `<tr>
+        <td class="nom">${a.nom}<br><span style="color:var(--text-2);font-weight:400;font-size:11px">${a.matricule} · ${a.fonction}</span></td>
+        ${CATALOGUE.map(f => {
+          if(!f.cible.includes(a.fonction)) return `<td class="cell c-na">·</td>`;
+          const q = a.qualifs[f.code], st = statutQualif(q);
+          const txt = st.cle==="absent" ? "—" : st.cle==="expire" ? "!" : (q ? new Date(q.echeance).toLocaleDateString("fr-FR",{month:"2-digit",year:"2-digit"}) : "");
+          return `<td class="cell c-${st.cle}" title="${a.nom} · ${f.lib} · ${st.lib}">${txt}</td>`;
+        }).join("")}
+      </tr>`).join("")}
+      </tbody></table>
+    </div></div>
+    <div class="carte"><div class="corps" style="display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px">
+      <span><span class="badge b-valide">Valide</span> échéance affichée (mm/aa)</span>
+      <span><span class="badge b-alerte">Sous 60 jours</span></span>
+      <span><span class="badge b-expire">Expiré</span> marqué «!»</span>
+      <span><span class="badge b-absent">Jamais réalisé</span> marqué «—»</span>
+      <span style="color:var(--text-2)">«·» = formation non applicable à la fonction</span>
+    </div></div>`);
+}
+
+/* ----- personnel ----- */
+function vuePersonnel(){
+  entete("Personnel", `${D.agents.filter(a=>a.actif).length} agents actifs · dossier individuel de formation`);
+  bouton("+ Ajouter un agent", () => modaleAgent(), "");
+  html($("contenu"), `
+    <div class="barre"><input id="p-rech" placeholder="Rechercher un nom, un matricule…">
+      <select id="p-service"><option value="">Tous les services</option>
+      ${[...new Set(D.agents.map(a=>a.service))].map(s=>`<option>${s}</option>`).join("")}</select></div>
+    <div id="p-liste"></div>`);
+  const dessiner = () => {
+    const r = $("p-rech").value.toLowerCase(), sv = $("p-service").value;
+    const l = D.agents.filter(a => (!sv || a.service === sv) &&
+      (!r || a.nom.toLowerCase().includes(r) || a.matricule.toLowerCase().includes(r)));
+    html($("p-liste"), `<div class="carte"><div class="scroll-x">
+      ${l.length ? `<table><thead><tr><th>Matricule</th><th>Nom</th><th>Fonction</th><th>Service</th><th>Conformité</th><th></th></tr></thead><tbody>
+      ${l.map(a => {
+        const fs = formationsDe(a);
+        const v = fs.filter(f => statutQualif(a.qualifs[f.code]).cle === "valide").length;
+        const p = fs.length ? Math.round(v/fs.length*100) : 100;
+        return `<tr><td><b>${a.matricule}</b></td><td>${a.nom}</td>
+          <td style="color:var(--text-2)">${a.fonction}</td><td style="color:var(--text-2)">${a.service}</td>
+          <td style="min-width:120px"><b style="font-variant-numeric:tabular-nums">${p} %</b>
+            <div class="jauge"><i style="width:${p}%;background:${p>=90?"var(--green)":p>=75?"var(--orange)":"var(--red)"}"></i></div></td>
+          <td style="white-space:nowrap"><button class="btn min sec" onclick="dossierAgent('${a.id}')">Dossier</button></td></tr>`;
+      }).join("")}</tbody></table>` : `<div class="vide">Aucun agent trouvé.</div>`}
+    </div></div>`);
+  };
+  $("p-rech").oninput = $("p-service").onchange = dessiner;
+  dessiner();
+}
+
+function dossierAgent(id){
+  const a = D.agents.find(x => x.id === id);
+  if(!a) return;
+  const fs = formationsDe(a);
+  ouvrirModale(`Dossier de formation — ${a.nom}`, `
+    <p style="font-size:13px;color:var(--text-2);margin-bottom:14px">
+      ${a.matricule} · ${a.fonction} · ${a.service} · entré le ${fdate(a.embauche)}</p>
+    <div class="scroll-x"><table><thead><tr><th>Formation</th><th>Réalisée</th><th>Échéance</th><th>Statut</th></tr></thead><tbody>
+    ${fs.map(f => { const q = a.qualifs[f.code], st = statutQualif(q);
+      return `<tr><td>${f.lib}<br><span style="color:var(--text-2);font-size:11px">${f.ref}</span></td>
+        <td>${q?fdate(q.realisee):"—"}</td><td>${q?fdate(q.echeance):"—"}</td>
+        <td><span class="badge ${st.cls}">${st.lib}</span></td></tr>`; }).join("")}
+    </tbody></table></div>
+  `, [
+    {label:"Fermer", classe:"sec", fn: fermerModale},
+    {label:"Modifier la fiche", classe:"sec", fn: () => { fermerModale(); modaleAgent(a.id); }},
+    {label:"Imprimer l'attestation", fn: () => imprimerAttestation(a.id)},
+  ]);
+}
+
+function modaleAgent(id){
+  const a = id ? D.agents.find(x => x.id === id) : null;
+  ouvrirModale(a ? "Modifier l'agent" : "Nouvel agent", `
+    <div class="ligne2">
+      <div class="champ"><label>Nom et prénom</label><input id="a-nom" value="${a?a.nom:""}"></div>
+      <div class="champ"><label>Matricule</label><input id="a-mat" value="${a?a.matricule:""}" placeholder="PN-006"></div>
+    </div>
+    <div class="ligne2">
+      <div class="champ"><label>Fonction</label><select id="a-fonc">
+        ${FONCTIONS.map(f => `<option ${a&&a.fonction===f?"selected":""}>${f}</option>`).join("")}</select></div>
+      <div class="champ"><label>Service</label><input id="a-serv" value="${a?a.service:""}" placeholder="Opérations aériennes"></div>
+    </div>
+    <div class="ligne2">
+      <div class="champ"><label>Date d'entrée</label><input type="date" id="a-emb" value="${a?a.embauche:iso(AUJ())}"></div>
+      <div class="champ"><label>Statut</label><select id="a-actif">
+        <option value="1" ${!a||a.actif?"selected":""}>Actif</option>
+        <option value="0" ${a&&!a.actif?"selected":""}>Inactif / sorti</option></select></div>
+    </div>
+  `, [
+    {label:"Annuler", classe:"sec", fn: fermerModale},
+    ...(a ? [{label:"Supprimer", classe:"dang", fn: () => {
+      if(!confirm("Supprimer cet agent et son dossier ?")) return;
+      D.agents = D.agents.filter(x => x.id !== a.id);
+      for(const s of D.sessions) s.participants = s.participants.filter(p => p !== a.id);
+      sauver(); fermerModale(); aller(vueCourante);
+    }}] : []),
+    {label:"Enregistrer", fn: () => {
+      const nom = $("a-nom").value.trim();
+      if(!nom){ alert("Le nom est obligatoire."); return; }
+      const obj = {nom, matricule: $("a-mat").value.trim() || "—", fonction: $("a-fonc").value,
+                   service: $("a-serv").value.trim() || "—", embauche: $("a-emb").value,
+                   actif: $("a-actif").value === "1"};
+      if(a) Object.assign(a, obj);
+      else D.agents.push({id:"A" + (++D.seq.a) + "-" + Date.now().toString(36), ...obj, qualifs:{}});
+      sauver(); fermerModale(); aller(vueCourante);
+    }},
+  ]);
+}
+
+/* ----- catalogue ----- */
+function vueCatalogue(){
+  entete("Catalogue des formations", `${CATALOGUE.length} matières · périodicités et références réglementaires`);
+  html($("contenu"), `<div class="carte"><div class="scroll-x">
+    <table><thead><tr><th>Code</th><th>Intitulé</th><th>Périodicité</th><th>Durée</th><th>Référence</th><th>Fonctions concernées</th><th>Agents</th></tr></thead><tbody>
+    ${CATALOGUE.map(f => {
+      const n = D.agents.filter(a => a.actif && f.cible.includes(a.fonction)).length;
+      const v = D.agents.filter(a => a.actif && f.cible.includes(a.fonction) && statutQualif(a.qualifs[f.code]).cle === "valide").length;
+      return `<tr><td><b>${f.code}</b></td><td>${f.lib}</td>
+        <td>${f.mois} mois</td><td>${f.h} h</td>
+        <td style="color:var(--text-2);font-size:12px">${f.ref}</td>
+        <td style="color:var(--text-2);font-size:11.5px">${f.cible.length === FONCTIONS.length ? "Tout le personnel" : f.cible.join(", ")}</td>
+        <td><b>${v}/${n}</b> à jour</td></tr>`;
+    }).join("")}
+    </tbody></table></div></div>`);
+}
+
+/* ----- impressions ----- */
+function imprimerAttestation(id){
+  const a = D.agents.find(x => x.id === id);
+  const fs = formationsDe(a).filter(f => a.qualifs[f.code]);
+  $("impression").innerHTML = `<div class="attest">
+    <div class="ent"><div><h1>ROYAL AIR</h1><p>Département Qualité · Formation &amp; Compétences</p></div>
+      <div class="ref">Réf. RA-TMS/ATT/${a.matricule}<br>Émis le ${new Date().toLocaleDateString("fr-FR")}</div></div>
+    <h2>Attestation de formation</h2>
+    <p style="font-size:14px;line-height:1.7">Je soussigné, Responsable Qualité de Royal Air, atteste que
+      <b>${a.nom}</b>, matricule <b>${a.matricule}</b>, exerçant la fonction de <b>${a.fonction}</b>
+      au sein du service ${a.service}, a suivi et validé les formations réglementaires suivantes :</p>
+    <table><thead><tr><th>Formation</th><th>Référence</th><th>Réalisée le</th><th>Valable jusqu'au</th></tr></thead><tbody>
+      ${fs.map(f => { const q = a.qualifs[f.code];
+        return `<tr><td>${f.lib}</td><td>${f.ref}</td><td>${fdate(q.realisee)}</td><td>${fdate(q.echeance)}</td></tr>`; }).join("")}
+    </tbody></table>
+    <p style="font-size:12px;color:#5B6B82">Cette attestation est établie conformément au référentiel ANACM,
+      aux annexes OACI applicables et au système qualité ISO 9001:2015 de Royal Air.</p>
+    <div class="sign"><div>Fait à Moroni, le ${new Date().toLocaleDateString("fr-FR")}</div>
+      <div>Le Responsable Qualité<br><br><br>____________________</div></div>
+  </div>`;
+  fermerModale();
+  window.print();
+}
+function imprimerFeuille(id){
+  const s = D.sessions.find(x => x.id === id);
+  const f = parCode(s.code);
+  const parts = (s.presents || s.participants).map(i => D.agents.find(a => a.id === i)).filter(Boolean);
+  $("impression").innerHTML = `<div class="attest">
+    <div class="ent"><div><h1>ROYAL AIR</h1><p>Département Qualité · Formation &amp; Compétences</p></div>
+      <div class="ref">Réf. RA-TMS/PRE/${s.id}<br>${fdate(s.date)}</div></div>
+    <h2>Feuille de présence</h2>
+    <table><tbody>
+      <tr><th style="width:35%">Formation</th><td>${f.lib}</td></tr>
+      <tr><th>Référence réglementaire</th><td>${f.ref}</td></tr>
+      <tr><th>Date et heure</th><td>${fdate(s.date)} à ${s.heure} · durée ${f.h} h</td></tr>
+      <tr><th>Lieu</th><td>${s.lieu}</td></tr>
+      <tr><th>Formateur / examinateur</th><td>${s.formateur}</td></tr>
+    </tbody></table>
+    <table><thead><tr><th>#</th><th>Nom et prénom</th><th>Matricule</th><th>Fonction</th><th>Émargement</th></tr></thead><tbody>
+      ${parts.map((a,i) => `<tr><td>${i+1}</td><td>${a.nom}</td><td>${a.matricule}</td><td>${a.fonction}</td><td style="height:34px"></td></tr>`).join("")}
+    </tbody></table>
+    <div class="sign"><div>Signature du formateur<br><br><br>____________________</div>
+      <div>Le Responsable Qualité<br><br><br>____________________</div></div>
+  </div>`;
+  window.print();
+}
+
+/* ---------------- modales ---------------- */
+function ouvrirModale(titre, corps, boutons){
+  $("modale").innerHTML = `<h3>${titre}<button type="button" onclick="fermerModale()">✕</button></h3>
+    <div class="mcorps">${corps}</div><div class="mpied" id="m-pied"></div>`;
+  for(const b of boutons){
+    const el = document.createElement("button");
+    el.className = "btn " + (b.classe || "");
+    el.textContent = b.label;
+    el.onclick = b.fn;
+    $("m-pied").appendChild(el);
+  }
+  $("voile").classList.add("ouvert");
+}
+function fermerModale(){ $("voile").classList.remove("ouvert"); }
+$("voile").onclick = e => { if(e.target === $("voile")) fermerModale(); };
+
+/* ---------------- démarrage ---------------- */
+for(const b of document.querySelectorAll("#nav button")) b.onclick = () => aller(b.dataset.vue);
+$("burger").onclick = () => $("side").classList.toggle("ouvert");
+$("btn-theme").onclick = () => {
+  const actuel = document.documentElement.getAttribute("data-theme");
+  const sombre = actuel ? actuel === "dark" : matchMedia("(prefers-color-scheme:dark)").matches;
+  document.documentElement.setAttribute("data-theme", sombre ? "light" : "dark");
+  try{ localStorage.setItem(CLE+"-theme", sombre ? "light" : "dark"); }catch(e){}
+};
+$("btn-reset").onclick = () => {
+  if(!confirm("Réinitialiser toutes les données avec le jeu de démonstration ?")) return;
+  D = donneesDemo(); sauver(); aller("tableau");
+};
+try{
+  const th = localStorage.getItem(CLE+"-theme");
+  if(th) document.documentElement.setAttribute("data-theme", th);
+}catch(e){}
+
+if(!charger()){ D = donneesDemo(); sauver(); }
+aller("tableau");
+</script>
+</body>
+</html>

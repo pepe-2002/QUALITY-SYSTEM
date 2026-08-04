@@ -178,6 +178,17 @@ terminer. Corrigé : indice automatique au 1er échec, solution proposée au
 aide, et le bilan distingue « réussi seul » de « fait avec la solution ».
 Leçon de conception à retenir pour tout ce qu'on construira ensuite : une
 impasse sans issue est un bug, pas un niveau de difficulté.
+
+⚠️ DEUXIÈME RETOUR (04/08) : « il faut que la partie ne finisse pas, je dois
+pouvoir continuer à développer l'entreprise, des développeurs, des grands
+contrats ». Fait : plus aucune fin de partie (ni victoire à 25 000 clients,
+ni faillite). Paliers infinis (Chambre → … → Empire, puis ×2,5 sans limite),
+générateur de contrats à l'échelle de l'entreprise une fois le catalogue
+épuisé, clientèle qui passe du local au mondial, équipe à trois métiers
+(développeur / commercial / technicien) au prix croissant, +1 action par
+jour à chaque palier. Caisse vide = un départ dans l'équipe ou un serveur
+revendu, et on continue. Même principe que ci-dessus : le joueur ne doit
+jamais se retrouver devant une porte fermée.
 Tout est expliqué dans `kodo/README.md`, y compris comment ajouter une leçon.
 **Aucun lien avec MoheliGo** — même règle que pour « Nous ».
 

@@ -5,8 +5,12 @@ Un jeu de gestion où **apprendre est la seule façon de progresser**.
 Tu diriges une startup tech depuis ta chambre. Un client propose un contrat ?
 Il exige une compétence. Tu ne l'as pas → tu la passes : une leçon courte, des
 exercices corrigés automatiquement, et la capacité est débloquée. Tu signes, tu
-développes, tu livres, tu encaisses, tu achètes des serveurs, tu embauches.
-Objectif : 25 000 clients.
+développes, tu livres, tu encaisses, tu achètes des serveurs, tu recrutes.
+
+**La partie ne se termine jamais.** Une entreprise ne s'arrête pas à un
+objectif : les contrats continuent d'arriver, de plus en plus gros, la
+clientèle change d'échelle, l'équipe s'agrandit. Et si la caisse se vide, ce
+n'est pas la fin — on se sépare de quelqu'un, on repart, on remonte.
 
 Tout ce que tu apprends dans le jeu est vrai, utilisable dehors.
 
@@ -72,17 +76,37 @@ Trois types d'exercices, tous corrigés sur-le-champ avec une explication :
 
 ## Les règles du jeu
 
-- **Énergie** : 5 actions par jour. Chaque leçon en coûte 1, chaque action aussi.
+- **Énergie** : 5 actions par jour au début, **+1 à chaque palier franchi**
+  (jusqu'à 10). Chaque leçon en coûte 1, chaque action aussi.
 - **Développer** : avance les contrats. La vitesse dépend de tes niveaux en
-  *code* et *web*, plus les développeurs embauchés.
+  *code* et *web*, plus les développeurs de ton équipe.
 - **Prospecter** : fait apparaître des offres. Une offre marquée en rouge exige
   une compétence que tu n'as pas encore.
 - **Maintenance** : évite la panne du jour quand tes serveurs sont saturés.
 - **Pub** : achète des clients ; le rendement dépend de ta réputation.
-- **Fin de journée** : les clients paient, les serveurs et les salaires coûtent.
-  Si la caisse passe sous zéro, la partie est perdue.
+- **Fin de journée** : les clients paient, les serveurs et les salaires coûtent,
+  et tes commerciaux ramènent des offres pendant que tu dors.
 
-Paliers : Chambre → Bureau → Agence → Studio → **Groupe** (25 000 clients = victoire).
+### L'équipe
+
+| Métier | Ce qu'il apporte |
+|---|---|
+| **Développeur** | un point de développement de plus à chaque action |
+| **Commercial** | ramène une offre par jour, sans dépenser ton énergie |
+| **Technicien** | tient 500 clients de plus et réduit le risque de panne |
+
+Chaque embauche coûte plus cher que la précédente, et tout le monde touche un
+salaire quotidien : une équipe se nourrit de contrats.
+
+### Les paliers
+
+Chambre → Bureau → Agence → Studio → Groupe → Groupe régional → Multinationale
+→ Licorne → Empire → Empire II, III… **et ça continue.** Passé le dernier palier
+nommé, il faut 2,5 fois plus de clients pour monter d'un cran, sans limite.
+
+Les contrats suivent : le catalogue écrit à la main sert de départ, puis le jeu
+en fabrique à la taille de l'entreprise — missions plus lourdes, clientèle qui
+passe du marché de Moroni aux groupes internationaux, montants à l'avenant.
 
 ---
 

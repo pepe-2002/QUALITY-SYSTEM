@@ -44,6 +44,46 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Monde des affaires 🏙️
+
+Près de **150 entreprises concurrentes** peuplent les 36 pays, chacune avec
+son nom, son patron, son secteur, sa valorisation, ses salariés et sa
+réputation — et elles **grandissent ou déclinent** chaque année selon
+l'économie de leur pays. Depuis l'onglet Pays, l'écran **Monde des affaires**
+donne :
+
+- le **classement national** des plus grandes entreprises, où la tienne
+  apparaît à sa vraie place, avec ton **rang national et mondial** ;
+- le **classement mondial** des quinze premières ;
+- et sur chaque concurrent, un bouton **« Aller les voir »** qui ouvre sa
+  fiche.
+
+Face à un concurrent, quatre leviers : **rencontrer son patron** (la relation
+se construit avant les affaires), **proposer un partenariat** (relation de 55
+requise, débouche sur un contrat), **débaucher son meilleur cadre**
+(25 000 €, et la relation en souffre durablement), ou **le racheter** — le
+prix baisse quand la relation est bonne, et l'absorption te ramène sa valeur,
+ses clients et ses cadres.
+
+## Voyager et s'installer ✈️
+
+Les 36 pays sont classés par attractivité. **Voyager** (quelques centaines
+d'euros) fait découvrir un marché, peut ramener un **contrat international**
+dans tes appels d'offres et te fait rencontrer des patrons locaux.
+**S'installer** dans un pays change ta résidence, ta **fiscalité**, ton coût
+de la vie et ton marché — mais éloigne une partie de tes proches. Et tu ne
+peux traiter avec une entreprise étrangère que si tu as visité son pays.
+
+## Négocier les contrats 🤝
+
+Un appel d'offres ne se subit plus : sur chaque proposition, trois
+négociations possibles — **+20 % sur le prix** (le client peut se vexer et
+retirer l'offre), **alléger le cahier des charges** (exigences de qualité et
+de réputation abaissées contre une petite remise), ou **allonger la durée**
+(du revenu sécurisé plus longtemps, à prix légèrement réduit). Ta force de
+négociation dépend de ta réputation, de ta compétence pro et de la taille de
+ton entreprise.
+
 ## Le monde entier 🌍
 
 **36 pays** sur six continents, chacun avec ses cinq indicateurs

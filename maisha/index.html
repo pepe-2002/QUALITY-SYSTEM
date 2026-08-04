@@ -395,6 +395,30 @@ const PAYS_NATAL = Object.keys(PAYS_DEF).filter(p => PAYS_DEF[p].natal);
 // attractivité d'un pays pour un investisseur étranger
 function attractivite(p){ return Math.round((p.eco*0.5 + p.dev*0.3 + (p.edu||50)*0.2) - p.corr*0.25); }
 
+/* ---- entreprises concurrentes du marché ---- */
+const SECTEURS = ["Import-export","Transport maritime","BTP","Agroalimentaire","Télécoms","Tourisme & hôtellerie",
+                  "Banque & finance","Distribution","Énergie","Numérique","Pêche industrielle","Logistique"];
+const SUFFIXES_ENT = ["Holding","& Fils","Group","International","Industries","Trading","Corporation","Partners"];
+function genererConcurrents(paysNom, nb){
+  const out = [];
+  for(let i=0;i<nb;i++){
+    const g = alea(2) ? "F" : "M";
+    const p = PAYS_DEF[paysNom] || {eco:50, dev:50};
+    const echelle = (p.eco + p.dev) / 100;
+    out.push({
+      id: "K" + paysNom.slice(0,3) + i + alea(9999),
+      nom: parmi(NOMS) + " " + parmi(SUFFIXES_ENT),
+      patron: parmi(g==="F"?PRENOMS_F:PRENOMS_M) + " " + parmi(NOMS),
+      genre: g, pays: paysNom, secteur: parmi(SECTEURS),
+      valeur: Math.round((40000 + alea(900000)) * echelle),
+      reputation: 30 + alea(60),
+      employes: 3 + alea(80),
+      relation: 30 + alea(30),
+    });
+  }
+  return out;
+}
+
 /* ---- banques et investisseurs ---- */
 const BANQUES = [
   {nom:"Banque de l'Archipel",    ico:"🏦", taux:11, maxRatio:0.8, garantie:0,   desc:"La banque du coin. Chère, mais elle prête à tout le monde."},
@@ -1071,6 +1095,8 @@ function charger(){
         if(etat.carriere===undefined) etat.carriere = null;
         if(!etat.placements) etat.placements = {};
         if(etat.gainCrypto==null) etat.gainCrypto = 0;
+        if(!etat.concurrents) etat.concurrents = [];
+        if(!etat.visites) etat.visites = [];
         if(!etat.animaux) etat.animaux = [];
         for(const k of ["crimes","anneesPrison","divorces","voyages","constructions","polMax","entMax"])
           if(etat[k]==null) etat[k] = 0;
@@ -1109,13 +1135,19 @@ function nouvelleVie(opts){
     entreprises:[], politique:null, royaume:null,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail:0, candidats:null, auto:false,
     karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
-    carriere:null, placements:{}, gainCrypto:0,
+    carriere:null, placements:{}, gainCrypto:0, concurrents:[], visites:[],
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
   };
   const nomMere = parmi(PRENOMS_F)+" "+nom, nomPere = parmi(PRENOMS_M)+" "+nom;
   etat.relations.push(rel("mere", nomMere, 20+alea(18), "F"));
   etat.relations.push(rel("pere", nomPere, 22+alea(20), "M"));
   if(alea(2)){ const g = alea(2)?"F":"M"; etat.relations.push(rel(g==="F"?"soeur":"frere", parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+nom, alea(10), g)); }
+  // le tissu économique du monde : des entreprises concurrentes existent déjà
+  for(const nomP of Object.keys(monde)){
+    const pp = monde[nomP];
+    const nb = pp.eco > 70 ? 5 : pp.eco > 50 ? 4 : 3;
+    etat.concurrents = etat.concurrents.concat(genererConcurrents(nomP, nb));
+  }
   nouvelleAnnee();
   ecrire(`Je m'appelle ${prenom} ${nom}. Je suis née${genre==="F"?"":""} ${genre==="F"?"fille":"garçon"} à ${ville}, ${paysNom}.`.replace("née g","né g"), "bon");
   ecrire(`Ma mère est ${nomMere} et mon père est ${nomPere}.`);
@@ -1213,6 +1245,21 @@ function vieillir(){
   }
   // le karma dérive doucement vers la moyenne
   etat.karma = borne((etat.karma||60) + (etat.karma < 50 ? 1 : etat.karma > 70 ? -1 : 0));
+
+  // les entreprises concurrentes vivent leur vie
+  for(const k of (etat.concurrents||[])){
+    const pk = etat.monde[k.pays];
+    const croissance = ((pk ? pk.eco : 50) - 48 + alea(20) - 9) / 100;
+    k.valeur = Math.max(15000, Math.round(k.valeur * (1 + croissance/3)));
+    k.reputation = borne(k.reputation + alea(7) - 3);
+    k.employes = Math.max(2, k.employes + alea(7) - 3);
+    k.relation = borne((k.relation||30) - 1);
+  }
+  if(alea(6) === 0 && (etat.concurrents||[]).length < 160){
+    const nomP = parmi(Object.keys(etat.monde));
+    const neuve = genererConcurrents(nomP, 1)[0];
+    etat.concurrents.push(neuve);
+  }
 
   // le monde évolue
   evolutionMonde();
@@ -2283,11 +2330,14 @@ function ouvrirFeuille(nom, arg, parent){
                   relations:"❤️ Relations", vie:"🌴 Vie & Formations"};
   const vues = {travail:feuilleTravail, actifs:feuilleActifs, pays:feuillePays,
                 relations:feuilleRelations, vie:feuilleVie,
-                entreprise:feuilleEntreprise, gouvernement:feuilleGouvernement};
+                entreprise:feuilleEntreprise, gouvernement:feuilleGouvernement,
+                affaires:feuilleAffaires, concurrent:feuilleConcurrent};
   ecranCourant = {nom, arg, parent: parent||null};
   conteneurCourant = null;
   $("feuille-titre").textContent = nom==="entreprise" ? `${arg.ico} ${arg.nom}`
     : nom==="gouvernement" ? `🏛️ Gouvernement de ${etat.pays}`
+    : nom==="affaires" ? "🏙️ Monde des affaires"
+    : nom==="concurrent" ? `🏢 ${arg.nom}`
     : titres[nom];
   $("feuille-retour").hidden = !parent;
   $("feuille-corps").innerHTML = "";
@@ -2806,7 +2856,7 @@ function feuilleEntreprise(e){
       <div class="ligne-info"><span>Qualité exigée</span><b>${e.qualite >= ct.qualiteMin ? "✅" : "❌"} ${ct.qualiteMin} (tu as ${e.qualite})</b></div>
       <div class="ligne-info"><span>Réputation exigée</span><b>${e.reputation >= ct.reputationMin ? "✅" : "❌"} ${ct.reputationMin} (tu as ${e.reputation})</b></div>
       <div class="ligne-info"><span>Effectif exigé</span><b>${e.employes.length >= ct.employesMin ? "✅" : "❌"} ${ct.employesMin} (tu as ${e.employes.length})</b></div>
-      <div class="detail" style="margin-top:6px">Pénalité si tu ne tiens pas : ${euros(ct.penalite)} · consomme ${ct.stockCout} de stock par an</div>
+      <div class="detail" style="margin-top:6px">Pénalité si tu ne tiens pas : ${euros(ct.penalite)} · consomme ${ct.stockCout} de stock par an${ct.negoPrix||ct.negoExig||ct.negoDuree ? " · <b>déjà renégocié</b>" : " · négociable"}</div>
       <div class="actions"></div>`);
     action(c, peut ? "Signer le contrat" : "Signer quand même (risqué)", peut ? "or" : "rouge", () => {
       e.contrats.push(ct);
@@ -2816,7 +2866,44 @@ function feuilleEntreprise(e){
       ecrire(`✍️ Contrat signé avec ${ct.client} : ${euros(ct.montant)}/an pendant ${ct.duree} an${ct.duree>1?"s":""}.`, "argent");
       rafraichirFeuille();
     });
-    action(c, "Refuser", "gris", () => {
+    action(c, "Négocier le prix (+20 %)", "gris", () => {
+      if(ct.negoPrix){ ecrire(`${ct.client} a déjà revu son offre, n'insistons pas.`); return; }
+      const force = 30 + e.reputation/3 + (etat.compPro||0)/4 + (e.taille||0)*7 - ct.montant/8000;
+      ct.negoPrix = true;
+      if(alea(100) < force){
+        ct.montant = Math.round(ct.montant * 1.2 / 500) * 500;
+        ecrire(`🤝 ${ct.client} accepte de porter le contrat à ${euros(ct.montant)}/an.`, "argent");
+      } else if(alea(2)){
+        ecrire(`🤝 ${ct.client} refuse d'augmenter, mais l'offre reste sur la table.`);
+      } else {
+        e.prospects.liste = e.prospects.liste.filter(x => x !== ct);
+        ecrire(`🤝 ${ct.client} s'est vexé de mes exigences et retire sa proposition.`, "mauvais");
+      }
+      rafraichirFeuille();
+    });
+    action(c, "Alléger les exigences", "gris", () => {
+      if(ct.negoExig){ ecrire("Le cahier des charges a déjà été rediscuté."); return; }
+      ct.negoExig = true;
+      const force = 25 + e.reputation/3 + (etat.compPro||0)/4;
+      if(alea(100) < force){
+        ct.qualiteMin = Math.max(10, ct.qualiteMin - 12);
+        ct.reputationMin = Math.max(10, ct.reputationMin - 12);
+        ct.montant = Math.round(ct.montant * 0.92 / 500) * 500;
+        ecrire(`🤝 ${ct.client} allège son cahier des charges (qualité ${ct.qualiteMin}, réputation ${ct.reputationMin}) contre une petite remise.`, "bon");
+      } else ecrire(`🤝 ${ct.client} maintient ses exigences : c'est à prendre ou à laisser.`, "mauvais");
+      rafraichirFeuille();
+    });
+    action(c, "Allonger la durée", "gris", () => {
+      if(ct.negoDuree){ ecrire("La durée a déjà été négociée."); return; }
+      ct.negoDuree = true;
+      if(alea(100) < 35 + e.reputation/3){
+        ct.duree += 2; ct.restant = ct.duree;
+        ct.montant = Math.round(ct.montant * 0.94 / 500) * 500;
+        ecrire(`🤝 ${ct.client} accepte un engagement sur ${ct.duree} ans à ${euros(ct.montant)}/an. Du revenu sécurisé sur la durée.`, "bon");
+      } else ecrire(`🤝 ${ct.client} ne veut pas s'engager plus longtemps.`);
+      rafraichirFeuille();
+    });
+    action(c, "Refuser", "rouge", () => {
       e.prospects.liste = e.prospects.liste.filter(x => x !== ct);
       ecrire(`J'ai décliné la proposition de ${ct.client}.`);
       rafraichirFeuille();
@@ -3382,6 +3469,17 @@ function feuillePays(){
       <div class="jauge"><i style="width:${Math.max(4,Math.min(100,Math.round(r.s/2.6)))}%;background:${r.n===etat.pays?"var(--accent)":"var(--line)"}"></i></div><b>${r.s}</b></div>`).join(""));
 
   if(etat.age>=18){
+    const cM = carte(`<div class="titre">🏙️ Monde des affaires ›</div>
+      <div class="detail">Le classement des plus grandes entreprises, pays par pays. Va voir les patrons, propose des partenariats, débauche leurs cadres… ou rachète-les.</div>
+      <div class="actions"></div>`);
+    action(cM, "Ouvrir le classement", "", () => ouvrirFeuille("affaires", null, "pays"));
+
+    const cV = carte(`<div class="titre">✈️ Voyager et s'installer ›</div>
+      <div class="detail">Pays visités : <b>${(etat.visites||[]).length}</b> · Résidence actuelle : <b>${etat.pays}</b>.
+        Voyager ouvre des opportunités ; s'installer change tes impôts, ton coût de la vie et ton marché.</div>
+      <div class="actions"></div>`);
+    action(cV, "Voyager dans le monde", "", () => ouvrirFeuille("affaires", "voyage", "pays"));
+
     const cI = carte(`<div class="titre">🏗️ Construire pour mon pays</div>
       <div class="detail">Investis ta fortune personnelle dans le développement du pays. Le peuple s'en souvient${etat.politique?" (et les électeurs aussi)":""}${etat.royaume?" (le prestige de la couronne grandit)":""}.</div>
       <div class="actions"></div>`);
@@ -3776,6 +3874,207 @@ function feuilleGouvernement(){
       fermerFeuille();
     } else rafraichirFeuille();
   });
+}
+
+/* ===================== ÉCRAN : MONDE DES AFFAIRES ===================== */
+
+function feuilleAffaires(mode){
+  const mesEnt = (etat.entreprises||[]).map(e => ({
+    id:"MOI"+e.nom, nom:e.nom, patron:etat.prenom+" "+etat.nom, pays:etat.pays,
+    secteur:e.type, valeur:e.valeur, reputation:e.reputation, employes:e.employes.length, moi:true, ref:e
+  }));
+
+  /* --- volet voyage --- */
+  section("✈️ Voyager dans le monde", mode === "voyage");
+  carte(`<div class="detail">Un voyage d'affaires te fait découvrir un marché, rencontrer ses patrons et parfois décrocher un contrat. T'installer dans un pays change ta fiscalité, ton coût de la vie et les opportunités qui s'ouvrent à toi.</div>`);
+  const paysTries = Object.keys(etat.monde)
+    .map(n => ({n, p: etat.monde[n], a: attractivite(etat.monde[n])}))
+    .sort((x,y) => y.a - x.a);
+  for(const {n, p, a} of paysTries.slice(0, mode === "voyage" ? 36 : 6)){
+    if(n === etat.pays) continue;
+    const cout = 400 + Math.round(a * 22);
+    const visite = (etat.visites||[]).includes(n);
+    const c = carte(`<div class="titre">${n} <span class="badge">${p.reg}</span>${visite ? ' <span class="badge">✓ visité</span>' : ""}</div>
+      <div class="detail">Attractivité <b>${a}/100</b> · économie ${p.eco} · développement ${p.dev} · éducation ${p.edu||50} · corruption ${p.corr}<br>
+        ${(etat.concurrents||[]).filter(k => k.pays === n).length} entreprises recensées · impôts estimés ${Math.round((10 + p.dev/4))} %</div>
+      <div class="actions"></div>`);
+    action(c, `Voyager (${euros(cout)})`, "gris", () => {
+      if(dejaFait("voyagePays")){ ecrire("Un déplacement à l'étranger par an, le passeport souffre."); fermerFeuille(); return; }
+      etat.argent -= cout;
+      if(!etat.visites.includes(n)) etat.visites.push(n);
+      etat.voyages = (etat.voyages||0)+1;
+      etat.bonheur = borne(etat.bonheur+6); etat.intel = borne(etat.intel+1);
+      let txt = `✈️ Voyage d'affaires en ${n}.`;
+      if((etat.entreprises||[]).length && alea(100) < 45 + etat.compPro/4){
+        const e = parmi(etat.entreprises);
+        const ct = genererContrat(e, p.eco > 65 ? 2 : 1);
+        ct.client = ct.client + " (" + n + ")";
+        e.prospects = e.prospects || {age: etat.age, liste:[]};
+        e.prospects.liste.push(ct);
+        txt += ` Un partenaire local propose un marché de ${euros(ct.montant)}/an à « ${e.nom} » — à retrouver dans les appels d'offres.`;
+      }
+      if(alea(3) === 0){
+        const nouveaux = genererConcurrents(n, 1);
+        etat.concurrents = etat.concurrents.concat(nouveaux);
+        txt += ` J'y ai rencontré ${nouveaux[0].patron}, patron de ${nouveaux[0].nom}.`;
+      }
+      ecrire(txt, "bon");
+      fermerFeuille();
+    }, etat.argent < cout);
+    action(c, `S'installer (${euros(cout*12)})`, "or", () => {
+      if(!confirm(`Quitter ${etat.pays} pour s'installer en ${n} ? Ta fiscalité et ton marché changent.`)) return;
+      etat.argent -= cout*12;
+      etat.pays = n;
+      etat.ville = n;
+      if(!etat.visites.includes(n)) etat.visites.push(n);
+      etat.bonheur = borne(etat.bonheur+8);
+      for(const r of etat.relations) if(r.vivant && r.type!=="conjoint" && r.type!=="enfant") r.barre = borne(r.barre-10);
+      ecrire(`✈️🏠 J'ai quitté mon pays pour m'installer en ${n}. Nouvelle vie, nouveau marché, nouveaux impôts (${Math.round(tauxImpot()*100)} %).`, "bon");
+      fermerFeuille();
+    }, etat.argent < cout*12);
+  }
+
+  /* --- classement des entreprises --- */
+  const tousK = (etat.concurrents||[]).concat(mesEnt);
+  const local = tousK.filter(k => k.pays === etat.pays).sort((a,b) => b.valeur - a.valeur);
+  const mondial = tousK.slice().sort((a,b) => b.valeur - a.valeur);
+  const monRangLocal = local.findIndex(k => k.moi);
+  const monRangMondial = mondial.findIndex(k => k.moi);
+
+  section(`🏆 Plus grandes entreprises — ${etat.pays}`, mode !== "voyage");
+  if(mesEnt.length)
+    carte(`<div class="kpis">
+      <div class="kpi"><span>Mon rang national</span><b>${monRangLocal>=0 ? (monRangLocal+1)+"ᵉ / "+local.length : "—"}</b></div>
+      <div class="kpi"><span>Mon rang mondial</span><b>${monRangMondial>=0 ? (monRangMondial+1)+"ᵉ / "+mondial.length : "—"}</b></div>
+      <div class="kpi"><span>Entreprises recensées</span><b>${tousK.length}</b></div>
+    </div>`);
+  for(const [i,k] of local.slice(0, 12).entries()){
+    const med = ["🥇","🥈","🥉"][i] || (i+1)+"ᵉ";
+    const c = carte(`<div class="ligne-info">
+        <span>${med} <b>${k.nom}</b>${k.moi ? ' <span class="badge" style="background:var(--accent);color:var(--accent-ink)">mon entreprise</span>' : ""}</span>
+        <b>${euros(k.valeur)}</b></div>
+      <div class="mini-jauge"><i style="width:${Math.max(3, Math.round(k.valeur/Math.max(1,local[0].valeur)*100))}%;background:${k.moi?"var(--accent)":"var(--money)"}"></i></div>
+      <div class="detail">${k.secteur} · ${k.employes} salariés · réputation ${k.reputation}/100${k.moi ? "" : " · dirigée par "+k.patron}</div>
+      ${k.moi ? "" : '<div class="actions"></div>'}`);
+    if(!k.moi) action(c, "Aller les voir ›", "gris", () => ouvrirFeuille("concurrent", k, "affaires"));
+  }
+
+  section("🌐 Classement mondial des entreprises", false);
+  for(const [i,k] of mondial.slice(0, 15).entries()){
+    const med = ["🥇","🥈","🥉"][i] || (i+1)+"ᵉ";
+    const c = carte(`<div class="ligne-info">
+        <span>${med} <b>${k.nom}</b>${k.moi ? ' <span class="badge" style="background:var(--accent);color:var(--accent-ink)">moi</span>' : ""}</span>
+        <b>${euros(k.valeur)}</b></div>
+      <div class="detail">${k.pays} · ${k.secteur} · ${k.employes} salariés${k.moi ? "" : " · "+k.patron}</div>
+      ${k.moi ? "" : '<div class="actions"></div>'}`);
+    if(!k.moi) action(c, "Aller les voir ›", "gris", () => ouvrirFeuille("concurrent", k, "affaires"));
+  }
+}
+
+/* ===================== ÉCRAN : UNE ENTREPRISE CONCURRENTE ===================== */
+
+function feuilleConcurrent(k){
+  const mesEnt = etat.entreprises || [];
+  const dejaVisite = (etat.visites||[]).includes(k.pays) || k.pays === etat.pays;
+  carte(`<div class="titre">${k.nom}</div>
+    <div class="kpis">
+      <div class="kpi"><span>Valorisation</span><b class="or">${euros(k.valeur)}</b></div>
+      <div class="kpi"><span>Salariés</span><b>${k.employes}</b></div>
+      <div class="kpi"><span>Réputation</span><b>${k.reputation}</b></div>
+    </div>
+    <div class="ligne-info"><span>Secteur</span><b>${k.secteur}</b></div>
+    <div class="ligne-info"><span>Pays</span><b>${k.pays}${dejaVisite ? "" : " (jamais visité)"}</b></div>
+    <div class="ligne-info"><span>Dirigeant</span><b>${k.patron}</b></div>
+    <div class="ligne-info"><span>Relation avec toi</span><b>${k.relation||30}/100</b></div>
+    <div class="mini-jauge"><i style="width:${k.relation||30}%"></i></div>`);
+
+  if(!dejaVisite){
+    carte(`<div class="detail">Tu n'as jamais mis les pieds en ${k.pays}. Voyage là-bas pour pouvoir traiter avec eux.</div>`);
+    return;
+  }
+  if(!mesEnt.length){
+    carte(`<div class="detail">Il te faut ta propre entreprise pour traiter d'égal à égal avec ${k.patron}.</div>`);
+    return;
+  }
+  const e = mesEnt[0];
+
+  section("Que faire avec eux ?");
+  const c1 = carte(`<div class="titre">🤝 Rencontrer ${k.patron}</div>
+    <div class="detail">Un déjeuner, une visite d'usine : la relation se construit avant les affaires. Gratuit.</div>
+    <div class="actions"></div>`);
+  action(c1, "Prendre contact", "", () => {
+    if(dejaFait("contact_"+k.id)){ ecrire(`${k.patron} m'a déjà reçu cette année.`); return; }
+    k.relation = borne((k.relation||30) + 10 + Math.round(charisme()/12));
+    ecrire(`🤝 Rencontre avec ${k.patron} de ${k.nom} : la relation progresse (${k.relation}/100).`, "bon");
+    rafraichirFeuille();
+  });
+
+  const c2 = carte(`<div class="titre">📄 Proposer un partenariat</div>
+    <div class="detail">Un accord commercial avec ${k.nom} apporte un contrat et de la réputation. Relation de 55 requise.</div>
+    <div class="actions"></div>`);
+  action(c2, "Proposer", "or", () => {
+    if((k.relation||30) < 55){ ecrire(`${k.patron} ne me connaît pas assez pour signer quoi que ce soit.`, "mauvais"); return; }
+    if(dejaFait("partenariat_"+k.id)){ ecrire("Une proposition par an suffit."); return; }
+    if(alea(100) < 40 + (k.relation||30)/3 + e.reputation/5){
+      const ct = genererContrat(e, k.valeur > 400000 ? 2 : 1);
+      ct.client = k.nom;
+      e.prospects = e.prospects || {age: etat.age, liste:[]};
+      e.prospects.liste.push(ct);
+      k.relation = borne(k.relation + 8);
+      e.reputation = borne(e.reputation + 4);
+      ecrire(`📄 ${k.nom} accepte un partenariat : un marché de ${euros(ct.montant)}/an t'attend dans les appels d'offres.`, "bon");
+    } else ecrire(`📄 ${k.patron} décline le partenariat pour cette fois.`, "mauvais");
+    rafraichirFeuille();
+  }, (k.relation||30) < 55);
+
+  const c3 = carte(`<div class="titre">🎯 Débaucher leur meilleur cadre</div>
+    <div class="detail">Coût : ${euros(25000)}. Tu récupères un cadre expérimenté — mais la relation en souffre durablement.</div>
+    <div class="actions"></div>`);
+  action(c3, "Faire une offre", "gris", () => {
+    if(dejaFait("debauche_"+k.id)){ ecrire("Un débauchage par an, sinon la place devient invivable."); return; }
+    etat.argent -= 25000;
+    if(alea(100) < 45 + e.reputation/4){
+      const g = alea(2) ? "F" : "M";
+      const comp = 55 + alea(35);
+      e.employes.push({nom: parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS), genre:g,
+                       poste:"Directeur adjoint", salaire: Math.round(comp*140/500)*500,
+                       competence: comp, externe:true, exp:3, argent:0});
+      k.relation = borne((k.relation||30) - 25);
+      k.employes = Math.max(2, k.employes - 1);
+      ecrire(`🎯 J'ai débauché un cadre de ${k.nom} (compétence ${comp}). ${k.patron} l'a très mal pris.`, "argent");
+    } else { k.relation = borne((k.relation||30) - 12);
+      ecrire(`🎯 Le cadre de ${k.nom} a refusé mon offre, et ${k.patron} l'a appris.`, "mauvais"); }
+    rafraichirFeuille();
+  }, etat.argent < 25000);
+
+  const prix = Math.round(k.valeur * (1.35 - (k.relation||30)/400));
+  const c4 = carte(`<div class="titre">💼 Racheter ${k.nom}</div>
+    <div class="detail">Prix demandé : <b>${euros(prix)}</b> (une bonne relation fait baisser le prix).
+      Le rachat absorbe leur valeur et leurs salariés dans « ${e.nom} ».</div>
+    <div class="actions"></div>`);
+  action(c4, "Faire une offre de rachat", "or", () => {
+    if(alea(100) < 35 + (k.relation||30)/2 + e.reputation/5){
+      etat.argent -= prix;
+      e.valeur += Math.round(k.valeur * 0.9);
+      e.reputation = borne(e.reputation + 6);
+      e.clients = (e.clients||0) + Math.round(k.employes*1.5);
+      for(let i=0;i<Math.min(3, Math.round(k.employes/12));i++){
+        const g = alea(2) ? "F" : "M";
+        const comp = 40 + alea(45);
+        e.employes.push({nom: parmi(g==="F"?PRENOMS_F:PRENOMS_M)+" "+parmi(NOMS), genre:g,
+                         poste:"Commercial", salaire: Math.round(comp*130/500)*500,
+                         competence: comp, externe:true, exp:2, argent:0});
+      }
+      etat.concurrents = etat.concurrents.filter(x => x.id !== k.id);
+      etat.celebrite = borne(etat.celebrite + 8);
+      ecrire(`💼 RACHAT : « ${e.nom} » absorbe ${k.nom} pour ${euros(prix)}. ${k.patron} passe la main.`, "argent");
+      ouvrirFeuille("affaires", null, "pays");
+    } else {
+      ecrire(`💼 ${k.patron} refuse de vendre ${k.nom}. « Cette maison n'est pas à vendre. »`, "mauvais");
+      k.relation = borne((k.relation||30) - 5);
+      rafraichirFeuille();
+    }
+  }, etat.argent < prix);
 }
 
 /* ----- relations ----- */

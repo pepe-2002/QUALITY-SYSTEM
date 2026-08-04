@@ -46,7 +46,12 @@ const CONTRATS = [
   { t:"Tri automatique des réclamations",cli:"Opérateur télécom",        br:'ia',  niv:3, travail:7, paie:1250000, users:3200 },
   { t:"Refonte complète de la plateforme",cli:"Office du tourisme",      br:'web', niv:3, travail:7, paie:980000, users:2400 },
   { t:"Moteur de recherche interne",     cli:"Ministère de l'éducation", br:'code',niv:3, travail:8, paie:1400000, users:4000 },
-  { t:"Application de caisse hors ligne",cli:"Chaîne de supérettes",     br:'code',niv:2, travail:5, paie:520000, users:700 }
+  { t:"Application de caisse hors ligne",cli:"Chaîne de supérettes",     br:'code',niv:2, travail:5, paie:520000, users:700 },
+  // — niveau 4 : les gros dossiers —
+  { t:"Audit et reprise d'un code en panne", cli:"Régie des transports",  br:'code',niv:4, travail:9,  paie:1900000, users:5200 },
+  { t:"Portail national allégé pour la 3G",  cli:"Administration des Comores", br:'web', niv:4, travail:9, paie:2100000, users:6400 },
+  { t:"Base de données centrale des patients", cli:"Réseau de santé",     br:'serveur', niv:4, travail:10, paie:2400000, users:7000 },
+  { t:"Assistant branché sur la documentation", cli:"Compagnie d'assurance", br:'ia', niv:4, travail:10, paie:2600000, users:8000 }
 ];
 
 /* ─────────── État ─────────── */

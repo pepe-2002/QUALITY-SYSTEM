@@ -181,6 +181,71 @@ t.push(3);                 // ajoute 3 à la fin`],
           indice: "Une seule ligne suffit : <code>return places.filter(n => n > 0);</code>",
           expl: "<code>filter</code> garde les éléments qui passent le test et rend un nouveau tableau." }
       ]
+    },
+    {
+      id: 'code-4',
+      titre: "Quand ça ne marche pas : lire l'erreur",
+      minutes: 6,
+      but: "Trouver la cause d'un bug en deux minutes au lieu de deux heures.",
+      contenu: [
+        ['p', "Un programme qui plante n'est pas un mystère : il te dit précisément ce qui l'a gêné, et à quelle ligne. Encore faut-il lire. C'est la compétence qui sépare celui qui avance de celui qui abandonne."],
+        ['h', "Les trois erreurs que tu verras le plus"],
+        ['code', `ReferenceError: prix is not defined
+   → tu utilises un nom qui n'existe pas
+     (faute de frappe, ou variable déclarée ailleurs)
+
+TypeError: Cannot read properties of undefined
+   → tu lis quelque chose DANS un vide
+     billet.prix alors que billet n'existe pas
+
+SyntaxError: Unexpected token
+   → une parenthèse, une accolade ou un guillemet
+     qui n'est pas refermé, juste avant la ligne citée`],
+        ['note', "Le <code>TypeError</code> sur <code>undefined</code> est de loin le plus fréquent. Il ne dit pas « ta donnée est fausse » mais « ta donnée n'est pas arrivée ». Remonte d'un cran : d'où devait-elle venir ?"],
+        ['h', "La méthode, dans l'ordre"],
+        ['code', `1. Lire le message ENTIER, pas juste sa couleur rouge
+2. Regarder le numéro de ligne, et la ligne d'AVANT
+3. Afficher ce qu'on croit avoir :
+     console.log("billet =", billet);
+4. Réduire : couper le programme en deux,
+   trouver dans quelle moitié ça casse
+5. Corriger UNE chose, retester`],
+        ['p', "L'étape 3 est la plus rentable. La moitié des bugs disparaissent au moment où tu affiches ce que contient vraiment la variable — parce que ce n'est presque jamais ce que tu croyais."],
+        ['h', "Les cas limites : là où ça casse toujours"],
+        ['p', "Ton code marche avec 3 réservations. Teste-le avec <b>zéro</b>, avec <b>une seule</b>, avec un champ vide, avec un texte à la place d'un nombre. C'est là que se cachent les bugs qui sortent le jour du lancement, devant le client."],
+        ['code', `moyenne([10, 20, 30]);  // 20   ✓ le cas facile
+moyenne([]);            // NaN  ✗ division par zéro !
+moyenne([5]);           // 5    ✓`],
+        ['h', "Attraper une erreur sans planter"],
+        ['code', `try {
+  const data = JSON.parse(texte);
+  afficher(data);
+} catch (e) {
+  afficher("Données illisibles.");
+  console.log("détail :", e.message);
+}`],
+        ['note', "N'entoure pas tout ton programme d'un <code>try/catch</code> vide : tu ne fais qu'éteindre l'alarme. On attrape une erreur qu'on sait gérer — un fichier absent, un réseau coupé — et on dit à l'utilisateur ce qui se passe."]
+      ],
+      exos: [
+        { type: 'qcm',
+          q: "Tu reçois <code>TypeError: Cannot read properties of undefined (reading 'prix')</code>. Que s'est-il passé ?",
+          choix: ["Le prix vaut zéro", "L'objet qui devait contenir <code>prix</code> n'existe pas", "Le prix est du texte", "Le fichier est introuvable"],
+          bon: 1,
+          expl: "L'erreur porte sur ce qu'il y a AVANT le point. L'objet est <code>undefined</code> — remonte à l'endroit où il aurait dû être rempli." },
+        { type: 'code',
+          q: "Écris <code>moyenne</code> : elle reçoit un tableau de nombres et rend la moyenne, mais elle doit rendre <code>0</code> si le tableau est vide (au lieu de planter).",
+          nom: 'moyenne',
+          depart: `function moyenne(nombres) {
+
+}`,
+          tests: [ {args:[[10,20,30]], att:20}, {args:[[]], att:0}, {args:[[5]], att:5}, {args:[[2,3]], att:2.5} ],
+          indice: "Traite le cas limite EN PREMIER : <code>if (nombres.length === 0) return 0;</code> puis fais la somme.",
+          expl: "Le cas vide se règle d'abord, en une ligne. Ensuite le calcul normal n'a plus à s'en méfier." },
+        { type: 'ordre',
+          q: "Remets la méthode de débogage dans le bon ordre.",
+          items: [ "Lire le message d'erreur en entier", "Ouvrir la ligne indiquée et celle d'avant", "Afficher le contenu réel des variables", "Corriger une seule chose", "Retester" ],
+          expl: "Corriger avant d'avoir affiché le contenu réel, c'est deviner. Et corriger plusieurs choses à la fois empêche de savoir laquelle a marché." }
+      ]
     }
   ]
 });
@@ -337,6 +402,57 @@ const relu = brut ? JSON.parse(brut) : null;   // attention au vide !`],
           choix: ['Ça le suit', 'Ça reste sur l’ancien téléphone', 'Ça part sur le serveur', 'Ça se synchronise'],
           bon: 1,
           expl: "Le localStorage est local, point. Pour suivre l'utilisateur partout, il faut un compte et un serveur." }
+      ]
+    },
+    {
+      id: 'web-4',
+      titre: "Rapide même en 3G",
+      minutes: 6,
+      but: "Faire un site utilisable sur un téléphone d'entrée de gamme, en connexion lente.",
+      contenu: [
+        ['p', "Un site testé en wifi sur un ordinateur neuf est toujours rapide. Le vrai public, lui, est sur un téléphone modeste et un réseau irrégulier. Un site lourd n'est pas « un peu plus lent » chez lui : il ne s'ouvre pas, et le client s'en va."],
+        ['h', "Le poids, c'est du temps"],
+        ['code', `En 3G réelle, compte environ 100 Ko par seconde.
+
+  page de 300 Ko   →  3 secondes    ✓ acceptable
+  page de 2 Mo     →  20 secondes   ✗ tout le monde est parti
+  page de 6 Mo     →  1 minute      ✗ n'existe pas`],
+        ['p', "La cible raisonnable : <b>moins de 500 Ko</b> pour le premier affichage. Ce n'est pas une contrainte d'esthète, c'est la différence entre un site qui sert et un site qui décore."],
+        ['h', "Le coupable numéro un : les images"],
+        ['p', "Une photo sortie d'un téléphone pèse 4 Mo et mesure 4000 pixels de large. Affichée dans un cadre de 400 pixels, elle est réduite <b>après</b> avoir été entièrement téléchargée. Tu as fait payer 4 Mo à ton visiteur pour en utiliser un centième."],
+        ['code', `Avant de publier une image :
+  1. Redimensionne-la à sa taille d'affichage réelle
+     (au maximum le double, pour les écrans fins)
+  2. Enregistre en WebP plutôt qu'en JPEG
+  3. Vise 100 à 200 Ko par photo, pas plus`],
+        ['note', "Compte le poids total de ta page avant de publier, images comprises. Si tu ne connais pas le chiffre, il est trop élevé — c'est vrai dans 100 % des cas."],
+        ['h', "Charger plus tard ce qui n'est pas vu"],
+        ['code', `&lt;img src="tortue.webp" loading="lazy" alt="Tortue"&gt;`],
+        ['p', "<code>loading=\"lazy\"</code> dit au navigateur de ne télécharger l'image que si le visiteur descend jusqu'à elle. Sur une page longue, c'est souvent la moitié du poids qui disparaît, en un mot."],
+        ['h', "Le cache et le hors-ligne"],
+        ['p', "Une fois les fichiers reçus, le navigateur peut les garder. La deuxième visite devient instantanée. Un <b>service worker</b> va plus loin : il sert la page même sans réseau. C'est ce qui permet à une application web de s'ouvrir dans une zone sans couverture."],
+        ['h', "Ce qui compte, ce n'est pas la fin du chargement"],
+        ['p', "Ce qui compte, c'est le moment où le visiteur voit quelque chose d'utile. Mieux vaut afficher le texte tout de suite et laisser les images arriver ensuite, que de faire attendre devant un écran blanc jusqu'à ce que tout soit prêt."]
+      ],
+      exos: [
+        { type: 'qcm',
+          q: "Tu publies une photo de 4 Mo dans un cadre de 400 pixels de large. Que télécharge le visiteur ?",
+          choix: ["Environ 40 Ko, le navigateur adapte", "Les 4 Mo entiers", "Rien tant qu'il ne clique pas", "Cela dépend de son écran"],
+          bon: 1,
+          expl: "Le navigateur télécharge le fichier tel quel, puis le réduit à l'affichage. Redimensionner doit se faire AVANT de publier." },
+        { type: 'code',
+          q: "Écris <code>secondes3G</code> : elle reçoit un poids de page en kilo-octets et rend le temps de chargement en 3G, en comptant 100 Ko par seconde.",
+          nom: 'secondes3G',
+          depart: `function secondes3G(ko) {
+
+}`,
+          tests: [ {args:[300], att:3}, {args:[2000], att:20}, {args:[50], att:0.5}, {args:[0], att:0} ],
+          indice: "Une division suffit : <code>return ko / 100;</code>",
+          expl: "Le calcul est trivial — ce qui compte, c'est de le faire avant de publier plutôt qu'après les plaintes." },
+        { type: 'ordre',
+          q: "Remets dans l'ordre la mise au régime d'une page trop lourde.",
+          items: [ "Mesurer le poids total actuel", "Redimensionner et convertir les images", "Ajouter le chargement différé sous la ligne de flottaison", "Activer le cache pour les visites suivantes", "Re-mesurer et tester sur un vrai téléphone" ],
+          expl: "On mesure avant et après, sinon on ne sait pas ce qu'on a gagné. Et l'image est toujours le premier poste d'économie." }
       ]
     }
   ]

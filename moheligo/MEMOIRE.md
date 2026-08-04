@@ -159,8 +159,11 @@ Le patron voulait apprendre la technologie (programmation, serveurs, API, IA)
 gestion de startup où la seule façon de débloquer un contrat est d'apprendre
 pour de vrai la compétence qu'il exige. Dossier `kodo/` à la racine, autonome,
 hors ligne, aucune dépendance, aucune donnée qui sort du téléphone.
-Contenu : 4 branches, 12 leçons, 37 exercices corrigés automatiquement (dont
-des exercices de code réellement exécutés contre des cas de test).
+Contenu : 4 branches, 16 leçons, 50 exercices corrigés automatiquement (dont
+14 exercices de code réellement exécutés contre des cas de test).
+Niveau 4 de chaque branche ajouté le 04/08 : déboguer, l'optimisation 3G,
+les bases de données (SQL, index, injection), et donner ses propres données
+à une IA. Contrats de niveau 4 ajoutés en face (jusqu'à 2,6 M FC).
 Tout est expliqué dans `kodo/README.md`, y compris comment ajouter une leçon.
 **Aucun lien avec MoheliGo** — même règle que pour « Nous ».
 

@@ -33,14 +33,14 @@ est sauvegardée sur l'appareil.
 
 ## Le programme
 
-4 branches, 12 leçons, 37 exercices corrigés.
+4 branches, 16 leçons, 50 exercices corrigés.
 
 | Branche | Leçons |
 |---|---|
-| **Le code** | Variables & fonctions · Décider (si/sinon) · Listes & boucles |
-| **Le web** | HTML/CSS · Le JS dans la page (DOM, événements) · JSON & mémoire locale |
-| **Les serveurs** | Client/serveur, DNS, ports · HTTP, verbes & codes · Mise en ligne, HTTPS, sauvegardes |
-| **API & IA** | Appeler une API (fetch, JSON) · Modèles, tokens, coût · Brancher une IA sans faire fuiter sa clé |
+| **Le code** | Variables & fonctions · Décider (si/sinon) · Listes & boucles · Lire une erreur et déboguer |
+| **Le web** | HTML/CSS · Le JS dans la page (DOM, événements) · JSON & mémoire locale · Rapide même en 3G |
+| **Les serveurs** | Client/serveur, DNS, ports · HTTP, verbes & codes · Mise en ligne, HTTPS, sauvegardes · Bases de données (SQL, index, injection) |
+| **API & IA** | Appeler une API (fetch, JSON) · Modèles, tokens, coût · Brancher une IA sans faire fuiter sa clé · Faire travailler l'IA sur tes données |
 
 Trois types d'exercices, tous corrigés sur-le-champ avec une explication :
 

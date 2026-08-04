@@ -1,8 +1,8 @@
 /* Kodo — service worker : l'application marche entièrement hors connexion. */
-const CACHE = 'kodo-v1';
+const CACHE = 'kodo-v2';
 const FICHIERS = [
   './', './index.html', './kodo.css', './kodo.js',
-  './cours-bases.js', './cours-tech.js',
+  './cours-bases.js', './cours-tech.js', './cours-avance.js',
   './fonts.css', './manifest.webmanifest',
   './icon-192.png', './icon-512.png',
   './fonts/manrope-400.woff2', './fonts/manrope-800.woff2',

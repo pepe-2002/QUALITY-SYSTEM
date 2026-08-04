@@ -51,7 +51,17 @@ const CONTRATS = [
   { t:"Audit et reprise d'un code en panne", cli:"Régie des transports",  br:'code',niv:4, travail:9,  paie:1900000, users:5200 },
   { t:"Portail national allégé pour la 3G",  cli:"Administration des Comores", br:'web', niv:4, travail:9, paie:2100000, users:6400 },
   { t:"Base de données centrale des patients", cli:"Réseau de santé",     br:'serveur', niv:4, travail:10, paie:2400000, users:7000 },
-  { t:"Assistant branché sur la documentation", cli:"Compagnie d'assurance", br:'ia', niv:4, travail:10, paie:2600000, users:8000 }
+  { t:"Assistant branché sur la documentation", cli:"Compagnie d'assurance", br:'ia', niv:4, travail:10, paie:2600000, users:8000 },
+  // — niveau 5 : on ne construit plus, on tient debout —
+  { t:"Suite de tests sur un code sans filet", cli:"Éditeur de logiciel",   br:'code',niv:5, travail:11, paie:3200000, users:9000 },
+  { t:"Refonte des formulaires d'inscription", cli:"Université des Comores", br:'web', niv:5, travail:11, paie:3400000, users:10000 },
+  { t:"Surveillance et astreinte 24 h",       cli:"Opérateur de paiement",  br:'serveur', niv:5, travail:12, paie:3800000, users:11000 },
+  { t:"Maîtrise du budget IA d'un service",   cli:"Plateforme régionale",   br:'ia',  niv:5, travail:12, paie:4000000, users:12000 },
+  // — niveau 6 : les dossiers qu'on ne confie qu'aux gens sûrs —
+  { t:"Reprise d'un projet abandonné",        cli:"Groupe agroalimentaire", br:'code',niv:6, travail:14, paie:5200000, users:15000 },
+  { t:"Audit de sécurité du site public",     cli:"Banque centrale",        br:'web', niv:6, travail:14, paie:5800000, users:16000 },
+  { t:"Comptes et droits de 40 000 agents",   cli:"Fonction publique",      br:'serveur', niv:6, travail:15, paie:6500000, users:18000 },
+  { t:"Évaluation d'un assistant en service", cli:"Opérateur télécom",      br:'ia',  niv:6, travail:15, paie:7000000, users:20000 }
 ];
 
 /* ─────────── État ─────────── */

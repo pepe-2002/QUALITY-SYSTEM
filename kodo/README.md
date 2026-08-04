@@ -14,8 +14,12 @@ Tout ce que tu apprends dans le jeu est vrai, utilisable dehors.
 
 ## Ouvrir le jeu
 
-Rien à installer. Deux façons :
+Rien à installer. Trois façons :
 
+0. **En un seul fichier** — ouvrir `kodo-en-ligne.html` : tout est dedans,
+   polices comprises. Pratique pour l'envoyer par WhatsApp ou le déposer
+   sur n'importe quelle page. Régénéré par `python3 construire-page-unique.py`
+   après chaque modification.
 1. **En local** — depuis le dossier `kodo/` :
    ```
    python3 -m http.server 8080
@@ -33,14 +37,21 @@ est sauvegardée sur l'appareil.
 
 ## Le programme
 
-4 branches, 16 leçons, 50 exercices corrigés.
+4 branches, 6 niveaux chacune : **24 leçons, 74 exercices corrigés**.
 
-| Branche | Leçons |
-|---|---|
-| **Le code** | Variables & fonctions · Décider (si/sinon) · Listes & boucles · Lire une erreur et déboguer |
-| **Le web** | HTML/CSS · Le JS dans la page (DOM, événements) · JSON & mémoire locale · Rapide même en 3G |
-| **Les serveurs** | Client/serveur, DNS, ports · HTTP, verbes & codes · Mise en ligne, HTTPS, sauvegardes · Bases de données (SQL, index, injection) |
-| **API & IA** | Appeler une API (fetch, JSON) · Modèles, tokens, coût · Brancher une IA sans faire fuiter sa clé · Faire travailler l'IA sur tes données |
+| Niveau | Le code | Le web | Les serveurs | API & IA |
+|---|---|---|---|---|
+| 1 | Variables & fonctions | HTML / CSS | Client, serveur, DNS | Appeler une API |
+| 2 | Décider (si/sinon) | Le JS dans la page | HTTP : verbes et codes | Modèles, tokens, coût |
+| 3 | Listes & boucles | JSON & mémoire locale | Mise en ligne, HTTPS | Brancher une IA sans fuite de clé |
+| 4 | Lire une erreur, déboguer | Rapide même en 3G | Bases de données (SQL) | L'IA sur tes propres données |
+| 5 | Des tests qui te protègent | Formulaires & accessibilité | **Surveiller et maintenir** | Une IA en production sans se ruiner |
+| 6 | Git & la dette technique | Ne jamais faire confiance au navigateur | Comptes, mots de passe, droits | Savoir si ton IA est bonne |
+
+Les niveaux 1 à 3 apprennent à **construire**. Les niveaux 4 à 6 apprennent à
+**garder en vie** : déboguer, tester, surveiller, sauvegarder, sécuriser,
+maîtriser les coûts — c'est là que se joue la différence entre un projet
+qui tient et un projet qu'on abandonne.
 
 Trois types d'exercices, tous corrigés sur-le-champ avec une explication :
 
@@ -74,8 +85,11 @@ Paliers : Chambre → Bureau → Agence → Studio → **Groupe** (25 000 client
 index.html          structure de l'application
 kodo.css            design (sombre, mobile d'abord)
 kodo.js             moteur de jeu, écrans, correcteur d'exercices
-cours-bases.js      branches « Le code » et « Le web »
-cours-tech.js       branches « Les serveurs » et « API & IA »
+cours-bases.js      niveaux 1-4 : « Le code » et « Le web »
+cours-tech.js       niveaux 1-4 : « Les serveurs » et « API & IA »
+cours-avance.js     niveaux 5 et 6 des quatre branches
+construire-page-unique.py   assemble tout en un seul fichier HTML
+kodo-en-ligne.html  le jeu en une seule page (produit par le script)
 manifest.webmanifest, sw.js   installation + fonctionnement hors ligne
 fonts.css, fonts/   polices embarquées (aucun appel extérieur)
 icon-192.png, icon-512.png    icônes de l'application
@@ -88,8 +102,8 @@ l'appareil. La partie est dans le `localStorage` sous la clé `kodo_partie_v1`.
 
 ## Ajouter une leçon
 
-Ouvrir `cours-bases.js` ou `cours-tech.js` et ajouter un objet dans le tableau
-`lecons` de la branche voulue :
+Ouvrir `cours-bases.js` ou `cours-tech.js` (niveaux 1-4), ou `cours-avance.js`
+(niveaux 5-6), et ajouter un objet dans le tableau `lecons` de la branche voulue :
 
 ```js
 {

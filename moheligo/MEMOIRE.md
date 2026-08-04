@@ -159,11 +159,16 @@ Le patron voulait apprendre la technologie (programmation, serveurs, API, IA)
 gestion de startup où la seule façon de débloquer un contrat est d'apprendre
 pour de vrai la compétence qu'il exige. Dossier `kodo/` à la racine, autonome,
 hors ligne, aucune dépendance, aucune donnée qui sort du téléphone.
-Contenu : 4 branches, 16 leçons, 50 exercices corrigés automatiquement (dont
-14 exercices de code réellement exécutés contre des cas de test).
-Niveau 4 de chaque branche ajouté le 04/08 : déboguer, l'optimisation 3G,
-les bases de données (SQL, index, injection), et donner ses propres données
-à une IA. Contrats de niveau 4 ajoutés en face (jusqu'à 2,6 M FC).
+Contenu : 4 branches × 6 niveaux = 24 leçons, 74 exercices corrigés
+automatiquement (dont 21 exercices de code réellement exécutés contre des
+cas de test). Niveaux 1-3 : construire. Niveaux 4-6 : garder en vie —
+déboguer, tester, Git, 3G, formulaires, sécurité navigateur, bases de
+données, surveillance et maintenance, comptes et mots de passe, coût d'une
+IA en production, évaluation d'une IA. Contrats jusqu'au niveau 6 en face
+(jusqu'à 7 M FC et 20 000 clients).
+Deux façons de l'ouvrir : le dossier complet (PWA installable, hors ligne),
+ou `kodo-en-ligne.html`, un fichier unique de 316 Ko avec les polices
+dedans, régénéré par `construire-page-unique.py`.
 Tout est expliqué dans `kodo/README.md`, y compris comment ajouter une leçon.
 **Aucun lien avec MoheliGo** — même règle que pour « Nous ».
 
@@ -173,9 +178,17 @@ Tout est expliqué dans `kodo/README.md`, y compris comment ajouter une leçon.
   idées écartées en cours de route à la demande du patron : un mini-jeu de
   vedette (« je n'ai pas de vedettes ») et un studio d'affiches. Ce qu'il
   voulait vraiment : apprendre la tech en jouant à un jeu de gestion.
-  Parcours complet testé au navigateur (29 vérifications : leçon, les trois
+  Parcours complet testé au navigateur (34 vérifications : leçon, les trois
   types d'exercices, contrat signé → développé → livré, fin de journée,
-  sauvegarde et reprise). **Rien à faire côté MoheliGo.**
+  sauvegarde et reprise), plus une vérification que les 21 exercices de code
+  sont solvables (solution de référence rejouée contre chaque cas de test).
+  Mise en ligne : GitHub Pages n'était toujours pas activé (404), donc le
+  workflow `nous-pages.yml` a été remplacé par `site-pages.yml`, qui publie
+  `/kodo/` ET `/nous/` — un seul site Pages est permis par dépôt. Il attend
+  toujours l'interrupteur du patron (Settings → Pages → Source : GitHub
+  Actions) et une fusion dans `main`. En attendant, le jeu a été publié en
+  artifact claude.ai pour qu'il ait un lien tout de suite.
+  **Rien à faire côté MoheliGo.**
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

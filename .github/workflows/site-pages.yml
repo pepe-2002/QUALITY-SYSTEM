@@ -1,25 +1,33 @@
 # ════════════════════════════════════════════════════════════════════
-#  Met en ligne « Nous » (dossier nous/) sur GitHub Pages.
+#  Met en ligne les applications du dépôt sur GitHub Pages.
 #
-#  ⚠️ Ne publie QUE le dossier nous/. Le reste du dépôt — RA-QDMS,
-#  MoheliGo — n'est pas touché et n'est pas mis en ligne par ici.
+#    /kodo/   le jeu-école Kodo
+#    /nous/   la messagerie privée Nous
+#
+#  ⚠️ GitHub n'autorise qu'UN SEUL site Pages par dépôt : les deux
+#  applications doivent donc être publiées par ce workflow unique.
+#  C'est pour ça qu'il remplace l'ancien « nous-pages.yml ».
+#
+#  ⚠️ RA-QDMS et MoheliGo ne sont PAS publiés ici et ne sont pas touchés.
 #
 #  ⚠️ À FAIRE UNE SEULE FOIS, ET SEUL LE PROPRIÉTAIRE PEUT LE FAIRE :
 #     Settings → Pages → Build and deployment → Source : « GitHub Actions »
 #  GitHub interdit à un robot de créer le site lui-même (l'API répond
 #  « Resource not accessible by integration »). Une fois l'interrupteur
-#  basculé, tout le reste est automatique et il n'y a plus jamais rien
-#  à toucher : chaque modification de nous/ remet le site à jour.
+#  basculé, tout est automatique : chaque modification de kodo/ ou de
+#  nous/ remet le site à jour toute seule.
 # ════════════════════════════════════════════════════════════════════
 
-name: Nous — mise en ligne
+name: Site — mise en ligne
 
 on:
   push:
     branches: [main]
     paths:
+      - "kodo/**"
       - "nous/**"
-      - ".github/workflows/nous-pages.yml"
+      - ".github/pages-index.html"
+      - ".github/workflows/site-pages.yml"
   workflow_dispatch:        # bouton « Run workflow » pour publier à la demande
 
 permissions:
@@ -32,7 +40,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # ── 1. Préparer le paquet ──
+  # ── 1. Assembler le paquet ──
   preparer:
     runs-on: ubuntu-latest
     steps:
@@ -40,10 +48,22 @@ jobs:
 
       - uses: actions/configure-pages@v5
 
-      # Seul le dossier de l'application part en ligne.
+      - name: Assembler le site
+        run: |
+          mkdir -p _site
+          cp -r kodo _site/kodo
+          cp -r nous _site/nous
+          # Documentation et fichiers de travail : inutiles en ligne
+          rm -f _site/kodo/README.md _site/kodo/kodo-en-ligne.html
+          rm -f _site/nous/README.md _site/nous/SQL-nous.sql
+          # La racine mène au jeu ; « Nous » garde son adresse discrète.
+          cp .github/pages-index.html _site/index.html
+          echo "Contenu publié :"
+          ls _site
+
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: nous
+          path: _site
 
   # ── 2. Publier ──
   publier:

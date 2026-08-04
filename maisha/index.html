@@ -345,13 +345,70 @@ const PRENOMS_F = ["Amina","Faïza","Nadjma","Zaïnaba","Halima","Echat","Mariam
 const PRENOMS_M = ["Saïd","Moussa","Ali","Ibrahim","Ahmed","Nayamdine","Soilihi","Youssouf","Abdou","Karim","Mohamed","Anli"];
 const NOMS = ["Madi","Abdallah","Soilih","Mohamed","Bacar","Ahamada","Attoumane","Saandi","Djoumbé","Combo","Mzé","Halidi"];
 const VILLES = [["Moroni","Comores"],["Fomboni","Comores"],["Mutsamudu","Comores"],["Mamoudzou","Mayotte"],["Marseille","France"],["Paris","France"],["Antananarivo","Madagascar"],["Dar es Salam","Tanzanie"]];
+/* Le monde : dev = développement, eco = économie, corr = corruption,
+   edu = éducation, peuple = moral, reg = région, natal = jouable à la naissance */
 const PAYS_DEF = {
-  "Comores":    {dev:35, eco:40, corr:55, edu:40, peuple:55},
-  "Mayotte":    {dev:55, eco:50, corr:35, edu:55, peuple:52},
-  "France":     {dev:85, eco:72, corr:18, edu:85, peuple:50},
-  "Madagascar": {dev:30, eco:35, corr:60, edu:35, peuple:48},
-  "Tanzanie":   {dev:42, eco:50, corr:48, edu:45, peuple:53},
+  // --- océan Indien et Afrique de l'Est ---
+  "Comores":       {dev:35, eco:40, corr:55, edu:40, peuple:55, reg:"Océan Indien", natal:true},
+  "Mayotte":       {dev:55, eco:50, corr:35, edu:55, peuple:52, reg:"Océan Indien", natal:true},
+  "Madagascar":    {dev:30, eco:35, corr:60, edu:35, peuple:48, reg:"Océan Indien", natal:true},
+  "Maurice":       {dev:70, eco:68, corr:28, edu:70, peuple:60, reg:"Océan Indien"},
+  "Seychelles":    {dev:72, eco:66, corr:30, edu:68, peuple:62, reg:"Océan Indien"},
+  "Tanzanie":      {dev:42, eco:50, corr:48, edu:45, peuple:53, reg:"Afrique de l'Est", natal:true},
+  "Kenya":         {dev:48, eco:56, corr:52, edu:52, peuple:50, reg:"Afrique de l'Est"},
+  "Éthiopie":      {dev:32, eco:44, corr:55, edu:38, peuple:45, reg:"Afrique de l'Est"},
+  "Rwanda":        {dev:45, eco:54, corr:22, edu:50, peuple:58, reg:"Afrique de l'Est"},
+  "Mozambique":    {dev:28, eco:38, corr:62, edu:33, peuple:44, reg:"Afrique de l'Est"},
+  // --- Afrique ---
+  "Afrique du Sud":{dev:62, eco:58, corr:55, edu:62, peuple:44, reg:"Afrique australe"},
+  "Nigeria":       {dev:38, eco:52, corr:70, edu:42, peuple:40, reg:"Afrique de l'Ouest"},
+  "Sénégal":       {dev:44, eco:50, corr:42, edu:46, peuple:56, reg:"Afrique de l'Ouest"},
+  "Côte d'Ivoire": {dev:45, eco:56, corr:50, edu:44, peuple:52, reg:"Afrique de l'Ouest"},
+  "Ghana":         {dev:47, eco:52, corr:45, edu:52, peuple:55, reg:"Afrique de l'Ouest"},
+  "Maroc":         {dev:58, eco:56, corr:44, edu:56, peuple:52, reg:"Afrique du Nord"},
+  "Égypte":        {dev:52, eco:50, corr:58, edu:50, peuple:44, reg:"Afrique du Nord"},
+  // --- Europe ---
+  "France":        {dev:85, eco:72, corr:18, edu:85, peuple:50, reg:"Europe", natal:true},
+  "Allemagne":     {dev:88, eco:78, corr:14, edu:86, peuple:56, reg:"Europe"},
+  "Royaume-Uni":   {dev:86, eco:74, corr:16, edu:84, peuple:50, reg:"Europe"},
+  "Suisse":        {dev:92, eco:85, corr:9,  edu:88, peuple:70, reg:"Europe"},
+  "Portugal":      {dev:78, eco:64, corr:26, edu:76, peuple:58, reg:"Europe"},
+  "Turquie":       {dev:64, eco:60, corr:48, edu:62, peuple:46, reg:"Europe"},
+  // --- Golfe et Asie ---
+  "Émirats arabes unis":{dev:82, eco:88, corr:26, edu:74, peuple:62, reg:"Golfe"},
+  "Qatar":         {dev:84, eco:90, corr:24, edu:76, peuple:64, reg:"Golfe"},
+  "Arabie saoudite":{dev:74, eco:82, corr:38, edu:68, peuple:52, reg:"Golfe"},
+  "Inde":          {dev:52, eco:66, corr:55, edu:56, peuple:50, reg:"Asie"},
+  "Chine":         {dev:70, eco:82, corr:48, edu:72, peuple:52, reg:"Asie"},
+  "Japon":         {dev:90, eco:76, corr:12, edu:88, peuple:54, reg:"Asie"},
+  "Singapour":     {dev:92, eco:88, corr:8,  edu:90, peuple:66, reg:"Asie"},
+  "Indonésie":     {dev:56, eco:62, corr:52, edu:58, peuple:54, reg:"Asie"},
+  // --- Amériques ---
+  "États-Unis":    {dev:88, eco:84, corr:22, edu:82, peuple:46, reg:"Amérique du Nord"},
+  "Canada":        {dev:89, eco:76, corr:13, edu:86, peuple:62, reg:"Amérique du Nord"},
+  "Brésil":        {dev:58, eco:60, corr:58, edu:58, peuple:48, reg:"Amérique du Sud"},
+  "Mexique":       {dev:60, eco:62, corr:60, edu:60, peuple:48, reg:"Amérique du Nord"},
+  // --- Océanie ---
+  "Australie":     {dev:87, eco:76, corr:15, edu:84, peuple:60, reg:"Océanie"},
 };
+const PAYS_NATAL = Object.keys(PAYS_DEF).filter(p => PAYS_DEF[p].natal);
+// attractivité d'un pays pour un investisseur étranger
+function attractivite(p){ return Math.round((p.eco*0.5 + p.dev*0.3 + (p.edu||50)*0.2) - p.corr*0.25); }
+
+/* ---- banques et investisseurs ---- */
+const BANQUES = [
+  {nom:"Banque de l'Archipel",    ico:"🏦", taux:11, maxRatio:0.8, garantie:0,   desc:"La banque du coin. Chère, mais elle prête à tout le monde."},
+  {nom:"Banque Populaire Océan",  ico:"🏛️", taux:8,  maxRatio:1.2, garantie:20,  desc:"Taux corrects, demande un peu de solidité."},
+  {nom:"Crédit Maritime",         ico:"⚓", taux:6.5,maxRatio:1.6, garantie:45,  desc:"Spécialiste du commerce et du transport."},
+  {nom:"Banque Internationale",   ico:"🌐", taux:5,  maxRatio:2.2, garantie:70,  desc:"Meilleurs taux, mais elle n'ouvre ses portes qu'aux dossiers solides."},
+  {nom:"Fonds de développement",  ico:"🕊️", taux:2.5,maxRatio:1.0, garantie:55,  desc:"Prêt bonifié si ton entreprise crée de l'emploi et du développement."},
+];
+const INVESTISSEURS = [
+  {nom:"Business angel local",     ico:"👤", part:12, mult:0.9,  repMin:0,  desc:"Un notable de Moroni qui croit en toi. Petit ticket, peu d'exigences."},
+  {nom:"Fonds régional océan Indien", ico:"🌊", part:20, mult:1.6, repMin:45, desc:"Capital sérieux, accompagnement et réseau régional."},
+  {nom:"Fonds de capital-risque",  ico:"🚀", part:30, mult:3.0,  repMin:60, desc:"Gros chèque, forte dilution, et une exigence de croissance rapide."},
+  {nom:"Fonds souverain du Golfe", ico:"🕌", part:35, mult:5.0,  repMin:75, desc:"Le très gros argent. Il ne vient que pour les champions."},
+];
 const FILIERES = ["Médecine","Droit","Informatique","Commerce","Ingénierie","Lettres"];
 
 const PETITS_BOULOTS = [
@@ -651,6 +708,9 @@ function normaliserEntreprise(e){
   if(!e.prospects) e.prospects = {age:-1, liste:[]};
   if(!e.histo) e.histo = [];
   if(e.clients==null) e.clients = 8 + (e.taille||0)*12;
+  if(!e.filiales) e.filiales = [];
+  if(e.partInvest==null) e.partInvest = 0;
+  if(!e.emprunts) e.emprunts = [];
   return e;
 }
 
@@ -1283,19 +1343,37 @@ function vieillir(){
 
     const masse = (e.monSalaire||0) + (e.pdg ? e.pdg.salaire : 0) + e.employes.reduce((s,x)=>s+x.salaire,0);
     prod = Math.round(prod * tauxAct * (e.pdg ? 1 + e.pdg.competence/110 : 1));
-    const ca = Math.max(0, chiffre) + prod + caContrats;
-    const interets = Math.round((e.dette||0) * 0.08);
+    // filiales à l'étranger : chaque implantation rapporte selon l'économie locale
+    let caFiliales = 0;
+    for(const f of (e.filiales||[])){
+      const pf = etat.monde[f.pays];
+      if(!pf) continue;
+      f.annees = (f.annees||0)+1;
+      const rendement = (pf.eco - 45 + alea(24) - 10) / 100;
+      const gain = Math.round(f.invest * rendement * 0.22);
+      caFiliales += gain;
+      f.valeur = Math.max(0, Math.round((f.valeur||f.invest) * (1 + rendement/2)));
+      if(Math.abs(gain) > 3000)
+        ecrire(`🌍 Filiale de « ${e.nom} » en ${f.pays} : ${gain>=0?"+":""}${euros(gain)} cette année.`, gain>=0?"argent":"mauvais");
+    }
+    const ca = Math.max(0, chiffre) + prod + caContrats + Math.max(0, caFiliales);
+    const interets = Math.round((e.dette||0) * ((e.tauxDette||8)/100));
     if(e.dette){
       const rembours = Math.min(e.dette, Math.round(e.dette*0.15));
       e.dette -= rembours;
       e.caisse -= rembours;
     }
-    let resultat = chiffre + prod + caContrats - coutContrats - masse - interets;
+    let resultat = chiffre + prod + caContrats + caFiliales - coutContrats - masse - interets;
     if(resultat > 0) resultat = Math.round(resultat*(1-imp));
     e.caisse = (e.caisse||0) + resultat;
 
     // mon salaire de dirigeant (versé par la caisse, imposé comme un salaire)
     if(e.monSalaire) revenus += Math.round(e.monSalaire*(1-imp));
+    if(e.partInvest > 0 && resultat > 0){
+      const du = Math.round(resultat * e.partInvest/100);
+      e.caisse -= du;
+      ecrire(`🤝 Dividendes versés aux investisseurs de « ${e.nom} » (${e.partInvest} % du capital) : ${euros(du)}.`, "info");
+    }
 
     // l'entreprise capitalise si elle est bénéficiaire (surtout en expansion)
     if(resultat > 0) e.valeur += Math.round(resultat * (e.strategie==="expansion" ? 0.22 : 0.10));
@@ -2910,6 +2988,125 @@ function feuilleEntreprise(e){
     rafraichirFeuille();
   });
 
+  /* --- financement bancaire --- */
+  section("🏦 Financement bancaire", false);
+  const detteTot = e.dette || 0;
+  carte(`<div class="detail">Dette actuelle : <b>${euros(detteTot)}</b> · Valorisation : ${euros(e.valeur)} · Réputation : ${e.reputation}/100.
+    Chaque banque a ses conditions : plus tu es solide, plus le taux baisse et le plafond monte.</div>`);
+  for(const bq of BANQUES){
+    const plafond = Math.round(e.valeur * bq.maxRatio);
+    const dispo = Math.max(0, plafond - detteTot);
+    const solide = e.reputation >= bq.garantie && (e.taille||0)*25 + e.reputation >= bq.garantie;
+    const montant = Math.min(dispo, Math.round(plafond*0.5 / 5000) * 5000);
+    const c = carte(`<div class="titre">${bq.ico} ${bq.nom}</div>
+      <div class="detail">${bq.desc}<br>Taux <b>${bq.taux} %</b> · plafond ${euros(plafond)} · réputation exigée ${bq.garantie}</div>
+      <div class="ligne-info"><span>Condition d'octroi</span><b>${solide ? "✅ dossier accepté" : "❌ profil trop léger"}</b></div>
+      <div class="ligne-info"><span>Capacité restante</span><b>${euros(dispo)}</b></div>
+      <div class="actions"></div>`);
+    action(c, montant > 0 ? `Emprunter ${euros(montant)}` : "Plafond atteint", "", () => {
+      e.dette = (e.dette||0) + montant;
+      e.caisse += montant;
+      e.emprunts = (e.emprunts||[]).concat([{banque: bq.nom, montant, taux: bq.taux, an: etat.age}]);
+      e.tauxDette = bq.taux;
+      ecrire(`🏦 ${bq.nom} accorde un prêt de ${euros(montant)} à « ${e.nom} » au taux de ${bq.taux} %.`, "argent");
+      rafraichirFeuille();
+    }, !solide || montant <= 0);
+  }
+  if(detteTot > 0){
+    const cR = carte(`<div class="titre">Rembourser par anticipation</div>
+      <div class="detail">Solder tout ou partie de la dette allège les charges financières des exercices suivants.</div>
+      <div class="actions"></div>`);
+    for(const part of [0.25, 1]){
+      const m = Math.round(detteTot * part);
+      action(cR, part === 1 ? `Tout solder (${euros(m)})` : `Rembourser ${euros(m)}`, "gris", () => {
+        e.caisse -= m; e.dette = Math.max(0, e.dette - m);
+        ecrire(`🏦 Remboursement anticipé de ${euros(m)} sur la dette de « ${e.nom} ».`, "argent");
+        rafraichirFeuille();
+      }, (e.caisse||0) < m);
+    }
+  }
+
+  /* --- levée de fonds --- */
+  section("🤝 Investisseurs", false);
+  carte(`<div class="detail">Part du capital déjà cédée : <b>${e.partInvest||0} %</b>. Un investisseur apporte du cash sans dette, mais prend une part définitive de tes bénéfices.</div>`);
+  for(const inv of INVESTISSEURS){
+    const ticket = Math.round(assietteCA(e.valeur) * inv.mult / 5000) * 5000;
+    const ok = e.reputation >= inv.repMin && (e.partInvest||0) + inv.part <= 70;
+    const c = carte(`<div class="titre">${inv.ico} ${inv.nom}</div>
+      <div class="detail">${inv.desc}<br>Apport <b>${euros(ticket)}</b> contre <b>${inv.part} %</b> du capital · réputation exigée ${inv.repMin}</div>
+      <div class="ligne-info"><span>Éligibilité</span><b>${ok ? "✅ intéressé" : (e.partInvest||0)+inv.part > 70 ? "❌ capital trop dilué" : "❌ réputation insuffisante"}</b></div>
+      <div class="actions"></div>`);
+    action(c, `Lever ${euros(ticket)}`, "or", () => {
+      e.caisse += ticket;
+      e.valeur += Math.round(ticket*0.6);
+      e.partInvest = (e.partInvest||0) + inv.part;
+      e.reputation = borne(e.reputation + 5);
+      ecrire(`🤝 ${inv.nom} investit ${euros(ticket)} dans « ${e.nom} » contre ${inv.part} % du capital (total cédé : ${e.partInvest} %).`, "argent");
+      rafraichirFeuille();
+    }, !ok);
+  }
+
+  /* --- expansion internationale --- */
+  section("🌍 Expansion internationale", false);
+  const paysDispo = Object.keys(etat.monde)
+    .filter(n => n !== etat.pays && !(e.filiales||[]).some(f => f.pays === n))
+    .map(n => ({n, p: etat.monde[n], a: attractivite(etat.monde[n])}))
+    .sort((x,y) => y.a - x.a);
+  carte(`<div class="detail">Ouvrir une filiale à l'étranger, c'est toucher un marché entier. Le rendement suit l'économie locale : un pays riche rapporte plus, un pays instable peut coûter cher.
+    ${(e.filiales||[]).length ? `<br>Filiales actuelles : <b>${e.filiales.length}</b>` : ""}</div>`);
+  for(const f of (e.filiales||[])){
+    const pf = etat.monde[f.pays];
+    const c = carte(`<div class="titre">🌍 Filiale — ${f.pays}</div>
+      <div class="detail">Investi ${euros(f.invest)} il y a ${f.annees||0} an(s) · valeur estimée <b>${euros(f.valeur||f.invest)}</b>
+        · économie locale ${pf ? pf.eco : "?"}/100</div>
+      <div class="actions"></div>`);
+    action(c, `Céder la filiale (${euros(Math.round((f.valeur||f.invest)*0.85))})`, "gris", () => {
+      e.caisse += Math.round((f.valeur||f.invest)*0.85);
+      e.filiales = e.filiales.filter(x => x !== f);
+      ecrire(`🌍 J'ai cédé la filiale de « ${e.nom} » en ${f.pays}.`, "argent");
+      rafraichirFeuille();
+    });
+  }
+  if((e.filiales||[]).length < 5){
+    for(const {n, p, a} of paysDispo.slice(0, 6)){
+      const cout = Math.max(25000, Math.round(assietteCA(e.valeur) * 0.5 * (1 + a/120) / 5000) * 5000);
+      // les pays attractifs courtisent les entreprises solides
+      const incitation = (e.taille||0) >= 1 && p.eco > 55 && alea(3) === 0;
+      const c = carte(`<div class="titre">🌍 ${n} <span class="badge">${p.reg}</span>${incitation ? ' <span class="badge" style="background:var(--accent);color:var(--accent-ink)">Offre d\'implantation</span>' : ""}</div>
+        <div class="detail">Attractivité <b>${a}/100</b> · économie ${p.eco} · développement ${p.dev} · corruption ${p.corr}<br>
+          Investissement requis : <b>${euros(incitation ? Math.round(cout*0.6) : cout)}</b>${incitation ? " — le pays prend 40 % à sa charge pour t'attirer" : ""}</div>
+        <div class="actions"></div>`);
+      const prix = incitation ? Math.round(cout*0.6) : cout;
+      action(c, "Ouvrir une filiale", incitation ? "or" : "", () => {
+        e.caisse -= prix;
+        e.filiales.push({pays:n, invest:cout, valeur:cout, annees:0});
+        e.reputation = borne(e.reputation + 4);
+        etat.celebrite = borne(etat.celebrite + 3);
+        ecrire(`🌍 « ${e.nom} » s'implante en ${n} : filiale ouverte pour ${euros(prix)}${incitation ? " (subvention du pays d'accueil)" : ""}.`, "argent");
+        rafraichirFeuille();
+      }, (e.caisse||0) < prix);
+      action(c, "Négocier des avantages", "gris", () => {
+        if(dejaFait("nego_"+n)){ ecrire(`Les autorités de ${n} m'ont déjà reçu cette année.`); return; }
+        const chance = 25 + e.reputation/3 + (etat.compPro||0)/5 + (e.taille||0)*8;
+        if(alea(100) < chance){
+          const remise = Math.round(cout * 0.35);
+          e.caisse += 0;
+          e.negos = e.negos || {};
+          e.negos[n] = remise;
+          ecrire(`🤝 Négociation réussie avec ${n} : exonération obtenue, l'implantation te coûtera ${euros(cout - remise)}.`, "bon");
+          // appliquer immédiatement en ouvrant la filiale
+          if((e.caisse||0) >= cout - remise){
+            e.caisse -= (cout - remise);
+            e.filiales.push({pays:n, invest:cout, valeur:cout, annees:0});
+            e.reputation = borne(e.reputation + 4);
+            ecrire(`🌍 Filiale ouverte en ${n} grâce à l'accord négocié.`, "argent");
+          }
+        } else ecrire(`🤝 ${n} n'a pas donné suite à ma demande d'avantages fiscaux.`, "mauvais");
+        rafraichirFeuille();
+      });
+    }
+  }
+
   /* --- croissance, fusion, bourse --- */
   section("Croissance & haut de bilan", false);
 
@@ -3174,10 +3371,13 @@ function feuillePays(){
     <div>${libellePays(p).map(x=>`<span class="badge">${x}</span>`).join("")}</div>
     <div class="detail" style="margin-top:6px">Taux d'imposition : ${Math.round(tauxImpot()*100)} %</div>`);
 
-  const rangs = Object.keys(etat.monde).map(n => ({n, s: scorePays(etat.monde[n])})).sort((a,b)=>b.s-a.s);
+  const tous = Object.keys(etat.monde).map(n => ({n, s: scorePays(etat.monde[n])})).sort((a,b)=>b.s-a.s);
+  const monRang = tous.findIndex(r => r.n === etat.pays);
+  const rangs = tous.slice(0, 8);
+  if(monRang >= 8) rangs.push(tous[monRang]);
   const medailles = ["🥇","🥈","🥉","4ᵉ","5ᵉ","6ᵉ"];
-  carte(`<div class="titre">🏆 Classement régional des pays</div>
-    <div class="detail">Score = développement + économie + éducation − corruption.</div>` +
+  carte(`<div class="titre">🏆 Classement mondial <span class="badge">${Object.keys(etat.monde).length} pays</span></div>
+    <div class="detail">Score = développement + économie + éducation − corruption. ${etat.pays} est ${monRang+1}ᵉ sur ${tous.length}.</div>` +
     rangs.map((r,i)=>`<div class="pays-stat"><label>${medailles[i]||i+1+"ᵉ"} ${r.n}${r.n===etat.pays?" ⭐":""}</label>
       <div class="jauge"><i style="width:${Math.max(4,Math.min(100,Math.round(r.s/2.6)))}%;background:${r.n===etat.pays?"var(--accent)":"var(--line)"}"></i></div><b>${r.s}</b></div>`).join(""));
 

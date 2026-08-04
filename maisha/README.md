@@ -44,6 +44,41 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Le monde entier 🌍
+
+**36 pays** sur six continents, chacun avec ses cinq indicateurs
+(développement, économie, éducation, moral du peuple, corruption) et sa
+région : de l'archipel des Comores à Singapour, du Rwanda aux Émirats, du
+Brésil au Japon. Tous évoluent chaque année. Le **classement mondial** montre
+le top 8 et la place de ton pays parmi les 36. On naît dans l'un des cinq pays
+de l'océan Indien et de l'Europe, mais on peut investir partout.
+
+## Financement et investisseurs 🏦
+
+**Cinq banques** se disputent ton dossier, chacune avec son taux, son plafond
+(un multiple de ta valorisation) et son exigence de réputation : la Banque de
+l'Archipel prête à tout le monde à 11 %, le Crédit Maritime à 6,5 % pour les
+dossiers sérieux, la Banque Internationale à 5 % pour les champions, et le
+Fonds de développement à 2,5 % en prêt bonifié. Le taux que tu obtiens
+détermine tes charges financières pour toute la durée du prêt, et tu peux
+rembourser par anticipation.
+
+**Quatre investisseurs** peuvent entrer à ton capital : business angel local,
+fonds régional de l'océan Indien, fonds de capital-risque, **fonds souverain
+du Golfe**. Chacun apporte un ticket proportionnel à ta taille contre une part
+définitive du capital (12 à 35 %) — de l'argent sans dette, mais une part de
+tes bénéfices leur revient chaque année, à vie.
+
+## Expansion internationale 🌍
+
+Ouvre des **filiales à l'étranger** (jusqu'à cinq) : les pays sont classés par
+**attractivité** et le rendement de chaque filiale suit l'économie locale. Les
+pays riches **te courtisent** : quand ton entreprise est solide, certains
+prennent **40 % de l'investissement à leur charge** pour t'attirer. Et tu peux
+toi-même **négocier des avantages fiscaux** auprès des autorités — plus ta
+réputation et ta compétence sont hautes, plus tu obtiens d'exonérations. Les
+filiales se revendent quand tu veux.
+
 ## L'entreprise comme une vraie entreprise 🏢
 
 L'écran de gestion est devenu un poste de pilotage professionnel :

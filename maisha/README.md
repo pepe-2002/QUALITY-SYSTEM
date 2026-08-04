@@ -44,6 +44,23 @@ tournent si tu leur as donné un PDG, et tes enfants mènent leur propre vie.
 Tous les boutons restent là si tu veux forcer les choses, mais tu peux
 traverser une vie entière en appuyant seulement sur **+ Âge**.
 
+## Ce que la génération suivante conserve 🧬
+
+Changer de génération ne remet rien à zéro du patrimoine ni du monde :
+
+- **Les placements sont liquidés et entrent dans la succession** (actions,
+  or, crypto, obligations) — ils comptent aussi dans ton patrimoine affiché
+  de ton vivant ;
+- **le monde des affaires reste intact** : les 150 entreprises concurrentes,
+  leurs valorisations, leurs patrons et les classements ;
+- **le réseau international de la famille est transmis** : les pays visités
+  restent accessibles à l'héritier ;
+- **les entreprises arrivent complètes** : le **PDG reste en poste**, les
+  contrats clients en cours continuent, les prestataires travaillent
+  toujours, les filiales à l'étranger et les participations sont conservées.
+
+Le journal de l'héritier détaille exactement ce qu'il reprend en main.
+
 ## Donner du travail aux autres entreprises 📋
 
 Tu n'es plus seulement fournisseur : tu peux devenir **client** des autres

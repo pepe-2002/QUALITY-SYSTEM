@@ -2212,6 +2212,13 @@ function ajouterAmi(){
 function valeurPatrimoine(){
   let v = etat.biens.reduce((s,b)=>s+b.valeur,0);
   for(const e of (etat.entreprises||[])) v += Math.round(e.valeur*0.9) + Math.max(0, e.caisse||0);
+  for(const cle in (etat.placements||{})) v += Math.max(0, (etat.placements[cle].montant)||0);
+  return v;
+}
+// tout ce qui se liquide au décès : biens + portefeuille de placements
+function valeurLiquidable(){
+  let v = etat.biens.reduce((s,b)=>s+b.valeur,0);
+  for(const cle in (etat.placements||{})) v += Math.max(0, (etat.placements[cle].montant)||0);
   return v;
 }
 
@@ -2223,7 +2230,7 @@ function mourir(cause){
   const heritiers = enfants();
   const patrimoine = valeurPatrimoine();
   // les biens sont vendus et partagés ; les entreprises passent en nature à l'héritier choisi
-  const patrimoineBiens = etat.biens.reduce((s,b)=>s+b.valeur,0);
+  const patrimoineBiens = valeurLiquidable();
   const fraisSucc = diff().frais;
   const succession = Math.max(0, Math.round((Math.max(0,etat.argent) + patrimoineBiens) * (1-fraisSucc)));
   const part = heritiers.length ? Math.round(succession / heritiers.length) : 0;
@@ -2266,6 +2273,7 @@ function mourir(cause){
       <div class="fiche">
         💰 Argent au décès : <b>${euros(etat.argent)}</b><br>
         🏠 Patrimoine : <b>${euros(patrimoine)}</b><br>
+        ${Object.keys(etat.placements||{}).length ? "📈 Placements liquidés : <b>"+euros(Object.values(etat.placements).reduce((x,y)=>x+(y.montant||0),0))+"</b><br>" : ""}
         ${etat.diplome ? "🎓 Diplôme : <b>"+etat.filiere+"</b><br>" : ""}
         ${etat.emploi ? "💼 Dernier poste : <b>"+etat.emploi.titre+"</b><br>" : ""}
         ${(etat.entreprises||[]).map(e=>"🏭 Entreprise transmise : <b>"+e.nom+"</b> (caisse "+euros(Math.max(0,e.caisse||0))+")<br>").join("")}
@@ -2307,6 +2315,8 @@ function continuerAvec(h, heritage){
     argent: heritage + (h.argent||0), emploi:null, filiere:null,
     etude:"aucune", anneesEtude:0, diplome: h.statut==="diplômé",
     entreprises: parent.entreprises || [], politique:null, royaume: parent.royaume,
+    concurrents: parent.concurrents || [], visites: parent.visites || [],
+    carriere:null, placements:{}, gainCrypto:0,
     pension:0, maladie:null, petitsEnfants:0, anneesTravail: h.metier?2:0, candidats:null, auto: parent.auto||false,
     karma:60, animaux:[], crimes:0, anneesPrison:0, divorces:0, voyages:0, constructions:0, polMax:0, entMax:0,
     prison:0, faits:{}, relations:[], biens:[], journal:[], monde, mort:false
@@ -2337,8 +2347,17 @@ function continuerAvec(h, heritage){
   nouvelleAnnee();
   ecrire(`Je suis ${etat.prenom} ${etat.nom}, génération ${etat.generation} de la famille.`, "bon");
   ecrire(`Mon ${parent.genre==="F"?"ma mère":"père"} ${parent.prenom} nous a quittés. J'hérite de ${euros(heritage)} (part sur ${freresSoeurs.length+1} enfant${freresSoeurs.length?"s":""})${h.argent?", en plus de mes "+euros(h.argent)+" d'économies personnelles":""}.`.replace("Mon ma","Ma"), "argent");
-  for(const e of etat.entreprises)
-    ecrire(`🏭 Je reprends l'entreprise familiale « ${e.nom} » (${e.type}, caisse : ${euros(e.caisse||0)}). À moi de la faire prospérer.`, "argent");
+  for(const e of etat.entreprises){
+    const details = [];
+    if(e.pdg) details.push(`${e.pdg.nom} reste PDG`);
+    if((e.contrats||[]).length) details.push(`${e.contrats.length} contrat(s) client en cours`);
+    if((e.fournisseurs||[]).length) details.push(`${e.fournisseurs.length} prestataire(s)`);
+    if((e.filiales||[]).length) details.push(`${e.filiales.length} filiale(s) à l'étranger`);
+    if((e.participations||[]).length) details.push(`${e.participations.length} participation(s)`);
+    ecrire(`🏭 Je reprends l'entreprise familiale « ${e.nom} » (${e.type}, caisse ${euros(e.caisse||0)}${details.length ? " · "+details.join(" · ") : ""}). Tout continue.`, "argent");
+  }
+  if((etat.visites||[]).length)
+    ecrire(`🌍 J'hérite aussi du réseau international de la famille : ${etat.visites.length} pays où nous sommes connus.`, "info");
   if(etat.royaume){
     if(etat.age>=18) ecrire(`👑 COURONNEMENT ! Je monte sur le trône : me voilà ${etat.genre==="F"?"Reine":"Roi"} de ${etat.royaume.nom}.`, "bon");
     else ecrire(`👑 J'hérite du trône de ${etat.royaume.nom}. Le conseil de régence gouvernera jusqu'à mes 18 ans.`, "bon");

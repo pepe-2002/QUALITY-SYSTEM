@@ -9,6 +9,7 @@
 | `flyer-nuit-facebook.png` | 2160 × 2700 (4:5) | Deuxième publication, fin de soirée (22h30 – minuit) |
 | `flyer-affiche-facebook.png` | 2160 × 2700 (4:5) | Affiche « destination » — îlots de Nioumachoua (photo libre CC BY 3.0, crédit imprimé) |
 | `flyer-affiche-vedette-facebook.png` | 2160 × 2700 (4:5) | Même affiche avec NOTRE photo (vedette en pleine mer) — aucun crédit à afficher |
+| `flyer-promo-facebook.png` | 2160 × 2700 (4:5) | Flyer promo « affiche locale » (style Yas / compagnies locales) — le plus accrocheur |
 | `flyer-moheligo.png` | 2160 × 2700 (4:5) | Première version (août 2026), conservée |
 
 Texte de publication Facebook associé : `../textes-publications.md`,
@@ -33,6 +34,11 @@ section « Flyer corporate ».
 - ⚠️ **Aucune personne sur les visuels** (consigne du patron du 06/08/2026,
   droit à l'image). La première affiche, tirée d'une photo montrant un jeune de
   dos, a été retirée.
+- `flyer6-promo-fb.html` — flyer promo : diagonale, bulle de prix cerclée de
+  blanc à cheval sur la coupe, trois cartes arrondies, bandeau des ports, bande
+  d'action or à coins arrondis. Registre des affiches locales (Yas, compagnies
+  aériennes) mais **aucune identité d'une autre marque n'est reprise** : nos
+  couleurs, notre logo, nos formulations.
 - `flyer1.html` — première version.
 - `render.js` — HTML/CSS → PNG haute résolution (Chromium).
 - `fonts/` — Montserrat + Inter en woff2 (latin/latin-ext), locales : aucun
@@ -52,6 +58,7 @@ node render.js flyer3-nuit-fb.html      flyer-nuit-facebook.png      1080 1350 2
 python3 affiche.py   # regénère nioumachoua-affiche.jpg et vedette-affiche.jpg
 node render.js flyer4-affiche-fb.html         flyer-affiche-facebook.png         1080 1350 2
 node render.js flyer5-affiche-vedette-fb.html flyer-affiche-vedette-facebook.png 1080 1350 2
+node render.js flyer6-promo-fb.html           flyer-promo-facebook.png           1080 1350 2
 ```
 
 Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à

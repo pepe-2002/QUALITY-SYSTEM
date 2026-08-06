@@ -46,6 +46,7 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-nuit-facebook.png` | Flyer nuit 4:5 — 2ᵉ publication du soir (22h30-minuit), angle « réservez ce soir, partez demain » + diaspora | — | — |
 | `flyers/flyer-affiche-facebook.png` | Affiche « destination » 4:5 — îlots de Nioumachoua (photo libre CC BY 3.0 étalonnée), 3ᵉ publication, registre émotion | — | — |
 | `flyers/flyer-affiche-vedette-facebook.png` | Même affiche avec notre photo de vedette en pleine mer (aucune licence, aucun crédit) | — | — |
+| `flyers/flyer-promo-facebook.png` | Flyer promo 4:5 style « affiche locale » (Yas / compagnies aériennes) : bulle de prix, diagonale, bande d'action or — le plus accrocheur | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -162,6 +163,28 @@ comoriennes → versions 720p ~3-5 Mo.
 - [ ] Vérifier si le patron veut brancher les pubs sur le site
       (videos.moheligo.com).
 
+### Registre « affiche locale » (demande du patron du 06/08/2026)
+
+Le patron veut des flyers « qui donnent envie de regarder », comme ceux de
+**Yas** (ex-Telma Comores, rebaptisé en novembre 2024) et de **Royal Air**.
+Ce qu'il faut retenir de ces codes :
+
+- Yas = **jaune vif + bleu profond**, formes très arrondies, bulles, diagonales,
+  prix mis en avant « À partir de X FC », accroches de trois mots, tutoiement
+  (« Dis Yas ! »). Coup de chance : notre or `#F6BC1C` + marine `#0F2A5C` sont
+  déjà cette paire — inutile de changer de charte.
+- Compagnies locales = destination et prix énormes, numéro de téléphone très
+  visible, gros bouton « Réserve maintenant ».
+- Recette appliquée dans `flyer6-promo-fb.html` : photo coupée en **diagonale**
+  (`clip-path`), **bulle de prix cerclée de blanc** posée à cheval sur la coupe
+  (`box-shadow:0 0 0 9px #fff` — elle reste lisible sur le bleu comme sur le
+  blanc), trois cartes arrondies (rayon 26 px), bandeau des ports en marine,
+  bande d'action or à coins arrondis en pied, pastilles WhatsApp/Facebook.
+- ⚠️ **Ne jamais reprendre le logo, la typo ou le slogan de Yas ou de Royal
+  Air** : on s'inspire de l'énergie, pas de l'identité. Contrefaçon sinon.
+- Le texte de ce support **tutoie** (registre télécom local) alors que les trois
+  autres vouvoient. À faire valider par le patron.
+
 ### Recherche d'images libres (acquis)
 - 🚫 **RÈGLE DU PATRON (06/08/2026) : aucune personne sur les visuels.**
   Il a refusé l'affiche dès qu'une personne y figurait (« pas de photo qui a
@@ -240,7 +263,10 @@ recharger ce sujet ici, ce n'est pas du marketing.
   (une personne à l'image) → refaite avec une photo libre de plage vide
   (Fatima771, CC BY 3.0) + une variante avec notre vedette en pleine mer.
   Trois angles disponibles pour la page : institutionnel (vitrine) → nuit
-  (action) → destination (émotion).
+  (action) → destination (émotion). Enfin il a demandé des flyers « comme Yas
+  et Royal Air, qui donnent envie de regarder » → flyer promo (voir la section
+  « Registre affiche locale »). C'est probablement celui-là qui marchera le
+  mieux sur Facebook aux Comores : prix visible, formes rondes, tutoiement.
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

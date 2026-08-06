@@ -4,6 +4,55 @@
 
 ---
 
+## 🔥 Flyer promo — registre « affiche locale » (06/08/2026)
+
+Image à joindre : `flyers/flyer-promo-facebook.png` (4:5).
+Demandé par le patron : « inspire-toi des flyers de Yas et de Royal Air, des
+flyers qui donnent envie de regarder ». Codes du genre respectés — couleurs
+franches, bulle de prix, formes arrondies, accroche de trois mots, gros bouton
+d'action, numéro WhatsApp bien visible — avec **nos** couleurs et **notre**
+logo uniquement.
+
+⚠️ Ce texte **tutoie** (registre des pubs télécom locales). Une version en
+vouvoiement est possible si le patron préfère.
+
+### Version principale
+
+```
+TA TRAVERSÉE EN 2 MINUTES.
+
+Plus besoin d'aller au port pour savoir s'il y a une place.
+Tu ouvres moheligo.com, tu choisis ton départ, tu paies par MVola.
+Ton billet QR arrive tout de suite dans ton téléphone.
+
+À partir de 15 000 FC le trajet.
+Ouroveni et Chindini vers Hoani et Fomboni.
+
+Billet QR direct. MVola et KartaPay. Météo mer sur 7 jours.
+Aucune application à installer : ça s'ouvre dans ton navigateur.
+
+Réserve maintenant : moheligo.com
+Une question ? WhatsApp +269 479 43 28
+
+Tu embarques quand ?
+```
+
+### Premier commentaire
+
+```
+moheligo.com — ta place en 2 minutes.
+WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp)
+
+```
+Ta traversée en 2 minutes. À partir de 15 000 FC.
+moheligo.com
+```
+
+---
+
 ## 🏝️ Affiche « destination » — troisième publication (06/08/2026)
 
 Deux images au choix (4:5), aucune personne dessus (consigne du patron) :

@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<!-- Flyer « promo » (1080x1350, 4:5) — registre des affiches Yas / compagnies
+     locales : couleurs franches, formes arrondies, bulle de prix, accroche
+     très courte, gros bouton d'action, numéro bien visible.
+     On garde NOS couleurs (or #F6BC1C, marine #0F2A5C, bleu #1C4FA8) et NOTRE
+     logo : aucune identité d'une autre marque n'est reprise.
+     Photo : notre vedette en pleine mer (aucune personne, aucune licence). -->
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{ --navy:#0F2A5C; --deep:#0A1C3E; --blue:#1C4FA8; --gold:#F6BC1C;
+       --tint:#EEF4FF; --grey:#5B6B84; --pad:56px; }
+body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:var(--navy);
+       -webkit-font-smoothing:antialiased; overflow:hidden; background:#fff; }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#fff; }
+
+/* ---------- haut : photo + accroche, coupé en diagonale ---------- */
+.top { position:relative; height:686px; overflow:hidden; background:var(--deep);
+  clip-path:polygon(0 0, 1080px 0, 1080px 626px, 0 686px); }
+.top img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 8%; }
+.top .veil { position:absolute; inset:0;
+  background:linear-gradient(178deg, rgba(10,28,62,.72) 0%, rgba(10,28,62,.30) 26%,
+                                     rgba(10,28,62,.62) 62%, rgba(10,28,62,.92) 100%); }
+
+.head { position:absolute; top:34px; left:var(--pad); right:var(--pad); display:flex;
+  align-items:center; justify-content:space-between; }
+.ident { display:flex; align-items:center; gap:15px; }
+.badge-app { width:72px; height:72px; border-radius:20px; background:#fff; display:flex;
+  align-items:center; justify-content:center; box-shadow:0 12px 28px rgba(0,0,0,.4); }
+.badge-app img { width:56px; display:block; position:static; }
+.word b { font-family:'Montserrat','Inter',sans-serif; font-size:33px; font-weight:800; letter-spacing:-1px;
+  color:#fff; display:block; line-height:1; text-shadow:0 2px 12px rgba(0,0,0,.45); }
+.word b em { font-style:normal; color:var(--gold); }
+.word small { display:block; margin-top:5px; font-size:11px; font-weight:700; letter-spacing:2.8px;
+  color:#DDE7F7; text-shadow:0 1px 8px rgba(0,0,0,.5); }
+.new { background:var(--gold); color:var(--navy); font-size:13px; font-weight:900; letter-spacing:2.4px;
+  padding:11px 20px; border-radius:999px; box-shadow:0 10px 24px rgba(0,0,0,.32); }
+
+.claim { position:absolute; left:var(--pad); bottom:118px; right:344px; color:#fff; }
+.claim h1 { font-family:'Montserrat','Inter',sans-serif; font-size:88px; font-weight:900; line-height:.96;
+  letter-spacing:-3.4px; text-shadow:0 8px 36px rgba(0,0,0,.5); }
+.claim h1 span { color:var(--gold); }
+.claim p { margin-top:20px; font-size:22px; font-weight:600; line-height:1.4; color:#E7EFFB;
+  text-shadow:0 2px 12px rgba(0,0,0,.45); }
+
+/* bulle de prix, à cheval sur la diagonale */
+.bubble { position:absolute; right:46px; top:446px; width:246px; height:246px; border-radius:50%;
+  background:var(--gold); transform:rotate(-7deg);
+  box-shadow:0 0 0 9px #fff, 0 22px 46px rgba(10,28,62,.38);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; color:var(--navy); z-index:4; }
+.bubble small { font-size:14px; font-weight:800; letter-spacing:2.4px; }
+.bubble b { font-family:'Montserrat','Inter',sans-serif; font-size:54px; font-weight:900; line-height:.94;
+  letter-spacing:-2.4px; margin-top:4px; }
+.bubble i { font-style:normal; font-size:21px; margin-left:2px; font-weight:900; letter-spacing:-.5px; }
+.bubble em { font-style:normal; margin-top:6px; font-size:14px; font-weight:700; letter-spacing:1.6px; }
+
+/* ---------- milieu : trois arguments ---------- */
+.mid { position:absolute; top:700px; left:var(--pad); right:var(--pad); display:flex; gap:18px; }
+.card { flex:1; background:var(--tint); border-radius:26px; padding:22px 20px 24px; text-align:center; }
+.card .ic { width:64px; height:64px; margin:0 auto; border-radius:20px; background:var(--navy);
+  display:flex; align-items:center; justify-content:center; }
+.card b { display:block; margin-top:14px; font-size:19.5px; font-weight:800; letter-spacing:-.3px; color:var(--navy); }
+.card small { display:block; margin-top:5px; font-size:14.5px; font-weight:600; color:var(--grey); line-height:1.35; }
+
+/* ---------- ligne des ports ---------- */
+.route { position:absolute; top:952px; left:var(--pad); right:var(--pad); height:96px;
+  background:var(--navy); border-radius:28px; display:flex; align-items:center;
+  justify-content:space-between; padding:0 30px; color:#fff; }
+.route .p { text-align:center; }
+.route .p b { display:block; font-family:'Montserrat','Inter',sans-serif; font-size:24px; font-weight:800; letter-spacing:-.4px; }
+.route .p small { display:block; margin-top:3px; font-size:12.5px; font-weight:700; letter-spacing:1.8px; color:#9FBBE4; }
+.route .mid-line { flex:1; display:flex; flex-direction:column; align-items:center; padding:0 18px; }
+.route .mid-line .lane { width:100%; height:3px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 11px,transparent 11px 22px); }
+.route .mid-line .boat { margin-top:-22px; }
+
+/* ---------- bas : appel à l'action ---------- */
+.cta { position:absolute; left:0; right:0; bottom:0; height:270px; background:var(--gold);
+  border-radius:52px 52px 0 0; padding:34px var(--pad) 0; display:flex; align-items:flex-start; gap:24px; }
+.qr { width:132px; height:132px; background:#fff; border-radius:22px; padding:9px; flex:none;
+  box-shadow:0 12px 26px rgba(10,28,62,.18); }
+.qr img { width:100%; height:100%; display:block; }
+.go { flex:1; }
+.go b { display:block; font-family:'Montserrat','Inter',sans-serif; font-size:31px; font-weight:900;
+  letter-spacing:-.8px; color:var(--navy); }
+.go .site { display:block; margin-top:6px; font-family:'Montserrat','Inter',sans-serif; font-size:46px;
+  font-weight:900; letter-spacing:-1.6px; color:var(--navy); line-height:1; }
+.go small { display:block; margin-top:9px; font-size:16px; font-weight:700; color:#6B5410; }
+.pills { display:flex; flex-direction:column; gap:11px; padding-top:4px; }
+.pill { display:flex; align-items:center; gap:11px; background:var(--navy); color:#fff;
+  border-radius:999px; padding:11px 20px 11px 12px; }
+.pill i { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; }
+.pill .wa { background:#25D366; } .pill .fb { background:#1877F2; }
+.pill span { font-size:17.5px; font-weight:800; letter-spacing:-.2px; }
+</style></head><body>
+<div class="page">
+
+  <div class="top">
+    <img src="vedette-affiche.jpg" alt="">
+    <div class="veil"></div>
+    <div class="head">
+      <div class="ident">
+        <div class="badge-app"><img src="logo-emblem.png" alt=""></div>
+        <div class="word"><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
+      </div>
+      <span class="new">NOUVEAU AUX COMORES</span>
+    </div>
+    <div class="claim">
+      <h1>TA TRAVERSÉE<br><span>EN 2 MINUTES.</span></h1>
+      <p>Grande Comore – Mohéli. Tu choisis ton départ, tu paies par MVola,
+         tu reçois ton billet. C'est tout.</p>
+    </div>
+  </div>
+
+  <div class="bubble">
+    <small>À PARTIR DE</small>
+    <b>15 000 <i>FC</i></b>
+    <em>LE TRAJET</em>
+  </div>
+
+  <div class="mid">
+    <div class="card">
+      <span class="ic">
+        <svg width="32" height="32" viewBox="0 0 28 28" fill="none" stroke="#F6BC1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="9" height="9" rx="1.6"/><rect x="16" y="3" width="9" height="9" rx="1.6"/>
+          <rect x="3" y="16" width="9" height="9" rx="1.6"/><path d="M16 16h4v4h-4zM24 16h1M16 24h1M21 21h4v4"/>
+          <rect x="6" y="6" width="3" height="3" fill="#F6BC1C" stroke="none"/>
+          <rect x="19" y="6" width="3" height="3" fill="#F6BC1C" stroke="none"/>
+          <rect x="6" y="19" width="3" height="3" fill="#F6BC1C" stroke="none"/></svg>
+      </span>
+      <b>Billet QR direct</b><small>Reçu dès le paiement</small>
+    </div>
+    <div class="card">
+      <span class="ic">
+        <svg width="32" height="32" viewBox="0 0 28 28" fill="none" stroke="#F6BC1C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="2.5" width="14" height="23" rx="3"/><path d="M12 22.5h4"/>
+          <path d="M10.5 8h7M10.5 12h7" stroke-width="2.2"/>
+          <rect x="10.5" y="15.5" width="4" height="3" rx="1" fill="#F6BC1C" stroke="none"/></svg>
+      </span>
+      <b>MVola &amp; KartaPay</b><small>Un proche peut payer</small>
+    </div>
+    <div class="card">
+      <span class="ic">
+        <svg width="32" height="32" viewBox="0 0 28 28" fill="none" stroke="#F6BC1C" stroke-width="2.2" stroke-linecap="round">
+          <path d="M2.5 9 C5.5 6.5 8.5 6.5 11.5 9 C14.5 11.5 17.5 11.5 20.5 9 C23 7 25 7 25.5 8"/>
+          <path d="M2.5 16 C5.5 13.5 8.5 13.5 11.5 16 C14.5 18.5 17.5 18.5 20.5 16 C23 14 25 14 25.5 15"/>
+          <path d="M2.5 23 C5.5 20.5 8.5 20.5 11.5 23 C14.5 25.5 17.5 25.5 20.5 23"/></svg>
+      </span>
+      <b>Météo mer 7 jours</b><small>Avant de partir</small>
+    </div>
+  </div>
+
+  <div class="route">
+    <div class="p"><b>Ouroveni · Chindini</b><small>GRANDE COMORE</small></div>
+    <div class="mid-line">
+      <div class="lane"></div>
+      <div class="boat">
+        <svg width="88" height="48" viewBox="0 0 104 56" fill="none">
+          <path d="M8 38 L74 38 C84 38 92 33 97 25 L69 25 C66.5 18 59.5 13.5 51 13.5 L36 13.5 L38.5 25 L17 25 C12 25 9 30 8 38 Z" fill="#F6BC1C"/>
+          <path d="M36 13.5 L51 13.5 C59.5 13.5 66.5 18 69 25 L52 25 Z" fill="#0F2A5C"/>
+          <rect x="40" y="17" width="11" height="6" rx="2" fill="#8FC4F5"/>
+          <path d="M5 45 C12 41.5 19 41.5 26 45 C33 48.5 40 48.5 47 45" stroke="#8FC4F5" stroke-width="3.6" stroke-linecap="round"/>
+          <path d="M56 46 C63 42.5 70 42.5 77 46" stroke="#8FC4F5" stroke-width="3.6" stroke-linecap="round" opacity=".6"/>
+        </svg>
+      </div>
+    </div>
+    <div class="p"><b>Hoani · Fomboni</b><small>MOHÉLI</small></div>
+  </div>
+
+  <div class="cta">
+    <div class="qr"><img src="qr-moheligo.png" alt=""></div>
+    <div class="go">
+      <b>RÉSERVE MAINTENANT SUR</b>
+      <span class="site">moheligo.com</span>
+      <small>Scanne le code — aucune application à installer.</small>
+    </div>
+    <div class="pills">
+      <div class="pill"><i class="wa"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.4 14.4c-.3-.15-1.8-.9-2.1-1-.3-.1-.5-.15-.7.15-.2.3-.8.95-.95 1.15-.15.2-.3.2-.6.05-.3-.15-1.15-.45-2.2-1.4-.8-.75-1.35-1.65-1.5-1.95-.15-.3 0-.45.15-.6.15-.15.35-.4.5-.6.15-.2.2-.35.3-.55.1-.2.05-.4-.05-.55-.1-.15-.7-1.7-.95-2.3-.25-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.75.4-.25.3-.95 1-.95 2.4 0 1.4 1 2.75 1.15 2.95.15.2 1.95 3.15 4.75 4.3 2.35.95 2.8.8 3.35.75.55-.05 1.75-.7 2-1.4.25-.7.25-1.3.2-1.4-.05-.1-.2-.15-.45-.3zM12 21.5c-1.65 0-3.25-.45-4.65-1.3l-3.85 1 1.05-3.75A9.4 9.4 0 012.5 12C2.5 6.75 6.75 2.5 12 2.5S21.5 6.75 21.5 12 17.25 21.5 12 21.5z"/></svg></i><span>+269 479 43 28</span></div>
+      <div class="pill"><i class="fb"><svg width="17" height="17" viewBox="0 0 36 36"><path d="M24.7 23.2l.8-5.2h-5v-3.4c0-1.4.7-2.8 2.9-2.8h2.3V7.4s-2-.35-4-.35c-4.1 0-6.8 2.5-6.8 7v4h-4.6v5.2h4.6V34h5.6V23.2h4.2z" fill="#fff"/></svg></i><span>MoheliGo</span></div>
+    </div>
+  </div>
+
+</div>
+</body></html>

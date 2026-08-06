@@ -6,9 +6,11 @@
 
 ## 🏝️ Affiche « destination » — troisième publication (06/08/2026)
 
-Image à joindre : `flyers/flyer-affiche-facebook.png` (4:5).
-Photo : îlot de Nioumachoua, parc marin de Mohéli — **le crédit doit rester
-visible sur l'image** (Eldalil05, CC BY-SA 4.0, Wikimedia Commons).
+Deux images au choix (4:5), aucune personne dessus (consigne du patron) :
+`flyer-affiche-facebook.png` (îlots de Nioumachoua, photo libre CC BY 3.0 —
+**le crédit doit rester visible sur l'image**) ou
+`flyer-affiche-vedette-facebook.png` (notre photo : une vedette en pleine mer,
+aucun crédit à afficher).
 À publier un autre jour, en journée (12h-14h) : c'est la publication émotion,
 celle qui se partage. Peu de texte sur l'image, donc le texte du post porte
 l'histoire.
@@ -18,8 +20,8 @@ l'histoire.
 ```
 MOHÉLI, À UNE TRAVERSÉE DE VOUS.
 
-L'îlot de Nioumachoua, dans le parc marin de Mohéli. On le regarde depuis la
-plage, et on se dit qu'un jour, il faudra y aller.
+Les îlots de Nioumachoua, dans le parc marin de Mohéli. On les regarde depuis
+la plage, et on se dit qu'un jour, il faudra y aller.
 
 Ce jour-là commence par une traversée. Et cette traversée se réserve
 maintenant, depuis votre téléphone :
@@ -35,7 +37,7 @@ minutes de réservation.
 
 moheligo.com — Mohéli commence ici.
 
-Photo : Eldalil05 — îlot de Nioumachoua (CC BY-SA 4.0, Wikimedia Commons)
+Photo : Fatima771 — îlots de Nioumachoua (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #ParcMarinDeMohéli #Comores #VisitComoros #Itsamia
 ```

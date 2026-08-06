@@ -1,9 +1,8 @@
 <!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
-<!-- Affiche « destination » (1080x1350, 4:5) — registre émotion, peu de texte.
-     Photo : îlots de Nioumachoua depuis la plage (Fatima771, CC BY 3.0,
-     Wikimedia Commons), étalonnée par affiche.py. AUCUNE personne à l'image.
-     La photo est en bandeau (et non en pleine page) pour rester nette : la
-     source fait 2032x1520, un fond perdu 4:5 l'aurait agrandie 1,8 fois. -->
+<!-- Variante de l'affiche « destination » avec NOTRE photo (pleine mer, une
+     vedette au large) : aucune personne à l'image et aucune licence à
+     respecter — donc aucun crédit à afficher. Même mise en page que
+     flyer4-affiche-fb.html. -->
 <style>
 @import url('fonts/local-fonts.css');
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -19,9 +18,9 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 
 /* bandeau photo */
 .band { flex:none; position:relative; height:704px; overflow:hidden; }
-.band img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 46%; }
-.band .top-scrim { position:absolute; top:0; left:0; right:0; height:250px;
-  background:linear-gradient(180deg, rgba(6,17,42,.72) 0%, rgba(6,17,42,.28) 55%, rgba(6,17,42,0) 100%); }
+.band img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 8%; }
+.band .top-scrim { position:absolute; top:0; left:0; right:0; height:196px;
+  background:linear-gradient(180deg, rgba(6,17,42,.66) 0%, rgba(6,17,42,.18) 46%, rgba(6,17,42,0) 100%); }
 .band .low-scrim { position:absolute; bottom:0; left:0; right:0; height:170px;
   background:linear-gradient(180deg, rgba(6,17,42,0) 0%, rgba(6,17,42,.34) 58%, rgba(10,28,62,.90) 100%); }
 .head { position:absolute; top:36px; left:var(--pad); right:var(--pad);
@@ -63,14 +62,13 @@ h1 span { color:var(--gold); }
   border:1px solid rgba(255,255,255,.22); padding:11px 16px; }
 .chip i { width:30px; height:30px; border-radius:8px; background:#1877F2; display:flex; align-items:center; justify-content:center; }
 .chip span { font-size:17px; font-weight:700; }
-.credit { flex:none; padding:14px var(--pad) 16px; font-size:11px; font-weight:500;
-  color:rgba(255,255,255,.50); text-align:right; }
+.body { padding-bottom:30px; }
 </style></head><body>
 <div class="page">
   <div class="topbar"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
 
   <div class="band">
-    <img src="nioumachoua-affiche.jpg" alt="">
+    <img src="vedette-affiche.jpg" alt="">
     <div class="top-scrim"></div>
     <div class="low-scrim"></div>
     <div class="head">
@@ -80,7 +78,7 @@ h1 span { color:var(--gold); }
       </div>
       <div class="site">moheligo.com</div>
     </div>
-    <span class="kicker">ÎLOTS DE NIOUMACHOUA · PARC MARIN DE MOHÉLI</span>
+    <span class="kicker">PLEINE MER · GRANDE COMORE &#9656; MOHÉLI</span>
   </div>
 
   <div class="body">
@@ -101,6 +99,5 @@ h1 span { color:var(--gold); }
     </div>
   </div>
 
-  <div class="credit">Photo : Fatima771 — îlots de Nioumachoua, Mohéli (CC BY 3.0, Wikimedia Commons)</div>
 </div>
 </body></html>

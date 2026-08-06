@@ -44,7 +44,8 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-corporate-A4.png` | Flyer institutionnel A4 300 dpi (06/08) — impression, partenaires | — | — |
 | `flyers/flyer-corporate-facebook.png` | Même flyer en 4:5 pour le feed FB/Insta | — | — |
 | `flyers/flyer-nuit-facebook.png` | Flyer nuit 4:5 — 2ᵉ publication du soir (22h30-minuit), angle « réservez ce soir, partez demain » + diaspora | — | — |
-| `flyers/flyer-affiche-facebook.png` | Affiche « destination » 4:5 — îlot de Nioumachoua (photo CC BY-SA étalonnée), 3ᵉ publication, registre émotion | — | — |
+| `flyers/flyer-affiche-facebook.png` | Affiche « destination » 4:5 — îlots de Nioumachoua (photo libre CC BY 3.0 étalonnée), 3ᵉ publication, registre émotion | — | — |
+| `flyers/flyer-affiche-vedette-facebook.png` | Même affiche avec notre photo de vedette en pleine mer (aucune licence, aucun crédit) | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -162,13 +163,26 @@ comoriennes → versions 720p ~3-5 Mo.
       (videos.moheligo.com).
 
 ### Recherche d'images libres (acquis)
-- **06/08/2026 — la meilleure image libre de Mohéli trouvée à ce jour** :
-  « Vue de l'îlot principale de nioumachoua.jpg » (Eldalil05, CC BY-SA 4.0,
-  1920×2560, Wikimedia Commons) — îlot de Nioumachoua vu de la plage, une
-  personne de dos. Grise à l'origine → `pub/flyers/affiche.py` lui rend une
-  lumière de fin de journée (contraste 1.16, couleur 1.30, halo chaud centré
-  sur l'horizon en `ImageChops.add`, bleu renforcé sous l'horizon, vignettage,
-  UnsharpMask). Copie source dans `pub/photos-cc/nioumachoua-ilot.jpg`.
+- 🚫 **RÈGLE DU PATRON (06/08/2026) : aucune personne sur les visuels.**
+  Il a refusé l'affiche dès qu'une personne y figurait (« pas de photo qui a
+  une image » = droit à l'image). Désormais : paysages, vedettes, bateaux,
+  animaux — jamais quelqu'un de reconnaissable, même de dos.
+- **Photo libre de Mohéli retenue** : « Îlot de Nioumachoua.jpg » (Fatima771,
+  **CC BY 3.0**, 2032×1520, Commons) — plage vide, aucune personne, et CC BY
+  n'impose pas le partage à l'identique (mieux que BY-SA pour de la publicité).
+  Voilée à l'origine → `pub/flyers/affiche.py` la dévoile
+  (`ImageOps.autocontrast(cutoff=(2,8))`, contraste 1.14, couleur 1.45, halo
+  chaud sur l'horizon en `ImageChops.add`, bleu renforcé sous l'horizon,
+  vignettage, UnsharpMask). Copie source dans
+  `pub/photos-cc/nioumachoua-ilot-fatima.jpg`.
+- ⚠️ **Nos propres photos : attention aux tailles.** Seules `mer-bateau.jpg`,
+  `vedette-mer.jpg` (2560×1920) et `rochers.jpg` (1920×2560) sont grandes ;
+  `horizon.jpg` et `plage-vedettes.jpg` ne font que 1080×810 → à réserver aux
+  bandeaux, jamais en pleine page 2160 px. `rochers.jpg` est inutilisable en
+  pub (eau boueuse, bidon rouillé, déchets).
+- **Astuce mise en page** : quand la photo est trop petite pour un fond perdu
+  4:5, la mettre en **bandeau** (haut de l'affiche) et poser la typo sur un
+  bloc marine en dessous — elle reste nette et l'affiche gagne en structure.
 - **Méthode de recherche qui marche** : l'API Wikimedia Commons
   (`generator=search` + `generator=categorymembers` sur `Category:Mohéli` et
   ses sous-catégories) donne bien plus que l'API Openverse pour Mohéli.
@@ -222,9 +236,11 @@ recharger ce sujet ici, ce n'est pas du marketing.
   `pub/textes-publications.md`. **Leçon de calendrier : ne pas republier la même
   vitrine deux fois dans la soirée — deux posts = deux angles.**
   Puis il a demandé un troisième support avec **une belle image de Mohéli
-  trouvée sur le net** : affiche « destination » sur l'îlot de Nioumachoua
-  (photo CC BY-SA 4.0 étalonnée, crédit imprimé). Trois angles disponibles pour
-  la page : institutionnel (vitrine) → nuit (action) → destination (émotion).
+  trouvée sur le net** : affiche « destination ». Première tentative refusée
+  (une personne à l'image) → refaite avec une photo libre de plage vide
+  (Fatima771, CC BY 3.0) + une variante avec notre vedette en pleine mer.
+  Trois angles disponibles pour la page : institutionnel (vitrine) → nuit
+  (action) → destination (émotion).
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

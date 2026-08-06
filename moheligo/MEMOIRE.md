@@ -2,7 +2,7 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **06/08/2026** (flyer corporate + texte Facebook).
+> Dernière mise à jour : **06/08/2026** (flyer corporate + flyer nuit + textes FB).
 
 ---
 
@@ -43,6 +43,7 @@ Tout est dans `moheligo/pub/` :
 | `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
 | `flyers/flyer-corporate-A4.png` | Flyer institutionnel A4 300 dpi (06/08) — impression, partenaires | — | — |
 | `flyers/flyer-corporate-facebook.png` | Même flyer en 4:5 pour le feed FB/Insta | — | — |
+| `flyers/flyer-nuit-facebook.png` | Flyer nuit 4:5 — 2ᵉ publication du soir (22h30-minuit), angle « réservez ce soir, partez demain » + diaspora | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -128,6 +129,13 @@ comoriennes → versions 720p ~3-5 Mo.
     (« entre Grande Comore et Mohéli ») ou en SVG.
   - Règle que je m'impose : **aucun chiffre inventé** sur les supports
     (pas de « 10 000 passagers », pas de « 24/7 ») — uniquement du vérifiable.
+  - **Nuit sans photo de nuit** : `pub/flyers/nuit.py` transforme une photo de
+    jour en nuit crédible (courbes par canal R×0.30 / V×0.40 / B×0.55 en gamma,
+    dégradé vers `#040A1C`, étoiles seulement au-dessus de l'horizon, lune +
+    halo flouté, reflet en traits horizontaux élargissants sur l'eau).
+    `random.seed(7)` → rendu reproductible. Sur fond sombre, l'emblème du logo
+    doit être posé sur une **pastille blanche** (il est marine + or, invisible
+    sinon) et le QR sur un **fond blanc** avec marge, sinon il ne scanne pas.
 
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 
@@ -189,6 +197,12 @@ recharger ce sujet ici, ce n'est pas du marketing.
   Documentation dans `pub/flyers/README.md`. **À faire à la prochaine session :
   demander au patron s'il valide le ton institutionnel ou s'il veut plus chaud
   / plus commercial, et s'il veut une version shikomori.**
+  Il a ensuite demandé **un deuxième support pour plus tard dans la nuit** :
+  produit le flyer nuit (ciel étoilé, lune, silhouette des îles) avec un angle
+  action — « Réservez ce soir. Partez demain. » — et un encart diaspora
+  (France, Mayotte, Golfe : payer la traversée d'un proche). Texte FB nuit dans
+  `pub/textes-publications.md`. **Leçon de calendrier : ne pas republier la même
+  vitrine deux fois dans la soirée — deux posts = deux angles.**
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

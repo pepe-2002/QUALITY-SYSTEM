@@ -4,6 +4,55 @@
 
 ---
 
+## 🌙 Flyer nuit — deuxième publication, fin de soirée (06/08/2026)
+
+Image à joindre : `flyers/flyer-nuit-facebook.png` (4:5).
+À publier **après** la publication corporate, entre **22h30 et minuit** (heure
+des Comores) : c'est aussi 21h30-23h en France, l'heure où la diaspora est sur
+son téléphone. Angle différent du premier post — pas la vitrine, l'action :
+réserver ce soir pour partir demain.
+
+### Version principale
+
+```
+IL EST TARD À MOHÉLI. LA MER, ELLE, SE PRÉPARE DÉJÀ.
+
+Demain matin, des vedettes quitteront Ouroveni et Chindini vers Hoani et Fomboni.
+Les places, elles, se prennent ce soir.
+
+Sur moheligo.com, à cette heure comme à toute heure :
+
+• Les départs de demain s'affichent en direct, avec les places restantes.
+• Votre billet QR arrive dès le paiement — MVola ou KartaPay.
+• L'état de la mer sur 7 jours vous dit si la traversée sera douce.
+
+Deux minutes ce soir. Une place assurée demain matin.
+
+À la diaspora : depuis la France, Mayotte ou le Golfe, vous pouvez réserver et
+payer la traversée d'un proche. Il reçoit son billet sur son téléphone, sans
+rien avancer.
+
+Bonne nuit — et bonne traversée.
+
+#MoheliGo #Mohéli #Comores #GrandeComore #Traversée #DiasporaComorienne #Hoani #Fomboni
+```
+
+### Premier commentaire
+
+```
+Réservez maintenant : moheligo.com
+Une question cette nuit ? WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp de fin de soirée)
+
+```
+Réservez ce soir. Partez demain. 🌙
+moheligo.com — 2 minutes, billet QR, paiement MVola.
+```
+
+---
+
 ## 🏛️ Flyer corporate — publication Facebook (06/08/2026)
 
 Image à joindre : `flyers/flyer-corporate-facebook.png` (format feed 4:5).

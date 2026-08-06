@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<!-- Affiche « destination » (1080x1350, 4:5). Registre différent des deux
+     premières publications : peu de texte, l'image porte tout.
+     Photo : îlot de Nioumachoua, parc marin de Mohéli — Eldalil05, CC BY-SA 4.0,
+     étalonnée par affiche.py. Crédit obligatoire en pied de page. -->
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{ --gold:#F6BC1C; --navy:#0B1F45; --blue:#1C4FA8; --pad:60px; }
+body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:#fff;
+       -webkit-font-smoothing:antialiased; overflow:hidden; background:var(--navy); }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:var(--navy); }
+.shot { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 34%; }
+.veil { position:absolute; inset:0; background:
+  linear-gradient(180deg, rgba(6,17,42,.62) 0%, rgba(6,17,42,.16) 15%, rgba(6,17,42,0) 34%,
+                          rgba(6,17,42,.30) 50%, rgba(6,17,42,.80) 68%, rgba(6,17,42,.96) 84%, #061129 100%); }
+
+/* filet de marque en haut */
+.topbar { position:absolute; top:0; left:0; right:0; height:9px; display:flex; z-index:3; }
+.topbar i { height:9px; display:block; }
+.topbar .b1 { flex:1; background:rgba(255,255,255,.22); }
+.topbar .b2 { width:130px; background:var(--blue); }
+.topbar .b3 { width:84px; background:var(--gold); }
+
+.head { position:absolute; top:42px; left:var(--pad); right:var(--pad); z-index:3;
+  display:flex; align-items:center; justify-content:space-between; }
+.ident { display:flex; align-items:center; gap:16px; }
+.badge-app { width:74px; height:74px; border-radius:19px; background:#fff; display:flex; align-items:center;
+  justify-content:center; box-shadow:0 12px 30px rgba(0,0,0,.42); }
+.badge-app img { width:58px; display:block; }
+.word b { font-family:'Montserrat','Inter',sans-serif; font-size:34px; font-weight:800; letter-spacing:-1px;
+  display:block; line-height:1; text-shadow:0 2px 14px rgba(0,0,0,.45); }
+.word b em { font-style:normal; color:var(--gold); }
+.word small { display:block; margin-top:6px; font-size:11.5px; font-weight:700; letter-spacing:3px;
+  color:#E4ECF9; text-shadow:0 1px 10px rgba(0,0,0,.5); }
+.head .site { font-size:18px; font-weight:800; text-shadow:0 2px 12px rgba(0,0,0,.5); }
+
+/* bloc bas */
+.body { position:absolute; left:var(--pad); right:var(--pad); bottom:0; z-index:3; padding-bottom:46px; }
+.kicker { display:inline-block; font-size:12px; font-weight:700; letter-spacing:3.4px;
+  border:1px solid rgba(255,255,255,.42); border-left:4px solid var(--gold);
+  padding:9px 15px 9px 13px; background:rgba(6,17,42,.34); }
+h1 { font-family:'Montserrat','Inter',sans-serif; margin-top:24px; font-size:72px; font-weight:900;
+  line-height:1.02; letter-spacing:-2.4px; text-shadow:0 8px 40px rgba(0,0,0,.55); }
+h1 span { color:var(--gold); }
+.sub { margin-top:20px; font-size:22px; line-height:1.45; font-weight:500; color:#DEE8F8; max-width:790px; }
+.ports { margin-top:24px; padding-top:20px; border-top:1px solid rgba(255,255,255,.22);
+  font-size:14.5px; font-weight:700; letter-spacing:2.8px; color:#C6D6EE; }
+.ports em { font-style:normal; color:var(--gold); margin:0 10px; }
+
+.foot { margin-top:28px; padding-top:26px; border-top:1px solid rgba(255,255,255,.20); display:flex; align-items:center; gap:22px; }
+.qr { width:104px; height:104px; background:#fff; padding:7px; border-radius:6px; flex:none; }
+.qr img { width:100%; height:100%; display:block; }
+.foot .cta { flex:1; }
+.foot .cta b { display:block; font-family:'Montserrat','Inter',sans-serif; font-size:38px; font-weight:900;
+  letter-spacing:-1.1px; }
+.foot .cta small { display:block; margin-top:6px; font-size:16px; font-weight:600; color:#BCCCE6; }
+.chip { display:flex; align-items:center; gap:10px; background:rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.22); padding:11px 16px; }
+.chip i { width:30px; height:30px; border-radius:8px; background:#1877F2; display:flex; align-items:center; justify-content:center; }
+.chip span { font-size:17px; font-weight:700; }
+
+.credit { position:absolute; bottom:14px; left:var(--pad); right:var(--pad); z-index:4;
+  font-size:11px; font-weight:500; color:rgba(255,255,255,.52); text-align:right; }
+</style></head><body>
+<div class="page">
+  <img class="shot" src="nioumachoua-affiche.jpg" alt="">
+  <div class="veil"></div>
+  <div class="topbar"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+
+  <div class="head">
+    <div class="ident">
+      <div class="badge-app"><img src="logo-emblem.png" alt=""></div>
+      <div class="word"><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
+    </div>
+    <div class="site">moheligo.com</div>
+  </div>
+
+  <div class="body">
+    <span class="kicker">ÎLOT DE NIOUMACHOUA · PARC MARIN DE MOHÉLI</span>
+    <h1>MOHÉLI, À UNE<br><span>TRAVERSÉE</span> DE VOUS.</h1>
+    <p class="sub">Deux minutes pour réserver votre place. Billet QR instantané,
+       paiement MVola, météo mer sur 7 jours — et l'île est en face.</p>
+
+    <div class="foot">
+      <div class="qr"><img src="qr-moheligo.png" alt=""></div>
+      <div class="cta"><b>moheligo.com</b><small>Scannez le code, choisissez votre départ.</small></div>
+      <div class="chip"><i><svg width="17" height="17" viewBox="0 0 36 36"><path d="M24.7 23.2l.8-5.2h-5v-3.4c0-1.4.7-2.8 2.9-2.8h2.3V7.4s-2-.35-4-.35c-4.1 0-6.8 2.5-6.8 7v4h-4.6v5.2h4.6V34h5.6V23.2h4.2z" fill="#fff"/></svg></i><span>MoheliGo</span></div>
+    </div>
+  </div>
+
+  <div class="credit">Photo : Eldalil05 — îlot de Nioumachoua, Mohéli (CC BY-SA 4.0, Wikimedia Commons)</div>
+</div>
+</body></html>

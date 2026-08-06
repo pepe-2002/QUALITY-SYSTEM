@@ -44,6 +44,7 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-corporate-A4.png` | Flyer institutionnel A4 300 dpi (06/08) — impression, partenaires | — | — |
 | `flyers/flyer-corporate-facebook.png` | Même flyer en 4:5 pour le feed FB/Insta | — | — |
 | `flyers/flyer-nuit-facebook.png` | Flyer nuit 4:5 — 2ᵉ publication du soir (22h30-minuit), angle « réservez ce soir, partez demain » + diaspora | — | — |
+| `flyers/flyer-affiche-facebook.png` | Affiche « destination » 4:5 — îlot de Nioumachoua (photo CC BY-SA étalonnée), 3ᵉ publication, registre émotion | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -161,6 +162,23 @@ comoriennes → versions 720p ~3-5 Mo.
       (videos.moheligo.com).
 
 ### Recherche d'images libres (acquis)
+- **06/08/2026 — la meilleure image libre de Mohéli trouvée à ce jour** :
+  « Vue de l'îlot principale de nioumachoua.jpg » (Eldalil05, CC BY-SA 4.0,
+  1920×2560, Wikimedia Commons) — îlot de Nioumachoua vu de la plage, une
+  personne de dos. Grise à l'origine → `pub/flyers/affiche.py` lui rend une
+  lumière de fin de journée (contraste 1.16, couleur 1.30, halo chaud centré
+  sur l'horizon en `ImageChops.add`, bleu renforcé sous l'horizon, vignettage,
+  UnsharpMask). Copie source dans `pub/photos-cc/nioumachoua-ilot.jpg`.
+- **Méthode de recherche qui marche** : l'API Wikimedia Commons
+  (`generator=search` + `generator=categorymembers` sur `Category:Mohéli` et
+  ses sous-catégories) donne bien plus que l'API Openverse pour Mohéli.
+  Openverse est utile pour Flickr. Les deux passent par curl + `--cacert`.
+- ⚠️ **Pièges relevés** : les résultats « Chissioua / M'Bouzi / Mtsamboro /
+  Bandrélé » sont **Mayotte** ; « Blue Guardian Comoros » et « Vue prise à
+  l'île wenefu » montrent des **personnes identifiables** → droit à l'image,
+  écartées pour de la publicité. Détail dans `pub/photos-cc/CREDITS.md`.
+- ⚠️ **CC BY-SA = partage à l'identique** sur l'œuvre dérivée. Pour un support
+  sans aucune contrainte, viser CC BY / CC0 ou nos propres photos.
 - Openverse API (`api.openverse.org/v1/images/?q=...`) et l'API Wikimedia
   Commons fonctionnent via curl + proxy. Flickr : suffixe `_b` = 1024 px.
 - ⚠️ AUCUNE photo/vidéo libre du port de Hoani n'existe. « Hoani » sur Commons
@@ -203,6 +221,10 @@ recharger ce sujet ici, ce n'est pas du marketing.
   (France, Mayotte, Golfe : payer la traversée d'un proche). Texte FB nuit dans
   `pub/textes-publications.md`. **Leçon de calendrier : ne pas republier la même
   vitrine deux fois dans la soirée — deux posts = deux angles.**
+  Puis il a demandé un troisième support avec **une belle image de Mohéli
+  trouvée sur le net** : affiche « destination » sur l'îlot de Nioumachoua
+  (photo CC BY-SA 4.0 étalonnée, crédit imprimé). Trois angles disponibles pour
+  la page : institutionnel (vitrine) → nuit (action) → destination (émotion).
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

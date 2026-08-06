@@ -4,6 +4,66 @@
 
 ---
 
+## 🏝️ Affiche « destination » — troisième publication (06/08/2026)
+
+Image à joindre : `flyers/flyer-affiche-facebook.png` (4:5).
+Photo : îlot de Nioumachoua, parc marin de Mohéli — **le crédit doit rester
+visible sur l'image** (Eldalil05, CC BY-SA 4.0, Wikimedia Commons).
+À publier un autre jour, en journée (12h-14h) : c'est la publication émotion,
+celle qui se partage. Peu de texte sur l'image, donc le texte du post porte
+l'histoire.
+
+### Version principale
+
+```
+MOHÉLI, À UNE TRAVERSÉE DE VOUS.
+
+L'îlot de Nioumachoua, dans le parc marin de Mohéli. On le regarde depuis la
+plage, et on se dit qu'un jour, il faudra y aller.
+
+Ce jour-là commence par une traversée. Et cette traversée se réserve
+maintenant, depuis votre téléphone :
+
+• Vous choisissez votre port et votre date — Ouroveni ou Chindini au départ,
+  Hoani ou Fomboni à l'arrivée.
+• Vous payez par MVola ou KartaPay, et votre billet QR arrive aussitôt.
+• Vous vérifiez l'état de la mer sur 7 jours avant de partir.
+
+Mohéli, ce sont ses îlots, ses tortues à Itsamia, ses baleines en saison, ses
+plages sans personne. Il n'y a plus qu'une chose entre l'île et vous : deux
+minutes de réservation.
+
+moheligo.com — Mohéli commence ici.
+
+Photo : Eldalil05 — îlot de Nioumachoua (CC BY-SA 4.0, Wikimedia Commons)
+
+#MoheliGo #Mohéli #Nioumachoua #ParcMarinDeMohéli #Comores #VisitComoros #Itsamia
+```
+
+### Premier commentaire
+
+```
+Réservez votre traversée : moheligo.com
+WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp / Instagram)
+
+```
+Mohéli, à une traversée de vous. 🏝️
+moheligo.com — 2 minutes, billet QR, météo mer.
+```
+
+### Idée d'engagement (à poster en commentaire de notre propre post)
+
+```
+Et vous, quel est le plus bel endroit de Mohéli selon vous ?
+Nioumachoua, Itsamia, la plage de Chalé, la cascade de Miringoni ?
+Les meilleures réponses passeront dans une prochaine publication.
+```
+
+---
+
 ## 🌙 Flyer nuit — deuxième publication, fin de soirée (06/08/2026)
 
 Image à joindre : `flyers/flyer-nuit-facebook.png` (4:5).

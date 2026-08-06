@@ -102,9 +102,19 @@ en comparant avec Yas) : « c'est comme si ça brille ». Traduction technique �
 aucun aplat, tout est dégradé ; liseré blanc intérieur en haut + ombre chaude
 intérieure en bas sur chaque élément or ; reflet spéculaire flouté ; balayage
 de lumière en diagonale ; texte rempli d'un dégradé (`background-clip:text`) ;
-lumière du soleil sur la photo ; et quatre éclats maximum, placés à la main.
-**Retenir : quand il dit « améliore le design », il parle de matière et de
-lumière, pas de mise en page.**
+lumière du soleil sur la photo. **Retenir : quand il dit « améliore le
+design », il parle de matière et de lumière, pas de mise en page.**
+
+🚫 **DEUX REFUS DU 06/08/2026, définitifs :**
+1. **Pas d'éclats / petites étoiles** sur les visuels — « ça fait enfants et
+   femme ». La brillance vient de la matière, jamais d'un décor ajouté.
+2. **Montserrat écartée pour les titres** : il voulait « une écriture façon
+   pro » → **Archivo 800/900** (plus sèche, plus éditoriale), Inter pour le
+   texte courant, plate de titre droite sans rotation, rayons resserrés,
+   fond clair froid sans halo crème. Polices déjà commitées dans
+   `pub/flyers/fonts/`. ⚠️ Archivo est plus large que Montserrat : compter
+   71-78 px de corps là où Montserrat tenait à 84-90 px, sinon le titre passe
+   sur trois lignes et écrase la mise en page.
 
 ## 3. Acquis techniques (comment refaire)
 

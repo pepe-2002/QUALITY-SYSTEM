@@ -78,6 +78,16 @@ Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à
 
 ## Système de design (à réutiliser tel quel)
 
+- **Typographie d'affiche : `Archivo` 800/900** pour tout le display (titres,
+  prix, `moheligo.com`, boutons, noms de ports) et `Inter` pour le texte
+  courant. Archivo remplace Montserrat depuis le 06/08/2026 : le patron voulait
+  « une écriture façon pro » — Archivo est plus sèche, plus éditoriale, moins
+  « gabarit ». ⚠️ Elle est **plus large** que Montserrat : à taille égale le
+  titre déborde. Compter environ 71-78 px là où Montserrat tenait à 84-90 px.
+- Registre « pro » : plate de titre **droite** (aucune rotation), rayons
+  resserrés (18 px sur les cartes, 28 px sur la bande d'action), interlettrage
+  des petites capitales à 1,8-2,4 px maximum, fond clair **froid** (pas de halo
+  crème).
 - Couleurs : marine `#0F2A5C`, or `#F6BC1C`, fond clair `#F3F7FE`, marine
   profonde `#081833` pour les photos, gris texte `#5C6E8B`.
 - Rayons : 20 (petits blocs), 26-30 (cartes), 44-52 (bande d'action), 999
@@ -118,9 +128,9 @@ Huit gestes, tous dans `flyer7-promo-brillant-fb.html` :
 7. **Texte rempli d'un dégradé** : `background-clip:text` + `color:transparent`
    sur le grand titre, le prix et `moheligo.com`, avec
    `drop-shadow(0 2px 0 rgba(255,255,255,.45))` pour l'arête lumineuse.
-8. **Éclats** (petites étoiles à quatre branches) posés **à la main**, jamais en
-   semis : un gros près du titre, deux moyens autour de la bulle, un petit en
-   contrepoint. Au-delà de quatre, ça fait sapin de Noël.
+8. 🚫 **PAS d'éclats ni de petites étoiles.** Essayés le 06/08/2026, refusés
+   par le patron : « ça fait enfants et femme ». La brillance doit venir de la
+   matière (dégradés, liserés, reflets), jamais d'un décor ajouté.
 
 ⚠️ À l'impression, exiger le PNG d'origine : un fichier passé par WhatsApp ou
 Facebook perd les dégradés (bandes visibles dans l'or) et les reflets fins.

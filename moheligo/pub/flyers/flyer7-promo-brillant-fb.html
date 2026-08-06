@@ -30,8 +30,8 @@
 body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:var(--navy);
        -webkit-font-smoothing:antialiased; overflow:hidden; background:var(--paper); }
 .page { position:relative; width:1080px; height:1350px; overflow:hidden;
-  background:radial-gradient(120% 70% at 82% 74%, #FFF6E0 0%, var(--paper) 46%, #EAF1FC 100%); }
-.mont { font-family:'Montserrat','Inter',sans-serif; }
+  background:linear-gradient(184deg, #FFFFFF 0%, var(--paper) 52%, #E7EEFA 100%); }
+.mont { font-family:'Archivo','Inter',Arial,sans-serif; }
 
 .pattern { position:absolute; left:0; right:0; top:660px; height:430px; opacity:.05; }
 
@@ -55,7 +55,7 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 .head { position:absolute; top:36px; left:var(--pad); right:var(--pad); display:flex;
   align-items:center; justify-content:space-between; z-index:6; }
 .ident { display:flex; align-items:center; gap:15px; }
-.badge-app { position:relative; width:76px; height:76px; border-radius:23px;
+.badge-app { position:relative; width:76px; height:76px; border-radius:18px;
   background:linear-gradient(160deg,#fff 0%,#EFF4FD 100%); display:flex; align-items:center;
   justify-content:center; box-shadow:var(--sh-float), inset 0 1.5px 0 #fff; overflow:hidden; }
 .badge-app img { width:58px; display:block; }
@@ -65,38 +65,38 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
   text-shadow:0 2px 14px rgba(0,0,0,.5); }
 .word b em { font-style:normal;
   background:var(--gold-metal); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.word small { display:block; margin-top:5px; font-size:11px; font-weight:700; letter-spacing:2.8px;
+.word small { display:block; margin-top:5px; font-size:11px; font-weight:700; letter-spacing:2.2px;
   color:#DDE8F9; text-shadow:0 1px 8px rgba(0,0,0,.55); }
 .new { position:relative; display:inline-flex; align-items:center; gap:9px; background:var(--gold-metal);
-  color:#4A3806; font-size:13px; font-weight:900; letter-spacing:2.2px; padding:12px 22px; border-radius:999px;
+  color:#4A3806; font-size:13px; font-weight:900; letter-spacing:1.8px; padding:12px 22px; border-radius:999px;
   box-shadow:var(--bevel-gold), 0 12px 26px rgba(7,22,48,.38); overflow:hidden; }
 .new i { width:8px; height:8px; border-radius:50%; background:#4A3806; display:block; }
 .new::after { content:''; position:absolute; left:-40%; top:-120%; width:60%; height:340%;
   background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0));
   transform:rotate(18deg); filter:blur(4px); }
 
-.claim { position:absolute; left:var(--pad); top:250px; right:344px; color:#fff; z-index:6; }
-.claim .over { display:inline-block; font-size:13.5px; font-weight:800; letter-spacing:3px; color:#FFE9AE;
+.claim { position:absolute; left:var(--pad); top:256px; right:318px; color:#fff; z-index:6; }
+.claim .over { display:inline-block; font-size:13.5px; font-weight:800; letter-spacing:2.4px; color:#FFE9AE;
   text-shadow:0 2px 10px rgba(0,0,0,.55); }
-.claim h1 { margin-top:16px; font-size:84px; font-weight:900; line-height:.96; letter-spacing:-3.2px; }
+.claim h1 { margin-top:16px; font-size:77px; font-weight:900; line-height:.99; letter-spacing:-2.1px; }
 .claim h1 .l1 { display:block;
   background:linear-gradient(178deg,#FFFFFF 0%,#FFFFFF 52%,#CFE0F7 100%);
   -webkit-background-clip:text; background-clip:text; color:transparent;
   filter:drop-shadow(0 10px 30px rgba(0,0,0,.55)); }
-.claim h1 .hl { position:relative; display:inline-block; color:#3A2B03; z-index:1; padding:0 20px 0 14px;
+.claim h1 .hl { position:relative; display:inline-block; word-spacing:3px; color:#3A2B03; z-index:1; padding:0 20px 0 14px;
   margin-top:6px; }
 .claim h1 .hl::before { content:''; position:absolute; left:0; right:0; top:6px; bottom:12px; z-index:-1;
-  background:var(--gold-metal); border-radius:14px; transform:rotate(-1.1deg);
+  background:var(--gold-metal); border-radius:7px; transform:rotate(0deg);
   box-shadow:var(--bevel-gold), 0 16px 32px rgba(7,22,48,.42); }
 .claim h1 .hl::after { content:''; position:absolute; left:3%; right:42%; top:11px; height:26%; z-index:-1;
   background:linear-gradient(rgba(255,255,255,.72),rgba(255,255,255,0)); border-radius:10px;
-  transform:rotate(-1.1deg); filter:blur(1px); }
-.claim p { margin-top:24px; font-size:21.5px; font-weight:600; line-height:1.42; color:#EAF1FD;
+  transform:rotate(0deg); filter:blur(1px); }
+.claim p { margin-top:22px; font-size:21px; font-weight:600; line-height:1.42; color:#EAF1FD;
   text-shadow:0 2px 14px rgba(0,0,0,.55); }
 
 /* ---------- bulle de prix : or verni ---------- */
 .bubble { position:absolute; right:44px; top:426px; width:254px; height:254px; border-radius:50%;
-  background:var(--gold-metal); transform:rotate(-7deg); z-index:7; overflow:hidden;
+  background:var(--gold-metal); transform:rotate(-3deg); z-index:7; overflow:hidden;
   box-shadow:var(--bevel-gold), 0 0 0 10px var(--paper), 0 28px 52px rgba(7,22,48,.40);
   display:flex; flex-direction:column; align-items:center; justify-content:center; }
 .bubble::before { content:''; position:absolute; left:-4%; top:-28%; width:108%; height:62%;
@@ -113,18 +113,16 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 .bubble em { position:relative; font-style:normal; margin-top:7px; font-size:13.5px; font-weight:800;
   letter-spacing:1.8px; color:#5B4508; }
 
-/* éclats */
-.spark { position:absolute; z-index:7; }
 
 /* ---------- trois arguments ---------- */
 .mid { position:absolute; top:724px; left:var(--pad); right:var(--pad); display:flex; gap:18px; z-index:4; }
-.card { position:relative; flex:1; border-radius:27px; padding:25px 20px 27px; text-align:center;
+.card { position:relative; flex:1; border-radius:18px; padding:25px 20px 27px; text-align:center;
   background:linear-gradient(178deg,#FFFFFF 0%,#F7FAFF 100%);
   box-shadow:var(--sh-card), inset 0 1.5px 0 #fff; border:1px solid rgba(15,42,92,.055); overflow:hidden; }
 .card::after { content:''; position:absolute; left:-20%; top:-90%; width:70%; height:190%;
   background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.9), rgba(255,255,255,0));
   transform:rotate(20deg); filter:blur(13px); opacity:.34; }
-.card .ic { position:relative; width:68px; height:68px; margin:0 auto; border-radius:23px;
+.card .ic { position:relative; width:68px; height:68px; margin:0 auto; border-radius:14px;
   background:var(--gold-metal); display:flex; align-items:center; justify-content:center;
   box-shadow:var(--bevel-gold), 0 10px 20px rgba(224,164,0,.42); overflow:hidden; }
 .card .ic::after { content:''; position:absolute; left:6%; right:34%; top:6%; height:38%;
@@ -150,13 +148,13 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 
 /* ---------- bande d'action ---------- */
 .cta { position:absolute; left:0; right:0; bottom:0; height:246px; background:var(--gold-metal);
-  border-radius:46px 46px 0 0; padding:32px var(--pad) 0; z-index:5; overflow:hidden;
+  border-radius:28px 28px 0 0; padding:32px var(--pad) 0; z-index:5; overflow:hidden;
   box-shadow:inset 0 2px 0 rgba(255,255,255,.7); }
 .cta::before { content:''; position:absolute; left:-25%; top:-60%; width:60%; height:230%;
   background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.55), rgba(255,255,255,0));
   transform:rotate(16deg); filter:blur(10px); }
 .cta .row { position:relative; display:flex; align-items:center; gap:24px; }
-.qr { position:relative; width:130px; height:130px; background:#fff; border-radius:21px; padding:9px; flex:none;
+.qr { position:relative; width:130px; height:130px; background:#fff; border-radius:14px; padding:9px; flex:none;
   box-shadow:0 14px 26px rgba(7,22,48,.24), inset 0 1.5px 0 #fff; }
 .qr img { width:100%; height:100%; display:block; }
 .go { flex:1; }
@@ -244,15 +242,6 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
     <em>LE TRAJET</em>
   </div>
 
-  <!-- éclats : placés à la main autour de la bulle et du titre -->
-  <svg class="spark" style="left:478px; top:272px" width="32" height="34" viewBox="0 0 40 40">
-    <path d="M20 0 L23.4 16.6 L40 20 L23.4 23.4 L20 40 L16.6 23.4 L0 20 L16.6 16.6 Z" fill="#FFF3CE" opacity=".92"/></svg>
-  <svg class="spark" style="right:296px; top:398px" width="20" height="20" viewBox="0 0 40 40">
-    <path d="M20 0 L23.4 16.6 L40 20 L23.4 23.4 L20 40 L16.6 23.4 L0 20 L16.6 16.6 Z" fill="#FFE9AE" opacity=".8"/></svg>
-  <svg class="spark" style="right:24px; top:392px" width="26" height="26" viewBox="0 0 40 40">
-    <path d="M20 0 L23.4 16.6 L40 20 L23.4 23.4 L20 40 L16.6 23.4 L0 20 L16.6 16.6 Z" fill="#FFFFFF" opacity=".85"/></svg>
-  <svg class="spark" style="right:262px; top:664px" width="16" height="16" viewBox="0 0 40 40">
-    <path d="M20 0 L23.4 16.6 L40 20 L23.4 23.4 L20 40 L16.6 23.4 L0 20 L16.6 16.6 Z" fill="#F6BC1C" opacity=".75"/></svg>
 
   <div class="mid">
     <div class="card">

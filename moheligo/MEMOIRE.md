@@ -2,7 +2,7 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **03/08/2026** (messagerie privée « Nous »).
+> Dernière mise à jour : **06/08/2026** (flyer corporate + texte Facebook).
 
 ---
 
@@ -41,6 +41,8 @@ Tout est dans `moheligo/pub/` :
 | `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux, carte satellite interactive + app (Ouroveni → Hoani) | 54 s | 4,4 Mo |
 | `flyers/` | Flyer premium 2160×2700 (HTML source + PNG) — QR vers moheligo.com | — | — |
 | `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
+| `flyers/flyer-corporate-A4.png` | Flyer institutionnel A4 300 dpi (06/08) — impression, partenaires | — | — |
+| `flyers/flyer-corporate-facebook.png` | Même flyer en 4:5 pour le feed FB/Insta | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -104,6 +106,28 @@ comoriennes → versions 720p ~3-5 Mo.
   ligne ; logo Facebook OFFICIEL (f blanc sur #1877F2), pas l'emoji livre.
 - GitHub raw (github.com/google/fonts) est bloqué par la session — passer par
   fonts.googleapis.com/css2.
+- **06/08/2026 — acquis à ne plus refaire** :
+  - Les polices sont maintenant **commitées** dans `pub/flyers/fonts/`
+    (Montserrat 600-900 + Inter 400-700, latin & latin-ext, ~1 Mo). Plus besoin
+    de les retélécharger, et `flyer1.html` se rend enfin correctement.
+  - `pub/flyers/render.js` fait le rendu : `node render.js src.html out.png L H échelle`.
+    Chromium est en `/opt/pw-browsers/chromium` (le chemin `.../chromium/chrome-linux/chrome`
+    n'existe pas, c'est un lien direct vers le binaire).
+  - `1240 × 1754` CSS × 2 = **A4 exactement à 300 dpi** (2480 × 3508) → format
+    imprimable pour les hôtels, agences, affichage aux ports.
+  - Mise en page en **flex column** (pas en `position:absolute` comme flyer1) :
+    plus rien ne se chevauche quand un texte s'allonge.
+  - Le logo officiel a été **détouré** (`logo-lockup.png`, `logo-emblem.png`).
+    L'emblème seul, à 78 px, reste net ; le lockup complet (281 px de large)
+    devient flou au-delà de ~200 px → à l'en-tête : emblème + « MoheliGo »
+    retypographié en Montserrat 800 aux couleurs du logo.
+  - Palette : utiliser les couleurs **du site** (`#1C4FA8`, `#0F2A5C`, `#F6BC1C`)
+    et non celles de flyer1 (`#071c3d`, `#facc15`).
+  - ⚠️ La flèche `↔` (U+2194) n'est PAS dans le sous-ensemble latin d'Inter :
+    elle tombe sur une police système et jure. L'écrire en mots
+    (« entre Grande Comore et Mohéli ») ou en SVG.
+  - Règle que je m'impose : **aucun chiffre inventé** sur les supports
+    (pas de « 10 000 passagers », pas de « 24/7 ») — uniquement du vérifiable.
 
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 
@@ -154,6 +178,17 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **06/08/2026** — Le patron demande « un flyer type grand conglomérat + un
+  écrit pour publier sur FB ». Produit : flyer institutionnel A4 300 dpi
+  (en-tête, bandeau photo, schéma du réseau des 4 ports, 6 services numérotés,
+  bande de chiffres clés, pied avec QR + WhatsApp + Facebook) et sa déclinaison
+  feed 4:5. Registre corporate assumé : filet institutionnel, sections
+  numérotées 01/02, aucun emoji, couleurs officielles du site. Texte Facebook
+  ajouté dans `pub/textes-publications.md` (version institutionnelle + premier
+  commentaire avec le lien + version courte + réponses types aux commentaires).
+  Documentation dans `pub/flyers/README.md`. **À faire à la prochaine session :
+  demander au patron s'il valide le ton institutionnel ou s'il veut plus chaud
+  / plus commercial, et s'il veut une version shikomori.**
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

@@ -4,6 +4,69 @@
 
 ---
 
+## 🏛️ Flyer corporate — publication Facebook (06/08/2026)
+
+Image à joindre : `flyers/flyer-corporate-facebook.png` (format feed 4:5).
+Le A4 (`flyer-corporate-A4.png`) est pour l'impression et les partenaires.
+**Ne pas mettre le lien dans le post** — Facebook réduit la portée des posts
+avec lien. Le lien va dans le premier commentaire (texte fourni plus bas).
+
+### Version principale (ton institutionnel — celle à publier)
+
+```
+DEUX ÎLES. UNE SEULE TRAVERSÉE.
+
+La liaison Grande Comore – Mohéli a désormais sa plateforme de réservation.
+
+Sur MoheliGo, tout le voyage tient dans votre téléphone :
+
+• Réservation en ligne — départ, date et place confirmés en deux minutes.
+• Billet QR instantané — contrôlé à l'embarquement, sans papier, sans file d'attente.
+• Paiement mobile — MVola et KartaPay. Un proche, ici ou à l'étranger, peut payer pour vous.
+• Météo mer sur 7 jours — l'état de la mer et le bulletin officiel avant chaque départ.
+• Suivi en direct — la position de la vedette pendant la traversée, pour ceux qui attendent au port.
+• Guide de Mohéli — hôtels, plages, tortues d'Itsamia, baleines en saison.
+
+Quatre ports desservis : Ouroveni et Chindini en Grande Comore, Hoani et Fomboni à Mohéli.
+Aucune application à installer : la plateforme s'ouvre dans le navigateur de n'importe quel téléphone.
+
+Mohéli commence ici.
+
+Depuis quel port embarquez-vous d'habitude ? Dites-le nous en commentaire.
+
+#MoheliGo #Mohéli #Comores #GrandeComore #Traversée #VisitComoros #Fomboni #Hoani
+```
+
+### Premier commentaire (à poster tout de suite après)
+
+```
+Réservez votre traversée : moheligo.com
+Assistance WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp, Instagram, seconde publication)
+
+```
+Deux îles. Une seule traversée. 🌊
+Grande Comore – Mohéli, réservé en 2 minutes depuis votre téléphone.
+Billet QR, MVola, météo mer 7 jours.
+moheligo.com
+```
+
+### Réponses types aux commentaires
+
+- « C'est payant ? » → « La réservation est gratuite, vous ne payez que votre
+  place : à partir de 15 000 FC selon la vedette et le port. Tout est affiché
+  avant de valider. »
+- « Ça marche sans internet ? » → « Il faut une connexion pour réserver, mais
+  votre billet QR reste dans votre téléphone après, même hors connexion. »
+- « Je suis à l'étranger, je peux payer pour ma famille ? » → « Oui : depuis
+  moheligo.com vous réservez et payez pour un proche, il reçoit son billet QR. »
+- Demande d'horaires → « Les départs disponibles s'affichent en direct sur
+  moheligo.com, avec les places restantes. »
+
+---
+
 ## 🎬 v4-film — « Amina » (le mini-film)
 
 Elle a réservé en 2 minutes. L'océan a fait le reste. 🌊

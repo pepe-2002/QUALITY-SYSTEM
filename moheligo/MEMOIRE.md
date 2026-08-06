@@ -46,7 +46,8 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-nuit-facebook.png` | Flyer nuit 4:5 — 2ᵉ publication du soir (22h30-minuit), angle « réservez ce soir, partez demain » + diaspora | — | — |
 | `flyers/flyer-affiche-facebook.png` | Affiche « destination » 4:5 — îlots de Nioumachoua (photo libre CC BY 3.0 étalonnée), 3ᵉ publication, registre émotion | — | — |
 | `flyers/flyer-affiche-vedette-facebook.png` | Même affiche avec notre photo de vedette en pleine mer (aucune licence, aucun crédit) | — | — |
-| `flyers/flyer-promo-facebook.png` | Flyer promo 4:5 style « affiche locale » (Yas / compagnies aériennes) : bulle de prix, diagonale, bande d'action or — le plus accrocheur | — | — |
+| `flyers/flyer-promo-facebook.png` | Flyer promo 4:5 style « affiche locale » : vague, bulle de prix, bande d'action or — le plus accrocheur | — | — |
+| `flyers/flyer-promo-A4.png` | Le promo en A4 300 dpi imprimable + bande « comment ça marche » (ports, boutiques, hôtels) | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -182,6 +183,24 @@ Ce qu'il faut retenir de ces codes :
   bande d'action or à coins arrondis en pied, pastilles WhatsApp/Facebook.
 - ⚠️ **Ne jamais reprendre le logo, la typo ou le slogan de Yas ou de Royal
   Air** : on s'inspire de l'énergie, pas de l'identité. Contrefaçon sinon.
+- **Ce qui a fait passer le design d'« correct » à « bon »** (demande
+  « améliore encore le design » du 06/08) — recettes réutilisables :
+  1. Découpe photo → fond en **vague SVG** remplie de la couleur du fond, au
+     lieu d'une diagonale droite : instantanément maritime et plus doux.
+  2. **Bloc surligneur** or derrière la deuxième ligne du titre (`::before`
+     tourné de −1,1°, `z-index:-1`, texte en marine) : l'œil se pose là.
+  3. **Anneau de la couleur du fond** autour de la bulle de prix
+     (`box-shadow:0 0 0 10px var(--paper)`) : elle reste lisible à cheval sur
+     la photo et sur le fond clair.
+  4. Cartes **blanches ombrées** sur fond bleuté (au lieu de cartes teintées
+     sur blanc) : elles avancent au lieu de s'enfoncer. Pastilles d'icône en
+     **or** avec icône marine (plus de couleur que l'inverse).
+  5. **Halo doré diffus + trame d'ondes à 5,5 %** dans la zone claire : sans
+     ça le fond est plat.
+  6. Un **vrai bouton** (gélule marine, flèche or) plutôt qu'une ligne de
+     texte « Réserve maintenant » : ça se lit comme une action.
+  7. Trois niveaux d'ombre et quatre rayons **et pas plus** — le reste du
+     système de design est écrit dans `pub/flyers/README.md`.
 - Le texte de ce support **tutoie** (registre télécom local) alors que les trois
   autres vouvoient. À faire valider par le patron.
 

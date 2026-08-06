@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<!-- Version A4 imprimable (1240x1754 CSS x2 = 2480x3508, soit 300 dpi) du flyer
+     promo. Même design que flyer6-promo-fb.html, avec en plus la bande
+     « comment ça marche » en trois étapes : sur un flyer papier, les gens
+     lisent, alors qu'un post Facebook doit rester très court. -->
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --navy:#0F2A5C; --deep:#081833; --gold:#F6BC1C;
+  --paper:#F3F7FE; --grey:#5C6E8B; --ink:#0F2A5C; --dark-gold:#6B5410;
+  --sh-m:0 16px 38px rgba(15,42,92,.14);
+  --sh-l:0 24px 52px rgba(8,24,51,.32);
+  --pad:66px;
+}
+body { width:1240px; height:1754px; font-family:'Inter',Arial,sans-serif; color:var(--ink);
+       -webkit-font-smoothing:antialiased; overflow:hidden; background:var(--paper); }
+.page { position:relative; width:1240px; height:1754px; overflow:hidden; background:var(--paper); }
+.mont { font-family:'Montserrat','Inter',sans-serif; }
+
+.glow { position:absolute; right:-200px; top:700px; width:760px; height:760px; border-radius:50%;
+  background:radial-gradient(circle, rgba(246,188,28,.22) 0%, rgba(246,188,28,0) 68%); }
+.pattern { position:absolute; left:0; right:0; top:770px; height:620px; opacity:.055; }
+
+/* ---------- haut ---------- */
+.top { position:absolute; top:0; left:0; right:0; height:790px; overflow:hidden; background:var(--deep); }
+.top img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  object-position:center 6%; transform:scale(1.18); transform-origin:52% 22%; }
+.top .veil { position:absolute; inset:0;
+  background:linear-gradient(177deg, rgba(8,24,51,.74) 0%, rgba(8,24,51,.22) 22%,
+                                     rgba(8,24,51,.30) 46%, rgba(8,24,51,.78) 82%, rgba(8,24,51,.94) 100%); }
+.top .wave { position:absolute; left:0; right:0; bottom:-2px; display:block; }
+
+.head { position:absolute; top:44px; left:var(--pad); right:var(--pad); display:flex;
+  align-items:center; justify-content:space-between; z-index:5; }
+.ident { display:flex; align-items:center; gap:18px; }
+.badge-app { width:88px; height:88px; border-radius:26px; background:#fff; display:flex;
+  align-items:center; justify-content:center; box-shadow:var(--sh-l); }
+.badge-app img { width:68px; display:block; }
+.word b { font-size:39px; font-weight:800; letter-spacing:-1.1px; color:#fff; display:block; line-height:1;
+  text-shadow:0 2px 12px rgba(0,0,0,.45); }
+.word b em { font-style:normal; color:var(--gold); }
+.word small { display:block; margin-top:6px; font-size:12.5px; font-weight:700; letter-spacing:3.2px;
+  color:#D8E4F7; text-shadow:0 1px 8px rgba(0,0,0,.5); }
+.new { display:inline-flex; align-items:center; gap:10px; background:var(--gold); color:var(--navy);
+  font-size:14px; font-weight:900; letter-spacing:2.4px; padding:14px 26px; border-radius:999px;
+  box-shadow:0 12px 26px rgba(8,24,51,.34); }
+.new i { width:9px; height:9px; border-radius:50%; background:var(--navy); display:block; }
+
+.claim { position:absolute; left:var(--pad); top:300px; right:404px; color:#fff; z-index:5; }
+.claim .over { display:inline-block; font-size:15px; font-weight:800; letter-spacing:3.2px; color:#FFE49A;
+  text-shadow:0 2px 10px rgba(0,0,0,.5); }
+.claim h1 { margin-top:18px; font-size:98px; font-weight:900; line-height:.96; letter-spacing:-3.8px;
+  text-shadow:0 10px 40px rgba(0,0,0,.5); }
+.claim h1 .hl { position:relative; display:inline-block; color:var(--navy); z-index:1;
+  padding:0 22px 0 16px; text-shadow:none; }
+.claim h1 .hl::before { content:''; position:absolute; left:0; right:0; top:8px; bottom:14px;
+  background:var(--gold); border-radius:15px; transform:rotate(-1.1deg); z-index:-1;
+  box-shadow:0 14px 30px rgba(8,24,51,.34); }
+.claim p { margin-top:26px; font-size:24px; font-weight:600; line-height:1.42; color:#E9F0FC;
+  text-shadow:0 2px 12px rgba(0,0,0,.5); }
+
+.bubble { position:absolute; right:54px; top:520px; width:292px; height:292px; border-radius:50%;
+  background:var(--gold); transform:rotate(-7deg); z-index:6; color:var(--navy);
+  box-shadow:0 0 0 11px var(--paper), 0 26px 52px rgba(8,24,51,.34);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.bubble small { font-size:16px; font-weight:800; letter-spacing:2.6px; }
+.bubble b { font-size:64px; font-weight:900; line-height:.94; letter-spacing:-2.6px; margin-top:6px; }
+.bubble b i { font-style:normal; font-size:24px; font-weight:900; margin-left:4px; }
+.bubble em { font-style:normal; margin-top:8px; font-size:15px; font-weight:800; letter-spacing:2px;
+  color:var(--dark-gold); }
+
+/* ---------- trois arguments ---------- */
+.mid { position:absolute; top:856px; left:var(--pad); right:var(--pad); display:flex; gap:22px; z-index:3; }
+.card { flex:1; background:#fff; border-radius:30px; padding:28px 22px 30px; text-align:center;
+  box-shadow:var(--sh-m); }
+.card .ic { width:76px; height:76px; margin:0 auto; border-radius:24px; background:var(--gold);
+  display:flex; align-items:center; justify-content:center; box-shadow:0 10px 22px rgba(246,188,28,.45); }
+.card b { display:block; margin-top:17px; font-size:22px; font-weight:800; letter-spacing:-.3px; }
+.card small { display:block; margin-top:6px; font-size:16px; font-weight:600; color:var(--grey); line-height:1.35; }
+
+/* ---------- comment ça marche ---------- */
+.steps { position:absolute; top:1116px; left:var(--pad); right:var(--pad); z-index:3; }
+.steps > h2 { font-size:17px; font-weight:900; letter-spacing:3.4px; color:var(--navy); }
+.steps .list { margin-top:20px; display:flex; gap:22px; }
+.step { flex:1; display:flex; align-items:flex-start; gap:15px; }
+.step .n { width:46px; height:46px; border-radius:50%; background:var(--navy); color:#fff; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:21px; font-weight:900;
+  box-shadow:0 8px 18px rgba(8,24,51,.22); }
+.step b { display:block; font-size:19.5px; font-weight:800; letter-spacing:-.2px; }
+.step small { display:block; margin-top:4px; font-size:15.5px; font-weight:600; color:var(--grey); line-height:1.35; }
+
+/* ---------- ligne des ports ---------- */
+.route { position:absolute; top:1290px; left:var(--pad); right:var(--pad); height:110px;
+  background:var(--navy); border-radius:999px; display:flex; align-items:center;
+  justify-content:space-between; padding:0 44px; color:#fff; box-shadow:var(--sh-m); z-index:3; }
+.route .p b { display:block; font-size:26px; font-weight:800; letter-spacing:-.4px; }
+.route .p small { display:block; margin-top:3px; font-size:13px; font-weight:800; letter-spacing:2px; color:#9BB8E3; }
+.route .p.r { text-align:right; }
+.route .lane { flex:1; display:flex; flex-direction:column; align-items:center; padding:0 24px; }
+.route .lane .dots { width:100%; height:3.5px;
+  background:repeating-linear-gradient(90deg,var(--gold) 0 12px,transparent 12px 24px); }
+.route .lane .boat { margin-top:-25px; }
+
+/* ---------- appel à l'action ---------- */
+.cta { position:absolute; left:0; right:0; bottom:0; height:306px; background:var(--gold);
+  border-radius:52px 52px 0 0; padding:38px var(--pad) 0; z-index:4; }
+.cta .row { display:flex; align-items:center; gap:30px; }
+.qr { width:164px; height:164px; background:#fff; border-radius:24px; padding:11px; flex:none;
+  box-shadow:0 14px 28px rgba(8,24,51,.20); }
+.qr img { width:100%; height:100%; display:block; }
+.go { flex:1; }
+.go .site { display:block; font-size:57px; font-weight:900; letter-spacing:-2px; color:var(--navy); line-height:1; }
+.go .btn { display:inline-flex; align-items:center; gap:14px; margin-top:17px; background:var(--navy);
+  color:#fff; border-radius:999px; padding:16px 30px; box-shadow:0 14px 28px rgba(8,24,51,.28); }
+.go .btn span { font-size:22px; font-weight:900; letter-spacing:.2px; }
+.pills { display:flex; flex-direction:column; gap:13px; }
+.pill { display:flex; align-items:center; gap:13px; background:var(--navy); color:#fff;
+  border-radius:999px; padding:13px 24px 13px 14px; box-shadow:0 10px 22px rgba(8,24,51,.22); }
+.pill i { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; }
+.pill .wa { background:#25D366; } .pill .fb { background:#1877F2; }
+.pill span { font-size:20px; font-weight:800; letter-spacing:-.2px; }
+.fineprint { margin-top:24px; font-size:15px; font-weight:700; color:var(--dark-gold); }
+.fineprint b { font-weight:900; color:var(--navy); }
+.fineprint em { font-style:normal; opacity:.45; margin:0 10px; }
+</style></head><body>
+<div class="page">
+  <div class="glow"></div>
+  <svg class="pattern" viewBox="0 0 1240 620" preserveAspectRatio="none" fill="none"
+       stroke="#0F2A5C" stroke-width="3" stroke-linecap="round">
+    <path d="M-40 70 C110 24 250 24 400 70 C550 116 690 116 840 70 C990 24 1130 24 1290 70"/>
+    <path d="M-40 208 C110 162 250 162 400 208 C550 254 690 254 840 208 C990 162 1130 162 1290 208"/>
+    <path d="M-40 346 C110 300 250 300 400 346 C550 392 690 392 840 346 C990 300 1130 300 1290 346"/>
+    <path d="M-40 484 C110 438 250 438 400 484 C550 530 690 530 840 484 C990 438 1130 438 1290 484"/>
+    <path d="M-40 600 C110 554 250 554 400 600 C550 646 690 646 840 600 C990 554 1130 554 1290 600"/>
+  </svg>
+
+  <div class="top">
+    <img src="vedette-affiche.jpg" alt="">
+    <div class="veil"></div>
+    <svg class="wave" width="1240" height="150" viewBox="0 0 1240 150" preserveAspectRatio="none">
+      <path d="M0 50 C193 -9 367 7 540 52 C735 105 932 119 1240 46 L1240 150 L0 150 Z" fill="#F3F7FE"/>
+    </svg>
+  </div>
+
+  <div class="head">
+    <div class="ident">
+      <div class="badge-app"><img src="logo-emblem.png" alt=""></div>
+      <div class="word mont"><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
+    </div>
+    <span class="new mont"><i></i>NOUVEAU AUX COMORES</span>
+  </div>
+
+  <div class="claim">
+    <span class="over">GRANDE COMORE &nbsp;·&nbsp; MOHÉLI</span>
+    <h1 class="mont">TA TRAVERSÉE<br><span class="hl">EN 2 MINUTES</span></h1>
+    <p>Tu choisis ton départ, tu paies par MVola, tu reçois ton billet.
+       Sans passer au port, sans faire la queue.</p>
+  </div>
+
+  <div class="bubble mont">
+    <small>À PARTIR DE</small>
+    <b>15 000 <i>FC</i></b>
+    <em>LE TRAJET</em>
+  </div>
+
+  <div class="mid">
+    <div class="card">
+      <span class="ic">
+        <svg width="38" height="38" viewBox="0 0 28 28" fill="none" stroke="#0F2A5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="9" height="9" rx="1.6"/><rect x="16" y="3" width="9" height="9" rx="1.6"/>
+          <rect x="3" y="16" width="9" height="9" rx="1.6"/><path d="M16 16h4v4h-4zM24 16h1M16 24h1M21 21h4v4"/>
+          <rect x="6" y="6" width="3" height="3" fill="#0F2A5C" stroke="none"/>
+          <rect x="19" y="6" width="3" height="3" fill="#0F2A5C" stroke="none"/>
+          <rect x="6" y="19" width="3" height="3" fill="#0F2A5C" stroke="none"/></svg>
+      </span>
+      <b>Billet QR direct</b><small>Reçu dès le paiement</small>
+    </div>
+    <div class="card">
+      <span class="ic">
+        <svg width="38" height="38" viewBox="0 0 28 28" fill="none" stroke="#0F2A5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="7" y="2.5" width="14" height="23" rx="3"/><path d="M12 22.5h4"/>
+          <path d="M10.5 8h7M10.5 12h7" stroke-width="2.2"/>
+          <rect x="10.5" y="15.5" width="4" height="3" rx="1" fill="#0F2A5C" stroke="none"/></svg>
+      </span>
+      <b>MVola &amp; KartaPay</b><small>Un proche peut payer</small>
+    </div>
+    <div class="card">
+      <span class="ic">
+        <svg width="38" height="38" viewBox="0 0 28 28" fill="none" stroke="#0F2A5C" stroke-width="2.2" stroke-linecap="round">
+          <path d="M2.5 9 C5.5 6.5 8.5 6.5 11.5 9 C14.5 11.5 17.5 11.5 20.5 9 C23 7 25 7 25.5 8"/>
+          <path d="M2.5 16 C5.5 13.5 8.5 13.5 11.5 16 C14.5 18.5 17.5 18.5 20.5 16 C23 14 25 14 25.5 15"/>
+          <path d="M2.5 23 C5.5 20.5 8.5 20.5 11.5 23 C14.5 25.5 17.5 25.5 20.5 23"/></svg>
+      </span>
+      <b>Météo mer 7 jours</b><small>Avant de partir</small>
+    </div>
+  </div>
+
+  <div class="steps">
+    <h2 class="mont">COMMENT ÇA MARCHE</h2>
+    <div class="list">
+      <div class="step"><span class="n mont">1</span><div>
+        <b>Choisis ta traversée</b><small>Port, date et nombre de places sur moheligo.com</small></div></div>
+      <div class="step"><span class="n mont">2</span><div>
+        <b>Paie par mobile</b><small>MVola ou KartaPay, confirmation immédiate</small></div></div>
+      <div class="step"><span class="n mont">3</span><div>
+        <b>Embarque</b><small>Ton billet QR est scanné, tu montes à bord</small></div></div>
+    </div>
+  </div>
+
+  <div class="route mont">
+    <div class="p"><b>Ouroveni · Chindini</b><small>GRANDE COMORE</small></div>
+    <div class="lane">
+      <div class="dots"></div>
+      <div class="boat">
+        <svg width="100" height="54" viewBox="0 0 104 56" fill="none">
+          <path d="M8 38 L74 38 C84 38 92 33 97 25 L69 25 C66.5 18 59.5 13.5 51 13.5 L36 13.5 L38.5 25 L17 25 C12 25 9 30 8 38 Z" fill="#F6BC1C"/>
+          <path d="M36 13.5 L51 13.5 C59.5 13.5 66.5 18 69 25 L52 25 Z" fill="#0F2A5C"/>
+          <rect x="40" y="17" width="11" height="6" rx="2" fill="#8FC4F5"/>
+          <path d="M5 45 C12 41.5 19 41.5 26 45 C33 48.5 40 48.5 47 45" stroke="#8FC4F5" stroke-width="3.6" stroke-linecap="round"/>
+          <path d="M56 46 C63 42.5 70 42.5 77 46" stroke="#8FC4F5" stroke-width="3.6" stroke-linecap="round" opacity=".6"/>
+        </svg>
+      </div>
+    </div>
+    <div class="p r"><b>Hoani · Fomboni</b><small>MOHÉLI</small></div>
+  </div>
+
+  <div class="cta">
+    <div class="row">
+      <div class="qr"><img src="qr-moheligo.png" alt=""></div>
+      <div class="go mont">
+        <span class="site">moheligo.com</span>
+        <span class="btn"><span>RÉSERVE MAINTENANT</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F6BC1C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h13M12.5 6l6 6-6 6"/></svg>
+        </span>
+      </div>
+      <div class="pills">
+        <div class="pill"><i class="wa"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M17.4 14.4c-.3-.15-1.8-.9-2.1-1-.3-.1-.5-.15-.7.15-.2.3-.8.95-.95 1.15-.15.2-.3.2-.6.05-.3-.15-1.15-.45-2.2-1.4-.8-.75-1.35-1.65-1.5-1.95-.15-.3 0-.45.15-.6.15-.15.35-.4.5-.6.15-.2.2-.35.3-.55.1-.2.05-.4-.05-.55-.1-.15-.7-1.7-.95-2.3-.25-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.75.4-.25.3-.95 1-.95 2.4 0 1.4 1 2.75 1.15 2.95.15.2 1.95 3.15 4.75 4.3 2.35.95 2.8.8 3.35.75.55-.05 1.75-.7 2-1.4.25-.7.25-1.3.2-1.4-.05-.1-.2-.15-.45-.3zM12 21.5c-1.65 0-3.25-.45-4.65-1.3l-3.85 1 1.05-3.75A9.4 9.4 0 012.5 12C2.5 6.75 6.75 2.5 12 2.5S21.5 6.75 21.5 12 17.25 21.5 12 21.5z"/></svg></i><span>+269 479 43 28</span></div>
+        <div class="pill"><i class="fb"><svg width="21" height="21" viewBox="0 0 36 36"><path d="M24.7 23.2l.8-5.2h-5v-3.4c0-1.4.7-2.8 2.9-2.8h2.3V7.4s-2-.35-4-.35c-4.1 0-6.8 2.5-6.8 7v4h-4.6v5.2h4.6V34h5.6V23.2h4.2z" fill="#fff"/></svg></i><span>MoheliGo</span></div>
+      </div>
+    </div>
+    <div class="fineprint">
+      <b>Aucune application à installer.</b><em>|</em>Horaires, places restantes et tarifs affichés en direct sur le site.
+    </div>
+  </div>
+</div>
+</body></html>

@@ -49,6 +49,8 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-affiche-vedette-facebook.png` | Même affiche avec notre photo de vedette en pleine mer (aucune licence, aucun crédit) | — | — |
 | `flyers/flyer-promo-facebook.png` | Flyer promo 4:5 style « affiche locale » : vague, bulle de prix, bande d'action or — le plus accrocheur | — | — |
 | `flyers/flyer-promo-A4.png` | Le promo en A4 300 dpi imprimable + bande « comment ça marche » (ports, boutiques, hôtels) | — | — |
+| `flyers/flyer-promo-brillant-facebook.png` | ⭐ Le plus abouti : promo « brillant » (or métallique, reflets spéculaires, soleil sur la mer, éclats) | — | — |
+| `flyers/flyer-promo-brillant-A4.png` | Le brillant en A4 300 dpi imprimable | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -62,8 +64,9 @@ qu'on veut faire :
 
 | Je veux… | Fichier source à modifier | PNG produit |
 |---|---|---|
-| **Améliorer le design validé par le patron** (le meilleur, à continuer) | **`flyer6-promo-fb.html`** | `flyer-promo-facebook.png` (2160×2700) |
-| Le même en A4 imprimable | `flyer6-promo-A4.html` | `flyer-promo-A4.png` (2480×3508, 300 dpi) |
+| **Améliorer le design (LE MEILLEUR, repartir de là)** | **`flyer7-promo-brillant-fb.html`** | `flyer-promo-brillant-facebook.png` (2160×2700) |
+| Le brillant en A4 imprimable | `flyer7-promo-brillant-A4.html` | `flyer-promo-brillant-A4.png` (2480×3508, 300 dpi) |
+| Le promo mat (version précédente, gardée) | `flyer6-promo-fb.html` / `flyer6-promo-A4.html` | `flyer-promo-facebook.png` / `flyer-promo-A4.png` |
 | Le flyer institutionnel A4 | `flyer2-corporate.html` | `flyer-corporate-A4.png` |
 | Le flyer institutionnel pour le feed | `flyer2-corporate-fb.html` | `flyer-corporate-facebook.png` |
 | Le flyer nuit (publication de fin de soirée) | `flyer3-nuit-fb.html` | `flyer-nuit-facebook.png` |
@@ -87,11 +90,21 @@ Fichiers de service, dans le même dossier :
 Textes des publications Facebook : `moheligo/pub/textes-publications.md`
 (une section par flyer, avec le premier commentaire et la version WhatsApp).
 
-➡️ **PROCHAINE SESSION** : le patron a validé le design du flyer promo le
-06/08/2026 (« c'est super le design ») et veut **encore l'améliorer**. Donc on
-repart de `flyer6-promo-fb.html`, on ne recommence pas de zéro. Question encore
-ouverte : ce flyer **tutoie**, les trois autres vouvoient — lui demander
-laquelle des deux formes devient la règle.
+➡️ **PROCHAINE SESSION** : repartir de **`flyer7-promo-brillant-fb.html`**
+(version la plus aboutie, passe « brillance » appliquée), jamais de zéro. La
+recette complète de la brillance est écrite dans `pub/flyers/README.md`,
+section « La recette ça brille » — **la relire avant de toucher un flyer**.
+Question encore ouverte : ce flyer **tutoie**, les trois autres vouvoient —
+demander au patron laquelle des deux formes devient la règle.
+
+🔑 **CE QUE LE PATRON APPELLE « UN TRAVAIL DE DESIGNER PRO »** (06/08/2026,
+en comparant avec Yas) : « c'est comme si ça brille ». Traduction technique —
+aucun aplat, tout est dégradé ; liseré blanc intérieur en haut + ombre chaude
+intérieure en bas sur chaque élément or ; reflet spéculaire flouté ; balayage
+de lumière en diagonale ; texte rempli d'un dégradé (`background-clip:text`) ;
+lumière du soleil sur la photo ; et quatre éclats maximum, placés à la main.
+**Retenir : quand il dit « améliore le design », il parle de matière et de
+lumière, pas de mise en page.**
 
 ## 3. Acquis techniques (comment refaire)
 

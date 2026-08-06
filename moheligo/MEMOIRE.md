@@ -2,7 +2,8 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **06/08/2026** (flyer corporate + flyer nuit + textes FB).
+> Dernière mise à jour : **06/08/2026** — 4 flyers + affiches, design promo validé
+> par le patron. **Index des fichiers : section 2 bis.**
 
 ---
 
@@ -53,6 +54,44 @@ Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée pa
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
 supprimée, silence propre ; ③fichiers trop lourds pour les connexions
 comoriennes → versions 720p ~3-5 Mo.
+
+## 2 bis. 📌 OÙ SONT LES FICHIERS DES FLYERS (à ouvrir en premier)
+
+Tout est dans **`moheligo/pub/flyers/`**. Le fichier à ouvrir dépend de ce
+qu'on veut faire :
+
+| Je veux… | Fichier source à modifier | PNG produit |
+|---|---|---|
+| **Améliorer le design validé par le patron** (le meilleur, à continuer) | **`flyer6-promo-fb.html`** | `flyer-promo-facebook.png` (2160×2700) |
+| Le même en A4 imprimable | `flyer6-promo-A4.html` | `flyer-promo-A4.png` (2480×3508, 300 dpi) |
+| Le flyer institutionnel A4 | `flyer2-corporate.html` | `flyer-corporate-A4.png` |
+| Le flyer institutionnel pour le feed | `flyer2-corporate-fb.html` | `flyer-corporate-facebook.png` |
+| Le flyer nuit (publication de fin de soirée) | `flyer3-nuit-fb.html` | `flyer-nuit-facebook.png` |
+| L'affiche destination (îlots de Nioumachoua) | `flyer4-affiche-fb.html` | `flyer-affiche-facebook.png` |
+| L'affiche destination (notre vedette) | `flyer5-affiche-vedette-fb.html` | `flyer-affiche-vedette-facebook.png` |
+
+Fichiers de service, dans le même dossier :
+
+- **`render.js`** — transforme un HTML en PNG :
+  `node render.js source.html sortie.png LARGEUR HAUTEUR 2` (le 2 = ×2, donc
+  1240×1754 → A4 300 dpi, 1080×1350 → 2160×2700 pour Facebook).
+- **`affiche.py`** — étalonne les photos des affiches (dévoilage, lumière).
+- **`nuit.py`** — transforme une photo de jour en nuit (flyer nuit).
+- **`fonts/`** — Montserrat + Inter en local, ne pas retélécharger.
+- **`logo-emblem.png` / `logo-lockup.png`** — logo officiel détouré.
+- **`qr-moheligo.png`** — QR vers moheligo.com.
+- **`README.md`** — le **système de design** complet (couleurs exactes, rayons,
+  ombres, recette de la vague et du bloc surligneur) + toutes les commandes de
+  regénération. **À relire avant de retoucher un flyer.**
+
+Textes des publications Facebook : `moheligo/pub/textes-publications.md`
+(une section par flyer, avec le premier commentaire et la version WhatsApp).
+
+➡️ **PROCHAINE SESSION** : le patron a validé le design du flyer promo le
+06/08/2026 (« c'est super le design ») et veut **encore l'améliorer**. Donc on
+repart de `flyer6-promo-fb.html`, on ne recommence pas de zéro. Question encore
+ouverte : ce flyer **tutoie**, les trois autres vouvoient — lui demander
+laquelle des deux formes devient la règle.
 
 ## 3. Acquis techniques (comment refaire)
 
@@ -259,6 +298,14 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **06/08/2026 (fin de session)** — Le patron valide : « c'est super le design,
+  la prochaine fois on va encore améliorer ». Design du flyer promo retravaillé
+  (vague SVG, bloc surligneur, bulle cerclée, cartes blanches ombrées, halo +
+  trame, vrai bouton, photo agrandie) et décliné en **A4 300 dpi imprimable**
+  avec la bande « comment ça marche ». Il m'a demandé d'inscrire dans cette
+  mémoire **où sont les fichiers** → section 2 bis. Reprendre là la prochaine
+  fois, à partir de `pub/flyers/flyer6-promo-fb.html`.
 
 - **06/08/2026** — Le patron demande « un flyer type grand conglomérat + un
   écrit pour publier sur FB ». Produit : flyer institutionnel A4 300 dpi

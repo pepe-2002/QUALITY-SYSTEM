@@ -113,11 +113,11 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 /* courbe de houle */
 .chart { margin-top:20px; padding-top:18px; border-top:1px solid rgba(255,255,255,.16); }
 .chart .ct { display:flex; align-items:baseline; justify-content:space-between; }
-.chart .ct b { font-size:12px; font-weight:900; letter-spacing:1.9px; color:#B9CDEC; }
-.chart .ct span { font-size:11.5px; font-weight:700; color:#8FAAD4; }
+.chart .ct b { font-size:13px; font-weight:900; letter-spacing:1.9px; color:#D5E2F6; }
+.chart .ct span { font-size:12.5px; font-weight:700; color:#A9C1E4; }
 .chart svg { display:block; margin-top:8px; }
-.hours { margin-top:5px; display:flex; justify-content:space-between;
-  font-size:10.5px; font-weight:800; letter-spacing:1px; color:#8FAAD4; }
+.hours { margin-top:9px; display:flex; justify-content:space-between;
+  font-size:14px; font-weight:800; letter-spacing:.4px; color:#D5E2F6; }
 
 /* ---------- ligne d'action ---------- */
 .mid { position:absolute; left:var(--pad); right:var(--pad); top:952px; z-index:4; display:flex; gap:16px; }
@@ -220,7 +220,7 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 
     <div class="chart">
       <div class="ct arch"><b>HOULE HEURE PAR HEURE</b><span>{{PLAGE}}</span></div>
-      <svg width="908" height="104" viewBox="0 0 908 104" fill="none">
+      <svg width="908" height="116" viewBox="0 0 908 116" fill="none">
         <defs>
           <linearGradient id="aire" x1="0" y1="0" x2="0" y2="104" gradientUnits="userSpaceOnUse">
             <stop offset="0" stop-color="#F6BC1C" stop-opacity=".42"/>
@@ -231,7 +231,7 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
             <stop offset="1" stop-color="#F0AE0B"/>
           </linearGradient>
         </defs>
-        <path d="M0 26 H908 M0 60 H908 M0 94 H908" stroke="#FFFFFF" stroke-opacity=".13" stroke-width="1"/>
+        <path d="M0 28 H908 M0 66 H908 M0 104 H908" stroke="#FFFFFF" stroke-opacity=".15" stroke-width="1"/>
         <path d="{{AIRE}}" fill="url(#aire)"/>
         <path d="{{COURBE}}" fill="none" stroke="url(#trait)" stroke-width="3.4"
               stroke-linecap="round" stroke-linejoin="round"/>

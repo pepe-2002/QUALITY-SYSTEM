@@ -108,7 +108,7 @@ def main():
     niveau = next(i for i, (seuil, _, _) in enumerate(DOUGLAS) if houle < seuil)
 
     # --- courbe de houle : chemins SVG dans une boîte 908 x 104
-    Wc, Hc, pad = 908, 104, 12
+    Wc, Hc, pad = 908, 116, 16
     lo, hi = min(courbe), max(courbe)
     if hi - lo < 0.25:                      # évite une courbe écrasée ou plate
         mid = (hi + lo) / 2
@@ -121,9 +121,20 @@ def main():
     courbe_d = 'M' + ' L'.join(f'{x} {y}' for x, y in pts)
     aire_d = f'{courbe_d} L{pts[-1][0]} {Hc} L{pts[0][0]} {Hc} Z'
     points = ''.join(
-        f'<circle cx="{x}" cy="{y}" r="4.2" fill="#0B2149" stroke="#FBC93C" stroke-width="2.6"/>'
-        for i, (x, y) in enumerate(pts) if i % 2 == 0)
-    heures = ''.join(f'<span>{h}h</span>' for h in range(5, 14) if (h - 5) % 2 == 0)
+        f'<circle cx="{x}" cy="{y}" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/>'
+        for x, y in pts)
+    # l'heure de départ la plus courante est repérée avec sa valeur
+    ix = 2                                     # 5h + 2 = 7h
+    px, py = pts[ix]
+    val = f'{courbe[ix]:.1f}'.replace('.', ',')     # la virgule UNIQUEMENT ici :
+    ty = py - 32 if py > 46 else py + 12            # jamais sur les coordonnées
+    points += (
+        f'<circle cx="{px}" cy="{py}" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/>'
+        f'<rect x="{px - 36}" y="{ty}" width="72" height="23" rx="7" fill="#FBC93C"/>'
+        f'<text x="{px}" y="{ty + 16.5}" text-anchor="middle" '
+        f'font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" '
+        f'fill="#0B2149">7h · {val} m</text>')
+    heures = ''.join(f'<span>{h}h</span>' for h in range(5, 14))
 
     gauge = ''.join(f'<div class="{"on" if i <= niveau else ""}"></div>' for i in range(5))
     gauge_lab = ''.join(f'<span class="{"on" if i == niveau else ""}">{l}</span>'

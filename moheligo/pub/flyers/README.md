@@ -139,6 +139,13 @@ Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à
 - Une photo **étalonnée fin de journée** (`soir.py`), pas un filtre orange.
 - ⚠️ Deux garde-fous non négociables : la **mention de source** et le rappel que
   **le bulletin officiel fait foi**. On publie une prévision, pas une promesse.
+- ⚠️ **Le PNG publié ne change jamais tout seul** — c'est une image. Ce qui est
+  automatique, c'est sa *fabrication* : `bulletin.py` va chercher les données du
+  jour et refait le fichier. Il faut donc le relancer et republier chaque jour.
+- ⚠️ Piège de code : dans `bulletin.py`, la virgule décimale française ne
+  s'applique **qu'aux valeurs affichées**, jamais au fragment SVG entier — un
+  `.replace('.', ',')` sur tout le fragment casse les coordonnées (`x="194,0"`)
+  et l'étiquette part dans le coin.
 
 ## La recette « ça brille » (demande du patron : niveau designer pro)
 

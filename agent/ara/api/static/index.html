@@ -48,6 +48,12 @@
 
     <section class="result" id="result" hidden>
       <h2>Résultat</h2>
+
+      <div id="contradictions-block" hidden>
+        <h3 class="danger">Contradictions détectées</h3>
+        <ul class="contradictions" id="contradictions"></ul>
+      </div>
+
       <div class="answer" id="answer"></div>
 
       <div id="files-block" hidden>
@@ -59,6 +65,8 @@
         <h3>Sources</h3>
         <ol class="sources" id="sources"></ol>
       </div>
+
+      <p class="loop-summary small muted" id="loop-summary" hidden></p>
     </section>
   </section>
 

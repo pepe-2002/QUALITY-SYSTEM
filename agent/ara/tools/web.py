@@ -25,9 +25,16 @@ def web_search(ctx: TaskContext, query: str, limit: int = 8) -> list[dict[str, A
     ctx.journal.add_step("search", query, engine=ctx.search.name, results=len(results))
     for result in results:
         ctx.journal.add_source(result.url, result.title, via=result.engine)
+
     # Un moteur du groupe « auto » peut échouer sans bloquer : on le signale.
     for failure in getattr(ctx.search, "failures", []):
         ctx.notice(f"Moteur indisponible — {failure}")
+
+    # « Zéro résultat » n'est pas « pas de recherche » : sans ce message,
+    # l'utilisateur voit une tâche sans source et sans explication.
+    if not results:
+        ctx.notice(f"Aucun résultat pour « {query} »")
+
     return [result.to_dict() for result in results]
 
 

@@ -159,10 +159,12 @@ un agent IA autonome (recherche web → analyse → création de documents →
 critique → correction). Comme « Nous », c'est **volontairement séparé** :
 dossier `agent/` à la racine, aucun lien avec MoheliGo.
 
-Phase 1 (MVP) livrée : interface mobile, recherche multi-sources, synthèse
-citée, PDF/DOCX/MD/TXT vérifiés, historique, permissions, journal, 127 tests.
-Phases 2 à 5 (boucle de recherche adaptative, agent créatif + critique de
-design, laboratoire de mesure, automatisation Android) restent à faire.
+Phases 1 et 2 livrées : interface mobile, boucle de recherche adaptative
+(relance ciblée quand une information manque ou que deux sources se
+contredisent), détection de contradictions chiffrées, synthèse citée,
+PDF/DOCX/MD/TXT vérifiés, historique, permissions, journal, 213 tests.
+Phases 3 à 5 (agent créatif + critique de design, laboratoire de mesure,
+automatisation Android) restent à faire.
 Tout est expliqué dans `agent/README.md` et `agent/docs/ANALYSE-V0.md` —
 ne pas recharger ce sujet ici, ce n'est pas du marketing.
 

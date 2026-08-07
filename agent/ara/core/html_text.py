@@ -46,7 +46,10 @@ class _TextExtractor(HTMLParser):
             self.title += data
             return
         if data.strip():
-            self.parts.append(data)
+            # Les retours à la ligne du code source HTML ne sont pas des
+            # fins de phrase : les garder coupait « … coûte\n15 000 FC » en
+            # deux, et l'analyse perdait le sujet du chiffre.
+            self.parts.append(re.sub(r"\s+", " ", data))
 
 
 def extract(html: str, *, max_chars: int = 20_000) -> tuple[str, str]:

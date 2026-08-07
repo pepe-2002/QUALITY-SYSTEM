@@ -1,21 +1,21 @@
-"""Collecte de sources — version Phase 1.
+"""Collecte de sources : recherche, téléchargement, filtrage de pertinence.
 
-Périmètre volontairement limité : plusieurs requêtes, plusieurs moteurs,
-récupération des meilleures pages. **Pas encore** de boucle adaptative, de
-détection de contradictions ni de relance automatique : c'est le RESEARCH AGENT
-de la Phase 2, et la spec §21 interdit de le construire avant que le MVP tourne.
+Ce module ne décide de rien — il exécute. C'est le RESEARCH AGENT
+(`research.py`) qui choisit quoi chercher, quand relancer et quand s'arrêter.
 
-Ce que cette étape garantit déjà :
+Ce que la collecte garantit :
 
 * jamais une seule source — on vise la diversité de domaines ;
 * les URL données par l'utilisateur sont consultées en priorité ;
-* un échec de récupération n'interrompt pas la tâche.
+* les pages hors sujet sont écartées avant de polluer l'analyse ;
+* un échec de récupération n'interrompt jamais la tâche.
 """
 
 from __future__ import annotations
 
 import math
 import time
+from collections import Counter
 
 from ..core.context import TaskContext
 from ..core.errors import AraError
@@ -30,7 +30,10 @@ from .planner import Plan
 #: Nombre de pages effectivement téléchargées par requête
 FETCH_PER_QUERY = 3
 #: Plafond de pages téléchargées pour une tâche
-MAX_FETCH = 8
+MAX_FETCH = 10
+#: Pages retenues par domaine. Dix pages d'un même site ne font pas dix
+#: sources : constaté en réel avec 10 sources pour 1 seul domaine.
+MAX_PER_DOMAIN = 3
 #: Nombre minimal de mots-clés de la question qu'une page doit contenir
 MIN_KEYWORD_HITS = 2
 #: …et au moins cette proportion des mots-clés, pour les questions détaillées
@@ -67,9 +70,9 @@ def _is_relevant(doc: SourceDoc, keywords: set[str]) -> bool:
 
 
 def build_queries(ctx: TaskContext, plan: Plan) -> list[str]:
-    """Décline la demande en requêtes de recherche."""
+    """Décline la demande en requêtes de recherche initiales."""
     if plan.budget.search_steps <= 1:
-        return [plan.prompt.strip()[:200]]
+        return [subject(plan.prompt)[:200] or plan.prompt.strip()[:200]]
 
     try:
         result = ctx.llm.complete(
@@ -98,37 +101,125 @@ def build_queries(ctx: TaskContext, plan: Plan) -> list[str]:
     return queries[: plan.budget.search_steps]
 
 
+class SourceCollector:
+    """Accumule des sources au fil des cycles de recherche.
+
+    L'état (`seen`) est conservé entre les cycles : une relance ne doit pas
+    retélécharger ce qui a déjà été lu, sinon la boucle tourne sur elle-même.
+    """
+
+    def __init__(self, ctx: TaskContext, toolbox: ToolBox, plan: Plan) -> None:
+        self.ctx = ctx
+        self.toolbox = toolbox
+        self.plan = plan
+        # Pertinence jugée sur le sujet seul : « pdf », « recherche »… sont des
+        # consignes, et les retenir ferait passer n'importe quelle page pour bonne.
+        self.keywords = _stems(subject(plan.prompt))
+        self.docs: list[SourceDoc] = []
+        self.seen: set[str] = set()
+        self.per_domain: Counter[str] = Counter()
+        self.rejected = 0
+        self.searches = 0
+
+    @property
+    def saturated(self) -> bool:
+        return len(self.docs) >= MAX_FETCH
+
+    def fetch_urls(self, urls: list[str]) -> list[SourceDoc]:
+        """Consulte les adresses fournies par l'utilisateur, sans filtrage.
+
+        S'il donne une URL, il la veut : on ne lui oppose pas notre score de
+        pertinence.
+        """
+        new: list[SourceDoc] = []
+        for url in urls[:MAX_FETCH]:
+            if self.saturated:
+                break
+            key = canonical(url)
+            if key in self.seen:
+                continue
+            self.seen.add(key)
+            doc = _to_doc(self.toolbox.call("fetch_page", url=url))
+            if doc.content:
+                self.per_domain[doc.domain] += 1
+                self.docs.append(doc)
+                new.append(doc)
+        return new
+
+    def run_query(self, query: str, *, limit: int = 6) -> list[SourceDoc]:
+        """Exécute une requête et retourne les nouvelles sources retenues."""
+        self.ctx.check_deadline()
+        # Politesse : enchaîner les requêtes sans pause fait répondre 429
+        # aux moteurs publics (constaté sur l'API Wikipédia).
+        if self.searches and self.ctx.settings.search_delay > 0:
+            time.sleep(self.ctx.settings.search_delay)
+        self.searches += 1
+
+        try:
+            results = self.toolbox.call("web_search", query=query, limit=limit)
+        except AraError as exc:
+            self.ctx.notice(f"Recherche impossible ({query}) : {exc}")
+            return []
+
+        new: list[SourceDoc] = []
+        for result in results:
+            if len(new) >= FETCH_PER_QUERY or self.saturated:
+                break
+            url = result.get("url", "")
+            key = canonical(url)
+            if not url or key in self.seen:
+                continue
+            self.seen.add(key)
+
+            doc = _to_doc(
+                self.toolbox.call("fetch_page", url=url),
+                snippet=result.get("snippet", ""),
+                engine=result.get("engine", ""),
+            )
+            if not doc.content:
+                continue
+            if not _is_relevant(doc, self.keywords):
+                self.rejected += 1
+                self.ctx.journal.add_step("reject", f"hors sujet : {doc.domain}", url=url)
+                continue
+            if self.per_domain[doc.domain] >= MAX_PER_DOMAIN:
+                self.ctx.journal.add_step(
+                    "reject", f"quota de domaine atteint : {doc.domain}", url=url
+                )
+                continue
+
+            self.per_domain[doc.domain] += 1
+            self.docs.append(doc)
+            new.append(doc)
+            self.ctx.bus.log(f"Source retenue : {doc.domain}", url=url)
+        return new
+
+    def summary(self) -> str:
+        message = f"{len(self.docs)} source(s) retenue(s)"
+        if self.docs:
+            message += f" sur {len({d.domain for d in self.docs})} domaine(s)"
+        if self.rejected:
+            message += f" · {self.rejected} écartée(s) hors sujet"
+        return message
+
+
 def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
-    """Cherche, télécharge et retourne les sources exploitables."""
+    """Collecte en une seule passe, sans boucle adaptative.
+
+    Conservé pour les usages simples et comme point de comparaison du
+    RESEARCH LAB (Phase 4) : c'est la stratégie « FIXED » face à la stratégie
+    « ADAPTIVE » de :mod:`ara.agents.research`.
+    """
     ctx.stage(Stage.RESEARCH, Status.RUNNING, "Préparation des recherches…")
-
-    docs: list[SourceDoc] = []
-    seen: set[str] = set()
-    # Pertinence jugée sur le sujet seul : « pdf », « recherche »… sont des
-    # consignes, et les retenir ferait passer n'importe quelle page pour bonne.
-    keywords = _stems(subject(plan.prompt))
-    rejected = 0
-
-    # 1. Les URL fournies par l'utilisateur passent en premier.
-    for url in plan.urls[:MAX_FETCH]:
-        payload = toolbox.call("fetch_page", url=url)
-        doc = _to_doc(payload)
-        if doc.content:
-            docs.append(doc)
-            seen.add(canonical(doc.url))
+    collector = SourceCollector(ctx, toolbox, plan)
+    collector.fetch_urls(plan.urls)
 
     if plan.needs_research:
         queries = build_queries(ctx, plan)
         ctx.journal.add_summary(f"plan de recherche : {len(queries)} requête(s)")
-
-        for index, query in enumerate(queries):
-            if plan.budget.remaining_searches <= 0 or len(docs) >= MAX_FETCH:
+        for query in queries:
+            if plan.budget.remaining_searches <= 0 or collector.saturated:
                 break
-            ctx.check_deadline()
-            # Politesse : enchaîner les requêtes sans pause fait répondre 429
-            # aux moteurs publics (constaté sur l'API Wikipédia).
-            if index and ctx.settings.search_delay > 0:
-                time.sleep(ctx.settings.search_delay)
             plan.budget.consume_search()
             ctx.stage(
                 Stage.RESEARCH,
@@ -138,50 +229,16 @@ def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
                 step=plan.budget.used_searches,
                 total=plan.budget.search_steps,
             )
-
-            try:
-                results = toolbox.call("web_search", query=query, limit=6)
-            except AraError as exc:
-                ctx.notice(f"Recherche impossible ({query}) : {exc}")
-                continue
-
-            fetched = 0
-            for result in results:
-                if fetched >= FETCH_PER_QUERY or len(docs) >= MAX_FETCH:
-                    break
-                url = result.get("url", "")
-                key = canonical(url)
-                if not url or key in seen:
-                    continue
-                seen.add(key)
-
-                payload = toolbox.call("fetch_page", url=url)
-                doc = _to_doc(payload, snippet=result.get("snippet", ""),
-                              engine=result.get("engine", ""))
-                if not doc.content:
-                    continue
-                if not _is_relevant(doc, keywords):
-                    rejected += 1
-                    ctx.journal.add_step("reject", f"hors sujet : {doc.domain}", url=url)
-                    continue
-                docs.append(doc)
-                fetched += 1
-                ctx.bus.log(f"Source retenue : {doc.domain}", url=url)
-
-    message = f"{len(docs)} source(s) retenue(s)"
-    if docs:
-        message += f" sur {len({d.domain for d in docs})} domaine(s)"
-    if rejected:
-        message += f" · {rejected} écartée(s) hors sujet"
+            collector.run_query(query)
 
     ctx.stage(
         Stage.RESEARCH,
-        Status.DONE if docs else Status.SKIPPED,
-        message,
-        sources=[doc.to_dict() for doc in docs],
-        rejected=rejected,
+        Status.DONE if collector.docs else Status.SKIPPED,
+        collector.summary(),
+        sources=[doc.to_dict() for doc in collector.docs],
+        rejected=collector.rejected,
     )
-    return docs
+    return collector.docs
 
 
 def _to_doc(payload: dict, *, snippet: str = "", engine: str = "") -> SourceDoc:

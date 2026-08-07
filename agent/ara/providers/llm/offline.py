@@ -54,6 +54,12 @@ _INSTRUCTION_WORDS = {
     "pdf", "docx", "doc", "word", "markdown", "txt", "fichier", "fichiers",
     "document", "documents", "rapport", "note", "fiche", "dossier",
     "s'il", "plait", "please", "make", "create", "write", "give",
+    # Mots interrogatifs : ils portent la forme de la question, pas son sujet.
+    # « combien » envoyé à un moteur, ou compté comme mot-clé attendu dans les
+    # sources, produit une fausse information manquante.
+    "combien", "quand", "comment", "pourquoi", "quel", "quelle", "quels",
+    "quelles", "lequel", "laquelle", "qui", "que", "quoi", "est-ce", "ce",
+    "what", "when", "where", "why", "how", "which", "who", "whom",
 }
 
 _SENTENCE_SPLIT = re.compile(r"(?<=[.!?…])\s+|\n+")

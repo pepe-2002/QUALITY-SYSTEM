@@ -38,6 +38,8 @@ class TaskRecord:
     sources: list[dict[str, Any]] = field(default_factory=list)
     notices: list[str] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+    report: dict[str, Any] = field(default_factory=dict)
+    answer_check: dict[str, Any] = field(default_factory=dict)
 
     def summary(self) -> dict[str, Any]:
         """Vue courte pour la liste d'historique (économise la 3G)."""
@@ -50,6 +52,8 @@ class TaskRecord:
             "complexity": self.complexity,
             "files": len(self.files),
             "sources": len(self.sources),
+            "cycles": self.report.get("iterations", 0),
+            "contradictions": len(self.report.get("contradictions", [])),
             "has_errors": bool(self.errors),
         }
 
@@ -142,6 +146,8 @@ class TaskService:
             record.notices = result.notices
             record.errors = result.errors
             record.complexity = result.complexity
+            record.report = result.report
+            record.answer_check = result.answer_check
             record.status = "error" if result.errors and not result.answer else "done"
         except Exception as exc:  # ne doit jamais arriver : l'orchestrateur capture
             record.status = "error"

@@ -78,6 +78,10 @@ class TaskResult:
     degraded: bool = False
     notices: list[str] = field(default_factory=list)
     errors: list[str] = field(default_factory=list)
+    #: bilan de la boucle de recherche (cycles, contradictions, manques)
+    report: dict[str, Any] = field(default_factory=dict)
+    #: contrôle des citations de la réponse
+    answer_check: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -90,4 +94,6 @@ class TaskResult:
             "degraded": self.degraded,
             "notices": self.notices,
             "errors": self.errors,
+            "report": self.report,
+            "answer_check": self.answer_check,
         }

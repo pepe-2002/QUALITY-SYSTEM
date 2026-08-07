@@ -136,11 +136,11 @@ function applyStage(event) {
   }
 }
 
-function addNotice(text) {
+function addNotice(text, alert = false) {
   const box = $('notices');
   box.hidden = false;
   const item = document.createElement('div');
-  item.className = 'notice';
+  item.className = alert ? 'notice alert' : 'notice';
   item.textContent = text;
   box.appendChild(item);
 }
@@ -152,11 +152,36 @@ function renderResult(task) {
   $('result').hidden = false;
   $('answer').innerHTML = markdown(task.answer || 'Aucune réponse produite.');
 
+  const report = task.report || {};
+
+  // Les désaccords entre sources passent avant la réponse : c'est ce que
+  // l'utilisateur doit voir en premier s'il compte agir sur ces chiffres.
+  const contradictions = report.contradictions || [];
+  $('contradictions-block').hidden = contradictions.length === 0;
+  $('contradictions').innerHTML = contradictions.map((item) => `
+    <li>
+      <div class="values">${escapeHtml(item.describe || '')}</div>
+      <div class="subject">sources ${(item.sources || []).map((s) => 'S' + s).join(', ')}</div>
+      ${(item.sentences || []).slice(0, 2).map((s) =>
+        `<div class="quote">« ${escapeHtml(s.length > 200 ? s.slice(0, 200) + '…' : s)} »</div>`).join('')}
+    </li>`).join('');
+
+  const loop = $('loop-summary');
+  if (report.iterations) {
+    loop.hidden = false;
+    loop.textContent =
+      `${report.iterations} cycle(s) de recherche · ${(report.queries || []).length} requête(s) · ` +
+      `${report.sources || 0} source(s) sur ${(report.domains || []).length} domaine(s)` +
+      (report.stopped_because ? ` · arrêt : ${report.stopped_because}` : '');
+  } else {
+    loop.hidden = true;
+  }
+
   const notices = $('notices');
   notices.innerHTML = '';
   const messages = [...(task.notices || []), ...(task.errors || [])];
   notices.hidden = messages.length === 0;
-  messages.forEach(addNotice);
+  messages.forEach((message) => addNotice(message, message.startsWith('CONTRADICTION')));
 
   const files = task.files || [];
   $('files-block').hidden = files.length === 0;
@@ -193,6 +218,9 @@ function listen(taskId) {
     try { event = JSON.parse(message.data); } catch { return; }
 
     if (event.type === 'stage') applyStage(event);
+    else if (event.type === 'log' && event.data && event.data.kind === 'contradiction') {
+      addNotice(event.message, true);
+    }
     else if (event.type === 'log' && event.data && event.data.kind === 'notice') addNotice(event.message);
     else if (event.type === 'log' && event.message) $('stage-detail').textContent = event.message;
     else if (event.type === 'final') {
@@ -253,6 +281,8 @@ async function loadHistory() {
         <div class="tags">
           <span class="state ${task.status}">${task.status}</span>
           · ${task.complexity || '—'} · ${task.files} fichier(s) · ${task.sources} source(s)
+          ${task.cycles ? ` · ${task.cycles} cycle(s)` : ''}
+          ${task.contradictions ? ` · <span class="state error">${task.contradictions} contradiction(s)</span>` : ''}
         </div>
       </button></li>`).join('');
 

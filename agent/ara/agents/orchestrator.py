@@ -28,9 +28,12 @@ from ..providers.llm import get_llm
 from ..providers.llm.base import LLMRequest
 from ..providers.search import get_search
 from ..providers.storage import get_storage
+from ..analysis.report import ResearchReport
+from ..analysis.verify import summarize, verify_answer
 from ..tools.registry import ToolBox
-from . import document_agent, gather
+from . import document_agent
 from .planner import Plan, plan as build_plan
+from .research import run_research
 
 _SYNTHESIS_INSTRUCTIONS = (
     "Rédige une réponse structurée en Markdown : un court paragraphe de "
@@ -109,24 +112,32 @@ class Orchestrator:
             )
             ctx.journal.add_summary(f"plan : {plan.describe()}")
 
-            # 2. RECHERCHE
+            # 2. RECHERCHE + ANALYSE — boucle adaptative (spec §3)
+            report: ResearchReport | None = None
             if plan.needs_research or plan.urls:
-                sources = gather.collect(ctx, plan, toolbox)
+                sources, report = run_research(ctx, plan, toolbox)
                 if not sources:
                     ctx.notice(
                         "Aucune source exploitable : réponse produite sans appui documentaire."
                     )
+                self._announce(ctx, report)
             else:
                 ctx.stage(Stage.RESEARCH, Status.SKIPPED, "Recherche non nécessaire")
 
-            # 3. ANALYSE
+            # 3. SYNTHÈSE
             result.answer = self._analyze(ctx, plan, sources)
+            if report is not None:
+                result.answer = f"{result.answer}\n\n{report.sections()}".strip()
+                result.report = report.to_dict()
 
             # 4. CRÉATION
             files = document_agent.produce(ctx, plan, toolbox, result.answer, sources)
 
-            # 5. VÉRIFICATION
+            # 5. VÉRIFICATION — la réponse d'abord, les fichiers ensuite
+            ctx.stage(Stage.VERIFICATION, Status.RUNNING, "Vérification…")
+            check = self._verify_answer(ctx, result, sources)
             result.files = document_agent.verify_all(ctx, files)
+            self._verdict(ctx, check, files, result.files)
 
         except ApprovalRequired as exc:
             # L'interface doit présenter la demande de confirmation à l'utilisateur.
@@ -214,6 +225,51 @@ class Orchestrator:
                 "phrases de sources. Configurez un LLM pour obtenir une réponse rédigée."
             )
         return completion.text
+
+    @staticmethod
+    def _announce(ctx: TaskContext, report: ResearchReport) -> None:
+        """Remonte à l'utilisateur ce que la boucle a trouvé de notable."""
+        for contradiction in report.contradictions:
+            ctx.notice(f"CONTRADICTION DÉTECTÉE — {contradiction.describe()}")
+        for gap in report.gaps[:3]:
+            ctx.notice(f"Information manquante — {gap.label}")
+        if report.iterations > 1:
+            ctx.bus.log(
+                f"{report.iterations} cycles de recherche · arrêt : {report.stopped_because}",
+                kind="loop",
+            )
+
+    @staticmethod
+    def _verify_answer(ctx: TaskContext, result: TaskResult, sources: list[SourceDoc]):
+        """Contrôle la réponse elle-même avant de la livrer (spec §3)."""
+        check = verify_answer(result.answer, sources)
+        result.answer_check = check.to_dict()
+
+        for problem in check.problems:
+            ctx.notice(f"Vérification — {problem}")
+        if check.uncited_claims:
+            ctx.notice(
+                "Vérification — chiffre(s) sans source dans la réponse : "
+                + ", ".join(check.uncited_claims[:3])
+            )
+        ctx.journal.add_step("verify", summarize(check), ok=check.ok)
+        return check
+
+    @staticmethod
+    def _verdict(ctx: TaskContext, check, produced: list, checked: list) -> None:
+        """Un seul verdict de VÉRIFICATION, couvrant réponse et fichiers."""
+        parts = [summarize(check)]
+        if produced:
+            parts.append(f"{len(checked)}/{len(produced)} fichier(s) ouvrable(s)")
+
+        failed = bool(produced) and not checked
+        ctx.stage(
+            Stage.VERIFICATION,
+            Status.FAILED if failed else Status.DONE,
+            " · ".join(parts),
+            answer=check.to_dict(),
+            files=checked,
+        )
 
     def _finish(self, ctx: TaskContext, result: TaskResult, started: float) -> None:
         ctx.journal.duration_ms = int((time.monotonic() - started) * 1000)

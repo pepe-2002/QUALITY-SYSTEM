@@ -78,11 +78,12 @@ def produce(
 
 
 def verify_all(ctx: TaskContext, files: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Rouvre chaque fichier livré — dernière barrière avant l'utilisateur."""
-    ctx.stage(Stage.VERIFICATION, Status.RUNNING, "Vérification des fichiers…")
+    """Rouvre chaque fichier livré — dernière barrière avant l'utilisateur.
 
+    N'émet pas d'événement d'étape : c'est l'orchestrateur qui publie un seul
+    verdict de VÉRIFICATION, couvrant la réponse **et** les fichiers.
+    """
     if not files:
-        ctx.stage(Stage.VERIFICATION, Status.SKIPPED, "Aucun fichier à vérifier")
         return []
 
     checked: list[dict[str, Any]] = []
@@ -99,10 +100,4 @@ def verify_all(ctx: TaskContext, files: list[dict[str, Any]]) -> list[dict[str, 
             ctx.journal.add_error(f"vérification {name}: {exc}")
             ctx.notice(f"Fichier écarté (illisible) : {name} — {exc}")
 
-    ctx.stage(
-        Stage.VERIFICATION,
-        Status.DONE if checked else Status.FAILED,
-        f"{len(checked)}/{len(files)} fichier(s) ouvrable(s)",
-        files=checked,
-    )
     return checked

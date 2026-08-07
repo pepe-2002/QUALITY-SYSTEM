@@ -1,6 +1,6 @@
 # ARA — Autonomous Research & Creative Agent
 
-**v0.1 — Phase 1 (MVP)**
+**v0.2 — Phases 1 et 2**
 
 Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
 crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
@@ -18,8 +18,10 @@ quels fichiers produire.
 | | |
 |---|---|
 | **Interface** | PWA installable sur Android, pipeline affiché en direct |
-| **Recherche** | DuckDuckGo + Wikipédia, plusieurs sources, filtre hors-sujet |
-| **Analyse** | synthèse citée `[S1] [S2]`, informations manquantes signalées |
+| **Recherche** | boucle adaptative : cherche, analyse, **relance si ça manque** |
+| **Comparaison** | confronte les sources, **détecte les contradictions chiffrées** |
+| **Analyse** | synthèse citée `[S1] [S2]`, recoupements et manques explicites |
+| **Vérification** | la réponse est contrôlée (citations, chiffres non sourcés) |
 | **Documents** | PDF, DOCX, Markdown, TXT — **vérifiés avant livraison** |
 | **Historique** | conservé sur disque, survit au redémarrage |
 | **Journal** | une entrée reproductible par tâche (spec §17) |
@@ -30,10 +32,42 @@ Le pipeline visible à l'écran est exactement celui qui s'exécute :
 
 ```
 TÂCHE → RECHERCHE → ANALYSE → CRÉATION → VÉRIFICATION → RÉSULTAT
+          ↑____________|
+       relance ciblée si une information manque
+       ou si deux sources se contredisent
 ```
 
 Une étape inutile est **sautée** : « bonjour » ne déclenche ni recherche ni
-fichier. C'est le raisonnement adaptatif du MVP — modeste, mais réel.
+fichier. Et le budget de recherche est un plafond, pas une dépense obligatoire :
+si le premier cycle répond à tout, l'agent s'arrête et **réduit** son budget.
+
+## La boucle de recherche (Phase 2)
+
+À chaque cycle, l'agent extrait les **faits chiffrés** des pages lues — prix,
+durées, distances, pourcentages — les ramène à une unité commune, puis les
+confronte. Il relance une recherche seulement s'il a une raison précise :
+
+| Raison de relancer | Exemple |
+|---|---|
+| Aspect non couvert | on demande un prix, aucune source n'en donne un |
+| Mot-clé absent | « Mohéli » n'apparaît dans aucune page lue |
+| Aucun recoupement | toutes les sources viennent du même site |
+| Valeur non confirmée | un seul site avance ce tarif |
+| **Contradiction** | 15 000 FC d'un côté, 45 000 FC de l'autre |
+
+Et il s'arrête toujours en disant pourquoi : plus rien ne manque, budget
+épuisé, plus aucune piste, ou plafond de cycles atteint.
+
+Trois garde-fous évitent les fausses alertes, tous issus d'essais réels :
+
+- une valeur comprise dans une fourchette annoncée ailleurs **confirme**, elle
+  ne contredit pas ;
+- deux pages d'un **même site** ne sont pas deux sources indépendantes ;
+- deux valeurs séparées d'un facteur 5 mesurent autre chose (6 m d'antenne
+  contre 330 m de tour), elles ne se contredisent pas.
+
+Tout cela est **déterministe** : la détection ne dépend pas du LLM configuré,
+donc elle est reproductible et testable.
 
 ---
 
@@ -139,10 +173,11 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-127 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
-la recherche, l'extraction, les citations, la création et la **vérification**
-PDF/DOCX/MD/TXT, les permissions, la confirmation humaine, les budgets d'arrêt,
-les réessais réseau et la gestion des erreurs.
+213 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+la recherche, l'extraction, les citations, la boucle adaptative (relance,
+arrêt, budget), la détection de contradictions et de manques, la création et la
+**vérification** PDF/DOCX/MD/TXT, les permissions, la confirmation humaine, les
+réessais réseau et la gestion des erreurs.
 
 ---
 
@@ -152,14 +187,15 @@ les réessais réseau et la gestion des erreurs.
 agent/
 ├── ara/
 │   ├── core/          config, erreurs, permissions, journal, complexité, HTTP
+│   ├── analysis/      faits chiffrés, contradictions, manques, vérification
 │   ├── providers/     LLM · recherche · stockage  (interchangeables)
 │   ├── tools/         outils indépendants + registre à permissions
 │   ├── documents/     modèle commun → PDF, DOCX, MD, TXT + vérification
-│   ├── agents/        planificateur, collecte, agent documentaire, orchestrateur
+│   ├── agents/        planificateur, collecte, research agent, documents
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             127 tests hors ligne
+├── tests/             213 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -170,15 +206,23 @@ agent/
 | Phase | Contenu | État |
 |---|---|---|
 | **1** | Interface mobile · LLM · recherche · fichiers · PDF · historique | **fait** |
-| 2 | Research Agent : boucle adaptative, contradictions, relances | à venir |
+| **2** | Research Agent : boucle adaptative, contradictions, relances | **fait** |
 | 3 | Creative Agent + Design Critic : flyers, QR code, itérations notées | à venir |
 | 4 | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | à venir |
 | 5 | Automatisation Android | à venir |
 
-La spec §21 l'impose : rien des phases 2 à 5 ne commence avant que le MVP
-tourne. Il tourne.
+**Limites connues** — à lire avant d'en attendre trop :
 
-**Limites connues de la Phase 1** — à lire avant d'en attendre trop :
-pas de relance de recherche après analyse, pas de détection de contradictions,
-contrôleur de complexité non validé empiriquement, pas d'envoi de fichier
-depuis le téléphone. Détail dans [`docs/ANALYSE-V0.md`](docs/ANALYSE-V0.md).
+- La détection de contradictions est **lexicale**. Elle voit deux prix
+  incompatibles ; elle ne comprend pas qu'une page parle de 2019 et l'autre de
+  2026. Sur un sujet encyclopédique riche, elle produit encore des alertes
+  discutables.
+- Le contrôleur de complexité n'est toujours **pas validé empiriquement**.
+  C'est le travail de la Phase 4 : essayer de le réfuter, pas de le confirmer.
+- Seuls les faits **chiffrés** sont comparés. Deux sources qui se contredisent
+  en prose passent inaperçues.
+- Pas d'envoi de fichier depuis le téléphone : « analyse ce document » n'est
+  pas encore possible.
+
+Détail et journal des corrections dans
+[`docs/ANALYSE-V0.md`](docs/ANALYSE-V0.md).

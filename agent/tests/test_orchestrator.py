@@ -146,3 +146,103 @@ def test_chaque_tache_a_son_propre_espace(orchestrator, isolated_settings):
         directory = isolated_settings.tasks_dir() / result.task_id / "files"
         assert directory.is_dir()
         assert len(list(directory.iterdir())) == 1
+
+
+# ————————————————— Phase 2 : boucle adaptative de bout en bout —————————————————
+
+
+@pytest.fixture
+def orchestrateur_contradictoire(isolated_settings, monkeypatch):
+    """Pipeline complet face à deux sources qui se contredisent."""
+    from ara.agents import orchestrator as module
+    from ara.core import http
+    from ara.core.models import SearchResult
+    from ara.providers.search.base import SearchProvider
+
+    pages = {
+        "https://pas-cher.test/t": (
+            "<html><head><title>Tarifs</title></head><body><p>Le billet de la traversée "
+            "entre Grande Comore et Mohéli coûte 15 000 francs comoriens.</p></body></html>"
+        ),
+        "https://cher.test/t": (
+            "<html><head><title>Voyager</title></head><body><p>Le billet de la traversée "
+            "entre Grande Comore et Mohéli coûte 45 000 francs comoriens.</p></body></html>"
+        ),
+    }
+
+    def servir(url, **kwargs):
+        if url in pages:
+            return http.HttpResponse(
+                url=url, status=200, body=pages[url].encode("utf-8"),
+                content_type="text/html; charset=utf-8",
+            )
+        raise http.ToolError(f"page absente : {url}")
+
+    monkeypatch.setattr(http, "get", servir)
+
+    class Deux(SearchProvider):
+        name = "deux"
+
+        def search(self, query, *, limit=8):
+            return [
+                SearchResult(title="Tarifs", url="https://pas-cher.test/t", engine=self.name),
+                SearchResult(title="Voyager", url="https://cher.test/t", engine=self.name),
+            ]
+
+    monkeypatch.setattr(module, "get_search", lambda name: (Deux(), ""))
+    return Orchestrator(isolated_settings)
+
+
+def test_la_contradiction_remonte_jusqua_lutilisateur(orchestrateur_contradictoire):
+    result = orchestrateur_contradictoire.run(
+        "Combien coûte la traversée entre Grande Comore et Mohéli ?"
+    )
+
+    assert result.report["contradictions"], "le désaccord doit figurer dans le rapport"
+    assert "CONTRADICTION DÉTECTÉE" in result.answer
+    assert any(notice.startswith("CONTRADICTION DÉTECTÉE") for notice in result.notices)
+
+
+def test_le_rapport_de_boucle_accompagne_le_resultat(orchestrateur_contradictoire):
+    result = orchestrateur_contradictoire.run(
+        "Combien coûte la traversée entre Grande Comore et Mohéli ?"
+    )
+    assert result.report["iterations"] >= 1
+    assert result.report["stopped_because"]
+    assert "Déroulé de la recherche" in result.answer
+
+
+def test_le_pdf_contient_le_constat_de_contradiction(orchestrateur_contradictoire, isolated_settings):
+    result = orchestrateur_contradictoire.run(
+        "Combien coûte la traversée entre Grande Comore et Mohéli ? Fais-moi un PDF"
+    )
+    assert result.files, "le PDF doit être produit"
+    path = isolated_settings.tasks_dir() / result.task_id / "files" / result.files[0]["name"]
+    assert path.read_bytes().startswith(b"%PDF-")
+
+
+def test_la_reponse_est_verifiee(orchestrateur_contradictoire):
+    result = orchestrateur_contradictoire.run(
+        "Combien coûte la traversée entre Grande Comore et Mohéli ?"
+    )
+    assert result.answer_check, "la réponse doit être contrôlée avant livraison"
+    assert result.answer_check["citations"], "des sources lues doivent être citées"
+
+
+def test_une_citation_inventee_est_signalee(orchestrateur_contradictoire, monkeypatch):
+    """Si le moteur cite une source inexistante, la vérification l'attrape."""
+    from ara.providers.llm.base import LLMResult
+    from ara.providers.llm.offline import OfflineLLM
+
+    monkeypatch.setattr(
+        OfflineLLM, "complete",
+        lambda self, request: LLMResult(
+            text="Le tarif est de 15 000 FC [S99].", provider="offline", degraded=True
+        ),
+    )
+
+    result = orchestrateur_contradictoire.run(
+        "Combien coûte la traversée entre Grande Comore et Mohéli ?"
+    )
+    assert not result.answer_check["ok"]
+    assert any("inexistantes" in notice for notice in result.notices)

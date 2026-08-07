@@ -127,6 +127,25 @@ textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
   background: rgba(255,176,32,.09); border: 1px solid rgba(255,176,32,.32);
   color: #ffd489;
 }
+.notice.alert {
+  background: rgba(255,107,107,.11); border-color: rgba(255,107,107,.42);
+  color: #ffb3b3; font-weight: 600;
+}
+
+/* ————— Contradictions (spec §2) ————— */
+h3.danger { color: var(--err); }
+.contradictions { list-style: none; margin: 0 0 4px; padding: 0; display: grid; gap: 9px; }
+.contradictions li {
+  padding: 12px 14px; border-radius: 11px; font-size: .87rem;
+  background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.34);
+}
+.contradictions .values { font-weight: 700; color: #ffb3b3; }
+.contradictions .subject { color: var(--muted); font-size: .78rem; margin-top: 3px; }
+.contradictions .quote {
+  margin-top: 7px; padding-left: 9px; border-left: 2px solid rgba(255,107,107,.4);
+  color: var(--muted); font-size: .79rem;
+}
+.loop-summary { margin-top: 18px; }
 
 /* ————— Résultat ————— */
 .result { margin-top: 26px; }

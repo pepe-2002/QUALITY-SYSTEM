@@ -68,7 +68,22 @@ section « Flyer corporate ».
 
 ## Regénérer
 
-### Le bulletin du soir, chaque jour
+### Le tuyau : le bulletin se refait tout seul
+
+`.github/workflows/bulletin-du-soir.yml` fait tourner ces deux commandes sur un
+serveur GitHub **chaque jour à 16h, heure des Comores**, et dépose le résultat
+sur la branche `bulletin-du-jour`. Deux adresses fixes, toujours à jour :
+
+- le visuel : `github.com/pepe-2002/QUALITY-SYSTEM/blob/bulletin-du-jour/flyer-soir-facebook.png`
+- le texte : `github.com/pepe-2002/QUALITY-SYSTEM/blob/bulletin-du-jour/texte-du-jour.txt`
+
+La branche est réécrite à chaque exécution (un seul commit) : le dépôt ne
+grossit pas. ⚠️ **Une tâche planifiée ne tourne que depuis la branche par
+défaut** : le fichier doit être fusionné dans `main` pour que l'horaire
+s'applique. Avant ça, seul le bouton « Run workflow » de l'onglet Actions
+fonctionne.
+
+### Le bulletin du soir, à la main
 
 ```bash
 cd moheligo/pub/flyers

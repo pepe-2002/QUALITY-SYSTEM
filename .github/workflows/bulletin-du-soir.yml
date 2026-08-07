@@ -1,0 +1,96 @@
+# Le « tuyau » du bulletin du soir MoheliGo.
+#
+# Chaque jour à 16h00 (heure des Comores), GitHub refait le flyer avec la vraie
+# prévision de mer du lendemain, et le dépose sur la branche `bulletin-du-jour`.
+# Le patron ouvre toujours la même adresse et trouve le flyer du jour :
+#
+#   https://github.com/pepe-2002/QUALITY-SYSTEM/blob/bulletin-du-jour/flyer-soir-facebook.png
+#   https://github.com/pepe-2002/QUALITY-SYSTEM/blob/bulletin-du-jour/texte-du-jour.txt
+#
+# La branche est réécrite à chaque fois (un seul commit, sans historique) :
+# le dépôt ne grossit pas, alors qu'un PNG de 2,6 Mo commité chaque jour
+# ajouterait près d'un gigaoctet par an.
+#
+# ⚠️ Une tâche planifiée ne tourne QUE depuis la branche par défaut : ce
+# fichier doit être fusionné dans `main` pour que l'horaire s'applique.
+# En attendant, le bouton « Run workflow » permet de la lancer à la main.
+
+name: Bulletin du soir
+
+on:
+  schedule:
+    - cron: '0 13 * * *'      # 13h00 UTC = 16h00 aux Comores (UTC+3)
+  workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
+
+permissions:
+  contents: write              # pour publier sur la branche bulletin-du-jour
+
+concurrency:
+  group: bulletin-du-soir
+  cancel-in-progress: false
+
+jobs:
+  fabriquer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Installer Playwright et Chromium
+        run: |
+          npm init -y >/dev/null 2>&1 || true
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Aller chercher la mer de demain et fabriquer le flyer
+        working-directory: moheligo/pub/flyers
+        run: |
+          python3 bulletin.py
+          node render.js flyer8-soir-fb.html flyer-soir-facebook.png 1080 1350 2
+          ls -la flyer-soir-facebook.png texte-du-jour.txt bulletin.json
+
+      - name: Déposer le flyer du jour sur la branche bulletin-du-jour
+        working-directory: moheligo/pub/flyers
+        run: |
+          set -e
+          jour=$(python3 -c "import json;print(json.load(open('bulletin.json'))['date'])")
+          etat=$(python3 -c "import json;print(json.load(open('bulletin.json'))['etat'])")
+          mkdir -p /tmp/depot
+          cp flyer-soir-facebook.png texte-du-jour.txt bulletin.json /tmp/depot/
+          cat > /tmp/depot/README.md <<EOF
+          # Bulletin du soir MoheliGo — $jour
+
+          **$etat** demain matin sur le couloir Ouroveni – Hoani.
+
+          - \`flyer-soir-facebook.png\` : le visuel à publier (2160 x 2700).
+          - \`texte-du-jour.txt\` : le texte du post et le premier commentaire.
+          - \`bulletin.json\` : les chiffres bruts.
+
+          Refait automatiquement chaque jour à 16h, heure des Comores.
+          Publier entre 16h et 19h. Ne jamais republier le flyer de la veille.
+          EOF
+          cd /tmp/depot
+          git init -q -b bulletin-du-jour
+          git config user.name  "MoheliGo Bulletin"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -qm "Bulletin du soir — $jour ($etat)"
+          git push -q --force \
+            "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
+            bulletin-du-jour
+
+      - name: Garder aussi une copie téléchargeable depuis cette exécution
+        uses: actions/upload-artifact@v4
+        with:
+          name: bulletin-du-soir
+          path: |
+            moheligo/pub/flyers/flyer-soir-facebook.png
+            moheligo/pub/flyers/texte-du-jour.txt
+          retention-days: 14

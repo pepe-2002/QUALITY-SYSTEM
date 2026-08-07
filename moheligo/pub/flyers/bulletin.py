@@ -169,9 +169,37 @@ def main():
                'releve': maj, 'source': 'Open-Meteo Marine + Forecast'},
               open('bulletin.json', 'w'), ensure_ascii=False, indent=2)
 
+    # texte de publication prêt à copier, avec les chiffres du jour
+    texte = f"""LA MER DE DEMAIN, CE SOIR.
+
+Demain matin entre Ouroveni et Hoani : {etat.lower()}.
+Houle {vals['HOULE']} m, vent {vals['VENT']} km/h de {dirv}, période {vals['PERIODE']} secondes.
+{conseil}
+
+C'est ça, MoheliGo : tu sais avant de quitter la maison.
+La météo mer des 7 prochains jours est dans l'application, mise à jour en continu.
+
+Ta place pour demain se prend maintenant :
+• Tu choisis ton départ sur moheligo.com
+• Tu paies par MVola ou KartaPay
+• Ton billet QR arrive tout de suite
+
+moheligo.com — et demain matin, tu embarques tranquille.
+
+Prévision Open-Meteo relevée {maj}. Le bulletin officiel affiché dans
+l'application fait foi avant l'embarquement.
+
+#MoheliGo #Mohéli #Comores #MétéoMer #Traversée #Ouroveni #Hoani
+
+--- premier commentaire ---
+Ta traversée de demain : moheligo.com
+WhatsApp : +269 479 43 28
+"""
+    open('texte-du-jour.txt', 'w').write(texte)
+
     print(f'{fr_date(cible)} matin : {etat.lower()}, houle {houle:.2f} m, '
           f'vent {v:.0f} km/h {dirv}, période {periode:.1f} s')
-    print('-> flyer8-soir-fb.html + bulletin.json')
+    print('-> flyer8-soir-fb.html + bulletin.json + texte-du-jour.txt')
 
 
 if __name__ == '__main__':

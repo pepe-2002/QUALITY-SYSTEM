@@ -341,8 +341,17 @@ recharger ce sujet ici, ce n'est pas du marketing.
   consultent, pas en page de pub qu'on ignore.
   ⚠️ Garde-fous : regénérer chaque jour, garder la source, rappeler que le
   bulletin officiel fait foi, et **publier aussi quand la mer est mauvaise**.
-  Prochaine idée à proposer au patron : automatiser la publication (le flyer
-  est déjà généré par script, il ne manque que la mise en ligne).
+  **Le tuyau est construit** : `.github/workflows/bulletin-du-soir.yml` refait
+  le flyer chaque jour à 16h (heure des Comores) sur un serveur GitHub et le
+  dépose sur la branche `bulletin-du-jour` (branche réécrite à chaque fois, donc
+  le dépôt ne grossit pas). Adresses fixes pour le patron :
+  `.../blob/bulletin-du-jour/flyer-soir-facebook.png` et `.../texte-du-jour.txt`.
+  ⚠️ **Une tâche planifiée ne tourne que depuis la branche par défaut** : tant
+  que le workflow n'est pas fusionné dans `main`, seul le bouton « Run workflow »
+  marche. À faire valider par le patron (c'est lui qui fusionne).
+  Dernière marche possible, si le patron la veut : **publier directement sur la
+  page Facebook** via l'API Graph (il faut une app Meta, un jeton de page longue
+  durée mis en secret GitHub, et accepter que ça poste sans relecture).
 
 - **07/08/2026 (fin de session)** — Le patron valide : « c'est super le design,
   la prochaine fois on va encore améliorer ». Design du flyer promo retravaillé

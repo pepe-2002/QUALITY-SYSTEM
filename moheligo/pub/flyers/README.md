@@ -9,7 +9,8 @@
 | `flyer-nuit-facebook.png` | 2160 × 2700 (4:5) | Deuxième publication, fin de soirée (22h30 – minuit) |
 | `flyer-affiche-facebook.png` | 2160 × 2700 (4:5) | Affiche « destination » — îlots de Nioumachoua (photo libre CC BY 3.0, crédit imprimé) |
 | `flyer-affiche-vedette-facebook.png` | 2160 × 2700 (4:5) | Même affiche avec NOTRE photo (vedette en pleine mer) — aucun crédit à afficher |
-| `flyer-promo-brillant-facebook.png` | 2160 × 2700 (4:5) | **⭐ LE PLUS ABOUTI** — promo « brillant » (or métallique, reflets, lumière) |
+| `flyer-soir-facebook.png` | 2160 × 2700 (4:5) | **⭐ BULLETIN DU SOIR** — la mer réelle de demain matin, généré depuis Open-Meteo. **Format daté : à regénérer chaque jour.** |
+| `flyer-promo-brillant-facebook.png` | 2160 × 2700 (4:5) | Promo « brillant » (or métallique, reflets, lumière) — intemporel |
 | `flyer-promo-brillant-A4.png` | 2480 × 3508 (A4, 300 dpi) | Le brillant en A4 imprimable, avec « comment ça marche » |
 | `flyer-promo-facebook.png` | 2160 × 2700 (4:5) | Promo version mate (avant la passe brillance), conservée |
 | `flyer-promo-A4.png` | 2480 × 3508 (A4, 300 dpi) | Le même en A4 imprimable, avec la bande « comment ça marche » — ports, boutiques, hôtels |
@@ -50,6 +51,13 @@ section « Flyer corporate ».
 - **`flyer7-promo-brillant-A4.html`** — le brillant en A4. Construit à partir de
   `flyer6-promo-A4.html` + une **feuille de surcharge** en fin de `<style>`
   (section « BRILLANCE ») : la mise en page A4 reste maintenue à un seul endroit.
+- **`flyer8-soir-fb.template.html` + `bulletin.py`** — le bulletin du soir.
+  `bulletin.py` interroge Open-Meteo (marine + vent) sur le couloir
+  Ouroveni–Hoani, calcule l'état de la mer sur l'échelle de Douglas, construit
+  la courbe de houle 5h-13h, remplit le gabarit et écrit `flyer8-soir-fb.html`
+  (fichier **généré**, ne pas le modifier à la main) + `bulletin.json`.
+- `soir.py` — étalonnage « fin de journée » de `../photos/vedette-mer.jpg`
+  (ciel de crépuscule, soleil bas, chemin de lumière, bloom) → `vedette-soir.jpg`.
 - `flyer1.html` — première version.
 - `render.js` — HTML/CSS → PNG haute résolution (Chromium).
 - `fonts/` — Montserrat + Inter en woff2 (latin/latin-ext), locales : aucun
@@ -59,6 +67,20 @@ section « Flyer corporate ».
 - `qr-moheligo.png` — QR vers https://moheligo.com (correction d'erreur H).
 
 ## Regénérer
+
+### Le bulletin du soir, chaque jour
+
+```bash
+cd moheligo/pub/flyers
+python3 bulletin.py                                                   # va chercher la mer de demain
+node render.js flyer8-soir-fb.html flyer-soir-facebook.png 1080 1350 2
+```
+
+`python3 bulletin.py --jour 2` pour après-demain. La photo `vedette-soir.jpg`
+est déjà générée : relancer `soir.py` seulement si on change de photo (compter
+une minute, les filtres tournent sur du 2560×1920).
+
+### Tout le reste
 
 ```bash
 cd moheligo/pub/flyers
@@ -103,6 +125,20 @@ Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à
   la couleur du fond : `box-shadow:0 0 0 10px var(--paper)`.
 - Titre surligné : `<span>` en `position:relative` + `::before` en or, légèrement
   tourné (`rotate(-1.1deg)`), `z-index:-1`, texte en marine par-dessus.
+
+## Le bulletin du soir : ce qui le rend impossible à copier
+
+- Deux éléments **pilotés par la donnée**, pas dessinés : la jauge d'état de la
+  mer (5 segments, échelle de Douglas) et la courbe de houle heure par heure
+  (chemin SVG calculé par `bulletin.py`, avec aire dégradée et points tous les
+  deux pas). Si la mer change, le flyer change tout seul.
+- Un **panneau en verre dépoli** posé sur la photo : `backdrop-filter:blur(18px)
+  saturate(1.25)` + fond marine translucide + liseré blanc intérieur. Le fond
+  translucide est indispensable : sans lui, le texte blanc devient illisible dès
+  que le panneau déborde sur une zone claire.
+- Une photo **étalonnée fin de journée** (`soir.py`), pas un filtre orange.
+- ⚠️ Deux garde-fous non négociables : la **mention de source** et le rappel que
+  **le bulletin officiel fait foi**. On publie une prévision, pas une promesse.
 
 ## La recette « ça brille » (demande du patron : niveau designer pro)
 

@@ -2,8 +2,8 @@
 
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
-> Dernière mise à jour : **06/08/2026** — 4 flyers + affiches, design promo validé
-> par le patron. **Index des fichiers : section 2 bis.**
+> Dernière mise à jour : **07/08/2026** — flyers promo brillants + **bulletin du
+> soir généré depuis la vraie prévision de mer**. **Index des fichiers : section 2 bis.**
 
 ---
 
@@ -42,7 +42,7 @@ Tout est dans `moheligo/pub/` :
 | `v5-destination(-leger).mp4` | Pub tourisme : satellite, tortues, dauphins, coraux, carte satellite interactive + app (Ouroveni → Hoani) | 54 s | 4,4 Mo |
 | `flyers/` | Flyer premium 2160×2700 (HTML source + PNG) — QR vers moheligo.com | — | — |
 | `photos-cc/` + `CREDITS.md` | 6 images CC de Mohéli (Wallace, Stanley, Commons) + obligations de crédit | — | — |
-| `flyers/flyer-corporate-A4.png` | Flyer institutionnel A4 300 dpi (06/08) — impression, partenaires | — | — |
+| `flyers/flyer-corporate-A4.png` | Flyer institutionnel A4 300 dpi (07/08) — impression, partenaires | — | — |
 | `flyers/flyer-corporate-facebook.png` | Même flyer en 4:5 pour le feed FB/Insta | — | — |
 | `flyers/flyer-nuit-facebook.png` | Flyer nuit 4:5 — 2ᵉ publication du soir (22h30-minuit), angle « réservez ce soir, partez demain » + diaspora | — | — |
 | `flyers/flyer-affiche-facebook.png` | Affiche « destination » 4:5 — îlots de Nioumachoua (photo libre CC BY 3.0 étalonnée), 3ᵉ publication, registre émotion | — | — |
@@ -51,6 +51,7 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-promo-A4.png` | Le promo en A4 300 dpi imprimable + bande « comment ça marche » (ports, boutiques, hôtels) | — | — |
 | `flyers/flyer-promo-brillant-facebook.png` | ⭐ Le plus abouti : promo « brillant » (or métallique, reflets spéculaires, soleil sur la mer, éclats) | — | — |
 | `flyers/flyer-promo-brillant-A4.png` | Le brillant en A4 300 dpi imprimable | — | — |
+| `flyers/flyer-soir-facebook.png` | ⭐ **Bulletin du soir** : la vraie mer de demain matin (Open-Meteo), jauge Douglas + courbe de houle, panneau en verre. **Daté : à regénérer chaque jour.** | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
 edge-tts Henri, validé ; ②nappe « océan » synthétique perçue comme un bug →
@@ -64,6 +65,7 @@ qu'on veut faire :
 
 | Je veux… | Fichier source à modifier | PNG produit |
 |---|---|---|
+| **Le bulletin du soir (format le plus fort)** | `bulletin.py` + `flyer8-soir-fb.template.html` | `flyer-soir-facebook.png` — **regénérer chaque jour** |
 | **Améliorer le design (LE MEILLEUR, repartir de là)** | **`flyer7-promo-brillant-fb.html`** | `flyer-promo-brillant-facebook.png` (2160×2700) |
 | Le brillant en A4 imprimable | `flyer7-promo-brillant-A4.html` | `flyer-promo-brillant-A4.png` (2480×3508, 300 dpi) |
 | Le promo mat (version précédente, gardée) | `flyer6-promo-fb.html` / `flyer6-promo-A4.html` | `flyer-promo-facebook.png` / `flyer-promo-A4.png` |
@@ -80,6 +82,10 @@ Fichiers de service, dans le même dossier :
   1240×1754 → A4 300 dpi, 1080×1350 → 2160×2700 pour Facebook).
 - **`affiche.py`** — étalonne les photos des affiches (dévoilage, lumière).
 - **`nuit.py`** — transforme une photo de jour en nuit (flyer nuit).
+- **`soir.py`** — étalonnage fin de journée (ciel de crépuscule, soleil bas,
+  chemin de lumière, bloom) → `vedette-soir.jpg`. Compter ~1 min de calcul.
+- **`bulletin.py`** — va chercher la vraie prévision de mer et fabrique le
+  flyer du soir. `bulletin.json` garde les chiffres pour le texte du post.
 - **`fonts/`** — Montserrat + Inter en local, ne pas retélécharger.
 - **`logo-emblem.png` / `logo-lockup.png`** — logo officiel détouré.
 - **`qr-moheligo.png`** — QR vers moheligo.com.
@@ -97,7 +103,7 @@ section « La recette ça brille » — **la relire avant de toucher un flyer**.
 Question encore ouverte : ce flyer **tutoie**, les trois autres vouvoient —
 demander au patron laquelle des deux formes devient la règle.
 
-🔑 **CE QUE LE PATRON APPELLE « UN TRAVAIL DE DESIGNER PRO »** (06/08/2026,
+🔑 **CE QUE LE PATRON APPELLE « UN TRAVAIL DE DESIGNER PRO »** (07/08/2026,
 en comparant avec Yas) : « c'est comme si ça brille ». Traduction technique —
 aucun aplat, tout est dégradé ; liseré blanc intérieur en haut + ombre chaude
 intérieure en bas sur chaque élément or ; reflet spéculaire flouté ; balayage
@@ -105,7 +111,7 @@ de lumière en diagonale ; texte rempli d'un dégradé (`background-clip:text`) 
 lumière du soleil sur la photo. **Retenir : quand il dit « améliore le
 design », il parle de matière et de lumière, pas de mise en page.**
 
-🚫 **DEUX REFUS DU 06/08/2026, définitifs :**
+🚫 **DEUX REFUS DU 07/08/2026, définitifs :**
 1. **Pas d'éclats / petites étoiles** sur les visuels — « ça fait enfants et
    femme ». La brillance vient de la matière, jamais d'un décor ajouté.
 2. **Montserrat écartée pour les titres** : il voulait « une écriture façon
@@ -173,7 +179,7 @@ design », il parle de matière et de lumière, pas de mise en page.**
   ligne ; logo Facebook OFFICIEL (f blanc sur #1877F2), pas l'emoji livre.
 - GitHub raw (github.com/google/fonts) est bloqué par la session — passer par
   fonts.googleapis.com/css2.
-- **06/08/2026 — acquis à ne plus refaire** :
+- **07/08/2026 — acquis à ne plus refaire** :
   - Les polices sont maintenant **commitées** dans `pub/flyers/fonts/`
     (Montserrat 600-900 + Inter 400-700, latin & latin-ext, ~1 Mo). Plus besoin
     de les retélécharger, et `flyer1.html` se rend enfin correctement.
@@ -226,7 +232,7 @@ design », il parle de matière et de lumière, pas de mise en page.**
 - [ ] Vérifier si le patron veut brancher les pubs sur le site
       (videos.moheligo.com).
 
-### Registre « affiche locale » (demande du patron du 06/08/2026)
+### Registre « affiche locale » (demande du patron du 07/08/2026)
 
 Le patron veut des flyers « qui donnent envie de regarder », comme ceux de
 **Yas** (ex-Telma Comores, rebaptisé en novembre 2024) et de **Royal Air**.
@@ -246,7 +252,7 @@ Ce qu'il faut retenir de ces codes :
 - ⚠️ **Ne jamais reprendre le logo, la typo ou le slogan de Yas ou de Royal
   Air** : on s'inspire de l'énergie, pas de l'identité. Contrefaçon sinon.
 - **Ce qui a fait passer le design d'« correct » à « bon »** (demande
-  « améliore encore le design » du 06/08) — recettes réutilisables :
+  « améliore encore le design » du 07/08) — recettes réutilisables :
   1. Découpe photo → fond en **vague SVG** remplie de la couleur du fond, au
      lieu d'une diagonale droite : instantanément maritime et plus doux.
   2. **Bloc surligneur** or derrière la deuxième ligne du titre (`::before`
@@ -267,7 +273,7 @@ Ce qu'il faut retenir de ces codes :
   autres vouvoient. À faire valider par le patron.
 
 ### Recherche d'images libres (acquis)
-- 🚫 **RÈGLE DU PATRON (06/08/2026) : aucune personne sur les visuels.**
+- 🚫 **RÈGLE DU PATRON (07/08/2026) : aucune personne sur les visuels.**
   Il a refusé l'affiche dès qu'une personne y figurait (« pas de photo qui a
   une image » = droit à l'image). Désormais : paysages, vedettes, bateaux,
   animaux — jamais quelqu'un de reconnaissable, même de dos.
@@ -322,7 +328,23 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
-- **06/08/2026 (fin de session)** — Le patron valide : « c'est super le design,
+- **07/08/2026 (fin de journée)** — Demande : « un flyer pour cette aprem ou ce
+  soir, avec une amélioration très avancée ». Créé **le bulletin du soir** :
+  un flyer qui affiche **la vraie mer de demain matin** sur le couloir
+  Ouroveni–Hoani, tiré d'Open-Meteo (API marine + vent), avec jauge d'état de
+  la mer (échelle de Douglas), courbe de houle heure par heure, panneau en
+  verre dépoli, et photo étalonnée fin de journée. Tout est **généré** :
+  `bulletin.py` remplit un gabarit, donc le flyer se refait en une commande.
+  → C'est le format à installer en **rituel quotidien** (publication 16h-19h).
+  Personne d'autre aux Comores ne publie l'état de la mer du lendemain :
+  c'est ce qui transformera la page Facebook en service que les gens
+  consultent, pas en page de pub qu'on ignore.
+  ⚠️ Garde-fous : regénérer chaque jour, garder la source, rappeler que le
+  bulletin officiel fait foi, et **publier aussi quand la mer est mauvaise**.
+  Prochaine idée à proposer au patron : automatiser la publication (le flyer
+  est déjà généré par script, il ne manque que la mise en ligne).
+
+- **07/08/2026 (fin de session)** — Le patron valide : « c'est super le design,
   la prochaine fois on va encore améliorer ». Design du flyer promo retravaillé
   (vague SVG, bloc surligneur, bulle cerclée, cartes blanches ombrées, halo +
   trame, vrai bouton, photo agrandie) et décliné en **A4 300 dpi imprimable**
@@ -330,7 +352,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   mémoire **où sont les fichiers** → section 2 bis. Reprendre là la prochaine
   fois, à partir de `pub/flyers/flyer6-promo-fb.html`.
 
-- **06/08/2026** — Le patron demande « un flyer type grand conglomérat + un
+- **07/08/2026** — Le patron demande « un flyer type grand conglomérat + un
   écrit pour publier sur FB ». Produit : flyer institutionnel A4 300 dpi
   (en-tête, bandeau photo, schéma du réseau des 4 ports, 6 services numérotés,
   bande de chiffres clés, pied avec QR + WhatsApp + Facebook) et sa déclinaison

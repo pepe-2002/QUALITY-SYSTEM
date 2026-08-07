@@ -4,7 +4,66 @@
 
 ---
 
-## 🔥 Flyer promo — registre « affiche locale » (06/08/2026)
+## 🌅 Bulletin du soir — publication quotidienne (créée le 07/08/2026)
+
+Image : `flyers/flyer-soir-facebook.png`. **Format daté** : le flyer annonce la
+mer d'un matin précis, il se regénère chaque jour (voir `flyers/README.md`).
+À publier entre **16h et 19h**, heure des Comores : c'est le moment où les gens
+décident de leur lendemain. C'est le format le plus fort qu'on ait : personne
+d'autre aux Comores ne publie l'état de la mer du lendemain.
+
+### Version du samedi 8 août (à adapter aux chiffres du jour)
+
+```
+LA MER DE DEMAIN, CE SOIR.
+
+Demain matin entre Ouroveni et Hoani : mer peu agitée.
+Houle 1,1 m, vent 20 km/h de sud-est, période 7,8 secondes.
+Traversée normale, un peu de mouvement — rien qui empêche de partir.
+
+C'est ça, MoheliGo : tu sais avant de quitter la maison.
+La météo mer des 7 prochains jours est dans l'application, mise à jour en continu.
+
+Ta place pour demain se prend maintenant :
+• Tu choisis ton départ sur moheligo.com
+• Tu paies par MVola ou KartaPay
+• Ton billet QR arrive tout de suite
+
+moheligo.com — et demain matin, tu embarques tranquille.
+
+Prévision Open-Meteo relevée aujourd'hui. Le bulletin officiel affiché dans
+l'application fait foi avant l'embarquement.
+
+#MoheliGo #Mohéli #Comores #MétéoMer #Traversée #Ouroveni #Hoani
+```
+
+### Premier commentaire
+
+```
+Ta traversée de demain : moheligo.com
+WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp)
+
+```
+Demain matin : mer peu agitée, houle 1,1 m.
+Ta place se prend ce soir : moheligo.com
+```
+
+### Règles à ne jamais oublier sur ce format
+
+- **Regénérer le flyer le jour même** (`python3 bulletin.py`) : republier celui
+  de la veille, c'est publier une fausse information.
+- **Garder la mention de source et le rappel du bulletin officiel.** On publie
+  une prévision, pas une garantie. C'est ce qui protège MoheliGo.
+- Quand la mer est mauvaise, **publier quand même**. Un compte qui n'annonce
+  que le beau temps n'est pas crédible ; celui qui prévient la veille d'une mer
+  forte devient la référence que tout le monde consulte.
+
+---
+
+## 🔥 Flyer promo — registre « affiche locale » (07/08/2026)
 
 Image à joindre : `flyers/flyer-promo-facebook.png` (4:5).
 Demandé par le patron : « inspire-toi des flyers de Yas et de Royal Air, des
@@ -53,7 +112,7 @@ moheligo.com
 
 ---
 
-## 🏝️ Affiche « destination » — troisième publication (06/08/2026)
+## 🏝️ Affiche « destination » — troisième publication (07/08/2026)
 
 Deux images au choix (4:5), aucune personne dessus (consigne du patron) :
 `flyer-affiche-facebook.png` (îlots de Nioumachoua, photo libre CC BY 3.0 —
@@ -115,7 +174,7 @@ Les meilleures réponses passeront dans une prochaine publication.
 
 ---
 
-## 🌙 Flyer nuit — deuxième publication, fin de soirée (06/08/2026)
+## 🌙 Flyer nuit — deuxième publication, fin de soirée (07/08/2026)
 
 Image à joindre : `flyers/flyer-nuit-facebook.png` (4:5).
 À publier **après** la publication corporate, entre **22h30 et minuit** (heure
@@ -164,7 +223,7 @@ moheligo.com — 2 minutes, billet QR, paiement MVola.
 
 ---
 
-## 🏛️ Flyer corporate — publication Facebook (06/08/2026)
+## 🏛️ Flyer corporate — publication Facebook (07/08/2026)
 
 Image à joindre : `flyers/flyer-corporate-facebook.png` (format feed 4:5).
 Le A4 (`flyer-corporate-A4.png`) est pour l'impression et les partenaires.

@@ -159,22 +159,42 @@ un agent IA autonome (recherche web → analyse → création de documents →
 critique → correction). Comme « Nous », c'est **volontairement séparé** :
 dossier `agent/` à la racine, aucun lien avec MoheliGo.
 
-Phases 1 et 2 livrées : interface mobile, boucle de recherche adaptative
-(relance ciblée quand une information manque ou que deux sources se
-contredisent), détection de contradictions chiffrées, synthèse citée,
-PDF/DOCX/MD/TXT vérifiés, historique, permissions, journal, 213 tests.
-Phases 3 à 5 (agent créatif + critique de design, laboratoire de mesure,
-automatisation Android) restent à faire.
+Phases 1 à 4 livrées (v0.4, 351 tests) :
+
+1. interface mobile (PWA), documents PDF/DOCX/MD/TXT vérifiés, historique,
+   permissions, journal ;
+2. boucle de recherche adaptative (relance ciblée quand une information
+   manque ou que deux sources se contredisent), contradictions chiffrées,
+   synthèse citée, **agent contexte** qui tranche vraie contradiction ou
+   écart explicable ;
+3. studio créatif : 3 concepts de flyer, critique sur 12 critères mesurés,
+   amélioration avec retour arrière, QR code encodé en Python pur et relu ;
+4. laboratoire : corpus web figé, 4 stratégies comparées sur les mêmes
+   pages, conditions de réfutation écrites d'avance. Verdict honnête :
+   **non concluant** (8 tâches, p = 1,000) — l'adaptation n'a pas prouvé
+   qu'elle répond plus juste, mais elle dépense moitié moins de recherches
+   à exactitude égale. Le banc a surtout servi à trouver 4 vrais bugs.
+
+Phase 5 (automatisation Android) reste à faire.
 Tout est expliqué dans `agent/README.md` et `agent/docs/ANALYSE-V0.md` —
 ne pas recharger ce sujet ici, ce n'est pas du marketing.
 
-⚠️ À noter pour plus tard : la Phase 3 (agent créatif + critique) recoupe
-directement le savoir-faire flyers déjà acquis (§3 « Flyers »), et la
-mémoire de marque de l'agent (`brand_profile.json`) devra reprendre les
-règles du patron : pas d'emojis, logo Facebook officiel, départ Ouroveni.
+✅ La mémoire de marque de l'agent (`agent/ara/design/brand.py`,
+`moheligo_profile()`) reprend bien les règles du patron : pas d'emojis,
+logo Facebook officiel, départ **Ouroveni** (pas Chindini), pas de
+« Embarquez ». Un interdit violé est un défaut **bloquant** pour le
+critique, pas une remarque.
 
 ## 6. Journal des sessions
 
+- **07/08/2026** — Hors marketing : projet ARA (voir 5 ter). Phases 1 à 4
+  construites d'affilée, à la demande du patron « construit phase par phase,
+  c'est un projet de recherche scientifique ». Leçon la plus utile de la
+  session, transposable au marketing : **ne jamais croire une note sans
+  regarder le résultat**. Le critique de design donnait 93/100 à un flyer
+  dont le sous-titre chevauchait le prix ; le défaut n'est apparu qu'en
+  affichant l'image. La détection de collisions ajoutée ensuite a fait
+  tomber ce concept à 50/100 et changé le flyer retenu.
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie
   privée couple + famille (voir 5 bis). Sortie de `moheligo/` à la demande
   du patron, base de données à elle, aucune dépendance à MoheliGo.

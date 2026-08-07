@@ -76,6 +76,17 @@ _WORD_NUM = "|".join(sorted(_WORD_NUMBERS, key=len, reverse=True))
 _SENTENCE_SPLIT = re.compile(r"(?<=[.!?…])\s+|\n+")
 _YEAR = re.compile(r"\b(19|20)\d{2}\b")
 
+#: Heure du jour — à ne pas confondre avec une durée.
+#: « La traversée dure 3 heures » et « le départ est à 7 heures » sont deux
+#: grandeurs différentes ; les mélanger faisait croire à l'agent qu'il avait
+#: l'horaire alors qu'il n'avait qu'une durée. Défaut trouvé par le laboratoire.
+_TIME = re.compile(
+    r"(?:(?:a|à|vers|des|dès|jusqu'a|jusqu'à)\s+(\d{1,2})\s*(?:h\b|heures?\b))"
+    r"|(?:\b(\d{1,2})\s*h\s*(\d{2})\b)"
+    r"|(?:\b(\d{1,2})\s*(?:h\b|heures?\b)\s*(?:du|le)\s+(?:matin|soir|midi))",
+    re.IGNORECASE,
+)
+
 
 def _normalize(text: str) -> str:
     text = unicodedata.normalize("NFKD", text.lower())
@@ -163,6 +174,10 @@ class Fact:
         if self.kind == "year":
             # Une année ne prend pas de séparateur de milliers.
             return str(int(self.low))
+        if self.kind == "time":
+            entier = int(self.low)
+            minutes = round((self.low - entier) * 60)
+            return f"{entier} h" if not minutes else f"{entier} h {minutes:02d}"
         if self.kind == "duration":
             # Les durées sont stockées en minutes pour être comparables ;
             # « 1 440 min » ne se lit pas, « 1 jour » si.
@@ -240,6 +255,26 @@ def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
     facts: list[Fact] = []
 
     for sentence in _sentences(text):
+        # Les heures du jour d'abord : elles consomment leur empan pour que la
+        # même expression ne soit pas relue comme une durée.
+        heures: list[tuple[int, int]] = []
+        for match in _TIME.finditer(sentence):
+            groupes = [g for g in match.groups() if g is not None]
+            if not groupes:
+                continue
+            heure = parse_number(groupes[0])
+            if heure is None or not 0 <= heure <= 24:
+                continue
+            minutes = parse_number(groupes[1]) if len(groupes) > 1 else 0
+            valeur = heure + (minutes or 0) / 60
+            facts.append(
+                Fact(
+                    "time", "h", valeur, valeur, match.group(0).strip(), sentence,
+                    source, window_words(sentence, match.start(), match.end()),
+                )
+            )
+            heures.append(match.span())
+
         for kind, unit, factor, simple, spread in _PATTERNS:
             # Les fourchettes d'abord : « entre 15 000 et 17 500 FC » est un
             # seul fait, pas deux valeurs qui se contredisent.
@@ -260,6 +295,8 @@ def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
 
             for match in simple.finditer(sentence):
                 if any(start <= match.start() < end for start, end in consumed):
+                    continue
+                if any(start <= match.start() < end for start, end in heures):
                     continue
                 raw = match.group(1) or match.group(2)
                 value = parse_number(raw) if raw else None

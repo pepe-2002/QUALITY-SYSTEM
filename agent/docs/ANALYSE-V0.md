@@ -167,7 +167,123 @@ L'agent nomme toujours la limite qui l'a arrêté.
 
 ---
 
-## 7. Limites connues
+## 7. Phase 4 — le laboratoire, ou l'art de se contredire soi-même
+
+### Ce que la phase devait faire
+
+Les phases 1 à 3 reposent sur une affirmation jamais vérifiée : *un agent qui
+décide lui-même quand chercher répond mieux qu'un agent à budget fixe.* La
+spec §18 dit quoi en faire — « le système doit chercher à réfuter l'hypothèse,
+pas à la confirmer ». La Phase 4 construit donc un banc d'essai dont le but
+avoué est de **faire tomber** le travail des trois premières.
+
+### Le choix structurant : geler le web
+
+Une mesure n'a de valeur que si elle est reproductible. Le vrai web ne l'est
+pas : les pages changent, les moteurs limitent, l'ordre des résultats varie.
+`lab/corpus.py` contient donc un **web figé** — un ensemble de pages écrites à
+la main, servies par un faux moteur de recherche. `frozen_network()` remplace
+le client HTTP le temps de l'expérience : aucune requête ne sort.
+
+Conséquence : deux exécutions du même banc donnent le même chiffre, et deux
+stratégies sont comparées **sur les mêmes pages** (comparaison appariée). Sans
+cela, on mesurerait la météo du web, pas la stratégie.
+
+### Les quatre bras, et pourquoi ils ne diffèrent que d'une chose
+
+| Bras | Décision de chercher |
+|---|---|
+| `MODEL ONLY` | ne cherche jamais — témoin bas |
+| `FIXED` | budget constant, 3 recherches, quelle que soit la question |
+| `ADAPTIVE` | budget variable selon la difficulté estimée |
+| `ADAPTIVE + RESEARCH` | recherche **uniquement lorsque nécessaire**, avec relances ciblées sur les manques |
+
+Le moteur de synthèse est **le même partout**. Si les bras différaient aussi
+par leur rédaction, on ne saurait pas ce que mesure l'écart.
+
+### Comment l'exactitude est mesurée sans juge humain
+
+Chaque tâche porte une vérité de référence **chiffrée** (`dataset.py` :
+15 000 FC, 3 heures, 70 km, 7 h du matin…). La réponse produite est passée dans
+l'extracteur de faits de la Phase 2, et on regarde si la bonne valeur y est.
+Aucune appréciation, aucun jugement de style : un nombre est là ou il n'y est
+pas.
+
+Le jeu contient trois familles, et la troisième est la plus importante :
+`facile` (une recherche suffit), `profond` (il faut relancer), et surtout
+`piege` — trois tâches où chercher davantage ramène une archive de 2019, le
+prix d'une autre liaison, ou trois prix sur la même page. **Elles sont là
+exprès pour faire perdre la stratégie adaptative.** Un banc d'essai qu'on ne
+peut pas perdre ne mesure rien.
+
+À l'exactitude s'ajoute le **bruit** : une valeur piège présentée comme la
+réponse. La note retenue est *nette* = exactitude − ½ bruit — répondre faux
+coûte, ce n'est pas neutre.
+
+### Les conditions de réfutation, écrites avant
+
+Inscrites dans `experiment.py` **avant** la première exécution :
+
+- gain d'exactitude nette < +0,05 → hypothèse réfutée ;
+- coût > 1,5× la référence → réfutée ;
+- dégradation sur les tâches pièges → réfutée ;
+- p > 0,05 au test des signes → non concluant.
+
+Le verdict ne prononce jamais « confirmée » : au mieux « non réfutée ». Un test
+le vérifie littéralement (`test_le_verdict_ne_dit_jamais_confirmee`).
+
+### Le résultat, tel quel
+
+| Stratégie | Exactitude | Bruit | Nette | Qualité | Recherches | Jetons |
+|---|---|---|---|---|---|---|
+| MODEL ONLY | 0.00 | 0.00 | 0.00 | 0.75 | 0.0 | 106 |
+| FIXED REASONING | 0.62 | 0.12 | 0.62 | 0.84 | 3.0 | 213 |
+| ADAPTIVE REASONING | 0.62 | 0.12 | 0.62 | 0.84 | 1.5 | 213 |
+| ADAPTIVE RESEARCH | 0.75 | 0.12 | 0.75 | 0.91 | 2.4 | 294 |
+
+**Verdict principal : NON CONCLUANT.** 1 victoire, 0 défaite, 7 égalités ; gain
+moyen +0,125, mais p = 1,000 au test des signes et l'intervalle de confiance à
+95 % — [+0,000 ; +0,375] — contient zéro. Aucune condition de réfutation n'est
+remplie, mais la preuve manque : huit tâches ne suffisent pas.
+
+**Verdict secondaire : NON RÉFUTÉE.** `ADAPTIVE` obtient exactement la même
+exactitude nette que `FIXED` avec **moitié moins de recherches**. C'est le seul
+résultat net de la phase, et ce n'est pas celui qu'on cherchait : l'adaptation
+n'a pas démontré qu'elle rend plus juste, elle a montré qu'elle rend moins cher.
+
+Le rapport complet, régénérable par `python -m ara.cli --lab`, est écrit dans
+`workspace/lab-report.md` et se termine par une section « ce que cette
+expérience ne prouve pas ».
+
+### Ce que le banc a réellement rapporté : quatre bugs
+
+L'apport le plus solide de la phase n'est pas son verdict, c'est ce qu'elle a
+trouvé en chemin. Quatre défauts du système **de production**, invisibles
+jusque-là :
+
+| Défaut trouvé par le banc | Cause | Correction |
+|---|---|---|
+| « À quelle heure **part** le bateau ? » déclenchait une recherche de pourcentage | « part » était un mot déclencheur de l'aspect *proportion* | mot retiré des déclencheurs (`coverage.py`) |
+| « 7 h du matin » lu comme une durée de 7 heures | un seul motif pour l'heure et la durée | motif `_TIME` dédié, extrait en premier, ses positions consommées |
+| Deux prix, l'un daté de 2019, l'autre non : contradiction annoncée | le validateur n'examinait que le cas où **les deux** sources sont datées | règle « une seule source datée, écart ≥ 2 ans → écart d'ancienneté » |
+| La boucle relançait une recherche sans motif | les requêtes de réserve étaient consommées même sans manque constaté | relance seulement pour une raison nommée ; sinon arrêt explicite |
+
+### Divulgation — pourquoi cette exécution n'est pas confirmatoire
+
+Ces quatre corrections ont été faites **après** avoir vu les résultats du banc.
+Le protocole était pré-enregistré, mais le système mesuré a changé entre-temps.
+Cette exécution est donc **exploratoire**, pas confirmatoire : elle a servi à
+trouver des défauts, ce qu'un banc d'essai fait très bien, et non à trancher
+l'hypothèse, ce qu'elle ne peut plus faire honnêtement.
+
+Ce qui n'a **pas** été fait, et qui aurait été la façon simple de sauver
+l'hypothèse : déplacer les seuils de réfutation après coup. Ils sont restés à
++0,05 et 1,5×. Une vraie confirmation demanderait un corpus neuf, plus grand,
+écrit par quelqu'un d'autre, sur un système désormais figé.
+
+---
+
+## 8. Limites connues
 
 À lire avant d'en attendre plus que le système ne donne :
 
@@ -178,11 +294,15 @@ L'agent nomme toujours la limite qui l'a arrêté.
   ce qu'un vrai LLM sait faire — et c'est pourquoi l'abstraction existe.
 - **Seuls les faits chiffrés sont confrontés.** Deux sources qui se
   contredisent en prose passent inaperçues.
-- **Le contrôleur de complexité n'est toujours pas validé.** C'est une
-  heuristique lexicale, sans preuve empirique qu'elle améliore quoi que ce
-  soit. Le rôle de la Phase 4 est d'essayer de la **réfuter**, pas de la
-  confirmer. La collecte en une passe (`gather.collect`) est déjà conservée
-  comme témoin « FIXED » face à la stratégie « ADAPTIVE ».
+- **Le contrôleur de complexité est mesuré, mais non démontré.** La Phase 4 lui
+  a donné toutes ses chances d'être réfuté ; il ne l'a pas été, mais il n'a pas
+  non plus prouvé qu'il rend les réponses plus justes (p = 1,000 sur huit
+  tâches). Ce qu'on peut en dire aujourd'hui : à exactitude égale, il dépense
+  deux fois moins.
+- **Le laboratoire mesure son propre corpus.** Huit tâches et un web écrits par
+  l'auteur du système : cela peut réfuter une hypothèse, pas l'établir. Et la
+  dernière exécution est exploratoire, le système ayant été corrigé après avoir
+  vu les résultats (§7).
 - **Le filtre de pertinence est lexical.** Il écarte le hors-sujet grossier ;
   il ne détecte ni la source douteuse, ni la date périmée.
 - **Aucun envoi de fichier depuis le téléphone.** « Analyse ce document »

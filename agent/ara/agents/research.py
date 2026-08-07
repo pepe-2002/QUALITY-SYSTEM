@@ -52,10 +52,12 @@ MAX_CYCLES = 4
 #: Requêtes de relance générées par cycle
 FOLLOWUP_PER_CYCLE = 2
 #: Requêtes lancées au premier cycle.
-#: Le budget de complexité est un **plafond**, pas une consommation obligatoire :
-#: on dépense au fur et à mesure, sinon une question simple coûte aussi cher
-#: qu'une question difficile et le raisonnement adaptatif ne sert à rien.
-INITIAL_QUERIES = 2
+#: Règle posée par le propriétaire du projet : **chercher uniquement lorsque
+#: c'est nécessaire**. On part donc du minimum — une requête — et on ne dépense
+#: davantage qu'après avoir constaté un manque. Le budget de complexité est un
+#: plafond, jamais une consommation obligatoire : sinon une question simple
+#: coûte aussi cher qu'une question difficile, et l'adaptatif ne sert à rien.
+INITIAL_QUERIES = 1
 
 #: Terme de relance selon la nature de la contradiction
 _CONTRADICTION_HINT = {
@@ -186,15 +188,22 @@ class ResearchAgent:
                 self._used,
                 chased=self._chased,
             )
+            if not relances:
+                # « Chercher uniquement lorsque c'est nécessaire » : sans manque
+                # ni désaccord non tranché, il n'y a aucune raison de relancer.
+                # Les requêtes de départ non explorées ne sont PAS une raison —
+                # elles ne font que compléter une relance déjà justifiée.
+                self.report.stopped_because = (
+                    "aucun manque et aucun désaccord à trancher : "
+                    "rien ne justifie une recherche de plus"
+                )
+                break
+
             relances += [
                 (query, "piste de départ non explorée")
                 for query in self._spare
                 if _key(query) not in self._used
             ][: max(0, FOLLOWUP_PER_CYCLE - len(relances))]
-
-            if not relances:
-                self.report.stopped_because = "aucune requête de relance pertinente"
-                break
 
             reasons = " · ".join(reason for _query, reason in relances)
             ctx.journal.add_step(

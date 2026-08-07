@@ -169,6 +169,23 @@ def rule_verdict(contradiction: Contradiction) -> Verdict | None:
             confidence="forte",
         )
 
+    # Une seule source datée, et d'une année ancienne : c'est l'explication la
+    # plus probable de l'écart. Sans cette règle, une archive de 2019 faisait
+    # relancer la recherche indéfiniment — constaté au laboratoire.
+    from datetime import date as _date
+
+    annee_courante = _date.today().year
+    datees = [years for years, _o in anchors if years]
+    if len(datees) == 1:
+        ancienne = min(int(y) for y in datees[0])
+        if annee_courante - ancienne >= 2:
+            return Verdict(
+                REJECTED,
+                f"l'une des valeurs est datée de {ancienne}, l'autre non : "
+                "l'écart s'explique par l'ancienneté",
+                confidence="moyenne",
+            )
+
     year_sets = [years for years, _o in anchors if years]
     if len(year_sets) >= 2 and not set.intersection(*year_sets):
         return Verdict(

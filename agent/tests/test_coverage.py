@@ -24,7 +24,10 @@ def _doc(url: str, titre: str, texte: str) -> SourceDoc:
         ("Quel est le tarif du billet ?", {"prix"}),
         ("Combien de temps dure la traversée ?", {"prix", "duree"}),
         ("Quelle distance sépare les deux îles ?", {"distance"}),
-        ("Quand partent les vedettes ?", {"date"}),
+        # « quand » demande un horaire, pas un millésime.
+        ("Quand partent les vedettes ?", {"horaire"}),
+        ("À quelle heure part la vedette ?", {"horaire"}),
+        ("Quel est le taux de remplissage ?", {"proportion"}),
         ("Parle-moi de Mohéli", set()),
     ],
 )

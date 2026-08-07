@@ -43,13 +43,21 @@ ASPECTS: dict[str, tuple[str, set[str], str]] = {
     ),
     "date": (
         "year",
-        {"quand", "date", "annee", "horaire", "horaires", "calendrier",
-         "planning", "when", "schedule"},
-        "horaires à jour",
+        {"date", "annee", "calendrier", "millesime", "edition"},
+        "date officielle",
+    ),
+    "horaire": (
+        "time",
+        {"heure", "heures", "horaire", "horaires", "quand", "depart",
+         "departs", "arrivee", "matin", "soir", "planning", "schedule",
+         "when", "time"},
+        "horaire officiel",
     ),
     "proportion": (
         "percent",
-        {"pourcentage", "taux", "proportion", "part", "percent"},
+        # ⚠️ « part » est ambigu : dans « à quelle heure part le bateau », c'est
+        # un verbe. Le garder faisait chercher un pourcentage à l'agent.
+        {"pourcentage", "taux", "proportion", "percent"},
         "chiffres officiels",
     ),
 }

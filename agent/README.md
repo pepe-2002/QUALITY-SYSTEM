@@ -1,6 +1,6 @@
 # ARA — Autonomous Research & Creative Agent
 
-**v0.3 — Phases 1 à 3**
+**v0.4 — Phases 1 à 4**
 
 Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
 crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
@@ -30,6 +30,7 @@ quels fichiers produire.
 | **Historique** | conservé sur disque, survit au redémarrage |
 | **Journal** | une entrée reproductible par tâche (spec §17) |
 | **Sécurité** | liste blanche d'outils, confirmation des actions sensibles |
+| **Laboratoire** | banc d'essai qui **tente de réfuter** le raisonnement adaptatif |
 | **Coût** | 0 € — aucune dépendance obligatoire, aucune clé requise |
 
 Le pipeline visible à l'écran est exactement celui qui s'exécute :
@@ -111,6 +112,56 @@ que **plusieurs sources ont confirmés**, pas des slogans inventés.
 Les créations sortent en **SVG** : zéro dépendance, imprimable sans perte, et
 surtout *mesurable* — c'est ce qui permet au critique de noter la géométrie
 plutôt que de donner un avis.
+
+## Le laboratoire (Phase 4)
+
+Les phases 1 à 3 affirment qu'un agent qui décide **quand** chercher répond
+mieux qu'un agent à budget fixe. Ce n'était qu'une affirmation. La phase 4 la
+met à l'épreuve — et **cherche à la faire tomber**, conformément à la spec §18.
+
+```bash
+python -m ara.cli --lab      # écrit workspace/lab-report.md
+```
+
+Le protocole, écrit **avant** de regarder le moindre résultat :
+
+- **corpus figé** — un web en dur, identique pour toutes les stratégies et
+  toutes les exécutions ; les comparaisons sont appariées (même tâche, même
+  pages) ;
+- **quatre stratégies**, un seul moteur de synthèse : seule la décision de
+  chercher change. `MODEL ONLY` (aucune recherche), `FIXED` (budget constant),
+  `ADAPTIVE` (budget variable selon la difficulté), `ADAPTIVE + RESEARCH`
+  (recherche uniquement lorsque nécessaire, avec relances ciblées) ;
+- **exactitude mesurée par machine** contre une vérité de référence chiffrée —
+  aucun jugement humain dans la boucle ;
+- **des tâches pièges exprès**, où chercher plus ramène une archive périmée ou
+  le prix d'une autre liaison. Elles existent pour donner à l'hypothèse une
+  chance d'être réfutée ;
+- **conditions de réfutation pré-enregistrées** : gain < +0,05, ou coût
+  > 1,5×, ou dégradation sur les pièges → hypothèse réfutée.
+
+Résultat de l'exécution actuelle :
+
+| Stratégie | Exactitude | Bruit | Nette | Recherches | Jetons |
+|---|---|---|---|---|---|
+| MODEL ONLY | 0.00 | 0.00 | **0.00** | 0.0 | 106 |
+| FIXED REASONING | 0.62 | 0.12 | **0.62** | 3.0 | 213 |
+| ADAPTIVE REASONING | 0.62 | 0.12 | **0.62** | 1.5 | 213 |
+| ADAPTIVE RESEARCH | 0.75 | 0.12 | **0.75** | 2.4 | 294 |
+
+**Verdict : non concluant.** 1 victoire, 0 défaite, 7 égalités ; gain +0,125
+mais p = 1,000 et l'intervalle de confiance [+0,000 ; +0,375] contient zéro.
+Le jeu d'essai est trop petit pour trancher. Le rapport dit « non réfutée »,
+jamais « confirmée » — et le verdict n'a été lu qu'après coup, sans toucher
+aux seuils.
+
+Un résultat annexe, lui, est net : à exactitude **égale**, la stratégie
+adaptative dépense **deux fois moins de recherches** que la stratégie fixe.
+C'est la seconde hypothèse, et elle n'est pas réfutée.
+
+Le banc a surtout servi à autre chose : il a **trouvé quatre défauts** dans le
+système de production (voir `docs/ANALYSE-V0.md`). C'est probablement son
+apport le plus solide à ce stade.
 
 ---
 
@@ -216,13 +267,18 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-320 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+351 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
 les douze critères du critique, le retour arrière de la boucle créative, la
 **vérification** PDF/DOCX/SVG/MD/TXT, les permissions, la confirmation humaine,
 les réessais réseau et la gestion des erreurs.
+
+Le laboratoire est testé comme le reste — y compris sur ce qu'il a le droit de
+conclure : un test vérifie que le verdict ne prononce **jamais** le mot
+« confirmée », d'autres qu'un gain insuffisant ou une dégradation sur les
+tâches pièges réfutent bien l'hypothèse.
 
 ---
 
@@ -238,10 +294,11 @@ agent/
 │   ├── design/        marque, QR, composition SVG, concepts, critique, studio
 │   ├── documents/     modèle commun → PDF, DOCX, MD, TXT + vérification
 │   ├── agents/        planificateur, collecte, research agent, documents
+│   ├── lab/           corpus figé, stratégies, mesures, expérience, rapport
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             320 tests hors ligne
+├── tests/             351 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -254,7 +311,7 @@ agent/
 | **1** | Interface mobile · LLM · recherche · fichiers · PDF · historique | **fait** |
 | **2** | Research Agent : boucle adaptative, contradictions, relances | **fait** |
 | **3** | Creative Agent + Design Critic : flyers, QR code, itérations notées | **fait** |
-| 4 | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | à venir |
+| **4** | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | **fait** |
 | 5 | Automatisation Android | à venir |
 
 **Limites connues** — à lire avant d'en attendre trop :
@@ -263,8 +320,13 @@ agent/
   incompatibles ; elle ne comprend pas qu'une page parle de 2019 et l'autre de
   2026. Sur un sujet encyclopédique riche, elle produit encore des alertes
   discutables.
-- Le contrôleur de complexité n'est toujours **pas validé empiriquement**.
-  C'est le travail de la Phase 4 : essayer de le réfuter, pas de le confirmer.
+- Le contrôleur de complexité est désormais **mesuré**, mais le résultat est
+  *non concluant* : le banc d'essai est trop petit (8 tâches) pour établir un
+  gain d'exactitude. Ce qu'il montre, c'est une économie de recherches à
+  exactitude égale — pas la supériorité annoncée.
+- Le laboratoire mesure **son propre corpus**. Un web figé de huit tâches
+  écrites par l'auteur du système ne remplace pas le vrai web : il sert à
+  réfuter, pas à décerner un satisfecit.
 - Seuls les faits **chiffrés** sont comparés. Deux sources qui se contredisent
   en prose passent inaperçues.
 - Pas d'envoi de fichier depuis le téléphone : « analyse ce document » n'est

@@ -46,12 +46,39 @@ def run_once(prompt: str) -> int:
     return 0
 
 
+def run_lab() -> int:
+    """Exécute l'expérience et écrit le rapport dans l'espace de travail."""
+    from .lab import render, run_experiment
+
+    settings = get_settings()
+    result = run_experiment(settings=settings)
+    rapport = render(result)
+    print(rapport)
+
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "lab-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+
+    # Une hypothèse réfutée n'est pas une erreur du programme : c'est un
+    # résultat. Le code de sortie le distingue quand même, pour qu'un script
+    # d'intégration puisse le remarquer.
+    return 0 if result.verdict and result.verdict.status != "refutee" else 3
+
+
 def main(argv: list[str] | None = None) -> int:
     load_dotenv()
     parser = argparse.ArgumentParser(prog="ara", description="Agent de recherche et de création.")
     parser.add_argument("prompt", nargs="*", help="la demande à traiter")
     parser.add_argument("--serve", action="store_true", help="lance le serveur web/mobile")
+    parser.add_argument(
+        "--lab", action="store_true",
+        help="lance le RESEARCH LAB : compare les stratégies et tente de réfuter l'hypothèse",
+    )
     args = parser.parse_args(argv)
+
+    if args.lab:
+        return run_lab()
 
     if args.serve:
         from .api.server import main as serve

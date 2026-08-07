@@ -48,11 +48,19 @@ class Task:
     note: str = ""
     #: valeurs qui NE doivent PAS être présentées comme la réponse
     distractors: list[Gold] = field(default_factory=list)
+    #: reformulations de la même question, pour faire varier les exécutions
+    #: d'une graine à l'autre. Les faits attendus, eux, ne changent jamais.
+    paraphrases: list[str] = field(default_factory=list)
+
+    def variants(self) -> list[str]:
+        """Toutes les formulations possibles, l'originale en tête."""
+        return [self.question, *self.paraphrases]
 
     def to_dict(self) -> dict:
         return {
             "id": self.id, "question": self.question, "family": self.family,
             "gold": [g.to_dict() for g in self.gold], "note": self.note,
+            "variants": len(self.variants()),
         }
 
 
@@ -64,6 +72,10 @@ TASKS: list[Task] = [
         gold=[Gold("money", 15000, "15 000 FC")],
         family="facile",
         note="Deux sources concordantes dès la première requête.",
+        paraphrases=[
+            "Quel est le tarif du billet pour la traversée Ouroveni – Hoani ?",
+            "Combien faut-il payer pour aller d'Ouroveni à Hoani en vedette ?",
+        ],
     ),
     Task(
         id="duree",
@@ -71,6 +83,10 @@ TASKS: list[Task] = [
         gold=[Gold("duration", 180, "3 heures")],
         family="facile",
         note="Réponse présente sur les deux premières pages.",
+        paraphrases=[
+            "Quelle est la durée du trajet en vedette entre Ouroveni et Hoani ?",
+            "Combien d'heures dure la traversée Ouroveni – Hoani ?",
+        ],
     ),
     Task(
         id="distance",
@@ -78,6 +94,10 @@ TASKS: list[Task] = [
         gold=[Gold("distance", 70, "70 km")],
         family="facile",
         note="Deux sources indépendantes, aucune ambiguïté.",
+        paraphrases=[
+            "Combien de kilomètres y a-t-il entre la Grande Comore et Mohéli ?",
+            "Quelle est la distance maritime Grande Comore – Mohéli ?",
+        ],
     ),
     Task(
         id="hotel",
@@ -85,6 +105,10 @@ TASKS: list[Task] = [
         gold=[Gold("money", 45000, "45 000 FC")],
         family="facile",
         note="Une seule page, mais elle répond directement.",
+        paraphrases=[
+            "Quel est le prix d'une nuit d'hôtel aux Comores ?",
+            "Combien faut-il compter pour dormir une nuit à l'hôtel aux Comores ?",
+        ],
     ),
     # --- famille « profond » : il faut relancer ------------------------------
     Task(
@@ -94,6 +118,10 @@ TASKS: list[Task] = [
         family="profond",
         note="Blog et forum ne savent pas. Seule l'autorité maritime répond, "
              "et il faut une requête ciblée pour l'atteindre.",
+        paraphrases=[
+            "Quel est l'horaire de départ de la vedette Ouroveni vers Hoani ?",
+            "À quelle heure la vedette quitte-t-elle Ouroveni pour Hoani ?",
+        ],
     ),
     # --- famille « piège » : chercher plus peut nuire ------------------------
     Task(
@@ -103,6 +131,10 @@ TASKS: list[Task] = [
         family="piege",
         note="Une seule source la donne, et aucune autre ne la confirmera. "
              "Une stratégie qui relance pour confirmer dépense sans rien gagner.",
+        paraphrases=[
+            "Combien de kilos de bagages chaque passager peut-il emporter ?",
+            "Quel poids de bagages est autorisé par passager à bord ?",
+        ],
     ),
     Task(
         id="tarif_officiel",
@@ -113,6 +145,10 @@ TASKS: list[Task] = [
         family="piege",
         note="Le mot « officiel » ramène une archive de 2019 et une autre "
              "liaison. Chercher plus expose à répondre faux.",
+        paraphrases=[
+            "Quel est le tarif officiel en vigueur pour le billet de la traversée ?",
+            "Combien coûte officiellement le billet de la traversée aujourd'hui ?",
+        ],
     ),
     Task(
         id="repas",
@@ -121,6 +157,10 @@ TASKS: list[Task] = [
         family="piege",
         note="La page contient trois prix différents. Le risque est de "
              "retenir le mauvais.",
+        paraphrases=[
+            "Quel est le prix d'un repas au restaurant du port ?",
+            "Combien faut-il payer pour manger au restaurant du port ?",
+        ],
     ),
 ]
 

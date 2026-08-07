@@ -67,6 +67,26 @@ def run_lab() -> int:
     return 0 if result.verdict and result.verdict.status != "refutee" else 3
 
 
+def run_h2_experiment() -> int:
+    """Expérience H2 : le contrôleur adaptatif économise-t-il des recherches ?"""
+    from .lab import run_h2
+    from .lab.report_h2 import render as render_h2
+
+    settings = get_settings()
+    result = run_h2(settings=settings)
+    rapport = render_h2(result)
+    print(rapport)
+
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "h2-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+
+    # Réfutée n'est pas une panne : c'est un résultat. Le code de sortie le
+    # distingue quand même, pour qu'un script d'intégration le remarque.
+    return 0 if result.verdict and result.verdict.status != "refutee" else 3
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -131,6 +151,10 @@ def main(argv: list[str] | None = None) -> int:
         help="lance le RESEARCH LAB : compare les stratégies et tente de réfuter l'hypothèse",
     )
     parser.add_argument(
+        "--h2", action="store_true",
+        help="lance l'expérience H2 : le contrôleur adaptatif économise-t-il des recherches ?",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -145,6 +169,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.lab:
         return run_lab()
+
+    if args.h2:
+        return run_h2_experiment()
 
     if args.phone:
         return run_phone()

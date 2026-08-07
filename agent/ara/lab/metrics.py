@@ -125,10 +125,15 @@ class Row:
     task: Task
     outcome: Outcome
     score: Score
+    #: erreurs relevées après coup (H2) — voir `lab/stops.py`
+    errors: object = None
 
     def to_dict(self) -> dict:
-        return {**self.outcome.to_dict(), **self.score.to_dict(),
+        data = {**self.outcome.to_dict(), **self.score.to_dict(),
                 "family": self.task.family}
+        if self.errors is not None:
+            data["errors"] = self.errors.to_dict()
+        return data
 
 
 def cost(outcome: Outcome, price_per_1k_tokens: float = 0.0) -> float:

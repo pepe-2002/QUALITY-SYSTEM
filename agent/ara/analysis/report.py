@@ -15,6 +15,20 @@ from .coverage import Gap
 from .validate import ValidatedContradiction
 from .facts import Fact
 
+#: Raisons d'arrêt de la boucle, sous forme de codes stables.
+#:
+#: Le texte lisible (`stopped_because`) sert à l'utilisateur ; ces codes
+#: servent à **compter**. Sans eux, analyser pourquoi l'agent s'arrête
+#: reviendrait à faire des statistiques sur des phrases françaises.
+STOP_CODES = {
+    "information_suffisante": "plus rien ne manque, aucun désaccord en suspens",
+    "difficulte_faible": "la question ne demandait pas de recherche",
+    "contradiction_tranchee": "un désaccord a été rencontré puis vérifié",
+    "manque_information": "il manque encore quelque chose, mais aucune piste",
+    "limite_budget": "plafond atteint (recherches, cycles ou sources)",
+    "erreur_controleur": "arrêt subi : erreur ou raison non classable",
+}
+
 
 @dataclass
 class ResearchReport:
@@ -31,6 +45,9 @@ class ResearchReport:
     iterations: int = 0
     queries: list[str] = field(default_factory=list)
     stopped_because: str = ""
+    #: Même raison d'arrêt, sous forme de code stable — voir STOP_CODES.
+    #: Le texte est fait pour être lu ; le code est fait pour être compté.
+    stop_code: str = ""
     #: source → domaine, pour ne recouper que des sites distincts
     domains_by_source: dict[int, str] = field(default_factory=dict)
 
@@ -109,4 +126,5 @@ class ResearchReport:
             ],
             "gaps": [g.to_dict() for g in self.gaps],
             "stopped_because": self.stopped_because,
+            "stop_code": self.stop_code,
         }

@@ -165,9 +165,10 @@ class ResearchAgent:
             self._search(cycle, pending)
             self._analyze(cycle)
 
-            stop = self._should_stop(cycle)
+            stop, code = self._should_stop(cycle)
             if stop:
                 self.report.stopped_because = stop
+                self.report.stop_code = code
                 break
 
             # Un manque justifie de dépenser plus : on augmente le budget
@@ -179,6 +180,7 @@ class ResearchAgent:
                     f"budget de recherche épuisé ({plan.budget.used_searches} recherches, "
                     f"plafond {plan.budget.max_search_steps})"
                 )
+                self.report.stop_code = "limite_budget"
                 break
 
             relances = followup_queries(
@@ -193,10 +195,27 @@ class ResearchAgent:
                 # ni désaccord non tranché, il n'y a aucune raison de relancer.
                 # Les requêtes de départ non explorées ne sont PAS une raison —
                 # elles ne font que compléter une relance déjà justifiée.
-                self.report.stopped_because = (
-                    "aucun manque et aucun désaccord à trancher : "
-                    "rien ne justifie une recherche de plus"
-                )
+                #
+                # Deux situations très différentes se cachent ici, et les
+                # confondre faussait l'analyse des arrêts : soit il ne manque
+                # rien, soit il manque quelque chose mais aucune requête
+                # nouvelle ne pourrait le trouver. Le second cas n'est pas une
+                # réussite — c'est un aveu.
+                if self.report.gaps:
+                    manques = ", ".join(gap.label for gap in self.report.gaps[:2])
+                    self.report.stopped_because = (
+                        f"il manque encore quelque chose ({manques}), mais aucune "
+                        "nouvelle piste à explorer : chercher plus ne servirait à rien"
+                    )
+                    self.report.stop_code = "manque_information"
+                else:
+                    self.report.stopped_because = (
+                        "aucun manque et aucun désaccord à trancher : "
+                        "rien ne justifie une recherche de plus"
+                    )
+                    self.report.stop_code = (
+                        "contradiction_tranchee" if self._chased else "information_suffisante"
+                    )
                 break
 
             relances += [
@@ -222,6 +241,7 @@ class ResearchAgent:
             pending = [query for query, _reason in relances]
         else:
             self.report.stopped_because = f"plafond de {MAX_CYCLES} cycles atteint"
+            self.report.stop_code = "limite_budget"
 
         self._finish()
         return self.collector.docs, self.report
@@ -329,8 +349,13 @@ class ResearchAgent:
             gaps=[g.to_dict() for g in self.report.gaps],
         )
 
-    def _should_stop(self, cycle: int) -> str:
-        """Retourne la raison d'arrêt, ou une chaîne vide pour continuer."""
+    def _should_stop(self, cycle: int) -> tuple[str, str]:
+        """Raison d'arrêt (texte, code), ou `("", "")` pour continuer.
+
+        Le code accompagne le texte depuis la Phase 4 bis : analyser *pourquoi*
+        l'agent s'arrête demande de compter des catégories, pas de recouper des
+        phrases.
+        """
         plan = self.plan
         report = self.report
 
@@ -343,17 +368,20 @@ class ResearchAgent:
                         "de-escalate",
                         f"budget réduit à {plan.budget.complexity.value}",
                     )
-                return "aucune information manquante, aucune contradiction"
+                return (
+                    "aucune information manquante, aucune contradiction",
+                    "contradiction_tranchee" if self._chased else "information_suffisante",
+                )
             if not plan.needs_research:
                 return "recherche non nécessaire"
 
         if not plan.needs_research:
-            return "recherche non nécessaire"
+            return "recherche non nécessaire", "difficulte_faible"
         if self.collector.saturated:
-            return "nombre maximal de sources atteint"
+            return "nombre maximal de sources atteint", "limite_budget"
         if cycle >= MAX_CYCLES:
-            return f"plafond de {MAX_CYCLES} cycles atteint"
-        return ""
+            return f"plafond de {MAX_CYCLES} cycles atteint", "limite_budget"
+        return "", ""
 
     def _finish(self) -> None:
         ctx, report = self.ctx, self.report

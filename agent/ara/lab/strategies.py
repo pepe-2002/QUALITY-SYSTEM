@@ -53,11 +53,13 @@ def _synthesize(ctx, docs) -> str:
         return f"Synthèse impossible : {exc}"
 
 
-def run(strategy: str, task: Task, settings: Settings, corpus: Corpus) -> Outcome:
+def run(
+    strategy: str, task: Task, settings: Settings, corpus: Corpus, *, seed: int = 0
+) -> Outcome:
     """Exécute une stratégie sur une tâche, dans le corpus figé."""
     search = LabSearch(corpus)
     counters: dict[str, int] = {}
-    outcome = Outcome(strategy=strategy, task_id=task.id)
+    outcome = Outcome(strategy=strategy, task_id=task.id, seed=seed)
 
     ctx = build_context(task.question, settings, search, f"lab-{strategy}-{task.id}")
     toolbox = ToolBox(ctx)
@@ -93,6 +95,7 @@ def run(strategy: str, task: Task, settings: Settings, corpus: Corpus) -> Outcom
                 outcome.gaps = [gap.label for gap in report.gaps]
                 outcome.contradictions = [a.describe() for a in report.anomalies]
                 outcome.stopped_because = report.stopped_because
+                outcome.stop_code = report.stop_code
 
     except AraError as exc:
         outcome.error = str(exc)
@@ -103,6 +106,7 @@ def run(strategy: str, task: Task, settings: Settings, corpus: Corpus) -> Outcom
     outcome.searches = len(search.queries)
     outcome.fetches = counters.get("fetches", 0)
     outcome.tool_calls = len(toolbox.calls)
+    outcome.llm_calls = getattr(ctx.llm, "calls", 0)
     outcome.latency_ms = timer.ms
     outcome.tokens = estimate_tokens(ctx, docs, answer)
     outcome.domains = len({doc.domain for doc in docs})

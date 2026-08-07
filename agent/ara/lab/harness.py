@@ -71,6 +71,26 @@ def frozen_network(corpus: Corpus, counters: dict[str, int]):
         http.get = original_get
 
 
+class CountingLLM:
+    """Enveloppe qui compte les appels au modèle, sans rien changer d'autre.
+
+    Le nombre d'appels est une mesure de coût à part entière : deux stratégies
+    peuvent traverser le même volume de texte en un appel ou en cinq, et la
+    facture d'un fournisseur payant n'est pas la même.
+    """
+
+    def __init__(self, inner) -> None:
+        self._inner = inner
+        self.calls = 0
+
+    def complete(self, request):
+        self.calls += 1
+        return self._inner.complete(request)
+
+    def __getattr__(self, name):
+        return getattr(self._inner, name)
+
+
 @dataclass
 class Outcome:
     """Ce qu'une stratégie a produit et ce qu'elle a coûté."""
@@ -83,23 +103,28 @@ class Outcome:
     searches: int = 0
     fetches: int = 0
     tool_calls: int = 0
+    llm_calls: int = 0
     tokens: int = 0
     latency_ms: int = 0
     domains: int = 0
+    seed: int = 0
     gaps: list[str] = field(default_factory=list)
     contradictions: list[str] = field(default_factory=list)
     stopped_because: str = ""
+    stop_code: str = ""
     error: str = ""
 
     def to_dict(self) -> dict:
         return {
-            "strategy": self.strategy, "task": self.task_id,
+            "strategy": self.strategy, "task": self.task_id, "seed": self.seed,
             "cycles": self.cycles, "searches": self.searches,
             "fetches": self.fetches, "tool_calls": self.tool_calls,
+            "llm_calls": self.llm_calls,
             "tokens": self.tokens, "latency_ms": self.latency_ms,
             "sources": len(self.sources), "domains": self.domains,
             "gaps": len(self.gaps), "contradictions": len(self.contradictions),
-            "stopped_because": self.stopped_because, "error": self.error,
+            "stopped_because": self.stopped_because, "stop_code": self.stop_code,
+            "error": self.error,
         }
 
 
@@ -107,6 +132,7 @@ def build_context(
     question: str, settings: Settings, search: SearchProvider, task_id: str
 ) -> TaskContext:
     llm, _notice = get_llm(settings.llm_provider)
+    llm = CountingLLM(llm)
     return TaskContext(
         task_id=task_id,
         prompt=question,

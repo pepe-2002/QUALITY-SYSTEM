@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 
 from .core.config import get_settings, load_dotenv
 from .core.events import EventBus, Stage
@@ -66,6 +67,60 @@ def run_lab() -> int:
     return 0 if result.verdict and result.verdict.status != "refutee" else 3
 
 
+def run_phone() -> int:
+    """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
+    from .android.bridge import SUPPORTED, capabilities
+
+    infos = capabilities()
+    print("Termux détecté : " + ("oui" if infos["on_termux"] else "non"))
+    if infos["reason"]:
+        print(f"  → {infos['reason']}")
+    for name, usage in sorted(SUPPORTED.items()):
+        etat = "✓" if name in infos["commands"] else "·"
+        print(f"  {etat} {name:<28} {usage}")
+    return 0 if infos["usable"] else 2
+
+
+def run_routines(create: tuple[str, str] | None) -> int:
+    """Liste les routines, ou en ajoute une."""
+    from .automation import RoutineError, RoutineStore, build_routine
+
+    settings = get_settings()
+    store = RoutineStore(settings.routines_path())
+
+    if create:
+        prompt, when = create
+        try:
+            routine = build_routine(prompt, when)
+            store.add(routine)
+        except RoutineError as exc:
+            print(f"✕ {exc}")
+            return 1
+        print(f"Routine créée : {routine.describe()} — « {routine.prompt} »")
+
+    routines = store.list()
+    if not routines:
+        print("Aucune routine. Exemple :")
+        print('  python -m ara.cli --add-routine "chaque matin" "Tarifs des traversées"')
+        return 0
+
+    print(f"{len(routines)} routine(s) :")
+    for routine in routines:
+        etat = "actif " if routine.enabled else "arrêté"
+        prochaine = (
+            time.strftime("%d/%m %H:%M", time.localtime(routine.next_run))
+            if routine.next_run
+            else "—"
+        )
+        print(f"  [{etat}] {routine.routine_id}  {routine.describe():<28} → {prochaine}")
+        print(f"           « {routine.prompt[:70]} »")
+        if routine.disabled_reason:
+            print(f"           arrêtée : {routine.disabled_reason}")
+    if not settings.automation_enabled:
+        print("\n⚠ L'ordonnanceur est arrêté. ARA_AUTOMATION=1 pour qu'elles tournent.")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     load_dotenv()
     parser = argparse.ArgumentParser(prog="ara", description="Agent de recherche et de création.")
@@ -75,10 +130,28 @@ def main(argv: list[str] | None = None) -> int:
         "--lab", action="store_true",
         help="lance le RESEARCH LAB : compare les stratégies et tente de réfuter l'hypothèse",
     )
+    parser.add_argument(
+        "--phone", action="store_true",
+        help="montre les capacités Android détectées (Termux)",
+    )
+    parser.add_argument(
+        "--routines", action="store_true", help="liste les routines programmées",
+    )
+    parser.add_argument(
+        "--add-routine", nargs=2, metavar=("QUAND", "DEMANDE"),
+        help='ajoute une routine, ex. --add-routine "chaque matin" "Tarifs des traversées"',
+    )
     args = parser.parse_args(argv)
 
     if args.lab:
         return run_lab()
+
+    if args.phone:
+        return run_phone()
+
+    if args.routines or args.add_routine:
+        creation = (args.add_routine[1], args.add_routine[0]) if args.add_routine else None
+        return run_routines(creation)
 
     if args.serve:
         from .api.server import main as serve

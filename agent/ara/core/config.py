@@ -32,6 +32,14 @@ DEFAULT_ALLOWED_TOOLS = (
     "create_flyer",
     "create_qr",
     "remember_brand",
+    # Phase 5 — capacités du téléphone. `share_file` en est volontairement
+    # absent : un fichier qui sort de l'appareil exige une autorisation
+    # explicite en plus de la confirmation humaine (double verrou, comme
+    # `delete_file`).
+    "notify_phone",
+    "phone_status",
+    "copy_to_clipboard",
+    "speak_text",
 )
 
 #: Outils considérés comme sensibles : confirmation humaine obligatoire (spec §15).
@@ -40,6 +48,7 @@ DEFAULT_SENSITIVE_TOOLS = (
     "publish",
     "send_message",
     "purchase",
+    "share_file",
 )
 
 _TRUE = {"1", "true", "yes", "on", "oui"}
@@ -127,6 +136,11 @@ class Settings:
     sensitive_tools: tuple[str, ...] = DEFAULT_SENSITIVE_TOOLS
     require_approval: bool = True
 
+    # --- Automatisation (Phase 5) ---
+    #: l'ordonnanceur ne démarre que si on le demande : rien ne tourne tout
+    #: seul sur la machine de quelqu'un sans qu'il l'ait décidé
+    automation_enabled: bool = False
+
     # --- Serveur ---
     host: str = "0.0.0.0"
     port: int = 8800
@@ -154,6 +168,7 @@ class Settings:
             allowed_tools=_env_list("ARA_ALLOWED_TOOLS", DEFAULT_ALLOWED_TOOLS),
             sensitive_tools=_env_list("ARA_SENSITIVE_TOOLS", DEFAULT_SENSITIVE_TOOLS),
             require_approval=_env_bool("ARA_REQUIRE_APPROVAL", True),
+            automation_enabled=_env_bool("ARA_AUTOMATION", False),
             host=os.environ.get("ARA_HOST", "0.0.0.0"),
             port=_env_int("ARA_PORT", 8800, minimum=1),
         )
@@ -179,6 +194,9 @@ class Settings:
 
     def brand_profile_path(self) -> Path:
         return self.workspace / "brand_profile.json"
+
+    def routines_path(self) -> Path:
+        return self.workspace / "routines.json"
 
 
 _settings: Settings | None = None

@@ -17,6 +17,8 @@ from pathlib import Path
 from typing import Any
 
 from .agents.orchestrator import Orchestrator
+from .automation.routines import RoutineStore
+from .automation.scheduler import Scheduler
 from .core.config import Settings, get_settings
 from .core.events import EventBus
 from .core.permissions import PermissionManager
@@ -113,9 +115,27 @@ class TaskService:
         self.settings = settings or get_settings()
         self.store = TaskStore(self.settings.tasks_dir())
         self.permissions = PermissionManager(self.settings)
+        self.routines = RoutineStore(self.settings.routines_path())
+        self.scheduler = Scheduler(self, self.routines)
         self._buses: dict[str, EventBus] = {}
         self._threads: dict[str, threading.Thread] = {}
         self._lock = threading.Lock()
+
+    # -- automatisation (Phase 5) -----------------------------------------
+
+    def start_scheduler(self) -> bool:
+        """Démarre l'ordonnanceur si le propriétaire l'a activé.
+
+        Rien ne tourne en arrière-plan par défaut : `ARA_AUTOMATION=1` est un
+        choix explicite, pas un réglage hérité.
+        """
+        if not self.settings.automation_enabled:
+            return False
+        self.scheduler.start()
+        return True
+
+    def stop_scheduler(self) -> None:
+        self.scheduler.stop()
 
     # -- lancement ---------------------------------------------------------
 

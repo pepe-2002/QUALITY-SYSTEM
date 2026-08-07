@@ -14,11 +14,13 @@ from __future__ import annotations
 import json
 import mimetypes
 import os
+import time
 import urllib.parse
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
+from ..automation.routines import DEFAULT_MIN_BATTERY, build_routine
 from ..core.config import Settings, get_settings
 from ..core.errors import AraError
 from ..core.events import STAGE_ORDER
@@ -157,6 +159,23 @@ class AraHandler(BaseHTTPRequestHandler):
             limit = int((query.get("limit") or ["50"])[0] or 50)
             return self._json({"tasks": self.service.history(min(limit, 200))})
 
+        if path == "/api/phone":
+            from ..android.bridge import capabilities
+
+            return self._json(capabilities())
+
+        if path == "/api/routines":
+            return self._json(
+                {
+                    "routines": [r.to_dict() for r in self.service.routines.list()],
+                    "scheduler": {
+                        "enabled": self.settings.automation_enabled,
+                        "running": self.service.scheduler.running,
+                        "last_error": self.service.scheduler.last_error,
+                    },
+                }
+            )
+
         parts = [p for p in path.split("/") if p]
         # /api/tasks/<id>[/events|/files/<name>]
         if len(parts) >= 3 and parts[0] == "api" and parts[1] == "tasks":
@@ -184,7 +203,14 @@ class AraHandler(BaseHTTPRequestHandler):
             record = self.service.start(prompt)
             return self._json(record.summary(), 201)
 
+        if path == "/api/routines":
+            return self._create_routine(self._body())
+
         parts = [p for p in path.split("/") if p]
+        # /api/routines/<id>/<action>
+        if len(parts) == 4 and parts[0] == "api" and parts[1] == "routines":
+            return self._routine_action(parts[2], parts[3])
+
         # /api/approvals/<request_id> — confirmation humaine (spec §15)
         if len(parts) == 3 and parts[0] == "api" and parts[1] == "approvals":
             data = self._body()
@@ -196,6 +222,63 @@ class AraHandler(BaseHTTPRequestHandler):
             return self._json({"request_id": request.request_id, "granted": request.granted})
 
         return self._error(404, "Route inconnue.")
+
+    # -- routines (Phase 5) ------------------------------------------------
+
+    def _create_routine(self, data: dict) -> None:
+        prompt = str(data.get("prompt", "")).strip()
+        when = str(data.get("when", "")).strip()
+        if not prompt:
+            return self._error(400, "Le champ « prompt » est requis.")
+        if len(prompt) > MAX_PROMPT_CHARS:
+            return self._error(400, f"Demande trop longue (max {MAX_PROMPT_CHARS} caractères).")
+        try:
+            routine = build_routine(
+                prompt,
+                when,
+                label=str(data.get("label", "")).strip(),
+                min_battery=int(data.get("min_battery", DEFAULT_MIN_BATTERY)),
+                notify=bool(data.get("notify", True)),
+            )
+            self.service.routines.add(routine)
+        except (AraError, TypeError, ValueError) as exc:
+            return self._error(400, str(exc))
+
+        if self.settings.automation_enabled:
+            self.service.scheduler.start()
+        return self._json(routine.to_dict(), 201)
+
+    def _routine_action(self, routine_id: str, action: str) -> None:
+        routines = self.service.routines
+        if action == "delete":
+            if not routines.delete(routine_id):
+                return self._error(404, "Routine inconnue.")
+            return self._json({"deleted": routine_id})
+
+        routine = routines.get(routine_id)
+        if routine is None:
+            return self._error(404, "Routine inconnue.")
+
+        if action in {"enable", "disable"}:
+            if action == "enable":
+                routine.enabled = True
+                routine.disabled_reason = ""
+                routine.failures = 0
+                routine.reschedule(time.time())
+            else:
+                routine.disable("désactivée à la main")
+            routines.save(routine)
+            return self._json(routine.to_dict())
+
+        if action == "run":
+            # Exécution immédiate, à la demande — elle ne décale pas l'horaire.
+            record = self.service.start(routine.prompt)
+            routine.last_task_id = record.task_id
+            routine.last_status = "lancée à la main"
+            routines.save(routine)
+            return self._json({"task": record.summary(), "routine": routine.to_dict()})
+
+        return self._error(400, f"Action inconnue : {action}")
 
     # -- flux d'événements (SSE) -------------------------------------------
 
@@ -277,12 +360,26 @@ def main() -> None:
 
     token = Settings.secret("ARA_TOKEN")
     from .. import __phase__, __version__
+    from ..android.bridge import detect
+
+    device = detect()
+    service: TaskService = httpd.service  # type: ignore[attr-defined]
+    automation = service.start_scheduler()
 
     print(f"ARA v{__version__} (phase {__phase__}) — http://{settings.host}:{settings.port}")
     print(f"  LLM       : {settings.llm_provider}")
     print(f"  Recherche : {settings.search_provider}")
     print(f"  Espace    : {settings.workspace}")
     print(f"  Jeton     : {'activé' if token else 'désactivé (réseau local uniquement)'}")
+    print(f"  Téléphone : {'Termux, ' + str(len(device.available)) + ' commandes' if device.usable else 'non (' + device.reason + ')'}")
+    print(
+        "  Routines  : "
+        + (
+            f"actives, {len(service.routines.list())} enregistrée(s)"
+            if automation
+            else "arrêtées (ARA_AUTOMATION=1 pour les activer)"
+        )
+    )
     print("Ctrl+C pour arrêter.")
 
     try:
@@ -290,6 +387,7 @@ def main() -> None:
     except KeyboardInterrupt:
         print("\nArrêt.")
     finally:
+        service.stop_scheduler()
         httpd.server_close()
 
 

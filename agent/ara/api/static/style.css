@@ -214,6 +214,41 @@ h3.danger { color: var(--err); }
 .history .state.error { color: var(--err); }
 .history .state.running { color: var(--warn); }
 
+/* ————— Routines ————— */
+#routine-when {
+  width: 100%; padding: 13px 14px; font: inherit; color: var(--text);
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+}
+#routine-when:focus { outline: 2px solid var(--accent); border-color: transparent; }
+#routine-prompt { min-height: 68px; }
+
+.scheduler-state {
+  font-size: .8rem; padding: 10px 12px; border-radius: 11px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  margin: 0 0 14px;
+}
+.scheduler-state.on { color: var(--ok); border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+.scheduler-state.off { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
+
+.routines { list-style: none; margin: 16px 0; padding: 0; display: grid; gap: 10px; }
+.routines li {
+  padding: 12px 14px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 12px;
+}
+.routines li.off { opacity: .6; }
+.routines .row { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.routines .when { font-size: .74rem; color: var(--accent); white-space: nowrap; }
+.routines .tags { margin-top: 6px; color: var(--muted); }
+.routines .danger { color: var(--err); }
+.routine-actions { display: flex; gap: 8px; margin-top: 10px; }
+.routine-actions button {
+  flex: 1; min-height: 40px; font: inherit; font-size: .82rem; cursor: pointer;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 10px;
+}
+.routine-actions button.danger { color: var(--err); }
+.routine-actions button[disabled] { opacity: .5; }
+
 /* ————— Dialogue ————— */
 dialog {
   width: min(94vw, 620px); border: 1px solid var(--line); border-radius: var(--radius);

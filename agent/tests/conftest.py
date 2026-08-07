@@ -100,6 +100,22 @@ def no_network(monkeypatch):
     monkeypatch.setattr(http, "post", lambda url, data, **kw: fake_request(url, **kw))
 
 
+@pytest.fixture(autouse=True)
+def no_phone(monkeypatch):
+    """Aucun test ne part du principe qu'un téléphone est branché.
+
+    Le pont Android retient ce qu'il a détecté ; sans remise à zéro, un test
+    qui simule Termux contaminerait les suivants.
+    """
+    from ara.android import bridge
+
+    monkeypatch.setattr(bridge, "_cache", None, raising=False)
+    monkeypatch.setattr(bridge, "_runner", bridge._default_runner, raising=False)
+    yield
+    bridge._cache = None
+    bridge._runner = bridge._default_runner
+
+
 @pytest.fixture
 def search_provider():
     return FixtureSearch(dict(RESULTS))

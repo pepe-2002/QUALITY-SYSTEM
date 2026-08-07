@@ -1,6 +1,6 @@
 # ARA — Autonomous Research & Creative Agent
 
-**v0.4 — Phases 1 à 4**
+**v0.5 — Phases 1 à 5**
 
 Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
 crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
@@ -31,6 +31,8 @@ quels fichiers produire.
 | **Journal** | une entrée reproductible par tâche (spec §17) |
 | **Sécurité** | liste blanche d'outils, confirmation des actions sensibles |
 | **Laboratoire** | banc d'essai qui **tente de réfuter** le raisonnement adaptatif |
+| **Téléphone** | notification, presse-papier, voix, partage Android (Termux) |
+| **Routines** | tâches programmées : « chaque matin », « chaque lundi à 8h » |
 | **Coût** | 0 € — aucune dépendance obligatoire, aucune clé requise |
 
 Le pipeline visible à l'écran est exactement celui qui s'exécute :
@@ -163,6 +165,52 @@ Le banc a surtout servi à autre chose : il a **trouvé quatre défauts** dans l
 système de production (voir `docs/ANALYSE-V0.md`). C'est probablement son
 apport le plus solide à ce stade.
 
+## Le téléphone et les routines (Phase 5)
+
+L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
+surtout **revenir tout seul** à heure fixe.
+
+```bash
+python -m ara.cli --phone                              # ce que ce téléphone sait faire
+python -m ara.cli --add-routine "chaque matin" "Vérifie les tarifs des traversées"
+ARA_AUTOMATION=1 python -m ara.cli --serve             # …et les routines tournent
+```
+
+| Capacité | Commande Termux | Autorisation |
+|---|---|---|
+| Notification | `termux-notification` | liste blanche |
+| État batterie / Wi-Fi | `termux-battery-status` | liste blanche |
+| Presse-papier | `termux-clipboard-set` | liste blanche |
+| Lecture à voix haute | `termux-tts-speak` | liste blanche |
+| **Partage d'un fichier** | `termux-share` | **hors liste blanche + confirmation** |
+
+Trois décisions valent d'être dites :
+
+- **Pas d'envoi de SMS.** C'est la seule capacité qui engage le propriétaire
+  auprès d'un tiers sans qu'il voie ce qui part. `termux-share` passe au
+  contraire par le sélecteur d'Android : le destinataire est choisi par
+  l'humain, dans son application, hors de portée de l'agent.
+- **Liste blanche fermée et aucun shell.** Seules huit commandes `termux-*`
+  sont exécutables, les arguments partent en liste — un `;` glissé dans un
+  titre de notification ne s'exécute pas.
+- **Une routine n'a aucun droit de plus qu'une demande tapée à la main.** Elle
+  emprunte le même orchestrateur, la même liste blanche, les mêmes
+  confirmations. Une action sensible programmée à 3 h du matin échoue
+  proprement au lieu de passer en douce.
+
+Une routine ne naît **que d'un horaire compris**. « De temps en temps » est
+refusé avec des exemples — deviner ferait tourner l'agent quand personne ne
+l'attend. Et chaque exécution est bornée : plafond quotidien, batterie
+minimale, jamais deux fois en parallèle, suspension automatique après trois
+échecs consécutifs — en disant lequel.
+
+L'ordonnanceur **ne rattrape pas** ce qu'il a manqué : téléphone éteint à 7 h,
+la routine attend le lendemain plutôt que de partir en rafale au réveil.
+
+Installation sur téléphone : `deploy/termux/install.sh`, et
+`deploy/termux/boot-ara.sh` pour un démarrage automatique via Termux:Boot.
+Rien ne tourne en arrière-plan tant que `ARA_AUTOMATION=1` n'est pas posé.
+
 ---
 
 ## Démarrage rapide
@@ -267,7 +315,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-351 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+413 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -295,10 +343,12 @@ agent/
 │   ├── documents/     modèle commun → PDF, DOCX, MD, TXT + vérification
 │   ├── agents/        planificateur, collecte, research agent, documents
 │   ├── lab/           corpus figé, stratégies, mesures, expérience, rapport
+│   ├── android/       pont Termux : détection, liste blanche de commandes
+│   ├── automation/    horaires, routines, ordonnanceur
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             351 tests hors ligne
+├── tests/             413 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -312,7 +362,7 @@ agent/
 | **2** | Research Agent : boucle adaptative, contradictions, relances | **fait** |
 | **3** | Creative Agent + Design Critic : flyers, QR code, itérations notées | **fait** |
 | **4** | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | **fait** |
-| 5 | Automatisation Android | à venir |
+| **5** | Automatisation Android : capacités du téléphone, routines programmées | **fait** |
 
 **Limites connues** — à lire avant d'en attendre trop :
 

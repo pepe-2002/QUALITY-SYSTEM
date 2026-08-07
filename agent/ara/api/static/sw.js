@@ -2,7 +2,7 @@
    Les routes /api/ ne sont JAMAIS mises en cache — un résultat de tâche
    périmé serait pire que pas de résultat, et le flux SSE doit rester direct. */
 
-const CACHE = 'ara-shell-v1';
+const CACHE = 'ara-shell-v5';
 const SHELL = ['/', '/index.html', '/style.css', '/app.js', '/icon.svg', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => {

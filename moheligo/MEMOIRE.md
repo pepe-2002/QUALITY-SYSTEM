@@ -159,7 +159,7 @@ un agent IA autonome (recherche web → analyse → création de documents →
 critique → correction). Comme « Nous », c'est **volontairement séparé** :
 dossier `agent/` à la racine, aucun lien avec MoheliGo.
 
-Phases 1 à 4 livrées (v0.4, 351 tests) :
+Les cinq phases sont livrées (v0.5, 413 tests) :
 
 1. interface mobile (PWA), documents PDF/DOCX/MD/TXT vérifiés, historique,
    permissions, journal ;
@@ -173,9 +173,12 @@ Phases 1 à 4 livrées (v0.4, 351 tests) :
    pages, conditions de réfutation écrites d'avance. Verdict honnête :
    **non concluant** (8 tâches, p = 1,000) — l'adaptation n'a pas prouvé
    qu'elle répond plus juste, mais elle dépense moitié moins de recherches
-   à exactitude égale. Le banc a surtout servi à trouver 4 vrais bugs.
+   à exactitude égale. Le banc a surtout servi à trouver 4 vrais bugs ;
+5. automatisation Android : capacités du téléphone via Termux (notification,
+   presse-papier, voix, partage) et **routines programmées** — « chaque
+   matin », « chaque lundi à 8h ». Pas d'envoi de SMS par l'agent : le partage
+   passe par le sélecteur d'Android, c'est l'humain qui choisit à qui.
 
-Phase 5 (automatisation Android) reste à faire.
 Tout est expliqué dans `agent/README.md` et `agent/docs/ANALYSE-V0.md` —
 ne pas recharger ce sujet ici, ce n'est pas du marketing.
 

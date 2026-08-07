@@ -3,10 +3,14 @@
 Agent personnel modulaire : cherche, comprend, planifie, utilise des outils,
 crée, vérifie, s'arrête.
 
-Version 0.2 — Phases 1 et 2 : interface mobile, LLM, recherche web adaptative
-(relance ciblée, détection de contradictions), création et vérification de
-fichiers (TXT/MD/DOCX/PDF), historique.
+Version 0.5 — Phases 1 à 5 :
+
+1. interface mobile, LLM interchangeable, fichiers vérifiés, historique ;
+2. boucle de recherche adaptative, contradictions et agent contexte ;
+3. studio créatif : concepts, critique mesurée, QR code relu ;
+4. laboratoire : mesure des stratégies et tentative de réfutation ;
+5. automatisation Android : capacités du téléphone et routines programmées.
 """
 
-__version__ = "0.2.0"
-__phase__ = 2
+__version__ = "0.5.0"
+__phase__ = 5

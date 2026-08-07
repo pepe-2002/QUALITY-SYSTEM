@@ -300,6 +300,105 @@ async function loadHistory() {
   }
 }
 
+/* ————————————————— Routines ————————————————— */
+
+function nextRun(ts) {
+  if (!ts) return '—';
+  const date = new Date(ts * 1000);
+  return date.toLocaleString('fr-FR', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+async function loadRoutines() {
+  try {
+    const data = await getJSON('/api/routines');
+    const state = $('scheduler-state');
+    if (!data.scheduler.enabled) {
+      state.className = 'scheduler-state off';
+      state.textContent = "L'ordonnanceur est arrêté : les routines sont enregistrées mais ne tournent pas. Lancez le serveur avec ARA_AUTOMATION=1.";
+    } else {
+      state.className = 'scheduler-state on';
+      state.textContent = data.scheduler.running
+        ? 'Ordonnanceur actif — les routines tournent même écran éteint.'
+        : "Ordonnanceur activé mais à l'arrêt.";
+    }
+
+    const list = $('routines');
+    if (!data.routines.length) {
+      list.innerHTML = '<li class="muted small">Aucune routine programmée.</li>';
+      return;
+    }
+    list.innerHTML = data.routines.map((routine) => `
+      <li class="${routine.enabled ? '' : 'off'}">
+        <div class="row">
+          <strong>${escapeHtml(routine.label || routine.prompt)}</strong>
+          <span class="when">${escapeHtml(routine.describe)}</span>
+        </div>
+        <div class="small muted">« ${escapeHtml(routine.prompt)} »</div>
+        <div class="tags small">
+          ${routine.enabled ? `prochaine : ${escapeHtml(nextRun(routine.next_run))}` : 'arrêtée'}
+          ${routine.runs ? ` · ${routine.runs} exécution(s)` : ''}
+          ${routine.last_status ? ` · ${escapeHtml(routine.last_status)}` : ''}
+        </div>
+        ${routine.disabled_reason ? `<div class="small danger">${escapeHtml(routine.disabled_reason)}</div>` : ''}
+        <div class="routine-actions">
+          <button data-action="run" data-id="${routine.routine_id}">Lancer</button>
+          <button data-action="${routine.enabled ? 'disable' : 'enable'}" data-id="${routine.routine_id}">
+            ${routine.enabled ? 'Suspendre' : 'Réactiver'}</button>
+          <button data-action="delete" data-id="${routine.routine_id}" class="danger">Supprimer</button>
+        </div>
+      </li>`).join('');
+
+    list.querySelectorAll('button').forEach((button) => {
+      button.onclick = async () => {
+        const { action, id } = button.dataset;
+        if (action === 'delete' && !confirm('Supprimer cette routine ?')) return;
+        button.disabled = true;
+        try {
+          const response = await fetch(api(`/api/routines/${id}/${action}`), { method: 'POST' });
+          const payload = await response.json();
+          if (!response.ok) throw new Error(payload.error || 'Erreur serveur');
+          if (action === 'run' && payload.task) {
+            switchView('run');
+            listen(payload.task.task_id);
+          }
+        } catch (error) {
+          addNotice('Action impossible : ' + error.message);
+        }
+        loadRoutines();
+      };
+    });
+  } catch (error) {
+    $('routines').innerHTML = `<li class="muted small">Routines indisponibles : ${escapeHtml(error.message)}</li>`;
+  }
+}
+
+async function createRoutine() {
+  const prompt = $('routine-prompt').value.trim();
+  const when = $('routine-when').value.trim();
+  const error = $('routine-error');
+  error.textContent = '';
+  if (!prompt || !when) {
+    error.textContent = 'Une demande et un moment sont nécessaires.';
+    return;
+  }
+  $('btn-routine').disabled = true;
+  try {
+    const response = await fetch(api('/api/routines'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt, when }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Erreur serveur');
+    $('routine-prompt').value = '';
+    $('routine-when').value = '';
+    loadRoutines();
+  } catch (err) {
+    error.textContent = err.message;
+  }
+  $('btn-routine').disabled = false;
+}
+
 /* ————————————————— Configuration ————————————————— */
 
 async function showInfo() {
@@ -321,7 +420,15 @@ async function showInfo() {
         (t.sensitive ? ' <em>(confirmation requise)</em>' : '') +
         (t.requires_external ? ' <em>(ressource externe)</em>' : '') + '</li>').join('')}</ul>
       <h4>Limites</h4>
-      <ul>${Object.entries(config.limits).map(([k, v]) => `<li>${escapeHtml(k)} : ${v}</li>`).join('')}</ul>`;
+      <ul>${Object.entries(config.limits).map(([k, v]) => `<li>${escapeHtml(k)} : ${v}</li>`).join('')}</ul>
+      <h4>Téléphone</h4>
+      <ul id="phone-body"><li class="muted">Détection…</li></ul>`;
+
+    const phone = await getJSON('/api/phone');
+    $('phone-body').innerHTML = phone.usable
+      ? Object.entries(phone.commands).map(([name, usage]) =>
+          `<li class="on">✓ <strong>${escapeHtml(name)}</strong> — ${escapeHtml(usage)}</li>`).join('')
+      : `<li class="off">✕ ${escapeHtml(phone.reason || 'aucune capacité Android détectée')}</li>`;
   } catch (error) {
     $('info-body').textContent = 'Configuration indisponible : ' + error.message;
   }
@@ -333,6 +440,7 @@ function switchView(name) {
   document.querySelectorAll('.tab').forEach((tab) => tab.classList.toggle('active', tab.dataset.view === name));
   document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === 'view-' + name));
   if (name === 'history') loadHistory();
+  if (name === 'routines') loadRoutines();
 }
 
 /* ————————————————— Démarrage ————————————————— */
@@ -348,6 +456,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!event.target.classList.contains('chip')) return;
     $('prompt').value = event.target.textContent.trim();
     $('prompt').focus();
+  };
+
+  $('routine-form').onsubmit = (event) => {
+    event.preventDefault();
+    createRoutine();
+  };
+
+  $('routine-chips').onclick = (event) => {
+    if (!event.target.classList.contains('chip')) return;
+    $('routine-when').value = event.target.textContent.trim();
   };
 
   document.querySelectorAll('.tab').forEach((tab) => {

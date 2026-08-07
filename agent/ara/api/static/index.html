@@ -14,7 +14,7 @@
 <header class="topbar">
   <div class="brand">
     <span class="dot" id="health-dot" title="état du serveur"></span>
-    <strong>ARA</strong><span class="muted">v0.2 · phase 2</span>
+    <strong>ARA</strong><span class="muted">v0.5 · phase 5</span>
   </div>
   <button class="icon-btn" id="btn-info" aria-label="Configuration">⚙</button>
 </header>
@@ -22,6 +22,7 @@
 <nav class="tabs" role="tablist">
   <button class="tab active" data-view="run" role="tab">Tâche</button>
   <button class="tab" data-view="history" role="tab">Historique</button>
+  <button class="tab" data-view="routines" role="tab">Routines</button>
 </nav>
 
 <main>
@@ -74,6 +75,32 @@
   <section id="view-history" class="view">
     <p class="muted small">Les tâches sont conservées sur le serveur, même après redémarrage.</p>
     <ul class="history" id="history"></ul>
+  </section>
+
+  <!-- ————— Vue routines ————— -->
+  <section id="view-routines" class="view">
+    <p class="scheduler-state" id="scheduler-state"></p>
+
+    <form id="routine-form" class="composer">
+      <textarea id="routine-prompt" rows="2"
+        placeholder="Ex. : Vérifie les tarifs des traversées et préviens-moi si un prix a changé"></textarea>
+      <input id="routine-when" type="text" placeholder="Quand ? ex. « chaque matin », « chaque lundi à 8h »">
+      <div class="chips" id="routine-chips">
+        <button type="button" class="chip">chaque matin</button>
+        <button type="button" class="chip">tous les jours à 7h30</button>
+        <button type="button" class="chip">chaque lundi à 8h</button>
+        <button type="button" class="chip">toutes les 6 heures</button>
+      </div>
+      <button type="submit" class="primary" id="btn-routine">Programmer</button>
+      <p class="small muted" id="routine-error"></p>
+    </form>
+
+    <ul class="routines" id="routines"></ul>
+
+    <p class="small muted">
+      Une routine emprunte les mêmes autorisations qu'une demande tapée à la
+      main : elle ne peut rien faire de plus que vous ne lui avez permis.
+    </p>
   </section>
 </main>
 

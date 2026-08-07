@@ -119,7 +119,11 @@ class AraHandler(BaseHTTPRequestHandler):
 
     def _api_get(self, path: str, query: dict[str, list[str]]) -> None:
         if path == "/api/health":
-            return self._json({"status": "ok", "version": "0.1.0", "phase": 1})
+            from .. import __phase__, __version__
+
+            return self._json(
+                {"status": "ok", "version": __version__, "phase": __phase__}
+            )
 
         if path == "/api/config":
             return self._json(
@@ -272,7 +276,9 @@ def main() -> None:
     httpd = build_server(settings)
 
     token = Settings.secret("ARA_TOKEN")
-    print(f"ARA v0.1 (Phase 1) — http://{settings.host}:{settings.port}")
+    from .. import __phase__, __version__
+
+    print(f"ARA v{__version__} (phase {__phase__}) — http://{settings.host}:{settings.port}")
     print(f"  LLM       : {settings.llm_provider}")
     print(f"  Recherche : {settings.search_provider}")
     print(f"  Espace    : {settings.workspace}")

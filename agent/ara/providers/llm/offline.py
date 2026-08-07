@@ -60,6 +60,13 @@ _INSTRUCTION_WORDS = {
     "combien", "quand", "comment", "pourquoi", "quel", "quelle", "quels",
     "quelles", "lequel", "laquelle", "qui", "que", "quoi", "est-ce", "ce",
     "what", "when", "where", "why", "how", "which", "who", "whom",
+    # Vocabulaire de fabrication graphique : ce sont des consignes de format,
+    # jamais le sujet. Sans cela, l'agent partait chercher « flyer premium »
+    # sur le web et relançait quatre cycles pour rien.
+    "flyer", "flyers", "affiche", "affiches", "poster", "visuel", "visuels",
+    "publicite", "pub", "story", "banniere", "carre", "prospectus", "depliant",
+    "premium", "moderne", "joli", "jolie", "beau", "belle", "http", "https",
+    "www", "com", "maquette", "design",
 }
 
 _SENTENCE_SPLIT = re.compile(r"(?<=[.!?…])\s+|\n+")

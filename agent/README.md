@@ -1,6 +1,6 @@
 # ARA — Autonomous Research & Creative Agent
 
-**v0.2 — Phases 1 et 2**
+**v0.3 — Phases 1 à 3**
 
 Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
 crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
@@ -21,6 +21,10 @@ quels fichiers produire.
 | **Recherche** | boucle adaptative : cherche, analyse, **relance si ça manque** |
 | **Comparaison** | confronte les sources, **détecte les contradictions chiffrées** |
 | **Analyse** | synthèse citée `[S1] [S2]`, recoupements et manques explicites |
+| **Validation** | un **agent contexte** tranche : vraie contradiction ou écart explicable |
+| **Création** | 3 concepts de flyer, critiqués sur 12 critères, améliorés, notés |
+| **QR code** | encodé en Python pur et **relu** avant d'être posé |
+| **Marque** | `brand_profile.json` : couleurs, ton, et surtout les interdits |
 | **Vérification** | la réponse est contrôlée (citations, chiffres non sourcés) |
 | **Documents** | PDF, DOCX, Markdown, TXT — **vérifiés avant livraison** |
 | **Historique** | conservé sur disque, survit au redémarrage |
@@ -66,8 +70,47 @@ Trois garde-fous évitent les fausses alertes, tous issus d'essais réels :
 - deux valeurs séparées d'un facteur 5 mesurent autre chose (6 m d'antenne
   contre 330 m de tour), elles ne se contredisent pas.
 
-Tout cela est **déterministe** : la détection ne dépend pas du LLM configuré,
-donc elle est reproductible et testable.
+### Deux étages de détection
+
+Le détecteur déterministe est réglé pour le **rappel** : il propose tous les
+écarts chiffrés. Un **agent contexte** dispose ensuite :
+
+```
+Données brutes → détection déterministe → anomalie → agent contexte
+→ « est-ce une vraie contradiction ? » → validation
+```
+
+Il rejette ce qui s'explique (deux époques, deux variantes, une valeur
+approchée), confirme ce qui ne s'explique pas, et laisse « à vérifier » ce
+qu'il ne sait pas trancher. Sans vrai LLM, il s'abstient plutôt que d'inventer.
+
+## Le studio créatif (Phase 3)
+
+```
+Brief marketing → recherche du marché → analyse des concurrents
+→ 3 concepts → critique automatique → amélioration → version finale
+```
+
+Le studio réutilise la boucle de recherche : les arguments du flyer sont ceux
+que **plusieurs sources ont confirmés**, pas des slogans inventés.
+
+- **Trois concepts** systématiquement, jamais un seul jet : bandeau, plein
+  cadre, colonne. Chacun est noté, le meilleur est retenu.
+- **Douze critères mesurés** — contraste WCAG, hiérarchie, alignement,
+  équilibre, espace négatif, collisions… Chaque faiblesse produit une
+  correction *applicable*, pas un commentaire.
+- **Retour arrière** : si une correction fait baisser la note, l'agent dit
+  « version précédente meilleure » et revient en arrière (spec §11).
+- **QR code encodé en Python pur**, puis **relu** comme le ferait un lecteur
+  avant d'être posé. Toujours sombre sur clair, sinon les téléphones ne le
+  scannent pas.
+- **Mémoire de marque** (`brand_profile.json`) : couleurs, ton, dimensions, et
+  surtout les **interdits** — « pas d'emojis », « le départ est Ouroveni ».
+  Un interdit violé est un défaut bloquant, pas une remarque.
+
+Les créations sortent en **SVG** : zéro dépendance, imprimable sans perte, et
+surtout *mesurable* — c'est ce qui permet au critique de noter la géométrie
+plutôt que de donner un avis.
 
 ---
 
@@ -173,11 +216,13 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-213 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+320 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
-arrêt, budget), la détection de contradictions et de manques, la création et la
-**vérification** PDF/DOCX/MD/TXT, les permissions, la confirmation humaine, les
-réessais réseau et la gestion des erreurs.
+arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
+QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
+les douze critères du critique, le retour arrière de la boucle créative, la
+**vérification** PDF/DOCX/SVG/MD/TXT, les permissions, la confirmation humaine,
+les réessais réseau et la gestion des erreurs.
 
 ---
 
@@ -190,12 +235,13 @@ agent/
 │   ├── analysis/      faits chiffrés, contradictions, manques, vérification
 │   ├── providers/     LLM · recherche · stockage  (interchangeables)
 │   ├── tools/         outils indépendants + registre à permissions
+│   ├── design/        marque, QR, composition SVG, concepts, critique, studio
 │   ├── documents/     modèle commun → PDF, DOCX, MD, TXT + vérification
 │   ├── agents/        planificateur, collecte, research agent, documents
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             213 tests hors ligne
+├── tests/             320 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -207,7 +253,7 @@ agent/
 |---|---|---|
 | **1** | Interface mobile · LLM · recherche · fichiers · PDF · historique | **fait** |
 | **2** | Research Agent : boucle adaptative, contradictions, relances | **fait** |
-| 3 | Creative Agent + Design Critic : flyers, QR code, itérations notées | à venir |
+| **3** | Creative Agent + Design Critic : flyers, QR code, itérations notées | **fait** |
 | 4 | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | à venir |
 | 5 | Automatisation Android | à venir |
 

@@ -147,6 +147,15 @@ def verify(path: Path) -> dict[str, object]:
         except ElementTree.ParseError as exc:
             raise VerificationError(f"{path.name} : XML mal formé ({exc}).") from exc
 
+    elif suffix == ".svg":
+        try:
+            root = ElementTree.fromstring(path.read_text(encoding="utf-8"))
+        except (ElementTree.ParseError, UnicodeDecodeError) as exc:
+            raise VerificationError(f"{path.name} : SVG mal formé ({exc}).") from exc
+        if not root.tag.endswith("svg"):
+            raise VerificationError(f"{path.name} : la racine n'est pas un <svg>.")
+        info["elements"] = len(list(root))
+
     elif suffix in {".md", ".txt", ".json", ".html"}:
         try:
             text = path.read_text(encoding="utf-8")

@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 from ..core.models import SourceDoc
 from .compare import Contradiction, agreements
 from .coverage import Gap
+from .validate import ValidatedContradiction
 from .facts import Fact
 
 
@@ -22,13 +23,21 @@ class ResearchReport:
     question: str
     docs: list[SourceDoc] = field(default_factory=list)
     facts: list[Fact] = field(default_factory=list)
-    contradictions: list[Contradiction] = field(default_factory=list)
+    #: anomalies retenues APRÈS validation par l'agent contexte
+    anomalies: list[ValidatedContradiction] = field(default_factory=list)
+    #: anomalies écartées, avec la raison (transparence)
+    dismissed: list[tuple[Contradiction, object]] = field(default_factory=list)
     gaps: list[Gap] = field(default_factory=list)
     iterations: int = 0
     queries: list[str] = field(default_factory=list)
     stopped_because: str = ""
     #: source → domaine, pour ne recouper que des sites distincts
     domains_by_source: dict[int, str] = field(default_factory=dict)
+
+    @property
+    def contradictions(self) -> list[Contradiction]:
+        """Les désaccords validés — c'est sur eux que la boucle relance."""
+        return [item.contradiction for item in self.anomalies]
 
     @property
     def domains(self) -> set[str]:
@@ -52,11 +61,12 @@ class ResearchReport:
                 lines.append(f"- **{cluster[0].describe()}** — confirmé par {sources}")
             blocks.append("\n".join(lines))
 
-        if self.contradictions:
+        if self.anomalies:
             lines = ["## CONTRADICTION DÉTECTÉE", ""]
-            for contradiction in self.contradictions[:6]:
-                lines.append(f"- {contradiction.describe()}")
-                for fact in contradiction.facts[:3]:
+            for item in self.anomalies[:6]:
+                lines.append(f"- {item.describe()}")
+                lines.append(f"  - *Vérifié par : {item.verdict.decided_by}*")
+                for fact in item.contradiction.facts[:3]:
                     extrait = fact.sentence
                     if len(extrait) > 180:
                         extrait = extrait[:180].rsplit(" ", 1)[0] + "…"
@@ -92,7 +102,11 @@ class ResearchReport:
             "sources": len(self.docs),
             "domains": sorted(self.domains),
             "facts": len(self.facts),
-            "contradictions": [c.to_dict() for c in self.contradictions],
+            "contradictions": [item.to_dict() for item in self.anomalies],
+            "dismissed": [
+                {"describe": c.describe(), "reason": v.reason, "by": v.decided_by}
+                for c, v in self.dismissed
+            ],
             "gaps": [g.to_dict() for g in self.gaps],
             "stopped_because": self.stopped_because,
         }

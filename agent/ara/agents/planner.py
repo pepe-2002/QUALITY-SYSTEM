@@ -54,6 +54,15 @@ _SMALL_TALK = {
     "qui es tu", "que sais tu faire", "aide", "help", "test",
 }
 
+#: Une demande de création graphique n'est pas une demande de document.
+_DESIGN_WORDS = {
+    "flyer": "flyer", "flyers": "flyer", "affiche": "affiche",
+    "affiches": "affiche", "poster": "affiche", "visuel": "flyer",
+    "publicite": "flyer", "pub": "flyer", "story": "story",
+    "banniere": "banniere", "carre": "carre", "prospectus": "flyer",
+    "depliant": "flyer",
+}
+
 _URL_RE = re.compile(r"https?://\S+")
 
 
@@ -73,13 +82,21 @@ class Plan:
     formats: list[str] = field(default_factory=list)
     urls: list[str] = field(default_factory=list)
     filename_hint: str = "resultat"
+    #: format de création graphique demandé (flyer, affiche, story…)
+    design: str = ""
 
     @property
     def needs_documents(self) -> bool:
         return bool(self.formats)
 
+    @property
+    def needs_design(self) -> bool:
+        return bool(self.design)
+
     def describe(self) -> str:
         bits = [f"complexité {self.budget.complexity.value}"]
+        if self.design:
+            bits.append(f"création : {self.design}")
         bits.append(
             f"{self.budget.search_steps} recherche(s)" if self.needs_research else "sans recherche"
         )
@@ -90,6 +107,7 @@ class Plan:
     def to_dict(self) -> dict:
         return {
             "needs_research": self.needs_research,
+            "design": self.design,
             "formats": self.formats,
             "urls": self.urls,
             **self.budget.to_dict(),
@@ -115,6 +133,12 @@ def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
 
     urls = _URL_RE.findall(prompt)
 
+    design = ""
+    for word, fmt in _DESIGN_WORDS.items():
+        if f" {word} " in padded:
+            design = fmt
+            break
+
     formats: list[str] = []
     for word, fmt in _FORMAT_WORDS.items():
         if f" {word} " in padded and fmt not in formats:
@@ -137,6 +161,10 @@ def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
     if formats and not needs_research and budget.complexity.value != "LOW":
         needs_research = True
 
+    # Un flyer n'est pas un rapport : ne pas produire un PDF de texte en plus.
+    if design:
+        formats = [f for f in formats if f != "pdf"] if "pdf" not in text else formats
+
     return Plan(
         prompt=prompt,
         budget=budget,
@@ -144,4 +172,5 @@ def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
         formats=formats,
         urls=urls,
         filename_hint=_slug(prompt),
+        design=design,
     )

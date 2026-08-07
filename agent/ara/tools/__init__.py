@@ -5,7 +5,7 @@ résultat sérialisable. Aucun outil ne s'exécute sans être passé par le regi
 qui vérifie systématiquement les permissions.
 """
 
-from . import documents, files, media, web  # noqa: F401  (enregistrement des outils)
+from . import design, documents, files, media, web  # noqa: F401  (enregistrement des outils)
 from .registry import REGISTRY, Tool, ToolBox, tool
 
 __all__ = ["REGISTRY", "Tool", "ToolBox", "tool"]

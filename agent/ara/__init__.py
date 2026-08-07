@@ -3,9 +3,10 @@
 Agent personnel modulaire : cherche, comprend, planifie, utilise des outils,
 crée, vérifie, s'arrête.
 
-Version 0.1 — Phase 1 (MVP) : interface mobile, LLM, recherche web,
-création de fichiers (TXT/MD/DOCX/PDF), historique.
+Version 0.2 — Phases 1 et 2 : interface mobile, LLM, recherche web adaptative
+(relance ciblée, détection de contradictions), création et vérification de
+fichiers (TXT/MD/DOCX/PDF), historique.
 """
 
-__version__ = "0.1.0"
-__phase__ = 1
+__version__ = "0.2.0"
+__phase__ = 2

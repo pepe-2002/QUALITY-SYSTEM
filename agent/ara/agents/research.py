@@ -37,6 +37,7 @@ from ..analysis.compare import find_contradictions
 from ..analysis.coverage import Gap, find_gaps
 from ..analysis.facts import extract_facts
 from ..analysis.report import ResearchReport
+from ..analysis.validate import ContradictionValidator
 from ..core.context import TaskContext
 from ..core.events import Stage, Status
 from ..core.models import SourceDoc
@@ -270,9 +271,19 @@ class ResearchAgent:
         self.report.docs = docs
         self.report.facts = facts
         self.report.domains_by_source = domains
-        self.report.contradictions = find_contradictions(
+        # Étage 1 : détection déterministe, réglée pour le rappel.
+        candidates = find_contradictions(
             facts, focus=self.collector.keywords, domains=domains
         )
+        # Étage 2 : agent contexte — « est-ce une vraie contradiction ? »
+        validator = ContradictionValidator(ctx.llm, question=self.plan.prompt)
+        self.report.anomalies = validator.validate(candidates, docs)
+        self.report.dismissed = validator.rejected
+
+        for anomaly, verdict in validator.rejected:
+            ctx.journal.add_step(
+                "dismiss", f"écart expliqué : {verdict.reason}", by=verdict.decided_by
+            )
         self.report.gaps = find_gaps(
             self.plan.prompt,
             docs,
@@ -284,26 +295,28 @@ class ResearchAgent:
         ctx.journal.add_step(
             "analysis",
             f"cycle {cycle} : {len(facts)} fait(s), "
-            f"{len(self.report.contradictions)} contradiction(s), "
+            f"{len(self.report.anomalies)} contradiction(s) validée(s), "
+            f"{len(validator.rejected)} écart(s) expliqué(s), "
             f"{len(self.report.gaps)} manque(s)",
             sources=len(docs),
         )
 
-        for contradiction in self.report.contradictions:
+        for item in self.report.anomalies:
             ctx.bus.log(
-                f"CONTRADICTION DÉTECTÉE — {contradiction.describe()}",
+                f"CONTRADICTION DÉTECTÉE — {item.describe()}",
                 kind="contradiction",
-                contradiction=contradiction.to_dict(),
+                contradiction=item.to_dict(),
             )
 
         ctx.stage(
             Stage.ANALYSIS,
             Status.DONE,
             f"Cycle {cycle} · {len(docs)} source(s), {len(facts)} fait(s) chiffré(s), "
-            f"{len(self.report.contradictions)} contradiction(s), "
+            f"{len(self.report.anomalies)} contradiction(s), "
+            f"{len(validator.rejected)} écart(s) expliqué(s), "
             f"{len(self.report.gaps)} manque(s)",
             cycle=cycle,
-            contradictions=[c.to_dict() for c in self.report.contradictions],
+            contradictions=[item.to_dict() for item in self.report.anomalies],
             gaps=[g.to_dict() for g in self.report.gaps],
         )
 

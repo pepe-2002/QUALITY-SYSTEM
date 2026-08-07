@@ -35,6 +35,29 @@ from . import document_agent
 from .planner import Plan, plan as build_plan
 from .research import run_research
 
+def _headline(prompt: str) -> str:
+    """Titre d'accroche tiré de la demande, sans les mots de fabrication."""
+    from ..providers.llm.offline import subject
+
+    import re as _re
+
+    words: list[str] = []
+    for word in subject(prompt).split():
+        # On s'arrête au premier chiffre : un titre qui avale le prix donne
+        # « Traversée Ouroveni vers Hoani à 15 000 », coupé en plein milieu.
+        if _re.search(r"\d", word):
+            break
+        words.append(word)
+    words = words[:8] or subject(prompt).split()[:6]
+    # Un titre ne se termine pas sur une préposition en suspens (« … Hoani à »).
+    orphelins = {"a", "à", "de", "du", "des", "en", "pour", "vers", "sur",
+                 "et", "ou", "le", "la", "les", "un", "une", "dans"}
+    while words and words[-1].lower() in orphelins:
+        words.pop()
+    titre = " ".join(words).strip(" ,.;:—-")
+    return (titre[:1].upper() + titre[1:]) if titre else "Sans titre"
+
+
 _SYNTHESIS_INSTRUCTIONS = (
     "Rédige une réponse structurée en Markdown : un court paragraphe de "
     "conclusion en tête, puis les détails en sections. Cite chaque affirmation "
@@ -130,8 +153,13 @@ class Orchestrator:
                 result.answer = f"{result.answer}\n\n{report.sections()}".strip()
                 result.report = report.to_dict()
 
-            # 4. CRÉATION
+            # 4. CRÉATION — documents et/ou création graphique
             files = document_agent.produce(ctx, plan, toolbox, result.answer, sources)
+            if plan.needs_design:
+                design_files, design_report = self._design(ctx, plan, toolbox, report)
+                files += design_files
+                if design_report:
+                    result.answer = f"{design_report}\n\n---\n\n{result.answer}".strip()
 
             # 5. VÉRIFICATION — la réponse d'abord, les fichiers ensuite
             ctx.stage(Stage.VERIFICATION, Status.RUNNING, "Vérification…")
@@ -226,11 +254,59 @@ class Orchestrator:
             )
         return completion.text
 
+    def _design(self, ctx: TaskContext, plan: Plan, toolbox: ToolBox,
+                report: ResearchReport | None):
+        """Studio créatif : brief → concepts → critique → amélioration (spec §5-§7).
+
+        La recherche déjà menée sert de matière : arguments confirmés par
+        plusieurs sources, et sites concurrents rencontrés en chemin.
+        """
+        from ..design.brief import from_prompt
+
+        ctx.stage(Stage.CREATION, Status.RUNNING, f"Studio créatif : {plan.design}")
+        brief = from_prompt(plan.prompt)
+
+        market: list[str] = []
+        competitors: list[str] = []
+        if report is not None:
+            for cluster in report.confirmed[:3]:
+                sources = ", ".join(f"S{s}" for s in sorted({f.source for f in cluster}))
+                market.append(f"{cluster[0].describe()} (confirmé par {sources})")
+            competitors = sorted(report.domains)[:5]
+
+        try:
+            info = toolbox.call(
+                "create_flyer",
+                title=brief.title or _headline(plan.prompt),
+                subtitle=brief.subject,
+                bullets=market,
+                price=brief.price,
+                contact=brief.contact,
+                url=brief.url,
+                format=plan.design,
+                filename=plan.filename_hint,
+                market=market,
+                competitors=competitors,
+                subject=brief.subject,
+            )
+        except AraError as exc:
+            ctx.journal.add_error(f"création graphique : {exc}")
+            ctx.notice(f"Création graphique impossible : {exc}")
+            ctx.stage(Stage.CREATION, Status.FAILED, str(exc))
+            return [], ""
+
+        ctx.stage(
+            Stage.CREATION, Status.DONE,
+            f"{len(info['files'])} visuel(s) · note finale {info['score']}/100",
+            files=info["files"], studio=info["studio"],
+        )
+        return info["files"], info["report"]
+
     @staticmethod
     def _announce(ctx: TaskContext, report: ResearchReport) -> None:
         """Remonte à l'utilisateur ce que la boucle a trouvé de notable."""
-        for contradiction in report.contradictions:
-            ctx.notice(f"CONTRADICTION DÉTECTÉE — {contradiction.describe()}")
+        for item in report.anomalies:
+            ctx.notice(f"CONTRADICTION DÉTECTÉE — {item.describe()}")
         for gap in report.gaps[:3]:
             ctx.notice(f"Information manquante — {gap.label}")
         if report.iterations > 1:

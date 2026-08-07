@@ -29,6 +29,9 @@ DEFAULT_ALLOWED_TOOLS = (
     "create_docx",
     "create_markdown",
     "create_txt",
+    "create_flyer",
+    "create_qr",
+    "remember_brand",
 )
 
 #: Outils considérés comme sensibles : confirmation humaine obligatoire (spec §15).

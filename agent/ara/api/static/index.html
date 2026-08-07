@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1220">
+<meta name="description" content="Agent autonome de recherche et de création — interface mobile">
+<title>ARA — agent de recherche</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="dot" id="health-dot" title="état du serveur"></span>
+    <strong>ARA</strong><span class="muted">v0.1 · phase 1</span>
+  </div>
+  <button class="icon-btn" id="btn-info" aria-label="Configuration">⚙</button>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="tab active" data-view="run" role="tab">Tâche</button>
+  <button class="tab" data-view="history" role="tab">Historique</button>
+</nav>
+
+<main>
+  <!-- ————— Vue tâche ————— -->
+  <section id="view-run" class="view active">
+
+    <form id="task-form" class="composer">
+      <textarea id="prompt" rows="3" enterkeyhint="send"
+        placeholder="Ex. : Recherche les horaires des traversées Grande Comore ↔ Mohéli et fais-moi un PDF"></textarea>
+      <div class="chips" id="chips">
+        <button type="button" class="chip">Recherche les tarifs des traversées aux Comores et fais un PDF</button>
+        <button type="button" class="chip">Fais-moi une note de synthèse sur le tourisme à Mohéli</button>
+        <button type="button" class="chip">Qui a écrit « Le Petit Prince » ?</button>
+      </div>
+      <button type="submit" class="primary" id="btn-send">Lancer la tâche</button>
+    </form>
+
+    <section class="pipeline" id="pipeline" hidden aria-live="polite">
+      <ol id="stages"></ol>
+      <p class="stage-detail" id="stage-detail"></p>
+    </section>
+
+    <section class="notices" id="notices" hidden></section>
+
+    <section class="result" id="result" hidden>
+      <h2>Résultat</h2>
+      <div class="answer" id="answer"></div>
+
+      <div id="files-block" hidden>
+        <h3>Fichiers vérifiés</h3>
+        <ul class="files" id="files"></ul>
+      </div>
+
+      <div id="sources-block" hidden>
+        <h3>Sources</h3>
+        <ol class="sources" id="sources"></ol>
+      </div>
+    </section>
+  </section>
+
+  <!-- ————— Vue historique ————— -->
+  <section id="view-history" class="view">
+    <p class="muted small">Les tâches sont conservées sur le serveur, même après redémarrage.</p>
+    <ul class="history" id="history"></ul>
+  </section>
+</main>
+
+<!-- ————— Panneau configuration ————— -->
+<dialog id="info-dialog">
+  <h2>Configuration</h2>
+  <div id="info-body">Chargement…</div>
+  <button class="primary" id="btn-close-info">Fermer</button>
+</dialog>
+
+<script src="/app.js"></script>
+</body>
+</html>

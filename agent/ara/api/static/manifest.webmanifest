@@ -1,0 +1,20 @@
+{
+  "name": "ARA — agent de recherche et création",
+  "short_name": "ARA",
+  "description": "Agent autonome : cherche, analyse, crée des documents vérifiés.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

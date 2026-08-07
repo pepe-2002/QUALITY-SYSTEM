@@ -1,0 +1,184 @@
+# ARA — Autonomous Research & Creative Agent
+
+**v0.1 — Phase 1 (MVP)**
+
+Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
+crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
+aucune clé d'API, et n'annonce jamais un fichier qu'il n'a pas réussi à
+rouvrir.
+
+Ce n'est pas un chatbot : avant de répondre, il décide s'il doit chercher,
+combien de recherches il s'autorise, quels outils il a le droit d'appeler et
+quels fichiers produire.
+
+---
+
+## Ce qui fonctionne aujourd'hui
+
+| | |
+|---|---|
+| **Interface** | PWA installable sur Android, pipeline affiché en direct |
+| **Recherche** | DuckDuckGo + Wikipédia, plusieurs sources, filtre hors-sujet |
+| **Analyse** | synthèse citée `[S1] [S2]`, informations manquantes signalées |
+| **Documents** | PDF, DOCX, Markdown, TXT — **vérifiés avant livraison** |
+| **Historique** | conservé sur disque, survit au redémarrage |
+| **Journal** | une entrée reproductible par tâche (spec §17) |
+| **Sécurité** | liste blanche d'outils, confirmation des actions sensibles |
+| **Coût** | 0 € — aucune dépendance obligatoire, aucune clé requise |
+
+Le pipeline visible à l'écran est exactement celui qui s'exécute :
+
+```
+TÂCHE → RECHERCHE → ANALYSE → CRÉATION → VÉRIFICATION → RÉSULTAT
+```
+
+Une étape inutile est **sautée** : « bonjour » ne déclenche ni recherche ni
+fichier. C'est le raisonnement adaptatif du MVP — modeste, mais réel.
+
+---
+
+## Démarrage rapide
+
+```bash
+cd agent
+python3 -m venv .venv && . .venv/bin/activate
+pip install -r requirements.txt      # optionnel : PDF soigné + tests
+python -m ara.cli --serve
+```
+
+Puis ouvrez `http://<ip-de-la-machine>:8800`.
+
+Sans rien installer du tout :
+
+```bash
+python3 -m ara.cli --serve            # fonctionne, PDF en mode simplifié
+```
+
+En ligne de commande :
+
+```bash
+python3 -m ara.cli "Recherche les tarifs des traversées aux Comores et fais-moi un PDF"
+```
+
+---
+
+## Depuis un téléphone
+
+### Option A — le serveur tourne sur un ordinateur du même Wi-Fi
+
+1. Sur l'ordinateur : `python3 -m ara.cli --serve`
+2. Relevez son adresse locale : `hostname -I` (Linux) ou `ipconfig` (Windows).
+3. Sur le téléphone, ouvrez `http://192.168.x.x:8800`.
+4. Menu Chrome → **Ajouter à l'écran d'accueil**. L'application s'installe et
+   se lance comme une vraie application.
+
+### Option B — tout sur le téléphone (Termux, hors ligne possible)
+
+```bash
+pkg install python git
+git clone <ce-depot> && cd QUALITY-SYSTEM/agent
+python -m ara.cli --serve
+```
+
+Puis ouvrez `http://127.0.0.1:8800` dans Chrome. Aucune dépendance à
+installer : c'est la raison pour laquelle le projet n'utilise que la
+bibliothèque standard.
+
+> **Hors du réseau domestique**, définissez un jeton :
+> `export ARA_TOKEN=une-phrase-longue`, puis ouvrez
+> `http://…:8800/?token=une-phrase-longue`. Toutes les routes `/api/` le
+> réclament alors.
+
+---
+
+## Configurer un vrai modèle de langage
+
+Par défaut, ARA utilise un moteur **extractif** : il sélectionne et cite des
+phrases des sources, sans rien reformuler. C'est gratuit, vérifiable et
+déterministe — mais ce n'est pas de la rédaction, et l'interface le dit.
+
+Pour une vraie synthèse, gratuitement, en local :
+
+```bash
+# https://ollama.com
+ollama pull llama3.2
+export ARA_LLM_PROVIDER=ollama
+```
+
+Ou avec un service distant (clé dans `.env`, **jamais** dans le code) :
+
+```bash
+cp .env.example .env    # puis renseignez ARA_OPENAI_API_KEY ou ARA_ANTHROPIC_API_KEY
+export ARA_LLM_PROVIDER=openai_compat   # ou anthropic
+```
+
+Si le fournisseur demandé n'est pas disponible, ARA **ne l'active pas de
+force** : il retombe sur le moteur gratuit et affiche pourquoi.
+
+---
+
+## Sécurité
+
+- Aucune clé n'est stockée dans le code ni dans l'objet de configuration —
+  uniquement en variables d'environnement, lues à l'usage.
+- **Un outil qui existe n'est pas un outil autorisé.** La liste blanche
+  (`ARA_ALLOWED_TOOLS`) décide ; le reste est refusé.
+- Les actions sensibles (suppression, publication, envoi, achat) exigent une
+  confirmation humaine explicite avant exécution.
+- Les fichiers d'une tâche sont confinés dans son dossier ; les remontées de
+  répertoire sont neutralisées.
+- Le client HTTP refuse les adresses locales et privées (garde-fou SSRF).
+- Le journal ne contient **aucune chaîne de pensée privée** : uniquement des
+  résumés opérationnels et de quoi reproduire la tâche.
+
+---
+
+## Tests
+
+```bash
+python -m pytest
+```
+
+127 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+la recherche, l'extraction, les citations, la création et la **vérification**
+PDF/DOCX/MD/TXT, les permissions, la confirmation humaine, les budgets d'arrêt,
+les réessais réseau et la gestion des erreurs.
+
+---
+
+## Structure
+
+```
+agent/
+├── ara/
+│   ├── core/          config, erreurs, permissions, journal, complexité, HTTP
+│   ├── providers/     LLM · recherche · stockage  (interchangeables)
+│   ├── tools/         outils indépendants + registre à permissions
+│   ├── documents/     modèle commun → PDF, DOCX, MD, TXT + vérification
+│   ├── agents/        planificateur, collecte, agent documentaire, orchestrateur
+│   ├── api/           serveur HTTP + PWA (static/)
+│   ├── service.py     tâches en arrière-plan et historique
+│   └── cli.py         ligne de commande
+├── tests/             127 tests hors ligne
+└── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
+```
+
+---
+
+## Feuille de route
+
+| Phase | Contenu | État |
+|---|---|---|
+| **1** | Interface mobile · LLM · recherche · fichiers · PDF · historique | **fait** |
+| 2 | Research Agent : boucle adaptative, contradictions, relances | à venir |
+| 3 | Creative Agent + Design Critic : flyers, QR code, itérations notées | à venir |
+| 4 | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | à venir |
+| 5 | Automatisation Android | à venir |
+
+La spec §21 l'impose : rien des phases 2 à 5 ne commence avant que le MVP
+tourne. Il tourne.
+
+**Limites connues de la Phase 1** — à lire avant d'en attendre trop :
+pas de relance de recherche après analyse, pas de détection de contradictions,
+contrôleur de complexité non validé empiriquement, pas d'envoi de fichier
+depuis le téléphone. Détail dans [`docs/ANALYSE-V0.md`](docs/ANALYSE-V0.md).

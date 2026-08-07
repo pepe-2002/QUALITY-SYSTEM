@@ -1,0 +1,18 @@
+[project]
+name = "ara"
+version = "0.1.0"
+description = "Agent autonome de recherche et de création — phase 1 (MVP)"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+# Mise en page PDF professionnelle. Sans elle, un PDF simplifié est produit
+# par le moteur de repli intégré (aucune dépendance).
+pdf = ["reportlab>=4.0"]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["error::DeprecationWarning"]

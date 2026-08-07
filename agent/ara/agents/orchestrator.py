@@ -1,0 +1,247 @@
+"""Orchestrateur : décide quel agent et quels outils utiliser (spec §1).
+
+Pipeline Phase 1, exactement celui que l'interface affiche (spec §14) :
+
+    TÂCHE → RECHERCHE → ANALYSE → CRÉATION → VÉRIFICATION → RÉSULTAT
+
+Chaque étape peut être **sautée** : une salutation ne déclenche ni recherche ni
+document. C'est le raisonnement adaptatif du MVP — modeste, mais réel.
+
+Toute erreur maîtrisée est capturée : une tâche rend toujours un résultat, même
+partiel, et écrit toujours son journal.
+"""
+
+from __future__ import annotations
+
+import time
+import uuid
+
+from ..core.complexity import Complexity
+from ..core.config import Settings, get_settings
+from ..core.context import TaskContext
+from ..core.errors import AraError, ApprovalRequired, BudgetExceeded
+from ..core.events import EventBus, Stage, Status
+from ..core.journal import JournalStore, ResearchLog
+from ..core.models import SourceDoc, TaskResult
+from ..core.permissions import PermissionManager
+from ..providers.llm import get_llm
+from ..providers.llm.base import LLMRequest
+from ..providers.search import get_search
+from ..providers.storage import get_storage
+from ..tools.registry import ToolBox
+from . import document_agent, gather
+from .planner import Plan, plan as build_plan
+
+_SYNTHESIS_INSTRUCTIONS = (
+    "Rédige une réponse structurée en Markdown : un court paragraphe de "
+    "conclusion en tête, puis les détails en sections. Cite chaque affirmation "
+    "importante avec [S1], [S2]… Termine par une section « Limites » indiquant "
+    "ce que les sources ne permettent pas d'établir."
+)
+
+
+class Orchestrator:
+    """Exécute une tâche de bout en bout."""
+
+    def __init__(
+        self,
+        settings: Settings | None = None,
+        *,
+        permissions: PermissionManager | None = None,
+    ) -> None:
+        self.settings = settings or get_settings()
+        self.permissions = permissions or PermissionManager(self.settings)
+
+    # -- construction du contexte -----------------------------------------
+
+    def _context(self, task_id: str, prompt: str, bus: EventBus) -> TaskContext:
+        llm, llm_notice = get_llm(self.settings.llm_provider)
+        search, search_notice = get_search(self.settings.search_provider)
+        plan = build_plan(prompt, max_search_steps=self.settings.max_research_steps)
+
+        ctx = TaskContext(
+            task_id=task_id,
+            prompt=prompt,
+            settings=self.settings,
+            bus=bus,
+            journal=ResearchLog(task_id=task_id, task=prompt),
+            permissions=self.permissions,
+            storage=get_storage(self.settings.storage_provider),
+            llm=llm,
+            search=search,
+            budget=plan.budget,
+        )
+        ctx._plan = plan  # type: ignore[attr-defined]
+        for notice in (llm_notice, search_notice):
+            if notice:
+                ctx.notice(notice)
+        return ctx
+
+    # -- exécution ---------------------------------------------------------
+
+    def run(self, prompt: str, *, task_id: str | None = None, bus: EventBus | None = None) -> TaskResult:
+        task_id = task_id or uuid.uuid4().hex[:12]
+        bus = bus or EventBus()
+        started = time.monotonic()
+
+        ctx = self._context(task_id, prompt, bus)
+        plan: Plan = ctx._plan  # type: ignore[attr-defined]
+        ctx.journal.complexity = plan.budget.complexity.value
+
+        toolbox = ToolBox(ctx)
+        result = TaskResult(
+            task_id=task_id,
+            prompt=prompt,
+            complexity=plan.budget.complexity.value,
+            degraded=ctx.llm.degraded,
+        )
+        sources: list[SourceDoc] = []
+
+        try:
+            # 1. TÂCHE — analyse de la demande et allocation du budget
+            ctx.stage(
+                Stage.TASK,
+                Status.DONE,
+                plan.describe(),
+                plan=plan.to_dict(),
+                llm=ctx.llm.name,
+                search=ctx.search.name,
+            )
+            ctx.journal.add_summary(f"plan : {plan.describe()}")
+
+            # 2. RECHERCHE
+            if plan.needs_research or plan.urls:
+                sources = gather.collect(ctx, plan, toolbox)
+                if not sources:
+                    ctx.notice(
+                        "Aucune source exploitable : réponse produite sans appui documentaire."
+                    )
+            else:
+                ctx.stage(Stage.RESEARCH, Status.SKIPPED, "Recherche non nécessaire")
+
+            # 3. ANALYSE
+            result.answer = self._analyze(ctx, plan, sources)
+
+            # 4. CRÉATION
+            files = document_agent.produce(ctx, plan, toolbox, result.answer, sources)
+
+            # 5. VÉRIFICATION
+            result.files = document_agent.verify_all(ctx, files)
+
+        except ApprovalRequired as exc:
+            # L'interface doit présenter la demande de confirmation à l'utilisateur.
+            ctx.stage(
+                Stage.RESULT,
+                Status.PENDING,
+                str(exc),
+                approval={"request_id": exc.request_id, "tool": exc.tool},
+            )
+            result.errors.append(str(exc))
+        except BudgetExceeded as exc:
+            ctx.notice(str(exc))
+            result.errors.append(str(exc))
+        except AraError as exc:
+            ctx.journal.add_error(str(exc))
+            result.errors.append(str(exc))
+            ctx.stage(Stage.RESULT, Status.FAILED, str(exc))
+        except Exception as exc:  # filet de sécurité : jamais de trace brute à l'écran
+            message = f"Erreur inattendue : {type(exc).__name__}: {exc}"
+            ctx.journal.add_error(message)
+            result.errors.append(message)
+            ctx.stage(Stage.RESULT, Status.FAILED, message)
+
+        # 6. RÉSULTAT
+        result.sources = sources
+        result.notices = list(ctx.notices)
+        if not result.answer and not result.errors:
+            result.answer = "Aucun résultat produit."
+
+        if not any(
+            event.stage is Stage.RESULT for event in bus.history if event.type == "stage"
+        ):
+            ctx.stage(
+                Stage.RESULT,
+                Status.DONE,
+                f"{len(result.files)} fichier(s) · {len(sources)} source(s)",
+                result=result.to_dict(),
+            )
+
+        self._finish(ctx, result, started)
+        bus.close()
+        return result
+
+    # -- étapes ------------------------------------------------------------
+
+    def _analyze(self, ctx: TaskContext, plan: Plan, sources: list[SourceDoc]) -> str:
+        ctx.stage(Stage.ANALYSIS, Status.RUNNING, "Analyse et synthèse…")
+        ctx.check_deadline()
+
+        instructions = _SYNTHESIS_INSTRUCTIONS if sources else ""
+        try:
+            completion = ctx.llm.complete(
+                LLMRequest(
+                    task="synthesis" if sources else "answer",
+                    question=plan.prompt,
+                    instructions=instructions,
+                    documents=sources,
+                    max_tokens=1600 if plan.budget.complexity is Complexity.HIGH else 1000,
+                )
+            )
+        except AraError as exc:
+            ctx.journal.add_error(f"analyse : {exc}")
+            ctx.stage(Stage.ANALYSIS, Status.FAILED, str(exc))
+            ctx.notice(f"Synthèse impossible avec « {ctx.llm.name} » : {exc}")
+            return _fallback_answer(plan, sources)
+
+        ctx.journal.add_summary(
+            f"synthèse via {completion.provider} sur {len(sources)} source(s)"
+        )
+        ctx.stage(
+            Stage.ANALYSIS,
+            Status.DONE,
+            f"Synthèse produite ({completion.provider})",
+            provider=completion.provider,
+            degraded=completion.degraded,
+        )
+        if completion.degraded and sources:
+            ctx.notice(
+                "Synthèse extractive (moteur hors-ligne) : les phrases sont copiées "
+                "des sources. Configurez un LLM pour une rédaction complète."
+            )
+        elif completion.degraded:
+            ctx.notice(
+                "Moteur hors-ligne : il ne rédige pas de texte, il n'extrait que des "
+                "phrases de sources. Configurez un LLM pour obtenir une réponse rédigée."
+            )
+        return completion.text
+
+    def _finish(self, ctx: TaskContext, result: TaskResult, started: float) -> None:
+        ctx.journal.duration_ms = int((time.monotonic() - started) * 1000)
+        ctx.journal.iterations = 1
+        for doc in result.sources:
+            ctx.journal.add_source(doc.url, doc.title, via=doc.engine)
+        try:
+            JournalStore(self.settings.journal_path()).append(ctx.journal)
+        except OSError as exc:  # un disque plein ne doit pas perdre le résultat
+            result.notices.append(f"Journal non écrit : {exc}")
+
+
+def _fallback_answer(plan: Plan, sources: list[SourceDoc]) -> str:
+    """Réponse minimale quand même l'analyse échoue — on ne rend jamais rien de vide."""
+    lines = [
+        "La synthèse automatique a échoué. Voici la matière brute collectée :",
+        "",
+    ]
+    for index, doc in enumerate(sources, start=1):
+        lines.append(f"- [S{index}] {doc.title or doc.domain} — {doc.url}")
+        excerpt = " ".join((doc.content or "").split())[:300]
+        if excerpt:
+            lines.append(f"  {excerpt}…")
+    if not sources:
+        lines.append("- Aucune source n'a pu être consultée.")
+    return "\n".join(lines)
+
+
+def run_task(prompt: str, **kwargs) -> TaskResult:
+    """Raccourci : exécute une tâche avec les réglages courants."""
+    return Orchestrator().run(prompt, **kwargs)

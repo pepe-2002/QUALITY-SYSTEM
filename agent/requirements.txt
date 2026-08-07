@@ -1,0 +1,12 @@
+# ARA fonctionne SANS aucune dépendance : serveur, recherche, extraction,
+# DOCX, Markdown, TXT et un PDF de secours sont écrits avec la seule
+# bibliothèque standard. C'est ce qui permet l'installation sur téléphone.
+#
+# Les lignes ci-dessous sont OPTIONNELLES et améliorent la qualité.
+
+# Mise en page PDF professionnelle (titres, tableaux, logo, pagination).
+# Sans elle : PDF simplifié produit par le moteur de repli intégré.
+reportlab>=4.0
+
+# Tests
+pytest>=8.0

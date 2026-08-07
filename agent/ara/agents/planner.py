@@ -1,0 +1,147 @@
+"""Planificateur : lit la demande et décide du chemin à suivre.
+
+C'est ce qui distingue un agent d'un chatbot : avant de répondre, on décide
+*quoi faire* — chercher ou non, produire quels fichiers, avec quel budget.
+"""
+
+from __future__ import annotations
+
+import re
+import unicodedata
+from dataclasses import dataclass, field
+
+from ..core.complexity import TaskBudget, assess
+from ..providers.llm.offline import subject
+
+#: Extensions demandables explicitement
+_FORMAT_WORDS = {
+    "pdf": "pdf",
+    "docx": "docx",
+    "word": "docx",
+    "markdown": "md",
+    "md": "md",
+    "txt": "txt",
+    "texte": "txt",
+}
+
+#: Mots qui impliquent un livrable écrit même sans extension nommée
+_DOC_WORDS = {
+    "rapport", "document", "dossier", "note", "fiche", "memo", "synthese",
+    "compte rendu", "recapitulatif", "resume ecrit",
+}
+
+#: Mots qui déclenchent une recherche web
+_SEARCH_WORDS = {
+    "recherche", "cherche", "chercher", "trouve", "trouver", "renseigne",
+    "actualite", "actualites", "horaire", "horaires", "prix", "tarif",
+    "tarifs", "meteo", "qui est", "combien", "quand", "sources", "documente",
+    "compare", "comparer", "verifie", "verifier", "search", "find", "news",
+}
+
+#: Mots interrogatifs : une question factuelle exige des sources, même courte.
+#: Sans cette règle, « Qui a écrit Le Petit Prince ? » ne déclenchait aucune
+#: recherche et l'agent répondait qu'il n'avait rien consulté.
+_INTERROGATIVES = {
+    "qui", "que", "quoi", "quel", "quelle", "quels", "quelles", "quand",
+    "comment", "pourquoi", "combien", "ou", "est-ce", "lequel", "laquelle",
+    "who", "what", "when", "where", "why", "how", "which",
+}
+
+#: Politesses et bavardage : aucune recherche à lancer.
+_SMALL_TALK = {
+    "bonjour", "salut", "coucou", "bonsoir", "merci", "hello", "hi", "ok",
+    "ca va", "comment ca va", "comment vas tu", "comment allez vous",
+    "qui es tu", "que sais tu faire", "aide", "help", "test",
+}
+
+_URL_RE = re.compile(r"https?://\S+")
+
+
+def _normalize(text: str) -> str:
+    text = unicodedata.normalize("NFKD", text.lower())
+    text = "".join(ch for ch in text if not unicodedata.combining(ch))
+    return re.sub(r"[^a-z0-9]+", " ", text).strip()
+
+
+@dataclass
+class Plan:
+    """Décision du planificateur pour une tâche."""
+
+    prompt: str
+    budget: TaskBudget
+    needs_research: bool = False
+    formats: list[str] = field(default_factory=list)
+    urls: list[str] = field(default_factory=list)
+    filename_hint: str = "resultat"
+
+    @property
+    def needs_documents(self) -> bool:
+        return bool(self.formats)
+
+    def describe(self) -> str:
+        bits = [f"complexité {self.budget.complexity.value}"]
+        bits.append(
+            f"{self.budget.search_steps} recherche(s)" if self.needs_research else "sans recherche"
+        )
+        if self.formats:
+            bits.append("livrables : " + ", ".join(self.formats))
+        return " · ".join(bits)
+
+    def to_dict(self) -> dict:
+        return {
+            "needs_research": self.needs_research,
+            "formats": self.formats,
+            "urls": self.urls,
+            **self.budget.to_dict(),
+        }
+
+
+def _slug(prompt: str, max_words: int = 5) -> str:
+    """Nom de fichier tiré du sujet, sans les verbes de consigne."""
+    words = [w for w in _normalize(subject(prompt)).split() if len(w) > 2][:max_words]
+    return "-".join(words) or "resultat"
+
+
+def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
+    """Construit le plan d'exécution d'une demande.
+
+    >>> p = plan("Recherche les horaires des traversées et fais-moi un PDF")
+    >>> p.needs_research, p.formats
+    (True, ['pdf'])
+    """
+    text = _normalize(prompt)
+    padded = f" {text} "
+    budget = assess(prompt, max_search_steps=max_search_steps)
+
+    urls = _URL_RE.findall(prompt)
+
+    formats: list[str] = []
+    for word, fmt in _FORMAT_WORDS.items():
+        if f" {word} " in padded and fmt not in formats:
+            formats.append(fmt)
+    if not formats and any(f" {word} " in padded for word in _DOC_WORDS):
+        formats.append("pdf")
+
+    small_talk = any(text == phrase or text.startswith(phrase + " ") for phrase in _SMALL_TALK)
+    first_word = text.split()[0] if text.split() else ""
+    is_question = not small_talk and (
+        "?" in prompt or first_word in _INTERROGATIVES
+    )
+
+    needs_research = (
+        bool(urls)
+        or is_question
+        or any(f" {word} " in padded for word in _SEARCH_WORDS)
+    )
+    # Un livrable documentaire sans matière : on cherche pour avoir du contenu.
+    if formats and not needs_research and budget.complexity.value != "LOW":
+        needs_research = True
+
+    return Plan(
+        prompt=prompt,
+        budget=budget,
+        needs_research=needs_research,
+        formats=formats,
+        urls=urls,
+        filename_hint=_slug(prompt),
+    )

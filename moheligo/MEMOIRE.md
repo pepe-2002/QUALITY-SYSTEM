@@ -152,6 +152,25 @@ Donc : aucun partage de code, d'adresse, de projet Supabase ni de service
 worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
+## 5 ter. ARA — agent de recherche, HORS MoheliGo
+
+Le 07/08/2026, le patron a lancé un **projet de recherche scientifique** :
+un agent IA autonome (recherche web → analyse → création de documents →
+critique → correction). Comme « Nous », c'est **volontairement séparé** :
+dossier `agent/` à la racine, aucun lien avec MoheliGo.
+
+Phase 1 (MVP) livrée : interface mobile, recherche multi-sources, synthèse
+citée, PDF/DOCX/MD/TXT vérifiés, historique, permissions, journal, 127 tests.
+Phases 2 à 5 (boucle de recherche adaptative, agent créatif + critique de
+design, laboratoire de mesure, automatisation Android) restent à faire.
+Tout est expliqué dans `agent/README.md` et `agent/docs/ANALYSE-V0.md` —
+ne pas recharger ce sujet ici, ce n'est pas du marketing.
+
+⚠️ À noter pour plus tard : la Phase 3 (agent créatif + critique) recoupe
+directement le savoir-faire flyers déjà acquis (§3 « Flyers »), et la
+mémoire de marque de l'agent (`brand_profile.json`) devra reprendre les
+règles du patron : pas d'emojis, logo Facebook officiel, départ Ouroveni.
+
 ## 6. Journal des sessions
 
 - **03/08/2026** — Hors marketing : création de « Nous », la messagerie

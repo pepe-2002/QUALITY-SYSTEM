@@ -1,0 +1,15 @@
+# Secrets — ne jamais versionner
+.env
+
+# Espace de travail : tâches, fichiers produits, journal
+workspace/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/

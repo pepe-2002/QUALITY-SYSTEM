@@ -1,0 +1,111 @@
+"""Rapport CONTEXT-V2 : autopsie, mécanisme, mesure, limites."""
+
+from __future__ import annotations
+
+from ..analysis.context_v2 import STATES
+from .context_test import CASES, compare
+
+
+def render() -> str:
+    resultats = compare()
+    base, v2 = resultats["baseline"], resultats["v2"]
+
+    return "\n".join([
+        "# CONTEXT-V2 — une information appartient-elle au contexte demandé ?",
+        "",
+        "## 1. Ce qui n'est pas touché",
+        "",
+        "H1, H2, ADAPTIVE-V1, ADAPTIVE-V2, RESEARCH-BASELINE, RESEARCH-V2,",
+        "EXTRACTION-V2 et les six jeux déjà utilisés : inchangés. CONTEXT-V2 est",
+        "un mécanisme **nouveau**, dans un module à part, qui n'est branché sur",
+        "aucun d'eux.",
+        "",
+        "## 2. Autopsie des 16 erreurs de contextualisation",
+        "",
+        "Fait décisif : **dans les seize cas, la bonne valeur était disponible**.",
+        "Le système ne manquait pas d'information — il en avait trop, et il a",
+        "servi la mauvaise. Ce n'est donc pas un problème de recherche.",
+        "",
+        "| Cause | Cas | Part |",
+        "|---|---|---|",
+        "| **Temps** — page ancienne prise pour l'actuelle | 9 | 56 % |",
+        "| **Objet** — autre bien ou service | 3 | 19 % |",
+        "| **Géographie** — autre lieu | 2 | 12 % |",
+        "| **Géographie** — lieu au nom voisin | 2 | 12 % |",
+        "",
+        "Le temps domine. L'ordre des contrôles de CONTEXT-V2 en découle :",
+        "temps d'abord, géographie ensuite, objet en dernier.",
+        "",
+        "L'autopsie est rejouable : `ara.lab.autopsy.run_autopsy()`.",
+        "",
+        "## 3. Le mécanisme",
+        "",
+        "Quatre états, deux seulement autorisent l'affirmation :",
+        "",
+        "| État | Sens | Affirmable |",
+        "|---|---|---|",
+        "| `MATCH` | objet, lieu et période concordent | oui |",
+        "| `PROBABLE_MATCH` | le sujet est nommé dans la source, pas dans la phrase | oui |",
+        "| `CONTEXT_UNKNOWN` | rien ne rattache l'information au sujet | **non** |",
+        "| `MISMATCH` | l'information appartient à un autre contexte | **non** |",
+        "",
+        "Règle de sécurité : `CONTEXT_UNKNOWN` et `MISMATCH` ne deviennent",
+        "jamais une affirmation. Rien n'est jeté pour autant — le filtre rend",
+        "deux paniers, et chaque blocage porte sa raison.",
+        "",
+        "## 4. Jeu 7 — indépendant, écrit avant exécution",
+        "",
+        f"{len(CASES)} cas, univers neuf (école de musique), neuf familles de",
+        "pièges : autre pays, nom homonyme, archive, plusieurs tarifs sur une",
+        "page, plusieurs devises, services voisins, autre objet, information",
+        "historique, commune limitrophe. Cinq cas sont **corrects** : un jeu",
+        "qui ne contiendrait que des pièges récompenserait le rejet aveugle.",
+        "",
+        "| Mesure | sans contrôle | CONTEXT-V2 |",
+        "|---|---|---|",
+        f"| Bonnes informations conservées | {base.kept_good}/{base.total_good} "
+        f"({base.recall_good:.0%}) | **{v2.kept_good}/{v2.total_good}** "
+        f"({v2.recall_good:.0%}) |",
+        f"| Mauvaises informations rejetées | {base.rejected_bad}/{base.total_bad} "
+        f"({base.rejection_rate:.0%}) | **{v2.rejected_bad}/{v2.total_bad}** "
+        f"({v2.rejection_rate:.0%}) |",
+        f"| Faux rejets | {base.false_rejects} | **{v2.false_rejects}** |",
+        f"| Exactitude finale | {base.accuracy:.0%} | **{v2.accuracy:.0%}** |",
+        "",
+        "**Zéro faux rejet** : aucune information correcte n'a été écartée.",
+        "C'était la condition posée — réduire les erreurs *sans* rejeter le bon.",
+        "",
+        "### Les quatre pièges qui passent encore",
+        "",
+        "| Cas | Pourquoi |",
+        "|---|---|",
+        "| `homonyme` | deux communes partagent un nom : il faudrait un référentiel géographique |",
+        "| `autre_instrument` | « école » suffit à rattacher un violon à une question sur une guitare |",
+        "| `service_voisin` | « cours » suffit à rattacher le solfège au piano |",
+        "| `page_multi_tarifs_mauvais` | le bon objet est ailleurs sur la page, la phrase parle d'autre chose |",
+        "",
+        "Trois d'entre eux ont **la même cause** : le contrôle d'objet se",
+        "contente d'un seul terme partagé, sans le peser. Le corriger exigerait",
+        "de savoir que « violon » et « guitare » s'excluent, et que « école » ne",
+        "distingue rien — donc une version suivante, avec son propre jeu.",
+        "",
+        "Chacun de ces quatre cas a un test qui **fige le comportement actuel**.",
+        "S'il se met à échouer, c'est que quelqu'un a progressé.",
+        "",
+        "## 5. Limites restantes",
+        "",
+        "- Le mécanisme est **mesuré, pas adopté**. Il n'est branché sur aucune",
+        "  version en production : cela demande une décision.",
+        "- Le contrôle d'objet est trop permissif (voir ci-dessus).",
+        "- Une question sans nom propre voit tous ses mots longs traités comme",
+        "  des identifiants, ce qui **désactive** le contrôle d'objet. Aucun cas",
+        "  du jeu 7 n'est concerné ; la faille est réelle et figée par un test.",
+        "- Le seuil d'ancienneté est de deux ans, fixé a priori. Il conviendrait",
+        "  mal à un domaine qui bouge chaque mois.",
+        "- Le jeu 7 est écrit par l'auteur du système, comme les six autres.",
+        "",
+        f"*(États disponibles : {', '.join(STATES)}.)*",
+    ])
+
+
+__all__ = ["render"]

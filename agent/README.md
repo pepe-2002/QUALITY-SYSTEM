@@ -373,6 +373,44 @@ affichée pendant que la bonne dormait dans les logs.
 Elle **ne réécrit pas** H1 ni H2, qui gardent la leur ; un test vérifie que les
 deux divergent sur le même cas, ce qui échouerait si on les « harmonisait ».
 
+### CONTEXT-V2 — l'information est-elle bien du sujet ?
+
+L'autopsie des 16 erreurs de contextualisation donne un fait décisif :
+**dans les 16 cas, la bonne valeur était disponible**. Le système ne manquait
+pas d'information — il en avait trop, et servait la mauvaise.
+
+| Cause | Cas |
+|---|---|
+| **Temps** — archive prise pour l'actuelle | 9 |
+| **Objet** — autre bien ou service | 3 |
+| **Géographie** — autre lieu / nom voisin | 2 + 2 |
+
+```bash
+python -m ara.cli --context    # écrit workspace/context-report.md
+```
+
+Quatre états, deux seulement autorisent l'affirmation : `MATCH` et
+`PROBABLE_MATCH` oui ; `CONTEXT_UNKNOWN` et `MISMATCH` **jamais**. Rien n'est
+jeté pour autant — le filtre rend deux paniers, et chaque blocage porte sa
+raison.
+
+Jeu 7, indépendant, 15 cas, neuf familles de pièges :
+
+| Mesure | sans contrôle | CONTEXT-V2 |
+|---|---|---|
+| Bonnes informations conservées | 5/5 | **5/5** |
+| Mauvaises rejetées | 0/10 | **6/10** |
+| Faux rejets | 0 | **0** |
+| Exactitude | 33 % | **73 %** |
+
+Quatre pièges passent encore, dont trois pour la même raison : le contrôle
+d'objet se contente d'**un** terme partagé — « école » suffit à rattacher un
+violon à une question sur une guitare. Chacun a un test qui fige le
+comportement actuel. Le corriger demandera une version suivante et un jeu neuf.
+
+**Mesuré, pas adopté** : CONTEXT-V2 n'est branché sur aucune version en
+production.
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -523,7 +561,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-573 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+596 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -556,7 +594,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             573 tests hors ligne
+├── tests/             596 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 

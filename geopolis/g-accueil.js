@@ -4,7 +4,7 @@
 
   const q = s => document.querySelector(s);
   const nf0 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
-  let choisi = -1;
+  let choisi = -1, selectionnee = null;
 
   function difficulte(p) {
     const s = Math.log10(Math.max(p.pib, 0.1)) * 22 + p.tech * 0.45 + p.stab * 0.25 + p.arm * 0.2;
@@ -38,11 +38,13 @@
     ids.sort(tris[tri]);
 
     g.innerHTML = '';
+    selectionnee = null;
     const frag = document.createDocumentFragment();
     ids.forEach(i => {
       const p = G.PAYS[i], d = difficulte(p);
       const c = document.createElement('button');
       c.className = 'acc-c' + (i === choisi ? ' actif' : '');
+      if (i === choisi) selectionnee = c;
       c.innerHTML = `
         <span class="ac-f">${p.drapeau}</span>
         <span class="ac-n">${p.nom}</span>
@@ -53,7 +55,13 @@
           <i><b>${nf0.format(p.tech)}</b>techno</i>
           <i><b>${nf0.format(p.arm)}</b>armée</i>
         </span>`;
-      c.onclick = () => { choisi = i; construire(); majSelection(); };
+      c.onclick = () => {
+        if (selectionnee) selectionnee.classList.remove('actif');
+        selectionnee = c;
+        c.classList.add('actif');
+        choisi = i;
+        majSelection();
+      };
       frag.appendChild(c);
     });
     g.appendChild(frag);
@@ -73,9 +81,12 @@
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    ['#acc-rech', '#acc-tri', '#acc-cont'].forEach(x => {
-      q(x).oninput = construire; q(x).onchange = construire;
-    });
+    G.ajusterHauteur();
+    window.addEventListener('resize', G.ajusterHauteur);
+    window.addEventListener('orientationchange', () => setTimeout(G.ajusterHauteur, 250));
+    q('#acc-rech').oninput = construire;
+    q('#acc-tri').onchange = construire;
+    q('#acc-cont').onchange = construire;
     construire();
 
     q('#acc-jouer').onclick = () => {
@@ -90,7 +101,10 @@
   });
 
   G.rafraichirAccueil = function () {
-    choisi = -1;
+    choisi = -1; selectionnee = null;
+    // On repart d'une liste complète : en revenant au menu, le filtre de la
+    // partie précédente ne laissait voir qu'un seul pays.
+    q('#acc-rech').value = '';
     construire();
     majSelection();
     const b = q('#acc-reprendre');

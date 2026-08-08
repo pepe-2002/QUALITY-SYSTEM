@@ -150,7 +150,7 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
 #carte-zone{position:absolute;inset:0}
 #carte{width:100%;height:100%;display:block;cursor:grab}
 .legende{
-  position:absolute;left:14px;bottom:14px;display:flex;flex-wrap:wrap;gap:6px 14px;
+  position:absolute;left:14px;bottom:14px;display:flex;flex-wrap:wrap;gap:6px 14px;pointer-events:none;
   background:rgba(8,15,26,.85);border:1px solid var(--bord);border-radius:9px;padding:9px 13px;
   font-size:11.5px;color:var(--texte2);max-width:440px;backdrop-filter:blur(6px);
 }
@@ -358,7 +358,7 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
 .mo-bilan span{color:var(--texte3)}
 
 /* Notifications */
-#notifs{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60;max-width:340px}
+#notifs{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:60;max-width:340px;pointer-events:none}
 .notif{
   background:var(--carte2);border:1px solid var(--bord);border-left:3px solid var(--bleu);
   border-radius:9px;padding:11px 14px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4);
@@ -375,6 +375,29 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
   .liste-pays{max-height:340px}
 }
 @media(max-width:820px){
+  /* Accueil compact : sur un téléphone, le pavé de présentation repoussait la
+     liste des nations si bas qu'on croyait qu'il n'y en avait aucune. */
+  .acc-in{padding:20px 14px 132px}
+  .acc-h h1{font-size:34px;letter-spacing:.10em}
+  .acc-st{font-size:13px;margin:4px 0 0}
+  .acc-tx{display:none}
+  .acc-choix{margin-top:20px}
+  .acc-barre{gap:8px}
+  .acc-barre h2{font-size:16px;flex:1 1 100%;margin:0}
+  .acc-barre .champ{flex:1 1 100%;min-width:0}
+  .acc-grille{grid-template-columns:1fr 1fr;gap:9px}
+  .acc-c{padding:11px}
+  .ac-f{font-size:21px}
+  .ac-n{font-size:13px;margin:5px 0 4px}
+  .ac-d{font-size:10px;padding:1px 6px}
+  .ac-s{gap:4px 8px;margin-top:8px}
+  .ac-s i{font-size:10px}
+  .ac-s b{font-size:12px}
+  .acc-f{padding:10px 14px;gap:8px}
+  .acc-sel{font-size:12px;min-width:0;flex:1 1 100%}
+  .acc-a{width:100%;gap:8px}
+  .acc-a .btn{flex:1;text-align:center;padding:11px 10px}
+
   #jeu{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;grid-template-areas:"barre" "nav" "principal"}
   #nav{display:flex;gap:5px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--bord);padding:7px}
   .onglet{width:auto;flex-direction:column;gap:3px;padding:7px 11px;font-size:11px}
@@ -1305,10 +1328,13 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
       const bv = k.v * NRES + k.r, ba = k.a * NRES + k.r;
       const dispo = Math.min(k.qte, Math.max(0, E.stock[bv] + E.prod[bv] - E.conso[bv]));
       const valeur = dispo * k.prix / 1e6;                 // M$
-      if (E.tresor[k.a] < valeur) {                        // acheteur insolvable
-        rompreContrat(c, 'insolvabilité');
+      const credit = Math.max(0, E.tresor[k.a]) + E.pib[k.a] * 1000 / 365 * 0.35;
+      if (credit < valeur) {                               // acheteur réellement insolvable
+        k.impayes = (k.impayes || 0) + 1;
+        if (k.impayes > 20) rompreContrat(c, 'insolvabilité de l\'acheteur');
         continue;
       }
+      k.impayes = 0;
       E.stock[bv] -= dispo; E.stock[ba] += dispo;
       E.tresor[k.v] += valeur; E.tresor[k.a] -= valeur;
       k.livre = (k.livre || 0) + valeur;
@@ -2903,14 +2929,74 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x !== undefined) n.textContent = x; return n; };
   const sig = v => v > 0 ? 'bon' : v < 0 ? 'mauvais' : '';
 
+  // ── Rattrapage des tapes ──────────────────────────────────────────────────
+  // Sur écran tactile, la séquence touchstart / pointerup / touchend n'est pas
+  // toujours suivie du clic que le navigateur est censé synthétiser. Résultat :
+  // taper sur une nation ne la sélectionnait pas, et rien ne réagissait au
+  // doigt. On déclenche donc le clic nous-mêmes quand il n'arrive pas.
+  (function rattraperTapes() {
+    const CIBLES = 'button, .acc-c, .lp, .sugg-p, .onglet, .btn, .btn-ic';
+    let cible = null, debut = 0, depX = 0, depY = 0, dernierClic = 0;
+
+    document.addEventListener('click', () => { dernierClic = Date.now(); }, true);
+
+    document.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      cible = (e.target.closest && e.target.closest(CIBLES)) || null;
+      debut = Date.now();
+      if (t) { depX = t.clientX; depY = t.clientY; }
+    }, true);
+
+    document.addEventListener('touchend', e => {
+      const c = cible; cible = null;
+      if (!c || Date.now() - debut > 600) return;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (t && (Math.abs(t.clientX - depX) > 12 || Math.abs(t.clientY - depY) > 12)) return;
+      const avant = dernierClic;
+      setTimeout(() => {
+        if (dernierClic !== avant) return;            // le navigateur a fait le travail
+        if (!document.contains(c) || c.disabled) return;
+        c.click();
+      }, 120);
+    }, true);
+  })();
+
+  // ── Hauteur de la scène ───────────────────────────────────────────────────
+  // Le jeu occupe tout l'écran en position fixe. Dans une page publiée, il est
+  // affiché dans un cadre dont l'hôte règle la hauteur sur celle du contenu —
+  // or un élément en position fixe ne compte pas comme contenu. Le cadre restait
+  // donc bloqué à sa hauteur initiale (400 px), la liste des nations passait
+  // hors champ et plus rien n'était cliquable. On impose donc une hauteur
+  // explicite en pixels : le contenu mesure alors exactement ce qu'il occupe, et
+  // le cadre s'y accorde du premier coup.
+  G.ajusterHauteur = function () {
+    let h;
+    if (window === window.top) {
+      h = window.innerHeight;
+    } else {
+      // Dans un cadre, innerHeight vaut ce que l'hôte a décidé : s'en servir
+      // reviendrait à se mordre la queue. L'écran physique, lui, est fiable.
+      // On laisse de la place à l'habillage de la page hôte, sinon la barre de
+      // commandes du bas tombe sous le bord visible du téléphone.
+      const ecran = (window.screen && window.screen.height) || 800;
+      h = clamp(Math.round(ecran - 250), 480, 900);
+    }
+    if (h === UI.hauteur) return;
+    UI.hauteur = h;
+    document.documentElement.style.height = h + 'px';
+    document.body.style.height = h + 'px';
+    if (UI.carteInstallee) G.redimensionnerCarte();
+  };
+
   // ── État de l'interface ───────────────────────────────────────────────────
-  const UI = G.UI = { panneau: 'carte', paysVise: -1, refs: {}, construits: {}, dernierMaj: 0 };
+  const UI = G.UI = { panneau: 'carte', paysVise: -1, refs: {}, construits: {}, dernierMaj: 0, hauteur: 0 };
   let boucle = null, tempsAccum = 0, dernierTemps = 0;
 
   const VITESSES = { 1: 700, 2: 340, 3: 150, 4: 45 };   // ms par jour de jeu
 
   // ══════════════════════════════════════════════════════ Démarrage
   G.demarrer = function () {
+    G.ajusterHauteur();
     q('#accueil').classList.add('cache');
     q('#jeu').classList.remove('cache');
     construireNav();
@@ -4367,7 +4453,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
 
   const q = s => document.querySelector(s);
   const nf0 = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 });
-  let choisi = -1;
+  let choisi = -1, selectionnee = null;
 
   function difficulte(p) {
     const s = Math.log10(Math.max(p.pib, 0.1)) * 22 + p.tech * 0.45 + p.stab * 0.25 + p.arm * 0.2;
@@ -4401,11 +4487,13 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     ids.sort(tris[tri]);
 
     g.innerHTML = '';
+    selectionnee = null;
     const frag = document.createDocumentFragment();
     ids.forEach(i => {
       const p = G.PAYS[i], d = difficulte(p);
       const c = document.createElement('button');
       c.className = 'acc-c' + (i === choisi ? ' actif' : '');
+      if (i === choisi) selectionnee = c;
       c.innerHTML = `
         <span class="ac-f">${p.drapeau}</span>
         <span class="ac-n">${p.nom}</span>
@@ -4416,7 +4504,13 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
           <i><b>${nf0.format(p.tech)}</b>techno</i>
           <i><b>${nf0.format(p.arm)}</b>armée</i>
         </span>`;
-      c.onclick = () => { choisi = i; construire(); majSelection(); };
+      c.onclick = () => {
+        if (selectionnee) selectionnee.classList.remove('actif');
+        selectionnee = c;
+        c.classList.add('actif');
+        choisi = i;
+        majSelection();
+      };
       frag.appendChild(c);
     });
     g.appendChild(frag);
@@ -4436,9 +4530,12 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   }
 
   window.addEventListener('DOMContentLoaded', () => {
-    ['#acc-rech', '#acc-tri', '#acc-cont'].forEach(x => {
-      q(x).oninput = construire; q(x).onchange = construire;
-    });
+    G.ajusterHauteur();
+    window.addEventListener('resize', G.ajusterHauteur);
+    window.addEventListener('orientationchange', () => setTimeout(G.ajusterHauteur, 250));
+    q('#acc-rech').oninput = construire;
+    q('#acc-tri').onchange = construire;
+    q('#acc-cont').onchange = construire;
     construire();
 
     q('#acc-jouer').onclick = () => {
@@ -4453,7 +4550,10 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   });
 
   G.rafraichirAccueil = function () {
-    choisi = -1;
+    choisi = -1; selectionnee = null;
+    // On repart d'une liste complète : en revenant au menu, le filtre de la
+    // partie précédente ne laissait voir qu'un seul pays.
+    q('#acc-rech').value = '';
     construire();
     majSelection();
     const b = q('#acc-reprendre');

@@ -373,10 +373,13 @@
       const bv = k.v * NRES + k.r, ba = k.a * NRES + k.r;
       const dispo = Math.min(k.qte, Math.max(0, E.stock[bv] + E.prod[bv] - E.conso[bv]));
       const valeur = dispo * k.prix / 1e6;                 // M$
-      if (E.tresor[k.a] < valeur) {                        // acheteur insolvable
-        rompreContrat(c, 'insolvabilité');
+      const credit = Math.max(0, E.tresor[k.a]) + E.pib[k.a] * 1000 / 365 * 0.35;
+      if (credit < valeur) {                               // acheteur réellement insolvable
+        k.impayes = (k.impayes || 0) + 1;
+        if (k.impayes > 20) rompreContrat(c, 'insolvabilité de l\'acheteur');
         continue;
       }
+      k.impayes = 0;
       E.stock[bv] -= dispo; E.stock[ba] += dispo;
       E.tresor[k.v] += valeur; E.tresor[k.a] -= valeur;
       k.livre = (k.livre || 0) + valeur;

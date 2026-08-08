@@ -25,14 +25,74 @@
   const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x !== undefined) n.textContent = x; return n; };
   const sig = v => v > 0 ? 'bon' : v < 0 ? 'mauvais' : '';
 
+  // ── Rattrapage des tapes ──────────────────────────────────────────────────
+  // Sur écran tactile, la séquence touchstart / pointerup / touchend n'est pas
+  // toujours suivie du clic que le navigateur est censé synthétiser. Résultat :
+  // taper sur une nation ne la sélectionnait pas, et rien ne réagissait au
+  // doigt. On déclenche donc le clic nous-mêmes quand il n'arrive pas.
+  (function rattraperTapes() {
+    const CIBLES = 'button, .acc-c, .lp, .sugg-p, .onglet, .btn, .btn-ic';
+    let cible = null, debut = 0, depX = 0, depY = 0, dernierClic = 0;
+
+    document.addEventListener('click', () => { dernierClic = Date.now(); }, true);
+
+    document.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      cible = (e.target.closest && e.target.closest(CIBLES)) || null;
+      debut = Date.now();
+      if (t) { depX = t.clientX; depY = t.clientY; }
+    }, true);
+
+    document.addEventListener('touchend', e => {
+      const c = cible; cible = null;
+      if (!c || Date.now() - debut > 600) return;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (t && (Math.abs(t.clientX - depX) > 12 || Math.abs(t.clientY - depY) > 12)) return;
+      const avant = dernierClic;
+      setTimeout(() => {
+        if (dernierClic !== avant) return;            // le navigateur a fait le travail
+        if (!document.contains(c) || c.disabled) return;
+        c.click();
+      }, 120);
+    }, true);
+  })();
+
+  // ── Hauteur de la scène ───────────────────────────────────────────────────
+  // Le jeu occupe tout l'écran en position fixe. Dans une page publiée, il est
+  // affiché dans un cadre dont l'hôte règle la hauteur sur celle du contenu —
+  // or un élément en position fixe ne compte pas comme contenu. Le cadre restait
+  // donc bloqué à sa hauteur initiale (400 px), la liste des nations passait
+  // hors champ et plus rien n'était cliquable. On impose donc une hauteur
+  // explicite en pixels : le contenu mesure alors exactement ce qu'il occupe, et
+  // le cadre s'y accorde du premier coup.
+  G.ajusterHauteur = function () {
+    let h;
+    if (window === window.top) {
+      h = window.innerHeight;
+    } else {
+      // Dans un cadre, innerHeight vaut ce que l'hôte a décidé : s'en servir
+      // reviendrait à se mordre la queue. L'écran physique, lui, est fiable.
+      // On laisse de la place à l'habillage de la page hôte, sinon la barre de
+      // commandes du bas tombe sous le bord visible du téléphone.
+      const ecran = (window.screen && window.screen.height) || 800;
+      h = clamp(Math.round(ecran - 250), 480, 900);
+    }
+    if (h === UI.hauteur) return;
+    UI.hauteur = h;
+    document.documentElement.style.height = h + 'px';
+    document.body.style.height = h + 'px';
+    if (UI.carteInstallee) G.redimensionnerCarte();
+  };
+
   // ── État de l'interface ───────────────────────────────────────────────────
-  const UI = G.UI = { panneau: 'carte', paysVise: -1, refs: {}, construits: {}, dernierMaj: 0 };
+  const UI = G.UI = { panneau: 'carte', paysVise: -1, refs: {}, construits: {}, dernierMaj: 0, hauteur: 0 };
   let boucle = null, tempsAccum = 0, dernierTemps = 0;
 
   const VITESSES = { 1: 700, 2: 340, 3: 150, 4: 45 };   // ms par jour de jeu
 
   // ══════════════════════════════════════════════════════ Démarrage
   G.demarrer = function () {
+    G.ajusterHauteur();
     q('#accueil').classList.add('cache');
     q('#jeu').classList.remove('cache');
     construireNav();

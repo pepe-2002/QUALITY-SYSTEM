@@ -30,7 +30,7 @@ from .failures import diagnose
 from .metrics import _matches, score
 from .seeds import SEEDS, corpus_for, task_for
 
-VERSIONS = ("v2", "v3")
+VERSIONS = ("v2", "v3", "v4")
 
 
 @dataclass
@@ -62,11 +62,10 @@ class Impact:
 
 
 def _checker(version: str):
-    if version == "v2":
-        from ..analysis.context_v2 import assess_context
-    else:
-        from ..analysis.context_v3 import assess_context
-    return assess_context
+    import importlib
+
+    module = {"v2": "context_v2", "v3": "context_v3", "v4": "context_v4"}[version]
+    return importlib.import_module(f"ara.analysis.{module}").assess_context
 
 
 def _facts_with_sources(outcome):

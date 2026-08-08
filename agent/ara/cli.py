@@ -139,6 +139,21 @@ def run_diagnostic_cli() -> int:
     return 0
 
 
+def run_extraction_cli() -> int:
+    """EXTRACTION-V2 : devises identifiées, et nouvelle métrique de réponse."""
+    from .lab.report_extraction import render
+
+    settings = get_settings()
+    rapport = render()
+    print(rapport)
+
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "extraction-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+    return 0
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -219,6 +234,10 @@ def main(argv: list[str] | None = None) -> int:
         help="range les échecs par étape du pipeline (recherche, extraction, …)",
     )
     parser.add_argument(
+        "--extraction", action="store_true",
+        help="compare l'extracteur gelé et EXTRACTION-V2 sur le jeu 6",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -245,6 +264,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.diagnostic:
         return run_diagnostic_cli()
+
+    if args.extraction:
+        return run_extraction_cli()
 
     if args.phone:
         return run_phone()

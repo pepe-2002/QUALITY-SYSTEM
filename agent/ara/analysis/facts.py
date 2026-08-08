@@ -12,9 +12,13 @@ alors que les deux sources disent la même chose.
 
 from __future__ import annotations
 
+import contextlib
 import re
 import unicodedata
 from dataclasses import dataclass, field
+
+from .currency import UNKNOWN as _UNKNOWN_CURRENCY
+from .currency import resolve as _resolve
 
 # --- Normalisation ------------------------------------------------------------
 
@@ -49,13 +53,71 @@ _WORD_NUMBERS = {
     "soixante": 60, "cent": 100, "mille": 1000, "demi": 0.5,
 }
 
-#: Familles d'unités : motif → (famille, unité canonique, facteur)
-_UNITS: list[tuple[str, str, str, float]] = [
-    # --- monnaie (jamais convertie : on ne compare que devise identique) ---
+#: Devises reconnues par la version **gelée** de l'extracteur.
+#:
+#: C'est celle qui a produit H1, H2 et les expériences ADAPTIVE-V2 et
+#: RESEARCH-V2. Elle ne bouge plus : ces résultats doivent rester
+#: reproductibles.
+_CURRENCIES_BASELINE: list[tuple[str, str, str, float]] = [
     (r"(?:francs?\s+comoriens?|fc|kmf)", "money", "KMF", 1),
     (r"(?:euros?|eur|€)", "money", "EUR", 1),
     (r"(?:dollars?\s*(?:us)?|usd|\$)", "money", "USD", 1),
     (r"(?:ariary|mga)", "money", "MGA", 1),
+]
+
+#: Qualificatifs qui transforment « franc » en une devise précise. Un franc
+#: suivi de l'un d'eux est déjà reconnu ; le motif générique doit donc
+#: l'ignorer, sinon la même somme serait comptée deux fois.
+_FRANC_QUALIFIERS = (
+    r"comoriens?|cfa|suisses?|pacifique|belges?|congolais|djiboutiens?"
+    r"|guineens?|guinéens?|rwandais|burundais"
+)
+
+#: EXTRACT-V2 — devises ajoutées après le diagnostic.
+#:
+#: Le diagnostic avait montré que dix pannes sur dix venaient d'un même
+#: aveuglement : une somme écrite en « francs », sans devise précisée, n'était
+#: pas vue du tout. La correction ne vise pas ce cas particulier — elle
+#: élargit la reconnaissance aux devises qu'un agent francophone rencontre
+#: réellement.
+#:
+#: Deux prudences volontaires :
+#:
+#: * « livre » n'est reconnu qu'accompagné de « sterling » : seul, le mot
+#:   désigne aussi un ouvrage et une unité de masse ;
+#: * un franc non qualifié reçoit l'unité générique ``FRANC``, jamais ``KMF`` :
+#:   deux francs de pays différents ne doivent pas être comparés entre eux.
+_CURRENCIES_V2: list[tuple[str, str, str, float]] = _CURRENCIES_BASELINE + [
+    (r"(?:francs?\s+cfa|fcfa|xof|xaf)", "money", "XOF", 1),
+    (r"(?:francs?\s+suisses?|chf)", "money", "CHF", 1),
+    # Un franc sans qualificatif n'est **pas** une devise : c'est un montant
+    # dont la devise reste à établir. L'unité est provisoire (`UNKNOWN`) et
+    # sera résolue par le contexte — ou restera inconnue.
+    (rf"(?:francs?(?!\s+(?:{_FRANC_QUALIFIERS})))", "money", "UNKNOWN", 1),
+    (r"(?:livres?\s+sterling|gbp|£)", "money", "GBP", 1),
+    (r"(?:yens?|jpy|¥)", "money", "JPY", 1),
+    (r"(?:yuans?|renminbi|cny)", "money", "CNY", 1),
+    (r"(?:roupies?|inr|₹)", "money", "INR", 1),
+    (r"(?:dirhams?|aed|mad)", "money", "DIRHAM", 1),
+    (r"(?:shillings?|kes|tzs|ugx)", "money", "SHILLING", 1),
+    (r"(?:rands?|zar)", "money", "ZAR", 1),
+    (r"(?:pesos?|mxn|ars|clp)", "money", "PESO", 1),
+    (r"(?:roubles?|rub|₽)", "money", "RUB", 1),
+    (r"(?:couronnes?|sek|nok|dkk)", "money", "COURONNE", 1),
+    (r"(?:nairas?|ngn)", "money", "NGN", 1),
+    (r"(?:dinars?|dzd|tnd|mad̸)", "money", "DINAR", 1),
+    (r"(?:riyals?|rials?|sar)", "money", "RIAL", 1),
+    (r"(?:wons?|krw|₩)", "money", "KRW", 1),
+    (r"(?:birrs?|etb)", "money", "ETB", 1),
+    (r"(?:cedis?|ghs)", "money", "GHS", 1),
+    (r"(?:shekels?|ils|₪)", "money", "ILS", 1),
+    (r"(?:zlotys?|pln)", "money", "PLN", 1),
+    (r"(?:bahts?|thb|฿)", "money", "THB", 1),
+    (r"(?:ringgits?|myr)", "money", "MYR", 1),
+]
+
+#: Unités non monétaires — communes aux deux versions.
+_MEASURES: list[tuple[str, str, str, float]] = [
     # --- durée (normalisée en minutes) ---
     (r"(?:heures?|hrs?|\bh\b)", "duration", "min", 60),
     (r"(?:minutes?|mins?|\bmn\b)", "duration", "min", 1),
@@ -69,6 +131,15 @@ _UNITS: list[tuple[str, str, str, float]] = [
     (r"(?:pour\s*cent|%)", "percent", "%", 1),
     (r"(?:kilogrammes?|\bkgs?\b)", "weight", "kg", 1),
 ]
+
+#: Jeux d'unités par version d'extracteur.
+UNITS_BY_VERSION: dict[str, list] = {
+    "baseline": _CURRENCIES_BASELINE + _MEASURES,
+    "v2": _CURRENCIES_V2 + _MEASURES,
+}
+
+#: Compatibilité : le jeu d'unités de la version gelée.
+_UNITS = UNITS_BY_VERSION["baseline"]
 
 _NUMBER = r"\d{1,3}(?:[\s" + _THIN_SPACES + r"\.]\d{3})*(?:[,.]\d+)?|\d+(?:[,.]\d+)?"
 _WORD_NUM = "|".join(sorted(_WORD_NUMBERS, key=len, reverse=True))
@@ -165,6 +236,12 @@ class Fact:
     sentence: str
     source: int        # index de la source (1 = [S1])
     context: set[str] = field(default_factory=set)
+    #: Confiance dans l'**identification de la devise** (montants seulement) :
+    #: « certaine » quand la devise est écrite, « probable » quand elle est
+    #: déduite du contexte, « inconnue » quand rien ne permet de trancher.
+    #: Les grandeurs non monétaires sont toujours « certaine » : un kilomètre
+    #: est un kilomètre.
+    confidence: str = "certaine"
 
     @property
     def is_range(self) -> bool:
@@ -225,9 +302,9 @@ def _sentences(text: str) -> list[str]:
 
 
 # Motifs compilés une fois : (famille, unité, facteur, regex simple, regex fourchette)
-def _build_patterns() -> list[tuple[str, str, float, re.Pattern, re.Pattern]]:
+def _build_patterns(units=None) -> list[tuple[str, str, float, re.Pattern, re.Pattern]]:
     patterns = []
-    for unit_re, kind, unit, factor in _UNITS:
+    for unit_re, kind, unit, factor in (units if units is not None else _UNITS):
         number = f"(?:{_NUMBER}|{_WORD_NUM})"
         simple = re.compile(
             rf"(?:({number})\s*(?:{unit_re})(?!\w))|(?:(?:{unit_re})\s*({number}))",
@@ -242,7 +319,57 @@ def _build_patterns() -> list[tuple[str, str, float, re.Pattern, re.Pattern]]:
     return patterns
 
 
-_PATTERNS = _build_patterns()
+_PATTERNS_BY_VERSION = {
+    version: _build_patterns(units) for version, units in UNITS_BY_VERSION.items()
+}
+
+#: Version active de l'extracteur.
+#:
+#: « v2 » depuis la correction des devises. Les expériences déjà publiées
+#: épinglent explicitement « baseline » le temps de leur exécution : c'est ce
+#: qui garde leurs chiffres reproductibles pendant que le système avance.
+EXTRACTOR_VERSION = "v2"
+
+_active_version = EXTRACTOR_VERSION
+
+
+def set_extractor(version: str) -> str:
+    """Change la version active. Retourne la précédente."""
+    global _active_version
+    if version not in _PATTERNS_BY_VERSION:
+        raise ValueError(f"version d'extracteur inconnue : {version}")
+    ancienne, _active_version = _active_version, version
+    return ancienne
+
+
+@contextlib.contextmanager
+def extractor(version: str):
+    """Épingle une version d'extracteur le temps d'un bloc.
+
+    Utilisé par le laboratoire pour rejouer une expérience avec l'extracteur
+    qui l'a produite. Sans cela, corriger l'extracteur réécrirait des
+    résultats publiés.
+    """
+    ancienne = set_extractor(version)
+    try:
+        yield version
+    finally:
+        set_extractor(ancienne)
+
+
+#: Compatibilité : motifs de la version gelée.
+_PATTERNS = _PATTERNS_BY_VERSION["baseline"]
+
+
+def _resolve_currency(unit: str, sentence: str, document: str) -> tuple[str, str]:
+    """Devise effective d'une unité provisoire, et confiance associée.
+
+    Seuls les montants sans devise écrite passent par la résolution : un
+    « franc comorien » reste un franc comorien, avec la confiance maximale.
+    """
+    if unit != _UNKNOWN_CURRENCY:
+        return unit, "certaine"
+    return _resolve(sentence, document)
 
 
 def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
@@ -253,6 +380,10 @@ def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
     ('money', 15000.0, 'KMF')
     """
     facts: list[Fact] = []
+    patterns = _PATTERNS_BY_VERSION[_active_version]
+    # EXTRACTION-V2 : le document entier sert de contexte pour identifier la
+    # devise d'un montant écrit sans elle. Calculé une fois, pas par phrase.
+    document = text if _active_version != "baseline" else ""
 
     for sentence in _sentences(text):
         # Les heures du jour d'abord : elles consomment leur empan pour que la
@@ -275,7 +406,7 @@ def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
             )
             heures.append(match.span())
 
-        for kind, unit, factor, simple, spread in _PATTERNS:
+        for kind, unit, factor, simple, spread in patterns:
             # Les fourchettes d'abord : « entre 15 000 et 17 500 FC » est un
             # seul fait, pas deux valeurs qui se contredisent.
             consumed: list[tuple[int, int]] = []
@@ -285,10 +416,12 @@ def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
                 if low is None or high is None:
                     continue
                 low, high = sorted((low * factor, high * factor))
+                devise, confiance = _resolve_currency(unit, sentence, document)
                 facts.append(
                     Fact(
-                        kind, unit, low, high, match.group(0).strip(), sentence, source,
-                        window_words(sentence, match.start(), match.end()),
+                        kind, devise, low, high, match.group(0).strip(), sentence,
+                        source, window_words(sentence, match.start(), match.end()),
+                        confidence=confiance,
                     )
                 )
                 consumed.append(match.span())
@@ -303,10 +436,12 @@ def extract_facts(text: str, source: int, *, max_facts: int = 40) -> list[Fact]:
                 if value is None:
                     continue
                 value *= factor
+                devise, confiance = _resolve_currency(unit, sentence, document)
                 facts.append(
                     Fact(
-                        kind, unit, value, value, match.group(0).strip(), sentence, source,
-                        window_words(sentence, match.start(), match.end()),
+                        kind, devise, value, value, match.group(0).strip(), sentence,
+                        source, window_words(sentence, match.start(), match.end()),
+                        confidence=confiance,
                     )
                 )
 

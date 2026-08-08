@@ -326,6 +326,53 @@ Deux enseignements, tous deux utiles :
   « francs comoriens », « euros », « dollars », « ariary ». Le diagnostic a
   donc trouvé un défaut réel en une exécution.
 
+### EXTRACTION-V2 — la devise n'est jamais devinée
+
+Le diagnostic avait montré qu'un montant écrit « 3 200 francs » n'était pas vu
+du tout. La correction n'est pas de décréter que « francs » vaut la devise du
+projet : un agent qui comparerait des francs comoriens à des francs CFA
+produirait des contradictions imaginaires.
+
+```bash
+python -m ara.cli --extraction    # écrit workspace/extraction-report.md
+```
+
+| Niveau de confiance | Quand | Exemple |
+|---|---|---|
+| `certaine` | la devise est écrite | « 15 000 francs comoriens » |
+| `probable` | le contexte ne laisse qu'une possibilité | « À Dakar, 25 000 francs » |
+| `inconnue` | rien ne permet de trancher | « Prix : 900 francs » |
+
+**Règle de sécurité : dans le doute, le montant est gardé et la devise marquée
+`UNKNOWN`.** Une marque de conversion (« soit », « contre », « ≈ ») annule la
+déduction — la devise écrite appartient alors à l'autre montant.
+
+Jeu 6, indépendant, 20 cas jamais utilisés :
+
+| Mesure | extracteur gelé | EXTRACTION-V2 |
+|---|---|---|
+| Montants extraits | 7/20 (35 %) | **20/20 (100 %)** |
+| Devises correctes | 100 % | **100 %** |
+| Fausses identifications | 0 | **0** |
+| Faux positifs | 0 | **0** |
+
+Et sur le système entier, le diagnostic rejoué : **64 % → 69 %** de réponses
+correctes, pannes d'extraction **10 → 0**. Mais cinq pannes se sont
+**déplacées** vers la contextualisation (11 → 16) : des montants jusque-là
+invisibles sont maintenant lus, et certains sont les valeurs pièges. La
+correction déplace une partie du problème vers l'aval.
+
+### FINAL_ANSWER_ACCURACY
+
+Une métrique **séparée** qui ne note que ce que l'utilisateur lit : tout ce qui
+suit un marqueur de trace est retiré avant notation. Elle attrape trois pannes
+que la métrique historique laissait passer — information cachée dans les
+traces, « je n'ai pas trouvé » alors que la valeur était connue, valeur fausse
+affichée pendant que la bonne dormait dans les logs.
+
+Elle **ne réécrit pas** H1 ni H2, qui gardent la leur ; un test vérifie que les
+deux divergent sur le même cas, ce qui échouerait si on les « harmonisait ».
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -476,7 +523,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-530 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+573 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -509,7 +556,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             530 tests hors ligne
+├── tests/             573 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 

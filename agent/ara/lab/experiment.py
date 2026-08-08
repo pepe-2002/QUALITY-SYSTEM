@@ -23,6 +23,7 @@ import statistics
 from dataclasses import dataclass, field
 from math import comb
 
+from ..analysis.facts import extractor
 from ..core.config import Settings, get_settings
 from . import strategies as arms
 from .corpus import Corpus
@@ -246,10 +247,15 @@ def run_experiment(
     corpus = corpus or Corpus()
     result = ExperimentResult(hypothesis=hypothesis)
 
-    for task in tasks:
-        for strategy in arms.STRATEGIES:
-            outcome = arms.run(strategy, task, settings, corpus)
-            result.rows.append(Row(task=task, outcome=outcome, score=score(task, outcome)))
+    # L'extracteur de faits est épinglé à la version qui a produit ces
+    # chiffres. Le corriger ailleurs ne doit pas réécrire ce résultat.
+    with extractor("baseline"):
+        for task in tasks:
+            for strategy in arms.STRATEGIES:
+                outcome = arms.run(strategy, task, settings, corpus)
+                result.rows.append(
+                    Row(task=task, outcome=outcome, score=score(task, outcome))
+                )
 
     result.comparison = compare(result, hypothesis.challenger, hypothesis.reference)
     result.verdict = judge(result, hypothesis)

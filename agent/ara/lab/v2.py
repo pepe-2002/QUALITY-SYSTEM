@@ -59,6 +59,7 @@ from __future__ import annotations
 import statistics
 from dataclasses import dataclass, field, replace
 
+from ..analysis.facts import extractor
 from ..core.complexity import MAX_REVISIONS
 from ..core.config import Settings, get_settings
 from . import strategies as arms
@@ -195,7 +196,13 @@ class V2Result:
 # --- Exécution -----------------------------------------------------------------
 
 
-def run_v2_dataset(
+def run_v2_dataset(*args, **kwargs) -> V2Run:
+    """Joue un jeu avec l'extracteur qui a produit les chiffres publiés."""
+    with extractor("baseline"):
+        return _run_v2_dataset(*args, **kwargs)
+
+
+def _run_v2_dataset(
     name: str,
     tasks: list[Task],
     corpus: Corpus,

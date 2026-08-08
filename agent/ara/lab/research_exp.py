@@ -20,6 +20,7 @@ from dataclasses import dataclass, field, replace
 from ..agents.planner import plan as build_plan
 from ..agents.research import ResearchAgent
 from ..agents.research_v2 import BASELINE_VERSION, RESEARCH_VERSION, ResearchAgentV2
+from ..analysis.facts import extractor
 from ..core.config import Settings, get_settings
 from ..core.errors import AraError
 from ..providers.llm.base import LLMRequest
@@ -166,7 +167,13 @@ def _source_quality(outcome: Outcome) -> tuple[float, int, int, dict]:
     return (sujets / len(labels), faux, lieux, detail)
 
 
-def run_research_experiment(
+def run_research_experiment(*args, **kwargs) -> ResearchResult:
+    """Compare les deux moteurs avec l'extracteur qui a produit ces chiffres."""
+    with extractor("baseline"):
+        return _run_research_experiment(*args, **kwargs)
+
+
+def _run_research_experiment(
     *, settings: Settings | None = None, seeds: tuple[int, ...] = SEEDS
 ) -> ResearchResult:
     settings = replace(settings or get_settings(), search_delay=0.0)

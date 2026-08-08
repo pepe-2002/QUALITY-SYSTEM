@@ -26,6 +26,7 @@ from __future__ import annotations
 import statistics
 from dataclasses import dataclass, field, replace
 
+from ..analysis.facts import extractor
 from ..core.config import Settings, get_settings
 from . import strategies as arms
 from .corpus import Corpus
@@ -402,7 +403,18 @@ class H2Result:
         }
 
 
-def run_dataset(
+def run_dataset(*args, **kwargs) -> DatasetRun:
+    """Joue un jeu de tâches avec l'extracteur **de l'époque**.
+
+    Les chiffres de H2 sont publiés. Corriger l'extracteur ailleurs dans le
+    système ne doit pas les réécrire : la version est donc épinglée le temps
+    de l'exécution.
+    """
+    with extractor("baseline"):
+        return _run_dataset(*args, **kwargs)
+
+
+def _run_dataset(
     name: str,
     tasks: list[Task],
     corpus: Corpus,

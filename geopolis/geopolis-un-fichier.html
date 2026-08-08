@@ -380,12 +380,51 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
   .onglet{width:auto;flex-direction:column;gap:3px;padding:7px 11px;font-size:11px}
   .onglet .kb{display:none}
   .onglet .lb{white-space:nowrap}
-  #barre{gap:12px}
-  .b-stats{gap:14px}
-  #contenu{padding:16px 14px 50px}
-  .legende{max-width:calc(100% - 28px);font-size:10.5px}
+  #barre{gap:14px;height:56px;padding:0 12px}
+  .b-stats{gap:16px}
+  .b-s .val{font-size:14px}
+  #contenu{padding:16px 14px 84px}
   .carte-aide{display:none}
   #pastille{display:none !important}
+
+  /* Les commandes passent en bas de l'écran : dans la barre du haut, elles
+     débordaient hors du téléphone et devenaient tout simplement inatteignables. */
+  .b-ctrl{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;
+    background:var(--fond2);border-top:1px solid var(--bord);
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    gap:4px;justify-content:space-between;
+    box-shadow:0 -8px 24px rgba(0,0,0,.5);
+  }
+  .b-ctrl .btn-ic{flex:1;min-width:0;height:38px;font-size:12px}
+  .legende{
+    left:8px;right:8px;bottom:60px;max-width:none;font-size:10px;
+    padding:7px 10px;gap:5px 10px;justify-content:center;
+  }
+  #notifs{right:10px;left:10px;bottom:64px;max-width:none}
+  .modale{padding:12px}
+  .modale-box{padding:22px 18px}
+  .grille-tuiles{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .tuile-v{font-size:18px}
+  .grille-bat{grid-template-columns:1fr}
+  .cb-f{flex-direction:column;align-items:stretch;gap:9px}
+  .cb-f .btn{width:100%;text-align:center;white-space:normal}
+  .lots{justify-content:stretch}
+  .lots .btn{flex:1}
+  .actions .btn{flex:1 1 auto;text-align:center}
+  .dp-actions .btn{width:100%;text-align:center;white-space:normal}
+  .chantier{flex-wrap:wrap}
+  .ch-n{min-width:0;flex:1}
+  .form{grid-template-columns:1fr 1fr}
+  .split{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  /* Le drapeau suffit à identifier la nation : le nom mangeait la place des
+     indicateurs, qui se retrouvaient hors de l'écran. */
+  .b-pays span:last-child{display:none}
+  .b-ctrl .btn-ic{height:36px;font-size:11px}
+  .b-stats{gap:13px}
+  .b-s .lab{font-size:9px}
 }
 
 /* Suggestions de partenaires commerciaux */
@@ -2567,6 +2606,59 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
       limiter(); dessiner();
     }, { passive: false });
 
+    // ── Gestes tactiles : un doigt déplace, deux doigts zooment, une tape
+    //    sélectionne. Les événements souris seuls ne suffisent pas sur mobile.
+    let toucheDep = null, pince = null;
+    const pos = t => { const r = cv.getBoundingClientRect(); return { x: t.clientX - r.left, y: t.clientY - r.top }; };
+    const ecart = ts => Math.hypot(ts[0].clientX - ts[1].clientX, ts[0].clientY - ts[1].clientY);
+
+    cv.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) {
+        const p = pos(e.touches[0]);
+        toucheDep = { x: p.x, y: p.y, x0: p.x, y0: p.y, t: Date.now() };
+        pince = null;
+      } else if (e.touches.length === 2) {
+        const r = cv.getBoundingClientRect();
+        pince = {
+          d: ecart(e.touches), zoom: C.zoom,
+          cx: (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left,
+          cy: (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top
+        };
+        toucheDep = null;
+      }
+    }, { passive: true });
+
+    cv.addEventListener('touchmove', e => {
+      if (pince && e.touches.length === 2) {
+        e.preventDefault();
+        const z2 = G.clamp(pince.zoom * (ecart(e.touches) / pince.d), 1, 9);
+        const f = z2 / C.zoom;
+        C.ox = pince.cx - (pince.cx - C.ox) * f;
+        C.oy = pince.cy - (pince.cy - C.oy) * f;
+        C.zoom = z2;
+        limiter(); dessiner();
+      } else if (toucheDep && e.touches.length === 1) {
+        e.preventDefault();
+        const p = pos(e.touches[0]);
+        C.ox += p.x - toucheDep.x; C.oy += p.y - toucheDep.y;
+        toucheDep.x = p.x; toucheDep.y = p.y;
+        limiter(); dessiner();
+      }
+    }, { passive: false });
+
+    cv.addEventListener('touchend', e => {
+      if (toucheDep && Date.now() - toucheDep.t < 400 &&
+          Math.abs(toucheDep.x - toucheDep.x0) < 12 && Math.abs(toucheDep.y - toucheDep.y0) < 12) {
+        const p = paysSous(toucheDep.x0, toucheDep.y0);
+        if (p >= 0) {
+          C.choisi = p; C.survol = p; C.souris = { x: toucheDep.x0, y: toucheDep.y0 };
+          dessiner();
+          surSelection && surSelection(p);
+        }
+      }
+      toucheDep = null; pince = null;
+    }, { passive: true });
+
     dessiner();
   };
 
@@ -2582,23 +2674,28 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   }
   G.redimensionnerCarte = redimensionner;
 
+  // Pixels par degré, identiques en longitude et en latitude : les proportions
+  // du monde sont conservées quelle que soit la forme de l'écran.
+  function ech() { return (C.largeur / 360) * C.zoom; }
+
   function limiter() {
-    const w = C.largeur * C.zoom, h = C.hauteur * C.zoom;
-    C.ox = G.clamp(C.ox, C.largeur - w, 0);
-    C.oy = G.clamp(C.oy, C.hauteur - h, 0);
+    const s = ech(), w = 360 * s, h = 148 * s;
+    C.ox = w <= C.largeur ? (C.largeur - w) / 2 : G.clamp(C.ox, C.largeur - w, 0);
+    C.oy = h <= C.hauteur ? (C.hauteur - h) / 2 : G.clamp(C.oy, C.hauteur - h, 0);
   }
 
-  function px(lon) { return ((lon + 180) / 360) * C.largeur * C.zoom + C.ox; }
-  function py(lat) { return ((78 - lat) / 148) * C.hauteur * C.zoom + C.oy; }
+  function px(lon) { return (lon + 180) * ech() + C.ox; }
+  function py(lat) { return (78 - lat) * ech() + C.oy; }
 
   function paysSous(x, y) {
-    let best = -1, bestD = 18 * 18;
+    const tolerance = ('ontouchstart' in window) ? 30 : 18;   // le doigt est moins précis
+    let best = -1, bestD = tolerance * tolerance;
     for (let i = 0; i < G.N; i++) {
       const p = G.PAYS[i];
       const dx = px(p.lon) - x, dy = py(p.lat) - y;
       const d = dx * dx + dy * dy;
       const r = rayon(i) + 4;
-      if (d < Math.max(r * r, 36) && d < bestD) { bestD = d; best = i; }
+      if (d < Math.max(r * r, bestD) && d < bestD) { bestD = d; best = i; }
     }
     return best;
   }
@@ -2756,11 +2853,24 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     });
   }
 
+  // Vue d'ouverture : la carte remplit l'écran en hauteur et se cale sur la
+  // nation du joueur. Sur un téléphone en portrait, sans cela, le monde
+  // n'occupe qu'une mince bande au milieu d'un océan de vide.
+  G.vueInitiale = function (i) {
+    const voulu = (C.hauteur * 0.80 / 148) / (C.largeur / 360);
+    C.zoom = G.clamp(voulu, 1, 4);
+    const s = ech(), p = G.PAYS[i];
+    C.ox = C.largeur / 2 - (p.lon + 180) * s;
+    C.oy = C.hauteur / 2 - (78 - p.lat) * s;
+    limiter(); dessiner();
+  };
+
   G.centrerSur = function (i) {
     const p = G.PAYS[i];
     C.zoom = Math.max(C.zoom, 2.6);
-    C.ox = C.largeur / 2 - ((p.lon + 180) / 360) * C.largeur * C.zoom;
-    C.oy = C.hauteur / 2 - ((78 - p.lat) / 148) * C.hauteur * C.zoom;
+    const s = ech();
+    C.ox = C.largeur / 2 - (p.lon + 180) * s;
+    C.oy = C.hauteur / 2 - (78 - p.lat) * s;
     limiter(); dessiner();
   };
 })(window.GEO = window.GEO || {});
@@ -2813,6 +2923,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     UI.enJeu = true;
     UI.dernierAuto = -1;
     ouvrir('carte');
+    G.vueInitiale(E.joueur);
     majBarre();
     dernierTemps = performance.now();
     tempsAccum = 0;

@@ -376,12 +376,51 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
   .onglet{width:auto;flex-direction:column;gap:3px;padding:7px 11px;font-size:11px}
   .onglet .kb{display:none}
   .onglet .lb{white-space:nowrap}
-  #barre{gap:12px}
-  .b-stats{gap:14px}
-  #contenu{padding:16px 14px 50px}
-  .legende{max-width:calc(100% - 28px);font-size:10.5px}
+  #barre{gap:14px;height:56px;padding:0 12px}
+  .b-stats{gap:16px}
+  .b-s .val{font-size:14px}
+  #contenu{padding:16px 14px 84px}
   .carte-aide{display:none}
   #pastille{display:none !important}
+
+  /* Les commandes passent en bas de l'écran : dans la barre du haut, elles
+     débordaient hors du téléphone et devenaient tout simplement inatteignables. */
+  .b-ctrl{
+    position:fixed;left:0;right:0;bottom:0;z-index:40;margin:0;
+    background:var(--fond2);border-top:1px solid var(--bord);
+    padding:8px 8px calc(8px + env(safe-area-inset-bottom));
+    gap:4px;justify-content:space-between;
+    box-shadow:0 -8px 24px rgba(0,0,0,.5);
+  }
+  .b-ctrl .btn-ic{flex:1;min-width:0;height:38px;font-size:12px}
+  .legende{
+    left:8px;right:8px;bottom:60px;max-width:none;font-size:10px;
+    padding:7px 10px;gap:5px 10px;justify-content:center;
+  }
+  #notifs{right:10px;left:10px;bottom:64px;max-width:none}
+  .modale{padding:12px}
+  .modale-box{padding:22px 18px}
+  .grille-tuiles{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .tuile-v{font-size:18px}
+  .grille-bat{grid-template-columns:1fr}
+  .cb-f{flex-direction:column;align-items:stretch;gap:9px}
+  .cb-f .btn{width:100%;text-align:center;white-space:normal}
+  .lots{justify-content:stretch}
+  .lots .btn{flex:1}
+  .actions .btn{flex:1 1 auto;text-align:center}
+  .dp-actions .btn{width:100%;text-align:center;white-space:normal}
+  .chantier{flex-wrap:wrap}
+  .ch-n{min-width:0;flex:1}
+  .form{grid-template-columns:1fr 1fr}
+  .split{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  /* Le drapeau suffit à identifier la nation : le nom mangeait la place des
+     indicateurs, qui se retrouvaient hors de l'écran. */
+  .b-pays span:last-child{display:none}
+  .b-ctrl .btn-ic{height:36px;font-size:11px}
+  .b-stats{gap:13px}
+  .b-s .lab{font-size:9px}
 }
 
 /* Suggestions de partenaires commerciaux */

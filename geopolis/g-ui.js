@@ -45,6 +45,7 @@
     UI.enJeu = true;
     UI.dernierAuto = -1;
     ouvrir('carte');
+    G.vueInitiale(E.joueur);
     majBarre();
     dernierTemps = performance.now();
     tempsAccum = 0;

@@ -79,6 +79,59 @@
       limiter(); dessiner();
     }, { passive: false });
 
+    // ── Gestes tactiles : un doigt déplace, deux doigts zooment, une tape
+    //    sélectionne. Les événements souris seuls ne suffisent pas sur mobile.
+    let toucheDep = null, pince = null;
+    const pos = t => { const r = cv.getBoundingClientRect(); return { x: t.clientX - r.left, y: t.clientY - r.top }; };
+    const ecart = ts => Math.hypot(ts[0].clientX - ts[1].clientX, ts[0].clientY - ts[1].clientY);
+
+    cv.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) {
+        const p = pos(e.touches[0]);
+        toucheDep = { x: p.x, y: p.y, x0: p.x, y0: p.y, t: Date.now() };
+        pince = null;
+      } else if (e.touches.length === 2) {
+        const r = cv.getBoundingClientRect();
+        pince = {
+          d: ecart(e.touches), zoom: C.zoom,
+          cx: (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left,
+          cy: (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top
+        };
+        toucheDep = null;
+      }
+    }, { passive: true });
+
+    cv.addEventListener('touchmove', e => {
+      if (pince && e.touches.length === 2) {
+        e.preventDefault();
+        const z2 = G.clamp(pince.zoom * (ecart(e.touches) / pince.d), 1, 9);
+        const f = z2 / C.zoom;
+        C.ox = pince.cx - (pince.cx - C.ox) * f;
+        C.oy = pince.cy - (pince.cy - C.oy) * f;
+        C.zoom = z2;
+        limiter(); dessiner();
+      } else if (toucheDep && e.touches.length === 1) {
+        e.preventDefault();
+        const p = pos(e.touches[0]);
+        C.ox += p.x - toucheDep.x; C.oy += p.y - toucheDep.y;
+        toucheDep.x = p.x; toucheDep.y = p.y;
+        limiter(); dessiner();
+      }
+    }, { passive: false });
+
+    cv.addEventListener('touchend', e => {
+      if (toucheDep && Date.now() - toucheDep.t < 400 &&
+          Math.abs(toucheDep.x - toucheDep.x0) < 12 && Math.abs(toucheDep.y - toucheDep.y0) < 12) {
+        const p = paysSous(toucheDep.x0, toucheDep.y0);
+        if (p >= 0) {
+          C.choisi = p; C.survol = p; C.souris = { x: toucheDep.x0, y: toucheDep.y0 };
+          dessiner();
+          surSelection && surSelection(p);
+        }
+      }
+      toucheDep = null; pince = null;
+    }, { passive: true });
+
     dessiner();
   };
 
@@ -94,23 +147,28 @@
   }
   G.redimensionnerCarte = redimensionner;
 
+  // Pixels par degré, identiques en longitude et en latitude : les proportions
+  // du monde sont conservées quelle que soit la forme de l'écran.
+  function ech() { return (C.largeur / 360) * C.zoom; }
+
   function limiter() {
-    const w = C.largeur * C.zoom, h = C.hauteur * C.zoom;
-    C.ox = G.clamp(C.ox, C.largeur - w, 0);
-    C.oy = G.clamp(C.oy, C.hauteur - h, 0);
+    const s = ech(), w = 360 * s, h = 148 * s;
+    C.ox = w <= C.largeur ? (C.largeur - w) / 2 : G.clamp(C.ox, C.largeur - w, 0);
+    C.oy = h <= C.hauteur ? (C.hauteur - h) / 2 : G.clamp(C.oy, C.hauteur - h, 0);
   }
 
-  function px(lon) { return ((lon + 180) / 360) * C.largeur * C.zoom + C.ox; }
-  function py(lat) { return ((78 - lat) / 148) * C.hauteur * C.zoom + C.oy; }
+  function px(lon) { return (lon + 180) * ech() + C.ox; }
+  function py(lat) { return (78 - lat) * ech() + C.oy; }
 
   function paysSous(x, y) {
-    let best = -1, bestD = 18 * 18;
+    const tolerance = ('ontouchstart' in window) ? 30 : 18;   // le doigt est moins précis
+    let best = -1, bestD = tolerance * tolerance;
     for (let i = 0; i < G.N; i++) {
       const p = G.PAYS[i];
       const dx = px(p.lon) - x, dy = py(p.lat) - y;
       const d = dx * dx + dy * dy;
       const r = rayon(i) + 4;
-      if (d < Math.max(r * r, 36) && d < bestD) { bestD = d; best = i; }
+      if (d < Math.max(r * r, bestD) && d < bestD) { bestD = d; best = i; }
     }
     return best;
   }
@@ -268,11 +326,24 @@
     });
   }
 
+  // Vue d'ouverture : la carte remplit l'écran en hauteur et se cale sur la
+  // nation du joueur. Sur un téléphone en portrait, sans cela, le monde
+  // n'occupe qu'une mince bande au milieu d'un océan de vide.
+  G.vueInitiale = function (i) {
+    const voulu = (C.hauteur * 0.80 / 148) / (C.largeur / 360);
+    C.zoom = G.clamp(voulu, 1, 4);
+    const s = ech(), p = G.PAYS[i];
+    C.ox = C.largeur / 2 - (p.lon + 180) * s;
+    C.oy = C.hauteur / 2 - (78 - p.lat) * s;
+    limiter(); dessiner();
+  };
+
   G.centrerSur = function (i) {
     const p = G.PAYS[i];
     C.zoom = Math.max(C.zoom, 2.6);
-    C.ox = C.largeur / 2 - ((p.lon + 180) / 360) * C.largeur * C.zoom;
-    C.oy = C.hauteur / 2 - ((78 - p.lat) / 148) * C.hauteur * C.zoom;
+    const s = ech();
+    C.ox = C.largeur / 2 - (p.lon + 180) * s;
+    C.oy = C.hauteur / 2 - (78 - p.lat) * s;
     limiter(); dessiner();
   };
 })(window.GEO = window.GEO || {});

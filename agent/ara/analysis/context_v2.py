@@ -54,6 +54,18 @@ jeu 7 reviendrait à s'entraîner sur son propre examen.
 Second effet, du même ordre : une question sans nom propre voit tous ses mots
 longs traités comme des lieux, ce qui désactive le contrôle d'objet. Aucune
 question du jeu 7 n'est dans ce cas, mais la faille est réelle.
+
+Une correction a été tentée pour cette seconde faille, puis **rejetée**
+- tentée : ne retenir que les noms propres comme termes de lieu ;
+- améliorait : les questions sans nom propre retrouvaient un contrôle d'objet ;
+- dégradait : « planteur » devenait un terme d'objet, et un prix de vanille
+  redevenait affirmable pour une question sur le girofle ;
+- effet sur le jeu 7 : aucun, 73 % avant comme après ;
+- rejetée parce que le résultat mesuré prime, et parce qu'ajuster après avoir
+  vu le jeu de test revient à s'entraîner sur son propre examen.
+
+Toute amélioration devient **CONTEXT-V3**, évaluée sur un jeu 8 écrit avant
+son exécution. Ce module-ci est figé tel que mesuré.
 """
 
 from __future__ import annotations

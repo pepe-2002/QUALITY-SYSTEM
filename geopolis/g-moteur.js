@@ -1311,6 +1311,7 @@
   function finPartie(type, msg) {
     E.fini = { type: type, msg: msg, jour: E.jour };
     E.pause = true;
+    try { localStorage.removeItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
     journal(type === 'victoire' ? '🏆' : '💀', msg, type === 'victoire' ? 'bon' : 'mauvais');
   }
   G.finPartie = finPartie;

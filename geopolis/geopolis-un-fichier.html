@@ -2204,6 +2204,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   function finPartie(type, msg) {
     E.fini = { type: type, msg: msg, jour: E.jour };
     E.pause = true;
+    try { localStorage.removeItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
     journal(type === 'victoire' ? '🏆' : '💀', msg, type === 'victoire' ? 'bon' : 'mauvais');
   }
   G.finPartie = finPartie;
@@ -2803,15 +2804,24 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     q('#accueil').classList.add('cache');
     q('#jeu').classList.remove('cache');
     construireNav();
-    G.initCarte(q('#carte'), p => { UI.paysVise = p; if (UI.panneau === 'diplomatie') majDiplo(true); });
+    if (!UI.carteInstallee) {
+      G.initCarte(q('#carte'), p => { UI.paysVise = p; if (UI.panneau === 'diplomatie') majDiplo(true); });
+      UI.carteInstallee = true;
+    } else {
+      G.redimensionnerCarte();
+    }
+    UI.enJeu = true;
+    UI.dernierAuto = -1;
     ouvrir('carte');
     majBarre();
     dernierTemps = performance.now();
+    tempsAccum = 0;
     if (!boucle) boucle = requestAnimationFrame(tourner);
-    window.addEventListener('keydown', clavier);
+    if (!UI.clavierInstalle) { window.addEventListener('keydown', clavier); UI.clavierInstalle = true; }
   };
 
   function clavier(e) {
+    if (!UI.enJeu) return;
     if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
     if (e.code === 'Space') { e.preventDefault(); basculerPause(); }
     if (e.key >= '1' && e.key <= '4') { E.pause = false; E.vitesse = +e.key; majVitesse(); }
@@ -2825,6 +2835,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   function tourner(t) {
     const dt = Math.min(t - dernierTemps, 400);
     dernierTemps = t;
+    if (!UI.enJeu) { boucle = requestAnimationFrame(tourner); return; }
     if (!E.pause && !E.fini && !E.evenement && !E.capitulation) {
       tempsAccum += dt;
       const pas = VITESSES[E.vitesse];
@@ -2850,6 +2861,27 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     }
     boucle = requestAnimationFrame(tourner);
   }
+
+  G.confirmer = function (titre, texte, onOui, libelleOui) {
+    modale(`<div class="mo-i">⚠️</div><h2>${titre}</h2><p>${texte}</p>`,
+      [[libelleOui || 'Confirmer', onOui, 'danger'], ['Annuler', () => {}, 'sec']]);
+  };
+
+  G.retourAccueil = function () {
+    UI.enJeu = false;
+    E.pause = true;
+    E.fini = null; E.evenement = null; E.capitulation = null; E.onu = null;
+    tempsAccum = 0;
+    q('#modale').classList.remove('ouvert');
+    q('#modale').innerHTML = '';
+    q('#jeu').classList.add('cache');
+    q('#accueil').classList.remove('cache');
+    q('#contenu').innerHTML = '';
+    UI.construits = {}; UI.refs = {}; UI.paysVise = -1;
+    G.carte.choisi = -1; G.carte.survol = -1; G.carte.zoom = 1; G.carte.ox = 0; G.carte.oy = 0;
+    document.title = 'GÉOPOLIS — Simulateur de Président';
+    if (G.rafraichirAccueil) G.rafraichirAccueil();
+  };
 
   function basculerPause() { E.pause = !E.pause; majVitesse(); }
   function majVitesse() {
@@ -3676,8 +3708,11 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     else A('Décréter des sanctions', 'danger', 'sanction');
     if (!enGuerre) {
       act.appendChild(bouton('Déclarer la guerre', 'danger', () => {
-        if (!confirm(`Déclarer la guerre à ${p.nom} ? Rapport de force estimé : ${nf2.format(rapport)} ×.`)) return;
-        resultat(G.declarerGuerre(i, j)); det.dataset.p = -1; majDiplo(true);
+        G.confirmer(`Déclarer la guerre à ${p.nom} ?`,
+          `Rapport de force estimé : ${nf2.format(rapport)} × en votre faveur. ` +
+          'Leurs alliés peuvent entrer dans le conflit, et votre réputation en souffrira.',
+          () => { resultat(G.declarerGuerre(i, j)); det.dataset.p = -1; majDiplo(true); },
+          'Déclarer la guerre');
       }));
     }
     act.appendChild(bouton('Centrer sur la carte', 'sec', () => { ouvrir('carte'); G.centrerSur(j); }));
@@ -3780,8 +3815,11 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
         }));
         if (E.uni[i * G.NUNI + U.ogive] > 0) {
           a.appendChild(bouton('☢️ Frappe nucléaire', 'danger', () => {
-            if (!confirm(`Frapper ${G.PAYS[adv].nom} à l'arme nucléaire ? Des millions de morts, votre réputation détruite, et une riposte probable.`)) return;
-            resultat(G.frappeNucleaire(i, adv)); PANNEAUX.armee.maj();
+            G.confirmer(`Frapper ${G.PAYS[adv].nom} à l'arme nucléaire ?`,
+              'Des millions de morts, votre réputation détruite, le monde entier contre vous — ' +
+              'et une riposte si l\'adversaire dispose lui aussi de l\'arme.',
+              () => { resultat(G.frappeNucleaire(i, adv)); PANNEAUX.armee.maj(); },
+              'Lancer la frappe');
           }));
         }
         c.appendChild(a);
@@ -4131,7 +4169,16 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
         <div><span>Approbation</span><b>${nf0.format(E.approb[i])} %</b></div>
         <div><span>Score</span><b>${nf0.format(E.score)}</b></div>
       </div>`,
-      [['Nouvelle partie', () => location.reload(), 'principal']], 'fin');
+      [['Choisir une autre nation', () => G.retourAccueil(), 'principal'],
+       ['Rejouer ' + G.PAYS[i].nom, () => {
+         const code = G.PAYS[i].code;
+         G.nouvellePartie(code); G.appliquerGeopolitique();
+         q('#b-drapeau').textContent = G.PAYS[E.joueur].drapeau;
+         q('#b-nom').textContent = G.PAYS[E.joueur].nom;
+         UI.construits = {}; UI.refs = {};
+         q('#contenu').innerHTML = '';
+         UI.enJeu = true; ouvrir('carte'); majBarre(); majVitesse();
+       }, 'sec']], 'fin');
   }
 
   // ══════════════════════════════════════════════════════ Contrôles globaux
@@ -4193,7 +4240,10 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     if (!G.stockageDispo())
       notifier('Ce navigateur bloque la sauvegarde automatique. Utilisez ⬇ pour télécharger votre partie.', 'mauvais');
     q('#btn-menu').onclick = () => {
-      if (confirm('Quitter la partie en cours ? Pensez à sauvegarder.')) location.reload();
+      G.confirmer('Quitter la partie ?',
+        'Vous reviendrez au choix des nations. Votre partie est sauvegardée automatiquement, ' +
+        'mais vous pouvez aussi la télécharger avec le bouton ⬇ avant de partir.',
+        () => G.retourAccueil(), 'Revenir au menu');
     };
     majVitesse();
   };
@@ -4287,24 +4337,28 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
       lancer();
     };
 
+    q('#acc-charger').onclick = () => G.chargerFichier(lancer);
+    G.rafraichirAccueil();
+  });
+
+  G.rafraichirAccueil = function () {
+    choisi = -1;
+    construire();
+    majSelection();
+    const b = q('#acc-reprendre');
     let save = null;
     try { save = localStorage.getItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
-
-    q('#acc-charger').onclick = () => G.chargerFichier(lancer);
-
-    if (save) {
-      const b = q('#acc-reprendre');
-      b.classList.remove('cache');
-      try {
-        const s = JSON.parse(save);
-        b.textContent = `Reprendre : ${G.PAYS[s.joueur].drapeau} ${G.PAYS[s.joueur].nom}, ${Math.floor(s.jour / 365)} an(s) de mandat`;
-      } catch (e) { /* sauvegarde illisible : le libellé par défaut suffit */ }
-      b.onclick = () => {
-        try { G.charger(save); lancer(); }
-        catch (e) { alert('Sauvegarde illisible : ' + e.message); }
-      };
-    }
-  });
+    if (!save) { b.classList.add('cache'); return; }
+    b.classList.remove('cache');
+    try {
+      const s = JSON.parse(save);
+      b.textContent = `Reprendre : ${G.PAYS[s.joueur].drapeau} ${G.PAYS[s.joueur].nom}, ${Math.floor(s.jour / 365)} an(s) de mandat`;
+    } catch (e) { b.textContent = 'Reprendre la partie sauvegardée'; }
+    b.onclick = () => {
+      try { G.charger(save); lancer(); }
+      catch (e) { G.notifier('Sauvegarde illisible : ' + e.message, 'mauvais'); }
+    };
+  };
 
   function lancer() {
     const p = G.PAYS[G.E.joueur];

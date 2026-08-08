@@ -85,24 +85,28 @@
       lancer();
     };
 
+    q('#acc-charger').onclick = () => G.chargerFichier(lancer);
+    G.rafraichirAccueil();
+  });
+
+  G.rafraichirAccueil = function () {
+    choisi = -1;
+    construire();
+    majSelection();
+    const b = q('#acc-reprendre');
     let save = null;
     try { save = localStorage.getItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
-
-    q('#acc-charger').onclick = () => G.chargerFichier(lancer);
-
-    if (save) {
-      const b = q('#acc-reprendre');
-      b.classList.remove('cache');
-      try {
-        const s = JSON.parse(save);
-        b.textContent = `Reprendre : ${G.PAYS[s.joueur].drapeau} ${G.PAYS[s.joueur].nom}, ${Math.floor(s.jour / 365)} an(s) de mandat`;
-      } catch (e) { /* sauvegarde illisible : le libellé par défaut suffit */ }
-      b.onclick = () => {
-        try { G.charger(save); lancer(); }
-        catch (e) { alert('Sauvegarde illisible : ' + e.message); }
-      };
-    }
-  });
+    if (!save) { b.classList.add('cache'); return; }
+    b.classList.remove('cache');
+    try {
+      const s = JSON.parse(save);
+      b.textContent = `Reprendre : ${G.PAYS[s.joueur].drapeau} ${G.PAYS[s.joueur].nom}, ${Math.floor(s.jour / 365)} an(s) de mandat`;
+    } catch (e) { b.textContent = 'Reprendre la partie sauvegardée'; }
+    b.onclick = () => {
+      try { G.charger(save); lancer(); }
+      catch (e) { G.notifier('Sauvegarde illisible : ' + e.message, 'mauvais'); }
+    };
+  };
 
   function lancer() {
     const p = G.PAYS[G.E.joueur];

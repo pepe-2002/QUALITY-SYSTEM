@@ -173,7 +173,11 @@ Les cinq phases sont livrées (v0.5, 413 tests) :
    pages, conditions de réfutation écrites d'avance. Verdict honnête :
    **non concluant** (8 tâches, p = 1,000) — l'adaptation n'a pas prouvé
    qu'elle répond plus juste, mais elle dépense moitié moins de recherches
-   à exactitude égale. Le banc a surtout servi à trouver 4 vrais bugs ;
+   à exactitude égale. Le banc a surtout servi à trouver 4 vrais bugs.
+   Une seconde hypothèse (H2), pré-enregistrée et testée sur un jeu tenu à
+   l'écart : **partiellement soutenue** — l'adaptation économise bien 56 % de
+   recherches, mais elle ne détecte pas la difficulté (elle coupe autant sur
+   les questions dures que sur les faciles) et y perd en exactitude ;
 5. automatisation Android : capacités du téléphone via Termux (notification,
    presse-papier, voix, partage) et **routines programmées** — « chaque
    matin », « chaque lundi à 8h ». Pas d'envoi de SMS par l'agent : le partage

@@ -149,7 +149,7 @@ Résultat de l'exécution actuelle :
 | MODEL ONLY | 0.00 | 0.00 | **0.00** | 0.0 | 106 |
 | FIXED REASONING | 0.62 | 0.12 | **0.62** | 3.0 | 213 |
 | ADAPTIVE REASONING | 0.62 | 0.12 | **0.62** | 1.5 | 213 |
-| ADAPTIVE RESEARCH | 0.75 | 0.12 | **0.75** | 2.4 | 294 |
+| ADAPTIVE RESEARCH | 0.75 | 0.12 | **0.75** | 2.4 | 315 |
 
 **Verdict : non concluant.** 1 victoire, 0 défaite, 7 égalités ; gain +0,125
 mais p = 1,000 et l'intervalle de confiance [+0,000 ; +0,375] contient zéro.
@@ -164,6 +164,40 @@ C'est la seconde hypothèse, et elle n'est pas réfutée.
 Le banc a surtout servi à autre chose : il a **trouvé quatre défauts** dans le
 système de production (voir `docs/ANALYSE-V0.md`). C'est probablement son
 apport le plus solide à ce stade.
+
+### H2 — l'adaptation économise-t-elle des recherches ?
+
+H1 reste non concluante. Une seconde hypothèse, plus mesurable, a été
+pré-enregistrée puis testée sur un **jeu tenu à l'écart** :
+
+> À exactitude comparable, ADAPTIVE REASONING réduit significativement le
+> nombre de recherches nécessaires par rapport à FIXED.
+
+```bash
+python -m ara.cli --h2      # écrit workspace/h2-report.md
+```
+
+Protocole renforcé par rapport à H1 : deux jeux séparés (calibration brûlée /
+test d'un autre domaine, jamais vu), **5 graines** qui font varier la
+formulation des questions et l'ordre des résultats, l'unité statistique restée
+la **tâche** (moyenner les graines évite la pseudo-réplication), critères
+écrits avant — et le commit qui les contient précède celui des résultats.
+
+| Stratégie (jeu de test) | Exactitude | Recherches | Appels LLM | Rech./réponse juste |
+|---|---|---|---|---|
+| FIXED REASONING | 0.78 | 3.00 | 2.00 | 3.85 |
+| ADAPTIVE REASONING | 0.74 | **1.32** | 1.16 | **1.78** |
+
+**Verdict : H2 PARTIELLEMENT SOUTENUE.** La réduction est là et elle est
+franche — 56 % de recherches en moins, 10 tâches sur 10, p = 0,002. Mais le
+critère d'exactitude comparable **échoue** (IC95 de l'écart [−0,120 ; 0,000],
+sous la marge de −0,05).
+
+L'analyse par famille dit pourquoi, et ce n'est pas ce qui était espéré : le
+contrôleur coupe **autant sur les tâches profondes que sur les faciles**. Il
+ne lit pas la difficulté, il rationne partout — et c'est sur les tâches
+profondes qu'il perd. Le contrôleur n'a pas été retouché après coup : les
+seuils et le code sont restés gelés.
 
 ## Le téléphone et les routines (Phase 5)
 
@@ -315,7 +349,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-413 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+445 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -348,7 +382,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             413 tests hors ligne
+├── tests/             445 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -370,10 +404,11 @@ agent/
   incompatibles ; elle ne comprend pas qu'une page parle de 2019 et l'autre de
   2026. Sur un sujet encyclopédique riche, elle produit encore des alertes
   discutables.
-- Le contrôleur de complexité est désormais **mesuré**, mais le résultat est
-  *non concluant* : le banc d'essai est trop petit (8 tâches) pour établir un
-  gain d'exactitude. Ce qu'il montre, c'est une économie de recherches à
-  exactitude égale — pas la supériorité annoncée.
+- Le contrôleur de complexité est désormais **mesuré**, et le résultat n'est
+  pas celui qu'on visait : il économise beaucoup de recherches (−56 % sur le
+  jeu de test, H2), mais il **ne détecte pas la difficulté** — il coupe autant
+  sur les questions profondes que sur les faciles, et y perd en exactitude.
+  H1, sur le gain d'exactitude, reste non concluante.
 - Le laboratoire mesure **son propre corpus**. Un web figé de huit tâches
   écrites par l'auteur du système ne remplace pas le vrai web : il sert à
   réfuter, pas à décerner un satisfecit.

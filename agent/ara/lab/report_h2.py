@@ -78,7 +78,8 @@ def _paired_block(comparison: PairedResult, titre: str) -> list[str]:
     return [
         f"**{titre}** (unité : {comparison.unit}, n = {comparison.n})",
         "",
-        f"- Recherches : **{comparison.reduction:+.0%}** "
+        f"- Recherches : **{'−' if comparison.reduction >= 0 else '+'}"
+        f"{abs(comparison.reduction):.0%}** "
         f"({comparison.search_ratio:.2f}× la référence, écart moyen "
         f"{comparison.search_delta:+.2f} par tâche, IC95 "
         f"[{comparison.search_ci[0]:+.2f}, {comparison.search_ci[1]:+.2f}])",
@@ -155,8 +156,10 @@ def render(result: H2Result) -> str:
         if run.paired_seed:
             lignes += [
                 f"*Analyse secondaire par couple tâche×graine (n = "
-                f"{run.paired_seed.n}, pseudo-réplication)* : réduction "
-                f"{run.paired_seed.reduction:+.0%}, p = {run.paired_seed.p_value:.3f}.",
+                f"{run.paired_seed.n}, pseudo-réplication)* : "
+                f"{abs(run.paired_seed.reduction):.0%} de recherches "
+                f"{'en moins' if run.paired_seed.reduction >= 0 else 'en plus'}, "
+                f"p = {run.paired_seed.p_value:.3f}.",
                 "",
             ]
         lignes += ["### Raisons d'arrêt", "", *_table_stops(run), ""]

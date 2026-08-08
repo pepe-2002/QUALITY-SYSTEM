@@ -479,12 +479,26 @@ def run_dataset(
     return run
 
 
-def explain(result: H2Result) -> list[str]:
-    """Pourquoi ADAPTIVE cherche moins — analyse *après* le verdict.
+def _family_stats(rows: list[Row], family: str, strategy: str) -> tuple[float, float]:
+    """(recherches moyennes, exactitude nette moyenne) d'une stratégie sur une famille."""
+    selection = [
+        r for r in rows if r.task.family == family and r.outcome.strategy == strategy
+    ]
+    if not selection:
+        return (0.0, 0.0)
+    return (
+        statistics.fmean(r.outcome.searches for r in selection),
+        statistics.fmean(r.score.net for r in selection),
+    )
 
-    Cette section n'a de sens que si l'effet est là. Elle est donc calculée à
-    partir des mesures, pas rédigée d'avance : ce sont les raisons d'arrêt et
-    les budgets alloués qui parlent.
+
+def explain(result: H2Result) -> list[str]:
+    """Pourquoi ADAPTIVE cherche moins — analyse conduite *après* le verdict.
+
+    Écrite pour suivre les chiffres, y compris quand ils déplaisent : la
+    première version de cette fonction affirmait que le contrôleur « maintient
+    le budget sur les tâches profondes ». Les mesures disent le contraire, et
+    c'est cette version-là qui a été gardée.
     """
     lignes: list[str] = []
     test = result.test
@@ -501,58 +515,87 @@ def explain(result: H2Result) -> list[str]:
         return lignes
 
     lignes.append(
-        f"Le contrôleur alloue un budget **avant** de chercher, à partir de la "
-        f"seule formulation de la question. FIXED dépense {fixe.searches:.2f} "
-        f"recherches quelle que soit la question ; ADAPTIVE en dépense "
-        f"{adaptatif.searches:.2f} en moyenne. L'écart ne vient pas d'un arrêt "
-        "anticipé en cours de route — ces deux stratégies ne relancent jamais — "
-        "mais d'une allocation plus basse dès le départ sur les questions "
-        "jugées simples."
+        f"**Le mécanisme.** Le contrôleur alloue un budget *avant* de chercher, "
+        f"à partir de la seule formulation de la question. FIXED dépense "
+        f"{fixe.searches:.2f} recherches quelle que soit la question ; ADAPTIVE "
+        f"en dépense {adaptatif.searches:.2f}. L'écart ne vient donc pas d'un "
+        "arrêt anticipé en cours de route — aucune de ces deux stratégies ne "
+        "relance — mais d'une estimation faite d'entrée de jeu."
     )
 
-    faciles = [r for r in test.rows if r.task.family == "facile"]
-    if faciles:
-        a_facile = statistics.fmean(
-            r.outcome.searches for r in faciles if r.outcome.strategy == "adaptive_reasoning"
-        )
-        f_facile = statistics.fmean(
-            r.outcome.searches for r in faciles if r.outcome.strategy == "fixed"
-        )
-        lignes.append(
-            f"Sur les tâches **faciles**, l'écart est de {f_facile - a_facile:+.2f} "
-            f"recherche par tâche ({a_facile:.2f} contre {f_facile:.2f}) : c'est "
-            "là que l'économie se fait, exactement là où elle ne coûte rien."
-        )
+    familles = [f for f in ("facile", "profond", "piege")
+                if any(r.task.family == f for r in test.rows)]
+    if familles:
+        tableau = [
+            "| Famille | Recherches ADAPTIVE | Recherches FIXED | Économie | "
+            "Exactitude ADAPTIVE | Exactitude FIXED |",
+            "|---|---|---|---|---|---|",
+        ]
+        for famille in familles:
+            a_rech, a_exact = _family_stats(test.rows, famille, "adaptive_reasoning")
+            f_rech, f_exact = _family_stats(test.rows, famille, "fixed")
+            tableau.append(
+                f"| {famille} | {a_rech:.2f} | {f_rech:.2f} | "
+                f"−{f_rech - a_rech:.2f} | {a_exact:.2f} | {f_exact:.2f} |"
+            )
+        lignes.append("\n".join(tableau))
 
-    profondes = [r for r in test.rows if r.task.family == "profond"]
-    if profondes:
-        a_profond = statistics.fmean(
-            r.outcome.searches for r in profondes if r.outcome.strategy == "adaptive_reasoning"
-        )
-        f_profond = statistics.fmean(
-            r.outcome.searches for r in profondes if r.outcome.strategy == "fixed"
-        )
-        lignes.append(
-            f"Sur les tâches **profondes**, l'écart tombe à "
-            f"{f_profond - a_profond:+.2f} ({a_profond:.2f} contre "
-            f"{f_profond:.2f}) : le contrôleur y maintient le budget. Une "
-            "économie uniforme aurait été suspecte — elle aurait signifié que "
-            "le contrôleur coupe partout, sans lire la question."
-        )
+    # Là où l'explication doit résister à l'envie de bien conclure : si le
+    # contrôleur coupe autant (ou plus) sur les tâches difficiles que sur les
+    # faciles, il ne lit pas la difficulté — il rationne partout.
+    if "facile" in familles and "profond" in familles:
+        a_facile, _ = _family_stats(test.rows, "facile", "adaptive_reasoning")
+        f_facile, _ = _family_stats(test.rows, "facile", "fixed")
+        a_profond, exact_profond = _family_stats(test.rows, "profond", "adaptive_reasoning")
+        f_profond, exact_fixe_profond = _family_stats(test.rows, "profond", "fixed")
+        eco_facile = f_facile - a_facile
+        eco_profond = f_profond - a_profond
+
+        if eco_profond >= eco_facile - 1e-9:
+            lignes.append(
+                f"**Et voici ce que l'économie n'est pas.** Elle n'est pas "
+                f"sélective : le contrôleur coupe autant sur les tâches "
+                f"profondes (−{eco_profond:.2f} recherche) que sur les faciles "
+                f"(−{eco_facile:.2f}). Autrement dit il ne détecte pas la "
+                "difficulté, il rationne partout. L'économie est donc réelle, "
+                "mais elle n'est pas *intelligente* au sens où le projet "
+                "l'espérait — et c'est précisément pour cela que le critère "
+                "d'exactitude comparable échoue : sur les tâches profondes, "
+                f"ADAPTIVE obtient {exact_profond:.2f} d'exactitude nette contre "
+                f"{exact_fixe_profond:.2f} pour FIXED."
+            )
+        else:
+            lignes.append(
+                f"**L'économie est sélective.** Elle est de −{eco_facile:.2f} "
+                f"recherche sur les tâches faciles contre −{eco_profond:.2f} sur "
+                "les profondes : le contrôleur coupe surtout là où couper ne "
+                "coûte rien. C'est le comportement que la conception visait."
+            )
+
+    lignes.append(
+        f"**Le rendement.** ADAPTIVE dépense "
+        f"{adaptatif.searches_per_correct:.2f} recherches par réponse correcte, "
+        f"contre {fixe.searches_per_correct:.2f} pour FIXED. Cette mesure est "
+        "plus dure que la moyenne des recherches : une stratégie qui économise "
+        "en se trompant y perd immédiatement. ADAPTIVE tient quand même."
+    )
 
     perdues = test.wasted.get("fixed", 0)
     if perdues:
         lignes.append(
-            f"Vu autrement : sur ce jeu, FIXED dépense {perdues} recherche(s) "
-            "au-delà du minimum qui suffisait à trouver la bonne réponse. "
-            "L'économie d'ADAPTIVE consiste largement à ne pas les faire."
+            f"**La contrepartie.** Sur ce jeu, FIXED lance {perdues} recherche(s) "
+            "au-delà du minimum qui suffisait à trouver la bonne réponse — "
+            f"contre {test.wasted.get('adaptive_reasoning', 0)} pour ADAPTIVE. "
+            "Une part de l'économie consiste simplement à ne pas les faire."
         )
 
     lignes.append(
-        "Limite de cette explication : elle décrit un mécanisme observé sur ce "
-        "corpus, pas une loi. Le contrôleur est lexical — il compte des mots de "
-        "la question. Sur un terrain où la difficulté ne se lit pas dans la "
-        "formulation, rien ne garantit qu'il alloue mieux qu'un budget fixe."
+        "**Limite de cette explication.** Elle décrit un mécanisme observé sur "
+        "un corpus, pas une loi. Le contrôleur est lexical : il compte des mots "
+        "de la question. Sur un terrain où la difficulté ne se lit pas dans la "
+        "formulation — et c'est le cas général — rien ne garantit qu'il alloue "
+        "mieux qu'un budget fixe. Ce que l'expérience montre, c'est qu'il "
+        "alloue *moins*."
     )
     return lignes
 

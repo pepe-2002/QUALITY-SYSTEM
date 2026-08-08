@@ -283,7 +283,125 @@ l'hypothèse : déplacer les seuils de réfutation après coup. Ils sont restés
 
 ---
 
-## 8. Limites connues
+## 8. H2 — l'adaptation économise-t-elle vraiment des recherches ?
+
+### Pourquoi une seconde hypothèse
+
+H1 est restée **non concluante**, et le reste : elle n'est ni révisée, ni
+reformulée, ni repêchée. Mais son échec disait quelque chose d'utile — l'effet
+cherché (« l'adaptation répond mieux ») était peut-être trop petit pour huit
+tâches. H2 porte sur une affirmation différente, plus mesurable :
+
+> H2 — À exactitude comparable, ADAPTIVE REASONING réduit significativement le
+> nombre de recherches nécessaires par rapport à FIXED.
+
+Elle a l'avantage d'être réfutable pour de bon : il suffit que la réduction
+n'existe pas, ou qu'elle se paie en exactitude.
+
+### Ce que la Phase 4 avait de faible, et que H2 corrige
+
+| Faiblesse de H1 | Correction |
+|---|---|
+| Un seul jeu, et il avait servi à corriger le système | Deux jeux : calibration (brûlé) et **test tenu à l'écart**, autre domaine, aucune page commune |
+| Une seule exécution, déterministe | **5 graines** : la formulation de la question et l'ordre des résultats varient, jamais les faits |
+| « Non concluant » sans dire *pourquoi* l'agent s'arrête | Taxonomie des **raisons d'arrêt**, instrumentée dans le système lui-même |
+| Aucune analyse des erreurs | Taxonomie des **erreurs** : arrêt trop tôt, recherche inutile, suffisance mal jugée, contradiction manquée ou signalée à tort |
+| Coût en jetons seulement | Recherches, pages, **appels LLM**, jetons, latence, **coût estimé**, **recherches par réponse correcte** |
+
+Deux points de méthode méritent d'être dits :
+
+- **L'unité statistique est la tâche, pas le couple tâche×graine.** Cinq
+  graines d'une même tâche ne sont pas cinq observations indépendantes ; les
+  compter comme telles ferait baisser la p-valeur sans rien prouver. L'analyse
+  par couple est donnée à part, étiquetée *pseudo-réplication*.
+- **Les critères sont écrits avant l'expérience**, et le commit qui les
+  contient précède celui des résultats. L'antériorité est vérifiable dans
+  l'historique Git, elle ne repose pas sur ma parole.
+
+Critères pré-enregistrés :
+
+- **A — exactitude comparable** : borne basse de l'IC95 de l'écart d'exactitude
+  nette ≥ −0,05 (non-infériorité) ;
+- **B — réduction significative** : ≥ 20 % de recherches en moins **et**
+  p < 0,05 au test des signes apparié ;
+- SOUTENUE = A et B · PARTIELLEMENT SOUTENUE = B sans A · RÉFUTÉE = B non
+  vérifié.
+
+### Le résultat, sur le jeu de test tenu à l'écart
+
+| Stratégie | Exactitude | Nette | Recherches | Appels LLM | Jetons | Rech./réponse juste |
+|---|---|---|---|---|---|---|
+| MODEL ONLY | 0.00 | 0.00 | 0.00 | 1.00 | 109 | — |
+| FIXED REASONING | 0.78 | 0.73 | 3.00 | 2.00 | 228 | 3.85 |
+| ADAPTIVE REASONING | 0.74 | 0.69 | 1.32 | 1.16 | 214 | **1.78** |
+| ADAPTIVE RESEARCH | 0.78 | 0.73 | 2.54 | 1.16 | 319 | 3.26 |
+
+**H2 PARTIELLEMENT SOUTENUE.**
+
+- **B vérifié** : 56 % de recherches en moins (écart moyen −1,68 par tâche,
+  IC95 [−1,92 ; −1,44]), 10 tâches sur 10 moins chères, p = 0,002.
+- **A non vérifié** : la borne basse de l'IC95 de l'écart d'exactitude
+  (−0,120) descend sous la marge de −0,05. L'exactitude n'est pas comparable.
+
+### Ce que l'analyse des arrêts et des erreurs a révélé
+
+L'économie est réelle mais **elle n'est pas sélective** :
+
+| Famille | Recherches ADAPTIVE | Recherches FIXED | Exactitude ADAPTIVE | Exactitude FIXED |
+|---|---|---|---|---|
+| facile | 1.40 | 3.00 | 0.80 | 0.80 |
+| profond | 1.00 | 3.00 | **0.80** | **1.00** |
+| piège | 1.40 | 3.00 | 0.54 | 0.54 |
+
+Le contrôleur coupe **autant sur les tâches profondes que sur les faciles** —
+davantage, même. Il ne détecte donc pas la difficulté : il rationne partout.
+C'est précisément là que le critère A tombe, sur les tâches profondes, où
+FIXED trouve ce qu'ADAPTIVE manque.
+
+C'est un résultat négatif utile, et il contredit ce que la conception
+annonçait. La première version de la section « pourquoi ADAPTIVE cherche
+moins » affirmait que le contrôleur *maintient* le budget sur les tâches
+difficiles. Les mesures disent l'inverse ; c'est la version conforme aux
+mesures qui a été gardée.
+
+Les erreurs relevées après coup complètent le tableau : sur le jeu de test,
+FIXED lance **64 recherches au-delà du minimum** qui suffisait à trouver la
+bonne réponse, contre 0 pour ADAPTIVE. Une bonne part de l'économie consiste
+simplement à ne pas les faire.
+
+Enfin, la mesure la plus dure — **recherches par réponse correcte**, qui punit
+immédiatement une stratégie qui économise en se trompant — reste à l'avantage
+d'ADAPTIVE : 1,78 contre 3,85.
+
+### Ce qui n'a pas été fait pour sauver l'hypothèse
+
+- Le contrôleur n'a **pas** été ajusté après la calibration, alors que celle-ci
+  montrait déjà le critère A à la limite (IC95 [−0,075 ; 0,000]). Régler le
+  système pour faire passer un critère qu'on vient de voir échouer est
+  exactement ce que le pré-enregistrement sert à empêcher.
+- Les seuils (−0,05 et 20 %) n'ont pas bougé.
+- H1 n'a pas été retouchée.
+
+### Divulgation — un effet de bord de l'instrumentation
+
+Ajouter les codes d'arrêt a modifié une **phrase** du rapport de recherche
+(l'agent annonçait « aucun manque » alors qu'un manque subsistait ; il dit
+maintenant ce qui manque). Cette phrase fait partie de la réponse rendue, donc
+le nombre de jetons d'ADAPTIVE RESEARCH augmente légèrement : le coût relatif
+de H1 passe de 1,38× à **1,48×**, toujours sous la limite de 1,5× annoncée.
+Exactitude, recherches, verdict de H1 : identiques.
+
+### Ce que H2 ne prouve pas
+
+- Le jeu de test est écrit par l'auteur du système : séparation calibration /
+  test, **pas** réplication indépendante.
+- Les graines varient la formulation et le classement, pas le contenu du web.
+- Une réduction de recherches n'est un gain que si les recherches coûtent. Sur
+  un moteur gratuit et rapide, l'économie reste théorique.
+
+---
+
+## 9. Limites connues
 
 À lire avant d'en attendre plus que le système ne donne :
 

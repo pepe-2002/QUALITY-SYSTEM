@@ -27,6 +27,14 @@
       </p>
     </header>
 
+    <div id="acc-partie" class="acc-partie cache">
+      <div class="ap-t"><span class="ap-lab">Partie en cours</span><b id="acc-partie-nom"></b></div>
+      <div class="ap-a">
+        <button id="acc-reprendre" class="btn principal">Reprendre</button>
+        <button id="acc-effacer" class="btn sec">Effacer</button>
+      </div>
+    </div>
+
     <section class="acc-choix">
       <div class="acc-barre">
         <h2>Choisissez votre nation</h2>
@@ -52,12 +60,9 @@
     </section>
 
     <footer class="acc-f">
-      <div id="acc-sel" class="acc-sel">Aucune nation sélectionnée</div>
-      <div class="acc-a">
-        <button id="acc-reprendre" class="btn sec cache">Reprendre la partie sauvegardée</button>
-        <button id="acc-charger" class="btn sec">Charger un fichier</button>
-        <button id="acc-jouer" class="btn principal" disabled>Prendre le pouvoir</button>
-      </div>
+      <div id="acc-sel" class="acc-sel">Choisissez une nation ci-dessus</div>
+      <button id="acc-jouer" class="btn principal grand" disabled>Prendre le pouvoir</button>
+      <button id="acc-charger" class="lien">Ouvrir un fichier de sauvegarde</button>
     </footer>
   </div>
 </div>

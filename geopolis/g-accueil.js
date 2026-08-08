@@ -70,8 +70,14 @@
 
   function majSelection() {
     const s = q('#acc-sel'), b = q('#acc-jouer');
-    if (choisi < 0) { s.textContent = 'Aucune nation sélectionnée'; b.disabled = true; return; }
+    if (choisi < 0) {
+      s.textContent = 'Choisissez une nation ci-dessus';
+      b.disabled = true;
+      b.textContent = 'Prendre le pouvoir';
+      return;
+    }
     const p = G.PAYS[choisi], d = difficulte(p);
+    b.textContent = `Prendre le pouvoir — ${p.drapeau} ${p.nom}`;
     const dot = p.dot;
     const noms = ['pétrole','gaz','charbon','fer','cuivre','terres rares','uranium','or','agriculture'];
     const riches = noms.filter((_, k) => dot[k] >= 5);
@@ -93,6 +99,7 @@
       if (choisi < 0) return;
       G.nouvellePartie(G.PAYS[choisi].code);
       G.appliquerGeopolitique();
+      G.amorcerDefis();
       lancer();
     };
 
@@ -107,18 +114,28 @@
     q('#acc-rech').value = '';
     construire();
     majSelection();
-    const b = q('#acc-reprendre');
+
+    // La partie sauvegardée est présentée à part, tout en haut, et jamais
+    // à côté du bouton qui lance une nouvelle partie.
+    const carte = q('#acc-partie');
     let save = null;
     try { save = localStorage.getItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
-    if (!save) { b.classList.add('cache'); return; }
-    b.classList.remove('cache');
+    if (!save) { carte.classList.add('cache'); return; }
+    let etiquette = 'partie sauvegardée';
     try {
       const s = JSON.parse(save);
-      b.textContent = `Reprendre : ${G.PAYS[s.joueur].drapeau} ${G.PAYS[s.joueur].nom}, ${Math.floor(s.jour / 365)} an(s) de mandat`;
-    } catch (e) { b.textContent = 'Reprendre la partie sauvegardée'; }
-    b.onclick = () => {
+      const an = Math.floor(s.jour / 365);
+      etiquette = `${G.PAYS[s.joueur].drapeau} ${G.PAYS[s.joueur].nom} — ${an ? an + ' an' + (an > 1 ? 's' : '') + ' de mandat' : 'mandat commencé'}`;
+    } catch (e) { /* étiquette par défaut */ }
+    q('#acc-partie-nom').textContent = etiquette;
+    carte.classList.remove('cache');
+    q('#acc-reprendre').onclick = () => {
       try { G.charger(save); lancer(); }
       catch (e) { G.notifier('Sauvegarde illisible : ' + e.message, 'mauvais'); }
+    };
+    q('#acc-effacer').onclick = () => {
+      try { localStorage.removeItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
+      carte.classList.add('cache');
     };
   };
 

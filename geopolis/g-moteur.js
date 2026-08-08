@@ -11,6 +11,7 @@
 
   const N = G.N, NRES = G.NRES, NBAT = G.NBAT, NUNI = G.NUNI, R = G.R, B = G.B, U = G.U;
   const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+  const NTECH = G.TECHS.length;
   const f64 = n => new Float64Array(n);
   G.clamp = clamp;
 
@@ -63,6 +64,8 @@
     E.pactes = [];      // [i, j]
     E.sanctions = [];   // [i, j]
     E.lois = new Set();
+    E.defisFaits = [];
+    E.defisQueue = [];
     E.journal = [];
     E.evenement = null;
     E.onu = null;
@@ -262,7 +265,6 @@
 
   // ───────────────────────────────────────────────────────────── Multiplicateurs
   const TIDX = {}; G.TECHS.forEach((t, k) => { TIDX[t.id] = k; });
-  const NTECH = G.TECHS.length;
   function aTech(i, id) {
     const k = TIDX[id];
     return k !== undefined && E.techs[i * NTECH + k] === 1;
@@ -1293,23 +1295,101 @@
       finPartie('defaite', 'Votre nation a cessé d\'exister.');
   }
 
-  function victoires() {
-    const i = E.joueur;
+  // Treize défis, du plus accessible au plus lointain. En accomplir un ne met
+  // pas fin à la partie : on le note, on félicite, et le jeu continue — il
+  // reste toujours quelque chose à viser.
+  G.DEFIS = [
+    { id:'budget',   icone:'💰', nom:'Comptes en ordre',
+      desc:'Dégager un excédent budgétaire tout en gardant plus de 55 % d\'approbation.',
+      fait:(E,i) => E.dernierBilan[i] > 0 && E.approb[i] > 55,
+      progres:(E,i) => Math.min(1, (E.approb[i] / 55) * (E.dernierBilan[i] > 0 ? 1 : 0.5)) },
+
+    { id:'autonomie',icone:'🌾', nom:'Autonomie vitale',
+      desc:'Produire soi-même sa nourriture et son électricité, sans aucune pénurie.',
+      fait:(E,i) => E.prod[i*NRES+R.nourriture] >= E.conso[i*NRES+R.nourriture] &&
+                    E.prod[i*NRES+R.electricite] >= E.conso[i*NRES+R.electricite],
+      progres:(E,i) => Math.min(1, (Math.min(1, E.prod[i*NRES+R.nourriture]/Math.max(E.conso[i*NRES+R.nourriture],1)) +
+                                    Math.min(1, E.prod[i*NRES+R.electricite]/Math.max(E.conso[i*NRES+R.electricite],1))) / 2) },
+
+    { id:'dette',    icone:'🏦', nom:'Nation désendettée',
+      desc:'Ramener la dette publique sous 20 % du produit intérieur brut.',
+      fait:(E,i) => E.dette[i] / Math.max(E.pib[i]*1000,1) < 0.20,
+      progres:(E,i) => G.clamp(1 - (E.dette[i]/Math.max(E.pib[i]*1000,1) - 0.20) / 0.8, 0, 1) },
+
+    { id:'savoir',   icone:'🎓', nom:'Nation savante',
+      desc:'Porter l\'éducation et la santé au-dessus de 80.',
+      fait:(E,i) => E.educ[i] > 80 && E.sante[i] > 80,
+      progres:(E,i) => G.clamp((E.educ[i] + E.sante[i]) / 160, 0, 1) },
+
+    { id:'techno',   icone:'🔬', nom:'Toutes les sciences',
+      desc:'Acquérir les quinze technologies de l\'arbre de recherche.',
+      fait:(E,i) => { for (let k=0;k<NTECH;k++) if (!E.techs[i*NTECH+k]) return false; return true; },
+      progres:(E,i) => { let n=0; for (let k=0;k<NTECH;k++) if (E.techs[i*NTECH+k]) n++; return n/NTECH; } },
+
+    { id:'militaire',icone:'⚔️', nom:'Première armée du monde',
+      desc:'Détenir la puissance militaire la plus élevée de la planète.',
+      fait:(E,i) => { const m = puissance(i,true); for (let j=0;j<N;j++) if (j!==i && puissance(j,true) > m) return false; return true; },
+      progres:(E,i) => { const m = puissance(i,true); let max=0; for (let j=0;j<N;j++) if (j!==i) max=Math.max(max,puissance(j,true)); return G.clamp(m/Math.max(max,1),0,1); } },
+
+    { id:'richesse', icone:'💎', nom:'Richesse par habitant',
+      desc:'Devenir le pays le plus riche par habitant parmi ceux de plus de dix millions d\'âmes.',
+      fait:(E,i) => { if (E.pop[i] < 1e7) return false; const h = E.pib[i]/(E.pop[i]/1e6);
+        for (let j=0;j<N;j++) if (j!==i && E.pop[j]>=1e7 && E.pib[j]/(E.pop[j]/1e6) > h) return false; return true; },
+      progres:(E,i) => { const h = E.pib[i]/Math.max(E.pop[i]/1e6,0.01); let max=0;
+        for (let j=0;j<N;j++) if (j!==i && E.pop[j]>=1e7) max=Math.max(max,E.pib[j]/(E.pop[j]/1e6)); return G.clamp(h/Math.max(max,1),0,1); } },
+
+    { id:'reputation',icone:'🕊️', nom:'Voix qui compte',
+      desc:'Atteindre une réputation internationale supérieure à 90.',
+      fait:(E,i) => E.reput[i] > 90,
+      progres:(E,i) => G.clamp(E.reput[i]/90, 0, 1) },
+
+    { id:'economie', majeur:true, icone:'💵', nom:'Domination économique',
+      desc:'Peser plus de 30 % du produit intérieur brut mondial, au premier rang.',
+      fait:(E,i) => { let monde=0, rang=1; for (let j=0;j<N;j++){ monde+=E.pib[j]; if (E.pib[j]>E.pib[i]) rang++; }
+        return rang===1 && E.pib[i]/Math.max(monde,1) > 0.30; },
+      progres:(E,i) => { let monde=0; for (let j=0;j<N;j++) monde+=E.pib[j]; return G.clamp((E.pib[i]/Math.max(monde,1))/0.30,0,1); } },
+
+    { id:'diplomatie',majeur:true, icone:'🤝', nom:'Concert des nations',
+      desc:'Nouer quatre-vingt-dix alliances en conservant une réputation supérieure à 80.',
+      fait:(E,i) => E.alliances.filter(a => a[0]===i||a[1]===i).length >= 90 && E.reput[i] > 80,
+      progres:(E,i) => G.clamp(E.alliances.filter(a => a[0]===i||a[1]===i).length/90, 0, 1) },
+
+    { id:'empire',   majeur:true, icone:'🏛️', nom:'Empire',
+      desc:'Annexer quinze nations.',
+      fait:(E,i) => (E.annexes ? E.annexes.size : 0) >= 15,
+      progres:(E,i) => G.clamp((E.annexes ? E.annexes.size : 0)/15, 0, 1) },
+
+    { id:'prosperite',majeur:true, icone:'🌟', nom:'Prospérité totale',
+      desc:'Plus de 92 % d\'approbation, santé et éducation au-dessus de 88, chômage sous 4 %.',
+      fait:(E,i) => E.approb[i]>92 && E.sante[i]>88 && E.educ[i]>88 && E.chomage[i]<4,
+      progres:(E,i) => G.clamp((Math.min(E.approb[i]/92,1)+Math.min(E.sante[i]/88,1)+Math.min(E.educ[i]/88,1)+Math.min(4/Math.max(E.chomage[i],0.5),1))/4,0,1) },
+
+    { id:'agi',      majeur:true, icone:'🧠', nom:'Superintelligence',
+      desc:'Atteindre le dernier palier de la course à l\'intelligence artificielle.',
+      fait:(E,i) => E.ia[i] >= 10,
+      progres:(E,i) => G.clamp(E.calcul[i] / G.PALIERS_IA[10].seuil, 0, 1) }
+  ];
+
+  G.defiFait = id => E.defisFaits.indexOf(id) >= 0;
+
+  // silencieux : au premier jour, on enregistre sans fêter les défis que la
+  // nation remplit déjà par sa seule situation de départ.
+  function verifierDefis(silencieux) {
     if (E.fini) return;
-    if (E.ia[i] >= 10) return finPartie('victoire', 'Superintelligence atteinte en premier : votre nation dicte désormais le rythme du monde.');
-    let rangPib = 1, pibMonde = 0;
-    for (let j = 0; j < N; j++) { if (E.pib[j] > E.pib[i]) rangPib++; pibMonde += E.pib[j]; }
-    const part = E.pib[i] / Math.max(pibMonde, 1);
-    if (rangPib === 1 && E.jour > 3650 && part > 0.30)
-      return finPartie('victoire', `Première économie mondiale avec ${(part * 100).toFixed(0)} % du PIB de la planète : la domination économique est acquise.`);
-    if (E.annexes && E.annexes.size >= 15)
-      return finPartie('victoire', `${E.annexes.size} nations annexées : l'empire est constitué.`);
-    const allies = E.alliances.filter(a => a[0] === i || a[1] === i).length;
-    if (allies >= 90 && E.reput[i] > 80)
-      return finPartie('victoire', `${allies} alliances et une réputation irréprochable : vous dirigez le concert des nations.`);
-    if (E.approb[i] > 92 && E.sante[i] > 88 && E.educ[i] > 88 && E.chomage[i] < 4 && E.jour > 2555)
-      return finPartie('victoire', 'Prospérité totale : santé, éducation, plein emploi et un peuple conquis.');
+    const i = E.joueur;
+    for (let k = 0; k < G.DEFIS.length; k++) {
+      const d = G.DEFIS[k];
+      if (E.defisFaits.indexOf(d.id) >= 0) continue;
+      let ok = false;
+      try { ok = d.fait(E, i); } catch (e) { ok = false; }
+      if (!ok) continue;
+      E.defisFaits.push(d.id);
+      if (silencieux) continue;
+      journal(d.icone, `Défi accompli : ${d.nom}. ${d.desc}`, 'bon');
+      E.defisQueue.push(d);                   // l'interface les fête un par un
+    }
   }
+  G.amorcerDefis = () => verifierDefis(true);
 
   function finPartie(type, msg) {
     E.fini = { type: type, msg: msg, jour: E.jour };
@@ -1351,7 +1431,7 @@
     if (E.onu && --E.onu.jours <= 0) { G.voterONU(Math.random() < 0.5); }
     evenements();
     politique();
-    if (E.jour % 30 === 0) victoires();
+    if (E.jour % 15 === 0) verifierDefis();
     E.score = calculScore();
   };
 
@@ -1363,7 +1443,8 @@
       E.tech[i] * 60 +
       (E.ia[i] | 0) * 900 +
       E.reput[i] * 20 +
-      (E.alliances.filter(a => a[0] === i || a[1] === i).length) * 60 -
+      (E.alliances.filter(a => a[0] === i || a[1] === i).length) * 60 +
+      E.defisFaits.length * 1500 -
       E.dette[i] * 0.02
     );
   }
@@ -1380,7 +1461,8 @@
       v: 1, joueur: E.joueur, jour: E.jour, difficulte: E.difficulte, brut: brut,
       chantiers: E.chantiers, casernes: E.casernes, contrats: E.contrats, guerres: E.guerres,
       alliances: E.alliances, pactes: E.pactes, sanctions: E.sanctions,
-      lois: Array.from(E.lois), journal: E.journal.slice(0, 60), idContrat: E.idContrat,
+      lois: Array.from(E.lois), defisFaits: E.defisFaits,
+      journal: E.journal.slice(0, 60), idContrat: E.idContrat,
       annexes: E.annexes ? Array.from(E.annexes) : [], fini: E.fini, score: E.score
     });
   };
@@ -1396,6 +1478,7 @@
     E.contrats = s.contrats; E.guerres = s.guerres; E.alliances = s.alliances;
     E.pactes = s.pactes; E.sanctions = s.sanctions; E.lois = new Set(s.lois);
     E.journal = s.journal; E.idContrat = s.idContrat; E.fini = s.fini; E.score = s.score || 0;
+    E.defisFaits = s.defisFaits || []; E.defisQueue = [];
     E.annexes = new Set(s.annexes || []);
     E.pause = true;
     return E;

@@ -85,8 +85,25 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
   border-top:1px solid var(--bord);padding:14px 24px;
   display:flex;gap:16px;align-items:center;flex-wrap:wrap;
 }
-.acc-sel{flex:1;min-width:260px;color:var(--texte2);font-size:13px}
-.acc-a{display:flex;gap:10px}
+.acc-sel{flex:1 1 100%;color:var(--texte2);font-size:13px}
+.btn.grand{padding:13px 22px;font-size:15px}
+.lien{
+  color:var(--texte3);font-size:12px;text-decoration:underline;
+  text-underline-offset:3px;padding:6px 2px;background:none;border:0;
+}
+.lien:hover{color:var(--bleu)}
+
+/* Partie sauvegardée : présentée à part, jamais en concurrence avec le bouton
+   qui lance une nouvelle partie. */
+.acc-partie{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:26px;
+  background:linear-gradient(180deg,rgba(245,197,66,.10),transparent);
+  border:1px solid rgba(245,197,66,.45);border-radius:var(--r);padding:14px 16px;
+}
+.ap-t{flex:1;min-width:190px;display:flex;flex-direction:column;gap:3px}
+.ap-lab{font-size:10.5px;color:var(--texte3);text-transform:uppercase;letter-spacing:.07em}
+.ap-t b{font-size:15px}
+.ap-a{display:flex;gap:8px}
 
 /* ═══════════════════════════════ Boutons ═══════════════════════════════ */
 .btn{
@@ -389,10 +406,13 @@ h1,h2,h3{font-weight:650;letter-spacing:-.01em}
   .ac-s{gap:4px 8px;margin-top:8px}
   .ac-s i{font-size:10px}
   .ac-s b{font-size:12px}
-  .acc-f{padding:10px 14px;gap:8px}
-  .acc-sel{font-size:12px;min-width:0;flex:1 1 100%}
-  .acc-a{width:100%;gap:8px}
-  .acc-a .btn{flex:1;text-align:center;padding:11px 10px}
+  .acc-f{padding:10px 14px 12px;gap:6px;flex-direction:column;align-items:stretch}
+  .acc-sel{font-size:12px;text-align:center}
+  .btn.grand{width:100%;text-align:center;padding:14px 12px;font-size:15px;white-space:normal}
+  .lien{align-self:center}
+  .acc-partie{margin-top:18px;padding:12px 13px;gap:10px}
+  .ap-a{width:100%}
+  .ap-a .btn{flex:1;text-align:center}
 
   #jeu{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;grid-template-areas:"barre" "nav" "principal"}
   #nav{display:flex;gap:5px;overflow-x:auto;border-right:0;border-bottom:1px solid var(--bord);padding:7px}

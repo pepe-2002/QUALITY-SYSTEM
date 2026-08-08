@@ -120,7 +120,7 @@
     if (e.key >= '1' && e.key <= '4') { E.pause = false; E.vitesse = +e.key; majVitesse(); }
     const raccourcis = { c:'carte', n:'nation', e:'economie', r:'ressources', b:'construction',
                          m:'commerce', d:'diplomatie', a:'armee', i:'ia', s:'recherche',
-                         p:'politique', l:'classements', j:'journal' };
+                         p:'politique', f:'defis', l:'classements', j:'journal' };
     if (raccourcis[e.key]) ouvrir(raccourcis[e.key]);
   }
 
@@ -145,6 +145,7 @@
       if (E.evenement && !q('#modale').classList.contains('ouvert')) modaleEvenement();
       if (E.capitulation && !q('#modale').classList.contains('ouvert')) modaleCapitulation();
       if (E.onu && !E.onu.montre) { E.onu.montre = true; modaleONU(); }
+      if (E.defisQueue.length && !q('#modale').classList.contains('ouvert')) modaleDefi();
       if (E.fini && !q('#modale').classList.contains('ouvert')) modaleFin();
       if (E.nouveauJournal) { E.nouveauJournal = false; pastilleJournal(); }
       if (E.jour > 0 && E.jour !== UI.dernierAuto && E.jour % 30 === 0 && !E.fini) {
@@ -210,7 +211,8 @@
     ['construction', '🏗️', 'Construction', 'b'], ['commerce', '📜', 'Commerce', 'm'],
     ['diplomatie', '🤝', 'Diplomatie', 'd'], ['armee', '⚔️', 'Armée', 'a'],
     ['ia', '🧠', 'Course à l\'IA', 'i'], ['recherche', '🔬', 'Recherche', 's'],
-    ['politique', '⚖️', 'Politique', 'p'], ['classements', '🏆', 'Classements', 'l'],
+    ['politique', '⚖️', 'Politique', 'p'], ['defis', '🎯', 'Défis', 'f'],
+    ['classements', '🏆', 'Classements', 'l'],
     ['journal', '📰', 'Journal', 'j']
   ];
 
@@ -1407,6 +1409,35 @@
     }
   };
 
+  PANNEAUX.defis = {
+    build(d) {
+      sectionTitre(d, 'Défis',
+        'Treize objectifs, du plus accessible au plus lointain. En accomplir un ne met jamais fin à la partie : ' +
+        'vous notez le résultat et vous continuez à gouverner. Chaque défi relevé vaut 1 500 points de score.');
+      const g = el('div', 'grille-bat'); d.appendChild(g);
+      UI.refs.x_cartes = [];
+      G.DEFIS.forEach(x => {
+        const c = el('div', 'carte-bat');
+        c.innerHTML = `<div class="cb-h"><span class="cb-i">${x.icone}</span>
+          <div class="cb-ht"><div class="cb-n">${x.nom}${x.majeur ? ' <span class="pastille">majeur</span>' : ''}</div></div></div>
+          <p class="cb-d">${x.desc}</p>`;
+        jauge(c, 'Progression', 'x_' + x.id);
+        g.appendChild(c);
+        UI.refs.x_cartes.push({ d: x, carte: c });
+      });
+    },
+    maj() {
+      const i = E.joueur;
+      if (!UI.refs.x_cartes) return;
+      UI.refs.x_cartes.forEach(x => {
+        const fait = G.defiFait(x.d.id);
+        x.carte.classList.toggle('acquise', fait);
+        const p = fait ? 1 : (x.d.progres ? x.d.progres(E, i) : 0);
+        majJauge('x_' + x.d.id, clamp(p * 100, 0, 100), 100);
+      });
+    }
+  };
+
   PANNEAUX.carte = { build() {}, maj() {} };
 
   function reconstruire(id) { UI.construits = {}; ouvrir(id); }
@@ -1449,6 +1480,20 @@
        ['Paix magnanime', () => { G.appliquerCapitulation(c.vainqueur, c.vaincu, 'paix'); E.capitulation = null; E.pause = false; majVitesse(); }, 'sec']]);
   }
 
+  function modaleDefi() {
+    const d = E.defisQueue.shift();
+    const restants = G.DEFIS.filter(x => !G.defiFait(x.id));
+    const suivant = restants.sort((a, b) => (b.progres ? b.progres(E, E.joueur) : 0) - (a.progres ? a.progres(E, E.joueur) : 0))[0];
+    modale(`<div class="mo-i">${d.icone}</div><h2>Défi accompli</h2>
+      <p><b>${d.nom}</b> — ${d.desc}</p>
+      <p class="sous-titre">${restants.length
+        ? `Il vous reste ${restants.length} défi${restants.length > 1 ? 's' : ''} à relever.` +
+          (suivant ? ` Le plus proche : <b>${suivant.nom}</b>, ${nf0.format((suivant.progres ? suivant.progres(E, E.joueur) : 0) * 100)} % du chemin parcouru.` : '')
+        : 'Vous les avez tous relevés. Le monde n\'a plus rien à vous apprendre — reste à durer.'}</p>`,
+      [['Continuer à gouverner', () => { if (!E.defisQueue.length) { E.pause = false; majVitesse(); } }, 'principal'],
+       ['Voir mes défis', () => { ouvrir('defis'); }, 'sec']], 'fin');
+  }
+
   function modaleFin() {
     const f = E.fini;
     const i = E.joueur;
@@ -1461,6 +1506,7 @@
         <div><span>Niveau d'IA</span><b>N${E.ia[i] | 0}</b></div>
         <div><span>Approbation</span><b>${nf0.format(E.approb[i])} %</b></div>
         <div><span>Score</span><b>${nf0.format(E.score)}</b></div>
+        <div><span>Défis relevés</span><b>${E.defisFaits.length} / ${G.DEFIS.length}</b></div>
       </div>`,
       [['Choisir une autre nation', () => G.retourAccueil(), 'principal'],
        ['Rejouer ' + G.PAYS[i].nom, () => {

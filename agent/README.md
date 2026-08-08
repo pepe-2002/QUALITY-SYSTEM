@@ -535,7 +535,23 @@ python3 -m ara.cli "Recherche les tarifs des traversées aux Comores et fais-moi
 4. Menu Chrome → **Ajouter à l'écran d'accueil**. L'application s'installe et
    se lance comme une vraie application.
 
-### Option B — tout sur le téléphone (Termux, hors ligne possible)
+### Option B — depuis l'extérieur, par un tunnel
+
+Votre PC garde l'agent ; Cloudflare ne fait que transporter la connexion.
+Aucun hébergeur, aucun compte.
+
+```bash
+bash deploy/tunnel/tunnel.sh
+```
+
+Le script fabrique un **jeton obligatoire**, fait écouter ARA sur `127.0.0.1`
+seulement — l'agent n'est donc pas exposé sur le Wi-Fi — puis affiche une
+adresse `https://….trycloudflare.com/?token=…` à ouvrir sur le téléphone.
+
+⚠️ **Ce lien est la clé** : qui l'a pilote l'agent. Détails et adresse
+permanente dans [`deploy/tunnel/README.md`](deploy/tunnel/README.md).
+
+### Option C — tout sur le téléphone (Termux, hors ligne possible)
 
 ```bash
 pkg install python git

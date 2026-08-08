@@ -430,6 +430,28 @@ contradiction, et une information correcte est rejetée.
 Le jeu 8 avait été écrit pour attraper exactement ce risque — il l'a attrapé.
 Le faux rejet n'est pas corrigé : ce sera CONTEXT-V4 sur un jeu 9.
 
+### L'effet réel, qui renverse la conclusion
+
+Mesuré sur les **vraies exécutions** de l'agent (jeux 1 à 4), pas sur des
+phrases écrites pour le mécanisme :
+
+| Version | Pièges bloqués | Bonnes valeurs bloquées **à tort** |
+|---|---|---|
+| CONTEXT-V2 | 10/22 (46 %) | 12/125 (10 %) |
+| CONTEXT-V3 | 15/22 (68 %) | 31/125 (**25 %**) |
+
+**V3, à 94 % sur son propre jeu, bloquerait un quart des bonnes réponses en
+production.** L'adopter sur la foi du jeu 8 aurait été une erreur.
+
+L'écart s'explique : les phrases des jeux 7 et 8 sont *autoportantes* — elles
+nomment le lieu, l'objet et la période. Les vraies pages ne le font pas. « La
+franchise bagages est fixée à 20 kilogrammes par passager » ne répète ni le
+lieu ni le service, et V3 y voit un défaut d'ancrage.
+
+**Ni V2 ni V3 ne sont adoptables en l'état.** Un mécanisme utilisable devra
+distinguer « la phrase ne répète pas le contexte » de « la phrase parle
+d'autre chose ».
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et

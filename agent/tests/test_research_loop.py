@@ -207,7 +207,14 @@ def test_larret_est_immediat_quand_tout_est_couvert(ctx, toolbox, web):
 
 
 def test_le_budget_est_reduit_quand_la_tache_est_plus_simple_que_prevu(ctx, toolbox, web):
-    """Spec §4 : le système doit savoir *diminuer* le nombre d'étapes."""
+    """Spec §4 : le système doit savoir *diminuer* le nombre d'étapes.
+
+    La question porte le mot « officiel », qui fait monter l'estimation de
+    difficulté : le contrôleur alloue large, puis constate que tout est là dès
+    le premier cycle et rend ce qu'il n'a pas dépensé. Sans ce mot, V2 estime
+    la question simple d'emblée — il n'y aurait alors rien à réduire, ce qui
+    est correct mais ne teste pas la réduction.
+    """
     web.update(
         {
             "https://pas-cher.test/tarifs": PAGE_BON_MARCHE,
@@ -219,7 +226,8 @@ def test_le_budget_est_reduit_quand_la_tache_est_plus_simple_que_prevu(ctx, tool
                ("Officiel", "https://officiel.test/tarifs")])]
     )
 
-    _run(ctx, toolbox)
+    _run(ctx, toolbox, question="Quel est le tarif officiel de la traversée "
+                                "entre Grande Comore et Mohéli ?")
     assert any(step["kind"] == "de-escalate" for step in ctx.journal.research_steps)
 
 

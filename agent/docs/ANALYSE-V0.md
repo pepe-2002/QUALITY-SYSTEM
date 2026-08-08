@@ -495,6 +495,25 @@ V2 contre 4 pour V1 ; 5 recherches gaspillées contre 82 pour FIXED.
 - Toute amélioration ultérieure de V2 devra faire l'objet d'une **nouvelle**
   expérience, sur un jeu encore jamais utilisé. Le jeu 3 est brûlé.
 
+### Adoption
+
+Sur décision du propriétaire du projet, **V2 devient le contrôleur de
+l'application** (`DEFAULT_CONTROLLER = "v2"`). Trois conséquences, toutes
+vérifiées :
+
+- V1 n'est pas supprimée : elle reste figée, et le laboratoire épingle
+  explicitement la version de chaque bras. H1 et H2 rejoués après l'adoption
+  donnent les mêmes chiffres au bit près.
+- Deux tests ont dû changer d'énoncé, non parce qu'ils échouaient à tort mais
+  parce que leur prémisse ne tenait plus : la question « combien coûte la
+  traversée ? » n'est plus sur-estimée par le contrôleur, il n'y a donc plus
+  rien à réduire. Le test de réduction de budget porte désormais sur une
+  question que V2 sur-estime réellement (« tarif **officiel** »), et le test de
+  temporisation réseau épingle V1 pour garantir deux requêtes.
+- Réserve inchangée et assumée : la validation porte sur dix tâches d'un seul
+  corpus, écrites par l'auteur du système. C'est une décision de produit
+  appuyée sur une mesure, pas une preuve.
+
 ### Une correction d'affichage, pas de contrôleur
 
 Après la première exécution, le tableau des raisons d'arrêt affichait « passe

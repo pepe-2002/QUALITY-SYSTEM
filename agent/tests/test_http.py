@@ -148,7 +148,14 @@ def test_une_pause_separe_deux_recherches(ctx, toolbox, monkeypatch):
     monkeypatch.setattr("ara.agents.gather.time.sleep", lambda d: pauses.append(d))
     ctx.settings = dataclasses.replace(ctx.settings, search_delay=0.5)
 
-    task_plan = plan("Recherche les tarifs des traversées aux Comores", max_search_steps=3)
+    # Il faut au moins deux requêtes pour qu'une pause existe. V2 juge cette
+    # question simple et n'en lance qu'une — ce qui est le comportement voulu.
+    # Ce test-ci porte sur la politesse réseau, pas sur la décision de chercher.
+    task_plan = plan(
+        "Recherche les tarifs des traversées aux Comores",
+        max_search_steps=3,
+        controller="v1",
+    )
     ctx.budget = task_plan.budget
     collect(ctx, task_plan, toolbox)
 

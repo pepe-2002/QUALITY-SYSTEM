@@ -181,7 +181,8 @@ Les cinq phases sont livrées (v0.5, 413 tests) :
    a ensuite été corrigé dans une version séparée, **ADAPTIVE-V2** (V1 gelée
    comme baseline immuable), validée sur un troisième jeu jamais utilisé :
    défaut corrigé, exactitude 0,90 contre 0,82, et enfin plus de recherches
-   sur les questions profondes que sur les faciles ;
+   sur les questions profondes que sur les faciles. **V2 est adoptée par
+   défaut dans l'application** (v0.6) sur décision du patron ;
 5. automatisation Android : capacités du téléphone via Termux (notification,
    presse-papier, voix, partage) et **routines programmées** — « chaque
    matin », « chaque lundi à 8h ». Pas d'envoi de SMS par l'agent : le partage

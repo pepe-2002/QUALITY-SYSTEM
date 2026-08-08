@@ -1,6 +1,6 @@
 # ARA — Autonomous Research & Creative Agent
 
-**v0.5 — Phases 1 à 5**
+**v0.6 — Phases 1 à 5, contrôleur ADAPTIVE-V2**
 
 Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
 crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
@@ -19,6 +19,7 @@ quels fichiers produire.
 |---|---|
 | **Interface** | PWA installable sur Android, pipeline affiché en direct |
 | **Recherche** | boucle adaptative : cherche, analyse, **relance si ça manque** |
+| **Budget** | difficulté estimée **avant** de chercher, révisée sur preuve (V2) |
 | **Comparaison** | confronte les sources, **détecte les contradictions chiffrées** |
 | **Analyse** | synthèse citée `[S1] [S2]`, recoupements et manques explicites |
 | **Validation** | un **agent contexte** tranche : vraie contradiction ou écart explicable |
@@ -225,6 +226,22 @@ prématuré, contre 4 pour V1.
 
 Ce n'est **pas** une preuve de H2 : corriger un défaut n'est pas valider une
 hypothèse, et le rapport le dit en première ligne.
+
+**V2 est désormais le contrôleur de l'application** (décision du propriétaire
+du projet, prise après l'expérience). Concrètement :
+
+```
+Question → estimateur de difficulté → simple : 1 recherche
+                                      intermédiaire : 3
+                                      profonde : 6
+              ↓ après chaque recherche
+        grandeur demandée trouvée ?  ── oui ──→ arrêt, budget rendu
+                                     └─ non ──→ le budget monte
+```
+
+V1 n'est pas supprimée : elle reste figée et reste la baseline de H1 et H2,
+que le laboratoire épingle explicitement. Les deux expériences rejouées après
+l'adoption donnent les mêmes chiffres au bit près.
 
 ## Le téléphone et les routines (Phase 5)
 
@@ -436,9 +453,10 @@ agent/
   (écart +0,82 recherche entre profond et facile sur le jeu 3) et gagne en
   exactitude. H1, sur le gain d'exactitude, reste non concluante — et V2 n'y
   change rien : c'est une correction de défaut, pas une validation.
-- **V2 n'est pas encore le contrôleur par défaut de l'application.** Elle est
-  validée sur un jeu de dix tâches écrites par l'auteur du système ; adopter
-  une version demande davantage.
+- **V2 est adoptée alors que sa validation reste étroite** : dix tâches d'un
+  seul corpus, écrites par l'auteur du système. C'est une décision de produit
+  appuyée sur une mesure, pas une preuve — et le prochain jeu de test devra
+  être écrit par quelqu'un d'autre pour valoir mieux.
 - Le laboratoire mesure **son propre corpus**. Un web figé de huit tâches
   écrites par l'auteur du système ne remplace pas le vrai web : il sert à
   réfuter, pas à décerner un satisfecit.

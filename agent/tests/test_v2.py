@@ -28,9 +28,14 @@ from ara.lab.heldout2 import TASKS as JEU3_TASKS
 # --- V1 est gelée --------------------------------------------------------------
 
 
-def test_v1_reste_la_baseline_par_defaut():
-    """On adopte une version après l'expérience qui la juge, pas avant."""
-    assert DEFAULT_CONTROLLER == "v1"
+def test_v2_est_adoptee_par_defaut():
+    """Adoptée après l'expérience qui l'a jugée, pas avant.
+
+    Ce qui reste immuable n'est pas ce réglage — c'est l'épinglage des bras du
+    laboratoire, vérifié par le test suivant : H1 et H2 continuent de jouer V1
+    quoi qu'il arrive au défaut de l'application.
+    """
+    assert DEFAULT_CONTROLLER == "v2"
 
 
 def test_v1_ne_revise_jamais_son_budget():

@@ -234,13 +234,19 @@ class TaskBudget:
 
 #: Version du contrôleur utilisée par défaut dans l'application.
 #:
-#: Volontairement laissée à « v1 » : V2 existe, mais elle n'est pas encore
-#: validée. On adopte une version **après** l'expérience qui la juge, pas
-#: avant — sans quoi le système en production changerait sur la foi d'une
-#: intuition, et les résultats déjà publiés (H1, H2) deviendraient
-#: irreproductibles. Le laboratoire épingle explicitement la version de
-#: chaque bras.
-DEFAULT_CONTROLLER = "v1"
+#: Passée à « v2 » sur décision du propriétaire du projet, après l'expérience
+#: qui l'a jugée : sur le jeu 3 — jamais utilisé auparavant — V2 corrige le
+#: défaut visé (elle alloue enfin plus aux questions profondes qu'aux faciles),
+#: gagne en exactitude et garde l'économie.
+#:
+#: Ce que cette adoption ne dit pas : la validation porte sur dix tâches
+#: écrites par l'auteur du système. C'est un choix de produit appuyé sur une
+#: mesure, pas une preuve.
+#:
+#: V1 reste figée et reste la baseline de H1 et H2 : le laboratoire épingle
+#: explicitement la version de chaque bras, donc ce changement ne touche pas
+#: aux résultats publiés.
+DEFAULT_CONTROLLER = "v2"
 
 #: Nombre maximal de révisions de budget pour une tâche. Garde-fou contre la
 #: boucle : sans lui, « difficile → +1 recherche → toujours difficile → … »

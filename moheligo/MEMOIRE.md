@@ -328,6 +328,22 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **08/08/2026, 18h40 (Comores)** — La session a franchi minuit : attention, le
+  flyer du soir généré la veille annonçait « samedi 8 » et était donc périmé.
+  Regénéré pour **dimanche 9 août** (mer peu agitée, houle 1,0 m, vent 9 km/h
+  sud-est, matin dégagé, pluie fine l'après-midi).
+  **Leçon de livraison, la plus importante de la session** : le patron ne
+  voyait pas les fichiers envoyés dans la conversation (« je trouve pas »,
+  « toujours pas »), et les liens GitHub ne lui parlent pas. Ce qui marche :
+  une **page web publiée** (artifact) avec les flyers en grand, un appui long
+  pour enregistrer, le texte du post et un bouton copier. L'adresse reste la
+  même quand on republie — la lui redonner au lieu d'en créer une nouvelle :
+  https://claude.ai/code/artifact/d08c3def-2c4b-418a-b7bd-b19c477df307
+  ⚠️ Il a dit aussi : « le projet me fatigue mentalement ». Ne plus empiler les
+  versions ni les étapes à faire de son côté : **une page, deux flyers, rien à
+  décider.** Le tuyau automatique, la fusion dans main et la publication
+  Facebook attendent qu'il les redemande.
+
 - **07/08/2026 (fin de journée)** — Demande : « un flyer pour cette aprem ou ce
   soir, avec une amélioration très avancée ». Créé **le bulletin du soir** :
   un flyer qui affiche **la vraie mer de demain matin** sur le couloir

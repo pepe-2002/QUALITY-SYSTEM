@@ -1,0 +1,16 @@
+{
+  "name": "GÉOPOLIS — Simulateur de Président",
+  "short_name": "GÉOPOLIS",
+  "description": "Dirigez l'une des 197 nations du monde : économie, ressources, commerce, diplomatie, armée et course à l'intelligence artificielle.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070d17",
+  "theme_color": "#0a1220",
+  "lang": "fr",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>GÉOPOLIS — Simulateur de Président</title>
+<meta name="description" content="Simulateur de géopolitique : dirigez l'une des 197 nations du monde. Économie, fiscalité, ressources, commerce, diplomatie, armée et course à l'intelligence artificielle.">
+<meta name="theme-color" content="#0a1220">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="geopolis.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════ ACCUEIL ══════════════════════════════ -->
+<div id="accueil">
+  <div class="acc-fond"></div>
+  <div class="acc-in">
+    <header class="acc-h">
+      <h1>GÉOPOLIS</h1>
+      <p class="acc-st">Simulateur de Président — 197 nations, un monde, vos décisions</p>
+      <p class="acc-tx">
+        Vous prenez la tête d'un État. Vous fixez les impôts, bâtissez les usines, les mines et
+        les centrales, signez des contrats d'approvisionnement, nouez des alliances, armez ou
+        désarmez, et engagez votre pays dans la course à l'intelligence artificielle.
+        Le monde entier tourne en même temps que vous : 197 gouvernements construisent,
+        commercent, se rapprochent et se déchirent sans vous attendre.
+      </p>
+    </header>
+
+    <section class="acc-choix">
+      <div class="acc-barre">
+        <h2>Choisissez votre nation</h2>
+        <input id="acc-rech" class="champ" placeholder="Rechercher un pays…" autocomplete="off">
+        <select id="acc-tri" class="champ">
+          <option value="pib">Trier par puissance économique</option>
+          <option value="nom">Trier par nom</option>
+          <option value="pop">Trier par population</option>
+          <option value="arm">Trier par puissance militaire</option>
+          <option value="def">Trier par difficulté</option>
+        </select>
+        <select id="acc-cont" class="champ">
+          <option value="">Tous les continents</option>
+          <option value="EU">Europe</option>
+          <option value="AS">Asie</option>
+          <option value="AF">Afrique</option>
+          <option value="NA">Amériques du Nord</option>
+          <option value="SA">Amérique du Sud</option>
+          <option value="OC">Océanie</option>
+        </select>
+      </div>
+      <div id="acc-grille" class="acc-grille"></div>
+    </section>
+
+    <footer class="acc-f">
+      <div id="acc-sel" class="acc-sel">Aucune nation sélectionnée</div>
+      <div class="acc-a">
+        <button id="acc-reprendre" class="btn sec cache">Reprendre la partie sauvegardée</button>
+        <button id="acc-jouer" class="btn principal" disabled>Prendre le pouvoir</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ JEU ═════════════════════════════════ -->
+<div id="jeu" class="cache">
+
+  <header id="barre">
+    <div class="b-pays"><span id="b-drapeau"></span><span id="b-nom"></span></div>
+
+    <div class="b-stats">
+      <div class="b-s"><span class="lab">Date</span><span id="b-date" class="val">—</span></div>
+      <div class="b-s"><span class="lab">Trésor</span><span id="b-tresor" class="val">—</span><span id="b-solde" class="sous">—</span></div>
+      <div class="b-s"><span class="lab">PIB</span><span id="b-pib" class="val">—</span><span id="b-croiss" class="sous">—</span></div>
+      <div class="b-s"><span class="lab">Approbation</span><span id="b-approb" class="val">—</span></div>
+      <div class="b-s"><span class="lab">IA</span><span id="b-ia" class="val">—</span></div>
+      <div class="b-s"><span class="lab">Score</span><span id="b-score" class="val">—</span></div>
+    </div>
+
+    <div class="b-ctrl">
+      <button id="btn-pause" class="btn-ic" title="Pause / reprise (Espace)">▶</button>
+      <button class="btn-ic vit" data-v="1" title="Vitesse normale">×1</button>
+      <button class="btn-ic vit" data-v="2" title="Vitesse rapide">×2</button>
+      <button class="btn-ic vit" data-v="3" title="Très rapide">×5</button>
+      <button class="btn-ic vit" data-v="4" title="Maximum">×20</button>
+      <button id="btn-sauver" class="btn-ic" title="Sauvegarder">💾</button>
+      <button id="btn-menu" class="btn-ic" title="Quitter">✕</button>
+    </div>
+  </header>
+
+  <aside id="nav"></aside>
+
+  <main id="principal">
+    <div id="carte-zone">
+      <canvas id="carte"></canvas>
+      <div class="legende">
+        <span><i class="pt-joueur"></i>Votre nation</span>
+        <span><i class="pt-allie"></i>Alliés</span>
+        <span><i class="pt-pacte"></i>Pacte</span>
+        <span><i class="pt-ami"></i>Amicaux</span>
+        <span><i class="pt-neutre"></i>Neutres</span>
+        <span><i class="pt-hostile"></i>Hostiles</span>
+        <span><i class="pt-sanction"></i>Sanctionnés</span>
+        <span><i class="pt-guerre"></i>En guerre</span>
+      </div>
+      <div class="carte-aide">Molette : zoom · Glisser : déplacer · Clic : sélectionner une nation</div>
+    </div>
+    <div id="contenu" class="cache"></div>
+  </main>
+
+  <span id="pastille" class="cache"></span>
+</div>
+
+<div id="modale" class="modale"></div>
+<div id="notifs"></div>
+
+<script src="g-data.js"></script>
+<script src="g-moteur.js"></script>
+<script src="g-evenements.js"></script>
+<script src="g-carte.js"></script>
+<script src="g-ui.js"></script>
+<script src="g-accueil.js"></script>
+</body>
+</html>

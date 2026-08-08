@@ -10,7 +10,7 @@ import re
 import unicodedata
 from dataclasses import dataclass, field
 
-from ..core.complexity import TaskBudget, assess
+from ..core.complexity import DEFAULT_CONTROLLER, TaskBudget, assess_for
 from ..providers.llm.offline import subject
 
 #: Extensions demandables explicitement
@@ -84,6 +84,10 @@ class Plan:
     filename_hint: str = "resultat"
     #: format de création graphique demandé (flyer, affiche, story…)
     design: str = ""
+    #: le budget peut-il être révisé d'après ce que la recherche ramène ?
+    #: Faux pour ADAPTIVE-V1 (gelée) et pour le témoin FIXED du laboratoire,
+    #: qui doit rester rigoureusement fixe pour servir de point de comparaison.
+    adaptive_budget: bool = False
 
     @property
     def needs_documents(self) -> bool:
@@ -120,8 +124,17 @@ def _slug(prompt: str, max_words: int = 5) -> str:
     return "-".join(words) or "resultat"
 
 
-def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
+def plan(
+    prompt: str,
+    *,
+    max_search_steps: int = 10,
+    controller: str = DEFAULT_CONTROLLER,
+) -> Plan:
     """Construit le plan d'exécution d'une demande.
+
+    `controller` choisit la version du contrôleur de difficulté. Le laboratoire
+    l'épingle explicitement pour chaque bras : c'est ce qui permet de comparer
+    V1 et V2 sans que l'une contamine les résultats déjà publiés de l'autre.
 
     >>> p = plan("Recherche les horaires des traversées et fais-moi un PDF")
     >>> p.needs_research, p.formats
@@ -129,7 +142,7 @@ def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
     """
     text = _normalize(prompt)
     padded = f" {text} "
-    budget = assess(prompt, max_search_steps=max_search_steps)
+    budget = assess_for(controller, prompt, max_search_steps=max_search_steps)
 
     urls = _URL_RE.findall(prompt)
 
@@ -173,4 +186,7 @@ def plan(prompt: str, *, max_search_steps: int = 10) -> Plan:
         urls=urls,
         filename_hint=_slug(prompt),
         design=design,
+        # V1 est gelée : elle décide une fois, avant de chercher, et ne revient
+        # jamais dessus. Seule V2 révise son budget en cours de route.
+        adaptive_budget=(controller == "v2"),
     )

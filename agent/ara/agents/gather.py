@@ -203,12 +203,61 @@ class SourceCollector:
         return message
 
 
-def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
-    """Collecte en une seule passe, sans boucle adaptative.
+def judge_difficulty(question: str, docs: list[SourceDoc]) -> tuple[str, str]:
+    """Constate la difficulté d'après ce que la recherche a ramené.
 
-    Conservé pour les usages simples et comme point de comparaison du
-    RESEARCH LAB (Phase 4) : c'est la stratégie « FIXED » face à la stratégie
-    « ADAPTIVE » de :mod:`ara.agents.research`.
+    Retourne ``(verdict, motif)`` avec un verdict parmi ``difficile``,
+    ``suffisant`` et ``indetermine``.
+
+    Le principe est simple et vérifiable : la question réclame une grandeur
+    d'un certain type — un prix, une durée, une heure, un pourcentage. Soit
+    une source la donne, soit aucune ne la donne. Dans le second cas, la
+    question était plus difficile que sa formulation ne le laissait croire, et
+    le budget doit monter.
+
+    Volontairement conservateur : sans aspect chiffré identifiable dans la
+    question, on répond ``indetermine`` plutôt que d'inventer un verdict. Un
+    contrôleur qui tranche au hasard est pire qu'un budget fixe.
+    """
+    from ..analysis.coverage import ASPECTS, detect_aspects
+    from ..analysis.facts import extract_facts
+
+    aspects = detect_aspects(question)
+    if not aspects:
+        return "indetermine", "la question ne réclame aucune grandeur identifiable"
+    if not docs:
+        return "difficile", "aucune source exploitable"
+
+    attendus = {ASPECTS[aspect][0] for aspect in aspects}
+    trouves: set[str] = set()
+    for index, doc in enumerate(docs, start=1):
+        for fact in extract_facts(f"{doc.title} {doc.content}", index, max_facts=120):
+            trouves.add(fact.kind)
+
+    manquants = sorted(attendus - trouves)
+    if not manquants:
+        return "suffisant", "toutes les grandeurs demandées figurent dans les sources"
+    if len(manquants) == len(attendus):
+        return (
+            "difficile",
+            "aucune source ne donne " + ", ".join(manquants) + " : "
+            "la réponse n'est pas là où l'on cherchait",
+        )
+    return "difficile", "il manque encore : " + ", ".join(manquants)
+
+
+def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
+    """Collecte en une passe, avec révision du budget **sur preuve**.
+
+    Deux comportements dans une seule fonction, selon `plan.adaptive_budget` :
+
+    * à ``False``, le budget est dépensé tel quel, sans jamais être révisé.
+      C'est la stratégie **FIXED** du laboratoire, et c'est ce qui en fait un
+      témoin honnête : un témoin qui s'adapte ne mesure plus rien.
+    * à ``True`` (défaut), le contrôleur regarde après chaque recherche si ce
+      qui est demandé a été trouvé, puis monte ou s'arrête. C'est la
+      correction apportée après H2, qui avait montré un contrôleur incapable
+      de distinguer une question facile d'une question profonde.
     """
     ctx.stage(Stage.RESEARCH, Status.RUNNING, "Préparation des recherches…")
     collector = SourceCollector(ctx, toolbox, plan)
@@ -217,9 +266,12 @@ def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
     if plan.needs_research:
         queries = build_queries(ctx, plan)
         ctx.journal.add_summary(f"plan de recherche : {len(queries)} requête(s)")
-        for query in queries:
+        index = 0
+        while index < len(queries):
             if plan.budget.remaining_searches <= 0 or collector.saturated:
                 break
+            query = queries[index]
+            index += 1
             plan.budget.consume_search()
             ctx.stage(
                 Stage.RESEARCH,
@@ -230,6 +282,29 @@ def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
                 total=plan.budget.search_steps,
             )
             collector.run_query(query)
+
+            if not plan.adaptive_budget:
+                continue
+
+            verdict, motif = judge_difficulty(plan.prompt, collector.docs)
+            action = plan.budget.revise(verdict, motif)
+            if action != "aucune":
+                ctx.journal.add_step(
+                    "revise",
+                    f"{action} — {motif}",
+                    complexity=plan.budget.complexity.value,
+                    searches=plan.budget.search_steps,
+                )
+            if verdict == "suffisant":
+                # « INFORMATION SUFFISANTE → arrêt » : le reste du budget n'est
+                # pas un dû, c'est un plafond.
+                break
+            if verdict == "difficile" and index >= len(queries):
+                # Le budget vient de monter mais il n'y a plus de requête à
+                # jouer : on en fabrique une, ciblée sur ce qui manque.
+                relance = f"{subject(plan.prompt)[:120]} officiel".strip()
+                if relance and relance not in queries:
+                    queries.append(relance)
 
     ctx.stage(
         Stage.RESEARCH,

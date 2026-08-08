@@ -30,11 +30,28 @@ FIXED_STEPS = 3
 
 STRATEGIES = ("model_only", "fixed", "adaptive_reasoning", "adaptive_research")
 
+#: Bras de l'expérience V2 — trois stratégies, comme demandé.
+V2_STRATEGIES = ("fixed", "adaptive_reasoning", "adaptive_v2")
+
 LABELS = {
     "model_only": "MODEL ONLY",
     "fixed": "FIXED REASONING",
-    "adaptive_reasoning": "ADAPTIVE REASONING",
+    "adaptive_reasoning": "ADAPTIVE-V1",
     "adaptive_research": "ADAPTIVE RESEARCH",
+    "adaptive_v2": "ADAPTIVE-V2",
+}
+
+#: Version du contrôleur **épinglée** pour chaque bras.
+#:
+#: C'est ce qui permet de faire avancer le système sans rendre irreproductibles
+#: les expériences déjà publiées : H1 et H2 continuent de jouer V1, quoi qu'il
+#: arrive ensuite au contrôleur par défaut de l'application.
+CONTROLLER_BY_STRATEGY = {
+    "model_only": "v1",
+    "fixed": "v1",
+    "adaptive_reasoning": "v1",
+    "adaptive_research": "v1",
+    "adaptive_v2": "v2",
 }
 
 
@@ -63,7 +80,11 @@ def run(
 
     ctx = build_context(task.question, settings, search, f"lab-{strategy}-{task.id}")
     toolbox = ToolBox(ctx)
-    plan = build_plan(task.question, max_search_steps=settings.max_research_steps)
+    plan = build_plan(
+        task.question,
+        max_search_steps=settings.max_research_steps,
+        controller=CONTROLLER_BY_STRATEGY.get(strategy, "v1"),
+    )
     plan.needs_research = strategy != "model_only"
     ctx.budget = plan.budget
 
@@ -74,15 +95,19 @@ def run(
                 answer = _synthesize(ctx, [])
 
             elif strategy == "fixed":
-                # Budget imposé, identique pour toutes les questions.
+                # Budget imposé, identique pour toutes les questions, et
+                # jamais révisé : un témoin qui s'adapte ne mesure plus rien.
                 plan.budget.complexity = Complexity.MEDIUM
                 plan.budget.search_steps = min(FIXED_STEPS, settings.max_research_steps)
+                plan.adaptive_budget = False
                 docs = collect(ctx, plan, toolbox)
                 answer = _synthesize(ctx, docs)
 
-            elif strategy == "adaptive_reasoning":
-                # Le contrôleur de complexité décide, mais une seule passe :
-                # pas de relance après analyse.
+            elif strategy in {"adaptive_reasoning", "adaptive_v2"}:
+                # Même code, deux contrôleurs. V1 décide une fois avant de
+                # chercher et n'y revient pas ; V2 estime la difficulté puis
+                # révise son budget sur preuve. C'est la seule différence entre
+                # ces deux bras, et c'est exactement ce que l'expérience mesure.
                 docs = collect(ctx, plan, toolbox)
                 answer = _synthesize(ctx, docs)
 
@@ -112,4 +137,7 @@ def run(
     outcome.domains = len({doc.domain for doc in docs})
     if not outcome.cycles:
         outcome.cycles = 1 if strategy != "model_only" else 0
+    outcome.controller = plan.budget.controller
+    outcome.difficulty = plan.budget.difficulty
+    outcome.revisions = [action for action, _motif in plan.budget.revisions]
     return outcome

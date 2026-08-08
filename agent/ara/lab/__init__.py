@@ -24,9 +24,12 @@ from .h2 import H2_STATEMENT, H2Result, run_h2
 from .metrics import Score, score
 from .report import render
 from .report_h2 import render as render_h2
+from .report_v2 import render as render_v2
+from .v2 import V2Result, run_v2_experiment
 
 __all__ = [
     "Corpus", "TASKS", "Task", "Gold", "HYPOTHESIS", "Hypothesis",
     "ExperimentResult", "run_experiment", "Score", "score", "render",
     "H2_STATEMENT", "H2Result", "run_h2", "render_h2",
+    "V2Result", "run_v2_experiment", "render_v2",
 ]

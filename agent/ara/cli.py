@@ -87,6 +87,24 @@ def run_h2_experiment() -> int:
     return 0 if result.verdict and result.verdict.status != "refutee" else 3
 
 
+def run_v2_experiment_cli() -> int:
+    """Expérience ADAPTIVE-V2 : le défaut identifié par H2 est-il corrigé ?"""
+    from .lab import run_v2_experiment
+    from .lab.report_v2 import render as render_v2
+
+    settings = get_settings()
+    result = run_v2_experiment(settings=settings)
+    rapport = render_v2(result)
+    print(rapport)
+
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "v2-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+
+    return 0 if result.verdict and result.verdict.status != "non_corrige" else 3
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -155,6 +173,10 @@ def main(argv: list[str] | None = None) -> int:
         help="lance l'expérience H2 : le contrôleur adaptatif économise-t-il des recherches ?",
     )
     parser.add_argument(
+        "--v2", action="store_true",
+        help="lance l'expérience ADAPTIVE-V2 : le défaut identifié est-il corrigé ?",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -172,6 +194,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.h2:
         return run_h2_experiment()
+
+    if args.v2:
+        return run_v2_experiment_cli()
 
     if args.phone:
         return run_phone()

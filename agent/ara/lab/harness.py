@@ -108,6 +108,10 @@ class Outcome:
     latency_ms: int = 0
     domains: int = 0
     seed: int = 0
+    #: version du contrôleur et estimation de difficulté (V2)
+    controller: str = ""
+    difficulty: str = ""
+    revisions: list[str] = field(default_factory=list)
     gaps: list[str] = field(default_factory=list)
     contradictions: list[str] = field(default_factory=list)
     stopped_because: str = ""
@@ -121,6 +125,8 @@ class Outcome:
             "fetches": self.fetches, "tool_calls": self.tool_calls,
             "llm_calls": self.llm_calls,
             "tokens": self.tokens, "latency_ms": self.latency_ms,
+            "controller": self.controller, "difficulty": self.difficulty,
+            "revisions": self.revisions,
             "sources": len(self.sources), "domains": self.domains,
             "gaps": len(self.gaps), "contradictions": len(self.contradictions),
             "stopped_because": self.stopped_because, "stop_code": self.stop_code,

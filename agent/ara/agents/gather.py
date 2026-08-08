@@ -108,10 +108,21 @@ class SourceCollector:
     retélécharger ce qui a déjà été lu, sinon la boucle tourne sur elle-même.
     """
 
-    def __init__(self, ctx: TaskContext, toolbox: ToolBox, plan: Plan) -> None:
+    def __init__(
+        self,
+        ctx: TaskContext,
+        toolbox: ToolBox,
+        plan: Plan,
+        *,
+        relevance=None,
+    ) -> None:
         self.ctx = ctx
         self.toolbox = toolbox
         self.plan = plan
+        #: Filtre de pertinence additionnel, injecté par RESEARCH-V2.
+        #: `None` = comportement de la baseline, inchangé au bit près : c'est
+        #: ce qui permet à H1 et H2 de rester reproductibles.
+        self.relevance = relevance
         # Pertinence jugée sur le sujet seul : « pdf », « recherche »… sont des
         # consignes, et les retenir ferait passer n'importe quelle page pour bonne.
         self.keywords = _stems(subject(plan.prompt))
@@ -178,7 +189,10 @@ class SourceCollector:
             )
             if not doc.content:
                 continue
-            if not _is_relevant(doc, self.keywords):
+            pertinent = _is_relevant(doc, self.keywords)
+            if self.relevance is not None:
+                pertinent = self.relevance(doc, pertinent)
+            if not pertinent:
                 self.rejected += 1
                 self.ctx.journal.add_step("reject", f"hors sujet : {doc.domain}", url=url)
                 continue

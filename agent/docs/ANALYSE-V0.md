@@ -524,7 +524,93 @@ chiffres de la ré-exécution sont identiques au bit près.
 
 ---
 
-## 10. Limites connues
+## 10. RESEARCH-V2 — pertinence des sources
+
+### Le défaut, trouvé en lançant l'agent en vrai
+
+Question posée au vrai web : « quel est le tarif officiel de la traversée en
+vedette entre la Grande Comore et Mohéli ? ». L'agent a répondu en citant les
+**Vedettes de Bréhat** et les **Vedettes de l'Odet** — des traversées
+bretonnes. Trois causes, toutes générales :
+
+| # | Défaut | Ce qu'on voyait |
+|---|---|---|
+| 1 | requête finissant sur une préposition, complément dupliqué | « …en vedette **entre** tarif officiel » |
+| 2 | mot générique isolé promu en complément de requête | « …entre **grande** », « …entre **comore** » |
+| 3 | pertinence purement lexicale | « traversée + vedette + tarif » suffisait à retenir une page bretonne |
+
+### Le choix : une version séparée, pas une correction
+
+Corriger `research.py` aurait rendu H1 et H2 irreproductibles — les chiffres
+publiés ne correspondraient plus au code. Le moteur est donc **gelé**, et
+`research_v2.py` vit à côté avec son propre identifiant. Le seul point de
+contact est un paramètre `relevance=None` ajouté au collecteur : à `None`, le
+comportement de la baseline est inchangé, et un test le verrouille.
+
+### Les corrections, toutes générales
+
+- `compose_query` — nettoie les mots grammaticaux en bord de fragment et
+  n'ajoute au sujet que des mots **nouveaux** ;
+- `is_orphan` — un complément d'un seul mot générique n'oriente rien et est
+  écarté ; une requête garde toujours le sujet nettoyé ;
+- `distinctive_terms` / `is_on_topic` — une source doit contenir au moins un
+  terme qui **identifie** le sujet (nom propre, ou mot rare à défaut), et non
+  seulement des mots qui le décrivent. Les qualificatifs génériques —
+  « grande », « saint », « nord » — ne comptent pas comme identité.
+
+**Aucune liste noire.** Un test parcourt l'arbre syntaxique du module et vérifie
+qu'aucun nom de site ni de lieu n'apparaît dans ses données ou ses
+identifiants — seulement dans la prose qui explique le défaut.
+
+### Le jeu 4, adversarial
+
+Quatrième corpus, jamais utilisé, sans lien avec les trois autres. Ses pièges
+ne sont pas des chiffres trompeurs mais des pages qui *ressemblent* à la
+réponse : autre pays au même vocabulaire, nom voisin, vocabulaire générique,
+archive périmée, même lieu dans un autre contexte. Chaque page est étiquetée,
+ce qui permet de compter les faux positifs par nature.
+
+### Résultats
+
+| Moteur | Exactitude | Précision des sources | Faux positifs | Mauvais lieux | Recherches | Temps | Jetons |
+|---|---|---|---|---|---|---|---|
+| RESEARCH-BASELINE | 0.25 | 56 % | 2.65 | 1.55 | 2.70 | 8 ms | 614 |
+| RESEARCH-V2 | 0.25 | **66 %** | **1.65** | **0.95** | 2.25 | 7 ms | 540 |
+
+Faux positifs par nature de piège, sur l'ensemble des exécutions :
+
+| Moteur | autre pays | nom voisin | générique | périmé | autre contexte |
+|---|---|---|---|---|---|
+| BASELINE | 12 | 19 | 7 | 15 | 0 |
+| V2 | **0** | 19 | **0** | 14 | 0 |
+
+Lecture honnête : V2 élimine complètement deux formes de faux positifs — les
+pages d'un autre lieu au même vocabulaire, et les pages purement génériques.
+Elle ne change **rien** aux deux autres, et c'était prévisible :
+
+- les **noms voisins** demanderaient un référentiel géographique ;
+- le **hors-période** n'est pas l'affaire du filtre de pertinence : une
+  archive parle bien du sujet, c'est sa date qui doit être lue — travail de
+  l'agent contexte.
+
+Ces deux limites ont chacune un test qui **fige le comportement actuel**,
+pour qu'elles restent visibles plutôt que d'être oubliées.
+
+L'exactitude, elle, ne bouge pas : 0,25 pour les deux. De meilleures sources
+n'ont pas donné de meilleures réponses sur ce jeu — le moteur de synthèse
+extractif reste le facteur limitant. Le résultat est conservé tel quel.
+
+### Ce que cette expérience ne prouve pas
+
+- Quatre tâches, un domaine, un corpus écrit par l'auteur du système.
+- Aucun résultat de H1 ou H2 n'a servi à calibrer cette version, et aucun n'a
+  été modifié : les deux expériences rejouées donnent les mêmes chiffres.
+- RESEARCH-V2 **n'est pas** adoptée par défaut dans l'application. Elle existe,
+  elle est mesurée, elle attend une décision.
+
+---
+
+## 11. Limites connues
 
 À lire avant d'en attendre plus que le système ne donne :
 

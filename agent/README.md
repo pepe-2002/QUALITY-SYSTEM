@@ -243,6 +243,35 @@ V1 n'est pas supprimée : elle reste figée et reste la baseline de H1 et H2,
 que le laboratoire épingle explicitement. Les deux expériences rejouées après
 l'adoption donnent les mêmes chiffres au bit près.
 
+### RESEARCH-V2 — les sources hors sujet
+
+Lancé sur le vrai web, l'agent a répondu à « tarif officiel de la traversée
+Grande Comore ↔ Mohéli » en citant les **Vedettes de Bréhat**. Trois défauts :
+requêtes finissant sur une préposition (« …en vedette **entre** tarif
+officiel »), mots génériques promus en requêtes (« …entre **grande** »), et un
+filtre de pertinence purement lexical (« traversée + vedette + tarif » suffisait).
+
+Le moteur de H1/H2 est **gelé** ; la correction vit dans `research_v2.py`.
+
+```bash
+python -m ara.cli --research    # jeu 4 adversarial, écrit workspace/research-report.md
+```
+
+| Moteur | Précision des sources | Faux positifs | Mauvais lieux |
+|---|---|---|---|
+| RESEARCH-BASELINE | 56 % | 2.65 | 1.55 |
+| RESEARCH-V2 | **66 %** | **1.65** | **0.95** |
+
+V2 élimine **complètement** deux formes de faux positifs (autre pays au même
+vocabulaire, pages purement génériques) et ne change rien aux deux autres —
+noms voisins et archives périmées, qui demandent respectivement un référentiel
+géographique et une lecture de date. Ces limites ont chacune un test qui les
+fige plutôt que de les taire. L'exactitude, elle, ne bouge pas : de meilleures
+sources n'ont pas donné de meilleures réponses sur ce jeu.
+
+Aucune liste noire : un test vérifie qu'aucun nom de site ou de lieu
+n'apparaît dans le code du filtre.
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -393,7 +422,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-477 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+512 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -426,7 +455,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             477 tests hors ligne
+├── tests/             512 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 

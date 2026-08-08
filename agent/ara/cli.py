@@ -105,6 +105,23 @@ def run_v2_experiment_cli() -> int:
     return 0 if result.verdict and result.verdict.status != "non_corrige" else 3
 
 
+def run_research_experiment_cli() -> int:
+    """Expérience RESEARCH-BASELINE contre RESEARCH-V2, sur le jeu adversarial."""
+    from .lab import run_research_experiment
+    from .lab.report_research import render as render_research
+
+    settings = get_settings()
+    result = run_research_experiment(settings=settings)
+    rapport = render_research(result)
+    print(rapport)
+
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "research-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+    return 0
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -177,6 +194,10 @@ def main(argv: list[str] | None = None) -> int:
         help="lance l'expérience ADAPTIVE-V2 : le défaut identifié est-il corrigé ?",
     )
     parser.add_argument(
+        "--research", action="store_true",
+        help="compare RESEARCH-BASELINE et RESEARCH-V2 sur le jeu adversarial",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -197,6 +218,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.v2:
         return run_v2_experiment_cli()
+
+    if args.research:
+        return run_research_experiment_cli()
 
     if args.phone:
         return run_phone()

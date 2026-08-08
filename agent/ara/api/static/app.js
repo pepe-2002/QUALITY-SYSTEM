@@ -421,6 +421,11 @@ async function showInfo() {
         (t.requires_external ? ' <em>(ressource externe)</em>' : '') + '</li>').join('')}</ul>
       <h4>Limites</h4>
       <ul>${Object.entries(config.limits).map(([k, v]) => `<li>${escapeHtml(k)} : ${v}</li>`).join('')}</ul>
+      <h4>Versions</h4>
+      <ul>
+        <li>Contrôleur de difficulté : <strong>${escapeHtml(config.versions ? config.versions.controller : '—')}</strong></li>
+        <li>Moteur de recherche : <strong>${escapeHtml(config.versions ? config.versions.research_engine : '—')}</strong></li>
+      </ul>
       <h4>Téléphone</h4>
       <ul id="phone-body"><li class="muted">Détection…</li></ul>`;
 

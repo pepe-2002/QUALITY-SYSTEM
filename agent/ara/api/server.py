@@ -20,7 +20,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any
 
+from ..agents.engines import engine_name
 from ..automation.routines import DEFAULT_MIN_BATTERY, build_routine
+from ..core.complexity import DEFAULT_CONTROLLER
 from ..core.config import Settings, get_settings
 from ..core.errors import AraError
 from ..core.events import STAGE_ORDER
@@ -138,6 +140,10 @@ class AraHandler(BaseHTTPRequestHandler):
                     "search": {
                         "selected": self.settings.search_provider,
                         "providers": available_engines(),
+                    },
+                    "versions": {
+                        "controller": DEFAULT_CONTROLLER,
+                        "research_engine": engine_name(),
                     },
                     "tools": [
                         {

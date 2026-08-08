@@ -600,13 +600,29 @@ L'exactitude, elle, ne bouge pas : 0,25 pour les deux. De meilleures sources
 n'ont pas donné de meilleures réponses sur ce jeu — le moteur de synthèse
 extractif reste le facteur limitant. Le résultat est conservé tel quel.
 
+### Adoption
+
+Sur décision du propriétaire du projet, **RESEARCH-V2 devient le moteur de
+l'application** (`agents/engines.py`, `DEFAULT_ENGINE = "v2"`).
+
+- La baseline n'est pas supprimée : elle reste joignable, et le laboratoire la
+  nomme explicitement pour chaque bras. H1 rejoué après l'adoption donne les
+  mêmes chiffres, verdict compris. Un test vérifie qu'aucun module du
+  laboratoire n'emprunte le moteur par défaut.
+- `ARA_RESEARCH_ENGINE=baseline` revient au moteur gelé sans modifier une
+  ligne de code.
+- Vérification en conditions réelles, sur la question même qui avait déraillé :
+  3 sources retenues (moheligo.com, comorese.com, comorosmayottetours.com),
+  **2 écartées hors sujet**, un seul cycle, aucune requête malformée. Faute de
+  trouver un prix, l'agent le dit — au lieu de servir le tarif d'un autre pays.
+
 ### Ce que cette expérience ne prouve pas
 
 - Quatre tâches, un domaine, un corpus écrit par l'auteur du système.
 - Aucun résultat de H1 ou H2 n'a servi à calibrer cette version, et aucun n'a
-  été modifié : les deux expériences rejouées donnent les mêmes chiffres.
-- RESEARCH-V2 **n'est pas** adoptée par défaut dans l'application. Elle existe,
-  elle est mesurée, elle attend une décision.
+  été modifié : les expériences rejouées donnent les mêmes chiffres.
+- Deux formes de faux positifs sur cinq résistent, et resteront visibles tant
+  que leurs tests les figent.
 
 ---
 

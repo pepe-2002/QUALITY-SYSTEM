@@ -33,7 +33,7 @@ from ..analysis.verify import summarize, verify_answer
 from ..tools.registry import ToolBox
 from . import document_agent
 from .planner import Plan, plan as build_plan
-from .research import run_research
+from .engines import engine_name, run_research
 
 def _headline(prompt: str) -> str:
     """Titre d'accroche tiré de la demande, sans les mots de fabrication."""
@@ -133,7 +133,10 @@ class Orchestrator:
                 llm=ctx.llm.name,
                 search=ctx.search.name,
             )
-            ctx.journal.add_summary(f"plan : {plan.describe()}")
+            ctx.journal.add_summary(
+                f"plan : {plan.describe()} · contrôleur {plan.budget.controller} "
+                f"· moteur de recherche {engine_name()}"
+            )
 
             # 2. RECHERCHE + ANALYSE — boucle adaptative (spec §3)
             report: ResearchReport | None = None

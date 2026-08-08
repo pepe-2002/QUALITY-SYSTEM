@@ -1,6 +1,6 @@
 # ARA — Autonomous Research & Creative Agent
 
-**v0.6 — Phases 1 à 5, contrôleur ADAPTIVE-V2**
+**v0.7 — Phases 1 à 5, ADAPTIVE-V2 · RESEARCH-V2**
 
 Un agent personnel qui **cherche → comprend → planifie → utilise des outils →
 crée → vérifie → s'arrête**. Il se pilote depuis un téléphone, tourne sans
@@ -272,6 +272,21 @@ sources n'ont pas donné de meilleures réponses sur ce jeu.
 Aucune liste noire : un test vérifie qu'aucun nom de site ou de lieu
 n'apparaît dans le code du filtre.
 
+**RESEARCH-V2 est désormais le moteur de l'application.** Rejouée en vrai, la
+question qui avait déraillé donne maintenant :
+
+```
+[RECHERCHE] 3 source(s) sur 3 domaine(s) · 2 écartée(s) hors sujet · 1 cycle(s)
+            arrêt : il manque encore quelque chose (aucune donnée chiffrée pour
+            « prix »), mais aucune relance exploitable
+Sources : moheligo.com · comorese.com · comorosmayottetours.com
+```
+
+Plus une seule source bretonne, aucune requête malformée — et quand il ne
+trouve pas le prix, **il le dit** au lieu de servir celui d'un autre pays.
+
+`ARA_RESEARCH_ENGINE=baseline` revient au moteur gelé sans toucher au code.
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -422,7 +437,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-512 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+516 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -455,7 +470,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             512 tests hors ligne
+├── tests/             516 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -482,10 +497,14 @@ agent/
   (écart +0,82 recherche entre profond et facile sur le jeu 3) et gagne en
   exactitude. H1, sur le gain d'exactitude, reste non concluante — et V2 n'y
   change rien : c'est une correction de défaut, pas une validation.
-- **V2 est adoptée alors que sa validation reste étroite** : dix tâches d'un
-  seul corpus, écrites par l'auteur du système. C'est une décision de produit
-  appuyée sur une mesure, pas une preuve — et le prochain jeu de test devra
+- **Les deux V2 sont adoptées alors que leur validation reste étroite** : dix
+  tâches pour le contrôleur, quatre pour le moteur de recherche, sur des
+  corpus écrits par l'auteur du système. Ce sont des décisions de produit
+  appuyées sur des mesures, pas des preuves — le prochain jeu de test devra
   être écrit par quelqu'un d'autre pour valoir mieux.
+- **Deux faux positifs sur cinq résistent** à RESEARCH-V2 : les lieux qui
+  partagent un nom (il faudrait un référentiel géographique) et les archives
+  périmées (c'est une lecture de date, pas de pertinence).
 - Le laboratoire mesure **son propre corpus**. Un web figé de huit tâches
   écrites par l'auteur du système ne remplace pas le vrai web : il sert à
   réfuter, pas à décerner un satisfecit.

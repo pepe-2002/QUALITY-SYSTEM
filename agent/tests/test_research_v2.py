@@ -297,3 +297,41 @@ def test_le_jeu_4_contient_les_cinq_formes_de_piege():
     assert {"autre_lieu", "nom_voisin", "generique", "perime", "autre_contexte"} <= set(
         LABELS.values()
     )
+
+
+# --- Adoption ------------------------------------------------------------------
+
+
+def test_v2_est_le_moteur_par_defaut_de_l_application():
+    """Adopté après l'expérience du jeu 4, pas avant."""
+    from ara.agents.engines import DEFAULT_ENGINE
+
+    assert DEFAULT_ENGINE == "v2"
+
+
+def test_la_baseline_reste_joignable():
+    """Elle n'est pas supprimée : elle reste le moteur gelé de H1 et H2."""
+    from ara.agents.engines import ENGINES
+    from ara.agents.research import ResearchAgent
+
+    assert ENGINES["baseline"] is ResearchAgent
+
+
+def test_le_moteur_peut_etre_force_par_l_environnement(monkeypatch):
+    from ara.agents import engines
+
+    monkeypatch.setenv("ARA_RESEARCH_ENGINE", "baseline")
+    assert engines.engine_name() == "baseline"
+    monkeypatch.setenv("ARA_RESEARCH_ENGINE", "n-importe-quoi")
+    assert engines.engine_name() == engines.DEFAULT_ENGINE
+
+
+def test_le_laboratoire_n_utilise_jamais_le_moteur_par_defaut():
+    """Sinon changer le défaut rendrait H1 et H2 irreproductibles."""
+    import inspect
+
+    from ara.lab import research_exp, strategies
+
+    for module in (strategies, research_exp):
+        source = inspect.getsource(module)
+        assert "engines" not in source, module.__name__

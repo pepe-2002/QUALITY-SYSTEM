@@ -411,6 +411,25 @@ comportement actuel. Le corriger demandera une version suivante et un jeu neuf.
 **Mesuré, pas adopté** : CONTEXT-V2 n'est branché sur aucune version en
 production.
 
+### CONTEXT-V3 — jugée sur le jeu 8
+
+V3 pèse les termes au lieu de les compter, traite un objet concurrent comme un
+désaveu, et distingue deux noms composés qui partagent leur tête.
+
+| Version | Bonnes conservées | Mauvaises rejetées | Faux rejets | Exactitude |
+|---|---|---|---|---|
+| sans contrôle | 8/8 | 0/10 | 0 | 44 % |
+| CONTEXT-V2 | 8/8 | 6/10 | 0 | 78 % |
+| **CONTEXT-V3** | 7/8 | **10/10** | **1** | **94 %** |
+
+V3 rejette **tous** les pièges, homonymie de lieux comprise. Mais elle
+introduit un défaut que V2 n'avait pas : une source qui **abrège** un nom
+(« Villeneuve » pour « Villeneuve-sur-Loire ») est prise pour une
+contradiction, et une information correcte est rejetée.
+
+Le jeu 8 avait été écrit pour attraper exactement ce risque — il l'a attrapé.
+Le faux rejet n'est pas corrigé : ce sera CONTEXT-V4 sur un jeu 9.
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -561,7 +580,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-596 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+603 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -594,7 +613,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             596 tests hors ligne
+├── tests/             603 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 

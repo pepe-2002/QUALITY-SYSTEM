@@ -243,3 +243,90 @@ def test_context_v2_ne_rejette_aucune_bonne_information():
     from ara.lab.context_test import evaluate
 
     assert evaluate("v2").false_rejects == 0
+
+
+# --- CONTEXT-V3 -----------------------------------------------------------------
+
+
+def test_v3_ne_modifie_pas_v2():
+    """V2 est figée : V3 l'importe, ne la remplace pas."""
+    from ara.analysis import context_v2, context_v3
+
+    assert context_v2.assess_context is not context_v3.assess_context
+    from ara.lab.context_test import evaluate
+
+    assert evaluate("v2").accuracy == pytest.approx(0.733, abs=0.01)
+
+
+def test_v3_pese_les_termes_au_lieu_de_les_compter():
+    from ara.analysis.context_v3 import most_specific
+
+    page = ("École de Vaudreuil. Le cours de piano coûte 45 euros. "
+            "Le cours de violon coûte 45 euros. Le cours de guitare aussi.")
+    # « cours » est partout, « piano » ne l'est pas.
+    assert "piano" in most_specific({"piano", "cours"}, page)
+    assert "cours" not in most_specific({"piano", "cours"}, page)
+
+
+def test_v3_distingue_deux_noms_composes():
+    from ara.analysis.context_v3 import qualified_mismatch
+
+    assert qualified_mismatch("cours à Vaudreuil-sur-Mer ?", "École de Vaudreuil-les-Bois")
+    assert not qualified_mismatch("cours à Vaudreuil-sur-Mer ?", "École de Vaudreuil-sur-Mer")
+
+
+def test_v3_rejette_un_objet_concurrent():
+    from ara.analysis.context_v3 import MISMATCH, assess_context as v3
+
+    verdict = v3(
+        question="Combien coûte la consultation d'un chat à Villeneuve ?",
+        sentence="La consultation d'un cheval coûte 95 euros à Villeneuve.",
+        title="Clinique de Villeneuve",
+        document="Clinique de Villeneuve. La consultation d'un chat coûte "
+                 "42 euros. La consultation d'un cheval coûte 95 euros.",
+        now=2026,
+    )
+    assert verdict.state == MISMATCH
+
+
+def test_caracteristique_la_specificite_se_mesure_dans_la_source():
+    """Propriété assumée, pas défaut : sur une source d'une seule ligne, tous
+    les mots paraissent spécifiques et le contrôle d'objet se relâche.
+
+    Une vraie pondération demanderait un corpus de fréquences, que ce système
+    n'a pas. Le comportement est figé ici pour rester visible.
+    """
+    from ara.analysis.context_v3 import assess_context as v3
+
+    verdict = v3(
+        question="Combien coûte la consultation d'un chat à Villeneuve ?",
+        sentence="La consultation d'un cheval coûte 95 euros à Villeneuve.",
+        title="Clinique de Villeneuve", now=2026,
+    )
+    assert verdict.assertable, "source trop pauvre pour peser les termes"
+
+
+def test_limite_connue_v3_prend_une_abreviation_pour_une_contradiction():
+    """Le faux rejet du jeu 8, figé.
+
+    Une source qui écrit « Villeneuve » là où la question dit
+    « Villeneuve-sur-Loire » abrège ; elle ne contredit pas. V3 la rejette
+    quand même. Corriger cela demandera CONTEXT-V4 et un jeu 9 : ajuster
+    maintenant reviendrait à s'entraîner sur l'examen qu'on vient de passer.
+    """
+    from ara.analysis.context_v3 import assess_context as v3
+
+    verdict = v3(
+        question="Combien coûte la consultation d'un chat à la clinique de "
+                 "Villeneuve-sur-Loire ?",
+        sentence="La consultation d'un chat coûte 42 euros à la clinique de Villeneuve.",
+        title="Clinique de Villeneuve", now=2026,
+    )
+    assert not verdict.assertable, "limite connue : l'abréviation est rejetée"
+
+
+def test_le_jeu_8_contient_des_cas_conçus_contre_v3():
+    from ara.lab.context_test2 import CASES
+
+    assert sum(1 for c in CASES if c.family == "sur_rejet") >= 3
+    assert sum(1 for c in CASES if c.assertable) >= 8

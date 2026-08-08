@@ -1024,15 +1024,30 @@
     return G.BAT[b].cout * (1 + n * 0.012) * (1 + E.inflation[i] / 260);
   }
 
-  G.construire = function (i, b) {
+  // Marge d'endettement encore disponible, en M$.
+  G.capaciteEmprunt = function (i) {
+    const plafond = E.pib[i] * 1000 * 1.5;
+    return Math.max(0, plafond - E.dette[i]);
+  };
+
+  G.construire = function (i, b, aCredit) {
     const bd = G.BAT[b];
-    if (bd.tech && E.tech[i] < bd.tech) return { ok: false, msg: `Technologie insuffisante (${bd.tech} requis).` };
-    if (bd.dot !== undefined && G.PAYS[i].dot[bd.dot] < 1) return { ok: false, msg: 'Votre sous-sol ne contient pas cette ressource.' };
+    if (bd.tech && E.tech[i] < bd.tech) return { ok: false, msg: `Technologie insuffisante : niveau ${bd.tech} requis, vous êtes à ${E.tech[i].toFixed(0)}.` };
+    if (bd.dot !== undefined && G.PAYS[i].dot[bd.dot] < 1) return { ok: false, msg: `Votre sous-sol ne contient pas de ${G.RES[R[Object.keys(bd.prod)[0]]].nom.toLowerCase()}.` };
     const cout = coutBatiment(i, b);
-    if (E.tresor[i] < cout) return { ok: false, msg: 'Trésor insuffisant.' };
+    const manque = cout - E.tresor[i];
+    if (manque > 0) {
+      if (!aCredit) return { ok: false, msg: `Il vous manque ${manque.toFixed(0)} M$. Empruntez, ou attendez que le trésor se remplisse.` };
+      if (manque > G.capaciteEmprunt(i))
+        return { ok: false, msg: 'Les marchés refusent de vous prêter davantage : votre dette atteint 150 % du PIB.' };
+      E.dette[i] += manque * 1.02;
+      E.tresor[i] += manque;
+    }
     E.tresor[i] -= cout;
     E.chantiers.push({ p: i, b: b, reste: Math.max(5, Math.ceil(bd.jours * (1.4 - E.infra[i] / 220))), total: bd.jours });
-    return { ok: true, msg: `Chantier lancé : ${bd.nom} (${cout.toFixed(0)} M$).` };
+    return { ok: true, msg: manque > 0
+      ? `Chantier lancé : ${bd.nom} (${cout.toFixed(0)} M$, dont ${manque.toFixed(0)} M$ empruntés).`
+      : `Chantier lancé : ${bd.nom} (${cout.toFixed(0)} M$).` };
   };
 
   G.recruter = function (i, u, n) {
@@ -1041,7 +1056,12 @@
     if (ud.bat && E.bat[i * NBAT + B[ud.bat]] < 1) return { ok: false, msg: `Nécessite : ${G.BAT[B[ud.bat]].nom}.` };
     const mult = E.lois.has('servicemil') && i === E.joueur ? 0.75 : 1;
     const cout = ud.cout * n * mult;
-    if (E.tresor[i] < cout) return { ok: false, msg: 'Trésor insuffisant.' };
+    const manque = cout - E.tresor[i];
+    if (manque > 0) {
+      if (manque > G.capaciteEmprunt(i))
+        return { ok: false, msg: `Il vous manque ${manque.toFixed(0)} M$ et les marchés ne vous prêtent plus.` };
+      E.dette[i] += manque * 1.02; E.tresor[i] += manque;
+    }
     E.tresor[i] -= cout;
     E.casernes.push({ p: i, u: u, n: n, reste: Math.ceil(ud.jours * mult) });
     return { ok: true, msg: `${n} × ${ud.nom} en formation (${cout.toFixed(0)} M$).` };
@@ -1089,6 +1109,30 @@
     return { ok: true, msg: 'Frappe exécutée.' };
   };
 
+  G.meilleursAcheteurs = function (r, n) {
+    const l = [];
+    for (let j = 0; j < N; j++) {
+      if (j === E.joueur) continue;
+      const besoin = E.conso[j * NRES + r] - E.prod[j * NRES + r];
+      if (besoin <= 0) continue;
+      l.push({ j: j, qte: besoin, rel: E.rel[E.joueur * N + j] });
+    }
+    l.sort((x, y) => y.qte * (120 + y.rel) - x.qte * (120 + x.rel));
+    return l.slice(0, n || 6);
+  };
+
+  G.meilleursVendeurs = function (r, n) {
+    const l = [];
+    for (let j = 0; j < N; j++) {
+      if (j === E.joueur) continue;
+      const surplus = E.prod[j * NRES + r] - E.conso[j * NRES + r];
+      if (surplus <= 0) continue;
+      l.push({ j: j, qte: surplus, rel: E.rel[E.joueur * N + j] });
+    }
+    l.sort((x, y) => y.qte * (120 + y.rel) - x.qte * (120 + x.rel));
+    return l.slice(0, n || 6);
+  };
+
   G.proposerContrat = function (v, a, r, qte, prix, jours) {
     const px = E.prix[r];
     const rel = E.rel[a * N + v];
@@ -1097,17 +1141,21 @@
     const besoin = Math.max(0, E.conso[dj] - E.prod[dj]);
     const attrait = (px / prix - 1) * 100 + rel * 0.4 + (besoin > qte ? 22 : besoin > qte * 0.4 ? 8 : -18)
                     - (E.sanctions.some(s => s[0] === a && s[1] === v) ? 60 : 0);
-    if (attrait < 5) return { ok: false, msg: `Refus : ${nomRefus(attrait, px, prix, besoin, qte, rel)}` };
+    if (attrait < 5) return { ok: false, msg: `Refus : ${nomRefus(r, a, px, prix, besoin, qte, rel)}` };
     E.contrats.push({ v: v, a: a, r: r, qte: qte, prix: prix, jours: jours, id: E.idContrat++ });
     modifierRelation(v, a, 6);
     return { ok: true, msg: `${G.PAYS[a].nom} signe le contrat.` };
   };
 
-  function nomRefus(att, px, prix, besoin, qte, rel) {
-    if (prix > px * 1.15) return 'votre prix est trop élevé.';
-    if (besoin < qte * 0.4) return 'ce pays n\'a pas besoin de cette ressource.';
-    if (rel < 0) return 'les relations diplomatiques sont trop mauvaises.';
-    return 'les conditions ne les convainquent pas.';
+  function nomRefus(r, a, px, prix, besoin, qte, rel) {
+    if (besoin < qte * 0.4) {
+      const autres = G.meilleursAcheteurs(r, 3).map(x => G.PAYS[x.j].nom);
+      const piste = autres.length ? ` En revanche, ${autres.join(', ')} en manquent.` : '';
+      return `${G.PAYS[a].nom} produit déjà assez de ${G.RES[r].nom.toLowerCase()}.${piste}`;
+    }
+    if (prix > px * 1.15) return `votre prix (${prix.toFixed(0)} $) dépasse trop le marché (${px.toFixed(0)} $).`;
+    if (rel < 0) return `les relations avec ${G.PAYS[a].nom} sont trop mauvaises (${rel}).`;
+    return 'les conditions ne les convainquent pas — baissez le prix ou améliorez vos relations.';
   }
 
   G.actionDiplo = function (i, j, type, montant) {

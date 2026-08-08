@@ -37,7 +37,6 @@
     q('#jeu').classList.remove('cache');
     construireNav();
     G.initCarte(q('#carte'), p => { UI.paysVise = p; if (UI.panneau === 'diplomatie') majDiplo(true); });
-    G.appliquerGeopolitique();
     ouvrir('carte');
     majBarre();
     dernierTemps = performance.now();
@@ -77,6 +76,10 @@
       if (E.onu && !E.onu.montre) { E.onu.montre = true; modaleONU(); }
       if (E.fini && !q('#modale').classList.contains('ouvert')) modaleFin();
       if (E.nouveauJournal) { E.nouveauJournal = false; pastilleJournal(); }
+      if (E.jour > 0 && E.jour !== UI.dernierAuto && E.jour % 30 === 0 && !E.fini) {
+        UI.dernierAuto = E.jour;
+        G.sauverLocal(true);
+      }
     }
     boucle = requestAnimationFrame(tourner);
   }
@@ -481,7 +484,9 @@
   PANNEAUX.construction = {
     build(d) {
       sectionTitre(d, 'Ministère de la Construction',
-        'Tout se construit avec du temps et de l\'argent. Un bon dirigeant bâtit avant d\'en avoir besoin.');
+        'Choisissez un bâtiment et cliquez sur Construire : la somme est prélevée sur le trésor, ' +
+        'le chantier démarre et le bâtiment produit dès sa livraison. Si le trésor ne suffit pas, ' +
+        'le bouton propose de financer le chantier par l\'emprunt — c\'est ainsi que démarrent les petits pays.');
       const ch = el('div', 'chantiers'); ch.id = 'c-chantiers'; d.appendChild(ch);
       UI.refs.c_chantiers = ch;
 
@@ -519,7 +524,10 @@
           const pied = el('div', 'cb-f');
           const cout = el('div', 'cb-c', '—');
           pied.appendChild(cout);
-          const btn = bouton('Construire', 'principal', () => { resultat(G.construire(E.joueur, k)); PANNEAUX.construction.maj(); });
+          const btn = bouton('Construire', 'principal', () => {
+            resultat(G.construire(E.joueur, k, btn.dataset.credit === '1'));
+            PANNEAUX.construction.maj();
+          });
           pied.appendChild(btn);
           c.appendChild(pied);
           g.appendChild(c);
@@ -539,13 +547,18 @@
         const cout = G.coutBatiment(i, x.k);
         const bd = G.BAT[x.k];
         x.cout.textContent = `${G.fmtM(cout)} · ${bd.jours} j · entretien ${nf2.format(bd.entretien)} M$/j`;
-        let bloque = '', raison = '';
-        if (bd.tech && E.tech[i] < bd.tech) { bloque = 'off'; raison = `Techno ${bd.tech}`; }
-        else if (bd.dot !== undefined && G.PAYS[i].dot[bd.dot] < 1) { bloque = 'off'; raison = 'Pas de gisement'; }
-        else if (E.tresor[i] < cout) { bloque = 'off'; raison = 'Trésor insuffisant'; }
-        x.btn.className = 'btn ' + (bloque ? 'off' : 'principal');
-        x.btn.textContent = bloque ? raison : 'Construire';
-        x.btn.disabled = !!bloque;
+        const manque = cout - E.tresor[i];
+        let etat = 'ok', libelle = 'Construire';
+        if (bd.tech && E.tech[i] < bd.tech) { etat = 'off'; libelle = `Technologie ${bd.tech} requise`; }
+        else if (bd.dot !== undefined && G.PAYS[i].dot[bd.dot] < 1) { etat = 'off'; libelle = 'Pas de gisement'; }
+        else if (manque > 0) {
+          if (manque <= G.capaciteEmprunt(i)) { etat = 'credit'; libelle = `Construire à crédit (+${G.fmtM(manque)} de dette)`; }
+          else { etat = 'off'; libelle = 'Endettement au plafond'; }
+        }
+        x.btn.dataset.credit = etat === 'credit' ? '1' : '0';
+        x.btn.className = 'btn ' + (etat === 'off' ? 'off' : etat === 'credit' ? 'sec' : 'principal');
+        x.btn.textContent = libelle;
+        x.btn.disabled = etat === 'off';
       });
       const ch = UI.refs.c_chantiers;
       const mes = E.chantiers.filter(c => c.p === i).concat(E.casernes.filter(c => c.p === i).map(c => ({ u: c.u, reste: c.reste, n: c.n, total: G.UNI[c.u].jours })));
@@ -572,7 +585,9 @@
     build(d) {
       const i = E.joueur;
       sectionTitre(d, 'Contrats commerciaux',
-        'Un contrat, c\'est un prix garanti sur la durée — à l\'abri des soubresauts du marché. Encore faut-il livrer : un contrat non honoré coûte cher en relations.');
+        'Votre excédent part déjà seul sur le marché mondial au prix du jour. Un contrat sert à autre chose : ' +
+        'verrouiller un prix et un volume sur plusieurs années, avec un pays précis. ' +
+        'Un pays n\'accepte que s\'il manque vraiment de la ressource — la liste ci-dessous vous dit qui.');
 
       const of = el('div', 'bloc'); of.id = 'm-offres'; d.appendChild(of);
       UI.refs.m_offres = of;
@@ -597,7 +612,57 @@
       form.appendChild(champ('Durée', selDur));
       d.appendChild(form);
 
+      const suggestions = el('div', 'bloc'); d.appendChild(suggestions);
       const info = el('div', 'form-info'); d.appendChild(info);
+      const majSuggestions = () => {
+        const k = +selRes.value;
+        const ach = G.meilleursAcheteurs(k, 5), ven = G.meilleursVendeurs(k, 5);
+        suggestions.innerHTML = '';
+        const colonne = (titre, liste, sousTitre) => {
+          const c = el('div', 'sugg');
+          c.appendChild(el('h4', '', titre));
+          c.appendChild(el('p', 'mini', sousTitre));
+          if (!liste.length) { c.appendChild(el('div', 'vide', 'Aucun pays dans ce cas.')); return c; }
+          liste.forEach(x => {
+            const vente = titre.indexOf('acheteurs') >= 0;
+            const mien = E.prod[i * G.NRES + k] - E.conso[i * G.NRES + k];
+            // On ne propose que ce que les deux parties peuvent réellement assumer.
+            const volume = vente
+              ? Math.min(x.qte * 0.8, Math.max(0, mien) * 0.7)
+              : Math.min(x.qte * 0.8, Math.max(0, -mien) * 0.9);
+            const b = el('button', 'sugg-p');
+            b.innerHTML = `<span>${G.PAYS[x.j].drapeau} ${G.PAYS[x.j].nom}</span>
+              <em>${volume >= 1 ? (vente ? 'vendre ' : 'acheter ') + G.fmtNb(volume) + '/j' : 'volume nul'}
+              · relations ${x.rel > 0 ? '+' : ''}${x.rel}</em>`;
+            b.onclick = () => {
+              selPays.value = x.j;
+              inQte.value = Math.max(1, Math.round(volume));
+              inPrix.value = nf2.format(E.prix[k] * (vente ? 0.99 : 1.01)).replace(/\s/g, '').replace(',', '.');
+              majInfo();
+              if (volume < 1) {
+                notifier(vente ? 'Vous n\'avez aucun excédent de cette ressource à vendre.'
+                               : 'Vous n\'avez besoin d\'aucune quantité de cette ressource.', 'mauvais');
+                return;
+              }
+              const r = vente
+                ? G.proposerContrat(i, x.j, k, +inQte.value, +inPrix.value, +selDur.value)
+                : G.proposerContrat(x.j, i, k, +inQte.value, +inPrix.value, +selDur.value);
+              resultat(r);
+              PANNEAUX.commerce.maj(true);
+              majSuggestions();
+            };
+            c.appendChild(b);
+          });
+          return c;
+        };
+        const g = el('div', 'grille-sugg');
+        g.appendChild(colonne('Qui manque de ' + G.RES[k].nom.toLowerCase() + ' — vos acheteurs', ach,
+          'Un clic propose la vente sur-le-champ, au volume que vous pouvez livrer et au prix du marché.'));
+        g.appendChild(colonne('Qui en a en trop — vos vendeurs', ven,
+          'Un clic propose l\'achat, à hauteur de ce qui vous manque.'));
+        suggestions.appendChild(g);
+      };
+
       const majInfo = () => {
         const k = +selRes.value, j = +selPays.value;
         const px = E.prix[k];
@@ -612,10 +677,27 @@
           <span>Relations : <b class="${sig(rel)}">${rel > 0 ? '+' : ''}${rel}</b></span>
           <span>Recette : <b>${G.fmtM(revenu)}/j</b></span>`;
       };
-      selRes.onchange = () => { inPrix.value = nf2.format(E.prix[+selRes.value]).replace(/\s/g, '').replace(',', '.'); majInfo(); };
+      selRes.onchange = () => {
+        inPrix.value = nf2.format(E.prix[+selRes.value]).replace(/\s/g, '').replace(',', '.');
+        majSuggestions(); majInfo();
+      };
       [selPays, inQte, inPrix, selDur].forEach(x => x.onchange = majInfo);
       inQte.oninput = majInfo; inPrix.oninput = majInfo;
+      // On ouvre sur la ressource où le joueur a le plus gros excédent à placer.
+      let meilleure = 0, meilleurSurplus = -Infinity;
+      for (let k = 0; k < G.NRES; k++) {
+        const sol = E.prod[i * G.NRES + k] - E.conso[i * G.NRES + k];
+        const valeur = sol * E.prix[k];
+        if (sol > 0 && valeur > meilleurSurplus) { meilleurSurplus = valeur; meilleure = k; }
+      }
+      selRes.value = meilleure;
       selRes.onchange();
+      const premier = G.meilleursAcheteurs(meilleure, 1)[0];
+      if (premier) {
+        selPays.value = premier.j;
+        inQte.value = Math.max(1, Math.round(Math.min(premier.qte, Math.max(0, E.prod[i * G.NRES + meilleure] - E.conso[i * G.NRES + meilleure])) * 0.6));
+        majInfo();
+      }
 
       const act = el('div', 'actions');
       act.appendChild(bouton('Proposer la vente', 'principal', () => {
@@ -626,6 +708,11 @@
         const r = G.proposerContrat(+selPays.value, i, +selRes.value, +inQte.value, +inPrix.value, +selDur.value);
         resultat(r); PANNEAUX.commerce.maj(true);
       }));
+      act.appendChild(bouton('Prix du marché', 'sec', () => {
+        inPrix.value = nf2.format(E.prix[+selRes.value]).replace(/\s/g, '').replace(',', '.');
+        majInfo(); notifier('Prix aligné sur le marché mondial.', '');
+      }));
+      act.appendChild(bouton('Actualiser les partenaires', 'sec', () => { majSuggestions(); majInfo(); }));
       d.appendChild(act);
 
       sectionTitre(d, 'Contrats en cours');
@@ -1281,15 +1368,63 @@
   }
 
   // ══════════════════════════════════════════════════════ Contrôles globaux
+  G.stockageDispo = function () {
+    try { localStorage.setItem('geopolis-test', '1'); localStorage.removeItem('geopolis-test'); return true; }
+    catch (e) { return false; }
+  };
+
+  G.sauverLocal = function (silencieux) {
+    try {
+      localStorage.setItem('geopolis-save', G.sauver());
+      if (!silencieux) notifier('Partie sauvegardée dans ce navigateur.', 'bon');
+      return true;
+    } catch (e) {
+      if (!silencieux) notifier('Ce navigateur refuse le stockage. Téléchargez plutôt le fichier de sauvegarde.', 'mauvais');
+      return false;
+    }
+  };
+
+  G.telechargerSauvegarde = function () {
+    const p = G.PAYS[E.joueur];
+    const blob = new Blob([G.sauver()], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `geopolis-${p.code}-an${Math.floor(E.jour / 365) + 1}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    notifier('Fichier de sauvegarde téléchargé. Gardez-le : il rouvre la partie où qu\'elle soit.', 'bon');
+  };
+
+  G.chargerFichier = function (auDemarrage) {
+    const input = document.createElement('input');
+    input.type = 'file'; input.accept = '.json,application/json';
+    input.onchange = () => {
+      const f = input.files[0];
+      if (!f) return;
+      const lecteur = new FileReader();
+      lecteur.onload = () => {
+        try {
+          G.charger(lecteur.result);
+          if (auDemarrage) auDemarrage();
+          else { UI.construits = {}; ouvrir('carte'); majBarre(); majVitesse(); }
+          notifier(`Partie reprise : ${G.PAYS[E.joueur].nom}, ${Math.floor(E.jour / 365)} an(s) de mandat.`, 'bon');
+        } catch (e) { notifier('Fichier illisible : ' + e.message, 'mauvais'); }
+      };
+      lecteur.readAsText(f);
+    };
+    input.click();
+  };
+
   G.brancherControles = function () {
     q('#btn-pause').onclick = basculerPause;
     document.querySelectorAll('.vit').forEach(b => b.onclick = () => { E.pause = false; E.vitesse = +b.dataset.v; majVitesse(); });
     q('#btn-sauver').onclick = () => {
-      try {
-        localStorage.setItem('geopolis-save', G.sauver());
-        notifier('Partie sauvegardée dans ce navigateur.', 'bon');
-      } catch (e) { notifier('Sauvegarde impossible : espace insuffisant.', 'mauvais'); }
+      if (!G.sauverLocal(false)) G.telechargerSauvegarde();
     };
+    q('#btn-fichier').onclick = () => G.telechargerSauvegarde();
+    q('#btn-ouvrir').onclick = () => G.chargerFichier();
+    if (!G.stockageDispo())
+      notifier('Ce navigateur bloque la sauvegarde automatique. Utilisez ⬇ pour télécharger votre partie.', 'mauvais');
     q('#btn-menu').onclick = () => {
       if (confirm('Quitter la partie en cours ? Pensez à sauvegarder.')) location.reload();
     };

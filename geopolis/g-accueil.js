@@ -81,10 +81,15 @@
     q('#acc-jouer').onclick = () => {
       if (choisi < 0) return;
       G.nouvellePartie(G.PAYS[choisi].code);
+      G.appliquerGeopolitique();
       lancer();
     };
 
-    const save = localStorage.getItem('geopolis-save');
+    let save = null;
+    try { save = localStorage.getItem('geopolis-save'); } catch (e) { /* stockage bloqué */ }
+
+    q('#acc-charger').onclick = () => G.chargerFichier(lancer);
+
     if (save) {
       const b = q('#acc-reprendre');
       b.classList.remove('cache');

@@ -25,6 +25,8 @@ from .metrics import Score, score
 from .report import render
 from .report_h2 import render as render_h2
 from .report_v2 import render as render_v2
+from .diagnostic import DiagnosticResult, run_diagnostic
+from .report_diagnostic import render as render_diagnostic
 from .report_research import render as render_research
 from .research_exp import ResearchResult, run_research_experiment
 from .v2 import V2Result, run_v2_experiment
@@ -35,4 +37,5 @@ __all__ = [
     "H2_STATEMENT", "H2Result", "run_h2", "render_h2",
     "V2Result", "run_v2_experiment", "render_v2",
     "ResearchResult", "run_research_experiment", "render_research",
+    "DiagnosticResult", "run_diagnostic", "render_diagnostic",
 ]

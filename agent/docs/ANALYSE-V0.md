@@ -626,7 +626,79 @@ l'application** (`agents/engines.py`, `DEFAULT_ENGINE = "v2"`).
 
 ---
 
-## 11. Limites connues
+## 11. Diagnostic — où l'information se perd
+
+### Pourquoi
+
+Après RESEARCH-V2, une question restait sans réponse : la précision des
+sources avait monté de 56 % à 66 % sans que l'exactitude bouge d'un pouce. On
+ne savait pas *où* l'information se perdait. Un chiffre d'exactitude ne le dit
+pas ; il faut ranger chaque échec à l'étape fautive.
+
+### Les six étapes
+
+| Étape | Ce qu'elle signifie |
+|---|---|
+| RECHERCHE | mauvaise source trouvée |
+| EXTRACTION | bonne information présente mais mal extraite |
+| CONTEXTUALISATION | bonne information mais mauvais lieu, date ou contexte |
+| COMPARAISON | sources correctes mais mal confrontées |
+| RAISONNEMENT | informations correctes mais conclusion incorrecte |
+| GÉNÉRATION | conclusion correcte mais réponse finale incorrecte |
+
+L'attribution suit l'ordre du pipeline et s'arrête à la **première** étape
+fautive. Sans cet ordre, un même échec compterait plusieurs fois et le
+diagnostic ne dirait plus où porter l'effort. Chaque règle est mécanique : on
+compare des ensembles de faits, jamais la qualité perçue d'une réponse.
+
+### L'état des lieux
+
+Configuration adoptée (ADAPTIVE-V2 + RESEARCH-V2), quatre jeux, cinq graines,
+160 exécutions — **64 % de réponses correctes**.
+
+| Étape | Pannes | Part des pannes |
+|---|---|---|
+| RECHERCHE | 36 | 63 % |
+| CONTEXTUALISATION | 11 | 19 % |
+| EXTRACTION | 10 | 18 % |
+| COMPARAISON · RAISONNEMENT · GÉNÉRATION | 0 | — |
+
+| Jeu | Exécutions | Correctes | RECHERCHE | EXTRACTION | CONTEXTUALISATION |
+|---|---|---|---|---|---|
+| 1 — calibration | 40 | 29 | 7 | 0 | 4 |
+| 2 — validation | 50 | 29 | 15 | 0 | 6 |
+| 3 — contrôleur | 50 | 40 | 9 | 0 | 1 |
+| 4 — adversarial | 20 | 5 | 5 | 10 | 0 |
+
+### Ce que le diagnostic a trouvé en une exécution
+
+**Les dix pannes d'EXTRACTION viennent toutes du jeu 4**, et elles ont une
+cause unique : ses prix sont écrits en « francs » sans devise précisée, alors
+que l'extracteur ne connaît que « francs comoriens », « euros », « dollars »
+et « ariary ». L'information était sur la page, lisible ; le système ne l'a
+pas vue.
+
+C'est exactement ce qu'un diagnostic doit produire : un défaut nommé, localisé
+et corrigeable — trouvé sans lancer d'expérience.
+
+Il n'est **pas corrigé ici**. Élargir la reconnaissance des devises
+changerait l'extracteur, donc les chiffres de H1 et H2. Ce sera une version
+nommée, avec son propre jeu de test, comme les précédentes.
+
+### Ce que le diagnostic ne dit pas
+
+- Quatre corpus figés, écrits par l'auteur du système : une panne rare ici peut
+  être fréquente ailleurs.
+- **GÉNÉRATION ne se déclenche jamais**, et ce n'est pas une bonne nouvelle :
+  l'exactitude est mesurée sur la réponse entière, bilan d'analyse compris, si
+  bien qu'une valeur présente uniquement dans le bilan compte comme trouvée.
+  Corriger cela changerait la métrique de H1 et H2. La limite est documentée
+  et figée par un test plutôt que contournée.
+- Aucun verdict, aucune hypothèse : ce document ne révise aucune expérience.
+
+---
+
+## 12. Limites connues
 
 À lire avant d'en attendre plus que le système ne donne :
 

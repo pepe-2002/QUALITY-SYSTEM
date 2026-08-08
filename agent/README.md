@@ -287,6 +287,45 @@ trouve pas le prix, **il le dit** au lieu de servir celui d'un autre pays.
 
 `ARA_RESEARCH_ENGINE=baseline` revient au moteur gelé sans toucher au code.
 
+### Où l'agent perd-il l'information ?
+
+Une réponse fausse ne dit pas quoi corriger. Chaque échec est donc rangé à
+l'étape du pipeline où l'information s'est perdue :
+
+```bash
+python -m ara.cli --diagnostic    # écrit workspace/diagnostic-report.md
+```
+
+| Étape | Signification |
+|---|---|
+| RECHERCHE | mauvaise source trouvée |
+| EXTRACTION | bonne information présente mais mal extraite |
+| CONTEXTUALISATION | bonne information mais mauvais lieu, date ou contexte |
+| COMPARAISON | sources correctes mais mal confrontées |
+| RAISONNEMENT | informations correctes mais conclusion incorrecte |
+| GÉNÉRATION | conclusion correcte mais réponse finale incorrecte |
+
+L'attribution suit l'ordre du pipeline et s'arrête à la **première** étape
+fautive — une information jamais trouvée ne peut pas être mal extraite.
+
+État des lieux de la configuration adoptée, sur les quatre jeux
+(160 exécutions, **64 % de réponses correctes**) :
+
+| Étape | Pannes | Part |
+|---|---|---|
+| RECHERCHE | 36 | 63 % |
+| CONTEXTUALISATION | 11 | 19 % |
+| EXTRACTION | 10 | 18 % |
+
+Deux enseignements, tous deux utiles :
+
+- la recherche reste la panne dominante — c'est là qu'il faut porter l'effort,
+  pas sur la rédaction ;
+- les 10 pannes d'extraction viennent **toutes** du jeu 4, où les prix sont
+  écrits en « francs » sans devise précisée : l'extracteur ne connaît que
+  « francs comoriens », « euros », « dollars », « ariary ». Le diagnostic a
+  donc trouvé un défaut réel en une exécution.
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -437,7 +476,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-516 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+530 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -470,7 +509,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             516 tests hors ligne
+├── tests/             530 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 

@@ -122,6 +122,23 @@ def run_research_experiment_cli() -> int:
     return 0
 
 
+def run_diagnostic_cli() -> int:
+    """Diagnostic : à quelle étape du pipeline l'information se perd-elle ?"""
+    from .lab import run_diagnostic
+    from .lab.report_diagnostic import render as render_diagnostic
+
+    settings = get_settings()
+    result = run_diagnostic(settings=settings)
+    rapport = render_diagnostic(result)
+    print(rapport)
+
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "diagnostic-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+    return 0
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -198,6 +215,10 @@ def main(argv: list[str] | None = None) -> int:
         help="compare RESEARCH-BASELINE et RESEARCH-V2 sur le jeu adversarial",
     )
     parser.add_argument(
+        "--diagnostic", action="store_true",
+        help="range les échecs par étape du pipeline (recherche, extraction, …)",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -221,6 +242,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.research:
         return run_research_experiment_cli()
+
+    if args.diagnostic:
+        return run_diagnostic_cli()
 
     if args.phone:
         return run_phone()

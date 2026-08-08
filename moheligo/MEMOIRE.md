@@ -185,7 +185,9 @@ Les cinq phases sont livrées (v0.5, 413 tests) :
    défaut dans l'application** sur décision du patron. Un essai en vrai a
    ensuite révélé un second défaut — l'agent citait des traversées bretonnes
    pour une question sur les Comores — corrigé dans **RESEARCH-V2**, adoptée
-   elle aussi (v0.7) ;
+   elle aussi (v0.7). Un diagnostic range désormais chaque échec à l'étape
+   où l'information se perd — 64 % de réponses correctes, et la recherche
+   reste la panne dominante (63 % des échecs) ;
 5. automatisation Android : capacités du téléphone via Termux (notification,
    presse-papier, voix, partage) et **routines programmées** — « chaque
    matin », « chaque lundi à 8h ». Pas d'envoi de SMS par l'agent : le partage

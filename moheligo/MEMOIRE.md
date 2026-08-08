@@ -51,6 +51,7 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-promo-A4.png` | Le promo en A4 300 dpi imprimable + bande « comment ça marche » (ports, boutiques, hôtels) | — | — |
 | `flyers/flyer-promo-brillant-facebook.png` | ⭐ Le plus abouti : promo « brillant » (or métallique, reflets spéculaires, soleil sur la mer, éclats) | — | — |
 | `flyers/flyer-promo-brillant-A4.png` | Le brillant en A4 300 dpi imprimable | — | — |
+| `flyers/flyer-diaspora-facebook.png` | Flyer pub « diaspora » : « Tu paies ici. Il embarque. » — payer la traversée d'un proche depuis la France, Mayotte ou le Golfe. Sans date. | — | — |
 | `flyers/flyer-soir-facebook.png` | ⭐ **Bulletin du soir** : la vraie mer de demain matin (Open-Meteo), jauge Douglas + courbe de houle, panneau en verre. **Daté : à regénérer chaque jour.** | — | — |
 
 Retours du patron : ①voix Piper jugée trop rapide/robotique → remplacée par
@@ -65,6 +66,7 @@ qu'on veut faire :
 
 | Je veux… | Fichier source à modifier | PNG produit |
 |---|---|---|
+| Le flyer diaspora (angle le plus rentable) | `flyer9-diaspora-fb.html` | `flyer-diaspora-facebook.png` |
 | **Le bulletin du soir (format le plus fort)** | `bulletin.py` + `flyer8-soir-fb.template.html` | `flyer-soir-facebook.png` — **regénérer chaque jour** |
 | **Améliorer le design (LE MEILLEUR, repartir de là)** | **`flyer7-promo-brillant-fb.html`** | `flyer-promo-brillant-facebook.png` (2160×2700) |
 | Le brillant en A4 imprimable | `flyer7-promo-brillant-A4.html` | `flyer-promo-brillant-A4.png` (2480×3508, 300 dpi) |
@@ -327,6 +329,22 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **08/08/2026** — Le patron ne voyait pas les fichiers envoyés dans la
+  conversation (« je trouve pas le flyer », deux fois) et disait le projet
+  fatigant. ⚠️ **LEÇON À RETENIR : chez lui, les pièces jointes ne s'affichent
+  pas. Le canal qui marche, c'est une PAGE WEB publiée** (artifact) avec les
+  flyers en grand et le texte à copier :
+  `https://claude.ai/code/artifact/d08c3def-2c4b-418a-b7bd-b19c477df307`
+  — republier le même fichier garde la même adresse, donc il n'a qu'un seul
+  lien à retenir. Deuxième leçon : **je lui ai sorti huit versions et noyé sous
+  les liens GitHub**. Quand il est fatigué : une page, deux flyers, rien à
+  décider.
+  Produit ce jour-là : le bulletin du soir remis à jour (dimanche 9 août, mer
+  peu agitée) et un **nouveau flyer pub « diaspora »** — « Tu paies ici. Il
+  embarque. » : payer la traversée d'un proche depuis la France, Mayotte ou le
+  Golfe. C'est l'angle le plus rentable qui restait, et il n'existait qu'en
+  encart dans le flyer nuit.
 
 - **08/08/2026, 18h40 (Comores)** — La session a franchi minuit : attention, le
   flyer du soir généré la veille annonçait « samedi 8 » et était donc périmé.

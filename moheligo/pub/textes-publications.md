@@ -4,6 +4,53 @@
 
 ---
 
+## 🌍 Flyer diaspora — « Tu paies ici. Il embarque. » (08/08/2026)
+
+Image : `flyers/flyer-diaspora-facebook.png` (4:5). Sans date, publiable
+n'importe quand. **L'angle le plus rentable** : un Comorien de France, de
+Mayotte ou du Golfe paie la traversée d'un proche resté au pays. À publier
+plutôt le week-end, en fin d'après-midi heure des Comores (la diaspora est
+en ligne à ce moment-là).
+
+### Version principale
+
+```
+TU PAIES ICI. IL EMBARQUE.
+
+Tu es en France, à Mayotte ou dans le Golfe, et ta famille doit traverser
+vers Mohéli ?
+
+Tu n'as plus besoin d'envoyer de l'argent et d'espérer que tout se passe bien.
+Depuis ton téléphone, sur moheligo.com :
+
+• Tu choisis le port, la date et la place — Ouroveni ou Chindini au départ,
+  Hoani ou Fomboni à l'arrivée.
+• Tu paies par MVola ou KartaPay.
+• Ton proche reçoit son billet QR sur son téléphone. Il n'avance rien, il
+  n'attend personne au port.
+
+À partir de 15 000 FC la traversée.
+
+moheligo.com — la place est prise avant même que tu raccroches.
+
+#MoheliGo #DiasporaComorienne #Comores #Mohéli #Traversée #Mayotte
+```
+
+### Premier commentaire
+
+```
+moheligo.com — WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp)
+
+```
+Tu paies ici, il embarque là-bas.
+La traversée d'un proche depuis ton téléphone : moheligo.com
+```
+
+---
+
 ## 🌅 Bulletin du soir — publication quotidienne (créée le 07/08/2026)
 
 Image : `flyers/flyer-soir-facebook.png`. **Format daté** : le flyer annonce la

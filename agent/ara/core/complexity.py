@@ -137,6 +137,8 @@ class TaskBudget:
     difficulty_reason: str = ""
     #: historique des révisions sur preuve — (action, motif)
     revisions: list = None  # type: ignore[assignment]
+    #: raison d'arrêt de la collecte, quand le budget est révisable (V2)
+    stop_code: str = ""
 
     def __post_init__(self) -> None:
         if self.revisions is None:
@@ -223,6 +225,7 @@ class TaskBudget:
             "used_searches": self.used_searches,
             "signals": self.signals,
             "controller": self.controller,
+            "stop_code": self.stop_code,
             "difficulty": self.difficulty,
             "difficulty_reason": self.difficulty_reason,
             "revisions": [{"action": a, "reason": r} for a, r in self.revisions],

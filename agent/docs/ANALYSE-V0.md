@@ -401,7 +401,111 @@ Exactitude, recherches, verdict de H1 : identiques.
 
 ---
 
-## 9. Limites connues
+## 9. ADAPTIVE-V2 — corriger le défaut que H2 avait mis au jour
+
+### Le défaut
+
+H2 avait montré, chiffres à l'appui, que le contrôleur ne distingue pas une
+tâche facile d'une tâche profonde : il rationne uniformément. Économie réelle,
+exactitude perdue là où il aurait fallu chercher.
+
+### Ce qui a été gelé avant de toucher à quoi que ce soit
+
+- **ADAPTIVE-V1 est figée définitivement.** Les quatre bras de H1 et H2
+  épinglent explicitement `v1` (`CONTROLLER_BY_STRATEGY`) : faire avancer le
+  contrôleur ne peut plus rendre ces expériences irreproductibles. Vérifié
+  après coup : H1 et H2 rejoués donnent exactement les mêmes chiffres.
+- **Le contrôleur par défaut de l'application reste V1.** On adopte une version
+  après l'expérience qui la juge, pas avant.
+
+### Les trois jeux, trois rôles
+
+| Jeu | Fichier | Rôle |
+|---|---|---|
+| 1 | `lab/dataset.py` | développement et calibration |
+| 2 | `lab/heldout.py` | première validation — résultats observés, V2 conçue à partir de là |
+| 3 | `lab/heldout2.py` | **jamais utilisé auparavant**, porte seul le verdict |
+
+### La logique de V2
+
+1. **Estimer la difficulté avant de chercher** (`estimate_difficulty`), sur des
+   caractéristiques de la seule question :
+   - la **grandeur demandée** — un horaire officiel ou un taux statistique est
+     publié à un seul endroit, un prix courant est répété partout ;
+   - l'**exigence d'autorité** — « officiel », « exact », « règlement » ;
+   - l'**ampleur** — comparaison, plusieurs grandeurs, propositions enchaînées ;
+   - la **longueur**, qui ne pèse plus qu'un peu : croire qu'une question courte
+     est une question facile était précisément l'erreur de V1.
+2. **Trois niveaux, trois budgets** : simple → 1, intermédiaire → 3, profonde
+   → 6 recherches, toujours plafonnés.
+3. **Réviser sur preuve** : grandeur introuvable → le budget monte ; grandeur
+   trouvée → arrêt anticipé ; doute → on ne touche à rien.
+
+L'estimateur ne voit **jamais** le corpus, ni un résultat de recherche, ni la
+vérité de référence. Trois tests le vérifient — un contrôleur qui donnerait un
+gros budget aux questions dont il connaît la réponse aurait d'excellents
+chiffres et aucune valeur.
+
+### Les garde-fous demandés
+
+| Risque | Mécanisme |
+|---|---|
+| Arrêt prématuré sur tâche difficile | l'arrêt anticipé exige que la grandeur demandée ait été **trouvée**, pas seulement que des pages soient revenues |
+| Recherche inutile sur tâche facile | dès que c'est trouvé, la collecte s'arrête |
+| Dépassement du budget maximal | `min(…, max_search_steps)` à chaque allocation et à chaque montée |
+| Boucle infinie | `MAX_REVISIONS` révisions au plus, une seule requête de repli par tâche |
+
+### Le résultat, sur le jeu 3
+
+| Stratégie | Exactitude | Nette | Recherches | Appels LLM | Jetons | Rech./réponse juste |
+|---|---|---|---|---|---|---|
+| FIXED | 0.82 | 0.79 | 3.00 | 2.00 | 176 | 3.66 |
+| ADAPTIVE-V1 | 0.82 | 0.80 | 1.00 | 1.00 | 172 | **1.22** |
+| ADAPTIVE-V2 | **0.90** | **0.88** | 1.46 | 1.24 | 179 | 1.62 |
+
+Par famille — c'est là que le défaut se lit :
+
+| Stratégie | facile | profond | piège | écart profond − facile |
+|---|---|---|---|---|
+| FIXED | 3.00 / 1.00 | 3.00 / 0.53 | 3.00 / 0.77 | +0.00 |
+| ADAPTIVE-V1 | 1.00 / 1.00 | 1.00 / 0.53 | 1.00 / 0.80 | **+0.00** |
+| ADAPTIVE-V2 | 1.25 / 1.00 | 2.07 / 0.67 | 1.13 / 0.93 | **+0.82** |
+
+*(recherches / exactitude nette)*
+
+**Verdict : DÉFAUT CORRIGÉ** — les trois critères pré-enregistrés sont vérifiés.
+
+- **C1** : sur les tâches profondes, V2 obtient 0,67 d'exactitude nette contre
+  0,53 pour FIXED, et alloue +0,82 recherche de plus au profond qu'au facile
+  (seuil : +0,50). Elle distingue enfin les deux.
+- **C2** : 51 % de recherches en moins que FIXED (seuil : 20 %).
+- **C3** : 0,88 contre 0,80 pour V1 — pas de régression, un gain.
+
+Et les erreurs, qui disent la même chose autrement : **0 arrêt prématuré** pour
+V2 contre 4 pour V1 ; 5 recherches gaspillées contre 82 pour FIXED.
+
+### Ce que cela ne prouve pas
+
+- **V2 n'est pas une preuve de H2.** H2 reste *partiellement soutenue*, H1
+  *non concluante*. Corriger un défaut n'est pas valider une hypothèse.
+- Le classement des grandeurs par difficulté (`ASPECT_DIFFICULTY`) a été formé
+  en lisant les jeux 1 et 2. Il ne dépend d'aucune valeur d'or, mais il n'est
+  pas tombé du ciel non plus.
+- Les trois jeux sont écrits par l'auteur du système.
+- Toute amélioration ultérieure de V2 devra faire l'objet d'une **nouvelle**
+  expérience, sur un jeu encore jamais utilisé. Le jeu 3 est brûlé.
+
+### Une correction d'affichage, pas de contrôleur
+
+Après la première exécution, le tableau des raisons d'arrêt affichait « passe
+unique » pour V2, alors qu'elle prend bel et bien des décisions d'arrêt : le
+code d'arrêt n'était renseigné que par la boucle de recherche complète. Seul
+l'enregistrement a été corrigé — la logique de V2 n'a pas bougé, et les
+chiffres de la ré-exécution sont identiques au bit près.
+
+---
+
+## 10. Limites connues
 
 À lire avant d'en attendre plus que le système ne donne :
 

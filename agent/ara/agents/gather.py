@@ -298,6 +298,7 @@ def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
             if verdict == "suffisant":
                 # « INFORMATION SUFFISANTE → arrêt » : le reste du budget n'est
                 # pas un dû, c'est un plafond.
+                plan.budget.stop_code = "information_suffisante"
                 break
             if verdict == "difficile" and index >= len(queries):
                 # Le budget vient de monter mais il n'y a plus de requête à
@@ -305,6 +306,16 @@ def collect(ctx: TaskContext, plan: Plan, toolbox: ToolBox) -> list[SourceDoc]:
                 relance = f"{subject(plan.prompt)[:120]} officiel".strip()
                 if relance and relance not in queries:
                     queries.append(relance)
+
+        if plan.adaptive_budget and not plan.budget.stop_code:
+            # La collecte s'est arrêtée sans avoir trouvé : dire lequel des
+            # deux murs a été touché, plutôt que de laisser croire à une
+            # décision qui n'a pas eu lieu.
+            plan.budget.stop_code = (
+                "limite_budget"
+                if plan.budget.remaining_searches <= 0 or collector.saturated
+                else "manque_information"
+            )
 
     ctx.stage(
         Stage.RESEARCH,

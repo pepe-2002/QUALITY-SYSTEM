@@ -138,6 +138,8 @@ def run(
     if not outcome.cycles:
         outcome.cycles = 1 if strategy != "model_only" else 0
     outcome.controller = plan.budget.controller
+    if not outcome.stop_code:
+        outcome.stop_code = plan.budget.stop_code
     outcome.difficulty = plan.budget.difficulty
     outcome.revisions = [action for action, _motif in plan.budget.revisions]
     return outcome

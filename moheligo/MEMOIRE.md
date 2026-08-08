@@ -177,7 +177,11 @@ Les cinq phases sont livrées (v0.5, 413 tests) :
    Une seconde hypothèse (H2), pré-enregistrée et testée sur un jeu tenu à
    l'écart : **partiellement soutenue** — l'adaptation économise bien 56 % de
    recherches, mais elle ne détecte pas la difficulté (elle coupe autant sur
-   les questions dures que sur les faciles) et y perd en exactitude ;
+   les questions dures que sur les faciles) et y perd en exactitude. Ce défaut
+   a ensuite été corrigé dans une version séparée, **ADAPTIVE-V2** (V1 gelée
+   comme baseline immuable), validée sur un troisième jeu jamais utilisé :
+   défaut corrigé, exactitude 0,90 contre 0,82, et enfin plus de recherches
+   sur les questions profondes que sur les faciles ;
 5. automatisation Android : capacités du téléphone via Termux (notification,
    presse-papier, voix, partage) et **routines programmées** — « chaque
    matin », « chaque lundi à 8h ». Pas d'envoi de SMS par l'agent : le partage

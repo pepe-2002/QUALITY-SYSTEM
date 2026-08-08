@@ -199,6 +199,33 @@ ne lit pas la difficulté, il rationne partout — et c'est sur les tâches
 profondes qu'il perd. Le contrôleur n'a pas été retouché après coup : les
 seuils et le code sont restés gelés.
 
+### ADAPTIVE-V2 — le défaut est corrigé
+
+Ce défaut a ensuite été corrigé, dans une version **séparée**. V1 est gelée
+définitivement (elle reste la baseline de H1 et H2, qui rejoués donnent les
+mêmes chiffres au bit près) ; V2 estime la difficulté **avant** de choisir son
+budget, puis le révise sur preuve.
+
+```bash
+python -m ara.cli --v2      # écrit workspace/v2-report.md
+```
+
+Jeu 3 — un troisième corpus, jamais utilisé auparavant :
+
+| Stratégie | Exactitude | Recherches | facile | profond | écart |
+|---|---|---|---|---|---|
+| FIXED | 0.82 | 3.00 | 3.00 | 3.00 | +0.00 |
+| ADAPTIVE-V1 | 0.82 | 1.00 | 1.00 | 1.00 | **+0.00** |
+| ADAPTIVE-V2 | **0.90** | 1.46 | 1.25 | 2.07 | **+0.82** |
+
+**Verdict : DÉFAUT CORRIGÉ** — les trois critères pré-enregistrés passent.
+V2 dépense enfin *plus* sur les questions profondes que sur les faciles, garde
+51 % d'économie face à FIXED, et ne régresse pas face à V1. Zéro arrêt
+prématuré, contre 4 pour V1.
+
+Ce n'est **pas** une preuve de H2 : corriger un défaut n'est pas valider une
+hypothèse, et le rapport le dit en première ligne.
+
 ## Le téléphone et les routines (Phase 5)
 
 L'agent sort de l'écran : il peut **prévenir**, **partager**, **parler**, et
@@ -349,7 +376,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-445 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+477 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -382,7 +409,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             445 tests hors ligne
+├── tests/             477 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -404,11 +431,14 @@ agent/
   incompatibles ; elle ne comprend pas qu'une page parle de 2019 et l'autre de
   2026. Sur un sujet encyclopédique riche, elle produit encore des alertes
   discutables.
-- Le contrôleur de complexité est désormais **mesuré**, et le résultat n'est
-  pas celui qu'on visait : il économise beaucoup de recherches (−56 % sur le
-  jeu de test, H2), mais il **ne détecte pas la difficulté** — il coupe autant
-  sur les questions profondes que sur les faciles, et y perd en exactitude.
-  H1, sur le gain d'exactitude, reste non concluante.
+- Le contrôleur de complexité est désormais **mesuré**. V1 économise beaucoup
+  (−56 % de recherches, H2) mais ne détecte pas la difficulté ; V2 la détecte
+  (écart +0,82 recherche entre profond et facile sur le jeu 3) et gagne en
+  exactitude. H1, sur le gain d'exactitude, reste non concluante — et V2 n'y
+  change rien : c'est une correction de défaut, pas une validation.
+- **V2 n'est pas encore le contrôleur par défaut de l'application.** Elle est
+  validée sur un jeu de dix tâches écrites par l'auteur du système ; adopter
+  une version demande davantage.
 - Le laboratoire mesure **son propre corpus**. Un web figé de huit tâches
   écrites par l'auteur du système ne remplace pas le vrai web : il sert à
   réfuter, pas à décerner un satisfecit.

@@ -1052,8 +1052,10 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     E.idContrat = 1;
     E.score = 0;
 
+    E.echelle = f64(N);
     for (let i = 0; i < N; i++) {
       const p = G.PAYS[i];
+      E.echelle[i] = clamp(Math.pow(Math.max(p.pop / 1e6, 0.05) / 12, 0.85), 0.05, 60);
       E.pop[i] = p.pop;
       E.pib[i] = p.pib;
       E.tech[i] = p.tech;
@@ -1127,7 +1129,10 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     // Parc de bâtiments cohérent avec la taille et la richesse du pays
     const ech = Math.pow(p.pib, 0.62) / 6;          // échelle économique
     const pop = p.pop / 1e6;
-    const set = (b, n) => { E.bat[i * NBAT + b] = Math.max(0, Math.round(n)); };
+    // Les quantités ci-dessous décrivent une capacité totale ; on la convertit
+    // en nombre de bâtiments à la taille du pays.
+    const t = E.echelle[i];
+    const set = (b, n) => { E.bat[i * NBAT + b] = Math.max(0, Math.round(n / t)); };
 
     set(B.ferme,     pop * 0.55 + ech * 0.10);
     set(B.route,     ech * 0.42 + pop * 0.05);
@@ -1294,6 +1299,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     E.prod.fill(0); E.conso.fill(0);
     for (let i = 0; i < N; i++) {
       const base = i * NRES, popM = E.pop[i] / 1e6, dots = G.PAYS[i].dot;
+      const taille = E.echelle[i];
       let rechJour = 0, educB = 0, santeB = 0, infraB = 0, expB = 0, milB = 0;
 
       for (let b = 0; b < NBAT; b++) {
@@ -1302,15 +1308,16 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
         const bd = G.BAT[b];
         const m = multProd(i, bd);
         const facteur = bd.dot !== undefined ? 0.30 + 0.19 * dots[bd.dot] : 1;
+        const q = n * taille;                       // capacité, et non nombre d'unités
         const pp = BPROD[b], cc = BCONSO[b];
-        for (let k = 0; k < pp.length; k += 2) E.prod[base + pp[k]] += pp[k + 1] * n * m * facteur;
-        for (let k = 0; k < cc.length; k += 2) E.conso[base + cc[k]] += cc[k + 1] * n;
-        if (bd.rech)   rechJour += bd.rech * n;
-        if (bd.educ)   educB += bd.educ * n;
-        if (bd.sante)  santeB += bd.sante * n;
-        if (bd.infra)  infraB += bd.infra * n;
-        if (bd.export) expB += bd.export * n;
-        if (bd.milcap) milB += bd.milcap * n;
+        for (let k = 0; k < pp.length; k += 2) E.prod[base + pp[k]] += pp[k + 1] * q * m * facteur;
+        for (let k = 0; k < cc.length; k += 2) E.conso[base + cc[k]] += cc[k + 1] * q;
+        if (bd.rech)   rechJour += bd.rech * q;
+        if (bd.educ)   educB += bd.educ * q;
+        if (bd.sante)  santeB += bd.sante * q;
+        if (bd.infra)  infraB += bd.infra * q;
+        if (bd.export) expB += bd.export * q;
+        if (bd.milcap) milB += bd.milcap * q;
       }
 
       // Consommation civile
@@ -1448,9 +1455,10 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
       const pibJour = E.pib[i] * 1000 / 365;                       // M$/jour
 
       // ── Croissance
-      const usines = E.bat[i * NBAT + B.usine];
-      const capital = clamp(usines / Math.max(Math.pow(E.pib[i], 0.62) / 6 * 0.34, 1) - 1, -0.5, 1.2);
-      const rattrapage = clamp((1 - pibHab / pibMax) * 2.4, 0, 2.4);
+      const capital = clamp((E.prod[base + R.biens] / Math.max(E.conso[base + R.biens], 1) - 1) * 0.8, -0.5, 0.9);
+      const rattrapage = clamp((1 - pibHab / pibMax) * 1.6, 0, 1.6);
+      // pibHab est ici en milliers de dollars : 70 vaut 70 000 $ par habitant.
+      const frontiere = clamp((pibHab / 70 - 0.6) * 3, 0, 8);
       const fisc = (E.tIR[i] * 0.5 + E.tIS[i] * 0.35 + E.tTVA[i] * 0.3);
       const penNour = E.penurie[base + R.nourriture];
       const penElec = E.penurie[base + R.electricite];
@@ -1459,7 +1467,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
 
       let g = 1.1
         + capital * 1.6
-        + rattrapage
+        + rattrapage - frontiere
         + (multIA(i) - 1) * 5.2
         + (E.educ[i] - 50) * 0.020
         + (E.infra[i] - 50) * 0.016
@@ -1534,7 +1542,8 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
 
   function coutEntretien(i) {
     let c = 0;
-    for (let b = 0; b < NBAT; b++) c += E.bat[i * NBAT + b] * G.BAT[b].entretien;
+    const t = E.echelle[i];
+    for (let b = 0; b < NBAT; b++) c += E.bat[i * NBAT + b] * G.BAT[b].entretien * t;
     for (let u = 0; u < NUNI; u++) c += E.uni[i * NUNI + u] * G.UNI[u].entretien;
     return c;
   }
@@ -1547,13 +1556,26 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
       const penNour = E.penurie[base + R.nourriture], penElec = E.penurie[base + R.electricite];
       const joueur = i === E.joueur;
 
-      let cibleApp = 50
+      // On ne juge pas un gouvernement à l'aune d'une norme universelle : un
+      // peuple attend de son État ce que le pays peut raisonnablement offrir.
+      // Sans cette échelle d'attentes, une nation pauvre partait avec vingt-huit
+      // points de malus permanents — services, chômage et corruption jugés à
+      // l'aune d'un pays riche — et sombrait quoi que fasse le joueur.
+      const pibHab = E.pib[i] * 1e9 / Math.max(E.pop[i], 1);
+      const attServices = clamp(20 + 60 * Math.sqrt(Math.min(pibHab / 40000, 1.4)), 20, 86);
+      const attChomage  = clamp(6 + (1 - pibHab / 30000) * 8, 6, 14);
+      const attCorrupt  = clamp(20 + (1 - pibHab / 25000) * 45, 20, 65);
+
+      let cibleApp = 46
         + clamp((E.croiss[i] - 1.5) * 5.5, -20, 20)
-        - clamp((E.chomage[i] - 6) * 1.5, -10, 24)
+        - clamp((E.chomage[i] - attChomage) * 1.5, -10, 24)
         - clamp((E.inflation[i] - 3) * 1.6, -8, 26)
         - (E.tIR[i] * 42 + E.tTVA[i] * 34 + E.tIS[i] * 10 - 22)
-        + (E.sante[i] - 50) * 0.22 + (E.educ[i] - 50) * 0.15 + (E.infra[i] - 50) * 0.10
-        - E.corrupt[i] * 0.30
+        + (E.sante[i] - attServices) * 0.16
+        + (E.educ[i] - attServices) * 0.11
+        + (E.infra[i] - attServices) * 0.07
+        - E.corrupt[i] * 0.10
+        - clamp(E.corrupt[i] - attCorrupt, -20, 40) * 0.22
         - penNour * 45 - penElec * 22
         + (E.bSub[i] - 0.02) * 260;
 
@@ -2013,7 +2035,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
   G.coutBatiment = coutBatiment;
   function coutBatiment(i, b) {
     const n = E.bat[i * NBAT + b] + E.chantiers.filter(c => c.p === i && c.b === b).length;
-    return G.BAT[b].cout * (1 + n * 0.012) * (1 + E.inflation[i] / 260);
+    return G.BAT[b].cout * E.echelle[i] * (1 + n * 0.012) * (1 + E.inflation[i] / 260);
   }
 
   // Marge d'endettement encore disponible, en M$.
@@ -2419,6 +2441,15 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     evenements();
     politique();
     if (E.jour % 15 === 0) verifierDefis();
+    if (E.jour % 90 === 0) {
+      let m = 0;
+      for (let i = 0; i < N; i++) {
+        if (E.pop[i] < 1e7) continue;
+        const h = E.pib[i] / (E.pop[i] / 1e6);
+        if (h > m) m = h;
+      }
+      if (m > 0) E.refPibHab = m;
+    }
     E.score = calculScore();
   };
 
@@ -2441,7 +2472,7 @@ PW|Palaos|OC|7.5|134.6|0.018|0.3|32|62|1|D|000000001
     const brut = {};
     ['pop','pib','croiss','tresor','dette','tech','stab','approb','corrupt','chomage','inflation',
      'educ','sante','infra','expCap','milcap','moral','rech','calcul','ia','reput','dernierBilan',
-     'tIR','tIS','tTVA','tDou','bSante','bEduc','bInfra','bDef','bSub','prix','prixBase','calib',
+     'tIR','tIS','tTVA','tDou','bSante','bEduc','bInfra','bDef','bSub','prix','prixBase','calib','echelle',
      'bat','uni','stock','rel','techs','rechCours','rechAcc'
     ].forEach(k => { brut[k] = Array.from(E[k]); });
     return JSON.stringify({

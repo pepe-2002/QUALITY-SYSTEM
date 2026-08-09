@@ -168,6 +168,20 @@ def run_context_cli() -> int:
     return 0
 
 
+def run_h3_cli() -> int:
+    """H3 : la mémoire des défauts réduit-elle le travail de correction ?"""
+    from .lab.report_h3 import render
+
+    settings = get_settings()
+    rapport = render()
+    print(rapport)
+    settings.workspace.mkdir(parents=True, exist_ok=True)
+    chemin = settings.workspace / "h3-report.md"
+    chemin.write_text(rapport, encoding="utf-8")
+    print(f"\nRapport écrit : {chemin}")
+    return 0
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -256,6 +270,10 @@ def main(argv: list[str] | None = None) -> int:
         help="CONTEXT-V2 : autopsie des erreurs de contexte et mesure sur le jeu 7",
     )
     parser.add_argument(
+        "--h3", action="store_true",
+        help="H3 : la mémoire des défauts web réduit-elle le travail de correction ?",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -288,6 +306,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.context:
         return run_context_cli()
+
+    if args.h3:
+        return run_h3_cli()
 
     if args.phone:
         return run_phone()

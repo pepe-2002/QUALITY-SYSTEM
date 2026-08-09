@@ -23,7 +23,7 @@ serveur HTTP sont écrits à la main.
 Coût : 0 €. Moteur par défaut **extractif** (il copie des phrases sourcées, il
 ne rédige pas) — et l'interface le dit à l'utilisateur.
 
-## 2. Les cinq phases, livrées
+## 2. Les six phases, livrées
 
 1. **Interface** — PWA installable, pipeline en direct (SSE), documents
    PDF/DOCX/MD/TXT **vérifiés avant livraison**, historique, permissions,
@@ -38,6 +38,11 @@ ne rédige pas) — et l'interface le dit à l'utilisateur.
    pré-enregistrées.
 5. **Automatisation Android** — Termux (notification, presse-papier, voix,
    partage), routines programmées, ordonnanceur.
+6. **Fabrique de sites et d'applications web** — générateur sans aucune
+   ressource distante, critique mécanique en dix critères, et **mémoire des
+   défauts** (`workspace/lessons.json`) qui rejoue d'avance les corrections
+   déjà éprouvées. C'est la partie « apprend de ses erreurs », et elle est
+   mesurée (H3).
 
 ## 3. LA MÉTHODE — c'est le cœur du projet, ne pas y déroger
 
@@ -73,6 +78,7 @@ prime sur tout le reste**, y compris sur l'envie de bien faire.
 | Extracteur de faits | baseline | **gelé** |
 | | EXTRACTION-V2 | **adopté** (jeu 6 : 35 % → 100 % de rappel) |
 | Contrôle de contexte | CONTEXT-V2 / V3 / V4 | **mesurés, AUCUN adopté** |
+| Fabrique web | WEBAPP-V1 | **adoptée** (outil `create_site`, H3 soutenue) |
 
 `ARA_RESEARCH_ENGINE=baseline` revient au moteur gelé sans toucher au code.
 
@@ -86,6 +92,7 @@ prime sur tout le reste**, y compris sur l'envie de bien faire.
 | **RESEARCH-V2** | 2 formes de faux positifs éliminées sur 5 | `--research` |
 | **EXTRACTION-V2** | 20/20 sur jeu 6 | `--extraction` |
 | **CONTEXT-V2/V3/V4** | aucune adoptable | `--context` |
+| **H3** — la mémoire des défauts réduit-elle le travail de correction ? | **SOUTENUE** (1,30 → 0,30 correction, p = 0,0078, note finale identique) | `--h3` |
 | Diagnostic par étape | 69 % de réponses correctes | `--diagnostic` |
 
 **Ces chiffres ne se retouchent pas.** Si une modification les fait bouger,
@@ -104,8 +111,10 @@ c'est un bug, pas un progrès.
 | 7 | `lab/context_test.py` | test CONTEXT-V2 (brûlé) |
 | 8 | `lab/context_test2.py` | test CONTEXT-V3 (brûlé) |
 | 9 | `lab/context_test3.py` | test CONTEXT-V4 (brûlé) |
+| 10 | `lab/webapp_test.py` | test H3, fabrique web (brûlé) |
 
-Prochaine amélioration du contexte → **CONTEXT-V5 sur un jeu 10**.
+Prochaine amélioration du contexte → **CONTEXT-V5 sur un jeu 11**.
+Prochaine amélioration du studio web → **WEBAPP-V2 sur un jeu 11**.
 
 ## 7. Ce que la mesure a appris, et qui contredit l'intuition
 
@@ -119,6 +128,16 @@ Prochaine amélioration du contexte → **CONTEXT-V5 sur un jeu 10**.
   en production. Sans jeux séparés, elle aurait été adoptée.
 - **Un jeu écrit à la main produit des phrases plus complètes que le vrai
   web.** C'est le biais qui a trompé les jeux 7 et 8.
+- **La mémoire des défauts ne rend pas les sites meilleurs — elle les rend
+  meilleurs plus tôt.** La note finale est identique avec et sans mémoire
+  (97,0 dans les deux bras) ; c'est la première version qui monte, de 85 à
+  94,5. L'apprentissage économise du travail, il ne relève pas le plafond de
+  qualité. Ne pas laisser croire l'inverse.
+- **Une règle de marque en français libre n'est pas vérifiable
+  mécaniquement.** « ne pas écrire Chindini : c'est Ouroveni » cite le mot
+  juste et le mot faux ; extraire les majuscules signalerait le bon comme une
+  faute. Seuls les termes **entre guillemets** sont contrôlés, le reste est
+  déclaré indécidable. Même principe que la devise UNKNOWN.
 
 ## 8. Où en est le déploiement
 
@@ -136,5 +155,8 @@ Aucune adresse publique n'existe. Trois chemins, tous documentés :
 2. **Le moteur de synthèse** : le filtre de contexte ne peut que rattraper
    après coup ce que la sélection de phrases choisit mal.
 3. CONTEXT-V5 sur un jeu 10, si le contexte reste le sujet.
-4. Une réplication par **quelqu'un d'autre** : les neuf jeux sont écrits par
+4. Une réplication par **quelqu'un d'autre** : les dix jeux sont écrits par
    l'auteur du système, et c'est la limite de fond de tout ce qui précède.
+5. Étendre la mémoire des défauts **au-delà du web** (documents, flyers) : le
+   mécanisme est générique, seul le critique change. À mesurer sur un jeu neuf,
+   comme le reste.

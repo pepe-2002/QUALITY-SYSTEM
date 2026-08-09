@@ -88,3 +88,54 @@ retiré pour l'expérience.
 
 *Rédigé le 9 août 2026, avant exécution. Le verdict est ajouté ci-dessous après
 coup, sans que rien de ce qui précède ne soit modifié.*
+
+---
+
+# Verdict, ajouté après exécution le 9 août 2026
+
+## **H3 SOUTENUE**
+
+| Mesure | SANS mémoire | AVEC mémoire |
+|---|---:|---:|
+| corrections après la première version (moyenne par brief) | **1,30** | **0,30** |
+| note de la première version (moyenne) | 85,0 | 94,5 |
+| note finale (moyenne) | **97,0** | **97,0** |
+
+* briefs en baisse : **8/10** (seuil pré-enregistré : 7) — hausses : 0, égalités : 2 ;
+* test des signes exact : **p = 0,0078** ;
+* note finale : identique au dixième de point, donc la marge de non-infériorité
+  (1 point) est respectée sans discussion.
+
+Les trois conditions fixées d'avance sont remplies.
+
+## Où l'effet se produit — et où il ne se produit pas
+
+La note **finale est rigoureusement la même** dans les deux bras. La mémoire ne
+produit pas de meilleurs sites : elle produit les mêmes, **plus tôt**. Ce qui
+change, c'est la première version — 85 → 94,5 — et le travail nécessaire pour
+arriver au résultat, divisé par quatre.
+
+Les deux égalités sont les deux briefs propres du jeu (`marche_couvert`,
+`cabinet_infirmier`) : sans défaut à la première version, il n'y a rien à
+apprendre ni à économiser. C'est le comportement attendu.
+
+## Limites, dont une sérieuse
+
+1. **Le générateur est déterministe.** Un même brief produit toujours les mêmes
+   fichiers ; un défaut se reproduit donc à l'identique et une correction connue
+   s'applique toujours. Avec un générateur variable, l'effet serait
+   vraisemblablement plus faible. Cette limite était annoncée avant l'exécution
+   et le résultat ne l'efface pas.
+2. **Aucune généralisation.** La mémoire rejoue des corrections déjà constatées
+   efficaces. Elle n'induit aucune règle nouvelle et ne transfère rien à un
+   défaut jamais rencontré.
+3. **Le critère « autonomie » n'a jamais été déclenché** par le JEU 10 : une
+   adresse web citée dans le texte d'une section n'est pas une ressource
+   chargée. Ce contrôle n'est donc vérifié que par les tests unitaires.
+4. **Le goût n'est pas mesuré.** Contraste, cibles tactiles, liens, contenu
+   réel — rien ne dit si un site est beau.
+
+Le JEU 10 a jugé. Il devient un jeu de développement ; toute amélioration
+ultérieure du studio web devra être évaluée sur un jeu 11 écrit d'avance.
+
+Rapport détaillé et rejouable : `python -m ara.cli --h3`.

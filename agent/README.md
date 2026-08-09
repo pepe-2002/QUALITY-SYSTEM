@@ -34,6 +34,8 @@ quels fichiers produire.
 | **Laboratoire** | banc d'essai qui **tente de réfuter** le raisonnement adaptatif |
 | **Téléphone** | notification, presse-papier, voix, partage Android (Termux) |
 | **Routines** | tâches programmées : « chaque matin », « chaque lundi à 8h » |
+| **Sites web** | site ou application installable, **sans aucune ressource distante** |
+| **Apprentissage** | les défauts corrigés sont retenus et **évités d'avance** la fois suivante |
 | **Coût** | 0 € — aucune dépendance obligatoire, aucune clé requise |
 
 Le pipeline visible à l'écran est exactement celui qui s'exécute :
@@ -498,6 +500,73 @@ Installation sur téléphone : `deploy/termux/install.sh`, et
 `deploy/termux/boot-ara.sh` pour un démarrage automatique via Termux:Boot.
 Rien ne tourne en arrière-plan tant que `ARA_AUTOMATION=1` n'est pas posé.
 
+## Fabriquer un site, et apprendre de ses erreurs (Phase 6)
+
+```bash
+python -m ara.cli "Crée un site vitrine pour le marché couvert de Fomboni"
+python -m ara.cli --h3        # la mémoire des défauts sert-elle à quelque chose ?
+```
+
+L'agent produit `index.html`, `style.css`, `app.js` — et, si l'on demande une
+application, un manifeste et un service worker. **Aucune ressource distante** :
+pas de CDN, pas de police Google, pas de script tiers. Le site s'ouvre d'un
+double-clic, fonctionne hors ligne, et tient sur une connexion comorienne.
+
+Le HTML est produit par gabarit, et ce n'est pas un aveu de paresse : c'est ce
+qui permet de le **critiquer mécaniquement**. Dix critères sont mesurés sur les
+fichiers eux-mêmes, pas sur les intentions du générateur :
+
+| Critère | Ce qui est mesuré |
+|---|---|
+| autonomie | aucune référence `http://`, `//cdn`, `@import` distant |
+| contraste | rapports WCAG calculés : texte/fond, texte/surface, accent, bouton |
+| usage au téléphone | `meta viewport` et cibles tactiles ≥ 44 px |
+| liens | chaque ancre et chaque fichier référencé existe |
+| contenu réel | aucun texte de remplissage survivant |
+| structure, titre, poids, interdits de marque, installation hors ligne | … |
+
+### Ce qui fait « apprendre »
+
+Le studio construit, mesure, corrige, et **annule une correction qui dégrade la
+note** — comme le studio de flyers. La nouveauté est ailleurs : chaque défaut
+porte un **code stable**, et un code dont la correction a fait monter la note
+est écrit dans `workspace/lessons.json`. À la tâche suivante, la correction est
+appliquée **avant** la première version.
+
+Un garde-fou compte plus que le reste : **une correction qui n'a jamais
+fonctionné ne devient jamais une règle**. Sinon la mémoire apprendrait aussi
+les mauvaises idées, et les appliquerait plus vite.
+
+C'est mesuré, pas affirmé — hypothèse H3, pré-enregistrée avant exécution
+(`docs/H3-APPRENTISSAGE.md`), jugée sur un jeu 10 écrit d'avance :
+
+| Mesure | sans mémoire | avec mémoire |
+|---|---:|---:|
+| corrections après la première version | **1,30** | **0,30** |
+| note de la première version | 85,0 | **94,5** |
+| note finale | 97,0 | 97,0 |
+
+**H3 SOUTENUE** — 8 briefs sur 10 en baisse, p = 0,0078.
+
+Et la phrase qu'il faut retenir : **la note finale est identique**. La mémoire
+ne rend pas les sites meilleurs, elle les rend meilleurs **plus tôt**. Limite
+principale, annoncée avant l'expérience : le générateur est déterministe, donc
+un défaut se reproduit à l'identique — avec un générateur variable, l'effet
+serait vraisemblablement plus faible.
+
+### Ce que l'agent refuse de faire
+
+Si une section n'a aucune matière — ni dans la demande, ni dans ce que la
+recherche a confirmé — elle est **retirée**, pas remplie de texte plausible.
+Un site plus court et vrai vaut mieux qu'un site complet et inventé. C'est la
+même règle que « une information de contexte inconnu ne devient pas une
+affirmation ».
+
+De même, une règle de marque en français libre n'est pas devinée. « Ne pas
+écrire Chindini : c'est Ouroveni » cite le mot juste **et** le mot faux ;
+extraire les majuscules signalerait le bon comme une faute. Seuls les termes
+**entre guillemets** sont contrôlés, le reste est déclaré non vérifiable.
+
 ---
 
 ## Démarrage rapide
@@ -618,7 +687,7 @@ force** : il retombe sur le moteur gratuit et affiche pourquoi.
 python -m pytest
 ```
 
-603 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
+634 tests, hors ligne, déterministes (corpus figé, réseau coupé). Ils couvrent
 la recherche, l'extraction, les citations, la boucle adaptative (relance,
 arrêt, budget), la détection **et la validation** des contradictions, l'encodeur
 QR (aller-retour + comparaison à une bibliothèque de référence), les concepts,
@@ -643,6 +712,7 @@ agent/
 │   ├── providers/     LLM · recherche · stockage  (interchangeables)
 │   ├── tools/         outils indépendants + registre à permissions
 │   ├── design/        marque, QR, composition SVG, concepts, critique, studio
+│   ├── webapp/        générateur de sites, critique mécanique, mémoire des défauts
 │   ├── documents/     modèle commun → PDF, DOCX, MD, TXT + vérification
 │   ├── agents/        planificateur, collecte, research agent, documents
 │   ├── lab/           corpus figé, stratégies, mesures, expérience, rapport
@@ -651,7 +721,7 @@ agent/
 │   ├── api/           serveur HTTP + PWA (static/)
 │   ├── service.py     tâches en arrière-plan et historique
 │   └── cli.py         ligne de commande
-├── tests/             603 tests hors ligne
+├── tests/             634 tests hors ligne
 └── docs/ANALYSE-V0.md analyse de la spec, choix techniques, limites
 ```
 
@@ -666,6 +736,7 @@ agent/
 | **3** | Creative Agent + Design Critic : flyers, QR code, itérations notées | **fait** |
 | **4** | Research Lab : mesurer et **tenter de réfuter** le raisonnement adaptatif | **fait** |
 | **5** | Automatisation Android : capacités du téléphone, routines programmées | **fait** |
+| **6** | Sites et applications web · critique mécanique · mémoire des défauts | **fait** |
 
 **Limites connues** — à lire avant d'en attendre trop :
 
@@ -673,6 +744,12 @@ agent/
   incompatibles ; elle ne comprend pas qu'une page parle de 2019 et l'autre de
   2026. Sur un sujet encyclopédique riche, elle produit encore des alertes
   discutables.
+- **La fabrique de sites ne juge pas du goût.** Elle mesure du contraste, des
+  cibles tactiles, des liens et la présence de contenu réel. Un site peut
+  obtenir 100/100 et rester laid : le critique ne prétend pas le contraire.
+- **La mémoire des défauts ne généralise pas.** Elle rejoue des corrections
+  déjà constatées efficaces ; elle n'induit aucune règle pour un défaut jamais
+  rencontré.
 - Le contrôleur de complexité est désormais **mesuré**. V1 économise beaucoup
   (−56 % de recherches, H2) mais ne détecte pas la difficulté ; V2 la détecte
   (écart +0,82 recherche entre profond et facile sur le jeu 3) et gagne en

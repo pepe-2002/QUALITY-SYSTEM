@@ -69,6 +69,26 @@ section « Flyer corporate ».
 
 ## Regénérer
 
+### La page que le patron ouvre
+
+```bash
+python3 bulletin.py                                                    # la mer de demain
+node render.js flyer8-soir-fb.html flyer-soir-facebook.png 1080 1350 2
+python3 page.py --sortie /tmp/page.html                                # la page complète
+```
+
+`page.py` regénère **toute** la page : météo de demain (Open-Meteo terre + mer),
+puis chaque flyer en grand avec son texte et un bouton « copier ». Les images
+sont converties en JPEG 1080 px avant d'être embarquées — le patron est sur un
+téléphone, pas question d'y mettre des PNG de 2,6 Mo.
+Puis publier le fichier comme artifact : republier le même chemin garde la même
+adresse, donc **le patron n'a qu'un seul lien à retenir**.
+
+⚠️ **Ne jamais retoucher la page à la main.** Elle a été rapiécée une fois par
+recherche-remplacement, et le découpage a effacé deux blocs sans prévenir. Pour
+changer quelque chose : modifier `page.py` (la liste `FLYERS` en haut) et
+relancer.
+
 ### Le tuyau : le bulletin se refait tout seul
 
 `.github/workflows/bulletin-du-soir.yml` fait tourner ces deux commandes sur un

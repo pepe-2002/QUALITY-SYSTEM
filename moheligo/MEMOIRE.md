@@ -90,6 +90,11 @@ Fichiers de service, dans le même dossier :
   chemin de lumière, bloom) → `vedette-soir.jpg`. Compter ~1 min de calcul.
 - **`bulletin.py`** — va chercher la vraie prévision de mer et fabrique le
   flyer du soir. `bulletin.json` garde les chiffres pour le texte du post.
+- **`page.py`** — regénère **toute** la page web du patron (météo de demain +
+  les flyers en grand + textes + boutons copier), à publier ensuite comme
+  artifact sur la même adresse. ⚠️ **Ne jamais rapiécer la page à la main** :
+  une retouche par recherche-remplacement a déjà effacé deux blocs. On modifie
+  la liste `FLYERS` en haut de `page.py` et on relance.
 - **`duotone.py`** — mappage de dégradé marine→or + grain : transforme une
   photo en image d'affiche. C'est ce traitement qui a donné le plus beau
   visuel de tous. Recette expliquée dans `README.md`.

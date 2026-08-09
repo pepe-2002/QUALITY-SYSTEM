@@ -46,8 +46,16 @@ fi
 
 # --- 2. Le code --------------------------------------------------------------
 # Si le script est déjà dans le dépôt, on l'utilise sur place. Sinon on clone.
-ICI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [ -f "$ICI/../ara/cli.py" ]; then
+#
+# `BASH_SOURCE` est **vide quand le script arrive par un tuyau** (`curl … | bash`) :
+# il n'y a alors aucun fichier sur le disque à désigner. Sans le repli `:-`,
+# `set -u` interrompt la ligne et affiche deux erreurs inquiétantes avant de
+# continuer quand même. C'est le cas normal d'un premier lancement, pas une panne.
+SOURCE="${BASH_SOURCE[0]:-}"
+ICI=""
+[ -n "$SOURCE" ] && ICI="$(cd "$(dirname "$SOURCE")" 2> /dev/null && pwd)"
+
+if [ -n "$ICI" ] && [ -f "$ICI/../ara/cli.py" ]; then
   RACINE="$(cd "$ICI/.." && pwd)"
   echo "→ Code trouvé sur place : $RACINE"
 else

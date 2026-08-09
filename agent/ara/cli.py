@@ -182,6 +182,51 @@ def run_h3_cli() -> int:
     return 0
 
 
+def run_llm_cli() -> int:
+    """Dit quel modèle est branché, et pourquoi les autres ne le sont pas.
+
+    Sans cette commande, un `.env` mal placé se manifeste seulement par un
+    avertissement en fin de réponse — on cherche longtemps pour rien.
+    """
+    from .core.config import PROJECT_ROOT
+    from .providers.llm import available_llms, get_llm
+
+    settings = get_settings()
+    fichier = PROJECT_ROOT / ".env"
+
+    print(f"Fichier .env attendu ici : {fichier}")
+    print(f"  → {'trouvé' if fichier.is_file() else 'ABSENT'}")
+    if fichier.is_file():
+        cles = [
+            ligne.split("=", 1)[0].strip()
+            for ligne in fichier.read_text(encoding="utf-8").splitlines()
+            if "=" in ligne and not ligne.strip().startswith("#")
+        ]
+        # Les valeurs ne sont jamais affichées : une clé d'API n'a rien à faire
+        # à l'écran, ni dans une capture envoyée pour demander de l'aide.
+        print("  → clés définies : " + (", ".join(cles) if cles else "aucune"))
+
+    print(f"\nARA_LLM_PROVIDER = {settings.llm_provider}")
+    fournisseur, avertissement = get_llm()
+    print(f"Fournisseur réellement utilisé : {fournisseur.name}")
+    if avertissement:
+        print(f"  ⚠ {avertissement}")
+
+    print("\nÉtat de chaque fournisseur :")
+    for infos in available_llms():
+        marque = "✓" if infos["available"] else "✕"
+        detail = "" if infos["available"] else f" — {infos['reason']}"
+        print(f"  {marque} {infos['name']}{detail}")
+
+    if fournisseur.degraded:
+        print(
+            "\nLe moteur hors-ligne extrait des phrases, il ne rédige pas. "
+            "Pour une vraie synthèse, renseignez un fournisseur ci-dessus."
+        )
+        return 2
+    return 0
+
+
 def run_phone() -> int:
     """Dit ce que cette machine sait faire côté téléphone, et ce qui manque."""
     from .android.bridge import SUPPORTED, capabilities
@@ -274,6 +319,10 @@ def main(argv: list[str] | None = None) -> int:
         help="H3 : la mémoire des défauts web réduit-elle le travail de correction ?",
     )
     parser.add_argument(
+        "--llm", action="store_true",
+        help="dit quel modèle est branché, et pourquoi les autres ne le sont pas",
+    )
+    parser.add_argument(
         "--phone", action="store_true",
         help="montre les capacités Android détectées (Termux)",
     )
@@ -309,6 +358,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.h3:
         return run_h3_cli()
+
+    if args.llm:
+        return run_llm_cli()
 
     if args.phone:
         return run_phone()

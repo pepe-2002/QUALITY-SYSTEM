@@ -32,9 +32,14 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
   background:linear-gradient(180deg, rgba(5,14,34,0) 34%, rgba(5,14,34,.30) 52%,
                                      rgba(5,14,34,.52) 72%, rgba(5,14,34,.74) 100%); }
 
-/* anneau de soleil : tracé fin, posé sur l'horizon */
-.anneau { position:absolute; left:50%; top:338px; width:860px; height:860px; margin-left:-430px;
-  border:2px solid rgba(255,247,224,.30); border-radius:50%; }
+/* le sceau : l'anneau de soleil contient l'emblème. Idée du patron — ça donne
+   à l'affiche une marque unique, et le logo devient enfin visible. */
+.sceau { position:absolute; left:50%; top:150px; width:352px; height:352px; margin-left:-176px;
+  border:2px solid rgba(11,33,73,.40); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; }
+.sceau::before { content:''; position:absolute; inset:13px; border-radius:50%;
+  border:1px solid rgba(11,33,73,.20); }
+.sceau img { width:196px; display:block; opacity:.92; }
 
 /* en-tête, en marine sur le ciel doré */
 .tete { position:absolute; top:var(--pad); left:var(--pad); right:var(--pad);
@@ -74,12 +79,11 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 <div class="page">
   <img class="shot" src="duo-ilots.jpg" alt="">
   <div class="ombre"></div>
-  <div class="anneau"></div>
+  <div class="sceau"><img src="logo-emblem-marine.png" alt=""></div>
 
   <div class="tete">
     <div class="marque arch">
-      <img src="logo-emblem.png" alt="">
-      <div><b>MoheliGo</b><small>TRAVERSÉES MARITIMES</small></div>
+      <div><b>MoheliGo</b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
     </div>
     <div class="lieu arch">ÎLOTS DE NIOUMACHOUA<br>UNION DES COMORES</div>
   </div>

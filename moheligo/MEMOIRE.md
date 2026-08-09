@@ -348,6 +348,13 @@ recharger ce sujet ici, ce n'est pas du marketing.
   fait beau, c'est d'en enlever.
   Bonus technique : le grain masque l'agrandissement d'une photo un peu petite —
   utile avec nos sources en 2032 px de large.
+  **Idée du patron, retenue** : mettre le logo dans le cercle du milieu. L'anneau
+  de soleil est devenu un **sceau** contenant l'emblème du navire en silhouette
+  marine — c'est la signature de l'affiche, et le logo est enfin grand. ⚠️ Au
+  passage : `logo-emblem.png` a un **fond blanc opaque** ; pour en faire une
+  silhouette il faut passer par la luminance (fichiers `logo-emblem-marine.png`
+  et `logo-emblem-creme.png`, à réutiliser). Et l'emblème ne doit figurer
+  **qu'une fois** par visuel : il a été retiré de l'en-tête.
 
 - **08/08/2026** — Le patron ne voyait pas les fichiers envoyés dans la
   conversation (« je trouve pas le flyer », deux fois) et disait le projet

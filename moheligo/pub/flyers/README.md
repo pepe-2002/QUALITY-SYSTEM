@@ -184,7 +184,18 @@ voyage), appliquée dans `flyer10-affiche-duotone-fb.html` + `duotone.py` :
    « fait à l'ordinateur », et ça masque l'agrandissement d'une photo un peu
    petite (avantage secondaire très pratique).
 6. **Un signe graphique, un seul** : l'anneau de soleil au tracé fin, clin d'œil
-   aux affiches des années 50.
+   aux affiches des années 50 — devenu un **sceau** sur l'idée du patron :
+   l'emblème du navire, en silhouette marine, posé au centre de l'anneau dans le
+   ciel doré (double filet, emblème à 196 px, opacité 0,92). C'est la signature
+   visuelle de l'affiche, et le logo est enfin grand.
+   ⚠️ Deux pièges rencontrés :
+   - `logo-emblem.png` a un **fond blanc opaque**, pas transparent. Repeindre
+     « tous les pixels visibles » donne un rectangle plein. Il faut construire la
+     silhouette depuis la **luminance** (plus sombre = plus opaque) → d'où
+     `logo-emblem-marine.png` (fonds clairs) et `logo-emblem-creme.png` (fonds
+     sombres), tous deux à fond réellement transparent.
+   - L'emblème ne doit apparaître **qu'une fois** : il a été retiré de l'en-tête
+     quand le sceau est arrivé, sinon la marque se répète.
 
 ## La recette « ça brille » (demande du patron : niveau designer pro)
 

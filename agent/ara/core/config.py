@@ -40,6 +40,10 @@ DEFAULT_ALLOWED_TOOLS = (
     "phone_status",
     "copy_to_clipboard",
     "speak_text",
+    # Phase 6 — fabrication de sites et d'applications web. `forget_lessons`
+    # en est absent volontairement : effacer la mémoire des défauts est une
+    # action que le patron déclenche, jamais l'agent de sa propre initiative.
+    "create_site",
 )
 
 #: Outils considérés comme sensibles : confirmation humaine obligatoire (spec §15).
@@ -197,6 +201,14 @@ class Settings:
 
     def routines_path(self) -> Path:
         return self.workspace / "routines.json"
+
+    def lessons_path(self) -> Path:
+        """Mémoire des défauts de fabrication web (Phase 6).
+
+        Volontairement dans le workspace, en clair : le patron doit pouvoir
+        lire ce que l'agent croit avoir appris — et l'effacer s'il se trompe.
+        """
+        return self.workspace / "lessons.json"
 
 
 _settings: Settings | None = None

@@ -63,6 +63,27 @@ _DESIGN_WORDS = {
     "depliant": "flyer",
 }
 
+#: Fabrication d'un site ou d'une application web (Phase 6).
+#: Ces mots-là sont trop courants pour décider seuls : « quel est le site de la
+#: compagnie ? » est une question, pas une commande. Il faut donc **en plus**
+#: un verbe de fabrication, sans quoi l'agent se mettrait à bâtir des sites au
+#: lieu de répondre.
+_SITE_WORDS = {
+    "site": "vitrine", "site web": "vitrine", "site internet": "vitrine",
+    "page web": "vitrine", "vitrine": "vitrine",
+    "landing": "landing", "landing page": "landing",
+    "application": "app", "application web": "app", "appli": "app",
+    "webapp": "app", "pwa": "app",
+    "portfolio": "portfolio",
+}
+
+_BUILD_VERBS = {
+    "cree", "creer", "crees", "fais", "faire", "fabrique", "fabriquer",
+    "construis", "construire", "developpe", "developper", "monte", "monter",
+    "genere", "generer", "code", "coder", "prepare", "preparer", "realise",
+    "realiser", "build", "make", "create", "veux", "voudrais", "besoin",
+}
+
 _URL_RE = re.compile(r"https?://\S+")
 
 
@@ -84,6 +105,8 @@ class Plan:
     filename_hint: str = "resultat"
     #: format de création graphique demandé (flyer, affiche, story…)
     design: str = ""
+    #: type de site web demandé (vitrine, landing, app, portfolio)
+    site: str = ""
     #: le budget peut-il être révisé d'après ce que la recherche ramène ?
     #: Faux pour ADAPTIVE-V1 (gelée) et pour le témoin FIXED du laboratoire,
     #: qui doit rester rigoureusement fixe pour servir de point de comparaison.
@@ -97,10 +120,16 @@ class Plan:
     def needs_design(self) -> bool:
         return bool(self.design)
 
+    @property
+    def needs_site(self) -> bool:
+        return bool(self.site)
+
     def describe(self) -> str:
         bits = [f"complexité {self.budget.complexity.value}"]
         if self.design:
             bits.append(f"création : {self.design}")
+        if self.site:
+            bits.append(f"site : {self.site}")
         bits.append(
             f"{self.budget.search_steps} recherche(s)" if self.needs_research else "sans recherche"
         )
@@ -112,6 +141,7 @@ class Plan:
         return {
             "needs_research": self.needs_research,
             "design": self.design,
+            "site": self.site,
             "formats": self.formats,
             "urls": self.urls,
             **self.budget.to_dict(),
@@ -152,6 +182,15 @@ def plan(
             design = fmt
             break
 
+    # Un site ne se déclenche qu'avec un verbe de fabrication : le mot « site »
+    # seul apparaît dans trop de questions ordinaires.
+    site = ""
+    if any(f" {verbe} " in padded for verbe in _BUILD_VERBS):
+        for word, genre in sorted(_SITE_WORDS.items(), key=lambda kv: -len(kv[0])):
+            if f" {word} " in padded:
+                site = genre
+                break
+
     formats: list[str] = []
     for word, fmt in _FORMAT_WORDS.items():
         if f" {word} " in padded and fmt not in formats:
@@ -174,8 +213,13 @@ def plan(
     if formats and not needs_research and budget.complexity.value != "LOW":
         needs_research = True
 
+    # Un site sans matière est un site de sections vides : le studio les
+    # retirera plutôt que d'inventer du texte. Autant chercher d'abord.
+    if site and not needs_research:
+        needs_research = True
+
     # Un flyer n'est pas un rapport : ne pas produire un PDF de texte en plus.
-    if design:
+    if design or site:
         formats = [f for f in formats if f != "pdf"] if "pdf" not in text else formats
 
     return Plan(
@@ -186,6 +230,7 @@ def plan(
         urls=urls,
         filename_hint=_slug(prompt),
         design=design,
+        site=site,
         # V1 est gelée : elle décide une fois, avant de chercher, et ne revient
         # jamais dessus. Seule V2 révise son budget en cours de route.
         adaptive_budget=(controller == "v2"),

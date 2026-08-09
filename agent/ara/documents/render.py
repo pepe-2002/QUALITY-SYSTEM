@@ -156,7 +156,7 @@ def verify(path: Path) -> dict[str, object]:
             raise VerificationError(f"{path.name} : la racine n'est pas un <svg>.")
         info["elements"] = len(list(root))
 
-    elif suffix in {".md", ".txt", ".json", ".html"}:
+    elif suffix in {".md", ".txt", ".json", ".html", ".css", ".js", ".webmanifest"}:
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError as exc:

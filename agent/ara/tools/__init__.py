@@ -12,6 +12,7 @@ from . import (  # noqa: F401  (l'import enregistre les outils)
     files,
     media,
     web,
+    webapp,
 )
 from .registry import REGISTRY, Tool, ToolBox, tool
 

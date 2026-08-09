@@ -163,6 +163,11 @@ class Orchestrator:
                 files += design_files
                 if design_report:
                     result.answer = f"{design_report}\n\n---\n\n{result.answer}".strip()
+            if plan.needs_site:
+                site_files, site_report = self._site(ctx, plan, toolbox, report)
+                files += site_files
+                if site_report:
+                    result.answer = f"{site_report}\n\n---\n\n{result.answer}".strip()
 
             # 5. VÉRIFICATION — la réponse d'abord, les fichiers ensuite
             ctx.stage(Stage.VERIFICATION, Status.RUNNING, "Vérification…")
@@ -302,6 +307,46 @@ class Orchestrator:
             Stage.CREATION, Status.DONE,
             f"{len(info['files'])} visuel(s) · note finale {info['score']}/100",
             files=info["files"], studio=info["studio"],
+        )
+        return info["files"], info["report"]
+
+    def _site(self, ctx: TaskContext, plan: Plan, toolbox: ToolBox,
+              report: ResearchReport | None):
+        """Fabrique un site ou une application web (Phase 6).
+
+        La matière des sections vient de la recherche, **pas de l'imagination**.
+        Un fait confirmé par au moins deux sources devient une phrase du site ;
+        s'il n'y en a aucun, le studio retirera les sections vides plutôt que
+        d'écrire du texte plausible. C'est moins joli, et c'est la règle.
+        """
+        ctx.stage(Stage.CREATION, Status.RUNNING, f"Fabrication du site : {plan.site}")
+
+        material: list[str] = []
+        if report is not None:
+            for cluster in report.confirmed[:6]:
+                sources = ", ".join(f"S{s}" for s in sorted({f.source for f in cluster}))
+                material.append(f"{cluster[0].describe()} (sources : {sources})")
+
+        try:
+            info = toolbox.call(
+                "create_site",
+                brief=plan.prompt,
+                kind=plan.site,
+                material=material,
+                title=_headline(plan.prompt),
+                installable=plan.site == "app",
+            )
+        except AraError as exc:
+            ctx.journal.add_error(f"fabrication du site : {exc}")
+            ctx.notice(f"Site non produit : {exc}")
+            ctx.stage(Stage.CREATION, Status.FAILED, str(exc))
+            return [], ""
+
+        ctx.stage(
+            Stage.CREATION, Status.DONE,
+            f"{len(info['files'])} fichier(s) · note finale {info['score']}/100 "
+            f"· ouvrir {info['entry']}",
+            files=info["files"], site=info["site"],
         )
         return info["files"], info["report"]
 

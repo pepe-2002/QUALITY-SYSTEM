@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<!-- Affiche « voyage » (1080x1350, 4:5) — 08/08/2026.
+     Ce flyer applique ce que dit la recherche sur les belles affiches, et
+     assume de faire l'inverse des précédents :
+       - DUOTONE marine/or (duotone.py) : deux couleurs seulement. Réduire la
+         photo à deux teintes force la clarté graphique — les silhouettes des
+         îlots deviennent des formes, et l'image devient mémorable ;
+       - UNE SEULE IDÉE, pas une fiche produit : le nom de l'île, énorme.
+         Les affiches de voyage qui ont traversé le siècle disent une chose ;
+       - composition en TIERS : ciel doré en haut, horizon au tiers, nom sur la
+         mer, informations au dernier tiers. Rien n'est centré ;
+       - GRAIN dans l'image (dans duotone.py) : enlève le côté « fait à
+         l'ordinateur » ;
+       - anneau de soleil, clin d'œil aux affiches des années 50, tracé fin.
+     Aucun aplat de gadget, aucune pastille, aucune bulle : la beauté vient de
+     l'image, du blanc et de la typographie. -->
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --creme:#FFF7E0; --or:#F6BC1C; --marine:#0B2149; --nuit:#050E22;
+  --pad:64px;
+}
+body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:var(--creme);
+       -webkit-font-smoothing:antialiased; overflow:hidden; background:var(--nuit); }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:var(--nuit); }
+.arch { font-family:'Archivo','Inter',Arial,sans-serif; }
+
+.shot { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* la mer est assombrie juste assez pour porter le grand titre */
+.ombre { position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(5,14,34,0) 34%, rgba(5,14,34,.30) 52%,
+                                     rgba(5,14,34,.52) 72%, rgba(5,14,34,.74) 100%); }
+
+/* anneau de soleil : tracé fin, posé sur l'horizon */
+.anneau { position:absolute; left:50%; top:338px; width:860px; height:860px; margin-left:-430px;
+  border:2px solid rgba(255,247,224,.30); border-radius:50%; }
+
+/* en-tête, en marine sur le ciel doré */
+.tete { position:absolute; top:var(--pad); left:var(--pad); right:var(--pad);
+  display:flex; align-items:center; justify-content:space-between; }
+.marque { display:flex; align-items:center; gap:14px; }
+.marque img { width:62px; display:block; }
+.marque b { font-size:29px; font-weight:800; letter-spacing:-.8px; color:var(--marine); display:block; line-height:1; }
+.marque small { display:block; margin-top:5px; font-size:10.5px; font-weight:700; letter-spacing:2.6px;
+  color:rgba(11,33,73,.70); }
+.tete .lieu { font-size:11px; font-weight:800; letter-spacing:2.8px; color:rgba(11,33,73,.72);
+  text-align:right; line-height:1.7; }
+
+/* le bloc de titre, au deuxième tiers */
+.titre { position:absolute; left:var(--pad); right:var(--pad); top:712px; }
+.titre .filet { width:88px; height:2px; background:rgba(255,247,224,.62); }
+.titre .sur { display:block; margin-top:18px; font-size:12.5px; font-weight:800; letter-spacing:3.4px;
+  color:rgba(255,247,224,.86); }
+.titre h1 { margin-top:14px; font-size:218px; font-weight:900; line-height:.86; letter-spacing:-9px;
+  color:var(--creme); text-shadow:0 22px 60px rgba(5,14,34,.55); }
+.titre .sous { display:block; margin-top:20px; font-size:22px; font-weight:500; line-height:1.45;
+  color:rgba(255,247,224,.92); max-width:660px; }
+
+/* dernier tiers : où réserver, sans pastille ni bouton */
+.pied { position:absolute; left:var(--pad); right:var(--pad); bottom:var(--pad);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:26px; }
+.pied .adresse b { display:block; font-size:44px; font-weight:900; letter-spacing:-1.4px; color:var(--or);
+  line-height:1; }
+.pied .adresse small { display:block; margin-top:11px; font-size:14.5px; font-weight:700; letter-spacing:1.6px;
+  color:rgba(255,247,224,.80); }
+.pied .qr { width:104px; height:104px; background:var(--creme); padding:7px; flex:none;
+  box-shadow:0 18px 40px rgba(5,14,34,.45); }
+.pied .qr img { width:100%; height:100%; display:block; }
+
+.credit { position:absolute; left:var(--pad); bottom:26px; font-size:10px; font-weight:500;
+  color:rgba(255,247,224,.42); }
+</style></head><body>
+<div class="page">
+  <img class="shot" src="duo-ilots.jpg" alt="">
+  <div class="ombre"></div>
+  <div class="anneau"></div>
+
+  <div class="tete">
+    <div class="marque arch">
+      <img src="logo-emblem.png" alt="">
+      <div><b>MoheliGo</b><small>TRAVERSÉES MARITIMES</small></div>
+    </div>
+    <div class="lieu arch">ÎLOTS DE NIOUMACHOUA<br>UNION DES COMORES</div>
+  </div>
+
+  <div class="titre">
+    <div class="filet"></div>
+    <span class="sur arch">À UNE TRAVERSÉE DE LA GRANDE COMORE</span>
+    <h1 class="arch">MOHÉLI</h1>
+    <span class="sous">Ouroveni ou Chindini le matin, Hoani ou Fomboni à l'arrivée.
+      Votre place se réserve en deux minutes.</span>
+  </div>
+
+  <div class="pied">
+    <div class="adresse arch">
+      <b>moheligo.com</b>
+      <small>BILLET QR · MVOLA · MÉTÉO MER 7 JOURS</small>
+    </div>
+    <div class="qr"><img src="qr-moheligo.png" alt=""></div>
+  </div>
+
+  <div class="credit">Photo : Fatima771 (CC BY 3.0, Wikimedia Commons) — traitement MoheliGo</div>
+</div>
+</body></html>

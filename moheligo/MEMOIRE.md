@@ -51,6 +51,7 @@ Tout est dans `moheligo/pub/` :
 | `flyers/flyer-promo-A4.png` | Le promo en A4 300 dpi imprimable + bande « comment ça marche » (ports, boutiques, hôtels) | — | — |
 | `flyers/flyer-promo-brillant-facebook.png` | ⭐ Le plus abouti : promo « brillant » (or métallique, reflets spéculaires, soleil sur la mer, éclats) | — | — |
 | `flyers/flyer-promo-brillant-A4.png` | Le brillant en A4 300 dpi imprimable | — | — |
+| `flyers/flyer-affiche-duotone-facebook.png` | ⭐ **La plus belle** : affiche de voyage duotone marine/or (`duotone.py`), une seule idée, grain, anneau de soleil. Sans date. | — | — |
 | `flyers/flyer-diaspora-facebook.png` | Flyer pub « diaspora » : « Tu paies ici. Il embarque. » — payer la traversée d'un proche depuis la France, Mayotte ou le Golfe. Sans date. | — | — |
 | `flyers/flyer-soir-facebook.png` | ⭐ **Bulletin du soir** : la vraie mer de demain matin (Open-Meteo), jauge Douglas + courbe de houle, panneau en verre. **Daté : à regénérer chaque jour.** | — | — |
 
@@ -66,6 +67,7 @@ qu'on veut faire :
 
 | Je veux… | Fichier source à modifier | PNG produit |
 |---|---|---|
+| **L'affiche duotone (la plus belle)** | `flyer10-affiche-duotone-fb.html` + `duotone.py` | `flyer-affiche-duotone-facebook.png` |
 | Le flyer diaspora (angle le plus rentable) | `flyer9-diaspora-fb.html` | `flyer-diaspora-facebook.png` |
 | **Le bulletin du soir (format le plus fort)** | `bulletin.py` + `flyer8-soir-fb.template.html` | `flyer-soir-facebook.png` — **regénérer chaque jour** |
 | **Améliorer le design (LE MEILLEUR, repartir de là)** | **`flyer7-promo-brillant-fb.html`** | `flyer-promo-brillant-facebook.png` (2160×2700) |
@@ -88,6 +90,9 @@ Fichiers de service, dans le même dossier :
   chemin de lumière, bloom) → `vedette-soir.jpg`. Compter ~1 min de calcul.
 - **`bulletin.py`** — va chercher la vraie prévision de mer et fabrique le
   flyer du soir. `bulletin.json` garde les chiffres pour le texte du post.
+- **`duotone.py`** — mappage de dégradé marine→or + grain : transforme une
+  photo en image d'affiche. C'est ce traitement qui a donné le plus beau
+  visuel de tous. Recette expliquée dans `README.md`.
 - **`fonts/`** — Montserrat + Inter en local, ne pas retélécharger.
 - **`logo-emblem.png` / `logo-lockup.png`** — logo officiel détouré.
 - **`qr-moheligo.png`** — QR vers moheligo.com.
@@ -329,6 +334,20 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **08/08/2026 (soir)** — « Dépasse-toi, va chercher sur internet comment faire
+  un flyer très joli. » Recherche faite (tendances graphiques 2026 + principes
+  de l'affiche de voyage), quatre enseignements retenus et appliqués :
+  **duotone deux couleurs** (marine + or = le registre « sophistiqué », et
+  c'est notre charte), **une seule idée** au lieu d'une fiche produit,
+  **composition en tiers** sans rien de centré, **grain** pour enlever le côté
+  ordinateur. Résultat : `flyer10-affiche-duotone-fb.html` — nom de l'île en
+  218 px sur une mer marine, ciel doré, anneau de soleil fin. **C'est le plus
+  beau visuel produit à ce jour, et le moins chargé.** Leçon de fond : jusque-là
+  j'ajoutais des éléments pour faire riche (bulles, pastilles, cartes) ; ce qui
+  fait beau, c'est d'en enlever.
+  Bonus technique : le grain masque l'agrandissement d'une photo un peu petite —
+  utile avec nos sources en 2032 px de large.
 
 - **08/08/2026** — Le patron ne voyait pas les fichiers envoyés dans la
   conversation (« je trouve pas le flyer », deux fois) et disait le projet

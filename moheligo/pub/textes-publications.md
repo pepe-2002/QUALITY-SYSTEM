@@ -4,6 +4,50 @@
 
 ---
 
+## 🖼️ Affiche duotone « MOHÉLI » — la plus belle (08/08/2026)
+
+Image : `flyers/flyer-affiche-duotone-facebook.png` (4:5). Sans date.
+Registre affiche de voyage : duotone marine/or, une seule idée, marges larges.
+À publier en journée, c'est celle qui se partage. **Garder le crédit photo** :
+la photo est sous licence libre CC BY 3.0.
+
+### Version principale
+
+```
+MOHÉLI, À UNE TRAVERSÉE.
+
+Les îlots de Nioumachoua, vus de la plage, un matin sans vent.
+
+Pour y être, il suffit de traverser. Et la traversée se réserve depuis votre
+téléphone, en deux minutes :
+
+• Ouroveni ou Chindini au départ, Hoani ou Fomboni à l'arrivée.
+• Paiement MVola ou KartaPay, billet QR immédiat.
+• L'état de la mer sur 7 jours, consulté avant de partir.
+
+moheligo.com
+
+Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
+
+#MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée
+```
+
+### Premier commentaire
+
+```
+Réservez votre traversée : moheligo.com
+WhatsApp : +269 479 43 28
+```
+
+### Version courte (statut WhatsApp)
+
+```
+Mohéli, à une traversée.
+moheligo.com
+```
+
+---
+
 ## 🌍 Flyer diaspora — « Tu paies ici. Il embarque. » (08/08/2026)
 
 Image : `flyers/flyer-diaspora-facebook.png` (4:5). Sans date, publiable

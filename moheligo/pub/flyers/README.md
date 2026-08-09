@@ -9,6 +9,7 @@
 | `flyer-nuit-facebook.png` | 2160 × 2700 (4:5) | Deuxième publication, fin de soirée (22h30 – minuit) |
 | `flyer-affiche-facebook.png` | 2160 × 2700 (4:5) | Affiche « destination » — îlots de Nioumachoua (photo libre CC BY 3.0, crédit imprimé) |
 | `flyer-affiche-vedette-facebook.png` | 2160 × 2700 (4:5) | Même affiche avec NOTRE photo (vedette en pleine mer) — aucun crédit à afficher |
+| `flyer-affiche-duotone-facebook.png` | 2160 × 2700 (4:5) | **⭐ LA PLUS BELLE** — affiche de voyage duotone marine/or, une seule idée |
 | `flyer-soir-facebook.png` | 2160 × 2700 (4:5) | **⭐ BULLETIN DU SOIR** — la mer réelle de demain matin, généré depuis Open-Meteo. **Format daté : à regénérer chaque jour.** |
 | `flyer-promo-brillant-facebook.png` | 2160 × 2700 (4:5) | Promo « brillant » (or métallique, reflets, lumière) — intemporel |
 | `flyer-promo-brillant-A4.png` | 2480 × 3508 (A4, 300 dpi) | Le brillant en A4 imprimable, avec « comment ça marche » |
@@ -161,6 +162,29 @@ Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à
   s'applique **qu'aux valeurs affichées**, jamais au fragment SVG entier — un
   `.replace('.', ',')` sur tout le fragment casse les coordonnées (`x="194,0"`)
   et l'étiquette part dans le coin.
+
+## L'affiche duotone : ce que dit la recherche sur les belles affiches
+
+Recherche du 08/08/2026 (tendances graphiques 2026 + principes de l'affiche de
+voyage), appliquée dans `flyer10-affiche-duotone-fb.html` + `duotone.py` :
+
+1. **Duotone, deux couleurs et rien d'autre.** Réduire une photo à deux teintes
+   force la clarté graphique : les silhouettes deviennent des formes. Le couple
+   **marine + or** est le registre « sophistiqué » du duotone — et c'est notre
+   charte. Technique : *gradient map*, la luminance de chaque pixel sert d'index
+   dans une rampe de 256 couleurs (marine → bleu → or → crème).
+2. **Une seule idée.** Les affiches de voyage qui ont traversé le siècle disent
+   une chose, elles ne récitent pas une fiche produit. Ici : le nom de l'île,
+   énorme. Pas de pastille, pas de bulle de prix, pas de cartes.
+3. **Composition en tiers, rien de centré.** Ciel doré en haut, horizon au
+   tiers, le nom posé sur la mer, les informations au dernier tiers.
+4. **Le blanc est actif** : marges de 64 px tenues partout, et une grande zone
+   vide assumée sous le titre.
+5. **Grain.** Un bruit monochrome léger en mode incrustation : ça enlève le côté
+   « fait à l'ordinateur », et ça masque l'agrandissement d'une photo un peu
+   petite (avantage secondaire très pratique).
+6. **Un signe graphique, un seul** : l'anneau de soleil au tracé fin, clin d'œil
+   aux affiches des années 50.
 
 ## La recette « ça brille » (demande du patron : niveau designer pro)
 

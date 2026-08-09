@@ -569,28 +569,52 @@ extraire les majuscules signalerait le bon comme une faute. Seuls les termes
 
 ---
 
-## Démarrage rapide
+## Démarrage rapide — une seule commande
+
+Il faut **Python 3.10 ou plus** et **git**. Rien d'autre : ARA n'a aucune
+dépendance obligatoire, donc pas de `pip`, pas d'environnement virtuel, pas de
+compilateur.
+
+**Linux, macOS, Termux :**
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pepe-2002/QUALITY-SYSTEM/claude/ai-autonomous-research-creative-agent-0su1cb/agent/deploy/demarrer.sh -o demarrer.sh
+bash demarrer.sh
+```
+
+**Windows** (PowerShell) :
+
+```powershell
+irm https://raw.githubusercontent.com/pepe-2002/QUALITY-SYSTEM/claude/ai-autonomous-research-creative-agent-0su1cb/agent/deploy/demarrer.ps1 | iex
+```
+
+Le script récupère le code, fabrique un jeton, lance le serveur sur
+`127.0.0.1` **seulement**, et ouvre le navigateur. Le jeton est conservé d'une
+fois sur l'autre : le lien reste le même, on peut l'enregistrer.
+
+Pour y accéder depuis le téléphone, ajouter `--telephone` (nécessite
+`cloudflared`, voir `deploy/tunnel/README.md`) :
+
+```bash
+bash demarrer.sh --telephone
+```
+
+### Si le dépôt est déjà sur la machine
 
 ```bash
 cd agent
-python3 -m venv .venv && . .venv/bin/activate
-pip install -r requirements.txt      # optionnel : PDF soigné + tests
-python -m ara.cli --serve
+bash deploy/demarrer.sh          # ou : python3 -m ara.cli --serve
 ```
 
-Puis ouvrez `http://<ip-de-la-machine>:8800`.
-
-Sans rien installer du tout :
+### En ligne de commande, sans interface
 
 ```bash
-python3 -m ara.cli --serve            # fonctionne, PDF en mode simplifié
-```
-
-En ligne de commande :
-
-```bash
+python3 -m ara.cli "Crée un site vitrine pour le marché couvert de Fomboni"
 python3 -m ara.cli "Recherche les tarifs des traversées aux Comores et fais-moi un PDF"
 ```
+
+`pip install -r requirements.txt` reste **facultatif** : il n'améliore que le
+rendu des PDF et permet de lancer les tests.
 
 ---
 

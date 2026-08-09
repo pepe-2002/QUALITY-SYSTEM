@@ -141,7 +141,18 @@ Prochaine amélioration du studio web → **WEBAPP-V2 sur un jeu 11**.
 
 ## 8. Où en est le déploiement
 
-Aucune adresse publique n'existe. Trois chemins, tous documentés :
+**Démarrage en une commande** — c'est le chemin à donner au patron :
+
+- Linux / macOS / Termux : `bash agent/deploy/demarrer.sh`
+- Windows : `irm …/agent/deploy/demarrer.ps1 | iex`
+
+Le script récupère le code, fabrique et **conserve** un jeton
+(`workspace/.jeton`, non versionné, donc le lien ne change plus), écoute sur
+`127.0.0.1` seulement, ouvre le navigateur. `--telephone` y ajoute le tunnel
+Cloudflare. Aucune bibliothèque à installer : le projet est stdlib-only, `pip`
+reste facultatif.
+
+Aucune adresse publique permanente n'existe. Trois chemins, tous documentés :
 
 - **téléphone** : `bash deploy/termux/install.sh`, puis `--serve` ;
 - **tunnel depuis un PC** (choix du propriétaire) :

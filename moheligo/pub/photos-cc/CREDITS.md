@@ -51,3 +51,16 @@ On ne publie que des paysages, des vedettes, des bateaux, des animaux.
 Note : aucune photo libre du port de Hoani n'existe à ce jour (02/08/2026) —
 opportunité : publier les nôtres sur les réseaux et devenir LA référence images
 de Hoani.
+
+## plage-cocotiers.jpg → flyers/plage-bulletin.jpg (11/08/2026)
+
+- **Titre** : « Coconut trees at Mitsamiouli beach Comoros 2 »
+- **Auteur** : Radosław Botev
+- **Licence** : **CC BY 3.0 PL** — attribution obligatoire, aucune obligation de
+  partage à l'identique (donc utilisable en publicité, contrairement à BY-SA).
+- **Source** : Wikimedia Commons, 4000 × 3000
+- **Crédit imprimé** : sur le bulletin du soir, dans la ligne de source.
+- **Aucune personne sur la photo** (consigne du patron du 06/08/2026).
+- Traitement : recadrage sur le lagon pour couper un ciel couvert, niveaux,
+  contraste 1,10, saturation 1,30, netteté. **Aucune couleur inventée** : le
+  turquoise est celui de la photo.

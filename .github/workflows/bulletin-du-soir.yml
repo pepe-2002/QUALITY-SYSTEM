@@ -96,6 +96,14 @@ jobs:
       # PUBLIER_FB ne vaut pas « oui ». Le bouton « Run workflow » permet en
       # plus une publication de contrôle, à la main, une seule fois.
       # Marche à suivre complète : moheligo/pub/flyers/LIER-FACEBOOK.md
+      - name: Vérifier la liaison avec la page (lecture seule)
+        if: vars.FB_PAGE_ID != ''
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python3 publier_fb.py --verifier
+
       - name: Répétition à blanc de la publication Facebook
         if: vars.FB_PAGE_ID != ''
         working-directory: moheligo/pub/flyers

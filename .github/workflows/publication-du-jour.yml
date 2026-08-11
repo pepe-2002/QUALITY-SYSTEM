@@ -52,6 +52,14 @@ jobs:
         working-directory: moheligo/pub/flyers
         run: python3 calendrier.py
 
+      - name: Vérifier la liaison avec la page (lecture seule)
+        if: vars.FB_PAGE_ID != ''
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python3 publier_fb.py --verifier
+
       - name: Répétition à blanc
         if: vars.FB_PAGE_ID != ''
         working-directory: moheligo/pub/flyers

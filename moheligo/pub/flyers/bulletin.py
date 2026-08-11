@@ -140,6 +140,20 @@ def main():
     gauge_lab = ''.join(f'<span class="{"on" if i == niveau else ""}">{l}</span>'
                         for i, l in enumerate(LABELS))
 
+    # amplitude de la matinée. Quand la houle est régulière (ce qui arrive
+    # souvent en saison sèche), l'arrondi au décimètre donnait « 0,9–0,9 m » :
+    # ça ressemble à un bug alors que c'est une bonne nouvelle. On la nomme.
+    hmin, hmax = f'{min(courbe):.1f}', f'{max(courbe):.1f}'
+    virg = lambda s: s.replace('.', ',')
+    if hmin == hmax:
+        ampli = f'{virg(hmin)}<i>m</i>'
+        ampli_lab = 'HOULE RÉGULIÈRE 5H-13H'
+        plage = f'régulière, autour de {virg(hmin)} m'
+    else:
+        ampli = f'{virg(hmin)}–{virg(hmax)}<i>m</i>'
+        ampli_lab = 'MATINÉE 5H-13H'
+        plage = f'de {virg(hmin)} m à {virg(hmax)} m'
+
     # heure des Comores (UTC+3), pas celle du serveur
     maj = datetime.now(timezone(timedelta(hours=3))).strftime('le %d/%m à %Hh%M')
     vals = {
@@ -151,9 +165,7 @@ def main():
         'VENT': f'{v:.0f}',
         'DIRV': dirv.upper(),
         'PERIODE': f'{periode:.1f}'.replace('.', ','),
-        'HMIN': f'{min(courbe):.1f}'.replace('.', ','),
-        'HMAX': f'{max(courbe):.1f}'.replace('.', ','),
-        'PLAGE': f'de {min(courbe):.1f} m à {max(courbe):.1f} m'.replace('.', ','),
+        'AMPLI': ampli, 'AMPLI_LAB': ampli_lab, 'PLAGE': plage,
         'COURBE': courbe_d, 'AIRE': aire_d, 'POINTS': points, 'HEURES': heures,
         'GAUGE': gauge, 'GAUGE_LAB': gauge_lab, 'MAJ': maj,
     }

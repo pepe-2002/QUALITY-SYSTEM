@@ -342,6 +342,20 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026** — « C'est toi le directeur marketing, fais aussi la météo de
+  demain. » Bulletin régénéré pour **mercredi 12 août** (mer peu agitée, houle
+  0,93 m, vent 17 km/h de sud-est, période 9,0 s) et bloc « météo de demain »
+  de la page rafraîchi (matin dégagé 22→27 °C, **pluie fine l'après-midi,
+  57 % vers 15h**, soir dégagé 24-25 °C).
+  ⚠️ **Amélioration à garder** : la houle était si régulière (0,92 → 0,94 m) que
+  l'arrondi au décimètre affichait « 0,9–0,9 m » et « de 0,9 m à 0,9 m » — ça
+  ressemblait à un bug alors que c'est une bonne nouvelle. `bulletin.py` détecte
+  maintenant ce cas et écrit **« 0,9 m · HOULE RÉGULIÈRE 5H-13H »** et
+  « régulière, autour de 0,9 m ». Le gabarit n'a plus `{{HMIN}}/{{HMAX}}` mais
+  `{{AMPLI}}` et `{{AMPLI_LAB}}`.
+  Leçon de fond : **un chiffre juste peut quand même mal se lire ; nommer la
+  situation vaut mieux que répéter le nombre.**
+
 - **09/08/2026 (suite)** — « Écris un autre texte pour la pub style grand
   conglomérat, réessaie. » Deuxième tentative, nettement plus tenue que celle du
   07/08 : « ENTRE DEUX ÎLES, IL Y A UN SERVICE » — phrases courtes, aucune liste

@@ -1,21 +1,21 @@
 {
-  "date": "2026-08-10",
+  "date": "2026-08-12",
   "etat": "MER PEU AGITÉE",
-  "houle_m": 0.92,
-  "periode_s": 9.4,
-  "vent_kmh": 8,
-  "vent_direction": "sud",
+  "houle_m": 0.93,
+  "periode_s": 9.0,
+  "vent_kmh": 17,
+  "vent_direction": "sud-est",
   "courbe_5h_13h": [
     0.92,
     0.92,
     0.92,
-    0.92,
-    0.92,
-    0.92,
     0.94,
     0.94,
-    0.96
+    0.94,
+    0.94,
+    0.94,
+    0.94
   ],
-  "releve": "le 09/08 à 13h38",
+  "releve": "le 11/08 à 10h10",
   "source": "Open-Meteo Marine + Forecast"
 }

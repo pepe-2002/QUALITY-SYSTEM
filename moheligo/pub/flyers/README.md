@@ -184,6 +184,14 @@ Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à
   s'applique **qu'aux valeurs affichées**, jamais au fragment SVG entier — un
   `.replace('.', ',')` sur tout le fragment casse les coordonnées (`x="194,0"`)
   et l'étiquette part dans le coin.
+- ⚠️ **Mer régulière (11/08/2026)** : quand la houle bouge de moins d'un
+  décimètre sur la matinée, l'ancien affichage donnait « 0,9–0,9 m » et « de
+  0,9 m à 0,9 m » — juste, mais ça se lit comme un bug. `bulletin.py` compare
+  maintenant les deux valeurs arrondies et bascule sur
+  **« 0,9 m · HOULE RÉGULIÈRE 5H-13H »** / « régulière, autour de 0,9 m ».
+  Les jetons du gabarit sont `{{AMPLI}}` et `{{AMPLI_LAB}}` (plus de
+  `{{HMIN}}`/`{{HMAX}}`). Règle générale : **nommer la situation plutôt que
+  répéter le chiffre.**
 
 ## L'affiche duotone : ce que dit la recherche sur les belles affiches
 

@@ -87,26 +87,28 @@ def verifier():
     personnel fait échouer l'appel avec un message trompeur — c'est arrivé.
     """
     page, jeton = config()
-    rep = curl(f'{BASE}/{page}?fields=name&metadata=1', jeton=jeton)
-    type_objet = (rep.get('metadata') or {}).get('type', 'inconnu')
-    print('Répond au nom de : « %s »' % rep.get('name', '?'))
-    print('Type d\'objet     :', type_objet)
+    # `category` (Transport, Service…) n'existe que sur une Page : c'est le
+    # marqueur le plus fiable. `metadata=1` a été essayé d'abord et Facebook ne
+    # le renvoie pas toujours — un test qui ne répond pas ne prouve rien.
+    rep = curl(f'{BASE}/{page}?fields=name,category,link,followers_count', jeton=jeton)
+    print('Répond au nom de :', '« %s »' % rep.get('name', '?'))
+    print('Champs obtenus   :', ', '.join(sorted(k for k in rep if k != 'id')))
 
-    if type_objet != 'page':
+    if 'category' not in rep:
         sys.exit(
-            "\nCe n'est PAS une page mais un objet « %s ».\n"
-            "FB_PAGE_ID contient sans doute l'identifiant du compte personnel.\n"
-            "Le bon numéro s'obtient avec la requête :\n"
+            "\nAucune catégorie : ce n'est pas une Page, ou le jeton n'a pas la\n"
+            "permission de la lire. FB_PAGE_ID contient probablement "
+            "l'identifiant\ndu compte personnel — qui porte le même nom que la "
+            "page, d'où la confusion.\n\n"
+            "Le bon couple s'obtient avec cette requête dans l'explorateur :\n"
             "    me/accounts?fields=name,id,access_token\n"
-            "C'est le « id » de la ligne MoheliGo qu'il faut mettre dans "
-            "FB_PAGE_ID (et son « access_token » dans FB_PAGE_TOKEN)."
-            % type_objet)
+            "Le « id » de la ligne MoheliGo va dans FB_PAGE_ID, son "
+            "« access_token » dans FB_PAGE_TOKEN.")
 
-    fans = curl(f'{BASE}/{page}?fields=followers_count,link', jeton=jeton)
-    print('Liaison OK — page « %s »' % rep.get('name', '?'))
-    if 'followers_count' in fans:
-        print('Abonnés :', fans['followers_count'])
-    print('Adresse :', fans.get('link', '—'))
+    print('\nLiaison OK — page « %s » (%s)' % (rep.get('name'), rep['category']))
+    if 'followers_count' in rep:
+        print('Abonnés :', rep['followers_count'])
+    print('Adresse :', rep.get('link', '—'))
 
 
 def decouper(chemin):

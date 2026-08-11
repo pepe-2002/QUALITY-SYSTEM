@@ -32,6 +32,7 @@ import pathlib
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timedelta, timezone
 
 #  v26.0 = la version proposée par l'explorateur d'API en août 2026. Meta sort
 #  environ deux versions par an et retire les plus anciennes : quand un appel
@@ -204,7 +205,28 @@ def publier(image, texte, pour_de_vrai, essai=False):
         os.unlink(cmt)
         print('Premier commentaire :', rc.get('id', '?'))
 
+    journaliser(page, post_id, img.name, post)
     print('À voir sur la page : https://facebook.com/' + str(page))
+
+
+def journaliser(page, post_id, visuel, texte):
+    """Chaque publication est consignée : c'est la matière première des rapports.
+
+    Sans ce journal, aucun rapport n'est possible — l'API ne dira jamais ce que
+    NOUS avons voulu publier, seulement ce qui est en ligne.
+    """
+    fichier = pathlib.Path(__file__).parent / 'journal-publications.json'
+    try:
+        journal = json.loads(fichier.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        journal = []
+    journal.append({
+        'quand': datetime.now(timezone(timedelta(hours=3))).isoformat(timespec='minutes'),
+        'page': str(page), 'post_id': str(post_id), 'visuel': visuel,
+        'accroche': texte.split('\n')[0][:80],
+    })
+    fichier.write_text(json.dumps(journal, ensure_ascii=False, indent=2))
+    print('Journalisé :', fichier.name, '(%d publications)' % len(journal))
 
 
 def main():

@@ -106,3 +106,11 @@ jobs:
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 programme.py --publier
+
+      - name: Rapport
+        if: always() && vars.FB_PAGE_ID != ''
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python3 rapport.py

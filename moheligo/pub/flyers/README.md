@@ -238,8 +238,15 @@ et la fonction `terminer_clair()` de `duotone.py` :
 5. **La typographie passe en marine sur fond clair.** La lumière vient du
    contraste, pas de l'ajout de blanc : un titre crème sur fond clair
    disparaîtrait.
-⚠️ Premier essai trop délavé (voile à 210, contraste 1,10) : les îlots avaient
-disparu. Bons réglages : voile 140, contraste 1,22, gamma 0,88.
+⚠️ **Deux allers-retours pour trouver le point juste** :
+- 1ᵉʳ essai trop délavé (voile 210, contraste 1,10, gamma 0,78) : les îlots
+  avaient disparu ;
+- 2ᵉ essai « trop lumineux » selon le patron (voile 140, contraste 1,22) ;
+- **réglage retenu** : voile de bord 74, bloom 62/255, contraste 1,30,
+  gamma 0,96, rampe aux ombres plus profondes, et voile crème du bas à
+  0,26/0,48/0,62 pour que le texte marine reste lisible sur le sable.
+**Leçon** : « lumineux » ne veut pas dire « pâle ». La lumière tient à la
+présence des ombres autant qu'à celle des hautes lumières.
 
 ## La recette « ça brille » (demande du patron : niveau designer pro)
 

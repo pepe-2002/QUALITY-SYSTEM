@@ -93,6 +93,63 @@ Une question ? WhatsApp +269 479 43 28
 ]
 
 
+# Textes sans image : à copier tels quels dans une publication Facebook.
+TEXTES = [
+    dict(titre="Pour faire s'abonner à la page", texte="""POURQUOI S'ABONNER À CETTE PAGE ?
+
+Parce qu'ici, chaque soir, vous trouverez la mer du lendemain matin sur le
+trajet Grande Comore – Mohéli : hauteur de houle, vent, et un verdict clair —
+mer belle, peu agitée, agitée.
+
+Vous y trouverez aussi :
+• les départs et les places qui restent ;
+• les alertes quand la mer tourne mal, publiées la veille et pas le matin
+  au port ;
+• Mohéli comme elle est : les îlots, les tortues d'Itsamia, les baleines
+  en saison.
+
+Ce n'est pas une page de publicité. C'est le bulletin de la traversée.
+
+Appuyez sur « S'abonner », et vous ne partirez plus à l'aveugle.
+
+moheligo.com — réservation, billet QR, météo mer 7 jours.
+
+#MoheliGo #Comores #Mohéli #MétéoMer #Traversée"""),
+
+    dict(titre="Pour faire utiliser l'application", texte="""VOUS N'AVEZ RIEN À INSTALLER.
+
+MoheliGo s'ouvre dans le navigateur de votre téléphone. Pas de boutique
+d'applications, pas de mise à jour, pas de mémoire prise pour rien.
+
+La première fois, ça prend deux minutes :
+
+1. Ouvrez moheligo.com.
+2. Choisissez votre port de départ, la date, le nombre de places.
+3. Payez par MVola ou KartaPay.
+4. Votre billet QR arrive aussitôt — et il reste dans votre téléphone, même
+   sans connexion.
+
+Une fois à l'intérieur, vous avez aussi la météo mer sur 7 jours, le suivi de
+la vedette en direct pendant la traversée, le guide de l'île, et l'assistance
+WhatsApp si quelque chose bloque.
+
+Un conseil : ajoutez moheligo.com à l'écran d'accueil de votre téléphone.
+Ça devient une icône, exactement comme une application.
+
+moheligo.com — et la prochaine fois, votre place est prise avant d'arriver
+au port.
+
+#MoheliGo #Comores #Mohéli #BilletQR #MVola"""),
+
+    dict(titre="Variante courte pour l'affiche", texte="""Un matin, la mer est plate. L'île est en face.
+Il ne manque qu'une place.
+
+moheligo.com — deux minutes, billet QR, paiement MVola.
+
+#MoheliGo #Mohéli #Comores"""),
+]
+
+
 def api(url, essais=4):
     dernier = ''
     for n in range(essais):
@@ -186,6 +243,19 @@ def main():
   </section>
 '''
 
+    n = len(FLYERS)
+    for j, t in enumerate(TEXTES, start=n + 1):
+        blocs += f'''
+  <section class="bloc">
+    <div class="tete"><b>{t['titre']}</b><span>Texte seul<br>sans image</span></div>
+    <details open><summary>Le texte</summary>
+      <pre>{t['texte']}</pre>
+      <button class="copie" data-cible="t{j}">Copier le texte</button>
+      <textarea id="t{j}" hidden>{t['texte']}</textarea>
+    </details>
+  </section>
+'''
+
     html = GABARIT.format(
         arch=b64('fonts/Archivo-800-latin.woff2'),
         in5=b64('fonts/Inter-500-latin.woff2'),
@@ -195,7 +265,8 @@ def main():
         releve=f"Relevé {fr(maintenant.date())} à {maintenant.strftime('%Hh%M')}, heure des Comores",
         lignes=lignes, blocs=blocs)
     pathlib.Path(args.sortie).write_text(html)
-    print(args.sortie, round(len(html) / 1024), 'ko —', len(FLYERS), 'flyers')
+    print(args.sortie, round(len(html) / 1024), 'ko —', len(FLYERS), 'flyers,',
+          len(TEXTES), 'textes')
 
 
 GABARIT = '''<title>MoheliGo — la météo de demain et les flyers</title>
@@ -254,6 +325,7 @@ img.shot {{ width:100%; height:auto; display:block; }}
 .howto svg {{ flex:none; margin-top:1px; }}
 
 details {{ border-top:1px solid var(--line); }}
+details[open] summary {{ border-bottom:1px solid var(--line); margin-bottom:14px; }}
 summary {{ padding:15px 18px; font-size:15px; font-weight:700; cursor:pointer; list-style:none;
   display:flex; justify-content:space-between; align-items:center; gap:10px; }}
 summary::-webkit-details-marker {{ display:none; }}
@@ -282,7 +354,8 @@ footer b {{ color:var(--ink); }}
   </section>
 {blocs}
   <footer>Le bulletin du soir annonce <b>demain matin</b> : bon pour ce soir seulement.
-    Les trois autres flyers n'ont pas de date, gardez-les.</footer>
+    Les autres flyers n'ont pas de date, gardez-les. Les derniers blocs sont des
+    <b>textes seuls</b>, à publier sans image ou avec une de vos photos.</footer>
 </div>
 
 <script>

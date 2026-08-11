@@ -352,6 +352,16 @@ recharger ce sujet ici, ce n'est pas du marketing.
   `pub/flyers/README.md`, section « Faire une affiche LUMINEUSE ».
   La page du patron montre maintenant cette affiche à la place de la sombre
   (la sombre reste dans le dépôt).
+  Retour immédiat : **« trop lumineux »**. Réglage final : voile de bord 74 au
+  lieu de 140, contraste 1,30, gamma 0,96, ombres de la rampe plus profondes,
+  et voile crème du bas remonté pour garder le texte marine lisible sur le
+  sable. **À retenir : « lumineux » ne veut pas dire « pâle » — la lumière tient
+  à la présence des ombres autant qu'à celle des hautes lumières.**
+  Ajouté le même jour, sur sa demande : **trois textes seuls** (faire s'abonner
+  à la page, faire utiliser l'application, variante courte de l'affiche), dans
+  `page.py` (liste `TEXTES`) et dans `pub/textes-publications.md`.
+  ⚠️ Le texte d'abonnement promet un bulletin **chaque soir** : soit on tient le
+  rythme, soit on retire la phrase.
 
 - **08/08/2026 (soir)** — « Dépasse-toi, va chercher sur internet comment faire
   un flyer très joli. » Recherche faite (tendances graphiques 2026 + principes

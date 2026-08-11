@@ -4,6 +4,81 @@
 
 ---
 
+## 📣 Textes seuls — abonnement à la page et usage de l'application (09/08/2026)
+
+Trois textes **sans image** (ou à publier avec une photo du patron), demandés
+le 09/08. Ils sont aussi dans la page web du patron, avec un bouton « copier ».
+
+⚠️ Le premier **promet un bulletin chaque soir**. Si le rythme n'est pas tenu,
+la promesse se retourne contre nous : soit on publie, soit on retire la phrase.
+
+### Pour faire s'abonner à la page
+
+```
+POURQUOI S'ABONNER À CETTE PAGE ?
+
+Parce qu'ici, chaque soir, vous trouverez la mer du lendemain matin sur le
+trajet Grande Comore – Mohéli : hauteur de houle, vent, et un verdict clair —
+mer belle, peu agitée, agitée.
+
+Vous y trouverez aussi :
+• les départs et les places qui restent ;
+• les alertes quand la mer tourne mal, publiées la veille et pas le matin
+  au port ;
+• Mohéli comme elle est : les îlots, les tortues d'Itsamia, les baleines
+  en saison.
+
+Ce n'est pas une page de publicité. C'est le bulletin de la traversée.
+
+Appuyez sur « S'abonner », et vous ne partirez plus à l'aveugle.
+
+moheligo.com — réservation, billet QR, météo mer 7 jours.
+
+#MoheliGo #Comores #Mohéli #MétéoMer #Traversée
+```
+
+### Pour faire utiliser l'application
+
+```
+VOUS N'AVEZ RIEN À INSTALLER.
+
+MoheliGo s'ouvre dans le navigateur de votre téléphone. Pas de boutique
+d'applications, pas de mise à jour, pas de mémoire prise pour rien.
+
+La première fois, ça prend deux minutes :
+
+1. Ouvrez moheligo.com.
+2. Choisissez votre port de départ, la date, le nombre de places.
+3. Payez par MVola ou KartaPay.
+4. Votre billet QR arrive aussitôt — et il reste dans votre téléphone, même
+   sans connexion.
+
+Une fois à l'intérieur, vous avez aussi la météo mer sur 7 jours, le suivi de
+la vedette en direct pendant la traversée, le guide de l'île, et l'assistance
+WhatsApp si quelque chose bloque.
+
+Un conseil : ajoutez moheligo.com à l'écran d'accueil de votre téléphone.
+Ça devient une icône, exactement comme une application.
+
+moheligo.com — et la prochaine fois, votre place est prise avant d'arriver
+au port.
+
+#MoheliGo #Comores #Mohéli #BilletQR #MVola
+```
+
+### Variante courte pour l'affiche
+
+```
+Un matin, la mer est plate. L'île est en face.
+Il ne manque qu'une place.
+
+moheligo.com — deux minutes, billet QR, paiement MVola.
+
+#MoheliGo #Mohéli #Comores
+```
+
+---
+
 ## 🖼️ Affiche duotone « MOHÉLI » — la plus belle (08/08/2026)
 
 Image : `flyers/flyer-affiche-duotone-facebook.png` (4:5). Sans date.

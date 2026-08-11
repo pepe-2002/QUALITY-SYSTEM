@@ -33,7 +33,10 @@ import subprocess
 import sys
 import tempfile
 
-API = os.environ.get('FB_API_VERSION', 'v21.0')   # Meta sort ~2 versions par an
+#  v26.0 = la version proposée par l'explorateur d'API en août 2026. Meta sort
+#  environ deux versions par an et retire les plus anciennes : quand un appel
+#  échoue en parlant de version, monter d'un cran (ou poser FB_API_VERSION).
+API = os.environ.get('FB_API_VERSION', 'v26.0')
 BASE = f'https://graph.facebook.com/{API}'
 CACERT = '/root/.ccr/ca-bundle.crt'               # proxy de session ; absent sur GitHub
 

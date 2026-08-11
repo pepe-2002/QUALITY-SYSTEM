@@ -119,6 +119,32 @@ les boutons apparaissent, et on peut zoomer.
 de requête, demande directement `me/accounts?fields=name,id,access_token` — tu
 n'auras que les trois lignes utiles.
 
+### Le chemin le plus court (celui qu'on a pris le 11/08/2026)
+
+Dans l'explorateur, le menu **« Utilisateur ou Page »** permet de choisir
+directement la page. Quand la page y est sélectionnée :
+
+- le jeton affiché **est déjà le jeton de page** ;
+- la requête `me?fields=id,name` renvoie la page, et son `id` est le
+  **FB_PAGE_ID**.
+
+Pas besoin de passer par `me/accounts`. Deux vérifications quand même :
+
+1. plus bas dans le panneau, la liste des **autorisations** doit contenir
+   `pages_manage_posts` (sinon : « Ajouter une autorisation ») ;
+2. la version d'API du menu déroulant (v26.0 en août 2026) doit correspondre à
+   celle de `publier_fb.py`, sinon poser `FB_API_VERSION`.
+
+⏳ **Le jeton de l'explorateur est éphémère** (une à deux heures). C'est parfait
+pour l'essai du jour, mais il faut ensuite le rendre durable (« Étendre le token »
+dans le débogueur, ou un utilisateur système dans Business Manager) — sinon le
+travail automatique du soir échouera dès demain.
+
+🚫 **Ne pas photographier l'écran du jeton.** Une capture d'écran qui montre le
+champ « Token d'accès » est une fuite : quelqu'un qui le lit peut publier sur la
+page. En cas de doute, cliquer **« Generate Access Token »** : l'ancien devient
+inutile.
+
 ### Rendre le jeton durable
 
 Le jeton obtenu comme ça expire vite. Deux façons de le rendre durable :

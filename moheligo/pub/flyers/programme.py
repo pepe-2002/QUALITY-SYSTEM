@@ -29,6 +29,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--jour', help='AAAA-MM-JJ, par défaut aujourd\'hui')
     ap.add_argument('--publier', action='store_true')
+    ap.add_argument('--essai', action='store_true')
     a = ap.parse_args()
 
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
@@ -47,7 +48,7 @@ def main():
         fh.write(texte)
         chemin = fh.name
     try:
-        publier_fb.publier(visuel, chemin, a.publier)
+        publier_fb.publier(visuel, chemin, a.publier or a.essai, essai=a.essai)
     finally:
         os.unlink(chemin)
 

@@ -151,7 +151,7 @@ def preparer(image):
     return tmp, tmp
 
 
-def publier(image, texte, pour_de_vrai):
+def publier(image, texte, pour_de_vrai, essai=False):
     # frein d'urgence : une variable de dépôt suffit à tout arrêter
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
         print('PAUSE_FB = oui → publication suspendue, rien n\'a été envoyé.')
@@ -177,12 +177,21 @@ def publier(image, texte, pour_de_vrai):
     with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False) as fh:
         fh.write(post)
         msg = fh.name
+    # `published=false` : la photo entre dans la bibliothèque de la page sans
+    # apparaître nulle part. C'est le seul moyen de prouver que le jeton a bien
+    # le droit de PUBLIER, sans rien montrer à personne.
     rep = curl(f'{BASE}/{page}/photos', 'POST', jeton=jeton, formulaires=[
-        f'source=@{img}', f'message=<{msg}', 'published=true'])
+        f'source=@{img}', f'message=<{msg}',
+        'published=false' if essai else 'published=true'])
     os.unlink(msg)
     if jetable:
         os.unlink(jetable)
     post_id = rep.get('post_id') or rep.get('id')
+    if essai:
+        print('ESSAI RÉUSSI : le jeton a bien le droit de publier.')
+        print('Photo déposée NON PUBLIÉE (invisible sur la page), id', post_id)
+        print('À supprimer quand vous voulez, dans la bibliothèque de la page.')
+        return
     print('Publié :', post_id)
 
     if commentaire and post_id:
@@ -206,8 +215,14 @@ def main():
                     help='teste seulement la liaison, ne publie rien')
     ap.add_argument('--publier', action='store_true',
                     help='publie pour de vrai (sans ce drapeau : répétition à blanc)')
+    ap.add_argument('--essai', action='store_true',
+                    help='envoie la photo en NON PUBLIÉE : prouve le droit de publier '
+                         'sans que personne ne voie quoi que ce soit')
     a = ap.parse_args()
-    verifier() if a.verifier else publier(a.image, a.texte, a.publier)
+    if a.verifier:
+        verifier()
+    else:
+        publier(a.image, a.texte, a.publier or a.essai, essai=a.essai)
 
 
 if __name__ == '__main__':

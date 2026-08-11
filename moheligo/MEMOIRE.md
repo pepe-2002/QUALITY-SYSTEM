@@ -1,5 +1,11 @@
 # 📚 MÉMOIRE — Directeur Marketing MoheliGo (Claude)
 
+> 📕 **AVANT TOUTE PRODUCTION — lire `MANUEL-MARKETING.md`.** C'est la grille
+> de décision (Sharp, Cialdini, Ogilvy, Ries & Trout, vente aux gens qui n'ont
+> jamais acheté en ligne) et elle finit par des **checklists à passer** avant de
+> livrer un flyer, un texte, un rapport ou un plan. Exigé par le patron le
+> 11/08/2026.
+>
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
 > Dernière mise à jour : **07/08/2026** — flyers promo brillants + **bulletin du

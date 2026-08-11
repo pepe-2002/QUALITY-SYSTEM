@@ -580,3 +580,90 @@ Et en bonus : météo mer 7 jours, guide de l'île, assistance WhatsApp.
 - Épingler v3 en haut de la page Facebook.
 - Toujours répondre aux commentaires avec le lien moheligo.com.
 - Heures de pointe aux Comores : 12h-14h et 19h-22h.
+
+
+---
+
+# Textes écrits avec le MANUEL-MARKETING (11/08/2026)
+
+Écrits en appliquant les règles du manuel : le client sujet des verbes,
+des chiffres vrais, un seul appel à l'action, aucune rareté inventée, et pour
+le troisième les trois peurs de celui qui n'a jamais acheté en ligne.
+
+## Faire s'abonner — version manuel
+
+```
+CHAQUE SOIR, LA MER DE DEMAIN. GRATUITEMENT.
+
+Ce soir, sur cette page : houle 0,9 m, vent 17 km/h de sud-est, mer peu agitée
+demain matin entre Ouroveni et Hoani.
+
+Demain soir, les chiffres du jour suivant. Et le soir d'après aussi.
+
+Personne d'autre ne le publie. Nous le faisons parce que traverser sans savoir,
+c'est se lever à 4 heures pour rien — et ça, ça suffit.
+
+Tu n'as rien à payer, rien à installer, rien à donner.
+Appuie sur « S'abonner », et tu sauras avant de quitter la maison.
+
+MoheliGo — moheligo.com
+
+#MoheliGo #Comores #Mohéli #MétéoMer #Traversée
+```
+
+## Faire créer un compte — version manuel
+
+```
+LA PREMIÈRE FOIS PREND TROIS MINUTES. LES SUIVANTES, TRENTE SECONDES.
+
+Quand tu crées ton compte sur moheligo.com :
+
+• Tes billets restent dedans. Tu les retrouves même sans connexion.
+• Ton nom et ton numéro sont déjà remplis la fois d'après.
+• Tu vois l'historique de tes traversées, et celles de ta famille si tu paies
+  pour elle.
+
+C'est tout. Pas de carte à donner, pas d'abonnement, pas de frais.
+
+Un compte, c'est une place prise en trente secondes le jour où tu es pressé.
+
+moheligo.com — crée ton compte maintenant, tu remercieras ton téléphone
+la prochaine fois.
+
+#MoheliGo #Comores #Mohéli #BilletQR
+```
+
+## ⭐ Convaincre celui qui n'a jamais acheté en ligne
+
+```
+« ET SI JE PAIE ET QU'IL N'Y A PAS DE PLACE ? »
+
+C'est la question qu'on nous pose le plus. Voici les réponses, sans détour.
+
+TU PAIES AVEC CE QUE TU CONNAIS DÉJÀ.
+MVola ou KartaPay, depuis ton téléphone. Pas de carte bancaire, rien de
+nouveau à apprendre.
+
+TU REÇOIS UN BILLET, PAS UNE PROMESSE.
+Dès le paiement, un billet avec un code QR arrive dans ton téléphone. Il y
+reste, même sans réseau. C'est lui que le commandant scanne à l'embarquement.
+
+QUELQU'UN RÉPOND, TOUJOURS.
+WhatsApp +269 479 43 28. Un vrai numéro, une vraie personne. Avant, pendant,
+après.
+
+TU PEUX LE FAIRE ACCOMPAGNÉ.
+La première fois, demande à un boutiquier, à un hôtelier, ou à un proche à
+l'étranger de le faire avec toi. Il n'y a aucune honte à ça : la deuxième fois,
+tu le feras seul en trois minutes.
+
+ET SI QUELQU'UN PAIE POUR TOI.
+Ton frère à Marseille, ta sœur à Mayotte : ils réservent et paient depuis
+là-bas, tu reçois ton billet ici. Tu n'avances rien.
+
+Traverser sans savoir si on embarque, c'était normal. Ça ne l'est plus.
+
+moheligo.com — WhatsApp +269 479 43 28
+
+#MoheliGo #Comores #Mohéli #Traversée #MVola
+```

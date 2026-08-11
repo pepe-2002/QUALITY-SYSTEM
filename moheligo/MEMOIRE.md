@@ -225,6 +225,18 @@ design », il parle de matière et de lumière, pas de mise en page.**
 
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 
+📌 **Le plan publicitaire complet est dans `pub/plan-publicitaire.md`**
+(écrit le 11/08/2026 à la demande du patron : « décris un plan publicitaire pour
+avoir plus d'utilisateurs »). Trois étages — organique (rythme quotidien),
+terrain (affiches aux ports, commandants, lodges), payant (diaspora d'abord) —
+plus trois paliers de budget et cinq chiffres à suivre. La liste ci-dessous en
+est le résumé historique.
+
+⚠️ Cinq réponses attendues du patron pour exécuter : la **marge par
+réservation** (sans elle, aucune publicité n'est jugeable), une **carte pour
+payer Meta** (MVola ne paie pas Facebook), le budget d'impression, trois
+témoignages de vrais clients, et le registre tu/vous.
+
 1. Lancement : publier v4 (film Amina) sur Facebook + statuts WhatsApp.
    Textes prêts dans `textes-publications.md`. Lien en 1er commentaire
    (l'algorithme FB pénalise les liens dans le post).
@@ -341,6 +353,18 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **11/08/2026 (suite)** — « Décris un plan publicitaire pour avoir plus
+  d'utilisateurs. » Écrit dans `pub/plan-publicitaire.md`. La thèse du plan :
+  **on a déjà tout le matériel (5 vidéos, 10 flyers), ce qui manque c'est du
+  rythme, du terrain et une mesure.** Trois idées à retenir :
+  ① le **bulletin mer quotidien** est notre seul actif que personne d'autre n'a —
+  il transforme la page en service, et on s'abonne à un service, pas à une
+  vitrine ; ② aux Comores l'**affiche au port** bat le ciblage publicitaire,
+  parce qu'elle est là au moment où la personne pense au voyage ; ③ la
+  **diaspora** est la seule cible qui paie en euros, donc la première à cibler
+  en payant. Recommandation budget : palier 1 (~25 000 FC/mois) pendant un mois,
+  et on ne monte que si le coût par réservation le justifie.
 
 - **11/08/2026** — « C'est toi le directeur marketing, fais aussi la météo de
   demain. » Bulletin régénéré pour **mercredi 12 août** (mer peu agitée, houle

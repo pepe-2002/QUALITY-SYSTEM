@@ -21,6 +21,11 @@ on:
   schedule:
     - cron: '0 13 * * *'      # 13h00 UTC = 16h00 aux Comores (UTC+3)
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
+    inputs:
+      publier_sur_facebook:
+        description: 'Publier vraiment sur la page Facebook ?'
+        type: boolean
+        default: false
 
 permissions:
   contents: write              # pour publier sur la branche bulletin-du-jour
@@ -85,6 +90,27 @@ jobs:
           git push -q --force \
             "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" \
             bulletin-du-jour
+
+      # --- Publication automatique sur la page Facebook -------------------
+      # DÉSARMÉE par défaut : rien n'est publié tant que la variable de dépôt
+      # PUBLIER_FB ne vaut pas « oui ». Le bouton « Run workflow » permet en
+      # plus une publication de contrôle, à la main, une seule fois.
+      # Marche à suivre complète : moheligo/pub/flyers/LIER-FACEBOOK.md
+      - name: Répétition à blanc de la publication Facebook
+        if: vars.FB_PAGE_ID != ''
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python3 publier_fb.py
+
+      - name: Publier sur la page Facebook
+        if: vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python3 publier_fb.py --publier
 
       - name: Garder aussi une copie téléchargeable depuis cette exécution
         uses: actions/upload-artifact@v4

@@ -91,6 +91,32 @@ recherche-remplacement, et le découpage a effacé deux blocs sans prévenir. Po
 changer quelque chose : modifier `page.py` (la liste `FLYERS` en haut) et
 relancer.
 
+### Publier tout seul sur la page Facebook
+
+`publier_fb.py` envoie l'image, le texte et le lien en premier commentaire via
+l'API Graph. La marche à suivre pour le patron (créer l'app Meta, obtenir le
+jeton de page, le ranger dans les secrets GitHub) est dans
+**`LIER-FACEBOOK.md`**.
+
+```bash
+export FB_PAGE_ID=...  FB_PAGE_TOKEN=...   # jamais dans un fichier du dépôt
+python3 publier_fb.py --verifier           # la liaison marche-t-elle ?
+python3 publier_fb.py                      # répétition à blanc
+python3 publier_fb.py --publier            # pour de vrai
+```
+
+- ⚠️ **Désarmé par défaut** : l'étape du workflow ne tourne que si la variable de
+  dépôt `PUBLIER_FB` vaut `oui`, ou si on coche `publier_sur_facebook` en lançant
+  le workflow à la main. Publier est public et difficile à défaire.
+- ⚠️ **Le jeton ne doit jamais passer par la ligne de commande** : il serait
+  visible dans les journaux GitHub et dans la liste des processus. Il est donné à
+  curl par son **entrée standard** (`-K -`, en-tête `Authorization`).
+- ⚠️ **Ne jamais demander le jeton dans la conversation** : tout y est
+  enregistré. Un jeton collé dans un message est un jeton à refaire.
+- Le message passe par un fichier temporaire (`-F "message=<fichier"` lit la
+  *valeur* du champ dans le fichier) : aucun ennui de guillemets ni de retours
+  à la ligne.
+
 ### Le tuyau : le bulletin se refait tout seul
 
 `.github/workflows/bulletin-du-soir.yml` fait tourner ces deux commandes sur un

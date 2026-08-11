@@ -354,6 +354,26 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (soir)** — « Montre comment lier la page FB à toi. » Il n'existe
+  **aucun connecteur Facebook dans Claude** : la liaison durable passe par
+  GitHub. Construit : `pub/flyers/publier_fb.py` (Graph API, publie l'image +
+  le texte + le lien en premier commentaire) et
+  **`pub/flyers/LIER-FACEBOOK.md`** (marche à suivre complète pour le patron).
+  Le workflow du bulletin a deux nouvelles étapes, **désarmées par défaut** :
+  rien n'est publié tant que la variable de dépôt `PUBLIER_FB` ne vaut pas
+  « oui ». Sécurité : le jeton n'est jamais dans argv (passé à curl par son
+  entrée standard, en-tête `Authorization`), et **jamais demandé dans la
+  conversation** — un jeton collé dans un message est un jeton à refaire.
+  🚨 **LE VRAI RISQUE DU PROJET, révélé ce jour-là** : le patron **n'a plus le
+  numéro de téléphone avec lequel il ouvre la page Facebook** (il a seulement
+  celui du compte). Tant que la session reste ouverte sur son téléphone, tout
+  est récupérable ; s'il se déconnecte, **la page et ses abonnés sont perdus**.
+  Priorité absolue, avant tout travail marketing : ajouter le numéro actuel et
+  un e-mail dans le Centre de comptes, double authentification **par
+  application et pas par SMS**, codes de secours conservés ailleurs, et
+  **un second administrateur sur la page**. À reposer à chaque session tant que
+  ce n'est pas fait.
+
 - **11/08/2026 (suite)** — « Décris un plan publicitaire pour avoir plus
   d'utilisateurs. » Écrit dans `pub/plan-publicitaire.md`. La thèse du plan :
   **on a déjà tout le matériel (5 vidéos, 10 flyers), ce qui manque c'est du

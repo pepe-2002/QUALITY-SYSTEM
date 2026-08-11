@@ -87,6 +87,27 @@ def nettoyer_jeton(brut):
     return j.strip()
 
 
+def jeton_de_page(page, jeton):
+    """Dérive le jeton de PAGE à partir d'un jeton d'UTILISATEUR, si besoin.
+
+    ⚠️ Piège majeur, découvert le 11/08/2026 : Facebook laisse un jeton
+    d'utilisateur LIRE une page, mais refuse de le laisser PUBLIER au nom de la
+    page — même quand on en est administrateur. Publier exige un jeton de page.
+    Le dialogue OAuth, lui, ne rend qu'un jeton d'utilisateur.
+    Plutôt que d'exiger du patron une manipulation de plus, on fait la
+    conversion ici : /me/accounts liste ses pages avec LEUR jeton.
+    Si le jeton fourni est déjà un jeton de page, l'appel ne renvoie rien
+    d'utilisable et on le garde tel quel.
+    """
+    rep = curl(f'{BASE}/me/accounts?fields=id,access_token&limit=100',
+               jeton=jeton, strict=False)
+    for compte in rep.get('data', []) or []:
+        if str(compte.get('id')) == str(page) and compte.get('access_token'):
+            print('Jeton de page dérivé du jeton utilisateur (conversion automatique).')
+            return compte['access_token']
+    return jeton
+
+
 def config():
     page = os.environ.get('FB_PAGE_ID', '').strip()
     jeton = nettoyer_jeton(os.environ.get('FB_PAGE_TOKEN', ''))
@@ -94,7 +115,7 @@ def config():
     if manque:
         sys.exit('Variables manquantes : %s\nVoir la marche à suivre dans '
                  'pub/flyers/LIER-FACEBOOK.md' % ', '.join(manque))
-    return page, jeton
+    return page, jeton_de_page(page, jeton)
 
 
 def verifier():

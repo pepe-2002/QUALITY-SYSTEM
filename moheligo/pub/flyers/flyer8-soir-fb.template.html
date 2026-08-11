@@ -35,8 +35,8 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
                                      rgba(5,15,36,.34) 44%, rgba(5,15,36,.70) 74%, rgba(5,15,36,.90) 100%); }
 .top .wave { position:absolute; left:0; right:0; bottom:-2px; display:block; }
 
-.head { position:absolute; top:36px; left:var(--pad); right:var(--pad); display:flex;
-  align-items:center; justify-content:space-between; z-index:6; }
+.head { position:absolute; top:44px; left:var(--pad); right:var(--pad); display:flex;
+  align-items:center; justify-content:flex-end; z-index:6; }
 .ident { display:flex; align-items:center; gap:15px; }
 .badge-app { position:relative; width:76px; height:76px; border-radius:18px;
   background:linear-gradient(160deg,#fff 0%,#EFF4FD 100%); display:flex; align-items:center;
@@ -58,6 +58,19 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
 .live::after { content:''; position:absolute; left:-40%; top:-120%; width:60%; height:340%;
   background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0));
   transform:rotate(18deg); filter:blur(4px); }
+
+
+/* ---------- coin blanc en biais : notre en-tête de signature ---------- */
+.coin { position:absolute; top:0; left:0; width:436px; height:190px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 79% 100%, 0 100%); z-index:9;
+  display:flex; align-items:center; gap:16px; padding:24px 0 34px 44px;
+  box-shadow:0 20px 48px rgba(4,12,40,.42); }
+.coin img { width:74px; height:74px; border-radius:18px; display:block; }
+.coin b { font-family:'Archivo','Inter',sans-serif; font-weight:900; font-size:32px;
+  color:var(--navy); letter-spacing:-1px; line-height:1; display:block; }
+.coin b em { font-style:normal; color:var(--gold); }
+.coin small { display:block; font-size:10px; font-weight:700; letter-spacing:2px;
+  color:var(--grey); margin-top:6px; }
 
 /* ---------- accroche ---------- */
 .claim { position:absolute; left:var(--pad); right:var(--pad); top:212px; color:#fff; z-index:6; }
@@ -188,11 +201,12 @@ body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:
     </svg>
   </div>
 
+    <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
   <div class="head">
-    <div class="ident">
-      <div class="badge-app"><img src="logo-emblem.png" alt=""></div>
-      <div class="word arch"><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
-    </div>
     <span class="live arch"><i></i>BULLETIN DU JOUR</span>
   </div>
 

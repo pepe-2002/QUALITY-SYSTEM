@@ -60,6 +60,14 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
+    dict(png='flyer-signature-facebook.png', titre='⭐ LE MODÈLE DE SIGNATURE',
+         note='Les quatre influences réunies<br>le logo Royal Air, la couleur et<br>l\'émotion Coca-Cola, le vide<br>d\'Apple, la brillance de Yas',
+         texte="""On se voit de l'autre côté.
+
+MoheliGo — traversées maritimes des Comores.
+Ouroveni · Chindini · Hoani · Fomboni
+
+Réservation en deux minutes : moheligo.com"""),
     dict(png='flyer-couleur-facebook.png', titre='Le « Coca-Cola »',
          note='Sans date<br>une couleur, une émotion', texte="""On se voit de l'autre côté.
 

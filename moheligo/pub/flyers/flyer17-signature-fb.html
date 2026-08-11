@@ -1,0 +1,91 @@
+<!-- LE MODÈLE DE SIGNATURE — commande du patron du 11/08/2026 :
+     « le logo comme le flyer Royal Air, la couleur et l'émotion type Coca-Cola,
+       le respect type Apple, et l'envie de regarder type Yas ».
+     Ce que chacun apporte, et où le voir dans ce fichier :
+       · ROYAL AIR  → le coin blanc en biais avec le logo (.coin)
+       · COCA-COLA  → le marine remplit tout le cadre, et la phrase parle d'un
+                      lien entre des gens, pas du produit (.phrase)
+       · APPLE      → beaucoup de vide, aucun prix, aucune liste, pied minuscule
+       · YAS        → la brillance : dégradé d'or métallique sur le mot fort,
+                      reflet spéculaire, ruban doré (.phrase span, .eclat, .ruban)
+     ⚠️ La tentation, avec quatre influences, c'est d'en mettre quatre fois trop.
+     La règle tenue ici : UNE phrase, UN accent brillant, UN ruban. Rien d'autre.
+     Rendu : node render.js flyer17-signature-fb.html flyer-signature-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden;
+  background:
+    radial-gradient(88% 58% at 76% 14%, rgba(70,132,235,.58) 0%, rgba(70,132,235,0) 62%),
+    radial-gradient(70% 46% at 8% 96%, rgba(5,14,42,.85) 0%, rgba(5,14,42,0) 64%),
+    #0C2454; }
+/* YAS : le reflet qui traverse, celui qui donne envie de regarder */
+.eclat { position:absolute; inset:0;
+  background:linear-gradient(116deg, rgba(255,255,255,0) 42%, rgba(255,255,255,.14) 51%,
+    rgba(255,255,255,0) 58%); }
+
+/* ROYAL AIR : le coin blanc en biais */
+.coin { position:absolute; top:0; left:0; width:404px; height:180px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%);
+  display:flex; align-items:center; gap:15px; padding:22px 0 30px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:70px; height:70px; border-radius:17px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:30px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10px; font-weight:700; letter-spacing:2px;
+  color:#5C6E8B; margin-top:5px; }
+
+/* COCA-COLA : le ruban, et rien qui l'encombre */
+.ruban { position:absolute; left:-40px; right:-40px; bottom:0; height:520px; }
+
+/* COCA-COLA + APPLE : une phrase, et du vide autour */
+.phrase { position:absolute; left:80px; top:392px; width:900px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:120px; line-height:.97;
+  letter-spacing:-4.8px; color:#fff; text-shadow:0 16px 44px rgba(4,12,38,.52); }
+/* YAS : l'or métallique, quatre arrêts pour que ça accroche la lumière */
+.phrase span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 10px 26px rgba(150,100,4,.42)); }
+
+/* APPLE : le pied ne cherche pas à convaincre */
+.pied { position:absolute; left:80px; right:80px; bottom:82px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; }
+.pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#fff;
+  letter-spacing:-.6px; }
+.pied .site small { display:block; font-family:'Inter',sans-serif; font-weight:500;
+  font-size:14px; letter-spacing:2.4px; color:rgba(255,255,255,.66); margin-top:9px; }
+.pied .ports { font-size:14px; font-weight:700; letter-spacing:2.2px;
+  color:rgba(255,255,255,.62); text-align:right; }
+</style>
+
+<div class="page">
+  <svg class="ruban" viewBox="0 0 1160 520" fill="none" preserveAspectRatio="none">
+    <path d="M0 300 C 250 180, 470 392, 720 282 C 900 202, 1030 258, 1160 224 L1160 520 L0 520 Z"
+          fill="rgba(255,255,255,.05)"/>
+    <path d="M0 300 C 250 180, 470 392, 720 282 C 900 202, 1030 258, 1160 224"
+          stroke="#F6BC1C" stroke-width="9" stroke-linecap="round"/>
+    <path d="M0 356 C 250 236, 470 448, 720 338 C 900 258, 1030 314, 1160 280"
+          stroke="rgba(255,255,255,.42)" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="phrase">On se voit<span>de l'autre côté.</span></div>
+
+  <div class="pied">
+    <div class="site">moheligo.com<small>RÉSERVATION EN DEUX MINUTES</small></div>
+    <div class="ports">OUROVENI · CHINDINI<br>HOANI · FOMBONI</div>
+  </div>
+</div>

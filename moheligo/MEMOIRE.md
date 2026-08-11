@@ -354,6 +354,36 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (les trois modèles)** — « Montre les flyers d'Apple et
+  Coca-Cola pour trancher le modèle. » Recherche faite, et **trois registres
+  coexistent désormais dans le dépôt** :
+  ① **Yas / affiche locale** (`flyer7-promo-brillant`) — prix énorme, bouton,
+  urgence : **fait réserver** ;
+  ② **Apple / institutionnel** (`flyer15-conglomerat`) — une phrase, du vide,
+  logo petit, aucun prix : **fait respecter** ;
+  ③ **Coca-Cola** (`flyer16-couleur`) — **une couleur possède tout le cadre**,
+  un ruban (notre vague = leur « dynamic ribbon »), une phrase d'émotion et
+  aucun argument : **fait aimer**.
+  **Recommandation donnée : ne pas choisir, doser.** Un institutionnel par
+  semaine (le dimanche, déjà prévu au calendrier), du concret le reste du temps.
+  ⚠️ Argument à réutiliser : **Apple peut se permettre le vide parce que tout le
+  monde connaît Apple** ; MoheliGo construit encore sa notoriété — ne publier
+  que du conglomérat, c'est être élégant et inconnu.
+  ⚠️ Leçon de mise en page : **le vide doit ENTOURER le texte**. Accumulé en bas,
+  il se lit comme un oubli, pas comme du calme.
+  🚫 **Consigne du 11/08 au soir : NE RIEN PUBLIER SUR FACEBOOK** jusqu'à nouvel
+  ordre. La liaison reste inachevée : le jeton d'utilisateur système n'a ni
+  `pages_read_engagement` ni `pages_manage_posts` (essai d'écriture refusé, donc
+  **rien n'a jamais atteint la page**). Reprendre par : générer le jeton système
+  en cochant les trois permissions, et vérifier que la page est bien attribuée à
+  `moheligobot` avec « Gérer la Page ».
+  ⚠️ Piège Meta découvert : **les cas d'utilisation d'une app ne se mélangent
+  pas**. La première app (`MoheliGo`, 1055072317068064) était partie sur la
+  publicité et n'offrait donc jamais `pages_manage_posts`. Il a fallu créer une
+  seconde app (`Moheligo publicite`, 4081944208770808) avec le cas
+  **« Tout gérer sur votre Page »**. Et `manage_ads` ≠ `manage_posts` : un mot
+  d'écart, une heure perdue.
+
 - **11/08/2026 (personnages)** — Le patron a montré une affiche **Royal Air**
   (fond dégradé profond, objets qui flottent, arche pointillée, barre sociale en
   pied) et demandé la même énergie. Résultat : `flyer13-aerien-fb.html` →

@@ -370,6 +370,54 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (🚨 L'INFORMATION PRODUIT LA PLUS IMPORTANTE DE LA SESSION)** —
+  Le patron : « le départ tkt pas, mais **en mauvais temps les vedettes ne
+  partent pas**. » Les départs sont donc fiables, sauf par grosse mer.
+  🎯 **Ce n'est pas une faiblesse, c'est notre produit** : le seul événement qui
+  annule une traversée est **exactement celui que nous sommes seuls à publier**.
+  ➡️ **Positionnement corrigé au manuel § 2**, et c'est la formulation à tenir
+  partout désormais :
+  > **La mer décide. Nous, on te le dit avant.**
+  On ne promet **jamais** qu'une vedette partira — ça ne dépend pas de nous. On
+  promet de savoir avant de quitter la maison. Plus modeste, toujours vrai.
+  ✅ **Garde-fou automatique livré** (et vérifié de bout en bout) :
+  - `mer.py` — l'état de la mer d'un jour donné (Open-Meteo Marine, fenêtre
+    6h-10h, échelle de Douglas de `bulletin.py`). Seuil **`SEUIL_GROS_TEMPS = 3`**
+    = MER FORTE, houle ≥ 2,50 m, le degré où le bulletin dit déjà « vérifiez le
+    maintien des départs ». `gros_temps()` renvoie **True / False / None** —
+    et **None veut dire « je ne sais pas », pas « beau temps »**.
+  - `programme.py` le consulte **avant chaque publication** : mer forte →
+    le message commercial est remplacé par l'**avis de mer**
+    (`flyer22-grostemps-fb.html` → `flyer-grostemps-facebook.png`), **zéro appel
+    à l'action**, avec l'état et la houle réels injectés dans le texte
+    (`{etat}` / `{houle}` remplis depuis `mer.niveau()`).
+  - **Choix assumé quand la météo est injoignable (None) : on publie quand même**
+    et on écrit l'avertissement dans le journal. Nos textes ne promettent jamais
+    qu'une vedette partira, et se taire à chaque hoquet d'Open-Meteo ferait des
+    trous dans la régularité — notre seul vrai actif.
+  - **Anti-doublon sans mémoire** : un jour de mer forte, l'avis part **le matin**
+    quand un créneau du matin existe (lundi, jeudi), et **midi se tait** ; les
+    autres jours, midi le publie. Décidé par le calendrier seul, aucun état à
+    conserver — testé sur lundi 17/08 (matin oui, midi non) et mardi 18/08
+    (midi oui, matin rien).
+  - Interdictions ajoutées au § 11 : ne jamais écrire « les vedettes ne partent
+    pas » (on ne connaît pas le seuil d'annulation de chaque compagnie → « **peuvent**
+    ne pas partir »), ne jamais promettre qu'une traversée partira.
+  🐛 **DÉFAUT CONNU, À CORRIGER — le journal des publications ne survit pas.**
+  `journal-publications.json` est écrit dans le dossier de travail du serveur
+  GitHub, qui est **détruit à la fin de chaque exécution**, et le fichier n'est
+  **pas suivi par git**. Conséquence : `rapport.py` ne verra jamais l'historique
+  des publications, seulement celle du jour. Correctif à faire : le pousser sur
+  une branche orpheline comme le bulletin (`bulletin-du-jour`), en le relisant
+  avant d'y ajouter une ligne. **Tant que ce n'est pas fait, les rapports
+  hebdomadaires sont amnésiques** — à dire au patron dans le premier rapport.
+  ❓ **Question B en attente (décision du patron)** : si une traversée est annulée
+  pour cause de mer, le client est-il **remboursé intégralement, frais de
+  transaction compris**, ou bien changement de date gratuit ? Aujourd'hui le site
+  dit « remboursé moins les frais » — c'est correct pour une annulation
+  volontaire, mais **injuste si c'est la mer qui annule**. Prendre en charge les
+  frais ces jours-là coûterait très peu et vaut mieux que dix publicités.
+
 - **11/08/2026 (NOUVEAU MANDAT + FEUILLE DE ROUTE)** — 🚨 **Décision
   d'organisation du patron** : « je te nomme sur tous les autres postes, moi je
   suis CEO et service client, ça te va ? tu dois me conseiller aussi. »

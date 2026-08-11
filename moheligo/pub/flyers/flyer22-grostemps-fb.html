@@ -1,0 +1,136 @@
+<!-- LES JOURS DE GROSSE MER — le visuel qui ne vend rien.
+     Le patron, 11/08/2026 : « le départ tkt pas, mais en mauvais temps les
+     vedettes ne partent pas. »
+
+     POURQUOI CE VISUEL EXISTE : les jours de mer forte, une publicité enjouée
+     n'est pas seulement inutile, elle est fausse — elle invite à descendre au
+     port un jour où la vedette peut ne pas partir. `programme.py` consulte
+     `mer.py` avant de publier : au niveau 3 de l'échelle de Douglas (houle
+     ≥ 2,50 m), il remplace le message commercial par celui-ci.
+
+     ⚠️ CE QU'ON N'ÉCRIT PAS : « les vedettes ne partent pas ». On ne connaît pas
+     le seuil exact d'annulation de chaque compagnie, donc on écrit « peuvent ne
+     pas partir » et on renvoie vers ceux qui savent. Informer, pas se tromper
+     à voix haute (§ 11 du manuel).
+
+     ⚠️ ZÉRO APPEL COMMERCIAL sur ce visuel. Pas de « réserve », pas de prix.
+     C'est le message : le jour où on ne peut rien promettre, on ne demande rien.
+     C'est le levier RÉCIPROCITÉ (§ 3) dans sa forme la plus forte, et c'est ce
+     qui rendra crédibles toutes les publications des autres jours.
+
+     Le chiffre exact du jour n'est PAS dans l'image (elle est réutilisable) :
+     il est dans le texte de publication, injecté par programme.py.
+     Rendu : node render.js flyer22-grostemps-fb.html flyer-grostemps-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* un marine plus profond que d'habitude : le registre du jour n'est pas le même */
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0A1D42; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 42%, rgba(255,255,255,.055) 50%, rgba(255,255,255,0) 58%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:1.9px;
+  color:#5C6E8B; margin-top:5px; }
+
+.ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
+  font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
+  color:rgba(255,255,255,.6); }
+
+.acc { position:absolute; left:76px; top:250px; width:920px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.98;
+  letter-spacing:-3.6px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.36)); }
+
+.dit { position:absolute; left:76px; top:470px; width:840px; z-index:3;
+  font-size:27px; line-height:1.44; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+/* l'avis : une carte claire avec un bandeau d'or. Un avis, pas une réclame. */
+.avis { position:absolute; left:76px; top:646px; width:928px; z-index:3;
+  background:#F6F9FF; border-radius:24px; overflow:hidden;
+  box-shadow:0 30px 64px rgba(3,10,32,.5); }
+.avis .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
+  font-weight:900; font-size:21px; letter-spacing:1.4px; color:#0A1D42; }
+.avis .corps { padding:30px 44px 34px; }
+.avis .corps > p { font-family:'Archivo',sans-serif; font-weight:900; font-size:37px;
+  line-height:1.14; letter-spacing:-1.2px; color:#0F2A5C; }
+.avis ul { margin-top:26px; list-style:none; }
+.avis li { display:flex; gap:18px; padding:15px 0; font-size:20.5px; line-height:1.38;
+  color:#43567A; border-top:1px solid #DDE6F4; }
+.avis li:first-child { border-top:0; padding-top:4px; }
+.avis li b { flex:0 0 210px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:21px; letter-spacing:-.4px; color:#0F2A5C; }
+
+.don { position:absolute; left:76px; right:76px; bottom:148px; z-index:3;
+  border-top:2px solid rgba(246,188,28,.6); padding-top:22px;
+  font-size:19px; line-height:1.42; color:#CFDDF3; }
+.don b { color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:22px; letter-spacing:-.4px; }
+
+.pied { position:absolute; left:76px; right:76px; bottom:58px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; }
+.pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
+  letter-spacing:-.7px; }
+.pied .site small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1.6px; color:#F6BC1C; margin-top:8px; }
+.pied .fin { max-width:330px; text-align:right; font-size:11.5px; line-height:1.5;
+  color:rgba(255,255,255,.46); }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="ligne">AVIS DE MER<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
+
+  <div class="acc">Aujourd'hui,<span>la mer est forte.</span></div>
+
+  <div class="dit">Alors on ne te vend rien. <b>On te dit ce qu'on sait</b>, et ce
+    qu'on ne sait pas.</div>
+
+  <div class="avis">
+    <div class="bande">CE QU'IL FAUT SAVOIR AVANT DE PARTIR</div>
+    <div class="corps">
+      <p>Par cette mer, les vedettes peuvent ne pas partir.</p>
+      <ul>
+        <li><b>Avant de descendre</b><span>Appelle ou écris : on te dit ce qui est
+          maintenu, et ce qui ne l'est pas encore décidé.</span></li>
+        <li><b>Si tu as un billet</b><span>Changer la date ne coûte rien. Et tant que
+          la traversée n'est pas partie, tu peux annuler et être remboursé.</span></li>
+        <li><b>Ce qui décide</b><span>La mer, et le commandant. Le bulletin officiel
+          affiché à l'embarquement fait toujours foi.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="don"><b>Chaque soir à 19h30, la mer du lendemain sur cette page.</b>
+    Gratuitement, qu'elle soit belle ou mauvaise — c'est les jours comme aujourd'hui
+    que ça compte.</div>
+
+  <div class="pied">
+    <div class="site">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
+    <div class="fin">Prévision Open-Meteo Marine. Nous ne décidons pas des départs :
+      nous publions la mer.</div>
+  </div>
+</div>

@@ -60,6 +60,32 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
+    dict(png='flyer-grostemps-facebook.png', titre='⛈️ LES JOURS DE GROSSE MER',
+         note="Sans date<br>publié tout seul quand la houle<br>dépasse 2,50 m au matin<br>{etat} et {houle} sont remplacés<br>par les vrais chiffres du jour<br>ZÉRO appel commercial",
+         texte="""AUJOURD'HUI, LA MER EST FORTE. ALORS ON NE TE VEND RIEN.
+
+{etat} ce matin entre nos ports : houle de {houle} m.
+
+PAR CETTE MER, LES VEDETTES PEUVENT NE PAS PARTIR.
+Nous ne décidons pas des départs — nous publions la mer. Avant de descendre au
+port, appelle ou écris : on te dit ce qui est maintenu, et ce qui n'est pas
+encore décidé.
+
+SI TU AS DÉJÀ UN BILLET.
+Changer la date ne coûte rien, sur la même liaison. Et tant que la traversée
+n'est pas partie, tu peux annuler et être remboursé.
+
+CE QUI DÉCIDE, C'EST LA MER ET LE COMMANDANT.
+Le bulletin officiel affiché à l'embarquement fait toujours foi.
+
+Chaque soir à 19h30, on publie la mer du lendemain sur cette page. Gratuitement,
+qu'elle soit belle ou mauvaise. C'est les jours comme aujourd'hui que ça compte.
+
+moheligo.com — WhatsApp +269 479 43 28
+
+Prévision Open-Meteo Marine.
+
+#MoheliGo #Comores #Mohéli #MétéoMer #Sécurité"""),
     dict(png='flyer-modedemploi-facebook.png', titre='⭐ LE MATIN — MODE D\'EMPLOI',
          note="Sans date<br>la démonstration en trois gestes<br>pour celui qui est bloqué,<br>pas pour celui qui hésite",
          texte="""EN TROIS GESTES, TA PLACE EST PRISE.

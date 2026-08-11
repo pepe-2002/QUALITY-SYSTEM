@@ -78,6 +78,26 @@ pour une idée par marque.
 > Avant : on descendait au port et on attendait de savoir.
 > Maintenant : on sait avant de partir de la maison.
 
+🚨 **Précision capitale, obtenue du patron le 11/08/2026** : « le départ tkt pas,
+mais **en mauvais temps les vedettes ne partent pas**. »
+
+Donc la promesse exacte, celle qu'on peut tenir tous les jours de l'année, est
+celle-ci — et pas une autre :
+
+> **La mer décide. Nous, on te le dit avant.**
+
+On ne promet **jamais** qu'une vedette partira : ça ne dépend pas de nous. On
+promet de **savoir avant de quitter la maison**. C'est plus modeste, c'est
+toujours vrai, et c'est justement ce qui a de la valeur : le seul événement qui
+annule une traversée est **exactement celui que nous sommes seuls à publier**.
+Notre point faible apparent est notre produit.
+
+⚠️ Conséquence opératoire, automatisée : les jours de mer forte, `programme.py`
+consulte `mer.py` et **remplace le message commercial par un avis de mer**
+(`flyer22-grostemps-fb.html`), sans aucun appel à l'action. Inviter quelqu'un à
+descendre au port un jour où la vedette peut rester à quai, c'est une promesse
+non tenue — et ça coûte plus cher qu'une pub jamais publiée.
+
 Ce n'est pas « réserver des places de vedette » (banal, imitable). C'est
 **supprimer l'incertitude** — la place, l'heure, le prix, et l'état de la mer.
 
@@ -391,6 +411,12 @@ modèle de référence pour tout visuel **sans image fournie**.
 - ❌ Demander deux choses dans un seul support.
 - ❌ Proposer un plan sans seuil d'arrêt.
 - ❌ Publier une pub joyeuse un jour d'accident en mer (frein `PAUSE_FB`).
+- ❌ Publier un message commercial un jour de **mer forte** : c'est automatisé
+  (`mer.py`, seuil Douglas 3), et ça ne se contourne pas à la main.
+- ❌ Écrire « les vedettes ne partent pas » : on ne connaît pas le seuil
+  d'annulation de chaque compagnie. On écrit « **peuvent** ne pas partir » et on
+  renvoie vers ceux qui décident. Informer, pas se tromper à voix haute.
+- ❌ Promettre qu'une traversée partira. On promet de **dire la mer avant**.
 
 ---
 

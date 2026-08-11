@@ -97,18 +97,48 @@ def decouper(chemin):
     return brut.strip(), ''
 
 
+LIMITE = 3.5 * 1024 * 1024        # Facebook refuse au-delà d'environ 4 Mo
+
+
+def preparer(image):
+    """Nos PNG font 4 à 6,5 Mo : au-delà de la limite, on repasse en JPEG.
+
+    Facebook recompresse de toute façon tout ce qu'on lui envoie ; un JPEG de
+    qualité 92 en 2160 px de large est visuellement identique au PNG et pèse
+    quatre fois moins. Renvoie (chemin_à_envoyer, chemin_temporaire_ou_None).
+    """
+    p = pathlib.Path(image)
+    if not p.exists():
+        sys.exit('Image introuvable : ' + str(image))
+    if p.stat().st_size <= LIMITE:
+        return p, None
+    from PIL import Image
+    im = Image.open(p).convert('RGB')
+    if im.width > 2160:
+        im = im.resize((2160, round(im.height * 2160 / im.width)), Image.LANCZOS)
+    tmp = pathlib.Path(tempfile.gettempdir()) / (p.stem + '-fb.jpg')
+    im.save(tmp, quality=92, optimize=True)
+    print('Image allégée : %d ko -> %d ko (JPEG, limite Facebook)'
+          % (p.stat().st_size // 1024, tmp.stat().st_size // 1024))
+    return tmp, tmp
+
+
 def publier(image, texte, pour_de_vrai):
+    # frein d'urgence : une variable de dépôt suffit à tout arrêter
+    if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
+        print('PAUSE_FB = oui → publication suspendue, rien n\'a été envoyé.')
+        return
     page, jeton = config()
     post, commentaire = decouper(texte)
-    img = pathlib.Path(image)
-    if not img.exists():
-        sys.exit('Image introuvable : ' + image)
+    img, jetable = preparer(image)
 
     print('Page      :', page)
     print('Image     : %s (%d ko)' % (img.name, img.stat().st_size // 1024))
     print('Post      : %d caractères, %d lignes' % (len(post), post.count('\n') + 1))
     print('Commentaire:', ('%d caractères' % len(commentaire)) if commentaire else 'aucun')
     if not pour_de_vrai:
+        if jetable:
+            os.unlink(jetable)
         print('\n--- RÉPÉTITION À BLANC : rien n\'a été publié. '
               'Relancer avec --publier pour de vrai. ---')
         print('\n' + post)
@@ -122,6 +152,8 @@ def publier(image, texte, pour_de_vrai):
     rep = curl(f'{BASE}/{page}/photos', 'POST', jeton=jeton, formulaires=[
         f'source=@{img}', f'message=<{msg}', 'published=true'])
     os.unlink(msg)
+    if jetable:
+        os.unlink(jetable)
     post_id = rep.get('post_id') or rep.get('id')
     print('Publié :', post_id)
 

@@ -27,6 +27,8 @@ from PIL import Image
 
 LAT_MER, LON_MER = -12.08, 43.54        # couloir Ouroveni – Hoani
 LAT_TERRE, LON_TERRE = -12.28, 43.74    # Fomboni
+# Le proxy de session impose son propre certificat ; sur GitHub ce fichier
+# n'existe pas et curl refuse de démarrer (erreur 77). D'où le test d'existence.
 CACERT = '/root/.ccr/ca-bundle.crt'
 TZ = 'Indian%2FComoro'
 MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
@@ -362,8 +364,10 @@ traversée.</p>"""),
 def api(url, essais=4):
     dernier = ''
     for n in range(essais):
-        out = subprocess.run(['curl', '-sS', '--max-time', '25', '--cacert', CACERT, url],
-                             capture_output=True, text=True)
+        cmd = ['curl', '-sS', '--max-time', '25']
+        if pathlib.Path(CACERT).exists():
+            cmd += ['--cacert', CACERT]
+        out = subprocess.run(cmd + [url], capture_output=True, text=True)
         if out.returncode == 0 and out.stdout.strip():
             try:
                 return json.loads(out.stdout)

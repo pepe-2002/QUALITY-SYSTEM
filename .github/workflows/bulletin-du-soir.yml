@@ -1,6 +1,6 @@
 # Le « tuyau » du bulletin du soir MoheliGo.
 #
-# Chaque jour à 16h00 (heure des Comores), GitHub refait le flyer avec la vraie
+# Chaque jour à 19h30 (heure des Comores), GitHub refait le flyer avec la vraie
 # prévision de mer du lendemain, et le dépose sur la branche `bulletin-du-jour`.
 # Le patron ouvre toujours la même adresse et trouve le flyer du jour :
 #
@@ -19,7 +19,7 @@ name: Bulletin du soir
 
 on:
   schedule:
-    - cron: '0 13 * * *'      # 13h00 UTC = 16h00 aux Comores (UTC+3)
+    - cron: '30 16 * * *'     # 16h30 UTC = 19h30 aux Comores (UTC+3)
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
       publier_sur_facebook:
@@ -102,6 +102,7 @@ jobs:
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 publier_fb.py
 
       - name: Publier sur la page Facebook
@@ -110,6 +111,7 @@ jobs:
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 publier_fb.py --publier
 
       - name: Garder aussi une copie téléchargeable depuis cette exécution

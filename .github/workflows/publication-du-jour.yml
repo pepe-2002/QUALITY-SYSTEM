@@ -1,0 +1,71 @@
+# La publication de midi, tous les jours, d'après le calendrier de la semaine.
+#
+#   lundi     comment ça marche      vendredi  la diaspora
+#   mardi     l'île                  samedi    la destination
+#   mercredi  les prix               dimanche  l'institutionnel
+#   jeudi     s'abonner à la page
+#
+# Le calendrier est dans moheligo/pub/flyers/calendrier.py — et il tire ses
+# visuels et ses textes de page.py, la même source que la page du patron.
+#
+# Ce travail est LÉGER : les visuels sont déjà dans le dépôt, donc ni Chromium
+# ni rendu — quelques secondes suffisent. Le bulletin du soir, lui, garde son
+# propre workflow parce qu'il doit être fabriqué le jour même.
+#
+# DEUX INTERRUPTEURS, dans cet ordre :
+#   variable PAUSE_FB = oui    → le frein d'urgence, plus rien ne part
+#   variable PUBLIER_FB = oui  → arme la publication automatique
+# Sans PUBLIER_FB, ce travail se contente d'une répétition à blanc : il affiche
+# ce qu'il aurait publié. Marche à suivre : moheligo/pub/flyers/LIER-FACEBOOK.md
+
+name: Publication du jour
+
+on:
+  schedule:
+    - cron: '30 9 * * *'       # 09h30 UTC = 12h30 aux Comores (heure de pointe)
+  workflow_dispatch:
+    inputs:
+      publier_sur_facebook:
+        description: 'Publier vraiment sur la page Facebook ?'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication-du-jour
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow      # pour alléger les PNG trop lourds
+
+      - name: Ce que le calendrier prévoit cette semaine
+        working-directory: moheligo/pub/flyers
+        run: python3 calendrier.py
+
+      - name: Répétition à blanc
+        if: vars.FB_PAGE_ID != ''
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: python3 programme.py
+
+      - name: Publier
+        if: vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: python3 programme.py --publier

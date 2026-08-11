@@ -21,6 +21,7 @@ fait foi : on publie une prévision, pas une garantie.
 """
 import argparse
 import json
+import pathlib
 import subprocess
 import sys
 import time
@@ -28,6 +29,8 @@ from datetime import date, datetime, timedelta, timezone
 
 LAT, LON = -12.08, 43.54          # milieu du couloir Ouroveni – Hoani
 TZ = 'Indian%2FComoro'
+# Le proxy de session impose son propre certificat ; sur GitHub ce fichier
+# n'existe pas et curl refuse de démarrer (erreur 77). D'où le test d'existence.
 CACERT = '/root/.ccr/ca-bundle.crt'
 
 MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
@@ -50,8 +53,10 @@ def api(url, essais=4):
     """Open-Meteo passe par le proxy de session : prévoir les coupures TLS."""
     dernier = ''
     for n in range(essais):
-        out = subprocess.run(['curl', '-sS', '--max-time', '25', '--cacert', CACERT, url],
-                             capture_output=True, text=True)
+        cmd = ['curl', '-sS', '--max-time', '25']
+        if pathlib.Path(CACERT).exists():
+            cmd += ['--cacert', CACERT]
+        out = subprocess.run(cmd + [url], capture_output=True, text=True)
         if out.returncode == 0 and out.stdout.strip():
             try:
                 return json.loads(out.stdout)

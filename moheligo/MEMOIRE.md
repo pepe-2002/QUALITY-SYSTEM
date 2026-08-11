@@ -387,6 +387,20 @@ recharger ce sujet ici, ce n'est pas du marketing.
   1 € = 492 FC. **Avant chaque visuel « prix », relire ces deux fichiers** — un
   tarif faux sur une affiche, c'est une promesse qu'on ne tient pas.
   🔓 **Le seul verrou qui reste sur les visuels promo : les images du patron.**
+  ✅ Le patron a validé (« c'est joli, publie-le demain ») et **autorisé
+  l'avancée de `main`**.
+  🚨 **PIÈGE À NE PLUS JAMAIS OUBLIER — le robot ne voit que `main`.** Un
+  workflow déclenché par `schedule` est lancé par GitHub **sur la branche par
+  défaut**, et `actions/checkout@v4` sans `ref` télécharge donc **`main`**, pas
+  la branche de travail. Un visuel commité seulement sur ma branche
+  **n'existe pas** pour la publication de 12h30 : le calendrier retomberait sur
+  l'ancienne variante. **Règle : après validation d'un visuel qui doit partir
+  automatiquement, vérifier que `main` le contient**
+  (`git ls-tree origin/main <fichier>` et `git show origin/main:.../calendrier.py`).
+  Avancer `main` demande l'accord explicite du patron — il l'a donné ce soir.
+  ✅ Vérifié après l'avancée : `du_jour(2026-08-12)` renvoie bien
+  `flyer-prix-facebook.png` (858 ko, sous la limite de 3,5 Mo, donc aucun
+  ré-encodage) et le texte « LE PRIX, TU LE CONNAIS AVANT DE PAYER. »
 
 - **11/08/2026 (LA LIAISON FACEBOOK MARCHE)** — 🎉 **Premier bulletin publié
   automatiquement sur la page** (mercredi 12 août, mer peu agitée), et jeton

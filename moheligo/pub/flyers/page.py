@@ -60,20 +60,6 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
-    dict(png='flyer-personnage-facebook.png', titre='ESSAI — avec un personnage',
-         note='À valider<br>voyageur dessiné, pas une vraie personne', texte="""TRAVERSEZ VERS MOHÉLI, SEREINEMENT.
-
-La place est prise avant d'arriver au port, et le billet est déjà dans le téléphone.
-
-1. Vous choisissez votre départ sur moheligo.com
-2. Vous payez par MVola ou KartaPay
-3. Vous embarquez, billet QR en main
-
-15 000 FC la traversée. Ouroveni et Chindini vers Hoani et Fomboni.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-#MoheliGo #Mohéli #Comores #Traversée"""),
     dict(png='flyer-aerien-facebook.png', titre='Le flyer « composition »',
          note='Sans date<br>le plus moderne', texte="""TRAVERSEZ VERS MOHÉLI, SEREINEMENT.
 

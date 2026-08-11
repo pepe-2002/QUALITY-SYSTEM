@@ -354,6 +354,21 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (personnages)** — Le patron a montré une affiche **Royal Air**
+  (fond dégradé profond, objets qui flottent, arche pointillée, barre sociale en
+  pied) et demandé la même énergie. Résultat : `flyer13-aerien-fb.html` →
+  `flyer-aerien-facebook.png`, avec un **hublot** (notre vedette) et un billet QR
+  à la place de l'humain.
+  Il a ensuite assoupli sa règle : **« si tu peux générer des personnes ça va,
+  mais jamais des personnes réelles »**. Or **aucun outil de génération d'images
+  n'est disponible dans cette session** : j'ai donc dessiné un voyageur en SVG à
+  plat (`flyer14-personnage-fb.html`, conservé comme gabarit).
+  🚫 **Verdict du patron : « ça fait débutant ».** Le personnage a été retiré de
+  la page. **RÈGLE À TENIR : pas de personnage dessiné à la main.** Un dessin
+  vectoriel se voit toujours à côté d'un rendu 3D ou d'une photo. Le patron
+  **fournira lui-même des images générées** ; d'ici là, **aucune personne sur
+  les visuels**, on reste sur les objets, la mer et la typographie.
+
 - **11/08/2026 (liaison Facebook, diagnostic)** — 🚨 **Le numéro donné par le
   patron (1055072317068064) n'est PAS une Page** : la requête ne renvoie que
   `name` et `link`, **jamais `category`** — or `category` n'existe que sur une

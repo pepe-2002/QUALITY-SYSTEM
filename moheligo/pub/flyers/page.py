@@ -95,6 +95,33 @@ Une question ? WhatsApp +269 479 43 28
 
 # Textes sans image : à copier tels quels dans une publication Facebook.
 TEXTES = [
+    dict(titre='Texte institutionnel — « grand conglomérat »', texte="""ENTRE DEUX ÎLES, IL Y A UN SERVICE.
+
+Pendant longtemps, traverser vers Mohéli voulait dire se lever avant le jour,
+descendre au port, et attendre de savoir.
+
+MoheliGo a été construit pour supprimer cette attente.
+
+Une plateforme. Quatre ports. Une réservation de deux minutes.
+Un billet qui existe avant que vous arriviez au quai.
+Un paiement qui part de votre téléphone — ou de celui d'un proche, à dix mille
+kilomètres de là.
+Un état de la mer consulté la veille, au lieu d'être découvert le matin.
+
+Nous ne vendons pas des places de vedette. Nous rendons une liaison prévisible.
+
+C'est le travail d'une infrastructure : retirer l'incertitude, puis se faire
+oublier.
+
+moheligo.com
+Grande Comore et Mohéli — Union des Comores"""),
+
+    dict(titre='Version très courte, même registre', texte="""Quatre ports. Deux îles. Une liaison prévisible.
+
+Réservation, billet QR, paiement mobile et état de la mer : moheligo.com
+
+MoheliGo — Union des Comores"""),
+
     dict(titre="Pour faire s'abonner à la page", texte="""POURQUOI S'ABONNER À CETTE PAGE ?
 
 Parce qu'ici, chaque soir, vous trouverez la mer du lendemain matin sur le

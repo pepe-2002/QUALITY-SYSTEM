@@ -4,6 +4,61 @@
 
 ---
 
+## 🏛️ Texte institutionnel « grand conglomérat » — 2ᵉ tentative (09/08/2026)
+
+Le patron a redemandé ce registre (« réessaie »). Ce qui change par rapport à la
+version du 07/08 : plus aucune liste de fonctionnalités, aucune interpellation,
+aucun hashtag. Des phrases courtes, une position — pas une promotion. La marque
+parle de ce qu'elle *est*, pas de ce qu'elle *offre*.
+
+**Ce registre suppose de renoncer à trois choses** : les hashtags (une
+institution n'en met pas), le tutoiement, et l'appel à l'action explicite. On
+gagne en autorité, on perd un peu en clics : à réserver aux publications
+d'image, pas aux publications qui doivent faire réserver le soir même.
+
+### Version principale
+
+```
+ENTRE DEUX ÎLES, IL Y A UN SERVICE.
+
+Pendant longtemps, traverser vers Mohéli voulait dire se lever avant le jour,
+descendre au port, et attendre de savoir.
+
+MoheliGo a été construit pour supprimer cette attente.
+
+Une plateforme. Quatre ports. Une réservation de deux minutes.
+Un billet qui existe avant que vous arriviez au quai.
+Un paiement qui part de votre téléphone — ou de celui d'un proche, à dix mille
+kilomètres de là.
+Un état de la mer consulté la veille, au lieu d'être découvert le matin.
+
+Nous ne vendons pas des places de vedette. Nous rendons une liaison prévisible.
+
+C'est le travail d'une infrastructure : retirer l'incertitude, puis se faire
+oublier.
+
+moheligo.com
+Grande Comore et Mohéli — Union des Comores
+```
+
+### Version très courte, même registre
+
+```
+Quatre ports. Deux îles. Une liaison prévisible.
+
+Réservation, billet QR, paiement mobile et état de la mer : moheligo.com
+
+MoheliGo — Union des Comores
+```
+
+### Premier commentaire (si vous voulez quand même le lien en commentaire)
+
+```
+moheligo.com — assistance : +269 479 43 28
+```
+
+---
+
 ## 📣 Textes seuls — abonnement à la page et usage de l'application (09/08/2026)
 
 Trois textes **sans image** (ou à publier avec une photo du patron), demandés

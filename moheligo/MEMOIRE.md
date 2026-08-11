@@ -342,6 +342,18 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **09/08/2026 (suite)** — « Écris un autre texte pour la pub style grand
+  conglomérat, réessaie. » Deuxième tentative, nettement plus tenue que celle du
+  07/08 : « ENTRE DEUX ÎLES, IL Y A UN SERVICE » — phrases courtes, aucune liste
+  de fonctionnalités, aucun hashtag, aucun appel à l'action, et une chute qui
+  assume la position (« C'est le travail d'une infrastructure : retirer
+  l'incertitude, puis se faire oublier »). Plus une version en trois lignes.
+  **Ce que ce registre coûte, à dire au patron** : sans hashtags ni appel à
+  l'action, on gagne en autorité et on perd en clics. À réserver aux
+  publications d'image ; garder le registre promo pour faire réserver le soir.
+  Les deux textes sont dans `page.py` (liste `TEXTES`) et dans
+  `pub/textes-publications.md`.
+
 - **09/08/2026** — « Dépasse-toi encore, ça doit être lumineux. » L'affiche a
   été refaite en version claire : rampe duotone qui ne descend jamais dans le
   noir, **voile clair sur les bords au lieu d'un vignettage sombre** (le geste

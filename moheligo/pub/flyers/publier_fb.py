@@ -80,11 +80,25 @@ def nettoyer_jeton(brut):
     source d'erreur. Le patron colle donc l'adresse complète : on retrouve la
     clé nous-mêmes. Coûte trois lignes, économise un aller-retour.
     """
+    from urllib.parse import unquote
     j = (brut or '').strip().strip('"\'')
+    # Chrome copie parfois l'adresse ENCODÉE (%23access_token%3D...) : sans ce
+    # décodage, le motif n'est pas reconnu, l'adresse entière part comme jeton,
+    # et Facebook répond « Bad signature » (code 190). Vécu le 11/08/2026.
+    j = unquote(unquote(j))
     if 'access_token=' in j:
         j = j.split('access_token=', 1)[1]
-    j = j.split('&', 1)[0].split('#', 1)[0]
-    return j.strip()
+    for sep in ('&', '#', '?', ' ', '\n', '\r', '\t'):
+        j = j.split(sep, 1)[0]
+    j = j.strip()
+    # un jeton Meta commence par EAA et fait au moins ~80 caractères : si ce
+    # n'est pas le cas, mieux vaut le dire tout de suite que de laisser
+    # Facebook répondre « Bad signature ».
+    if j and not (j.startswith('EAA') and len(j) > 60):
+        print('⚠️ La valeur de FB_PAGE_TOKEN ne ressemble pas à un jeton Meta '
+              '(%d caractères, commence par « %s »). Recoller la clé.'
+              % (len(j), j[:6]), file=sys.stderr)
+    return j
 
 
 def jeton_de_page(page, jeton):

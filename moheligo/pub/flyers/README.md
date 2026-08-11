@@ -113,6 +113,17 @@ python3 publier_fb.py --publier            # pour de vrai
   curl par son **entrée standard** (`-K -`, en-tête `Authorization`).
 - ⚠️ **Ne jamais demander le jeton dans la conversation** : tout y est
   enregistré. Un jeton collé dans un message est un jeton à refaire.
+- ⚠️ **Le certificat du proxy ne doit servir que s'il est lisible.** Les scripts
+  passaient `--cacert /root/.ccr/ca-bundle.crt` en dur : sur les serveurs GitHub
+  ce fichier n'existe pas (curl : erreur 77) et `/root` n'est même pas lisible,
+  donc `Path.exists()` lève `PermissionError`. La bonne forme est
+  `os.path.isfile(CACERT)`, qui avale les erreurs d'accès. Le tuyau a échoué
+  deux fois là-dessus avant de passer — **un workflow non essayé est un workflow
+  qui ne marche pas.**
+- ⚠️ **Facebook refuse les photos de plus d'environ 4 Mo** alors que nos flyers
+  pèsent 4 à 6,5 Mo : `publier_fb.preparer()` repasse en JPEG 92 au-delà de
+  3,5 Mo (6019 ko → 901 ko, invisible à l'œil puisque Facebook recompresse de
+  toute façon).
 - Le message passe par un fichier temporaire (`-F "message=<fichier"` lit la
   *valeur* du champ dans le fichier) : aucun ennui de guillemets ni de retours
   à la ligne.
@@ -120,7 +131,8 @@ python3 publier_fb.py --publier            # pour de vrai
 ### Le tuyau : le bulletin se refait tout seul
 
 `.github/workflows/bulletin-du-soir.yml` fait tourner ces deux commandes sur un
-serveur GitHub **chaque jour à 16h, heure des Comores**, et dépose le résultat
+serveur GitHub **chaque jour à 19h30, heure des Comores** (l'heure de pointe du
+soir), et `publication-du-jour.yml` publie la publication thématique **à 12h30**, et dépose le résultat
 sur la branche `bulletin-du-jour`. Deux adresses fixes, toujours à jour :
 
 - le visuel : `github.com/pepe-2002/QUALITY-SYSTEM/blob/bulletin-du-jour/flyer-soir-facebook.png`

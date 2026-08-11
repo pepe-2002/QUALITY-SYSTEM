@@ -354,6 +354,41 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (fin de journée)** — « Pourquoi le bulletin du soir seulement ?
+  c'est toi le directeur marketing et commercial, tu vas tout gérer les pubs. »
+  Il a raison, et je m'étais arrêté trop tôt. **Toute la semaine est désormais
+  automatisée** : `calendrier.py` (lundi comment ça marche, mardi l'île,
+  mercredi les prix, jeudi s'abonner, vendredi la diaspora, samedi la
+  destination, dimanche l'institutionnel) + `programme.py` + le workflow
+  `publication-du-jour.yml` à **12h30**. Le bulletin passe de 16h à **19h30**.
+  Deux publications par jour, aux deux heures de pointe.
+  - `calendrier.py` **tire ses visuels et ses textes de `page.py`** : une seule
+    source de vérité, rien n'est recopié. Chaque jour a plusieurs variantes,
+    choisies selon le numéro de semaine ISO, **contre l'usure** — sept
+    publications par semaine tirées de quatre visuels se voient au bout de
+    quinze jours. Il faut continuer à produire des visuels neufs.
+  - Nouveau **frein d'urgence** : variable de dépôt `PAUSE_FB = oui` → plus rien
+    ne part. Vérifié dans les scripts, pas seulement dans les workflows. À
+    utiliser sans hésiter s'il arrive quelque chose en mer : une pub joyeuse le
+    jour d'un accident ne se rattrape pas.
+  - 🚨 **DEUX BOGUES QUI AURAIENT TUÉ LA PROMESSE, trouvés en lançant le
+    workflow pour de vrai** : ① les scripts passaient `--cacert` vers le
+    certificat du proxy de session, absent sur GitHub (curl erreur 77) — et ma
+    première correction, `Path.exists()`, levait `PermissionError` parce que
+    `/root` n'est pas lisible chez GitHub ; la bonne forme est
+    `os.path.isfile()`. ② **Facebook refuse les photos de plus de ~4 Mo** et nos
+    flyers pèsent 4 à 6,5 Mo : toutes les publications auraient été rejetées.
+    `publier_fb.preparer()` repasse en JPEG 92 au-delà de 3,5 Mo.
+    **Leçon : un workflow qu'on n'a jamais lancé est un workflow qui ne marche
+    pas.** Le tuyau a échoué trois fois avant de déposer son premier bulletin
+    (branche `bulletin-du-jour`, 11/08 à 13h22 heure des Comores).
+  - La branche a été **fusionnée dans `main`** avec l'accord explicite du patron
+    (sans quoi GitHub n'affiche pas « Run workflow » et n'applique pas
+    l'horaire : une tâche planifiée ne tourne que depuis la branche par défaut).
+  - Reste à faire de son côté : ranger `FB_PAGE_TOKEN` (secret) et `FB_PAGE_ID`
+    (variable), essayer à blanc, puis créer `PUBLIER_FB = oui`. Et **refaire un
+    jeton durable** : celui de l'explorateur expire en une à deux heures.
+
 - **11/08/2026 (soir)** — « Montre comment lier la page FB à toi. » Il n'existe
   **aucun connecteur Facebook dans Claude** : la liaison durable passe par
   GitHub. Construit : `pub/flyers/publier_fb.py` (Graph API, publie l'image +

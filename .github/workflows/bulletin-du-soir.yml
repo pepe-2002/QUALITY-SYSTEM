@@ -78,8 +78,8 @@ jobs:
           - \`texte-du-jour.txt\` : le texte du post et le premier commentaire.
           - \`bulletin.json\` : les chiffres bruts.
 
-          Refait automatiquement chaque jour à 16h, heure des Comores.
-          Publier entre 16h et 19h. Ne jamais republier le flyer de la veille.
+          Refait ET publié automatiquement chaque jour à 19h30, heure des Comores.
+          Ne jamais republier le flyer de la veille : il annonce une date.
           EOF
           cd /tmp/depot
           git init -q -b bulletin-du-jour

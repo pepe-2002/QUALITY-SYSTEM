@@ -52,6 +52,18 @@ jobs:
         working-directory: moheligo/pub/flyers
         run: python3 calendrier.py
 
+      - name: Est-ce que la liaison Facebook est configurée ?
+        run: |
+          if [ -z "${{ vars.FB_PAGE_ID }}" ]; then
+            echo "::warning::FB_PAGE_ID absent — les etapes Facebook seront sautees et RIEN ne sera publie. Verifier le nom exact de la variable dans Settings > Secrets and variables > Actions."
+          elif [ -z "${{ secrets.FB_PAGE_TOKEN }}" ]; then
+            echo "::warning::FB_PAGE_TOKEN absent — la liaison echouera. Verifier le nom exact du secret."
+          elif [ "${{ vars.PUBLIER_FB }}" != "oui" ]; then
+            echo "Liaison configuree. Publication DESARMEE (PUBLIER_FB n'est pas a « oui ») : repetition a blanc seulement."
+          else
+            echo "Liaison configuree et publication ARMEE."
+          fi
+
       - name: Vérifier la liaison avec la page (lecture seule)
         if: vars.FB_PAGE_ID != ''
         working-directory: moheligo/pub/flyers

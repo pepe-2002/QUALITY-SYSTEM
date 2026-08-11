@@ -80,12 +80,33 @@ def config():
 
 
 def verifier():
+    """Lecture seule : qui est au bout du fil, et est-ce bien une PAGE ?
+
+    On ne demande que `name`, plus `metadata=1` qui donne le type de l'objet.
+    Demander un champ propre aux pages (followers_count) sur un compte
+    personnel fait échouer l'appel avec un message trompeur — c'est arrivé.
+    """
     page, jeton = config()
-    rep = curl(f'{BASE}/{page}?fields=name,followers_count,link', jeton=jeton)
+    rep = curl(f'{BASE}/{page}?fields=name&metadata=1', jeton=jeton)
+    type_objet = (rep.get('metadata') or {}).get('type', 'inconnu')
+    print('Répond au nom de : « %s »' % rep.get('name', '?'))
+    print('Type d\'objet     :', type_objet)
+
+    if type_objet != 'page':
+        sys.exit(
+            "\nCe n'est PAS une page mais un objet « %s ».\n"
+            "FB_PAGE_ID contient sans doute l'identifiant du compte personnel.\n"
+            "Le bon numéro s'obtient avec la requête :\n"
+            "    me/accounts?fields=name,id,access_token\n"
+            "C'est le « id » de la ligne MoheliGo qu'il faut mettre dans "
+            "FB_PAGE_ID (et son « access_token » dans FB_PAGE_TOKEN)."
+            % type_objet)
+
+    fans = curl(f'{BASE}/{page}?fields=followers_count,link', jeton=jeton)
     print('Liaison OK — page « %s »' % rep.get('name', '?'))
-    if 'followers_count' in rep:
-        print('Abonnés :', rep['followers_count'])
-    print('Adresse :', rep.get('link', '—'))
+    if 'followers_count' in fans:
+        print('Abonnés :', fans['followers_count'])
+    print('Adresse :', fans.get('link', '—'))
 
 
 def decouper(chemin):

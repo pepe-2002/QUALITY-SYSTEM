@@ -44,7 +44,7 @@ CACERT = '/root/.ccr/ca-bundle.crt'               # proxy de session ; absent su
 def curl(url, methode='GET', formulaires=(), jeton=None):
     """Appel Graph API. Le jeton passe par l'entrée standard, jamais par argv."""
     cmd = ['curl', '-sS', '--max-time', '40', '-X', methode]
-    if pathlib.Path(CACERT).exists():
+    if os.path.isfile(CACERT):
         cmd += ['--cacert', CACERT]
     for f in formulaires:
         cmd += ['-F', f]

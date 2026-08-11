@@ -21,6 +21,7 @@ fait foi : on publie une prévision, pas une garantie.
 """
 import argparse
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -54,7 +55,7 @@ def api(url, essais=4):
     dernier = ''
     for n in range(essais):
         cmd = ['curl', '-sS', '--max-time', '25']
-        if pathlib.Path(CACERT).exists():
+        if os.path.isfile(CACERT):
             cmd += ['--cacert', CACERT]
         out = subprocess.run(cmd + [url], capture_output=True, text=True)
         if out.returncode == 0 and out.stdout.strip():

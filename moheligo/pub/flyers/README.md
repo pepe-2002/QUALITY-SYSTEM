@@ -193,6 +193,21 @@ Le dernier argument est le facteur d'échelle : 1240 × 1754 CSS × 2 = A4 à
   `{{HMIN}}`/`{{HMAX}}`). Règle générale : **nommer la situation plutôt que
   répéter le chiffre.**
 
+## La page du patron contient aussi le plan publicitaire (11/08/2026)
+
+`page.py` génère, entre la météo et les flyers, un bloc **« Le plan
+publicitaire »** : dix chapitres dépliables (`PLAN`), avec trois tableaux rendus
+en lignes `.ligne` réutilisées de la météo — `SEMAINE` (calendrier hebdo),
+`PALIERS` (budget) et `JOURS7` (les sept premiers jours). Les paragraphes
+d'alerte prennent la classe `.attention` (fond or).
+
+- La version longue et éditable est `pub/plan-publicitaire.md` ; la page en est
+  la version téléphone. **Quand le plan change, changer les deux.**
+- ⚠️ Les chapitres passent par `str.format()` pour insérer les tableaux : ne pas
+  mettre d'accolade littérale dans le HTML d'un chapitre.
+- Vérifier le rendu à 430 px de large avant de publier (script jetable avec
+  Playwright, `details.open = true`) : c'est la largeur du téléphone du patron.
+
 ## L'affiche duotone : ce que dit la recherche sur les belles affiches
 
 Recherche du 08/08/2026 (tendances graphiques 2026 + principes de l'affiche de

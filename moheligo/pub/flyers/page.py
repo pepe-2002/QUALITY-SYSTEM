@@ -177,6 +177,188 @@ moheligo.com — deux minutes, billet QR, paiement MVola.
 ]
 
 
+# ---------------------------------------------------------------------------
+# Le plan publicitaire (demande du patron du 11/08/2026). La version longue est
+# dans `pub/plan-publicitaire.md` ; ici c'est la version qu'on lit sur un
+# téléphone : un chapitre = un volet dépliable, pas de tableau qui déborde.
+# ---------------------------------------------------------------------------
+PLAN_INTRO = ("On a déjà tout le matériel : 5 vidéos, une dizaine de flyers, le "
+              "bulletin mer. Ce qui manque, ce n'est pas du matériel — c'est du "
+              "<b>rythme</b>, du <b>terrain</b> et une <b>mesure</b>.")
+
+SEMAINE = [
+    ('Tous les soirs', 'Le bulletin mer', "19h30-21h · c'est le rendez-vous, il ne saute jamais"),
+    ('Lundi', 'Comment ça marche', 'la vidéo démo de l\'app'),
+    ('Mardi', "L'île", "l'affiche MOHÉLI, registre émotion"),
+    ('Mercredi', 'Les prix', 'le flyer promo + les quatre ports'),
+    ('Jeudi', 'La preuve', 'un vrai billet QR, un vrai client'),
+    ('Vendredi', 'La diaspora', "jour de paie en Europe — le meilleur jour"),
+    ('Samedi', 'La destination', 'la vidéo tourisme'),
+    ('Dimanche', "L'institutionnel", 'le texte « Entre deux îles »'),
+]
+
+PALIERS = [
+    ('Palier 0', '0 FC', 'Le rythme seul + tournée des ports. Croissance lente mais réelle.'),
+    ('Palier 1', '≈ 25 000 FC / mois',
+     '50 affiches couleur + 2 mises en avant par semaine. <b>Ma recommandation.</b>'),
+    ('Palier 2', '≈ 100 000 FC / mois',
+     'Palier 1 + campagne diaspora continue + reciblage des paniers abandonnés.'),
+]
+
+JOURS7 = [
+    ('J1', 'Publier le film Amina', 'lien en premier commentaire · bulletin le soir'),
+    ('J2', 'Ouvrir le tableau des 5 chiffres', 'noter les valeurs de départ'),
+    ('J3', 'Imprimer 20 affiches A4', 'les fichiers 300 dpi sont prêts'),
+    ('J4', 'Tournée Ouroveni + Chindini', 'affiches, et parler aux commandants'),
+    ('J5', 'Publication diaspora', 'vendredi soir, jour de paie en Europe'),
+    ('J6', 'Demander 3 témoignages', 'un mot + une photo de billet'),
+    ('J7', 'Relever les 5 chiffres', 'et décider du palier de budget'),
+]
+
+
+def lignes_html(rangs):
+    return ''.join(f'<div class="ligne"><span class="q">{q}</span>'
+                   f'<span class="v">{v}</span><span class="d">{d}</span></div>'
+                   for q, v, d in rangs)
+
+
+PLAN = [
+    ('1. Le diagnostic', """
+<p>Notre problème n'est pas que les gens n'aiment pas le service. C'est que
+<b>la plupart ne sait pas qu'on existe</b>, et que ceux qui savent hésitent à
+payer en ligne un bateau qu'ils ont toujours payé en espèces au port.</p>
+<p>Donc trois chantiers, dans cet ordre :</p>
+<ul>
+  <li><b>La notoriété</b> — « MoheliGo, c'est quoi ? » → présence quotidienne
+      et affiches au port.</li>
+  <li><b>La confiance</b> — « Si je paie, j'embarque vraiment ? » → des preuves :
+      vrais billets, vrais clients, bulletin mer.</li>
+  <li><b>La friction</b> — « Comment je paie, moi ? » → MVola et KartaPay
+      expliqués en trois images, et un WhatsApp qui répond vite.</li>
+</ul>
+<p class="attention">Ne jamais payer de la publicité pour envoyer des gens dans
+un tunnel qui fuit. Avant de dépenser un franc : vérifier que réserver et payer
+prend moins de trois minutes sur un téléphone bas de gamme en 3G.</p>"""),
+
+    ('2. Les quatre cibles, par valeur', """
+<ul>
+  <li><b>1. La diaspora payeuse</b> (France, Mayotte, Golfe) — carte bancaire,
+      revenus en euros, famille à faire voyager. Elle ne prend pas le bateau :
+      <b>elle paie le bateau des autres.</b> La plus rentable.</li>
+  <li><b>2. Les habitués</b> — Mohéliens installés à Grande Comore, commerçants,
+      fonctionnaires. Un client gagné = dix traversées. C'est le volume.</li>
+  <li><b>3. Les grands moments</b> — mariages, deuils, rentrée scolaire. Voyage
+      décidé en urgence : celui qui est visible à ce moment-là gagne.</li>
+  <li><b>4. Les touristes et les lodges</b> — petit volume, gros panier,
+      excellent pour l'image.</li>
+</ul>"""),
+
+    ('3. Notre arme, celle que personne n\'a', """
+<p><b>Le bulletin mer quotidien.</b> Personne aux Comores ne publie chaque soir,
+en chiffres, l'état de la mer du lendemain matin sur le couloir
+Ouroveni – Hoani.</p>
+<p>C'est le cœur du plan, pour une raison de fond : <b>on ne s'abonne pas à une
+page qui vend, on s'abonne à une page qui sert.</b> Le bulletin est le service
+gratuit ; la réservation est ce qu'on vend derrière.</p>
+<p>Autrement dit : MoheliGo doit devenir <b>le média de la mer entre les deux
+îles</b>. Celui qui vérifie la mer chez nous chaque soir réservera chez nous le
+jour où il traverse — sans qu'on ait besoin de le convaincre.</p>
+<p class="attention">Le prix à payer : c'est un engagement <b>tous les soirs</b>.
+Un bulletin un soir sur trois ne crée aucune habitude. Soit on tient sept soirs
+sur sept, soit on annonce « du lundi au vendredi » et on s'y tient.</p>"""),
+
+    ('4. Étage 1 — le rythme (0 FC)', """
+<p>C'est la base. Rien de payant ne marche sans ça. La semaine type, aux heures
+de pointe comoriennes (12h-14h et 19h-22h) :</p>
+{semaine}
+<p style="margin-top:13px">Quatre règles d'exécution :</p>
+<ul>
+  <li>Le <b>lien va dans le premier commentaire</b>, pas dans le post.</li>
+  <li><b>Statut WhatsApp chaque soir</b> avec le bulletin. Aux Comores, WhatsApp
+      touche plus de monde que le fil Facebook — et c'est notre canal le plus
+      sous-exploité. Gratuit.</li>
+  <li><b>Répondre en moins de 10 minutes</b> entre 12h-14h et 19h-22h. Un message
+      sans réponse le soir, c'est une réservation perdue. C'est le levier de
+      conversion le moins cher de tout ce plan.</li>
+  <li>Une seule idée par publication. Jamais deux appels à l'action.</li>
+</ul>"""),
+
+    ('5. Étage 2 — le terrain (coût : impression)', """
+<p>Aux Comores, l'affiche physique bat le ciblage publicitaire, parce qu'elle est
+là <b>au moment exact</b> où la personne pense au voyage. Par ordre
+d'efficacité :</p>
+<ul>
+  <li><b>Les ports</b> — Chindini, Ouroveni, Hoani, Fomboni. Celui qui attend la
+      vedette s'ennuie : il scanne.</li>
+  <li><b>Les boutiques et cabines</b> autour des embarcadères et des gares
+      routières.</li>
+  <li><b>Les hôtels et lodges de Mohéli</b> — « vos clients réservent leur retour
+      depuis votre réception, en trois minutes ».</li>
+  <li><b>Les commandants et les équipages</b> — ce sont eux qu'on croit. Un
+      commandant qui dit « réserve sur MoheliGo » vaut dix publications.</li>
+  <li><b>Les taxis</b> de la route Moroni – Chindini.</li>
+</ul>
+<p>Les affiches A4 300 dpi sont déjà prêtes dans le dépôt, QR compris.</p>
+<p><b>Le code partenaire, sans une ligne de code :</b> chaque partenaire reçoit un
+mot à faire dire sur WhatsApp. On compte les mots reçus, on sait qui travaille,
+on récompense. À mettre en place tout de suite, ça ne coûte rien.</p>"""),
+
+    ('6. Étage 3 — le payant, après les deux autres', """
+<ul>
+  <li><b>La diaspora d'abord</b> — France (Marseille, Dunkerque, Paris), Mayotte,
+      puis le Golfe. C'est la seule cible qui paie en euros : le coût par
+      réservation y sera le meilleur.</li>
+  <li><b>Mettre en avant le bulletin</b> auprès du public comorien, avec pour
+      objectif les abonnés et pas les ventes. On achète l'audience une fois,
+      elle revient gratuitement chaque soir.</li>
+  <li><b>Le reciblage</b> de ceux qui ont commencé à payer sans finir. Demande
+      d'installer le pixel Meta sur le site.</li>
+</ul>
+<p class="attention">À vérifier avant de rien promettre : Meta se paie par carte
+bancaire ou PayPal — <b>MVola ne paie pas Facebook</b>. Sans carte utilisable,
+l'étage 3 n'existe pas, et le plan tient très bien sur les étages 1 et 2.</p>"""),
+
+    ('7. Le budget — trois paliers', """
+<p>Rappel de change : le franc comorien est arrimé à l'euro,
+<b>1 € = 492 FC</b>.</p>
+{paliers}
+<p style="margin-top:13px"><b>Palier 1 pendant un mois, en mesurant.</b> On ne
+passe au palier 2 que si le premier mois prouve un coût par réservation
+acceptable. Dépenser plus avant d'avoir mesuré, c'est acheter du bruit.</p>"""),
+
+    ('8. Cinq chiffres, relevés chaque dimanche', """
+<ul>
+  <li><b>Abonnés de la page</b> — le stock qu'on construit.</li>
+  <li><b>Visites sur moheligo.com</b> — l'intérêt qu'on génère.</li>
+  <li><b>Réservations payées</b> — la seule qui compte vraiment.</li>
+  <li><b>Abandon au paiement</b> — combien commencent, combien finissent.</li>
+  <li><b>Coût par réservation</b> — dépensé ÷ réservations payées.</li>
+</ul>
+<p class="attention">Si l'abandon au paiement est mauvais : on arrête la
+publicité et on répare le site d'abord. Et le seuil de décision est simple — le
+coût par réservation doit rester nettement sous la marge gagnée sur une
+traversée.</p>"""),
+
+    ('9. Ce que j\'attends de toi, patron', """
+<ul>
+  <li><b>La marge que tu gagnes par réservation.</b> Sans ce chiffre, aucune
+      publicité n'est jugeable. C'est la donnée la plus importante du plan.</li>
+  <li><b>Une carte pour payer Meta</b>, si on veut l'étage 3.</li>
+  <li><b>Trois témoignages de vrais clients</b> + une photo de billet QR. C'est le
+      contenu qui convertit le mieux, et le seul que je ne peux pas fabriquer :
+      inventer un témoignage, ça se retourne contre nous.</li>
+  <li><b>Le budget d'impression</b>, et qui fait la tournée des ports.</li>
+  <li><b>Tu ou vous ?</b> Ma recommandation : tutoyer partout, sauf
+      l'institutionnel et le A4 destiné aux partenaires.</li>
+</ul>"""),
+
+    ('10. Les sept premiers jours', """
+{jours7}
+<p style="margin-top:13px">Le seul engagement qui compte dans cette liste :
+<b>le bulletin, tous les soirs.</b> Le reste peut glisser d'un jour. Pas lui.</p>"""),
+]
+
+
 def api(url, essais=4):
     dernier = ''
     for n in range(essais):
@@ -251,6 +433,13 @@ def main():
         f'<div class="ligne"><span class="q">{q}</span><span class="v">{v}</span>'
         f'<span class="d">{d}</span></div>' for q, v, d in meteo_demain(demain))
 
+    chapitres = ''
+    for titre, corps in PLAN:
+        corps = corps.format(semaine=lignes_html(SEMAINE), paliers=lignes_html(PALIERS),
+                             jours7=lignes_html(JOURS7))
+        chapitres += (f'<details><summary>{titre}</summary>'
+                      f'<div class="plan">{corps}</div></details>')
+
     blocs = ''
     for i, f in enumerate(FLYERS, start=1):
         texte = (pathlib.Path(f['texte'][1:]).read_text().split('--- premier commentaire ---')[0].strip()
@@ -290,10 +479,10 @@ def main():
         embleme=b64('logo-emblem.png'),
         titre_jour=f'Demain, {fr(demain)}',
         releve=f"Relevé {fr(maintenant.date())} à {maintenant.strftime('%Hh%M')}, heure des Comores",
-        lignes=lignes, blocs=blocs)
+        lignes=lignes, plan_intro=PLAN_INTRO, chapitres=chapitres, blocs=blocs)
     pathlib.Path(args.sortie).write_text(html)
     print(args.sortie, round(len(html) / 1024), 'ko —', len(FLYERS), 'flyers,',
-          len(TEXTES), 'textes')
+          len(TEXTES), 'textes,', len(PLAN), 'chapitres de plan')
 
 
 GABARIT = '''<title>MoheliGo — la météo de demain et les flyers</title>
@@ -367,6 +556,19 @@ pre {{ margin:0; padding:0 18px 18px; white-space:pre-wrap; word-wrap:break-word
 .copie:focus-visible {{ outline:3px solid var(--gold); outline-offset:2px; }}
 footer {{ font-size:14px; color:var(--ink-soft); border-top:1px solid var(--line); padding-top:20px; }}
 footer b {{ color:var(--ink); }}
+
+/* le plan publicitaire */
+.intro {{ margin:0; padding:15px 18px; font-size:14.5px; color:var(--ink-soft); }}
+.intro b {{ color:var(--ink); }}
+.plan {{ padding:0 18px 6px; font-size:14.5px; }}
+.plan p {{ margin:0 0 12px; }}
+.plan ul {{ margin:0 0 12px; padding-left:19px; }}
+.plan li {{ margin-bottom:8px; }}
+.plan .ligne {{ padding:11px 0; grid-template-columns:108px 1fr; }}
+.plan .ligne .v {{ font-size:16px; }}
+.plan .attention {{ background:var(--gold); color:var(--gold-ink); font-weight:700;
+  border-radius:12px; padding:13px 15px; margin-bottom:12px; }}
+.plan details {{ border:0; }}
 </style>
 
 <div class="wrap">
@@ -379,10 +581,17 @@ footer b {{ color:var(--ink); }}
     <div class="tete"><b>La météo de demain</b><span>Mohéli et le couloir<br>Ouroveni – Hoani</span></div>
     {lignes}
   </section>
+
+  <section class="bloc">
+    <div class="tete"><b>Le plan publicitaire</b><span>Pour avoir<br>plus d'utilisateurs</span></div>
+    <p class="intro">{plan_intro}</p>
+    {chapitres}
+  </section>
 {blocs}
   <footer>Le bulletin du soir annonce <b>demain matin</b> : bon pour ce soir seulement.
     Les autres flyers n'ont pas de date, gardez-les. Les derniers blocs sont des
-    <b>textes seuls</b>, à publier sans image ou avec une de vos photos.</footer>
+    <b>textes seuls</b>, à publier sans image ou avec une de vos photos.
+    Le plan complet est aussi dans le dépôt : <b>moheligo/pub/plan-publicitaire.md</b>.</footer>
 </div>
 
 <script>

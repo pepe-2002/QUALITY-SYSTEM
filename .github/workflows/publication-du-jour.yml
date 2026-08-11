@@ -34,6 +34,12 @@ on:
         type: boolean
         default: false
 
+# Sans ceci, Python met sa sortie en memoire tampon quand elle est redirigee :
+# les messages d'erreur (stderr, non tamponne) apparaissent AVANT les lignes
+# normales, et on cherche l'erreur au mauvais endroit du journal. Vecu.
+env:
+  PYTHONUNBUFFERED: '1'
+
 permissions:
   contents: read
 

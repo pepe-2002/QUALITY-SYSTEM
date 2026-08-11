@@ -56,9 +56,15 @@ def abonnes():
         return None
     sys.path.insert(0, str(ICI))
     import publier_fb
-    rep = publier_fb.curl(f'{publier_fb.BASE}/{page}?fields=followers_count,fan_count',
-                          jeton=jeton, strict=False)
-    return rep.get('followers_count', rep.get('fan_count'))
+    # ⚠️ UN SEUL champ invalide fait rejeter TOUT l'appel chez Facebook. Donc un
+    # champ par appel, et on garde le premier qui répond. (Piège déjà rencontré
+    # le 11/08 sur followers_count — ne pas le repayer une troisième fois.)
+    for champ in ('followers_count', 'fan_count'):
+        rep = publier_fb.curl(f'{publier_fb.BASE}/{page}?fields={champ}',
+                              jeton=jeton, strict=False)
+        if champ in rep:
+            return rep[champ]
+    return None
 
 
 def main():

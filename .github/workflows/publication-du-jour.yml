@@ -68,7 +68,12 @@ jobs:
             echo "Liaison configuree et publication ARMEE."
           fi
 
+      # Diagnostic : elle LIT la page, ce qui demande pages_read_engagement.
+      # Publier n'en a pas besoin — donc cette etape ne doit jamais faire
+      # echouer le travail. continue-on-error garantit qu'un manque de droit de
+      # LECTURE n'empeche pas l'ECRITURE.
       - name: Vérifier la liaison avec la page (lecture seule)
+        continue-on-error: true
         if: vars.FB_PAGE_ID != ''
         working-directory: moheligo/pub/flyers
         env:

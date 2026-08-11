@@ -360,6 +360,31 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (LA LIAISON FACEBOOK MARCHE)** — 🎉 **Premier bulletin publié
+  automatiquement sur la page** (mercredi 12 août, mer peu agitée), et jeton
+  durable posé. `PUBLIER_FB = oui` : à partir du 12/08, **bulletin à 19h30 et
+  publication du jour à 12h30, sans intervention**.
+  **LA RECETTE QUI MARCHE, à ne plus jamais chercher :**
+  1. app dédiée avec le cas d'utilisation **« Tout gérer sur votre Page »**
+     (les cas d'utilisation ne se mélangent pas : une app « publicité » n'offre
+     jamais `pages_manage_posts`) ;
+  2. explorateur → **Utilisateur actuel** → quatre permissions :
+     `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`,
+     **`pages_manage_engagement`** (celle-ci pour COMMENTER — permission
+     différente de celle qui publie) ;
+  3. débogueur → **« Étendre le token d'accès »** → 60 jours ;
+  4. coller ce jeton **utilisateur** dans le secret : `jeton_de_page()` en dérive
+     tout seul le jeton de page, qui ne périme plus.
+  **LES SIX PIÈGES DE LA JOURNÉE** (quatre étaient de mon fait) :
+  ① un seul champ invalide fait rejeter TOUT l'appel Graph ; ② un jeton
+  d'utilisateur peut LIRE une page mais pas y PUBLIER ; ③ Chrome copie parfois
+  l'adresse encodée → « Bad signature » ; ④ stdout tamponné plaçait les erreurs
+  au mauvais endroit du journal (`PYTHONUNBUFFERED`) ; ⑤ commenter demande une
+  autre permission que publier — et son refus faisait échouer une publication
+  déjà réussie ; ⑥ une étape sautée laisse le voyant vert.
+  **Reste à faire** : refaire le jeton avant le 10/10/2026 (60 jours), et
+  fournir les images pour les visuels promo (les miens font « débutant »).
+
 - **11/08/2026 (les trois modèles)** — « Montre les flyers d'Apple et
   Coca-Cola pour trancher le modèle. » Recherche faite, et **trois registres
   coexistent désormais dans le dépôt** :

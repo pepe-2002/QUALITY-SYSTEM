@@ -354,6 +354,27 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (liaison Facebook, diagnostic)** — 🚨 **Le numéro donné par le
+  patron (1055072317068064) n'est PAS une Page** : la requête ne renvoie que
+  `name` et `link`, **jamais `category`** — or `category` n'existe que sur une
+  Page. C'est donc un **compte** qui porte le nom « MoheliGo ». Question posée au
+  patron : `me/accounts?fields=name,id,access_token` renvoie-t-il une ligne
+  MoheliGo, ou une liste vide ?
+  - Si une ligne existe → prendre **son** `id` et **son** `access_token`.
+  - Si la liste est vide → **MoheliGo est un profil, pas une Page**, et
+    **aucune API ne peut publier sur un profil personnel**. Il faudra créer une
+    vraie Page (ce qui apporte en plus : statistiques, publicité payante,
+    plusieurs administrateurs, pas de plafond d'amis).
+  ⚠️ Leçons de la mise au point, à ne pas repayer : ① **Facebook rejette la
+  requête entière dès qu'un seul champ demandé est invalide** — demander
+  `followers_count` faisait échouer `name` et `category` avec ; les champs
+  facultatifs vont dans un appel séparé tolérant (`curl(..., strict=False)`).
+  ② `metadata=1` n'est pas toujours renvoyé : un test qui ne répond pas ne
+  prouve rien. ③ Une étape de workflow **sautée laisse le voyant vert** — d'où
+  l'étape qui annonce l'état réel de la liaison.
+  ⚠️ Le patron a collé un jeton dans la conversation. Règle rappelée et écrite :
+  **une clé se colle dans un champ masqué, jamais dans une phrase.**
+
 - **11/08/2026 (fin de journée)** — « Pourquoi le bulletin du soir seulement ?
   c'est toi le directeur marketing et commercial, tu vas tout gérer les pubs. »
   Il a raison, et je m'étais arrêté trop tôt. **Toute la semaine est désormais

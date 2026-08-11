@@ -60,6 +60,11 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
+    dict(png='flyer-conglomerat-facebook.png', titre='Le « grand conglomérat »',
+         note='Sans date<br>registre Apple / institutionnel', texte="""Entre deux îles, il y a une mer. Et un service.
+
+MoheliGo — traversées maritimes des Comores.
+moheligo.com"""),
     dict(png='flyer-aerien-facebook.png', titre='Le flyer « composition »',
          note='Sans date<br>le plus moderne', texte="""TRAVERSEZ VERS MOHÉLI, SEREINEMENT.
 

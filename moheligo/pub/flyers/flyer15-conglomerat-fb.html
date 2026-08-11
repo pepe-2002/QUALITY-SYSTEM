@@ -1,0 +1,82 @@
+<!-- Flyer « grand conglomérat » — registre Apple / Coca-Cola institutionnel.
+     La règle de ce visuel, et elle est dure à tenir : UNE seule idée, UN seul
+     objet, UNE seule phrase, et beaucoup de vide. Pas de prix, pas de liste de
+     services, pas de numéro de téléphone, pas de hashtags. Le vide n'est pas de
+     la place perdue : c'est ce qui dit « nous n'avons pas besoin de crier ».
+     Ce que ces marques font et que les affiches locales ne font pas :
+       · une couleur qui possède tout le cadre (Coca-Cola : le rouge)
+       · un immense blanc tournant (Apple : marges très larges)
+       · le logo petit et discret : la marque n'a rien à prouver
+       · la typographie fait tout le travail
+     Rendu : node render.js flyer15-conglomerat-fb.html flyer-conglomerat-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:600; src:url(fonts/Archivo-600-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page {
+  position:relative; width:1080px; height:1350px; background:#F7F9FD;
+  padding:104px 130px 104px; display:flex; flex-direction:column;
+}
+/* une lumière très douce, pour que le blanc ne soit pas plat */
+.page::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(120% 70% at 78% 6%, rgba(28,79,168,.07) 0%, rgba(28,79,168,0) 60%);
+}
+
+/* la phrase : le seul élément qui compte */
+.mot { position:relative; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:112px; line-height:1.02; letter-spacing:-4.5px; color:#0F2A5C; }
+.mot em { font-style:normal; color:#1C4FA8; }
+.mot i { font-style:normal; display:block; color:#B8860D; }
+
+/* la traversée, réduite à sa plus simple expression */
+.trait { position:relative; margin-top:86px; display:flex; align-items:center; gap:0; }
+.trait .pt { width:15px; height:15px; border-radius:50%; background:#F6BC1C; flex:none;
+  box-shadow:0 0 0 7px rgba(246,188,28,.18); }
+.trait .ligne { flex:1; height:2px; background:linear-gradient(90deg,#F6BC1C,#D9A417); }
+.legende { position:relative; margin-top:26px; display:flex; justify-content:space-between;
+  font-size:16px; font-weight:500; letter-spacing:3.4px; color:#5C6E8B; }
+
+.vide { flex:1; }
+
+/* le pied : la marque, petite. Elle n'a rien à prouver. */
+.pied { position:relative; display:flex; align-items:center; gap:18px; }
+.pied img { width:56px; height:56px; border-radius:14px; display:block; }
+.pied .nom { font-family:'Archivo',sans-serif; font-weight:900; font-size:25px;
+  color:#0F2A5C; letter-spacing:-.7px; line-height:1.1; }
+.pied .nom span { color:#F6BC1C; }
+.pied .nom small { display:block; font-family:'Inter',sans-serif; font-weight:500;
+  font-size:14px; letter-spacing:2.2px; color:#8496B4; margin-top:5px; }
+.pied .site { margin-left:auto; font-family:'Archivo',sans-serif; font-weight:600;
+  font-size:22px; color:#1C4FA8; letter-spacing:-.4px; }
+</style>
+
+<div class="page">
+  <div class="vide" style="flex:.58"></div>
+
+  <div class="mot">
+    Entre deux îles,<br>
+    <em>il y a une mer.</em>
+    <i>Et un service.</i>
+  </div>
+
+  <div class="trait">
+    <div class="pt"></div><div class="ligne"></div><div class="pt"></div>
+  </div>
+  <div class="legende"><span>GRANDE COMORE</span><span>MOHÉLI</span></div>
+
+  <div class="vide"></div>
+
+  <div class="pied">
+    <img src="logo-emblem.png" alt="">
+    <div class="nom">Moheli<span>Go</span>
+      <small>TRAVERSÉES MARITIMES DES COMORES</small>
+    </div>
+    <div class="site">moheligo.com</div>
+  </div>
+</div>

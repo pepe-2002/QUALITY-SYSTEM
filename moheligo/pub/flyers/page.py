@@ -68,6 +68,22 @@ MoheliGo — traversées maritimes des Comores.
 Ouroveni · Chindini · Hoani · Fomboni
 
 Réservation en deux minutes : moheligo.com"""),
+    dict(png='flyer-chiffre-facebook.png', titre='⭐ CARTE BLANCHE — le chiffre',
+         note='Mon manuel appliqué à la lettre<br>aplat franc, un fait, zéro décor<br>DATÉ : à regénérer chaque jour',
+         texte="""DEMAIN MATIN, LA MER SERA À 0,9 M.
+
+Mer peu agitée entre Ouroveni et Hoani. Traversée normale, un peu de mouvement.
+Vent 17 km/h de sud-est, période de houle 9,0 secondes.
+
+Personne d'autre ne publie ce chiffre. Nous le faisons chaque soir, gratuitement,
+parce que partir sans savoir, c'est se lever à 4 heures pour rien.
+
+La mer des 7 prochains jours — et votre place — sur moheligo.com
+
+Prévision Open-Meteo Marine. Le bulletin officiel affiché dans l'application
+fait foi avant l'embarquement.
+
+#MoheliGo #Comores #Mohéli #MétéoMer #Traversée"""),
     dict(png='flyer-couleur-facebook.png', titre='Le « Coca-Cola »',
          note='Sans date<br>une couleur, une émotion', texte="""On se voit de l'autre côté.
 

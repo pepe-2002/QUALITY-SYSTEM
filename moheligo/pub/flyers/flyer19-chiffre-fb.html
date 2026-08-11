@@ -1,0 +1,107 @@
+<!-- « Fais-moi un flyer, ne suis pas mes indications, montre ce que tu peux faire »
+     (patron, 11/08/2026). Ce visuel est l'application stricte de mon propre
+     MANUEL-MARKETING, y compris de son § 10 bis où je diagnostique pourquoi mes
+     visuels faisaient débutant. D'où les interdictions que je me suis données :
+
+       ❌ aucun dégradé, aucun halo radial  → c'est la signature de l'outil gratuit
+       ❌ aucun ruban, aucun reflet, aucune vague, aucune carte flottante
+          → l'accumulation de dispositifs décoratifs fait bricolage
+       ❌ aucune photo → nos photos sont faibles ; mieux vaut assumer l'absence
+          d'image que la subir
+
+     Ce qui reste, et qui suffit :
+       ✅ UN aplat franc du marine de la marque (§ 1 : actif distinctif)
+       ✅ UNE idée (§ 2) : demain matin, la mer fera 0,9 m
+       ✅ DES FAITS, pas des adjectifs (§ 4, Ogilvy) : le chiffre EST l'accroche
+       ✅ le levier AUTORITÉ (§ 3), le seul que nos concurrents ne peuvent copier :
+          personne d'autre aux Comores ne publie cette donnée
+       ✅ le levier RÉCIPROCITÉ : c'est donné, on ne demande rien en échange
+       ✅ une grille stricte, deux tailles de caractères, une couleur d'accent
+
+     ⚠️ Les chiffres viennent de bulletin.json — ils sont VRAIS. Un visuel de ce
+     type mentirait s'il était réutilisé un autre jour : à regénérer chaque jour,
+     comme le bulletin.
+     Rendu : node render.js flyer19-chiffre-fb.html flyer-chiffre-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* UN APLAT. Pas de dégradé. C'est le choix le plus difficile à tenir. */
+.page { position:relative; width:1080px; height:1350px; background:#0F2A5C; color:#fff;
+  padding:96px 96px 88px; display:flex; flex-direction:column; }
+
+/* en-tête : une ligne, une règle. Rien de plus. */
+.tete { display:flex; align-items:center; gap:14px; padding-bottom:30px;
+  border-bottom:2px solid rgba(255,255,255,.22); }
+.tete img { width:52px; height:52px; border-radius:13px; display:block; }
+.tete b { font-family:'Archivo',sans-serif; font-weight:900; font-size:26px;
+  letter-spacing:-.7px; }
+.tete b i { color:#F6BC1C; font-style:normal; }
+.tete span { margin-left:auto; font-size:12.5px; font-weight:700; letter-spacing:2.6px;
+  color:rgba(255,255,255,.62); }
+
+.sur { margin-top:78px; font-size:15px; font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* l'accroche EST le fait. Ogilvy : les chiffres vendent, les adjectifs non. */
+.dit { margin-top:34px; font-family:'Archivo',sans-serif; font-weight:700; font-size:54px;
+  line-height:1.08; letter-spacing:-1.6px; color:#DCE7FA; }
+.chiffre { margin-top:6px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:290px; line-height:.84; letter-spacing:-14px; color:#F6BC1C; }
+.chiffre em { font-style:normal; font-size:104px; letter-spacing:-3px; margin-left:8px; }
+.verdict { margin-top:84px; font-family:'Archivo',sans-serif; font-weight:900; font-size:46px;
+  letter-spacing:-1.4px; }
+.verdict + p { margin-top:12px; font-size:24px; color:#B9CCE9; }
+
+.vide { flex:1; }
+
+/* les trois autres faits, alignés sur la même grille */
+.faits { display:flex; border-top:2px solid rgba(255,255,255,.22); padding-top:28px; }
+.faits div { flex:1; }
+.faits b { display:block; font-family:'Archivo',sans-serif; font-weight:900; font-size:34px;
+  letter-spacing:-1px; }
+.faits b i { font-style:normal; font-size:17px; color:#F6BC1C; margin-left:3px; }
+.faits small { display:block; margin-top:7px; font-size:12px; font-weight:700;
+  letter-spacing:1.9px; color:rgba(255,255,255,.58); }
+
+.pied { margin-top:40px; display:flex; align-items:flex-end; justify-content:space-between; }
+.pied .a { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; letter-spacing:-.8px; }
+.pied .a small { display:block; margin-top:8px; font-family:'Inter',sans-serif; font-weight:500;
+  font-size:14.5px; letter-spacing:.2px; color:#B9CCE9; }
+.pied .s { max-width:330px; text-align:right; font-size:11.5px; line-height:1.55;
+  color:rgba(255,255,255,.46); }
+</style>
+
+<div class="page">
+  <div class="tete">
+    <img src="logo-emblem.png" alt="">
+    <b>Moheli<i>Go</i></b>
+    <span>BULLETIN MER</span>
+  </div>
+
+  <div class="sur">MERCREDI 12 AOÛT · 6H-10H · OUROVENI → HOANI</div>
+
+  <div class="dit">Demain matin,<br>la mer sera à</div>
+  <div class="chiffre">0,9<em>m</em></div>
+
+  <div class="verdict">Mer peu agitée.</div>
+  <p>Traversée normale, un peu de mouvement.</p>
+
+  <div class="vide"></div>
+
+  <div class="faits">
+    <div><b>17<i>km/h</i></b><small>VENT DE SUD-EST</small></div>
+    <div><b>9,0<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
+    <div><b>0,9<i>m</i></b><small>RÉGULIÈRE 5H-13H</small></div>
+  </div>
+
+  <div class="pied">
+    <div class="a">moheligo.com<small>La mer des 7 prochains jours, et votre place.</small></div>
+    <div class="s">Prévision Open-Meteo Marine relevée le 11/08.
+      Le bulletin officiel affiché dans l'application fait foi avant l'embarquement.</div>
+  </div>
+</div>

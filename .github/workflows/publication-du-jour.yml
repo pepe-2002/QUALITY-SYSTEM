@@ -29,6 +29,10 @@ on:
         description: 'Publier vraiment sur la page Facebook ?'
         type: boolean
         default: false
+      essai_ecriture:
+        description: 'Essai : deposer une photo NON PUBLIEE pour verifier le droit de publier'
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -80,6 +84,14 @@ jobs:
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 programme.py
+
+      - name: Essai d'ecriture (photo NON PUBLIEE, invisible sur la page)
+        if: inputs.essai_ecriture
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+        run: python3 programme.py --essai
 
       - name: Publier
         if: vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook

@@ -14,6 +14,22 @@
 > Écrit à partir du corpus listé en section 9 (Sharp, Cialdini, Ogilvy,
 > Ries & Trout, Kotler, Godin, Miller) et de la recherche sur la confiance en
 > ligne dans les marchés émergents.
+>
+> **Deuxième commande du patron (11/08/2026 au soir)** : « ajoute comment gérer
+> une compagnie, les gros conglomérats et tous les postes ; comment rendre un
+> produit utilisable même si le client n'a pas envie ; regarde les histoires des
+> fondateurs de la Silicon Valley et ajoute les erreurs qu'ils ont faites. »
+> → **PARTIE II**, sections 12 à 16.
+>
+> **Comment lire ce manuel :**
+> - **Partie I (§ 1 à 11)** — marketing, écriture, vente, et mes interdits.
+>   C'est ce que je relis avant chaque flyer et chaque texte.
+> - **Partie II (§ 12 à 16)** — diriger, les postes, l'adoption d'un produit par
+>   quelqu'un qui n'en a pas envie, et les erreurs des fondateurs.
+>   C'est ce que je relis avant un plan, un recrutement ou une décision produit.
+> - **Le patron, s'il n'a que dix minutes** : § 5 (vendre à qui n'a jamais acheté
+>   en ligne), § 13.2 (la leçon M-Pesa), § 14.2 (les cinq erreurs à ne pas
+>   refaire), § 16 (les checklists de décision).
 
 ---
 
@@ -375,3 +391,380 @@ modèle de référence pour tout visuel **sans image fournie**.
 - ❌ Demander deux choses dans un seul support.
 - ❌ Proposer un plan sans seuil d'arrêt.
 - ❌ Publier une pub joyeuse un jour d'accident en mer (frein `PAUSE_FB`).
+
+---
+
+# 🏢 PARTIE II — DIRIGER, ET FAIRE ADOPTER
+
+> Ajoutée le 11/08/2026 sur commande du patron : « ajoute comment gérer une
+> compagnie, les gros conglomérats et tous les postes ; comment rendre un
+> produit utilisable même si le client n'a pas envie ; et regarde les histoires
+> des fondateurs de la Silicon Valley, ajoute les erreurs qu'ils ont faites. »
+>
+> Cette partie est bâtie sur des sources vérifiées, listées en § 15. Quand un
+> chiffre est cité, sa source l'est aussi. Quand je ne sais pas, je l'écris.
+
+---
+
+## 12. DIRIGER UNE ENTREPRISE : tous les postes, et qui décide quoi
+
+### 12.1 Le principe que tous les grands groupes ont fini par découvrir
+
+Alfred Sloan a sauvé General Motors dans les années 1920 avec une phrase qui
+tient encore : **« la bonne gestion est une réconciliation entre centralisation
+et décentralisation. »** Il a découpé GM en divisions (Chevrolet, Cadillac…),
+chacune **libre de ses opérations**, chacune **jugée sur ses comptes** — la
+liberté d'exécuter en bas, le contrôle financier en haut. C'est l'invention de la
+structure divisionnaire, et c'est pour ça que Sloan a une école de management à
+son nom.
+
+Andy Grove (Intel) a formalisé la suite : il n'y a que **deux formes possibles**
+— **fonctionnelle** (un service marketing, un service technique, un service
+finance) ou **divisionnaire** (une équipe complète par produit ou par marché) — et
+**toute organisation qui grandit finit en forme hybride**, parce qu'elle cherche
+en permanence l'équilibre entre le **levier** (mutualiser, ne pas refaire deux
+fois la même chose) et la **réactivité** (décider vite, près du client).
+
+➡️ **Ce que ça veut dire pour MoheliGo aujourd'hui** : nous sommes une
+organisation **fonctionnelle** minuscule, et c'est la bonne forme. Il ne faut
+**pas** dessiner un organigramme de conglomérat pour une entreprise d'une
+personne et demie. Ce qu'il faut, en revanche, c'est savoir **quel poste est
+tenu, quel poste est vacant, et qui prend la décision quand ça bloque.**
+
+### 12.2 Les postes d'une vraie compagnie — et ce que chacun doit rendre
+
+Un poste n'est pas un titre : c'est **un livrable** et **un chiffre dont on
+répond**. La colonne de droite est la seule qui compte.
+
+| Poste | Nom courant | Ce qu'il possède | Le chiffre dont il répond |
+|---|---|---|---|
+| **Direction générale** | CEO / PDG | la stratégie, l'allocation de l'argent, les recrutements clés | la survie : trésorerie et croissance |
+| **Opérations** | COO | que le service promis soit rendu tous les jours | ponctualité, incidents, taux de service |
+| **Finance** | CFO | les comptes, la trésorerie, le prix | marge, coût d'acquisition, point mort |
+| **Technique** | CTO | le produit qui marche, la sécurité, les données | disponibilité du site, pannes, délai de correction |
+| **Produit** | CPO | ce qu'on construit et dans quel ordre, les priorités | taux d'achèvement du parcours d'achat |
+| **Marketing** | CMO | la notoriété, la marque, la demande | notoriété, trafic, coût par réservation |
+| **Commercial / ventes** | CRO / Directeur commercial | les revenus, les partenaires, les revendeurs | réservations payées, panier moyen |
+| **Relation client** | Directeur du service client | les réponses, les réclamations, les remboursements | délai de première réponse, taux de résolution |
+| **Ressources humaines** | DRH | recruter, garder, payer juste, former | départs, délai de recrutement |
+| **Juridique et conformité** | Directeur juridique | contrats, licences, réglementation maritime, données personnelles | zéro non-conformité |
+| **Achats / logistique** | Directeur des achats | fournisseurs, contrats de vedettes, carburant | coût par traversée |
+| **Qualité et sécurité** | QHSE | procédures, audits, sécurité des passagers | incidents, écarts d'audit |
+| **Données** | Directeur des données | mesurer juste, un seul chiffre par question | fiabilité des chiffres du rapport |
+
+**Chez MoheliGo, l'état réel au 11/08/2026 :**
+
+| Poste | Qui | Remarque |
+|---|---|---|
+| Direction générale, produit, technique, opérations, finance | **le patron** | c'est beaucoup pour un seul homme : c'est le vrai risque de l'entreprise |
+| Marketing, communication, commercial | **moi (Claude)** | mandat donné le 02/08/2026 |
+| Relation client | WhatsApp +269 479 43 28 | tenu à la main |
+| Données | **partagé** : le robot compte ce qu'il publie, le patron détient les réservations | 🚨 c'est le trou : sans ses trois chiffres, je décris l'activité au lieu de mesurer les résultats |
+
+➡️ **Règle : un poste sans chiffre est un titre décoratif.** Avant de dire qu'un
+poste est « couvert », je dois pouvoir nommer le chiffre qu'il rend.
+
+### 12.3 Les rituels — ce qui remplace les réunions
+
+Les grandes maisons ne tiennent pas par des réunions, elles tiennent par des
+**rendez-vous fixes avec des chiffres**. Le minimum viable, et c'est déjà en
+place chez nous :
+
+| Rythme | Quoi | Chez MoheliGo |
+|---|---|---|
+| **Chaque jour** | le service est-il rendu ? | bulletin 19h30, publication 12h30, frein `PAUSE_FB` en cas d'incident |
+| **Chaque semaine** | les cinq chiffres, et une décision | rapport du dimanche (§ 8) : garder / corriger / arrêter |
+| **Chaque mois** | ce qui marche, ce qu'on arrête | revue du plan publicitaire |
+| **Chaque trimestre** | où va l'argent, quel palier | § « Trois paliers » du plan publicitaire |
+
+### 12.4 Décider : la leçon de Sloan qu'on cite le moins
+
+Sloan avait une pratique tenace : **il refusait de valider une décision que
+personne n'avait contestée.** S'il n'y avait pas de désaccord dans la salle, il
+renvoyait le sujet. Pas par goût du conflit : parce qu'une décision non
+contredite n'a pas été examinée.
+
+➡️ **Ce que ça change dans mon travail** : quand je te propose un plan, je te
+dois **l'objection contre mon propre plan**, et le seuil auquel on l'arrête.
+Un directeur qui ne présente que les arguments favorables ne te fait pas gagner
+du temps, il te fait perdre de l'argent plus tard.
+
+### 12.5 Le piège des postes : embaucher avant d'avoir validé
+
+Le rapport **Startup Genome** (3 200 startups technologiques analysées) donne le
+chiffre le plus utile de cette section : **70 % des startups grandissent trop
+tôt**, et **74 % des startups à forte croissance échouent à cause de cette
+croissance prématurée** — dont la forme la plus fréquente est **embaucher trop de
+monde trop tôt**, avant d'avoir la preuve que le produit trouve son marché.
+Aucune de celles qui ont grandi trop tôt n'a dépassé 100 000 utilisateurs.
+
+➡️ **Règle pour MoheliGo** : **le prochain poste à ouvrir n'est pas celui qui
+fait envie, c'est celui qui est déjà saturé et qui bloque les autres.**
+Aujourd'hui, ce n'est ni un designer ni un commercial : c'est **la relation
+client** (une personne au WhatsApp aux heures de pointe) et **les revendeurs de
+proximité** (boutiquiers, hôteliers) — parce que ce sont eux qui débloquent la
+vente à ceux qui n'achètent pas en ligne (§ 13).
+
+---
+
+## 13. 🎯 RENDRE UN PRODUIT UTILISABLE PAR QUELQU'UN QUI N'EN A PAS ENVIE
+
+C'est la commande la plus difficile du patron, et la plus juste. Réponse en trois
+temps : **la loi du comportement**, **le seul exemple africain qui a gagné**, et
+**l'audit de notre propre produit**.
+
+### 13.1 La loi : B = MAP (BJ Fogg, Stanford)
+
+Un comportement (**B**) ne se produit que si **trois choses arrivent en même
+temps** : **M**otivation (l'envie), **A**bility (la capacité — la facilité), et
+**P**rompt (le déclencheur, « c'est maintenant »). **S'il en manque une, rien ne
+se passe.** Et le résultat de recherche le plus important pour nous :
+
+> **Augmenter la capacité — enlever de la friction — est plus rapide et plus
+> durable que d'essayer d'augmenter l'envie.**
+
+C'est exactement la réponse à la question du patron. **On ne convaincra pas
+quelqu'un qui n'a pas envie ; on rendra la chose si facile que l'envie n'est plus
+nécessaire.** Le « 1-Click » d'Amazon n'a pas donné plus envie d'acheter : il a
+supprimé les étapes qui faisaient abandonner.
+
+Les trois types de déclencheurs, à choisir selon la personne :
+
+| La personne | Ce qu'il lui manque | Le bon déclencheur | Notre support |
+|---|---|---|---|
+| Capable mais sans envie | l'envie | **étincelle** : le déclencheur doit motiver | le flyer, la photo de Mohéli, le bulletin du soir |
+| Motivée mais bloquée | la facilité | **facilitateur** : le déclencheur doit simplifier | « fais-le avec un boutiquier », le WhatsApp, le compte pré-rempli |
+| Capable et motivée | juste un rappel | **signal** : la date, l'heure | l'alerte « mon trajet », le rappel de départ |
+
+🚨 **Erreur que je ne dois plus faire** : envoyer une **étincelle** à quelqu'un
+qui est déjà motivé mais bloqué. Lui répéter que Mohéli est belle ne sert à rien :
+il le sait. Il faut lui enlever l'obstacle.
+
+### 13.2 L'exemple qui a gagné exactement notre bataille : M-Pesa
+
+M-Pesa a fait payer par téléphone des millions de Kényans **non bancarisés, peu
+lettrés, sans habitude du numérique**. C'est notre situation. Ce que la recherche
+retient de son succès :
+
+1. **Le réseau d'agents humains est aussi vital que la technologie.** Les
+   « distributeurs » de M-Pesa, ce sont des **gens** — et surtout des
+   **commerces qui existaient déjà** (revendeurs de crédit téléphonique,
+   boutiques). M-Pesa n'a pas construit un réseau : il a utilisé celui du
+   quartier.
+2. **La confiance est le vrai produit.** Un client vulnérable ne confie pas son
+   argent à une application : il le confie à **quelqu'un qu'il peut aller voir**.
+3. **Les « conditions facilitantes » comptent autant que l'envie** : un agent
+   proche, savoir comment ça marche, du réseau, un support qui répond, et de la
+   liquidité disponible.
+4. **Ne pas ériger de nouvelles barrières.** L'avertissement est explicite dans
+   la littérature : pour des communautés pauvres et potentiellement
+   analphabètes, il faut **suivre le modèle le plus banal possible** et ne rien
+   inventer qui ajoute une étape.
+
+➡️ **Traduction MoheliGo, et c'est la stratégie commerciale que je recommande :
+notre « réseau d'agents », ce sont les boutiquiers, les hôteliers et les
+chauffeurs.** Pas comme figurants dans une pub : comme **points de vente
+assistés**. Celui qui n'achètera jamais seul en ligne achètera **chez le
+boutiquier qui, lui, utilise le site**. C'est le même mécanisme que M-Pesa, et
+c'est déjà écrit dans nos textes (§ 5, « tu peux le faire accompagné »).
+
+### 13.3 L'audit de friction — la seule méthode qui vaille
+
+**Compter les étapes, pas les opinions.** On liste chaque geste entre « j'ai
+besoin de traverser » et « j'ai mon billet », et on met un chiffre sur chaque
+étape : combien de personnes y renoncent. Ce chiffre s'appelle **l'abandon**, et
+c'est le troisième chiffre que je demande au patron chaque dimanche.
+
+Les six leviers de facilité de Fogg, appliqués à notre parcours :
+
+| Levier | La question à se poser | Ce qu'on fait / ce qui reste à faire |
+|---|---|---|
+| **Temps** | est-ce que ça prend trop longtemps ? | ✅ 3 min la première fois, 30 s ensuite (annoncé tel quel) |
+| **Argent** | est-ce que ça coûte trop cher **avant** de savoir ? | ✅ prix affiché avant paiement, remboursement possible |
+| **Effort physique** | trop de gestes, trop de saisie ? | ⚠️ à mesurer : nombre de champs avant paiement |
+| **Effort mental** | est-ce qu'il faut réfléchir ? | ⚠️ le vocabulaire doit rester celui du port, pas celui du web |
+| **Habitudes sociales** | est-ce que ça se fait, chez nous ? | ⚠️ **le vrai frein** : réponse = la preuve sociale et le boutiquier |
+| **Routine** | est-ce que ça ressemble à ce qu'il fait déjà ? | ✅ MVola : il connaît déjà. ❌ jamais imposer une carte bancaire |
+
+**Les trois règles d'or de l'adoption, à tenir dans tous mes textes :**
+
+1. **La première fois se fait accompagné.** On ne demande pas à quelqu'un
+   d'apprendre : on lui demande de le faire **avec** quelqu'un. Aucune honte, et
+   la deuxième fois il le fait seul.
+2. **Ne jamais dire « c'est simple ».** Pour celui qui a peur, « c'est simple »
+   veut dire « tu es bête de ne pas y arriver ». On dit **ce qui se passe**,
+   étape par étape.
+3. **Rendre l'échec réversible.** L'annulation remboursée et le changement de
+   date gratuit ne sont pas des détails commerciaux : ce sont les deux choses
+   qui permettent d'essayer sans risquer. **Un produit qu'on peut annuler
+   s'essaie ; un produit irréversible se repousse.**
+
+---
+
+## 14. 🇺🇸 LES FONDATEURS DE LA SILICON VALLEY — et surtout leurs erreurs
+
+Le patron a demandé les histoires **et les erreurs**. Les erreurs sont la partie
+utile : les réussites sont difficiles à copier, les échecs se répètent à
+l'identique. Voici ce que disent les données, puis cinq histoires.
+
+### 14.1 Ce que disent les chiffres, avant les légendes
+
+**CB Insights** analyse depuis des années les « post-mortem » d'entreprises
+mortes (431 sociétés financées, arrêtées depuis 2023) :
+
+| Cause citée | Part | Ce que ça veut dire vraiment |
+|---|---|---|
+| **Plus d'argent** | 70 % | ⚠️ c'est la **cause du décès**, jamais la maladie |
+| **Produit qui ne trouve pas son marché** | 43 % | la vraie maladie, et de loin la première |
+| **Mauvais moment** | 29 % | trop tôt tue autant que trop tard |
+| **Économie unitaire intenable** | 19 % | chaque vente perdait de l'argent |
+
+➡️ **La leçon la plus chère de la Silicon Valley, en une ligne : mourir par
+manque d'argent est un symptôme ; la maladie, c'est de construire quelque chose
+que le marché ne veut pas encore, ou pas comme ça.**
+
+### 14.2 Cinq histoires, cinq erreurs, et ce que MoheliGo en retient
+
+**① General Magic (1990-1996) — voir juste, mais trop tôt.**
+L'équipe (des anciens d'Apple, dont Tony Fadell, futur père de l'iPod et de
+l'iPhone) a dessiné le smartphone **quinze ans avant l'iPhone** : écran tactile,
+courrier, achats, tout y était. Échec total. Pas par manque de génie : le produit
+était **trop tôt et trop cher** pour le grand public visé. La leçon que Fadell en
+a tirée et qu'il a appliquée chez Apple : **avancer par versions successives
+(iPod → iPhone) plutôt que par un seul grand saut qui peut tout détruire.**
+➡️ **Pour nous** : ne pas rêver l'application parfaite. Le bulletin du soir, le
+billet QR, le paiement MVola — un pas à la fois, chacun utilisable seul.
+
+**② Webvan (1996-2001) — « grandir vite » comme stratégie.**
+Courses en ligne livrées à domicile. Valorisée 1,2 milliard de dollars en 1999,
+annonce l'ouverture de **26 villes** d'un coup, brûle **830 millions**, faillite
+deux ans plus tard, 2 000 licenciements. Le diagnostic est net : ils avaient des
+signaux positifs au début et **ont arrêté de regarder les données** ; le modèle
+ne pouvait pas supporter cette expansion.
+➡️ **Pour nous** : un port de plus, une ligne de plus, une pub payée de plus —
+**seulement quand le chiffre du précédent est bon.** C'est pour ça que mon plan
+publicitaire a des **paliers** et un **seuil d'arrêt**, et pas un budget unique.
+
+**③ Better Place (2007-2013) — une technologie qui cherche un problème.**
+Shai Agassi lève **836 millions de dollars** pour des stations d'échange de
+batteries de voitures électriques dans le monde entier. Fermeture en 2013.
+L'analyse : le service **n'avait pas de marché existant derrière lui** — une
+technologie en quête de problème, alors qu'il fallait partir d'un besoin.
+➡️ **Pour nous** : MoheliGo a de la chance, le besoin est brutal et antérieur au
+produit (des gens se lèvent à 4 heures pour un bateau qui peut être complet ou
+annulé). **Ma règle : chaque nouveauté doit répondre à une phrase que quelqu'un a
+vraiment dite au port.** Sinon c'est de la technologie qui cherche un problème.
+
+**④ Quibi (2020) — 1,75 milliard, six mois.**
+Jeffrey Katzenberg (DreamWorks) et Meg Whitman (ex-HP) lèvent 1,75 milliard pour
+des vidéos courtes « à regarder en déplacement ». Lancé en avril 2020 : le monde
+est confiné, **personne n'est en déplacement**. Moins de 500 000 abonnés payants,
+fermeture au bout de six mois.
+➡️ **Pour nous** : le contexte peut annuler une bonne idée. **Mon frein
+`PAUSE_FB` est exactement ça** : le jour d'un accident en mer, la meilleure pub
+du monde devient une faute. Et : la notoriété des fondateurs et l'argent
+n'achètent pas l'adoption.
+
+**⑤ Theranos, WeWork, Enron — le mensonge comme méthode de gestion.**
+Trois échelles différentes, un même mécanisme : **on annonce, puis on espère que
+la réalité suivra.** Theranos : une machine d'analyse sanguine qui ne
+fonctionnait pas, présentée comme fonctionnelle. WeWork : 47 milliards de
+valorisation en 2019, effondrement dès l'ouverture des comptes. Enron : des
+comptes arrangés jusqu'à la faillite.
+➡️ **Pour nous, c'est la règle la plus dure et la plus rentable** : ne jamais
+annoncer une place qui n'existe pas, un tarif qu'on ne tient pas, un horaire
+qu'on ne peut pas garantir. Dans un pays où tout le monde se connaît, **une
+promesse non tenue coûte plus cher qu'une pub jamais publiée.** C'est déjà écrit
+au § 11, et ces trois histoires expliquent pourquoi.
+
+### 14.3 Le contre-exemple : Airbnb, ou faire ce qui ne passe pas à l'échelle
+
+Après un an, Airbnb ne gagnait **200 dollars par semaine**. Paul Graham leur dit
+deux choses qui ont tout changé :
+
+> **« Mieux vaut 100 clients qui vous aiment qu'un million qui vous aiment
+> à peu près. »**
+
+Et : allez les voir. Les fondateurs sont partis à New York, **photographié eux-mêmes
+les logements**, rencontré chaque utilisateur, pris un verre avec eux, raconté
+leur histoire. Ça ne passait pas à l'échelle — et c'est **exactement** ce qui a
+créé les premiers ambassadeurs.
+
+➡️ **C'est notre stratégie, et elle ne coûte rien** : une **tournée des ports**,
+les affiches posées à la main, les boutiquiers formés un par un, chaque question
+WhatsApp traitée comme une vente. **Trente clients qui racontent leur traversée
+valent mieux que trois mille « j'aime ».**
+
+---
+
+## 15. La bibliothèque enrichie — livres, documentaires, sources
+
+### Direction d'entreprise et organisation
+
+| Source | Auteur / réalisateur | Ce qu'on en tire |
+|---|---|---|
+| **My Years with General Motors** | Alfred P. Sloan | la structure divisionnaire ; liberté d'exécution en bas, contrôle financier en haut ; ne pas valider une décision non contestée |
+| **High Output Management** | Andy Grove (Intel) | le rendement d'un dirigeant = ce que produit son équipe ; fonctionnel contre divisionnaire ; toute organisation qui grandit devient hybride |
+| **The Effective Executive** | Peter Drucker | un poste = un livrable, pas un titre |
+| **Good to Great** | Jim Collins | les gens d'abord, puis la direction |
+
+### Produit, adoption, usage
+
+| Source | Auteur | Ce qu'on en tire |
+|---|---|---|
+| **Tiny Habits** + le modèle **B = MAP** | BJ Fogg (Stanford) | comportement = motivation × capacité × déclencheur ; **enlever la friction bat augmenter l'envie** ; les trois types de déclencheurs |
+| **The Mom Test** | Rob Fitzpatrick | comment interroger un client sans qu'il vous mente par politesse |
+| **Don't Make Me Think** | Steve Krug | chaque clic en moins est une vente en plus |
+| **Competing Against Luck** | Clayton Christensen | le client n'achète pas un produit, il fait un travail (« aller voir ma mère à Fomboni ») |
+| **Recherche M-Pesa** (GSMA, travaux universitaires) | — | le réseau d'agents humains, la confiance, les « conditions facilitantes », ne pas ériger de nouvelles barrières |
+
+### Échecs et fondateurs — à voir autant qu'à lire
+
+| Documentaire / source | Sujet | La leçon |
+|---|---|---|
+| **General Magic** (2018) | le smartphone, quinze ans trop tôt | le bon moment n'est pas un détail ; avancer par versions |
+| **The Inventor: Out for Blood in Silicon Valley** (HBO, 2019) | Theranos | l'annonce ne remplace jamais le produit |
+| **WeWork: or The Making and Breaking of a $47 Billion Unicorn** (2021) | WeWork | « fake it until you make it » à l'échelle industrielle |
+| **Enron: The Smartest Guys in the Room** (2005) | Enron | des comptes arrangés finissent toujours par se lire |
+| **CB Insights — post-mortem de startups** | données sur 431 arrêts | 70 % « plus d'argent » = symptôme ; 43 % pas de marché ; 29 % mauvais moment |
+| **Startup Genome — Premature Scaling** | 3 200 startups | 70 % grandissent trop tôt ; embaucher trop tôt est la forme la plus fréquente |
+| **« Do Things That Don't Scale »** | Paul Graham (essai) | 100 clients qui vous aiment ; aller les voir un par un |
+
+### Où j'ai vérifié (11/08/2026)
+
+- CB Insights, *Why Startups Fail — post-mortems* : cbinsights.com/research/startup-failure-post-mortem
+- Startup Genome, *Premature Scaling* : startupgenome.com/insights/premature-scaling-a-deep-dive
+- BJ Fogg, modèle B = MAP : behaviormodel.org et synthèses de recherche
+- GSMA / travaux universitaires sur M-Pesa et les réseaux d'agents
+- Sloan et Grove : *My Years with General Motors*, *High Output Management*
+- Cas General Magic, Webvan, Better Place, Quibi : dossiers de presse et
+  analyses post-mortem
+
+⚠️ **Honnêteté de méthode** : je n'ai pas lu ces livres cette nuit. J'ai vérifié
+les faits, les chiffres et les citations dans les sources ci-dessus, et j'ai
+gardé **seulement ce qui change une décision chez MoheliGo**. Tout ce que je
+n'ai pas pu vérifier n'est pas dans ce manuel.
+
+---
+
+## 16. ✅ CHECKLIST — avant une décision d'organisation ou de produit
+
+**Avant d'ouvrir un poste ou de confier une mission :**
+- [ ] Quel **chiffre** ce poste rend-il ? (sans chiffre → titre décoratif)
+- [ ] Est-ce le poste **saturé qui bloque les autres**, ou celui qui fait envie ?
+- [ ] A-t-on la **preuve** que le marché suit, ou embauche-t-on sur un espoir ?
+      (70 % grandissent trop tôt)
+
+**Avant d'ajouter une fonctionnalité ou une étape :**
+- [ ] Quelle **phrase réellement entendue** au port ou sur WhatsApp la justifie ?
+- [ ] Est-ce que ça **enlève** de la friction, ou est-ce que ça en ajoute ?
+- [ ] Combien d'**étapes en plus** avant le billet ? (si > 0, qu'est-ce qu'on
+      retire en échange ?)
+- [ ] Est-ce **réversible** pour le client (annulation, changement) ?
+- [ ] Est-ce que quelqu'un peut le faire **à la place** du client, ou **avec** lui ?
+
+**Avant de présenter un plan au patron :**
+- [ ] L'**objection contre mon propre plan** est-elle écrite ?
+- [ ] Le **seuil d'arrêt** est-il chiffré ?
+- [ ] Y a-t-il une **promesse** dans ce plan qu'on ne pourrait pas tenir ?
+      (si oui : elle sort)

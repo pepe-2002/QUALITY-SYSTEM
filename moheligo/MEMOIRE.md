@@ -1,10 +1,16 @@
 # 📚 MÉMOIRE — Directeur Marketing MoheliGo (Claude)
 
 > 📕 **AVANT TOUTE PRODUCTION — lire `MANUEL-MARKETING.md`.** C'est la grille
-> de décision (Sharp, Cialdini, Ogilvy, Ries & Trout, vente aux gens qui n'ont
-> jamais acheté en ligne) et elle finit par des **checklists à passer** avant de
-> livrer un flyer, un texte, un rapport ou un plan. Exigé par le patron le
-> 11/08/2026.
+> de décision, en deux parties :
+> **PARTIE I (§ 1-11)** marketing, écriture, vente aux gens qui n'ont jamais
+> acheté en ligne, et mes interdits — à relire avant un flyer ou un texte ;
+> **PARTIE II (§ 12-16)** diriger (les postes et le chiffre dont chacun répond),
+> faire adopter un produit à qui n'en a pas envie (B = MAP, leçon M-Pesa), les
+> erreurs des fondateurs de la Silicon Valley — à relire avant un plan, un
+> recrutement ou une décision produit. Chaque partie finit par des **checklists
+> à passer**. Exigé par le patron le 11/08/2026, enrichi le même soir.
+> 📖 Copie lisible pour le patron : `python3 pub/flyers/manuel_page.py --sortie
+> /tmp/manuel.html` — **générée depuis le manuel, jamais recopiée à la main**.
 >
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
@@ -359,6 +365,64 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **11/08/2026 (PARTIE II DU MANUEL — diriger, faire adopter, les erreurs des
+  fondateurs)** — Commande du patron : « ajoute comment gérer une compagnie, les
+  gros conglomérats et tous les postes ; comment rendre un produit utilisable
+  même si le client n'a pas envie ; regarde les histoires des fondateurs de la
+  Silicon Valley et ajoute leurs erreurs ; puis donne-moi une copie pour que je
+  puisse lire. » Fait, **avec recherche** (pas de mémoire seule) :
+  `MANUEL-MARKETING.md` passe de 377 à ~790 lignes, sections **12 à 16**.
+  - **§ 12 Diriger** — Sloan (« réconcilier centralisation et décentralisation » :
+    liberté d'exécution en bas, contrôle financier en haut) ; Grove (fonctionnel
+    contre divisionnaire, toute organisation qui grandit devient hybride) ; le
+    **tableau des 13 postes** avec, pour chacun, ce qu'il possède et **le chiffre
+    dont il répond** ; l'état réel de MoheliGo (le patron tient cinq postes, moi
+    trois, et les **données sont le trou**) ; les rituels ; Sloan qui refusait de
+    valider une décision non contestée → **je dois livrer l'objection contre mon
+    propre plan** ; Startup Genome (**70 %** grandissent trop tôt, **74 %** des
+    échecs à forte croissance) → le prochain poste à ouvrir est **celui qui est
+    saturé**, soit la relation client et les revendeurs de proximité.
+  - **§ 13 Faire adopter** — **B = MAP** (Fogg, Stanford) : comportement =
+    motivation × capacité × déclencheur, et le résultat décisif — **enlever la
+    friction est plus rapide et plus durable que d'augmenter l'envie** ; les trois
+    types de déclencheurs (étincelle / facilitateur / signal) et l'erreur de
+    donner une étincelle à quelqu'un qui est motivé mais bloqué ; **la leçon
+    M-Pesa** : le réseau d'agents humains vaut autant que la technologie, on
+    utilise **les commerces qui existent déjà**, la confiance est le vrai produit,
+    ne pas ériger de nouvelle barrière → **notre réseau d'agents, ce sont les
+    boutiquiers, hôteliers et chauffeurs, comme points de vente assistés** ;
+    l'audit de friction par les six leviers ; les trois règles d'or (la première
+    fois se fait accompagné / ne jamais dire « c'est simple » / rendre l'échec
+    réversible).
+  - **§ 14 Les fondateurs et leurs erreurs** — les données CB Insights (70 %
+    « plus d'argent » = **symptôme**, 43 % pas de marché, 29 % mauvais moment,
+    19 % économie unitaire) puis cinq cas : **General Magic** (le smartphone 15
+    ans trop tôt ; leçon de Fadell : avancer par versions, pas par un grand
+    saut), **Webvan** (26 villes d'un coup, 830 M$ brûlés, ils ont cessé de
+    regarder les données → nos **paliers** et notre **seuil d'arrêt**),
+    **Better Place** (836 M$, une technologie en quête de problème → chaque
+    nouveauté doit répondre à **une phrase entendue au port**), **Quibi**
+    (1,75 Md$, six mois, le contexte a annulé l'idée → c'est la raison d'être du
+    frein `PAUSE_FB`), **Theranos / WeWork / Enron** (annoncer et espérer que la
+    réalité suive → dans un pays où tout le monde se connaît, une promesse non
+    tenue coûte plus cher qu'une pub jamais publiée). Contre-exemple **Airbnb** :
+    « mieux vaut 100 clients qui vous aiment qu'un million qui vous aiment à peu
+    près » → tournée des ports, boutiquiers formés un par un.
+  - **§ 15** bibliothèque enrichie (livres **et documentaires** : General Magic,
+    The Inventor, WeWork, Enron) avec **où j'ai vérifié**, et l'aveu de méthode :
+    je n'ai pas lu ces livres cette nuit, j'ai vérifié faits et chiffres.
+  - **§ 16** checklists de décision : avant d'ouvrir un poste, avant d'ajouter
+    une étape produit, avant de présenter un plan.
+  📖 **Copie lisible pour le patron** (générée, jamais recopiée) :
+  `pub/flyers/manuel_page.py` convertit le manuel en page web soignée avec
+  sommaire, tableaux qui défilent sur téléphone et thème clair/sombre :
+  `python3 manuel_page.py --sortie /tmp/manuel.html`. **Règle : ne jamais
+  corriger cette page à la main — corriger le manuel, puis regénérer**, sinon les
+  deux versions divergent et je relis un manuel périmé avant une pub.
+  Adresse publiée : https://claude.ai/code/artifact/bf9196e3-8a00-414d-82ee-eb2333cda23f
+  📌 Le patron **enverra ses images demain (12/08)** → à ce moment-là, passer en
+  **sortie A** du § 10 bis (vraie matière : découpe, ombre portée, composition).
 
 - **11/08/2026 (« TROP BASIC » — la leçon la plus utile de la journée)** — Carte
   blanche donnée : « fais-moi un flyer, ne suis pas mes indications ». J'ai rendu

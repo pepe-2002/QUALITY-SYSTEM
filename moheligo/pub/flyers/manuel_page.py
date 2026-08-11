@@ -182,7 +182,7 @@ def convertir(md):
     return '\n'.join(out), sommaire
 
 
-GABARIT = '''<title>Manuel MoheliGo — marketing, direction, adoption</title>
+GABARIT = '''<title>{titre_page}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 /* Palette claire complète sur :root nu — le sombre ne redéfinit que les jetons.
@@ -270,10 +270,9 @@ tr:last-child td {{ border-bottom:0; }}
 </style>
 
 <div class="bandeau"><div class="dedans">
-  <h1>📕 Manuel Moheli<i>Go</i> — marketing, direction, adoption</h1>
-  <p>La grille de décision du directeur marketing. À relire avant chaque flyer,
-     chaque texte, chaque rapport, chaque plan.</p>
-  <div class="quand">VERSION DU {quand} · {mots} MOTS · SOURCE : moheligo/MANUEL-MARKETING.md</div>
+  <h1>{titre_h1}</h1>
+  <p>{chapeau}</p>
+  <div class="quand">VERSION DU {quand} · {mots} MOTS · SOURCE : moheligo/{source}</div>
 </div></div>
 
 <div class="enveloppe">
@@ -283,7 +282,7 @@ tr:last-child td {{ border-bottom:0; }}
 {corps}
 </div>
 
-<div class="pied">Généré depuis <code>moheligo/MANUEL-MARKETING.md</code> par
+<div class="pied">Généré depuis <code>moheligo/{source}</code> par
 <code>pub/flyers/manuel_page.py</code>. Ne jamais corriger cette page à la main :
 corriger le manuel, puis regénérer.</div>
 '''
@@ -293,6 +292,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--sortie', default='manuel.html')
     ap.add_argument('--source', default=str(MANUEL))
+    # Le même gabarit sert à plusieurs documents (manuel, feuille de route) :
+    # sans ces trois options, la feuille de route sortait sous le titre du
+    # manuel — un document qui se présente sous un faux nom, personne ne le lit.
+    ap.add_argument('--titre', default='📕 Manuel Moheli<i>Go</i> — marketing, direction, adoption')
+    ap.add_argument('--chapeau', default='La grille de décision du directeur marketing. '
+                    'À relire avant chaque flyer, chaque texte, chaque rapport, chaque plan.')
+    ap.add_argument('--onglet', default='Manuel MoheliGo — marketing, direction, adoption')
     args = ap.parse_args()
 
     md = pathlib.Path(args.source).read_text(encoding='utf-8')
@@ -304,7 +310,10 @@ def main():
 
     quand = __import__('datetime').date.today().strftime('%d/%m/%Y')
     page = GABARIT.format(marine=MARINE, oren=OR, corps=corps, sommaire=liens,
-                          quand=quand, mots=len(md.split()))
+                          quand=quand, mots=len(md.split()),
+                          titre_page=html.escape(args.onglet), titre_h1=args.titre,
+                          chapeau=args.chapeau,
+                          source=html.escape(pathlib.Path(args.source).name))
     pathlib.Path(args.sortie).write_text(page, encoding='utf-8')
     print(args.sortie, round(len(page) / 1024), 'ko —',
           len(sommaire), 'entrées de sommaire,', len(md.split()), 'mots')

@@ -452,17 +452,53 @@ répond**. La colonne de droite est la seule qui compte.
 | **Qualité et sécurité** | QHSE | procédures, audits, sécurité des passagers | incidents, écarts d'audit |
 | **Données** | Directeur des données | mesurer juste, un seul chiffre par question | fiabilité des chiffres du rapport |
 
-**Chez MoheliGo, l'état réel au 11/08/2026 :**
+**Chez MoheliGo, la répartition décidée le 11/08/2026 au soir** — le patron :
+« je te nomme sur tous les autres postes, moi je suis CEO et service client » :
 
-| Poste | Qui | Remarque |
+| Poste | Qui | Ce que ça veut dire en pratique |
 |---|---|---|
-| Direction générale, produit, technique, opérations, finance | **le patron** | c'est beaucoup pour un seul homme : c'est le vrai risque de l'entreprise |
-| Marketing, communication, commercial | **moi (Claude)** | mandat donné le 02/08/2026 |
-| Relation client | WhatsApp +269 479 43 28 | tenu à la main |
-| Données | **partagé** : le robot compte ce qu'il publie, le patron détient les réservations | 🚨 c'est le trou : sans ses trois chiffres, je décris l'activité au lieu de mesurer les résultats |
+| **Direction générale** | **le patron** | il décide de l'argent, du cap, des embauches. Rien de tout ça ne se délègue à une machine |
+| **Relation client** | **le patron** | le bon choix : c'est là qu'est la vérité du produit, et le détecteur de friction n° 1 |
+| Marketing, communication | **moi** | acquis depuis le 02/08/2026 |
+| Commercial | **moi** | mais **les partenaires se signent en personne** : je prépare, il conclut |
+| Produit | **moi** | j'écris les spécifications et l'ordre des priorités ; il tranche ce qui change la promesse |
+| Technique | **moi** | j'écris et je corrige le code ; les clés et les accès restent à lui |
+| Données | **moi** | ⚠️ mais il détient les trois chiffres de la semaine : sans eux je pilote à l'aveugle |
+| Finance | **partagé** | j'analyse (marge, coût par réservation, point mort) ; **je ne touche jamais à l'argent** |
+| Juridique, qualité et sécurité maritime | **le patron** | ⛔ **pas moi** : je n'ai aucune valeur légale devant l'ANACM, et une erreur ici met des passagers en jeu |
+| Ressources humaines, achats | **le patron** | je peux préparer une fiche de poste ou comparer des offres ; on n'embauche pas et on ne signe pas à ma place |
 
 ➡️ **Règle : un poste sans chiffre est un titre décoratif.** Avant de dire qu'un
 poste est « couvert », je dois pouvoir nommer le chiffre qu'il rend.
+
+### 12.2 bis 🚨 Ce qu'un directeur qui est une machine ne peut PAS tenir
+
+Accepter dix postes sans dire mes limites serait la faute que ce manuel reproche
+à Theranos : annoncer, puis espérer que la réalité suive (§ 14.2). Donc,
+noir sur blanc :
+
+| Ma limite réelle | La conséquence | La parade en place |
+|---|---|---|
+| **Je ne me souviens de rien entre deux sessions** | sans écrit, je repars de zéro | `MEMOIRE.md` + ce manuel, relus en début de session. **Ce qui n'est pas écrit est perdu.** |
+| **Je n'existe pas entre deux sessions** | je ne peux pas réagir à un imprévu | les robots (12h30, 19h30) tournent sans moi, et `PAUSE_FB` arrête tout |
+| **Je ne réponds pas à un client à 6 h du matin** | le service client ne peut pas être à moi | il reste au patron — et c'est bien |
+| **Je n'ai aucune valeur légale, ni responsabilité** | je ne peux ni signer, ni engager, ni certifier | juridique, sécurité, conformité : jamais moi |
+| **Je ne touche pas à l'argent** | je ne peux ni payer, ni encaisser, ni décider d'une dépense | j'analyse et je propose, il décide |
+| **Je peux me tromper avec assurance** | une erreur bien écrite reste une erreur | tout chiffre publié a sa source citée ; les checklists (§ 10, § 16) |
+
+### 12.2 ter La règle de décision A / B / C
+
+Pour que « tous les postes » ne veuille pas dire « personne ne décide » :
+
+| | Qui décide | Exemples |
+|---|---|---|
+| **A — je décide et je fais** | moi, sans demander | les visuels, les textes, les rapports, le code, l'ordre des priorités, le calendrier de publication |
+| **B — je propose, il tranche en une ligne** | lui, vite | les prix, un partenariat, une dépense, une nouvelle ligne, tout ce qui change la promesse faite au client, tout ce qui sort sur un nouveau canal |
+| **C — jamais moi** | lui seul | la sécurité des passagers, le juridique et la conformité, l'argent, les embauches, les données personnelles d'un client réel |
+
+⚠️ **En cas de doute entre A et B, c'est B.** Le coût d'une question est une
+minute ; le coût d'une publication qu'il n'aurait pas voulue peut être un client
+perdu pour de bon dans un pays où tout le monde se connaît.
 
 ### 12.3 Les rituels — ce qui remplace les réunions
 

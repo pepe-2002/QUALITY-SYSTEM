@@ -11,6 +11,10 @@
 > à passer**. Exigé par le patron le 11/08/2026, enrichi le même soir.
 > 📖 Copie lisible pour le patron : `python3 pub/flyers/manuel_page.py --sortie
 > /tmp/manuel.html` — **générée depuis le manuel, jamais recopiée à la main**.
+> 🗺️ **`FEUILLE-DE-ROUTE.md`** — les quatre étapes avec leurs seuils de décision,
+> et les risques. À relire avant de promettre un délai au patron.
+> ⚖️ **Répartition des postes et règle A / B / C : manuel § 12.2 à 12.2 ter.**
+> En cas de doute entre « je décide » et « je propose », **je propose**.
 >
 > **Consigne pour moi-même** : lire ce fichier en début de session MoheliGo,
 > le mettre à jour à chaque avancée, et le pousser sur GitHub.
@@ -365,6 +369,48 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **11/08/2026 (NOUVEAU MANDAT + FEUILLE DE ROUTE)** — 🚨 **Décision
+  d'organisation du patron** : « je te nomme sur tous les autres postes, moi je
+  suis CEO et service client, ça te va ? tu dois me conseiller aussi. »
+  **Accepté**, avec mes limites écrites — accepter dix postes sans les dire
+  serait la faute reprochée à Theranos au § 14.2 du manuel.
+  → Répartition, limites et **règle de décision A / B / C** consignées au manuel,
+  **§ 12.2, 12.2 bis et 12.2 ter**. À relire avant de décider quoi que ce soit.
+  - **A — je décide et je fais** : visuels, textes, rapports, code, priorités,
+    calendrier de publication.
+  - **B — je propose, il tranche** : prix, partenariats, dépenses, nouvelle
+    ligne, tout ce qui change la promesse au client, tout nouveau canal.
+    **En cas de doute entre A et B, c'est B.**
+  - **C — jamais moi** : sécurité des passagers, juridique et conformité ANACM,
+    argent, embauches, données personnelles d'un client réel.
+  - Mes limites réelles, à ne pas oublier : aucun souvenir entre sessions (d'où
+    ce fichier), aucune existence entre sessions (d'où les robots), aucune
+    réponse à un client à 6 h, aucune valeur légale, aucun accès à l'argent, et
+    **je peux me tromper avec assurance** (d'où les sources citées et les
+    checklists).
+  - Le service client reste au patron : **c'est le bon choix** — c'est là qu'est
+    la vérité du produit et le premier détecteur de friction.
+  🗺️ **`FEUILLE-DE-ROUTE.md` (nouveau)** — réponse à « dans combien de temps ça
+  va se faire ? ». Position tenue : **le produit est fait, c'est l'habitude qui
+  n'est pas faite**, et je refuse de donner une date sans chiffres.
+  - **Étape 1, 6 semaines : la PREUVE** — 10 traversées payées par des inconnus,
+    30 vraies conversations. Seuil : **0 réservation après six semaines de
+    présence quotidienne → on arrête de publier plus et on descend au port**, le
+    problème n'est pas la publicité (erreur de Webvan).
+  - **Étape 2, 2 à 4 mois : l'HABITUDE** — une réservation par jour, premiers
+    clients qui reviennent. Signal de bascule à guetter : **les questions passent
+    de « c'est fiable ? » à « il y a une place samedi ? »**.
+  - **Étape 3, 6 à 12 mois : la NORMALITÉ** — compressible à 4-6 mois avec un
+    budget, **mais seulement après l'étape 1**.
+  - Risques nommés : le patron seul sur cinq postes (le plus grave), **la
+    fiabilité réelle des départs** (notre promesse est « prévisible » — elle
+    dépend des compagnies, pas de nous), les trois chiffres manquants, le jeton
+    Facebook qui expire vers le 10/10/2026.
+  📌 **Question posée au patron et restée ouverte : les départs sont-ils
+  réellement fiables aujourd'hui ?** Si les vedettes ne partent pas comme
+  annoncé, aucune publicité ne rattrape ça — et c'est le seul point qui peut
+  invalider tout le positionnement.
 
 - **11/08/2026 (LE CRÉNEAU DU MATIN — démonstration)** — « On peut pas ajouter un
   flyer ou vidéo de démonstration le matin ? » Oui pour le flyer, **non pour la

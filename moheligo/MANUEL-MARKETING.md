@@ -326,11 +326,49 @@ de retoucher un flyer, parce que c'est la vraie limite du travail actuel :
 ça passe.** Deux refus de suite sur le même motif veulent dire que le problème
 est dans la matière et dans le procédé, pas dans les réglages.
 
+## 10 ter. 🚨 « TROP BASIC » — la correction du 11/08/2026 au soir
+
+J'ai appliqué la sortie **B** (typographique strict) au flyer « chiffre », et le
+patron a répondu : **« c'est trop basic »**. Il a encore raison, et l'erreur est à
+moi, pas à la méthode. Voici ce que j'avais mal compris :
+
+**Sobre ≠ vide.** J'ai lu la sortie B comme « enlever », et je me suis arrêté là.
+Or enlever n'est que la moitié du travail : la sobriété ne devient chère que si
+ce qui reste est **travaillé**. Chez Apple, l'aplat blanc n'est pas vide — il
+tient parce qu'il reste **un objet parfait** au milieu. Moi, j'avais enlevé le
+décor et je n'avais rien mis à la place. Résultat : ça ne se lit pas comme du
+calme, ça se lit comme une page pas finie.
+
+**Les cinq choses qui séparent le sobre du basic** — à vérifier sur chaque
+visuel sans photo :
+
+1. **Un objet à regarder.** Pas un décor : un objet qui a un *sens* pour le
+   sujet. On parle du prix → on montre un **billet** (carte claire, encoches
+   taillées, ligne de perforation). Le dispositif est justifié par le message,
+   donc il n'est pas de la décoration.
+2. **Un vrai contraste de matière.** Marine profond contre carte claire. C'est ce
+   contraste-là qui fait « imprimé », et il ne coûte aucune photo.
+3. **De la densité assumée.** Le lecteur doit avoir de quoi lire **six secondes**,
+   pas une. Un fait unique et géant impressionne un designer ; il n'occupe pas un
+   client. Trois faits secondaires bien rangés valent mieux qu'un vide poli.
+4. **Du détail typographique** : chiffres à largeur fixe (`tabular-nums`), filets
+   d'un demi-point, hiérarchie à trois niveaux, une seule couleur d'accent.
+5. **Aucune zone morte.** Un grand blanc en bas d'une affiche ne se lit jamais
+   comme une intention : il se lit comme un oubli. Le vide doit être *encadré*
+   par quelque chose, sinon il faut le supprimer.
+
+➡️ **Application** : `pub/flyers/flyer20-prix-fb.html` (mercredi, les prix). Même
+discipline que le flyer « chiffre » — aplat franc, or réservé à un mot, aucune
+photo — mais avec un objet, un contraste et de la densité. C'est le nouveau
+modèle de référence pour tout visuel **sans image fournie**.
+
 ## 11. Ce que ce manuel m'interdit
 
 Écrit noir sur blanc pour que je ne recommence pas :
 
 - ❌ Ajouter des éléments pour « faire riche ». Ce qui fait beau, c'est enlever.
+- ❌ …mais s'arrêter à « enlever » et rendre une page vide (§ 10 ter). Enlever le
+  décor oblige à travailler ce qui reste : un objet, un contraste, de la densité.
 - ❌ Changer les couleurs ou la typo pour faire nouveau : c'est du capital détruit.
 - ❌ Inventer une preuve, un témoignage, une place restante ou un chiffre.
 - ❌ Écrire « c'est simple » à quelqu'un qui a peur de ne pas savoir.

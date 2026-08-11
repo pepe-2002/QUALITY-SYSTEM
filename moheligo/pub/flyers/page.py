@@ -60,6 +60,29 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
+    dict(png='flyer-prix-facebook.png', titre='⭐ MERCREDI — LES PRIX',
+         note="Sans date<br>publiable tous les mercredis<br>le billet est l'objet qu'on regarde<br>tous les chiffres viennent du site",
+         texte="""LE PRIX, TU LE CONNAIS AVANT DE PAYER.
+
+Adulte : environ 14 500 FC pour une personne, un trajet. Enfant : −30 à −50 %.
+Le prix exact de chaque départ est écrit dans l'application, en direct, AVANT que
+tu paies. Pas de négociation, pas de surprise au port.
+
+Ce qui est déjà compris dans ce prix :
+
+• Ta place est bloquée 15 minutes, le temps de payer tranquillement. Personne ne
+  te la prend pendant ce temps-là.
+• Changer la date de ton billet ne coûte rien, sur la même liaison.
+• Tu annules avant le départ : ton argent revient, moins les frais de transaction.
+
+Tu paies avec MVola ou KartaPay, depuis ton téléphone. Rien de nouveau à
+apprendre. Et si quelqu'un de ta famille est à l'étranger, il peut payer pour toi
+depuis là-bas : tu reçois ton billet ici, tu n'avances rien.
+
+Regarde le prix de ton départ : moheligo.com
+Une question avant de payer ? WhatsApp +269 479 43 28
+
+#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
     dict(png='flyer-signature-facebook.png', titre='⭐ LE MODÈLE DE SIGNATURE',
          note='Les quatre influences réunies<br>le logo Royal Air, la couleur et<br>l\'émotion Coca-Cola, le vide<br>d\'Apple, la brillance de Yas',
          texte="""On se voit de l'autre côté.

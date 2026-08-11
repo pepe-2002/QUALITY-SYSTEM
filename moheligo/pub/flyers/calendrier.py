@@ -41,6 +41,7 @@ TEXTE = {t['titre']: t['texte'] for t in page.TEXTES}
 AFFICHE = 'flyer-affiche-vraie-facebook.png'
 DIASPORA = 'flyer-diaspora-facebook.png'
 PROMO = 'flyer-promo-brillant-facebook.png'
+PRIX = 'flyer-prix-facebook.png'         # le billet : mercredi, jour des prix
 # visuels présents dans le dossier mais pas sur la page du patron
 DUOTONE = 'flyer-affiche-duotone-facebook.png'
 LUMINEUSE = 'flyer-affiche-lumineuse-facebook.png'
@@ -58,7 +59,7 @@ T_AFFICHE = "Variante courte pour l'affiche"
 SEMAINE = {
     0: [(PROMO, TEXTE[T_APPLI]), (NUIT, TEXTE[T_APPLI])],
     1: [(AFFICHE, VISUEL[AFFICHE]), (LUMINEUSE, TEXTE[T_AFFICHE])],
-    2: [(PROMO, VISUEL[PROMO]), (PROMO, VISUEL[PROMO])],
+    2: [(PROMO, VISUEL[PROMO]), (PRIX, VISUEL[PRIX])],
     3: [(DUOTONE, TEXTE[T_ABO]), (AFFICHE, TEXTE[T_ABO])],
     4: [(DIASPORA, VISUEL[DIASPORA]), (DIASPORA, VISUEL[DIASPORA])],
     5: [(LUMINEUSE, TEXTE[T_AFFICHE]), (DUOTONE, VISUEL[AFFICHE])],

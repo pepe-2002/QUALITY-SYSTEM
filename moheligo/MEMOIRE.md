@@ -360,6 +360,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (« TROP BASIC » — la leçon la plus utile de la journée)** — Carte
+  blanche donnée : « fais-moi un flyer, ne suis pas mes indications ». J'ai rendu
+  `flyer19-chiffre-fb.html` : aplat marine, un seul fait géant (la mer à 0,9 m),
+  zéro décor — l'application littérale de la **sortie B** de mon § 10 bis.
+  Verdict : **« c'est trop basic, mais explique-moi ce choix. »**
+  🎓 **Ce que j'avais mal compris, écrit dans le manuel au § 10 ter : sobre ≠
+  vide.** Enlever le décor n'est que la moitié du travail ; il faut ensuite
+  travailler ce qui reste. Les cinq points de contrôle pour un visuel sans photo :
+  ① un **objet** justifié par le sujet (pas un décor) ; ② un vrai contraste de
+  matière (marine profond / carte claire) ; ③ de la **densité** — six secondes de
+  lecture, pas une ; ④ du détail typographique (`tabular-nums`, filets fins,
+  trois niveaux de hiérarchie) ; ⑤ **aucune zone morte** : un grand vide non
+  encadré se lit comme un oubli, jamais comme du calme.
+  ➡️ Nouveau modèle de référence pour tout visuel **sans image fournie** :
+  `pub/flyers/flyer20-prix-fb.html` → `flyer-prix-facebook.png`. Sujet : **les
+  prix** (mercredi du calendrier). L'objet, c'est un **billet** (carte claire,
+  encoches taillées dans le marine, ligne de perforation) — un dispositif qui a
+  un sens puisqu'on parle du prix d'un billet. **Sans date → réutilisable tous
+  les mercredis.** Branché dans `calendrier.py` (variante mercredi) et ajouté à
+  `page.py`.
+  ⚠️ Tous les chiffres sont **vérifiés dans le code du site**, aucun inventé :
+  ~14 500 FC adulte + prix exact affiché en direct (`index.html`, FAQ) ; enfant
+  −30 à −50 %, place bloquée 15 min, changement de date gratuit, remboursement
+  intégral moins les frais, 10 traversées = un bon (`moheli-savoir.js`) ;
+  1 € = 492 FC. **Avant chaque visuel « prix », relire ces deux fichiers** — un
+  tarif faux sur une affiche, c'est une promesse qu'on ne tient pas.
+  🔓 **Le seul verrou qui reste sur les visuels promo : les images du patron.**
+
 - **11/08/2026 (LA LIAISON FACEBOOK MARCHE)** — 🎉 **Premier bulletin publié
   automatiquement sur la page** (mercredi 12 août, mer peu agitée), et jeton
   durable posé. `PUBLIER_FB = oui` : à partir du 12/08, **bulletin à 19h30 et

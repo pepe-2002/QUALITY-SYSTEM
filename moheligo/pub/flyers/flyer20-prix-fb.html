@@ -1,0 +1,164 @@
+<!-- MERCREDI — « LES PRIX » (calendrier de la semaine, pub/flyers/calendrier.py).
+     Le patron, 11/08/2026 : « le flyer de demain, pas la météo — et le tien est
+     trop basic, explique-moi ce choix ». Ma réponse en image.
+
+     CE QUI CHANGE PAR RAPPORT AU FLYER « CHIFFRE » :
+       · sobre ne veut pas dire vide. Le vide n'est premium que s'il reste UN
+         objet parfait à regarder. Ici l'objet, c'est le BILLET : carte claire,
+         vraies encoches, ligne de perforation. Un dispositif qui a un SENS
+         (on parle du prix, on montre un billet), pas une décoration.
+       · densité assumée : le lecteur a de quoi lire 6 secondes au lieu de 1.
+       · l'or reste réservé à UN mot et aux filets. Le chiffre est en marine
+         sur le clair : plus lisible, et le contraste fait le travail.
+       · aucune date → publiable tous les mercredis (programme.py refuse le daté).
+
+     TOUS LES FAITS SONT VÉRIFIÉS DANS LE SITE (aucun inventé) :
+       · ~14 500 FC adulte, prix exact affiché en direct .... index.html (FAQ)
+       · tarif enfant −30 à −50 % ........................... moheli-savoir.js
+       · place bloquée 15 minutes pour payer ................ moheli-savoir.js
+       · changement de date gratuit, même liaison ........... moheli-savoir.js
+       · annulation : remboursé 100 %, moins les frais ...... moheli-savoir.js
+       · 10 traversées payées = un bon de réduction ......... moheli-savoir.js
+       · 1 € = 492 FC (parité fixe) ......................... plan-publicitaire.md
+     Rendu : node render.js flyer20-prix-fb.html flyer-prix-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* aplat franc : les encoches du billet doivent tomber pile sur la même couleur */
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+/* la seule brillance : un balayage oblique, celui de la signature */
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+
+/* ROYAL AIR : le coin blanc en biais, actif distinctif de la marque */
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:1.9px;
+  color:#5C6E8B; margin-top:5px; }
+
+.ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
+  font-size:12px; font-weight:700; letter-spacing:2.4px; line-height:1.7;
+  color:rgba(255,255,255,.58); }
+
+/* l'accroche : le prix n'est pas une promesse, c'est une information */
+.acc { position:absolute; left:76px; top:232px; width:920px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:88px; line-height:.99;
+  letter-spacing:-3.4px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+/* ---------- LE BILLET : l'objet qu'on regarde ---------- */
+.billet { position:absolute; left:76px; top:604px; width:928px; z-index:3;
+  background:#F6F9FF; border-radius:24px; padding:34px 44px 30px;
+  box-shadow:0 30px 64px rgba(4,12,40,.44); }
+.billet .haut { display:flex; align-items:baseline; justify-content:space-between;
+  font-size:11.5px; font-weight:700; letter-spacing:2.2px; color:#6B7C99; }
+.billet .haut i { font-style:normal; color:#0F2A5C; }
+
+.tarif { margin-top:22px; display:flex; align-items:flex-end; gap:30px; }
+.tarif .quoi { font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
+  letter-spacing:-.4px; color:#0F2A5C; padding-bottom:26px; }
+.tarif .quoi small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:1.8px; color:#8493AD; margin-top:6px; }
+.tarif .n { margin-left:auto; display:flex; align-items:flex-end; gap:12px; }
+.tarif .n b { font-family:'Archivo',sans-serif; font-weight:900; font-size:150px;
+  line-height:.8; letter-spacing:-7px; color:#0F2A5C; font-variant-numeric:tabular-nums; }
+.tarif .n em { font-style:normal; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:44px; letter-spacing:-1px; color:#F0A800; padding-bottom:10px; }
+.tarif .eq { margin-top:12px; text-align:right; font-size:14px; font-weight:700;
+  letter-spacing:.4px; color:#7A89A3; }
+
+/* la perforation : deux encoches taillées dans le marine, une ligne pointillée */
+.perf { position:relative; margin:26px -44px 0; height:2px;
+  background:repeating-linear-gradient(90deg,#C3D0E6 0 12px, transparent 12px 24px); }
+.perf u, .perf s { position:absolute; top:-23px; width:46px; height:46px;
+  border-radius:50%; background:#0F2A5C; text-decoration:none; }
+.perf u { left:-23px; }
+.perf s { right:-23px; }
+
+.enfant { margin-top:26px; display:flex; align-items:center; }
+.enfant .g { font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
+  color:#0F2A5C; letter-spacing:-.4px; }
+.enfant .g small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:1.8px; color:#8493AD; margin-top:6px; }
+.enfant .d { margin-left:auto; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:52px; letter-spacing:-2px; color:#0F2A5C; }
+.enfant .d span { font-size:22px; color:#F0A800; margin-left:4px; }
+
+/* ---------- ce que le prix comprend déjà ---------- */
+.inclus { position:absolute; left:76px; right:76px; top:1036px; z-index:3;
+  display:flex; gap:0; border-top:2px solid rgba(246,188,28,.55); padding-top:24px; }
+.inclus div { flex:1; padding-right:26px; }
+.inclus div + div { border-left:1px solid rgba(255,255,255,.16); padding-left:26px; }
+.inclus b { display:block; font-family:'Archivo',sans-serif; font-weight:900; font-size:26px;
+  letter-spacing:-.8px; color:#F6BC1C; }
+.inclus p { margin-top:8px; font-size:15px; line-height:1.34; color:#CBD9EF; }
+
+.pied { position:absolute; left:76px; right:76px; bottom:66px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; }
+.pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#fff;
+  letter-spacing:-.7px; }
+.pied .site small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1.6px; color:#F6BC1C; margin-top:9px; }
+.pied .fin { max-width:398px; text-align:right; font-size:11px; line-height:1.55;
+  color:rgba(255,255,255,.46); }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
+
+  <div class="acc">Le prix,<br>tu le connais<span>avant de payer.</span></div>
+
+  <div class="billet">
+    <div class="haut"><span>BILLET DE TRAVERSÉE · <i>TARIF INDICATIF</i></span><span>1 € = 492 FC</span></div>
+
+    <div class="tarif">
+      <div class="quoi">Adulte<small>UNE PERSONNE, UN TRAJET</small></div>
+      <div>
+        <div class="n"><b>14 500</b><em>FC</em></div>
+        <div class="eq">soit environ 29 €</div>
+      </div>
+    </div>
+
+    <div class="perf"><u></u><s></s></div>
+
+    <div class="enfant">
+      <div class="g">Enfant<small>TARIF RÉDUIT</small></div>
+      <div class="d">−30 à −50 <span>%</span></div>
+    </div>
+  </div>
+
+  <div class="inclus">
+    <div><b>15 minutes</b><p>Ta place est bloquée le temps que tu paies. Personne ne te la prend.</p></div>
+    <div><b>Gratuit</b><p>Changer la date de ton billet ne coûte rien, sur la même liaison.</p></div>
+    <div><b>Remboursé</b><p>Tu annules avant le départ : tu récupères ton argent, moins les frais.</p></div>
+  </div>
+
+  <div class="pied">
+    <div class="site">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
+    <div class="fin">Tarif adulte indicatif : le prix exact de chaque départ s'affiche en direct
+      dans l'application, avant le paiement. Paiement MVola ou KartaPay. Frais de transaction
+      non remboursables.</div>
+  </div>
+</div>

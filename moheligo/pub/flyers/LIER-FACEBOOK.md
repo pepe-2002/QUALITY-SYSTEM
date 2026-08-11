@@ -77,20 +77,47 @@ Il faut être **administrateur** de la page MoheliGo (tu l'es).
 pages des *autres*. Tant que tu publies sur **ta** page avec **ton** jeton,
 l'application peut rester en mode développement.
 
+## Étape 1 bis — Ajouter le cas d'utilisation « Page »
+
+Meta a changé son interface (« Espace App ») : les permissions ne se demandent
+plus directement, elles viennent d'un **cas d'utilisation**.
+
+1. Dans le menu de gauche : **Cas d'utilisation → Ajouter des cas d'utilisation**.
+2. Cherche celui qui parle des **Pages** — « Gérer tout ce qui concerne votre
+   Page » ou « Gérer les Pages ». Ajoute-le.
+3. Ouvre-le, clique **Personnaliser**, et vérifie que ces trois permissions
+   apparaissent : `pages_show_list`, `pages_read_engagement`,
+   `pages_manage_posts`. Ajoute-les si elles ne sont pas déjà là.
+
+ℹ️ L'app peut rester **« Non publiée »** : la publication d'app sert à agir sur
+les pages des autres. Pour ta propre page, le mode développement suffit.
+
+## 📱 Si tu fais ça depuis le téléphone
+
+L'explorateur d'API est presque inutilisable en affichage mobile. Dans Chrome :
+**menu ⋮ → cocher « Site pour ordinateur »**. La page devient petite mais tous
+les boutons apparaissent, et on peut zoomer.
+
 ## Étape 2 — Obtenir le jeton de page
 
 1. Va sur l'**explorateur d'API** : `developers.facebook.com/tools/explorer`.
-2. En haut à droite, choisis ton app `MoheliGo Bulletin`.
-3. Clique **« Générer un token d'accès utilisateur »** et coche exactement ces
-   trois permissions :
+2. En haut à droite, choisis ton app `MoheliGo`.
+3. Clique **« Générer un token d'accès utilisateur »** et vérifie que ces trois
+   permissions sont bien cochées :
    - `pages_show_list`
    - `pages_read_engagement`
    - `pages_manage_posts`
 4. Connecte-toi, et **autorise la page MoheliGo** quand il demande laquelle.
+   ⚠️ Si l'écran propose « Toutes les Pages » ou une sélection, il faut que
+   MoheliGo soit bien cochée — sinon le jeton ne verra rien.
 5. Dans la barre de requête, tape `me/accounts` puis **Envoyer**.
    La réponse liste tes pages. Pour MoheliGo, relève deux choses :
    - `"id"` → c'est le **FB_PAGE_ID** (une longue suite de chiffres)
    - `"access_token"` → c'est le **jeton de page**
+
+💡 Sur téléphone, la réponse est longue et pénible à lire. Astuce : dans la barre
+de requête, demande directement `me/accounts?fields=name,id,access_token` — tu
+n'auras que les trois lignes utiles.
 
 ### Rendre le jeton durable
 

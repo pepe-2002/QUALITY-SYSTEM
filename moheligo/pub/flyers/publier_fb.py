@@ -250,10 +250,19 @@ def publier(image, texte, pour_de_vrai, essai=False):
         with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False) as fh:
             fh.write(commentaire)
             cmt = fh.name
+        # ⚠️ Commenter demande `pages_manage_engagement`, une permission
+        # DIFFÉRENTE de celle qui sert à publier. Sans elle, le commentaire est
+        # refusé — mais la photo est déjà en ligne. Le post compte plus que le
+        # lien : on ne fait donc jamais échouer une publication réussie pour ça.
         rc = curl(f'{BASE}/{post_id}/comments', 'POST', jeton=jeton,
-                  formulaires=[f'message=<{cmt}'])
+                  formulaires=[f'message=<{cmt}'], strict=False)
         os.unlink(cmt)
-        print('Premier commentaire :', rc.get('id', '?'))
+        if rc.get('id'):
+            print('Premier commentaire :', rc['id'])
+        else:
+            print('⚠️ Commentaire refusé (permission pages_manage_engagement '
+                  'manquante). La publication, elle, est bien en ligne — '
+                  'ajouter le lien à la main sous le post.')
 
     journaliser(page, post_id, img.name, post)
     print('À voir sur la page : https://facebook.com/' + str(page))

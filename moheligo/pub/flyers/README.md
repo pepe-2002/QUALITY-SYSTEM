@@ -9,7 +9,8 @@
 | `flyer-nuit-facebook.png` | 2160 × 2700 (4:5) | Deuxième publication, fin de soirée (22h30 – minuit) |
 | `flyer-affiche-facebook.png` | 2160 × 2700 (4:5) | Affiche « destination » — îlots de Nioumachoua (photo libre CC BY 3.0, crédit imprimé) |
 | `flyer-affiche-vedette-facebook.png` | 2160 × 2700 (4:5) | Même affiche avec NOTRE photo (vedette en pleine mer) — aucun crédit à afficher |
-| `flyer-affiche-duotone-facebook.png` | 2160 × 2700 (4:5) | **⭐ LA PLUS BELLE** — affiche de voyage duotone marine/or, une seule idée |
+| `flyer-affiche-lumineuse-facebook.png` | 2160 × 2700 (4:5) | **⭐⭐ LA PLUS ABOUTIE** — affiche lumineuse : rampe claire, soleil à rayons, typo marine |
+| `flyer-affiche-duotone-facebook.png` | 2160 × 2700 (4:5) | La même en version sombre (marine dominante), conservée |
 | `flyer-soir-facebook.png` | 2160 × 2700 (4:5) | **⭐ BULLETIN DU SOIR** — la mer réelle de demain matin, généré depuis Open-Meteo. **Format daté : à regénérer chaque jour.** |
 | `flyer-promo-brillant-facebook.png` | 2160 × 2700 (4:5) | Promo « brillant » (or métallique, reflets, lumière) — intemporel |
 | `flyer-promo-brillant-A4.png` | 2480 × 3508 (A4, 300 dpi) | Le brillant en A4 imprimable, avec « comment ça marche » |
@@ -216,6 +217,29 @@ voyage), appliquée dans `flyer10-affiche-duotone-fb.html` + `duotone.py` :
      sombres), tous deux à fond réellement transparent.
    - L'emblème ne doit apparaître **qu'une fois** : il a été retiré de l'en-tête
      quand le sceau est arrivé, sinon la marque se répète.
+
+## Faire une affiche LUMINEUSE (demande du 09/08/2026)
+
+Le patron : « ça doit être lumineux ». La version sombre était belle mais la mer
+marine mangeait tout. Ce qui a marché — dans `flyer11-affiche-lumineuse-fb.html`
+et la fonction `terminer_clair()` de `duotone.py` :
+
+1. **Une rampe duotone claire** (`RAMPE_CLAIRE`) : les ombres ne descendent
+   jamais dans le noir (marine doux `#0E2854`), les tons moyens passent par
+   l'aigue-marine, les hautes lumières montent au crème `#FFFCF2`.
+   Plus une correction gamma 0,88 qui remonte les basses lumières.
+2. **Un voile clair sur les bords au lieu d'un vignettage sombre.** C'est le
+   geste qui change tout : la lumière sort du cadre au lieu d'y être enfermée.
+3. **Bloom généreux** sur les hautes lumières (seuil 170, flou 2,2 % de la
+   largeur, écran à 92/255).
+4. **Le sceau devient le soleil** : `repeating-conic-gradient` pour l'éventail
+   de rayons, éteint par un `mask-image` radial (trou au centre, extinction à
+   52 %). Un halo radial chaud par-dessus.
+5. **La typographie passe en marine sur fond clair.** La lumière vient du
+   contraste, pas de l'ajout de blanc : un titre crème sur fond clair
+   disparaîtrait.
+⚠️ Premier essai trop délavé (voile à 210, contraste 1,10) : les îlots avaient
+disparu. Bons réglages : voile 140, contraste 1,22, gamma 0,88.
 
 ## La recette « ça brille » (demande du patron : niveau designer pro)
 

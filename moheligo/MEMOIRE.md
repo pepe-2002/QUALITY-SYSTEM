@@ -67,7 +67,8 @@ qu'on veut faire :
 
 | Je veux… | Fichier source à modifier | PNG produit |
 |---|---|---|
-| **L'affiche duotone (la plus belle)** | `flyer10-affiche-duotone-fb.html` + `duotone.py` | `flyer-affiche-duotone-facebook.png` |
+| **L'AFFICHE LUMINEUSE (la plus aboutie)** | `flyer11-affiche-lumineuse-fb.html` + `duotone.py` | `flyer-affiche-lumineuse-facebook.png` |
+| L'affiche duotone sombre (gardée) | `flyer10-affiche-duotone-fb.html` + `duotone.py` | `flyer-affiche-duotone-facebook.png` |
 | Le flyer diaspora (angle le plus rentable) | `flyer9-diaspora-fb.html` | `flyer-diaspora-facebook.png` |
 | **Le bulletin du soir (format le plus fort)** | `bulletin.py` + `flyer8-soir-fb.template.html` | `flyer-soir-facebook.png` — **regénérer chaque jour** |
 | **Améliorer le design (LE MEILLEUR, repartir de là)** | **`flyer7-promo-brillant-fb.html`** | `flyer-promo-brillant-facebook.png` (2160×2700) |
@@ -339,6 +340,18 @@ worker avec MoheliGo. Tout est expliqué dans `nous/README.md` — ne pas
 recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
+
+- **09/08/2026** — « Dépasse-toi encore, ça doit être lumineux. » L'affiche a
+  été refaite en version claire : rampe duotone qui ne descend jamais dans le
+  noir, **voile clair sur les bords au lieu d'un vignettage sombre** (le geste
+  qui change tout), bloom généreux, et le **sceau devenu soleil** avec un
+  éventail de rayons en dégradé conique. La typo passe en **marine sur fond
+  clair** — la lumière vient du contraste, pas de l'ajout de blanc.
+  ⚠️ Premier essai trop délavé : les îlots avaient disparu. Réglages retenus :
+  voile 140, contraste 1,22, gamma 0,88. Recette complète dans
+  `pub/flyers/README.md`, section « Faire une affiche LUMINEUSE ».
+  La page du patron montre maintenant cette affiche à la place de la sombre
+  (la sombre reste dans le dépôt).
 
 - **08/08/2026 (soir)** — « Dépasse-toi, va chercher sur internet comment faire
   un flyer très joli. » Recherche faite (tendances graphiques 2026 + principes

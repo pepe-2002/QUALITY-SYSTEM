@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+<!-- Affiche « lumineuse » (1080x1350, 4:5) — 09/08/2026.
+     Demande du patron : « ça doit être lumineux ». La version précédente était
+     belle mais sombre (mer marine dominante). Ici tout est renversé :
+       - rampe duotone CLAIRE (duotone.py, RAMPE_CLAIRE) : les ombres ne
+         descendent jamais dans le noir, les hautes lumières montent au crème.
+         L'image paraît éclairée de l'intérieur ;
+       - voile clair sur les bords au lieu d'un vignettage sombre, et bloom
+         généreux sur les hautes lumières ;
+       - le SCEAU devient le SOLEIL : un éventail de rayons en dégradé conique
+         part de l'emblème et s'éteint en s'éloignant ;
+       - la typographie passe en MARINE sur fond clair : c'est le contraste qui
+         fait la lumière, pas l'ajout de blanc.
+     Toujours : une seule idée, composition en tiers, marges de 64 px. -->
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root{
+  --marine:#0B2149; --marine-doux:rgba(11,33,73,.62); --or:#E0A400; --creme:#FFFCF2;
+  --pad:64px; --centre-x:540px; --centre-y:322px;
+}
+body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:var(--marine);
+       -webkit-font-smoothing:antialiased; overflow:hidden; background:var(--creme); }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:var(--creme); }
+.arch { font-family:'Archivo','Inter',Arial,sans-serif; }
+
+.shot { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+/* voile crème très léger en bas : le grand titre marine doit rester net */
+.clarte { position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(255,252,242,0) 46%, rgba(255,252,242,.34) 66%,
+                                     rgba(255,252,242,.56) 82%, rgba(255,252,242,.72) 100%); }
+
+/* les rayons du soleil : dégradé conique, éteint par un masque radial */
+.rayons { position:absolute; left:var(--centre-x); top:var(--centre-y); width:1500px; height:1500px;
+  margin:-750px 0 0 -750px;
+  background:repeating-conic-gradient(from 0deg,
+    rgba(224,164,0,.26) 0deg 1.05deg, rgba(224,164,0,0) 1.1deg 7.5deg);
+  -webkit-mask-image:radial-gradient(circle, rgba(0,0,0,0) 12.5%, rgba(0,0,0,.95) 23%, rgba(0,0,0,0) 52%);
+  mask-image:radial-gradient(circle, rgba(0,0,0,0) 12.5%, rgba(0,0,0,.95) 23%, rgba(0,0,0,0) 52%); }
+/* halo doux autour du soleil */
+.halo { position:absolute; left:var(--centre-x); top:var(--centre-y); width:900px; height:900px;
+  margin:-450px 0 0 -450px; border-radius:50%;
+  background:radial-gradient(circle, rgba(255,236,178,.55) 0%, rgba(255,236,178,.18) 34%, rgba(255,236,178,0) 62%); }
+
+/* le sceau : l'emblème dans l'anneau, au centre du soleil */
+.sceau { position:absolute; left:var(--centre-x); top:var(--centre-y); width:330px; height:330px;
+  margin:-165px 0 0 -165px; border:2px solid rgba(11,33,73,.46); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; background:rgba(255,252,242,.30); }
+.sceau::before { content:''; position:absolute; inset:12px; border-radius:50%;
+  border:1px solid rgba(11,33,73,.22); }
+.sceau img { width:184px; display:block; opacity:.95; }
+
+.tete { position:absolute; top:var(--pad); left:var(--pad); right:var(--pad);
+  display:flex; align-items:flex-start; justify-content:space-between; }
+.tete b { font-size:29px; font-weight:800; letter-spacing:-.8px; display:block; line-height:1; }
+.tete small { display:block; margin-top:5px; font-size:10.5px; font-weight:700; letter-spacing:2.6px;
+  color:var(--marine-doux); }
+.tete .lieu { font-size:11px; font-weight:800; letter-spacing:2.8px; color:var(--marine-doux);
+  text-align:right; line-height:1.7; }
+
+.titre { position:absolute; left:var(--pad); right:var(--pad); top:706px; }
+.titre .filet { width:88px; height:2px; background:var(--or); }
+.titre .sur { display:block; margin-top:18px; font-size:12.5px; font-weight:800; letter-spacing:3.4px;
+  color:var(--marine-doux); }
+.titre h1 { margin-top:14px; font-size:212px; font-weight:900; line-height:.86; letter-spacing:-8.5px;
+  color:var(--marine); }
+.titre .sous { display:block; margin-top:22px; font-size:22px; font-weight:500; line-height:1.45;
+  color:rgba(11,33,73,.80); max-width:640px; }
+
+.pied { position:absolute; left:var(--pad); right:var(--pad); bottom:var(--pad);
+  display:flex; align-items:flex-end; justify-content:space-between; gap:26px; }
+.pied .adresse b { display:block; font-size:44px; font-weight:900; letter-spacing:-1.4px; line-height:1;
+  color:var(--marine); }
+.pied .adresse small { display:block; margin-top:11px; font-size:14.5px; font-weight:700; letter-spacing:1.6px;
+  color:var(--or); }
+.pied .qr { width:104px; height:104px; background:#fff; padding:7px; flex:none;
+  border:1px solid rgba(11,33,73,.14); box-shadow:0 16px 34px rgba(11,33,73,.14); }
+.pied .qr img { width:100%; height:100%; display:block; }
+
+.credit { position:absolute; left:var(--pad); bottom:26px; font-size:10px; font-weight:500;
+  color:rgba(11,33,73,.40); }
+</style></head><body>
+<div class="page">
+  <img class="shot" src="duo-ilots-clair.jpg" alt="">
+  <div class="clarte"></div>
+  <div class="rayons"></div>
+  <div class="halo"></div>
+  <div class="sceau"><img src="logo-emblem-marine.png" alt=""></div>
+
+  <div class="tete arch">
+    <div><b>MoheliGo</b><small>TRAVERSÉES MARITIMES DES COMORES</small></div>
+    <div class="lieu">ÎLOTS DE NIOUMACHOUA<br>UNION DES COMORES</div>
+  </div>
+
+  <div class="titre">
+    <div class="filet"></div>
+    <span class="sur arch">LE MATIN, L'ÎLE EST DÉJÀ LÀ</span>
+    <h1 class="arch">MOHÉLI</h1>
+    <span class="sous">Ouroveni ou Chindini au départ, Hoani ou Fomboni à l'arrivée.
+      Votre place se réserve en deux minutes.</span>
+  </div>
+
+  <div class="pied">
+    <div class="adresse arch">
+      <b>moheligo.com</b>
+      <small>BILLET QR · MVOLA · MÉTÉO MER 7 JOURS</small>
+    </div>
+    <div class="qr"><img src="qr-moheligo.png" alt=""></div>
+  </div>
+
+  <div class="credit">Photo : Fatima771 (CC BY 3.0, Wikimedia Commons) — traitement MoheliGo</div>
+</div>
+</body></html>

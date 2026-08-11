@@ -17,24 +17,33 @@ Puis grain monochrome léger, et vignettage.
 import random
 from PIL import Image, ImageChops, ImageEnhance, ImageFilter
 
-# rampe : ombres marine -> bleu -> or -> crème (les points d'arrêt sont la charte)
+# rampe SOMBRE : ombres marine -> bleu -> or -> crème (points d'arrêt = la charte)
 RAMPE = [(0.00, (5, 14, 34)), (0.28, (14, 45, 100)), (0.52, (28, 79, 168)),
          (0.74, (246, 188, 28)), (0.90, (255, 226, 150)), (1.00, (255, 247, 224))]
+
+# rampe CLAIRE (« lumineuse ») : on ne descend jamais dans le noir. Les ombres
+# restent un marine doux, les tons moyens passent par l'aigue-marine, et les
+# hautes lumières montent jusqu'au crème presque blanc. C'est ce qui donne une
+# affiche qui semble éclairée de l'intérieur au lieu d'être assombrie.
+RAMPE_CLAIRE = [(0.00, (14, 40, 84)), (0.20, (32, 88, 140)), (0.40, (96, 162, 190)),
+                (0.58, (170, 210, 214)), (0.74, (250, 214, 122)), (0.88, (255, 238, 196)),
+                (1.00, (255, 252, 242))]
 CIBLE = (2160, 2700)          # plein cadre 4:5 pour Facebook
 
 
-def rampe_255():
-    """Interpole la rampe en une table de 256 couleurs."""
+def rampe_255(rampe=None):
+    """Interpole une rampe en une table de 256 couleurs."""
+    rampe = rampe or RAMPE
     table = []
     for i in range(256):
         t = i / 255
-        for (t0, c0), (t1, c1) in zip(RAMPE, RAMPE[1:]):
+        for (t0, c0), (t1, c1) in zip(rampe, rampe[1:]):
             if t0 <= t <= t1:
                 k = 0 if t1 == t0 else (t - t0) / (t1 - t0)
                 table.append(tuple(int(a + (b - a) * k) for a, b in zip(c0, c1)))
                 break
         else:
-            table.append(RAMPE[-1][1])
+            table.append(rampe[-1][1])
     return table
 
 
@@ -52,12 +61,15 @@ def cadrer(im, cible):
     return im.resize(cible, Image.LANCZOS)
 
 
-def duotone(src, out, contraste=1.18, grain=9):
+def duotone(src, out, contraste=1.18, grain=9, rampe=None, clair=False):
     im = cadrer(Image.open(src).convert('RGB'), CIBLE)
     W, H = im.size
 
-    lum = ImageEnhance.Contrast(im.convert('L')).enhance(contraste)
-    table = rampe_255()
+    lum = im.convert('L')
+    if clair:                                # on remonte les basses lumières
+        lum = lum.point(lambda v: int(255 * (v / 255) ** 0.88))
+    lum = ImageEnhance.Contrast(lum).enhance(contraste)
+    table = rampe_255(rampe)
     plat = [c for coul in table for c in coul]          # palette à plat
     duo = lum.convert('P')
     duo.putpalette(plat)
@@ -68,6 +80,9 @@ def duotone(src, out, contraste=1.18, grain=9):
     bruit = Image.effect_noise((W // 2, H // 2), 26).resize((W, H), Image.BILINEAR)
     bruit = bruit.point(lambda v: 128 + int((v - 128) * grain / 100))
     im = ImageChops.overlay(im, Image.merge('RGB', (bruit, bruit, bruit)))
+
+    if clair:
+        return terminer_clair(im, out)
 
     # vignettage doux : le regard reste au centre
     sw, sh = 160, 200
@@ -83,6 +98,31 @@ def duotone(src, out, contraste=1.18, grain=9):
     print(out, im.size)
 
 
+def terminer_clair(im, out):
+    """Version claire : halo blanc sur les bords au lieu d'un vignettage sombre,
+    et bloom généreux — l'image doit paraître éclairée, pas encadrée."""
+    W, H = im.size
+    lum = im.convert('L')
+    hautes = lum.point(lambda v: 0 if v < 170 else min(255, int((v - 170) * 3)))
+    bloom = Image.composite(im, Image.new('RGB', (W, H), (0, 0, 0)), hautes)
+    bloom = bloom.filter(ImageFilter.GaussianBlur(W * 0.022))
+    im = ImageChops.screen(im, ImageChops.multiply(bloom, Image.new('RGB', (W, H), (92, 92, 92))))
+
+    # voile clair sur les bords (l'inverse du vignettage)
+    sw, sh = 160, 200
+    voile = Image.new('L', (sw, sh)); vp = voile.load()
+    for y in range(sh):
+        for x in range(sw):
+            d = (((x - sw / 2) / (sw / 2)) ** 2 + ((y - sh / 2) / (sh / 2)) ** 2) ** 0.5
+            vp[x, y] = int(140 * max(0.0, (d - 0.66) / 0.70) ** 1.5)
+    voile = voile.resize((W, H), Image.BICUBIC).filter(ImageFilter.GaussianBlur(W * 0.03))
+    im = Image.composite(Image.new('RGB', (W, H), (255, 252, 242)), im, voile)
+    im.save(out, quality=94)
+    print(out, im.size, '(clair)')
+
+
 if __name__ == '__main__':
     duotone('../photos-cc/nioumachoua-ilot-fatima.jpg', 'duo-ilots.jpg', contraste=1.30)
     duotone('../photos/mer-bateau.jpg', 'duo-vedette.jpg', contraste=1.14)
+    duotone('../photos-cc/nioumachoua-ilot-fatima.jpg', 'duo-ilots-clair.jpg',
+            contraste=1.22, grain=6, rampe=RAMPE_CLAIRE, clair=True)

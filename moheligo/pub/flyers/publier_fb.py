@@ -41,7 +41,7 @@ BASE = f'https://graph.facebook.com/{API}'
 CACERT = '/root/.ccr/ca-bundle.crt'               # proxy de session ; absent sur GitHub
 
 
-def curl(url, methode='GET', formulaires=(), jeton=None):
+def curl(url, methode='GET', formulaires=(), jeton=None, strict=True):
     """Appel Graph API. Le jeton passe par l'entrée standard, jamais par argv."""
     cmd = ['curl', '-sS', '--max-time', '40', '-X', methode]
     if os.path.isfile(CACERT):
@@ -62,6 +62,8 @@ def curl(url, methode='GET', formulaires=(), jeton=None):
         sys.exit('Réponse illisible de Facebook : ' + out.stdout[:400])
     if isinstance(rep, dict) and 'error' in rep:
         e = rep['error']
+        if not strict:                      # appel facultatif : on renvoie vide
+            return {}
         sys.exit('Facebook refuse : %s (code %s, type %s)\n%s' % (
             e.get('message', '?'), e.get('code', '?'), e.get('type', '?'),
             "Jeton expiré ou permission manquante : refaire un jeton de page "
@@ -90,7 +92,9 @@ def verifier():
     # `category` (Transport, Service…) n'existe que sur une Page : c'est le
     # marqueur le plus fiable. `metadata=1` a été essayé d'abord et Facebook ne
     # le renvoie pas toujours — un test qui ne répond pas ne prouve rien.
-    rep = curl(f'{BASE}/{page}?fields=name,category,link,followers_count', jeton=jeton)
+    # ⚠️ un seul champ invalide fait rejeter TOUT l'appel : on ne demande ici
+    # que des champs sûrs, et le nombre d'abonnés dans un appel facultatif.
+    rep = curl(f'{BASE}/{page}?fields=name,category,link', jeton=jeton)
     print('Répond au nom de :', '« %s »' % rep.get('name', '?'))
     print('Champs obtenus   :', ', '.join(sorted(k for k in rep if k != 'id')))
 
@@ -106,8 +110,9 @@ def verifier():
             "« access_token » dans FB_PAGE_TOKEN.")
 
     print('\nLiaison OK — page « %s » (%s)' % (rep.get('name'), rep['category']))
-    if 'followers_count' in rep:
-        print('Abonnés :', rep['followers_count'])
+    abo = curl(f'{BASE}/{page}?fields=followers_count', jeton=jeton, strict=False)
+    if 'followers_count' in abo:
+        print('Abonnés :', abo['followers_count'])
     print('Adresse :', rep.get('link', '—'))
 
 

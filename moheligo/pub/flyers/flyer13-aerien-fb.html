@@ -1,0 +1,160 @@
+<!-- Flyer « composition aérienne » — inspiré de l'ÉNERGIE des affiches Royal Air
+     (fond dégradé profond, objets qui flottent, arche pointillée, barre sociale
+     en pied), JAMAIS de leur identité : nos couleurs, notre logo, nos mots.
+     ⚠️ Consigne du patron : aucune personne sur le visuel. L'humain de leur
+     affiche est remplacé ici par la vedette et le billet qui flottent.
+     Rendu : node render.js flyer13-aerien-fb.html flyer-aerien-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:800; src:url(fonts/Archivo-800-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page {
+  position:relative; width:1080px; height:1350px; overflow:hidden;
+  background:
+    radial-gradient(120% 80% at 88% 8%, rgba(150,214,255,.95) 0%, rgba(60,140,235,0) 55%),
+    radial-gradient(90% 60% at 10% 95%, rgba(10,22,60,.9) 0%, rgba(10,22,60,0) 60%),
+    linear-gradient(158deg, #0B1E52 0%, #143AA6 42%, #2E6BE6 72%, #63A8EF 100%);
+}
+/* voile de lumière diagonal, comme un reflet d'objectif */
+.page::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(118deg, rgba(255,255,255,0) 44%, rgba(255,255,255,.13) 52%, rgba(255,255,255,0) 60%);
+}
+
+/* --- coin blanc en haut à gauche, avec l'emblème --- */
+.coin {
+  position:absolute; top:0; left:0; width:412px; height:186px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 79% 100%, 0 100%);
+  display:flex; align-items:center; gap:16px; padding:24px 0 30px 38px;
+  box-shadow:0 18px 44px rgba(4,14,44,.34);
+}
+.coin img { width:74px; height:74px; border-radius:17px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10.5px; font-weight:700; letter-spacing:2.1px;
+  color:#5C6E8B; margin-top:5px; }
+
+/* --- arche pointillée : la route Ouroveni – Hoani --- */
+.arche { position:absolute; top:210px; left:0; width:1080px; height:560px; }
+
+/* --- le titre --- */
+.titre { position:absolute; left:76px; top:706px; width:940px; z-index:4; }
+.titre .sur { font-size:43px; font-weight:500; color:#DCEBFF; letter-spacing:-.6px;
+  text-shadow:0 3px 18px rgba(4,14,44,.5); }
+.titre .gros { font-family:'Archivo',sans-serif; font-weight:900; font-size:124px;
+  line-height:.92; color:#fff; letter-spacing:-4.5px; margin-top:6px;
+  text-shadow:0 10px 34px rgba(4,14,44,.55); }
+.titre .gros u { text-decoration:none; position:relative; }
+.titre .gros u::after {
+  content:''; position:absolute; left:6px; right:24px; bottom:12px; height:11px;
+  background:linear-gradient(90deg,#FFD75E,#F6BC1C); border-radius:99px; z-index:-1;
+}
+.titre .sous { margin-top:24px; font-size:23.5px; line-height:1.5; color:#CFE2FF; max-width:600px; }
+.titre .sous b { color:#fff; font-weight:700; }
+
+/* --- le hublot : la vedette, photo réelle --- */
+.hublot {
+  position:absolute; right:-58px; top:196px; width:452px; height:452px; border-radius:50%;
+  overflow:hidden; border:10px solid rgba(255,255,255,.9);
+  box-shadow:0 46px 90px rgba(4,14,44,.5), inset 0 0 60px rgba(4,14,44,.25);
+  transform:rotate(-4deg);
+}
+.hublot img { width:100%; height:100%; object-fit:cover; transform:scale(1.18) rotate(4deg); display:block; }
+
+/* --- le billet qui flotte --- */
+.billet {
+  position:absolute; right:76px; top:1024px; width:326px; background:#fff; border-radius:24px;
+  padding:20px 22px; display:flex; align-items:center; gap:16px; transform:rotate(-5deg);
+  box-shadow:0 34px 64px rgba(4,14,44,.44);
+}
+.billet img { width:92px; height:92px; display:block; border-radius:10px; }
+.billet .t { font-family:'Archivo',sans-serif; font-weight:900; font-size:20px; color:#0F2A5C;
+  letter-spacing:-.5px; line-height:1.1; }
+.billet .d { font-size:13.5px; color:#5C6E8B; margin-top:5px; line-height:1.35; }
+.billet .p { display:inline-block; margin-top:9px; padding:5px 12px; border-radius:99px;
+  background:#F6BC1C; color:#4A3705; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:13px; letter-spacing:.3px; }
+
+/* --- pastilles d'arguments --- */
+.args { position:absolute; left:76px; top:1054px; display:flex; flex-direction:column; gap:13px; z-index:4; }
+.args div { display:flex; align-items:center; gap:12px; color:#fff; font-size:19px; font-weight:700; }
+.args span { width:30px; height:30px; border-radius:50%; background:#F6BC1C; color:#0F2A5C;
+  display:flex; align-items:center; justify-content:center; font-family:'Archivo',sans-serif;
+  font-weight:900; font-size:16px; flex:none; }
+
+/* --- la barre du bas --- */
+.barre {
+  position:absolute; left:64px; right:64px; bottom:48px; height:76px; border-radius:99px;
+  background:rgba(255,255,255,.14); border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(14px);
+  display:flex; align-items:center; justify-content:space-between; padding:0 34px; color:#fff;
+}
+.barre .g { display:flex; align-items:center; gap:14px; font-weight:700; font-size:19px; }
+.barre .rond { width:34px; height:34px; border-radius:50%; background:#fff; color:#143AA6;
+  display:flex; align-items:center; justify-content:center; font-family:'Archivo',sans-serif;
+  font-weight:900; font-size:17px; }
+.barre .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:25px; letter-spacing:-.6px; }
+.barre .d { font-size:16.5px; font-weight:700; opacity:.92; }
+</style>
+
+<div class="page">
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div>
+      <b>Moheli<i>Go</i></b>
+      <small>TRAVERSÉES MARITIMES</small>
+    </div>
+  </div>
+
+  <svg class="arche" viewBox="0 0 1080 560" fill="none">
+    <path d="M78 392 C 300 120, 700 78, 1002 196" stroke="rgba(255,255,255,.45)"
+          stroke-width="4" stroke-dasharray="3 16" stroke-linecap="round"/>
+    <circle cx="78" cy="392" r="11" fill="#F6BC1C"/>
+    <circle cx="1002" cy="196" r="11" fill="#F6BC1C"/>
+    <text x="52" y="438" font-family="Archivo,sans-serif" font-size="21" font-weight="900"
+          fill="#FFFFFF" opacity=".92">OUROVENI → HOANI</text>
+
+  </svg>
+
+  <div class="hublot"><img src="../photos/vedette-mer.jpg" alt=""></div>
+
+  <div class="titre">
+    <div class="sur">Traversez vers Mohéli</div>
+    <div class="gros"><u>Sereinement.</u></div>
+    <div class="sous">Votre place est prise avant d'arriver au port,
+      et votre <b>billet est déjà dans votre poche</b>.</div>
+  </div>
+
+  <div class="billet">
+    <img src="qr-moheligo.png" alt="">
+    <div>
+      <div class="t">Billet QR</div>
+      <div class="d">Reçu dès le paiement,<br>valable sans connexion</div>
+      <div class="p">dès 15 000 FC</div>
+    </div>
+  </div>
+
+  <div class="args">
+    <div><span>1</span>Vous choisissez votre départ</div>
+    <div><span>2</span>Vous payez par MVola ou KartaPay</div>
+    <div><span>3</span>Vous embarquez, billet en main</div>
+  </div>
+
+
+  <div class="barre">
+    <div class="g">
+      <div class="rond">f</div>
+      <div class="rond">✆</div>
+      <span>MoheliGo</span>
+    </div>
+    <div class="site">moheligo.com</div>
+    <div class="d">Ouroveni · Chindini · Hoani · Fomboni</div>
+  </div>
+</div>

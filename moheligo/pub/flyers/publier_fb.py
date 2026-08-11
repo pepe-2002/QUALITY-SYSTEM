@@ -72,9 +72,24 @@ def curl(url, methode='GET', formulaires=(), jeton=None, strict=True):
     return rep
 
 
+def nettoyer_jeton(brut):
+    """Accepte un jeton collé n'importe comment, y compris une adresse entière.
+
+    Sur un téléphone, extraire le jeton d'une barre d'adresse
+    (`...login_success.html#access_token=EAA...&expires_in=...`) est pénible et
+    source d'erreur. Le patron colle donc l'adresse complète : on retrouve la
+    clé nous-mêmes. Coûte trois lignes, économise un aller-retour.
+    """
+    j = (brut or '').strip().strip('"\'')
+    if 'access_token=' in j:
+        j = j.split('access_token=', 1)[1]
+    j = j.split('&', 1)[0].split('#', 1)[0]
+    return j.strip()
+
+
 def config():
     page = os.environ.get('FB_PAGE_ID', '').strip()
-    jeton = os.environ.get('FB_PAGE_TOKEN', '').strip()
+    jeton = nettoyer_jeton(os.environ.get('FB_PAGE_TOKEN', ''))
     manque = [n for n, v in (('FB_PAGE_ID', page), ('FB_PAGE_TOKEN', jeton)) if not v]
     if manque:
         sys.exit('Variables manquantes : %s\nVoir la marche à suivre dans '

@@ -40,7 +40,7 @@ CIEL = {0: 'Ciel dégagé', 1: 'Peu nuageux', 2: 'Partiellement nuageux', 3: 'Co
 # Les flyers de la page, dans l'ordre d'affichage.
 # (fichier PNG, titre, note, fichier texte ou None si le texte est ici)
 FLYERS = [
-    dict(png='flyer-affiche-lumineuse-facebook.png', titre="L'affiche MOHÉLI",
+    dict(png='flyer-affiche-vraie-facebook.png', titre="L'affiche MOHÉLI",
          note='Sans date<br>publiable quand vous voulez', texte="""MOHÉLI, À UNE TRAVERSÉE.
 
 Les îlots de Nioumachoua, vus de la plage, un matin sans vent.

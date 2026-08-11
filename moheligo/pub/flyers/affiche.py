@@ -76,8 +76,38 @@ def etalonner(src, out, horizon, devoile, contraste, couleur, halo, bleu):
     print(out, im.size)
 
 
-for job in JOBS:
-    try:
-        etalonner(**job)
-    except FileNotFoundError:
-        print('absent, ignoré :', job['src'], file=sys.stderr)
+def plein_cadre(src, out, cible=(2160, 2700), grain=5):
+    """Version plein cadre 4:5 en COULEURS RÉELLES, pour l'affiche.
+
+    Le patron : « la mer doit être vraie ». Donc aucun mappage de couleurs ici —
+    la mer reste celle de la photo. On ne fait que l'aider : recadrage, netteté,
+    et un grain très léger qui masque l'agrandissement (la source ne fait que
+    2032 px de large pour une sortie à 2160).
+    """
+    im = Image.open(src).convert('RGB')
+    cw, ch = cible
+    if im.width / im.height > cw / ch:        # source large : on coupe les côtés
+        w = int(im.height * cw / ch)
+        im = im.crop(((im.width - w) // 2, 0, (im.width + w) // 2, im.height))
+    else:                                     # source haute : on coupe en bas
+        im = im.crop((0, 0, im.width, int(im.width * ch / cw)))
+    im = im.resize(cible, Image.LANCZOS)
+    W, H = im.size
+
+    im = im.filter(ImageFilter.UnsharpMask(radius=2.6, percent=72, threshold=3))
+    bruit = Image.effect_noise((W // 2, H // 2), 24).resize((W, H), Image.BILINEAR)
+    bruit = bruit.point(lambda v: 128 + int((v - 128) * grain / 100))
+    im = ImageChops.overlay(im, Image.merge('RGB', (bruit, bruit, bruit)))
+    im.save(out, quality=94)
+    print(out, im.size, '(couleurs réelles)')
+
+
+# ⚠️ garde-fou : sans ce test, un simple « import affiche » relançait tout
+# l'étalonnage (c'est arrivé). Les traitements ne tournent qu'en ligne de commande.
+if __name__ == '__main__':
+    for job in JOBS:
+        try:
+            etalonner(**job)
+        except FileNotFoundError:
+            print('absent, ignoré :', job['src'], file=sys.stderr)
+    plein_cadre('nioumachoua-affiche.jpg', 'nioumachoua-plein.jpg')

@@ -67,7 +67,8 @@ qu'on veut faire :
 
 | Je veux… | Fichier source à modifier | PNG produit |
 |---|---|---|
-| **L'AFFICHE LUMINEUSE (la plus aboutie)** | `flyer11-affiche-lumineuse-fb.html` + `duotone.py` | `flyer-affiche-lumineuse-facebook.png` |
+| **L'AFFICHE À UTILISER (mer vraie)** | `flyer12-affiche-vraie-fb.html` + `affiche.py` | `flyer-affiche-vraie-facebook.png` |
+| L'affiche lumineuse duotone (gardée) | `flyer11-affiche-lumineuse-fb.html` + `duotone.py` | `flyer-affiche-lumineuse-facebook.png` |
 | L'affiche duotone sombre (gardée) | `flyer10-affiche-duotone-fb.html` + `duotone.py` | `flyer-affiche-duotone-facebook.png` |
 | Le flyer diaspora (angle le plus rentable) | `flyer9-diaspora-fb.html` | `flyer-diaspora-facebook.png` |
 | **Le bulletin du soir (format le plus fort)** | `bulletin.py` + `flyer8-soir-fb.template.html` | `flyer-soir-facebook.png` — **regénérer chaque jour** |
@@ -362,6 +363,13 @@ recharger ce sujet ici, ce n'est pas du marketing.
   `page.py` (liste `TEXTES`) et dans `pub/textes-publications.md`.
   ⚠️ Le texte d'abonnement promet un bulletin **chaque soir** : soit on tient le
   rythme, soit on retire la phrase.
+  Dernier retour du jour : **« la mer doit être vraie »**. Le duotone, aussi beau
+  qu'il soit, recolore la mer — le patron n'en veut pas sur l'affiche. Version
+  définitive : `flyer12-affiche-vraie-fb.html`, photo en **couleurs réelles**
+  (`affiche.py → plein_cadre()` : recadrage, netteté, grain, rien d'autre), même
+  mise en page, et une **bande de papier crème en pied** pour que l'adresse et le
+  QR restent lisibles sur le sable orange. **Règle à garder : le duotone pour un
+  visuel graphique, jamais quand la vérité de la scène compte.**
 
 - **08/08/2026 (soir)** — « Dépasse-toi, va chercher sur internet comment faire
   un flyer très joli. » Recherche faite (tendances graphiques 2026 + principes

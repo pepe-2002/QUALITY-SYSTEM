@@ -9,7 +9,8 @@
 | `flyer-nuit-facebook.png` | 2160 × 2700 (4:5) | Deuxième publication, fin de soirée (22h30 – minuit) |
 | `flyer-affiche-facebook.png` | 2160 × 2700 (4:5) | Affiche « destination » — îlots de Nioumachoua (photo libre CC BY 3.0, crédit imprimé) |
 | `flyer-affiche-vedette-facebook.png` | 2160 × 2700 (4:5) | Même affiche avec NOTRE photo (vedette en pleine mer) — aucun crédit à afficher |
-| `flyer-affiche-lumineuse-facebook.png` | 2160 × 2700 (4:5) | **⭐⭐ LA PLUS ABOUTIE** — affiche lumineuse : rampe claire, soleil à rayons, typo marine |
+| `flyer-affiche-vraie-facebook.png` | 2160 × 2700 (4:5) | **⭐⭐⭐ CELLE À UTILISER** — mer en **couleurs réelles**, soleil à rayons, bande de papier crème en pied |
+| `flyer-affiche-lumineuse-facebook.png` | 2160 × 2700 (4:5) | Version duotone claire (mer recolorée), conservée |
 | `flyer-affiche-duotone-facebook.png` | 2160 × 2700 (4:5) | La même en version sombre (marine dominante), conservée |
 | `flyer-soir-facebook.png` | 2160 × 2700 (4:5) | **⭐ BULLETIN DU SOIR** — la mer réelle de demain matin, généré depuis Open-Meteo. **Format daté : à regénérer chaque jour.** |
 | `flyer-promo-brillant-facebook.png` | 2160 × 2700 (4:5) | Promo « brillant » (or métallique, reflets, lumière) — intemporel |
@@ -217,6 +218,26 @@ voyage), appliquée dans `flyer10-affiche-duotone-fb.html` + `duotone.py` :
      sombres), tous deux à fond réellement transparent.
    - L'emblème ne doit apparaître **qu'une fois** : il a été retiré de l'en-tête
      quand le sceau est arrivé, sinon la marque se répète.
+
+## « La mer doit être vraie » (09/08/2026)
+
+Le duotone est beau mais il **recolore la mer** — et le patron veut la vraie.
+D'où `flyer12-affiche-vraie-fb.html`, qui garde toute la mise en page (sceau
+solaire, un seul grand mot, tiers, marges) mais sur une photo en **couleurs
+réelles** : `affiche.py → plein_cadre()` ne fait que recadrer en 4:5, remonter
+la netteté et poser un grain léger — aucun mappage de couleurs.
+
+Ce que ça impose en plus : sur du sable orange vif, un texte marine se noie.
+La solution est celle des vraies affiches de voyage — **une bande de papier
+crème en pied de page** (196 px, `#FFF9E8`) qui porte l'adresse, la ligne de
+services et le QR. Le titre remonte au-dessus, sur la limite mer/sable, avec un
+voile crème progressif. Personne ne lutte plus contre la photo.
+
+⚠️ Piège rencontré : `affiche.py` n'avait **pas** de garde
+`if __name__ == '__main__'`, donc un simple `import affiche` relançait tout
+l'étalonnage — et mes deux `replace` sur ce fichier n'avaient rien remplacé
+(motifs indentés qui n'existaient pas), sans le moindre message. Le garde-fou
+est en place ; et un `assert` avant réécriture évite les remplacements muets.
 
 ## Faire une affiche LUMINEUSE (demande du 09/08/2026)
 

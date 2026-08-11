@@ -1,0 +1,154 @@
+<!-- LE MATIN — « COMMENT ON PREND SA PLACE » (démonstration statique).
+     Le patron, 11/08/2026 : « on peut pas ajouter un flyer ou vidéo de
+     démonstration le matin ? »
+
+     POURQUOI UN FLYER ET PAS UNE VIDÉO, CE SOIR : Chromium n'a aucun accès
+     réseau dans la session, et le site dépend de Supabase et d'un CDN — donc
+     ni enregistrement du site en ligne, ni exécution en local. Je refuse de
+     dessiner une fausse interface : montrer un écran qui n'existe pas, c'est
+     inventer une preuve (§ 11 du manuel). La vidéo se fera avec 4 vraies
+     captures d'écran du patron (voir pub/demo/README.md).
+
+     LE REGISTRE (§ 10 ter — sobre ne veut pas dire vide) :
+       · l'objet regardé, c'est la MARCHE À SUIVRE : une carte claire, un
+         chemin doré, trois paliers numérotés. Il a un sens : on explique un
+         parcours, on montre un parcours.
+       · même famille que flyer20 (coin blanc, aplat marine, carte claire) —
+         la régularité bat la créativité (§ 1, actifs distinctifs).
+       · le déclencheur est un FACILITATEUR, pas une étincelle (§ 13.1) : la
+         cible est motivée mais bloquée. On enlève l'obstacle, on ne vante rien.
+       · aucune date → publiable tous les matins prévus au calendrier.
+
+     TOUS LES FAITS VIENNENT DU SITE (aucun inventé) :
+       · 4 ports : Ouroveni, Chindini, Hoani, Fomboni ........ index.html
+       · « la connexion n'est demandée qu'au moment de réserver » index.html
+       · connexion = nom + téléphone, 30 secondes ............ moheli-savoir.js
+       · place bloquée 15 minutes pour payer ................. moheli-savoir.js
+       · paiement MVola / KartaPay ; billet QR immédiat ...... moheli-savoir.js
+       · le billet reste dans le téléphone sans réseau ....... pub/plan-publicitaire.md
+       · WhatsApp +269 479 43 28 ............................. site et supports
+     Rendu : node render.js flyer21-modedemploi-fb.html flyer-modedemploi-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+
+/* le coin blanc en biais : notre actif distinctif, identique partout */
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:1.9px;
+  color:#5C6E8B; margin-top:5px; }
+
+.ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
+  font-size:12px; font-weight:700; letter-spacing:2.4px; line-height:1.7;
+  color:rgba(255,255,255,.58); }
+
+.acc { position:absolute; left:76px; top:248px; width:920px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:86px; line-height:.99;
+  letter-spacing:-3.2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+/* ---------- LA MARCHE À SUIVRE : l'objet qu'on regarde ---------- */
+.marche { position:absolute; left:76px; top:520px; width:928px; z-index:3;
+  background:#F6F9FF; border-radius:24px; padding:8px 44px 10px;
+  box-shadow:0 30px 64px rgba(4,12,40,.44); }
+.etape { position:relative; display:flex; gap:26px; padding:30px 0 30px 0; }
+.etape + .etape { border-top:1px solid #DDE6F4; }
+/* Le chemin doré. Chaque pastille a son centre à 64 px du haut de sa rangée
+   (30 de marge + 34 de demi-pastille), donc la distance entre deux centres
+   consécutifs vaut exactement la hauteur de la rangée : « top:64px » +
+   « height:100% » relie un centre au suivant, quel que soit le texte.
+   La dernière rangée n'en a pas — sinon le fil dépasse dans le vide. */
+.etape:not(:last-child)::before { content:''; position:absolute; left:33px;
+  top:64px; height:100%; width:4px; background:#F1D68A; z-index:1; }
+
+.num { position:relative; z-index:2; flex:0 0 68px; height:68px; border-radius:50%;
+  background:#0F2A5C; color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:34px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 0 8px #F6F9FF; }
+.txt b { display:block; font-family:'Archivo',sans-serif; font-weight:900; font-size:38px;
+  letter-spacing:-1.2px; color:#0F2A5C; line-height:1.06; }
+.txt p { margin-top:10px; font-size:21px; line-height:1.4; color:#43567A; }
+.txt p em { font-style:normal; font-weight:700; color:#0F2A5C; }
+
+/* ---------- ce qui enlève la peur, sur le marine ---------- */
+.rassure { position:absolute; left:76px; right:76px; top:1108px; z-index:3;
+  display:flex; align-items:flex-start; gap:26px;
+  border-top:2px solid rgba(246,188,28,.55); padding-top:24px; }
+.rassure div { flex:1; }
+.rassure b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:23px; letter-spacing:-.6px; color:#F6BC1C; }
+.rassure p { margin-top:7px; font-size:15px; line-height:1.36; color:#CBD9EF; }
+
+.pied { position:absolute; left:76px; right:76px; bottom:62px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; }
+.pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#fff;
+  letter-spacing:-.7px; }
+.pied .site small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1.6px; color:#F6BC1C; margin-top:9px; }
+.pied .fin { max-width:380px; text-align:right; font-size:11.5px; line-height:1.5;
+  color:rgba(255,255,255,.5); }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
+
+  <div class="acc">En trois gestes,<span>ta place est prise.</span></div>
+
+  <div class="marche">
+    <div class="etape">
+      <div class="num">1</div>
+      <div class="txt"><b>Tu choisis</b>
+        <p>Départ, arrivée, date. <em>Ouroveni, Chindini, Hoani, Fomboni.</em>
+           Tu regardes les traversées et les prix <em>sans rien donner</em>.</p></div>
+    </div>
+    <div class="etape">
+      <div class="num">2</div>
+      <div class="txt"><b>Tu réserves</b>
+        <p>Ton nom et ton numéro, <em>seulement ici</em> : trente secondes.
+           Ta place est <em>bloquée quinze minutes</em> le temps de payer.</p></div>
+    </div>
+    <div class="etape">
+      <div class="num">3</div>
+      <div class="txt"><b>Tu paies, tu embarques</b>
+        <p><em>MVola ou KartaPay</em>, depuis ton téléphone. Ton billet arrive
+           avec son code, et il <em>reste dans le téléphone même sans réseau</em>.</p></div>
+    </div>
+  </div>
+
+  <div class="rassure">
+    <div><b>Rien à installer</b><p>Ça s'ouvre dans le téléphone, comme une page.</p></div>
+    <div><b>Rien à donner d'abord</b><p>La connexion n'est demandée qu'au moment de réserver.</p></div>
+    <div><b>Personne ne fait ça seul</b><p>La première fois, fais-le avec un proche ou un boutiquier.</p></div>
+  </div>
+
+  <div class="pied">
+    <div class="site">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
+    <div class="fin">Une question avant de commencer ? Écris sur WhatsApp :
+      quelqu'un répond, et peut le faire avec toi.</div>
+  </div>
+</div>

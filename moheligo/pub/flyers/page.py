@@ -60,6 +60,36 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
+    dict(png='flyer-modedemploi-facebook.png', titre='⭐ LE MATIN — MODE D\'EMPLOI',
+         note="Sans date<br>la démonstration en trois gestes<br>pour celui qui est bloqué,<br>pas pour celui qui hésite",
+         texte="""EN TROIS GESTES, TA PLACE EST PRISE.
+
+Si tu n'as jamais réservé sur un site, lis ça une fois. Après, tu sauras.
+
+1. TU CHOISIS.
+Départ, arrivée, date — Ouroveni, Chindini, Hoani, Fomboni. Tu vois les
+traversées, les places et les prix sans rien donner. Ni nom, ni numéro.
+
+2. TU RÉSERVES.
+C'est seulement ici qu'on te demande ton nom et ton numéro : trente secondes.
+Ta place est bloquée quinze minutes, le temps de payer tranquillement.
+Personne ne te la prend pendant ce temps-là.
+
+3. TU PAIES, TU EMBARQUES.
+MVola ou KartaPay, depuis ton téléphone — ce que tu utilises déjà. Ton billet
+arrive avec son code, et il reste dans le téléphone même sans réseau. C'est lui
+que le commandant scanne.
+
+Rien à installer : ça s'ouvre comme une page.
+
+Et la première fois, tu n'es pas obligé de le faire seul. Demande à un proche,
+à un boutiquier, à ton hôtelier. Il n'y a aucune honte à ça — la deuxième fois,
+tu le feras seul en trois minutes.
+
+moheligo.com — une question avant de commencer ? WhatsApp +269 479 43 28,
+quelqu'un répond, et peut le faire avec toi.
+
+#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
     dict(png='flyer-prix-facebook.png', titre='⭐ MERCREDI — LES PRIX',
          note="Sans date<br>publiable tous les mercredis<br>le billet est l'objet qu'on regarde<br>tous les chiffres viennent du site",
          texte="""LE PRIX, TU LE CONNAIS AVANT DE PAYER.

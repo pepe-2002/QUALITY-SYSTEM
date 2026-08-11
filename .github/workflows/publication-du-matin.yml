@@ -1,0 +1,91 @@
+# La démonstration du matin — LUNDI et JEUDI seulement.
+#
+# Le patron (11/08/2026) : « on peut pas ajouter un flyer ou vidéo de
+# démonstration le matin ? » Si, et le matin est le bon moment : c'est là qu'on
+# décide de descendre au port.
+#
+# POURQUOI SEULEMENT DEUX MATINS PAR SEMAINE : publier trois fois par jour sur
+# une page jeune ne multiplie pas la portée, ça la divise entre les
+# publications, et ça fatigue les abonnés. Un désabonnement se récupère bien
+# plus difficilement qu'une portée faible. Donc deux matins, on mesure dans le
+# rapport du dimanche, et on augmente (ou on arrête) avec les chiffres.
+# Les jours sont dans moheligo/pub/flyers/calendrier.py (dictionnaire MATIN) :
+# les autres matins, ce travail s'arrête proprement sans rien publier.
+#
+# TROIS INTERRUPTEURS, dans cet ordre :
+#   variable PAUSE_FB = oui      → le frein d'urgence, plus rien ne part
+#   variable PUBLIER_MATIN = oui → arme CE créneau, indépendamment des autres
+#   (PUBLIER_FB n'agit pas ici : le patron doit pouvoir garder midi et le soir
+#    armés tout en gardant le matin à l'essai, ou l'inverse.)
+# Sans PUBLIER_MATIN, ce travail se contente d'une répétition à blanc.
+
+name: Publication du matin
+
+on:
+  schedule:
+    - cron: '30 4 * * 1,4'     # 04h30 UTC = 07h30 aux Comores, lundi et jeudi
+  workflow_dispatch:
+    inputs:
+      publier_sur_facebook:
+        description: 'Publier vraiment sur la page Facebook ?'
+        type: boolean
+        default: false
+      jour:
+        description: 'Forcer un jour (AAAA-MM-JJ) pour essayer, sinon aujourd hui'
+        type: string
+        default: ''
+
+env:
+  PYTHONUNBUFFERED: '1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publication-du-matin
+  cancel-in-progress: false
+
+jobs:
+  publier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow
+
+      - name: Ce que le calendrier prévoit
+        working-directory: moheligo/pub/flyers
+        run: python3 calendrier.py
+
+      - name: État de la liaison et de cet interrupteur
+        run: |
+          if [ -z "${{ vars.FB_PAGE_ID }}" ]; then
+            echo "::warning::FB_PAGE_ID absent — rien ne sera publie."
+          elif [ -z "${{ secrets.FB_PAGE_TOKEN }}" ]; then
+            echo "::warning::FB_PAGE_TOKEN absent — la liaison echouera."
+          elif [ "${{ vars.PUBLIER_MATIN }}" != "oui" ]; then
+            echo "Liaison prete. Creneau du MATIN DESARME (PUBLIER_MATIN n'est pas a « oui ») : repetition a blanc seulement."
+          else
+            echo "Creneau du matin ARME."
+          fi
+
+      - name: Répétition à blanc
+        if: vars.FB_PAGE_ID != ''
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: python3 programme.py --matin ${{ inputs.jour && format('--jour {0}', inputs.jour) || '' }}
+
+      - name: Publier la démonstration
+        if: vars.PUBLIER_MATIN == 'oui' || inputs.publier_sur_facebook
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: python3 programme.py --matin --publier ${{ inputs.jour && format('--jour {0}', inputs.jour) || '' }}

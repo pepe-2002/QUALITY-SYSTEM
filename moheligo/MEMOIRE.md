@@ -366,6 +366,52 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/08/2026 (LE CRÉNEAU DU MATIN — démonstration)** — « On peut pas ajouter un
+  flyer ou vidéo de démonstration le matin ? » Oui pour le flyer, **non pour la
+  vidéo ce soir** — et la raison est technique, pas une excuse :
+  🚨 **Chromium n'a AUCUN accès réseau dans la session** (`ERR_CONNECTION_RESET`,
+  testé avec mandataire, sans mandataire, et sur un autre domaine ; `curl` passe,
+  le navigateur non). Et le site **ne tourne pas en local** : il charge ses
+  départs depuis **Supabase** et son client depuis un **CDN**. Donc ni
+  enregistrement du site en ligne, ni exécution locale. J'ai **refusé de
+  dessiner une fausse interface** : montrer un écran qui n'existe pas, c'est
+  inventer une preuve (§ 11 du manuel), et ça se voit.
+  ✅ **Livré à la place** : `flyer21-modedemploi-fb.html` →
+  `flyer-modedemploi-facebook.png`, « En trois gestes, ta place est prise ».
+  Même famille que le flyer des prix (coin blanc, aplat marine, carte claire) —
+  la régularité bat la créativité. L'objet regardé est **la marche à suivre** :
+  trois pastilles reliées par un fil doré. Tous les faits viennent du site.
+  💡 **Astuce CSS à réutiliser** : pour relier des pastilles par un fil continu,
+  ne pas placer un trait absolu sur toute la carte (il dépasse et il faut le
+  recalculer à chaque changement de texte). Comme chaque pastille a son centre à
+  **64 px du haut de sa rangée**, la distance entre deux centres vaut exactement
+  la hauteur de la rangée : `.etape:not(:last-child)::before { top:64px;
+  height:100% }` relie un centre au suivant **quel que soit le texte**.
+  ⏰ **Le rythme, et pourquoi il est prudent** : **lundi et jeudi 7h30**
+  seulement (`.github/workflows/publication-du-matin.yml`, cron `30 4 * * 1,4`).
+  Publier trois fois par jour sur une page jeune **ne multiplie pas la portée,
+  ça la divise** entre les publications, et ça fatigue les abonnés — or un
+  désabonnement se récupère bien plus difficilement qu'une portée faible. Donc
+  deux matins, on mesure dans le rapport du dimanche, on décide avec les
+  chiffres.
+  🔌 **Interrupteur séparé : `PUBLIER_MATIN = oui`** — volontairement distinct de
+  `PUBLIER_FB`, pour que le patron puisse garder midi et le soir armés tout en
+  laissant le matin à l'essai. **Le créneau est DÉSARMÉ jusqu'à sa décision.**
+  `PAUSE_FB` reste au-dessus de tout.
+  🧠 Détail de conception : un matin sans démonstration prévue **n'est pas une
+  erreur** — `programme.py --matin` sort proprement en code 0. Un voyant rouge
+  cinq matins sur sept, on apprend à l'ignorer, et il ne sert plus le jour où il
+  compte.
+  🎬 **La vidéo attend 4 captures d'écran du patron** (accueil / carte de
+  réservation remplie / liste des traversées / **billet avec son QR**, données
+  personnelles masquées) → `pub/demo/README.md` dit exactement quoi envoyer et ce
+  que j'en ferai. L'encodage est déjà prêt (`pip install imageio-ffmpeg` fournit
+  un ffmpeg 7.0.2 autonome) et `pub/demo/capture_site.js` est écrit — il ne lui
+  manque que le réseau. ⚠️ Publier une vidéo demandera d'ajouter le point
+  d'entrée `/{page}/videos` à `publier_fb.py` (les photos passent par
+  `/{page}/photos`) : à faire **le jour où les captures arrivent**, pas avant —
+  du code qui attend n'a jamais été testé.
+
 - **11/08/2026 (PARTIE II DU MANUEL — diriger, faire adopter, les erreurs des
   fondateurs)** — Commande du patron : « ajoute comment gérer une compagnie, les
   gros conglomérats et tous les postes ; comment rendre un produit utilisable

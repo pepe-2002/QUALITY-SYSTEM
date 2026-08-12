@@ -1,0 +1,138 @@
+<!-- LUNDI — « RIEN À INSTALLER ». Sans date.
+     Pourquoi un visuel de plus alors que le mode d'emploi existe : le matin (si
+     le patron l'arme) publie les trois gestes. Midi ne doit donc PAS répéter la
+     même chose — il prend l'objection la plus fréquente de ceux qui n'achètent
+     pas en ligne : « il faut installer une application, mon téléphone est
+     plein ». Une seule idée, comme toujours.
+     L'objet regardé : la BARRE D'ADRESSE. Elle prouve le message au lieu de
+     l'affirmer — c'est une page, rien d'autre.
+     ⚠️ Ce qu'on n'écrit pas : « ça marche sur tous les téléphones ». Je ne l'ai
+     pas vérifié. On dit ce qu'on sait : ça s'ouvre dans le navigateur.
+     Rendu : node render.js flyer28-rien-installer-fb.html flyer-rien-installer-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+.coin { position:absolute; top:0; left:0; width:392px; height:158px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4; display:flex;
+  align-items:center; gap:14px; padding:14px 0 26px 38px; box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:62px; height:62px; border-radius:15px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9px; font-weight:700; letter-spacing:1.8px;
+  color:#5C6E8B; margin-top:4px; }
+.ligne { position:absolute; top:56px; right:70px; z-index:4; text-align:right;
+  font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
+  color:rgba(255,255,255,.56); }
+
+.acc { position:absolute; left:70px; top:206px; width:940px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.97;
+  letter-spacing:-3.6px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+.sous { position:absolute; left:70px; top:412px; width:900px; z-index:3;
+  font-size:23px; font-weight:500; color:#BDD0EE; }
+.sous b { color:#fff; font-weight:700; }
+
+/* L'OBJET : la barre d'adresse. Elle prouve, elle n'affirme pas. */
+.carte { position:absolute; left:70px; top:492px; width:940px; z-index:3;
+  background:#F6F9FF; border-radius:22px; padding:30px 32px 32px;
+  box-shadow:0 26px 56px rgba(4,12,40,.42); }
+.barre { display:flex; align-items:center; gap:16px; background:#fff;
+  border:2px solid #D7E2F2; border-radius:999px; padding:16px 26px;
+  box-shadow:inset 0 2px 6px rgba(15,42,92,.06); }
+.barre .cadenas { flex:0 0 34px; height:34px; }
+.barre .adr { flex:1; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:44px; letter-spacing:-1.6px; color:#0F2A5C; line-height:1; }
+.barre .fleche { flex:0 0 46px; height:46px; border-radius:50%; background:#0F2A5C;
+  display:flex; align-items:center; justify-content:center; color:#F6BC1C;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:22px; }
+.legende { margin-top:16px; padding-left:8px; font-size:16px; font-weight:700;
+  letter-spacing:.2px; color:#8493AD; }
+.trois { display:flex; margin-top:28px; padding-top:26px; border-top:1px solid #DDE6F4; }
+.trois div { flex:1; padding-right:20px; }
+.trois div + div { border-left:1px solid #DDE6F4; padding-left:20px; }
+.trois b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:26px; letter-spacing:-.8px; color:#0F2A5C; }
+.trois p { margin-top:7px; font-size:16.5px; line-height:1.34; color:#48597B; }
+
+.action { position:absolute; left:70px; top:952px; width:940px; z-index:3;
+  display:flex; align-items:center; gap:28px;
+  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
+  border-radius:22px; padding:20px 30px; box-shadow:0 24px 52px rgba(4,12,40,.44); }
+.action .qr { flex:0 0 132px; height:132px; background:#fff; border-radius:13px;
+  padding:8px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
+.action .qr img { width:100%; height:100%; display:block; }
+.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
+  letter-spacing:.5px; color:#0A1D42; }
+.action .adr2 { margin-top:5px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:50px; letter-spacing:-1.9px; color:#0A1D42; line-height:1; }
+.action .paie { margin-top:9px; font-size:14.5px; font-weight:700; color:#4A3A08; }
+
+.pied { position:absolute; left:70px; right:70px; bottom:62px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between;
+  border-top:2px solid rgba(246,188,28,.55); padding-top:20px; }
+.pied .g b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:27px; letter-spacing:-.8px; color:#F6BC1C; }
+.pied .g p { margin-top:7px; font-size:18px; line-height:1.36; color:#CBD9EF;
+  max-width:600px; }
+.pied .d { text-align:right; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:22px; color:#fff; letter-spacing:-.4px; line-height:1.25; }
+.pied .d small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:11.5px; letter-spacing:1.8px; color:rgba(255,255,255,.56); margin-top:7px; }
+</style>
+<div class="page">
+  <div class="eclat"></div>
+  <div class="coin"><img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
+  <div class="ligne">RÉSERVER SANS APPLICATION<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
+
+  <div class="acc">Rien à installer.<span>C'est juste une page.</span></div>
+  <div class="sous">Pas d'application à télécharger, pas de place à faire dans le
+    téléphone. <b>Tu écris l'adresse, et c'est ouvert — comme n'importe quel site.</b></div>
+
+  <div class="carte">
+    <div class="barre">
+      <svg class="cadenas" viewBox="0 0 24 24" fill="none">
+        <rect x="4" y="10" width="16" height="11" rx="2.5" fill="#1E7A45"/>
+        <path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="#1E7A45" stroke-width="2.2"
+              stroke-linecap="round"/>
+      </svg>
+      <div class="adr">moheligo.com</div>
+      <div class="fleche">→</div>
+    </div>
+    <div class="legende">C'est tout. Ça marche dans le navigateur que tu as déjà.</div>
+    <div class="trois">
+      <div><b>Aucune place prise</b><p>Rien ne s'installe, rien ne reste dans ton
+        téléphone.</p></div>
+      <div><b>Ton billet, lui, reste</b><p>Une fois payé, il est dans le téléphone,
+        même sans réseau.</p></div>
+      <div><b>Rien à donner d'abord</b><p>Tu regardes les traversées et les prix
+        avant de te connecter.</p></div>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
+    <div>
+      <div class="scanne">SCANNE ET RÉSERVE</div>
+      <div class="adr2">moheligo.com</div>
+      <div class="paie">MVola ou KartaPay · ta place bloquée 15 minutes</div>
+    </div>
+  </div>
+
+  <div class="pied">
+    <div class="g"><b>Besoin d'aide ? On est là.</b>
+      <p>Première réservation ? Un proche ou un commerçant peut t'accompagner.</p></div>
+    <div class="d">WhatsApp<br>+269 479 43 28<small>QUELQU'UN RÉPOND</small></div>
+  </div>
+</div>

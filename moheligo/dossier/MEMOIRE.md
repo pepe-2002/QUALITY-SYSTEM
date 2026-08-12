@@ -370,6 +370,46 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (LA SEMAINE ENTIÈRE DANS LE ROBOT)** — « Fais tous les flyers
+  jusqu'à mardi, mets-les dans le robot, car la limite de la semaine sera
+  bientôt atteinte. » Fait : **la semaine complète tourne sans moi.**
+  Cinq visuels neufs, tous dans la même famille (coin blanc en biais, aplat
+  marine, carte claire, bandeau d'or, QR vérifié) :
+
+  | Jour | Visuel | L'objet regardé, et l'idée unique |
+  |---|---|---|
+  | lundi | `flyer28-rien-installer` | la **barre d'adresse** — répond à « mon téléphone est plein » |
+  | mardi | `flyer17-signature` (déjà validé) | « On se voit de l'autre côté » — le registre émotion |
+  | mercredi | `flyer20-prix` | le **billet** — le prix connu avant de payer |
+  | jeudi | `flyer24-abonner` | les **sept soirs** — seule demande de la semaine qui n'est pas « réserve » |
+  | vendredi | `flyer25-diaspora` | les **deux côtés de la mer** — tu paies d'ici, elle embarque là-bas |
+  | samedi | `flyer26-destination` | la **photo tenue dans la carte** (Nioumachoua, crédit imprimé) |
+  | dimanche | `flyer27-institutionnel` | le **tableau des liaisons** — registre partenaires, vouvoiement |
+
+  🎯 **Correction du patron en cours de route** : la première version du samedi
+  était une photo plein cadre. « Fais le même type que ce que tu viens de faire,
+  c'est joli le type bleu et blanc. » → la photo est passée **dans la carte
+  claire**, comme le billet du mercredi. **Leçon : la famille avant l'effet.**
+  Un visuel qui sort du système abîme la marque plus qu'il ne l'embellit.
+
+  🚨 **PIÈGE ÉVITÉ, à ne pas réintroduire : la rotation tirait dans l'ANCIENNE
+  bibliothèque.** `SEMAINE` avait deux variantes par jour et choisissait selon le
+  numéro de semaine ISO ; en semaine 33 le tirage tombait sur les visuels
+  d'avant le système (pas de coin blanc, pas de QR). **La rotation est
+  supprimée : une seule variante par jour.** Elle reviendra quand la bibliothèque
+  aura grandi *dans* le système. Publier hors système une semaine sur deux coûte
+  plus cher que l'usure.
+
+  🔍 **Contrôles passés avant de pousser** (à refaire à chaque nouvelle série) :
+  ① un détecteur de **chevauchements et de débordements** sur les huit visuels —
+  il a trouvé trois vrais défauts : accroche sur trois lignes qui recouvrait la
+  ligne suivante (dimanche et lundi), et la carte d'avis qui mordait de 6 px sur
+  le texte du visuel de **grosse mer** ; ② simulation de `du_jour()` du 12 au
+  18/08 : fichier présent, poids sous la limite, aucun texte à trous.
+  💡 **Règle de largeur d'accroche** apprise ici : en Archivo 900, compter
+  **≈ 0,47 × taille de police par caractère**. Au-delà de 940 px, la ligne casse
+  et le bloc suivant est recouvert. Vérifier AVANT de rendre, pas après.
+
 - **12/08/2026 (LE DOSSIER, ET LA V2 DU MODE D'EMPLOI)** —
   📁 **« Écris tout dans un dossier comme le manuel que tu vas consulter. »**
   Fait : `moheligo/dossier/` regroupe les **huit documents de référence**

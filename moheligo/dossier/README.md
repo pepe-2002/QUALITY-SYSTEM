@@ -85,7 +85,7 @@ qu'il est encore vrai avant de l'annoncer au patron.**
 | Quoi | Quand | Interrupteur | État |
 |---|---|---|---|
 | **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs 19h30 | `PUBLIER_FB` | ✅ armé |
-| **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ✅ armé |
+| **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ✅ armé — **les 7 jours sont couverts par des visuels du système** |
 | **Démonstration du matin** | lundi et jeudi 7h30 | `PUBLIER_MATIN` | ⏸️ **désarmé**, attend la décision du patron |
 | **Avis de mer forte** (remplace la pub) | automatique, houle ≥ 2,50 m | — | ✅ actif |
 | **Frein d'urgence** | à tout moment | `PAUSE_FB = oui` | 🛑 arrête tout |

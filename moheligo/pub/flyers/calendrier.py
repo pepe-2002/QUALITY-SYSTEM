@@ -44,6 +44,17 @@ PROMO = 'flyer-promo-brillant-facebook.png'
 PRIX = 'flyer-prix-facebook.png'         # le billet : mercredi, jour des prix
 EMPLOI = 'flyer-modedemploi-v2-facebook.png'   # la démonstration du matin (V2)
 EMPLOI_V1 = 'flyer-modedemploi-facebook.png'   # V1, gardée pour l'impression papier
+# --- la série du 12/08/2026 : un visuel par jour, tous dans le même système ---
+# Le patron : « fais tous les flyers jusqu'à mardi, mets-les dans le robot, la
+# limite de la semaine sera bientôt atteinte. » Donc la semaine complète est
+# désormais couverte par des visuels de la même famille (coin blanc, aplat
+# marine, carte claire, bandeau d'or), sans dépendre de moi.
+ABONNER = 'flyer-abonner-facebook.png'          # jeudi
+DIASPORA_V2 = 'flyer-diaspora-v2-facebook.png'  # vendredi
+DESTINATION = 'flyer-destination-facebook.png'  # samedi
+INSTIT = 'flyer-institutionnel-facebook.png'    # dimanche
+RIEN = 'flyer-rien-installer-facebook.png'      # lundi
+SIGNATURE = 'flyer-signature-facebook.png'      # mardi (déjà validé par le patron)
 # visuels présents dans le dossier mais pas sur la page du patron
 DUOTONE = 'flyer-affiche-duotone-facebook.png'
 LUMINEUSE = 'flyer-affiche-lumineuse-facebook.png'
@@ -58,14 +69,22 @@ T_AFFICHE = "Variante courte pour l'affiche"
 
 # --- le programme : jour de la semaine -> variantes (visuel, texte) ---------
 # On tourne d'une variante à l'autre selon le numéro de semaine ISO.
+# ⚠️ UNE SEULE VARIANTE PAR JOUR, ET C'EST VOULU (12/08/2026).
+# La rotation par numéro de semaine existait pour lutter contre l'usure, mais
+# elle tirait une semaine sur deux dans l'ANCIENNE bibliothèque — des visuels
+# d'avant le système actuel (pas de coin blanc, pas de carte claire, pas de QR).
+# Publier un visuel hors système une semaine sur deux abîme la marque plus que
+# l'usure ne la fatigue : la régularité EST l'actif (§ 1 du manuel).
+# La deuxième variante reviendra quand la bibliothèque aura grandi DANS le
+# système — c'est-à-dire quand le patron m'aura donné ses images.
 SEMAINE = {
-    0: [(PROMO, TEXTE[T_APPLI]), (NUIT, TEXTE[T_APPLI])],
-    1: [(AFFICHE, VISUEL[AFFICHE]), (LUMINEUSE, TEXTE[T_AFFICHE])],
-    2: [(PROMO, VISUEL[PROMO]), (PRIX, VISUEL[PRIX])],
-    3: [(DUOTONE, TEXTE[T_ABO]), (AFFICHE, TEXTE[T_ABO])],
-    4: [(DIASPORA, VISUEL[DIASPORA]), (DIASPORA, VISUEL[DIASPORA])],
-    5: [(LUMINEUSE, TEXTE[T_AFFICHE]), (DUOTONE, VISUEL[AFFICHE])],
-    6: [(CORPORATE, TEXTE[T_INSTIT]), (CORPORATE, TEXTE[T_COURT])],
+    0: [(RIEN, VISUEL[RIEN])],                  # lundi : rien à installer
+    1: [(SIGNATURE, VISUEL[SIGNATURE])],        # mardi : l'île, registre émotion
+    2: [(PRIX, VISUEL[PRIX])],                  # mercredi : les prix
+    3: [(ABONNER, VISUEL[ABONNER])],            # jeudi : s'abonner
+    4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
+    5: [(DESTINATION, VISUEL[DESTINATION])],    # samedi : la destination
+    6: [(INSTIT, VISUEL[INSTIT])],              # dimanche : l'institutionnel
 }
 
 # --- LE MATIN : la démonstration, et rien d'autre --------------------------

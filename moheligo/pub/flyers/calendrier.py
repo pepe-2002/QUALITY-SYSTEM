@@ -3,7 +3,7 @@
 
 Le patron (11/08/2026) : « pourquoi le bulletin du soir seulement ? c'est toi le
 directeur marketing et commercial, tu vas tout gérer les pubs. » Donc voici le
-calendrier complet, celui du plan publicitaire (`pub/plan-publicitaire.md`) :
+calendrier complet, celui du plan publicitaire (`dossier/PLAN-PUBLICITAIRE.md`) :
 
     tous les soirs   le bulletin mer          (daté, fabriqué le jour même)
     lundi            comment ça marche

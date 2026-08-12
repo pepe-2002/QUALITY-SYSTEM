@@ -128,7 +128,7 @@ def config():
     manque = [n for n, v in (('FB_PAGE_ID', page), ('FB_PAGE_TOKEN', jeton)) if not v]
     if manque:
         sys.exit('Variables manquantes : %s\nVoir la marche à suivre dans '
-                 'pub/flyers/LIER-FACEBOOK.md' % ', '.join(manque))
+                 'dossier/LIER-FACEBOOK.md' % ', '.join(manque))
     return page, jeton_de_page(page, jeton)
 
 

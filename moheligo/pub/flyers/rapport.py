@@ -16,7 +16,7 @@ Ce qu'il ne peut PAS savoir, et qu'il réclame donc explicitement au patron :
   · les réservations payées
   · les visites du site
   · l'abandon au paiement
-  → Ce sont les trois chiffres du plan (`pub/plan-publicitaire.md`) qui décident
+  → Ce sont les trois chiffres du plan (`dossier/PLAN-PUBLICITAIRE.md`) qui décident
     s'il faut dépenser plus ou réparer. Un rapport qui les invente ne sert à rien.
 
 ⚠️ Règle du manuel (§ checklists) : un rapport commence par LA DÉCISION à

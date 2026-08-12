@@ -123,12 +123,12 @@ Fichiers de service, dans le même dossier :
   ombres, recette de la vague et du bloc surligneur) + toutes les commandes de
   regénération. **À relire avant de retoucher un flyer.**
 
-Textes des publications Facebook : `moheligo/pub/textes-publications.md`
+Textes des publications Facebook : `moheligo/dossier/TEXTES-PUBLICATIONS.md`
 (une section par flyer, avec le premier commentaire et la version WhatsApp).
 
 ➡️ **PROCHAINE SESSION** : repartir de **`flyer7-promo-brillant-fb.html`**
 (version la plus aboutie, passe « brillance » appliquée), jamais de zéro. La
-recette complète de la brillance est écrite dans `pub/flyers/README.md`,
+recette complète de la brillance est écrite dans `dossier/ATELIER-FLYERS.md`,
 section « La recette ça brille » — **la relire avant de toucher un flyer**.
 Question encore ouverte : ce flyer **tutoie**, les trois autres vouvoient —
 demander au patron laquelle des deux formes devient la règle.
@@ -241,7 +241,7 @@ design », il parle de matière et de lumière, pas de mise en page.**
 
 ## 4. Plan marketing (validé dans l'esprit, à exécuter)
 
-📌 **Le plan publicitaire complet est dans `pub/plan-publicitaire.md`**
+📌 **Le plan publicitaire complet est dans `dossier/PLAN-PUBLICITAIRE.md`**
 (écrit le 11/08/2026 à la demande du patron : « décris un plan publicitaire pour
 avoir plus d'utilisateurs »). Trois étages — organique (rythme quotidien),
 terrain (affiches aux ports, commandants, lodges), payant (diaspora d'abord) —
@@ -310,7 +310,7 @@ Ce qu'il faut retenir de ces codes :
   6. Un **vrai bouton** (gélule marine, flèche or) plutôt qu'une ligne de
      texte « Réserve maintenant » : ça se lit comme une action.
   7. Trois niveaux d'ombre et quatre rayons **et pas plus** — le reste du
-     système de design est écrit dans `pub/flyers/README.md`.
+     système de design est écrit dans `dossier/ATELIER-FLYERS.md`.
 - Le texte de ce support **tutoie** (registre télécom local) alors que les trois
   autres vouvoient. À faire valider par le patron.
 
@@ -498,7 +498,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   compte.
   🎬 **La vidéo attend 4 captures d'écran du patron** (accueil / carte de
   réservation remplie / liste des traversées / **billet avec son QR**, données
-  personnelles masquées) → `pub/demo/README.md` dit exactement quoi envoyer et ce
+  personnelles masquées) → `dossier/VIDEO-DEMONSTRATION.md` dit exactement quoi envoyer et ce
   que j'en ferai. L'encodage est déjà prêt (`pip install imageio-ffmpeg` fournit
   un ffmpeg 7.0.2 autonome) et `pub/demo/capture_site.js` est écrit — il ne lui
   manque que le réseau. ⚠️ Publier une vidéo demandera d'ajouter le point
@@ -736,7 +736,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   **aucun connecteur Facebook dans Claude** : la liaison durable passe par
   GitHub. Construit : `pub/flyers/publier_fb.py` (Graph API, publie l'image +
   le texte + le lien en premier commentaire) et
-  **`pub/flyers/LIER-FACEBOOK.md`** (marche à suivre complète pour le patron).
+  **`dossier/LIER-FACEBOOK.md`** (marche à suivre complète pour le patron).
   Le workflow du bulletin a deux nouvelles étapes, **désarmées par défaut** :
   rien n'est publié tant que la variable de dépôt `PUBLIER_FB` ne vaut pas
   « oui ». Sécurité : le jeton n'est jamais dans argv (passé à curl par son
@@ -753,7 +753,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   ce n'est pas fait.
 
 - **11/08/2026 (suite)** — « Décris un plan publicitaire pour avoir plus
-  d'utilisateurs. » Écrit dans `pub/plan-publicitaire.md`. La thèse du plan :
+  d'utilisateurs. » Écrit dans `dossier/PLAN-PUBLICITAIRE.md`. La thèse du plan :
   **on a déjà tout le matériel (5 vidéos, 10 flyers), ce qui manque c'est du
   rythme, du terrain et une mesure.** Trois idées à retenir :
   ① le **bulletin mer quotidien** est notre seul actif que personne d'autre n'a —
@@ -788,7 +788,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   l'action, on gagne en autorité et on perd en clics. À réserver aux
   publications d'image ; garder le registre promo pour faire réserver le soir.
   Les deux textes sont dans `page.py` (liste `TEXTES`) et dans
-  `pub/textes-publications.md`.
+  `dossier/TEXTES-PUBLICATIONS.md`.
 
 - **09/08/2026** — « Dépasse-toi encore, ça doit être lumineux. » L'affiche a
   été refaite en version claire : rampe duotone qui ne descend jamais dans le
@@ -798,7 +798,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   clair** — la lumière vient du contraste, pas de l'ajout de blanc.
   ⚠️ Premier essai trop délavé : les îlots avaient disparu. Réglages retenus :
   voile 140, contraste 1,22, gamma 0,88. Recette complète dans
-  `pub/flyers/README.md`, section « Faire une affiche LUMINEUSE ».
+  `dossier/ATELIER-FLYERS.md`, section « Faire une affiche LUMINEUSE ».
   La page du patron montre maintenant cette affiche à la place de la sombre
   (la sombre reste dans le dépôt).
   Retour immédiat : **« trop lumineux »**. Réglage final : voile de bord 74 au
@@ -808,7 +808,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   à la présence des ombres autant qu'à celle des hautes lumières.**
   Ajouté le même jour, sur sa demande : **trois textes seuls** (faire s'abonner
   à la page, faire utiliser l'application, variante courte de l'affiche), dans
-  `page.py` (liste `TEXTES`) et dans `pub/textes-publications.md`.
+  `page.py` (liste `TEXTES`) et dans `dossier/TEXTES-PUBLICATIONS.md`.
   ⚠️ Le texte d'abonnement promet un bulletin **chaque soir** : soit on tient le
   rythme, soit on retire la phrase.
   Dernier retour du jour : **« la mer doit être vraie »**. Le duotone, aussi beau
@@ -911,16 +911,16 @@ recharger ce sujet ici, ce n'est pas du marketing.
   bande de chiffres clés, pied avec QR + WhatsApp + Facebook) et sa déclinaison
   feed 4:5. Registre corporate assumé : filet institutionnel, sections
   numérotées 01/02, aucun emoji, couleurs officielles du site. Texte Facebook
-  ajouté dans `pub/textes-publications.md` (version institutionnelle + premier
+  ajouté dans `dossier/TEXTES-PUBLICATIONS.md` (version institutionnelle + premier
   commentaire avec le lien + version courte + réponses types aux commentaires).
-  Documentation dans `pub/flyers/README.md`. **À faire à la prochaine session :
+  Documentation dans `dossier/ATELIER-FLYERS.md`. **À faire à la prochaine session :
   demander au patron s'il valide le ton institutionnel ou s'il veut plus chaud
   / plus commercial, et s'il veut une version shikomori.**
   Il a ensuite demandé **un deuxième support pour plus tard dans la nuit** :
   produit le flyer nuit (ciel étoilé, lune, silhouette des îles) avec un angle
   action — « Réservez ce soir. Partez demain. » — et un encart diaspora
   (France, Mayotte, Golfe : payer la traversée d'un proche). Texte FB nuit dans
-  `pub/textes-publications.md`. **Leçon de calendrier : ne pas republier la même
+  `dossier/TEXTES-PUBLICATIONS.md`. **Leçon de calendrier : ne pas republier la même
   vitrine deux fois dans la soirée — deux posts = deux angles.**
   Puis il a demandé un troisième support avec **une belle image de Mohéli
   trouvée sur le net** : affiche « destination ». Première tentative refusée

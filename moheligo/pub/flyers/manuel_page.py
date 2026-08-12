@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Fabrique la version LISIBLE du manuel, à partir du manuel lui-même.
+"""Fabrique les versions LISIBLES des documents, à partir des documents eux-mêmes.
 
-    python3 manuel_page.py --sortie /tmp/manuel.html
+    python3 manuel_page.py --sortie /tmp/manuel.html            # le manuel seul
+    python3 manuel_page.py --dossier --sortie /tmp/dossier.html  # TOUT le dossier
+    python3 manuel_page.py --source ../../dossier/FEUILLE-DE-ROUTE.md ...
 
 Le patron a demandé « une copie pour que je puisse lire aussi ». Elle est
-GÉNÉRÉE, jamais recopiée à la main : `moheligo/MANUEL-MARKETING.md` reste la
+GÉNÉRÉE, jamais recopiée à la main : `moheligo/dossier/MANUEL-MARKETING.md` reste la
 seule source de vérité. Si on recopiait, les deux versions divergeraient au
 premier ajout — et je finirais par relire une version périmée avant une pub.
 
@@ -20,7 +22,14 @@ import pathlib
 import re
 import unicodedata
 
-MANUEL = pathlib.Path(__file__).resolve().parents[2] / 'MANUEL-MARKETING.md'
+DOSSIER = pathlib.Path(__file__).resolve().parents[2] / 'dossier'
+MANUEL = DOSSIER / 'MANUEL-MARKETING.md'
+
+# L'ordre de lecture du dossier, celui qu'annonce dossier/README.md. L'index
+# vient en premier : c'est lui qui dit quoi lire avant quoi.
+ORDRE = ['README.md', 'MEMOIRE.md', 'MANUEL-MARKETING.md', 'FEUILLE-DE-ROUTE.md',
+         'PLAN-PUBLICITAIRE.md', 'TEXTES-PUBLICATIONS.md', 'LIER-FACEBOOK.md',
+         'VIDEO-DEMONSTRATION.md', 'ATELIER-FLYERS.md']
 
 MARINE = '#0F2A5C'
 OR = '#F6BC1C'
@@ -299,9 +308,31 @@ def main():
     ap.add_argument('--chapeau', default='La grille de décision du directeur marketing. '
                     'À relire avant chaque flyer, chaque texte, chaque rapport, chaque plan.')
     ap.add_argument('--onglet', default='Manuel MoheliGo — marketing, direction, adoption')
+    ap.add_argument('--dossier', action='store_true',
+                    help='assembler tout le dossier en une seule page')
     args = ap.parse_args()
 
-    md = pathlib.Path(args.source).read_text(encoding='utf-8')
+    if args.dossier:
+        # Un document manquant doit être VISIBLE dans la page, pas ignoré : un
+        # trou silencieux dans le dossier, c'est un document qu'on croit avoir.
+        morceaux = []
+        for nom in ORDRE:
+            f = DOSSIER / nom
+            if f.is_file():
+                morceaux.append(f.read_text(encoding='utf-8').rstrip())
+            else:
+                morceaux.append('# ⚠️ %s — INTROUVABLE\n\nCe document est annoncé '
+                                'dans l\'ordre de lecture mais absent du dossier.' % nom)
+        md = '\n\n---\n\n'.join(morceaux)
+        args.source = str(DOSSIER)
+        if args.onglet == ap.get_default('onglet'):
+            args.onglet = 'Le dossier MoheliGo'
+            args.titre = '📁 Le dossier Moheli<i>Go</i>'
+            args.chapeau = ('Tout ce qui gouverne le travail du directeur : mémoire, '
+                            'manuel, feuille de route, plan publicitaire, textes et '
+                            'modes d\'emploi. Assemblé depuis les documents eux-mêmes.')
+    else:
+        md = pathlib.Path(args.source).read_text(encoding='utf-8')
     corps, sommaire = convertir(md)
 
     liens = '\n'.join(
@@ -313,7 +344,9 @@ def main():
                           quand=quand, mots=len(md.split()),
                           titre_page=html.escape(args.onglet), titre_h1=args.titre,
                           chapeau=args.chapeau,
-                          source=html.escape(pathlib.Path(args.source).name))
+                          source=html.escape(
+                              'dossier/' if args.dossier
+                              else pathlib.Path(args.source).name))
     pathlib.Path(args.sortie).write_text(page, encoding='utf-8')
     print(args.sortie, round(len(page) / 1024), 'ko —',
           len(sommaire), 'entrées de sommaire,', len(md.split()), 'mots')

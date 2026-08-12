@@ -258,7 +258,7 @@ longtemps que les autres. Pas être le plus original une fois.**
 
 ## 8. Mesurer : cinq chiffres, et un seuil de décision
 
-Relevés **chaque dimanche soir** (voir `pub/plan-publicitaire.md`) :
+Relevés **chaque dimanche soir** (voir `dossier/PLAN-PUBLICITAIRE.md`) :
 
 1. abonnés de la page — 2. visites du site — 3. **réservations payées** —
 4. taux d'abandon au paiement — 5. coût par réservation.

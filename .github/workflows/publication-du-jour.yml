@@ -16,7 +16,7 @@
 #   variable PAUSE_FB = oui    → le frein d'urgence, plus rien ne part
 #   variable PUBLIER_FB = oui  → arme la publication automatique
 # Sans PUBLIER_FB, ce travail se contente d'une répétition à blanc : il affiche
-# ce qu'il aurait publié. Marche à suivre : moheligo/pub/flyers/LIER-FACEBOOK.md
+# ce qu'il aurait publié. Marche à suivre : moheligo/dossier/LIER-FACEBOOK.md
 
 name: Publication du jour
 

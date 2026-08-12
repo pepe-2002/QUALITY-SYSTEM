@@ -239,7 +239,7 @@ en lignes `.ligne` réutilisées de la météo — `SEMAINE` (calendrier hebdo),
 `PALIERS` (budget) et `JOURS7` (les sept premiers jours). Les paragraphes
 d'alerte prennent la classe `.attention` (fond or).
 
-- La version longue et éditable est `pub/plan-publicitaire.md` ; la page en est
+- La version longue et éditable est `dossier/PLAN-PUBLICITAIRE.md` ; la page en est
   la version téléphone. **Quand le plan change, changer les deux.**
 - ⚠️ Les chapitres passent par `str.format()` pour insérer les tableaux : ne pas
   mettre d'accolade littérale dans le HTML d'un chapitre.

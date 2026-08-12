@@ -101,7 +101,7 @@ jobs:
       # DÉSARMÉE par défaut : rien n'est publié tant que la variable de dépôt
       # PUBLIER_FB ne vaut pas « oui ». Le bouton « Run workflow » permet en
       # plus une publication de contrôle, à la main, une seule fois.
-      # Marche à suivre complète : moheligo/pub/flyers/LIER-FACEBOOK.md
+      # Marche à suivre complète : moheligo/dossier/LIER-FACEBOOK.md
       - name: Est-ce que la liaison Facebook est configurée ?
         run: |
           if [ -z "${{ vars.FB_PAGE_ID }}" ]; then

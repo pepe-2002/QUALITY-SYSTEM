@@ -318,7 +318,7 @@ moheligo.com — deux minutes, billet QR, paiement MVola.
 
 # ---------------------------------------------------------------------------
 # Le plan publicitaire (demande du patron du 11/08/2026). La version longue est
-# dans `pub/plan-publicitaire.md` ; ici c'est la version qu'on lit sur un
+# dans `dossier/PLAN-PUBLICITAIRE.md` ; ici c'est la version qu'on lit sur un
 # téléphone : un chapitre = un volet dépliable, pas de tableau qui déborde.
 # ---------------------------------------------------------------------------
 PLAN_INTRO = ("On a déjà tout le matériel : 5 vidéos, une dizaine de flyers, le "
@@ -732,7 +732,7 @@ footer b {{ color:var(--ink); }}
   <footer>Le bulletin du soir annonce <b>demain matin</b> : bon pour ce soir seulement.
     Les autres flyers n'ont pas de date, gardez-les. Les derniers blocs sont des
     <b>textes seuls</b>, à publier sans image ou avec une de vos photos.
-    Le plan complet est aussi dans le dépôt : <b>moheligo/pub/plan-publicitaire.md</b>.</footer>
+    Le plan complet est aussi dans le dépôt : <b>moheligo/dossier/PLAN-PUBLICITAIRE.md</b>.</footer>
 </div>
 
 <script>

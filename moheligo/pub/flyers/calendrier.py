@@ -127,7 +127,9 @@ def du_matin(jour=None):
 
 # Ce que le calendrier annonce, pour l'afficher sans publier.
 INTENTION = ['comment ça marche', "l'île", 'les prix', 's'"'"'abonner à la page',
-             'la diaspora', 'la destination', "l'institutionnel"]
+             'la diaspora', 'la destination',
+             # le dimanche alterne : le nom du visuel dit lequel des deux part
+             "l'institutionnel ou le partenariat"]
 
 
 def du_jour(jour=None):

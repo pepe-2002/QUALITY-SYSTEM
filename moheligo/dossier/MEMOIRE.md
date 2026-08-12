@@ -430,6 +430,31 @@ recharger ce sujet ici, ce n'est pas du marketing.
     dans les trois fichiers. **Leçon : un voyant qui ment coûte plus cher que
     pas de voyant du tout** — vérifier ce qu'affiche un diagnostic avant de s'y
     fier, et ne jamais comparer une variable saisie à la main sans la normaliser.
+  - 🔬 **« Y'a pas d'erreur ? vérifie jusqu'à mardi »** — d'où **`controle.py`** :
+    il déroule chaque jour et chaque créneau jusqu'à la date demandée, sans rien
+    publier, et vérifie que le visuel existe au bon format, que le texte n'a plus
+    de trou `{...}`, qu'aucun mot commercial ne sort pendant la fermeture et
+    qu'aucun interdit du manuel n'est écrit. `--ouvert` simule la réouverture.
+    Résultat : **rien à signaler**, fermé comme ouvert.
+    Ce contrôle a corrigé **quatre fausses alertes que j'aurais présentées comme
+    des erreurs** — leçon plus utile que le résultat lui-même :
+    · les PNG lourds ne sont pas un problème (`publier_fb.preparer()` repasse en
+      JPEG 92) — le contrôle fait maintenant tourner l'allègement pour le prouver ;
+    · `el.className` sur un `<svg>` renvoie un objet, pas une chaîne : aucun SVG
+      décoratif n'était ignoré (le ruban doré du flyer de mardi, déjà validé) ;
+    · un dessin qui déborde du cadre est normal (`overflow:hidden` le coupe) —
+      seul du **texte** coupé compte ;
+    · surtout : comparer des **boîtes** signale des croisements qui n'existent pas
+      à l'œil. Le contrôleur compare désormais **les lignes de texte rendues**
+      (Range.getClientRects), et distingue « deux textes se croisent » (défaut) de
+      « une image passe derrière un texte » (souvent voulu). Vérifié ensuite en
+      cassant volontairement un flyer : il voit toujours la vraie erreur.
+    📌 **Un voyant qui crie au loup finit ignoré ; un voyant aveugle ne sert à
+    rien.** Chaque nouveau contrôle doit être testé DANS LES DEUX SENS.
+    ⚠️ **Trou trouvé et signalé au patron** : le jour de la réouverture, le robot
+    publiera simplement la case du calendrier (« les prix », « l'île »). Il n'y a
+    **pas de visuel de reprise**, alors que c'est la meilleure publication de la
+    semaine à faire. À produire avant mardi.
   - **Young Leader autorisé.** `flyer30-partenariat` passe d'essai à visuel
     publiable ; la trace est dans `pub/photos-partenaires/CREDITS-PARTENAIRES.md`
     avec ses mots et la date. La phrase écrite du responsable **reste à

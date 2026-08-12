@@ -82,7 +82,8 @@ section « Flyer corporate ».
 | `calendrier.py` | le programme de la semaine (`SEMAINE`, `MATIN`) | les visuels et textes viennent de `page.py`, jamais recopiés |
 | `programme.py` | publie midi (`--publier`), le matin (`--matin`), l'avis de fermeture (`--avis`) | consulte **`service.py` d'abord**, puis `mer.py` : fermé → avis de suspension ; mer forte → avis de mer ; dans les deux cas, zéro pub |
 | **`service.py`** | **l'état du service : est-ce qu'on vend ?** | `OUVERT = True/False` — **une seule ligne à changer** pour fermer ou rouvrir, et `programme.py` comme `bulletin.py` s'y plient (bandeau d'or et conseil de mer compris) |
-| **`verifier.js`** | **le contrôle de mise en page** | `node verifier.js flyer31-suspension-fb.html` — signale chevauchements et débordements ; un titre qui s'allonge passe SOUS le bloc suivant sans que ça se voie |
+| **`verifier.js`** | **le contrôle de mise en page** | `node verifier.js flyer31-suspension-fb.html` — un titre qui s'allonge passe SOUS le bloc suivant sans que ça se voie. Il compare **les lignes de texte rendues**, pas les boîtes : deux textes qui se croisent = ⛔ défaut ; une image derrière un texte = · superposition, à juger à l'œil |
+| **`controle.py`** | **le contrôle de la semaine entière** | `python3 controle.py --jusqu-au 2026-08-18`, et `--ouvert` pour simuler la réouverture. Déroule chaque jour et chaque créneau sans rien publier : visuel existant, bon format, texte sans trou `{...}`, aucun mot commercial pendant une fermeture, aucun interdit du manuel |
 | `publier_fb.py` | l'envoi à l'API Graph | jeton de page dérivé tout seul ; voir `LIER-FACEBOOK.md` |
 | `rapport.py` | `pub/RAPPORT.md` | décision d'abord, puis les chiffres |
 | **`qr.py`** | **le QR code, généré ET vérifié** | voir l'avertissement ci-dessous |

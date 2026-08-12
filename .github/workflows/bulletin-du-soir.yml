@@ -19,7 +19,10 @@ name: Bulletin du soir
 
 on:
   schedule:
-    - cron: '30 16 * * *'     # 16h30 UTC = 19h30 aux Comores (UTC+3)
+    # 16h07 UTC = 19h07 aux Comores : minute creuse et marge d'avance, pour que
+    # le retard habituel de GitHub fasse tomber le bulletin vers 19h30 (voir
+    # publication-du-jour.yml pour la mesure qui a motivé ce choix).
+    - cron: '7 16 * * *'
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
       publier_sur_facebook:

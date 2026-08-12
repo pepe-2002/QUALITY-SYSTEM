@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (🚨 LE POSTE DE MIDI N'EST PAS PARTI — retard, pas panne)** — Le
+  patron à 13h07 (Comores) : « le poste de midi n'est pas parti. »
+  🔍 **Diagnostic** : aucune exécution **programmée** de `publication-du-jour` —
+  que des lancements manuels de la veille. Les quatre workflows sont pourtant
+  `active`, sur `main`, et le fichier est en place.
+  💡 **La cause : GitHub exécute les crons « au mieux », et sature aux minutes
+  rondes.** La preuve dans nos propres journaux : le bulletin du soir, programmé
+  à **16h30 UTC**, s'est lancé à **17h26** — **56 minutes de retard**. Les
+  minutes `:00` et `:30` sont celles où tout le monde programme.
+  ✅ **Correctif appliqué aux trois workflows : minute creuse ET marge d'avance.**
+  On ne programme plus à l'heure voulue, on programme **avant**, pour que le
+  retard habituel (20 à 40 min) fasse tomber la publication à l'heure visée :
+  | Robot | Avant | Après | Cible locale |
+  |---|---|---|---|
+  | Publication du jour | `30 9` (12h30) | **`7 9`** (12h07) | ~12h30 |
+  | Bulletin du soir | `30 16` (19h30) | **`7 16`** (19h07) | ~19h30 |
+  | Démonstration du matin | `30 4` (07h30) | **`7 4`** (07h07) | ~07h30 |
+  ⚠️ **Conséquence à accepter et à dire au patron : un cron GitHub n'est pas une
+  horloge.** Il peut arriver en retard, et il peut être **sauté** en cas de
+  charge. Un rendez-vous « à la minute » ne peut pas reposer là-dessus. Si un
+  jour la précision devient nécessaire, il faudra un déclencheur payant ou un
+  petit serveur — pas un cron gratuit.
+  ✅ **Publication du jour lancée à la main dans la foulée, et vérifiée dans le
+  journal** — pas seulement le voyant vert :
+  `Publié : 1166058113262206_122115123117374081`, `flyer-prix-facebook.png`
+  (857 ko), texte de 926 caractères. **Page : 25 abonnés.**
+  📌 **Réflexe à garder** : quand une publication manque, regarder d'abord s'il
+  existe une exécution **`event: schedule`**. S'il n'y en a aucune, c'est le
+  déclencheur, pas le code — inutile de chercher un bogue dans les scripts.
+  🐛 Le rapport dit « 1 publication en 7 jours » : c'est le **défaut connu du
+  journal** qui ne survit pas d'une exécution à l'autre, déjà consigné. À
+  corriger, sinon tous les rapports resteront amnésiques.
+
 - **12/08/2026 (NETTOYER ET AGRANDIR UNE PHOTO — et le mot juste)** — Le patron :
   « essaie de les décompresser et essaie un flyer. »
   ⚠️ **On ne « décompresse » pas une photo.** Ce que le JPEG a jeté est

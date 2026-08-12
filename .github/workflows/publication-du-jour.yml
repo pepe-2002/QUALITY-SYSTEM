@@ -22,7 +22,12 @@ name: Publication du jour
 
 on:
   schedule:
-    - cron: '30 9 * * *'       # 09h30 UTC = 12h30 aux Comores (heure de pointe)
+    # ⚠️ 09h07 UTC = 12h07 aux Comores, et NON 09h30. Deux raisons :
+    #  · GitHub sature aux minutes rondes (:00 et :30) : le 11/08, le bulletin
+    #    programmé à 16h30 s'est lancé à 17h26 — 56 minutes de retard ;
+    #  · on programme donc EN AVANCE, pour que le retard habituel (20 à 40 min)
+    #    fasse tomber la publication autour de 12h30, l'heure visée.
+    - cron: '7 9 * * *'
   workflow_dispatch:
     inputs:
       publier_sur_facebook:

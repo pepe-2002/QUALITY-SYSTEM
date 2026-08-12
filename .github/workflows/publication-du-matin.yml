@@ -23,7 +23,9 @@ name: Publication du matin
 
 on:
   schedule:
-    - cron: '30 4 * * 1,4'     # 04h30 UTC = 07h30 aux Comores, lundi et jeudi
+    # 04h07 UTC = 07h07 aux Comores, lundi et jeudi. Minute creuse et marge
+    # d'avance : le retard habituel de GitHub le pose vers 07h30.
+    - cron: '7 4 * * 1,4'
   workflow_dispatch:
     inputs:
       publier_sur_facebook:

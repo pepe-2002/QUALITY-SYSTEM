@@ -370,6 +370,32 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (PREMIÈRES PHOTOS DE PARTENAIRE ARCHIVÉES)** — Le patron a envoyé
+  **trois photos de Young Leader Mohéli** : « ils sont là, archive-les. » Fait,
+  dans **`pub/photos-partenaires/`**, avec leur fiche de droits
+  (`CREDITS-PARTENAIRES.md`) : ce qu'on voit, la taille, si des personnes sont
+  identifiables, et si c'est utilisable.
+  | Fichier | Sujet | Taille |
+  |---|---|---|
+  | `young-leader-ocean-indien-2025-2026.jpg` | lauréat, écharpe dorée Océan Indien | 1280 × 1280 |
+  | `young-leader-2e-challenger-comores-2026.jpg` | lauréat, écharpe verte 2ᵉ challenger | 854 × 1280 |
+  | `young-leader-moheli-podium-2025-2026.jpg` | les trois lauréats de Mohéli | 1080 × 856 |
+  ⏸️ **AUCUNE N'EST PUBLIABLE POUR L'INSTANT** : les trois montrent des visages
+  nets. Le contrat couvre le droit d'**auteur** ; il manque la confirmation écrite
+  sur le droit à l'**image des personnes** (modèle de phrase dans la fiche). Poste
+  « C » : le patron, jamais moi. **Ne pas céder à la tentation de publier « juste
+  une fois ».**
+  ⚠️ **Limite technique à retenir** : elles font 1080-1280 px, nos visuels 2160 px.
+  Utilisables **dans un cadre jusqu'à ~600 px de large** (net), **jamais en fond
+  plein cadre** (agrandissement 1,7× = flou visible). Demander les **fichiers
+  d'origine** à l'association : ceux-là ont déjà été recompressés par les réseaux.
+  💡 **Recommandation écrite dans la fiche** : ces portraits servent la **preuve
+  sociale** (visuel de partenariat, registre institutionnel du dimanche), pas la
+  vente. Ce qui vend une traversée, ce sont les photos du **produit et du
+  terrain** : la vedette, les ports d'Ouroveni et Hoani, un billet dans une main.
+  **Un portrait dit « on est sérieux » ; une vedette au port dit « ta place
+  existe ». Deux registres, on ne les mélange pas.**
+
 - **12/08/2026 (L'ÉCRAN RÉEL DE L'APPLICATION SUR LES VISUELS)** — « Tu peux
   mettre l'accueil MoheliGo sur l'écran ? » Oui, et **sans rien dessiner**.
   🎉 **Découverte importante : le site TOURNE en local depuis le dépôt.** Il

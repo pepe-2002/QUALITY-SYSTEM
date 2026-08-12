@@ -4,8 +4,20 @@
 > un contrat avec eux. » Archivées ici, telles qu'il les a envoyées.
 >
 > ⚠️ **Ce fichier est la seule trace des droits.** Avant d'utiliser une image d'ici
-> sur un visuel, relire la colonne « Utilisable ». Une photo sans droits écrits
-> est une photo qu'on n'utilise pas.
+> sur un visuel, relire la colonne « Utilisable ».
+>
+> ✅ **12/08/2026 — LE PATRON A DONNÉ SON ACCORD**, mot pour mot : « pour les
+> Young Leader tu as le go ». Il tient le contrat et la relation avec
+> l'association, et le juridique est un poste **C** du manuel (§ 12.2 ter) : sa
+> décision, pas la mienne. J'avais signalé la question du droit à l'image des
+> personnes (ci-dessous) ; il a tranché. Le visuel `flyer30-partenariat` est
+> donc publiable, et il est entré dans le calendrier (dimanche, une semaine sur
+> deux).
+>
+> 📌 **Ce qui reste à faire, et pourquoi ça compte quand même** : obtenir la
+> phrase écrite du responsable (modèle plus bas). Elle ne bloque plus rien —
+> c'est simplement la seule pièce qui protégerait MoheliGo si l'une des trois
+> personnes photographiées revenait dessus. Un message WhatsApp suffit.
 
 ---
 
@@ -13,9 +25,9 @@
 
 | Fichier | Ce qu'on voit | Taille reçue | Personnes identifiables | Utilisable ? |
 |---|---|---|---|---|
-| `young-leader-ocean-indien-2025-2026.jpg` | Un lauréat en costume, écharpe dorée **« YOUNG LEADER · OCÉAN INDIEN · 2025-2026 »**, devant un mur de briques. Portrait vertical serré. | 1280 × 1280 | **oui, un visage net** | ⏸️ **en attente** de la confirmation écrite (§ ci-dessous) |
-| `young-leader-2e-challenger-comores-2026.jpg` | Un lauréat en chemise blanche, écharpe verte **« 2ᵉ CHALLENGER · YOUNG LEADER · DES ÎLES COMORES 2026 »**, extérieur, végétation et maison au toit rouge. | 854 × 1280 | **oui, un visage net** | ⏸️ **en attente** |
-| `young-leader-moheli-podium-2025-2026.jpg` | Trois lauréats côte à côte, écharpes blanches **« 1ᵉʳ CHALLENGERS »**, **« YOUNG LEADER MOHÉLI »** (avec collier de fleurs), **« 2ᵉ CHALLENGERS »**, 2025-2026. Affiche imprimée en fond. | 1080 × 856 | **oui, trois visages nets** | ⏸️ **en attente** |
+| `young-leader-ocean-indien-2025-2026.jpg` | Un lauréat en costume, écharpe dorée **« YOUNG LEADER · OCÉAN INDIEN · 2025-2026 »**, devant un mur de briques. Portrait vertical serré. | 1280 × 1280 | **oui, un visage net** | ✅ **oui** (même accord) — pas encore utilisée sur un visuel |
+| `young-leader-2e-challenger-comores-2026.jpg` | Un lauréat en chemise blanche, écharpe verte **« 2ᵉ CHALLENGER · YOUNG LEADER · DES ÎLES COMORES 2026 »**, extérieur, végétation et maison au toit rouge. | 854 × 1280 | **oui, un visage net** | ✅ **oui** (même accord) — pas encore utilisée sur un visuel |
+| `young-leader-moheli-podium-2025-2026.jpg` | Trois lauréats côte à côte, écharpes blanches **« 1ᵉʳ CHALLENGERS »**, **« YOUNG LEADER MOHÉLI »** (avec collier de fleurs), **« 2ᵉ CHALLENGERS »**, 2025-2026. Affiche imprimée en fond. | 1080 × 856 | **oui, trois visages nets** | ✅ **oui** — accord du patron du 12/08/2026, publiée sur `flyer30-partenariat` |
 
 **Auteur / source** : Young Leader Mohéli (transmises par le patron).
 **Contrat** : existe selon le patron — **référence à ajouter ici** dès qu'il me la
@@ -23,7 +35,7 @@ donne (date, signataires, durée).
 
 ---
 
-## ⏸️ Ce qui manque pour les utiliser — une phrase, une fois
+## 📌 La phrase écrite qui manque encore (elle ne bloque plus, elle protège)
 
 Le contrat règle le droit d'**auteur** (celui du photographe). Les trois photos
 montrent des **personnes identifiables**, ce qui ouvre une **deuxième** question :
@@ -40,8 +52,10 @@ faire une trace) :
 > consenti. »
 
 Dès que cette phrase existe : la coller ici avec la date et le nom de la
-personne qui l'a écrite, et je peux publier. **C'est un poste « C » du manuel
-(juridique) : le patron, jamais moi.**
+personne qui l'a écrite. **C'est un poste « C » du manuel (juridique) : le
+patron, jamais moi** — et il a déjà tranché sur la publication (voir en haut).
+Cette phrase reste utile pour la suite : elle transforme un accord verbal en
+trace, et une trace, c'est ce qui compte le jour où quelqu'un conteste.
 
 ---
 
@@ -73,7 +87,8 @@ la vedette, les ports d'Ouroveni et de Hoani, la mer, un billet avec son code
 dans une main. Ce sont celles-là qui font vendre une traversée. Un portrait dit
 « on est sérieux » ; une photo de vedette au port dit « ta place existe ».
 
-📌 **Ma recommandation** : quand la confirmation écrite arrive, on fait **un
-visuel de partenariat** avec ces portraits (registre institutionnel, dimanche),
-et on garde les visuels commerciaux sur le produit. Deux registres, deux usages —
-et on ne mélange pas.
+📌 **Ce qui a été fait** (12/08/2026) : **un** visuel de partenariat avec la
+photo du podium (registre institutionnel, dimanche une semaine sur deux), et les
+visuels commerciaux restent sur le produit. Deux registres, deux usages — et on
+ne mélange pas. Les deux portraits individuels sont gardés en réserve : trois
+publications de partenariat d'affilée diraient qu'on n'a rien d'autre à montrer.

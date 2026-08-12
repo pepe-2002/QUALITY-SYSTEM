@@ -53,6 +53,7 @@ ABONNER = 'flyer-abonner-facebook.png'          # jeudi
 DIASPORA_V2 = 'flyer-diaspora-v2-facebook.png'  # vendredi
 DESTINATION = 'flyer-destination-facebook.png'  # samedi
 INSTIT = 'flyer-institutionnel-facebook.png'    # dimanche
+PARTENARIAT = 'flyer-partenariat-facebook.png'  # dimanche, l'autre semaine
 RIEN = 'flyer-rien-installer-facebook.png'      # lundi
 SIGNATURE = 'flyer-signature-facebook.png'      # mardi (déjà validé par le patron)
 # visuels présents dans le dossier mais pas sur la page du patron
@@ -75,8 +76,12 @@ T_AFFICHE = "Variante courte pour l'affiche"
 # d'avant le système actuel (pas de coin blanc, pas de carte claire, pas de QR).
 # Publier un visuel hors système une semaine sur deux abîme la marque plus que
 # l'usure ne la fatigue : la régularité EST l'actif (§ 1 du manuel).
-# La deuxième variante reviendra quand la bibliothèque aura grandi DANS le
-# système — c'est-à-dire quand le patron m'aura donné ses images.
+# La deuxième variante revient au fur et à mesure que la bibliothèque grandit
+# DANS le système. Premier retour le 12/08/2026 : le dimanche alterne
+# institutionnel et partenariat Young Leader — deux visuels de la même famille,
+# même registre (partenaires, vouvoiement), donc l'alternance repose la page sans
+# abîmer la marque. C'est la condition, et la seule : jamais un visuel d'avant le
+# système.
 SEMAINE = {
     0: [(RIEN, VISUEL[RIEN])],                  # lundi : rien à installer
     1: [(SIGNATURE, VISUEL[SIGNATURE])],        # mardi : l'île, registre émotion
@@ -84,7 +89,8 @@ SEMAINE = {
     3: [(ABONNER, VISUEL[ABONNER])],            # jeudi : s'abonner
     4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
     5: [(DESTINATION, VISUEL[DESTINATION])],    # samedi : la destination
-    6: [(INSTIT, VISUEL[INSTIT])],              # dimanche : l'institutionnel
+    6: [(INSTIT, VISUEL[INSTIT]),               # dimanche : l'institutionnel
+        (PARTENARIAT, VISUEL[PARTENARIAT])],    #   et, l'autre semaine, le partenariat
 }
 
 # --- LE MATIN : la démonstration, et rien d'autre --------------------------

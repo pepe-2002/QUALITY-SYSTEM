@@ -164,6 +164,34 @@ moheligo.com — WhatsApp +269 479 43 28
 Nous ne décidons pas des départs : nous publions la mer et délivrons les billets.
 
 #MoheliGo #Comores #Mohéli #Traversée"""),
+    dict(png='flyer-partenariat-facebook.png', titre='⭐ DIMANCHE — PARTENARIAT YOUNG LEADER',
+         note="Sans date · publie le dimanche<br>une semaine sur deux (avec l'institutionnel)<br>photo Young Leader Mohéli, accord du patron<br>registre partenaires, VOUVOIEMENT<br>preuve sociale locale : des visages d'ici<br>un seul appel, discret, en pied",
+         texte="""CEUX QUI FONT BOUGER L'ÎLE.
+
+MoheliGo est partenaire de Young Leader Mohéli. Sur la photo : le lauréat
+2025-2026 et ses deux challengers.
+
+Pourquoi une compagnie de traversées soutient un concours de jeunes ? Parce
+qu'une île qui bouge a besoin de deux choses en même temps : des jeunes qui
+prennent des responsabilités, et des liaisons sur lesquelles on peut compter.
+Nous nous occupons de la deuxième.
+
+D'ICI. Une entreprise comorienne, pour des traversées comoriennes. Les gens qui
+répondent au téléphone sont d'ici et connaissent les ports.
+
+AVEC EUX. Nous soutenons ceux qui font quelque chose pour Mohéli, pas ceux qui
+en parlent.
+
+POUR VOUS. L'état de la mer publié chaque soir sur cette page, et l'état du
+service — même les jours où il est fermé.
+
+Félicitations aux trois lauréats.
+
+moheligo.com — WhatsApp +269 479 43 28
+
+Photo : Young Leader Mohéli, utilisée avec leur accord.
+
+#MoheliGo #YoungLeaderMoheli #Mohéli #Comores #Jeunesse"""),
     dict(png='flyer-rien-installer-facebook.png', titre='⭐ LUNDI — RIEN À INSTALLER',
          note="Sans date · publie le lundi<br>répond à l'objection « mon<br>téléphone est plein »<br>l'objet : la barre d'adresse",
          texte="""RIEN À INSTALLER. C'EST JUSTE UNE PAGE.

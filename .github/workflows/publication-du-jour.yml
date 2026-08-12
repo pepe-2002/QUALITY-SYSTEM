@@ -38,6 +38,10 @@ on:
         description: 'Essai : deposer une photo NON PUBLIEE pour verifier le droit de publier'
         type: boolean
         default: false
+      avis_de_suspension:
+        description: 'Publier l avis de SERVICE SUSPENDU (pendant une fermeture)'
+        type: boolean
+        default: false
 
 # Sans ceci, Python met sa sortie en memoire tampon quand elle est redirigee :
 # les messages d'erreur (stderr, non tamponne) apparaissent AVANT les lignes
@@ -109,8 +113,24 @@ jobs:
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
         run: python3 programme.py --essai
 
+      # L'avis de fermeture, a la demande. Le robot ne le sort de lui-meme que le
+      # PREMIER jour de la fermeture (il ne garde aucune memoire entre deux
+      # executions) : cette case sert a le republier, ou a l'annoncer plus tard
+      # dans la journee comme le 12/08/2026.
+      - name: Publier l'avis de service suspendu
+        if: inputs.avis_de_suspension
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: python3 programme.py --avis --publier
+
+      # ⚠️ « && !inputs.avis_de_suspension » : sans cette condition, un lancement
+      # avec la case ci-dessus publierait DEUX FOIS le meme avis, puisque
+      # PUBLIER_FB est arme en permanence.
       - name: Publier
-        if: vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook
+        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension
         working-directory: moheligo/pub/flyers
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}

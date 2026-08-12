@@ -25,6 +25,7 @@
 | Ce que je vais faire | Ce que je lis d'abord |
 |---|---|
 | **Un flyer, un visuel** | `MANUEL-MARKETING.md` § 1-4 (marque, positionnement, écriture), **§ 10 bis et 10 ter** (pourquoi mes visuels faisaient débutant, et pourquoi sobre ≠ vide), § 10 checklist « avant de publier un FLYER » |
+| **Présenter MoheliGo** (partenaire, bio de page, message) | `PRESENTATION.md` — quatre longueurs déjà écrites, **et la liste de ce qu'on ne dit pas** |
 | **Un texte de publication** | `MANUEL-MARKETING.md` § 4 (écrire), **§ 5 (vendre à qui n'a jamais acheté en ligne)**, § 10 checklist « TEXTE » ; `TEXTES-PUBLICATIONS.md` pour ne pas me répéter |
 | **Un rapport** | `MANUEL-MARKETING.md` § 8 (mesurer : cinq chiffres et un seuil) et § 10 checklist « RAPPORT » ; `FEUILLE-DE-ROUTE.md` pour savoir à quelle étape on est |
 | **Un plan, une campagne** | `PLAN-PUBLICITAIRE.md` (les trois paliers et leurs seuils) ; `FEUILLE-DE-ROUTE.md` ; § 16 checklist de décision |
@@ -46,6 +47,7 @@ demande.** (Manuel § 12.2 ter — la règle A / B / C.)
 | **`MANUEL-MARKETING.md`** | 📕 **la grille de décision.** Partie I : marketing, écriture, vente. Partie II : diriger, les postes, faire adopter un produit, les erreurs des fondateurs de la Silicon Valley. Finit par des checklists | moi, quand j'apprends quelque chose |
 | **`FEUILLE-DE-ROUTE.md`** | 🗺️ « dans combien de temps ça va se faire ? » — quatre étapes, **chacune avec son seuil de décision** | moi, révisé avec les chiffres |
 | **`PLAN-PUBLICITAIRE.md`** | 📣 la stratégie : les étages organiques, les trois paliers de budget, les seuils d'arrêt | moi |
+| **`PRESENTATION.md`** | 🪪 la présentation officielle en **quatre longueurs** (une phrase, trois lignes, un paragraphe, une demi-page partenaires), plus les interdits et l'endroit où revérifier chaque fait | moi |
 | **`TEXTES-PUBLICATIONS.md`** | ✍️ la bibliothèque des textes déjà écrits, par angle | moi |
 | **`LIER-FACEBOOK.md`** | 🔗 la recette de la liaison Facebook **qui marche**, et les six pièges déjà payés en heures perdues | moi, après chaque incident |
 | **`VIDEO-DEMONSTRATION.md`** | 🎬 pourquoi la vidéo n'existe pas encore, et les **4 captures d'écran** qu'il me faut | moi |

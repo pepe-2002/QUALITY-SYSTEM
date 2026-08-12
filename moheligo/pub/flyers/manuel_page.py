@@ -28,8 +28,8 @@ MANUEL = DOSSIER / 'MANUEL-MARKETING.md'
 # L'ordre de lecture du dossier, celui qu'annonce dossier/README.md. L'index
 # vient en premier : c'est lui qui dit quoi lire avant quoi.
 ORDRE = ['README.md', 'MEMOIRE.md', 'MANUEL-MARKETING.md', 'FEUILLE-DE-ROUTE.md',
-         'PLAN-PUBLICITAIRE.md', 'TEXTES-PUBLICATIONS.md', 'LIER-FACEBOOK.md',
-         'VIDEO-DEMONSTRATION.md', 'ATELIER-FLYERS.md']
+         'PRESENTATION.md', 'PLAN-PUBLICITAIRE.md', 'TEXTES-PUBLICATIONS.md',
+         'LIER-FACEBOOK.md', 'VIDEO-DEMONSTRATION.md', 'ATELIER-FLYERS.md']
 
 MARINE = '#0F2A5C'
 OR = '#F6BC1C'

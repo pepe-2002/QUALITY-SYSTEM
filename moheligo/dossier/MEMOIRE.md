@@ -370,6 +370,52 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (LE DOSSIER, ET LA V2 DU MODE D'EMPLOI)** —
+  📁 **« Écris tout dans un dossier comme le manuel que tu vas consulter. »**
+  Fait : `moheligo/dossier/` regroupe les **huit documents de référence**
+  (déplacés avec `git mv`, historique conservé), et **`dossier/README.md` est
+  l'index** : il dit quoi lire avant quoi selon le travail, ce qui n'est
+  volontairement PAS dans le dossier (tout ce qui est **généré** reste à côté du
+  programme, sinon on corrige la copie au lieu de la source), et **l'état du
+  système** avec ses interrupteurs. `CLAUDE.md` pointe désormais sur le dossier :
+  c'est ce qui fait qu'il sera lu et pas seulement rangé. Tous les chemins ont
+  été corrigés dans le code, les workflows et les messages d'erreur.
+  `manuel_page.py --dossier` assemble tout le dossier en une seule page lisible.
+
+  🎯 **Revue du patron sur le mode d'emploi : 8,7/10, et la phrase à retenir** —
+  « je ne veux pas simplement un flyer plus beau, je veux un flyer qui convertit
+  davantage ». J'avais optimisé la **compréhension**, pas l'**action**.
+  → **Manuel § 10 quater** (nouveau) : la règle des 3 secondes, les six
+  corrections avec leur leçon réutilisable, et les ajouts à la checklist FLYER.
+  Les trois plus utiles pour la suite :
+  ① **relire chaque mot fort comme un malveillant** — « ta place est *prise* »
+  pouvait se lire « déjà prise par un autre », l'inverse du message ;
+  ② **ne jamais rassurer par la négative** — « personne ne fait ça seul »
+  installait le doute qu'il prétendait lever, remplacé par « Besoin d'aide ? On
+  est là. » ;
+  ③ **un support sans geste faisable tout de suite n'est pas un support de
+  vente** — d'où le QR.
+  ✅ **`flyer23-modedemploi-v2-fb.html` → `flyer-modedemploi-v2-facebook.png`** :
+  slogan « ta place est **réservée** », une ligne par étape (textes secondaires
+  −40 %), bandeau d'or avec **QR 200 px + « SCANNE ET RÉSERVE »**,
+  `moheligo.com` de 29 à 57 px, MVola et KartaPay en pastilles.
+  C'est **elle** qui publie désormais (calendrier du matin) ; la **V1 est gardée**
+  dans la bibliothèque pour le test terrain papier, le patron l'ayant jugée
+  utilisable telle quelle.
+
+  🚨 **`qr.py` (nouveau) — un QR ne se publie jamais sans être décodé.** Un QR
+  est illisible pour un humain : s'il pointe ailleurs, personne ne s'en aperçoit
+  avant cent affiches imprimées. Le script **génère** depuis une adresse écrite
+  en clair, puis **relit et décode** le PNG produit, et **sort en erreur** si
+  l'adresse lue n'est pas la bonne. Correction d'erreur **Q** (25 % du code peut
+  être abîmé) pour une affiche exposée dehors.
+  ⚠️ **Piège technique payé** : `pyzbar` a besoin de la bibliothèque système
+  `zbar`, absente ici et impossible à installer (dépôts incomplets). La
+  vérification serait restée annoncée mais jamais faite. Solution :
+  **OpenCV** (`pip install opencv-python-headless`), qui embarque son propre
+  décodeur dans la roue Python. Vérifié : le QR décode bien
+  `https://moheligo.com/`.
+
 - **11/08/2026 (🚨 L'INFORMATION PRODUIT LA PLUS IMPORTANTE DE LA SESSION)** —
   Le patron : « le départ tkt pas, mais **en mauvais temps les vedettes ne
   partent pas**. » Les départs sont donc fiables, sauf par grosse mer.

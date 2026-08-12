@@ -42,7 +42,8 @@ AFFICHE = 'flyer-affiche-vraie-facebook.png'
 DIASPORA = 'flyer-diaspora-facebook.png'
 PROMO = 'flyer-promo-brillant-facebook.png'
 PRIX = 'flyer-prix-facebook.png'         # le billet : mercredi, jour des prix
-EMPLOI = 'flyer-modedemploi-facebook.png'   # la démonstration : le matin
+EMPLOI = 'flyer-modedemploi-v2-facebook.png'   # la démonstration du matin (V2)
+EMPLOI_V1 = 'flyer-modedemploi-facebook.png'   # V1, gardée pour l'impression papier
 # visuels présents dans le dossier mais pas sur la page du patron
 DUOTONE = 'flyer-affiche-duotone-facebook.png'
 LUMINEUSE = 'flyer-affiche-lumineuse-facebook.png'

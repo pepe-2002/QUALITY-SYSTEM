@@ -86,8 +86,31 @@ moheligo.com — WhatsApp +269 479 43 28
 Prévision Open-Meteo Marine.
 
 #MoheliGo #Comores #Mohéli #MétéoMer #Sécurité"""),
-    dict(png='flyer-modedemploi-facebook.png', titre='⭐ LE MATIN — MODE D\'EMPLOI',
-         note="Sans date<br>la démonstration en trois gestes<br>pour celui qui est bloqué,<br>pas pour celui qui hésite",
+    dict(png='flyer-modedemploi-v2-facebook.png', titre="⭐ MODE D'EMPLOI — V2",
+         note="Sans date · celui qui publie<br>QR vérifié vers moheligo.com<br>lisible en 3 secondes :<br>promesse, 1-2-3, QR, adresse<br>les six corrections du patron",
+         texte="""EN TROIS GESTES, TA PLACE EST RÉSERVÉE.
+
+Depuis ton téléphone, sans passer au port pour chercher une place.
+
+1. TU CHOISIS
+Départ, arrivée, date. Tu vois les horaires et les prix sans rien donner.
+
+2. TU RÉSERVES
+Ton nom et ton numéro. Ça prend 30 secondes.
+
+3. TU PAIES, TU EMBARQUES
+MVola ou KartaPay, depuis ton téléphone. Ton billet arrive avec son code, et il
+reste dans le téléphone même sans réseau.
+
+Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant
+peut t'accompagner — la deuxième fois, tu le feras seul.
+
+Scanne le code ou va sur moheligo.com
+WhatsApp +269 479 43 28 — quelqu'un répond.
+
+#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
+    dict(png='flyer-modedemploi-facebook.png', titre="Mode d'emploi — V1 (test terrain)",
+         note="Sans date · gardée pour l'impression<br>notée 8,7/10 par le patron<br>remplacée par la V2 pour publier<br>textes plus longs, pas de QR",
          texte="""EN TROIS GESTES, TA PLACE EST PRISE.
 
 Si tu n'as jamais réservé sur un site, lis ça une fois. Après, tu sauras.

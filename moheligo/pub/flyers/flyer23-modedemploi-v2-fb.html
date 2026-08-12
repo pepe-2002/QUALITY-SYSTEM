@@ -1,0 +1,172 @@
+<!-- MODE D'EMPLOI — V2. Réponse point par point à l'analyse du patron
+     (V1 notée 8,7/10, « je ne veux pas un flyer plus beau, je veux un flyer qui
+     convertit davantage »).
+
+     CE QUI EST CONSERVÉ, PARCE QU'IL A JUGÉ QUE ÇA MARCHE :
+       · le concept des trois étapes, dans le même ordre ;
+       · l'identité marine + or, le coin blanc en biais, la carte claire ;
+       · le ton direct, tutoiement.
+
+     LES SIX CORRECTIONS DEMANDÉES, ET OÙ ELLES SONT :
+       1. slogan → « ta place est RÉSERVÉE » (« prise » était ambigu : on peut
+          comprendre « déjà prise par quelqu'un d'autre »).
+       2. étape 2 → « Ton nom et ton numéro. Ça prend 30 secondes. » (naturel).
+       3. bloc bas → « Besoin d'aide ? On est là. » puis « Première réservation ?
+          Un proche ou un commerçant peut t'accompagner. » L'ancien « personne ne
+          fait ça seul » laissait entendre que c'était compliqué.
+       4. appel à l'action → un QR code de 200 px sur bandeau d'or avec
+          « SCANNE ET RÉSERVE », et moheligo.com passé de 29 à 57 px.
+       5. hiérarchie → trois niveaux seulement, et les textes secondaires réduits
+          d'environ 40 % : une ligne par étape au lieu de deux.
+       6. ton → aucun mot corporate ; les moyens de paiement nommés en clair.
+
+     LE QR EST FABRIQUÉ ET VÉRIFIÉ par `qr.py` : il est décodé après génération
+     et le script échoue si l'adresse lue n'est pas https://moheligo.com/. Un QR
+     est illisible pour un humain — on ne l'imprime pas sans l'avoir relu.
+
+     LECTURE EN 3 SECONDES (ce qu'on voit sans lire) : la promesse, les trois
+     chiffres 1-2-3, le carré du QR, moheligo.com. Le reste ne sert qu'à celui
+     qui s'arrête.
+     Rendu : node render.js flyer23-modedemploi-v2-fb.html flyer-modedemploi-v2-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+
+.coin { position:absolute; top:0; left:0; width:392px; height:158px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4;
+  display:flex; align-items:center; gap:14px; padding:14px 0 26px 38px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:62px; height:62px; border-radius:15px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9px; font-weight:700; letter-spacing:1.8px;
+  color:#5C6E8B; margin-top:4px; }
+
+.ligne { position:absolute; top:56px; right:70px; z-index:4; text-align:right;
+  font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
+  color:rgba(255,255,255,.56); }
+
+/* NIVEAU 1 — la promesse. Ce qu'on lit à trois mètres. */
+.acc { position:absolute; left:70px; top:198px; width:940px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:88px; line-height:.97;
+  letter-spacing:-3.4px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+.sous { position:absolute; left:70px; top:396px; width:900px; z-index:3;
+  font-size:23px; font-weight:500; color:#BDD0EE; }
+.sous b { color:#fff; font-weight:700; }
+
+/* NIVEAU 2 — les trois étapes. Une ligne chacune, pas deux. */
+.marche { position:absolute; left:70px; top:462px; width:940px; z-index:3;
+  background:#F6F9FF; border-radius:22px; padding:6px 40px 8px;
+  box-shadow:0 26px 56px rgba(4,12,40,.42); }
+.etape { position:relative; display:flex; align-items:center; gap:22px; padding:23px 0; }
+.etape + .etape { border-top:1px solid #DDE6F4; }
+/* le fil doré : centre de pastille à centre de pastille, quel que soit le texte
+   (chaque centre est à 23 px de marge + 30 px de demi-pastille = 53 px du haut) */
+.etape:not(:last-child)::before { content:''; position:absolute; left:27px; top:53px;
+  height:100%; width:4px; background:#F1D68A; z-index:1; }
+.num { position:relative; z-index:2; flex:0 0 60px; height:60px; border-radius:50%;
+  background:#0F2A5C; color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:30px; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 0 7px #F6F9FF; }
+.txt b { display:block; font-family:'Archivo',sans-serif; font-weight:900; font-size:33px;
+  letter-spacing:-1.1px; color:#0F2A5C; line-height:1.04; }
+.txt p { margin-top:6px; font-size:20px; line-height:1.32; color:#48597B; }
+.txt p em { font-style:normal; font-weight:700; color:#0F2A5C; }
+
+/* NIVEAU 1 bis — L'APPEL À L'ACTION. Le deuxième bloc le plus visible. */
+.action { position:absolute; left:70px; top:866px; width:940px; z-index:3;
+  display:flex; align-items:center; gap:34px;
+  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
+  border-radius:22px; padding:26px 34px;
+  box-shadow:0 26px 56px rgba(4,12,40,.42); }
+.action .qr { flex:0 0 200px; height:200px; background:#fff; border-radius:16px;
+  padding:11px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
+.action .qr img { width:100%; height:100%; display:block; }
+.action .mot { flex:1; }
+.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+  letter-spacing:.6px; color:#0A1D42; }
+.action .adr { margin-top:8px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:57px; letter-spacing:-2.2px; color:#0A1D42; line-height:1; }
+.action .paie { margin-top:16px; display:flex; align-items:center; gap:10px;
+  font-size:15px; font-weight:700; color:#4A3A08; }
+.action .paie u { text-decoration:none; background:#0F2A5C; color:#fff;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:16px;
+  letter-spacing:.3px; padding:7px 13px; border-radius:8px; }
+
+/* NIVEAU 3 — l'aide. Court, positif, humain. */
+.aide { position:absolute; left:70px; right:70px; bottom:66px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:30px;
+  border-top:2px solid rgba(246,188,28,.55); padding-top:22px; }
+.aide .g b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:31px; letter-spacing:-1px; color:#F6BC1C; }
+.aide .g p { margin-top:8px; font-size:19px; line-height:1.36; color:#CBD9EF;
+  max-width:560px; }
+.aide .d { text-align:right; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:25px; color:#fff; letter-spacing:-.5px; line-height:1.25; }
+.aide .d small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:12px; letter-spacing:1.9px; color:rgba(255,255,255,.56); margin-top:7px; }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
+
+  <div class="acc">En trois gestes,<span>ta place est réservée.</span></div>
+  <div class="sous">Depuis ton téléphone. <b>Sans passer au port pour chercher une
+    place.</b></div>
+
+  <div class="marche">
+    <div class="etape">
+      <div class="num">1</div>
+      <div class="txt"><b>Tu choisis</b>
+        <p>Départ, arrivée, date. Tu vois les horaires et <em>les prix</em> sans
+           rien donner.</p></div>
+    </div>
+    <div class="etape">
+      <div class="num">2</div>
+      <div class="txt"><b>Tu réserves</b>
+        <p>Ton nom et ton numéro. <em>Ça prend 30 secondes.</em></p></div>
+    </div>
+    <div class="etape">
+      <div class="num">3</div>
+      <div class="txt"><b>Tu paies, tu embarques</b>
+        <p>Ton billet arrive avec son code, et il <em>reste dans le téléphone
+           même sans réseau</em>.</p></div>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
+    <div class="mot">
+      <div class="scanne">SCANNE ET RÉSERVE</div>
+      <div class="adr">moheligo.com</div>
+      <div class="paie">Tu paies avec <u>MVola</u> <u>KartaPay</u></div>
+    </div>
+  </div>
+
+  <div class="aide">
+    <div class="g"><b>Besoin d'aide ? On est là.</b>
+      <p>Première réservation ? Un proche ou un commerçant peut t'accompagner.</p></div>
+    <div class="d">WhatsApp<br>+269 479 43 28<small>QUELQU'UN RÉPOND</small></div>
+  </div>
+</div>

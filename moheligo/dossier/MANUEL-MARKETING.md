@@ -398,6 +398,63 @@ discipline que le flyer « chiffre » — aplat franc, or réservé à un mot, a
 photo — mais avec un objet, un contraste et de la densité. C'est le nouveau
 modèle de référence pour tout visuel **sans image fournie**.
 
+## 10 quater. 🎯 EXPLIQUER N'EST PAS CONVERTIR — la revue du patron du 11/08/2026
+
+Le patron a noté le mode d'emploi **8,7/10** et a dit la phrase la plus utile de
+la journée sur les visuels :
+
+> **« Je ne veux pas simplement un flyer plus beau. Je veux un flyer qui
+> convertit davantage. »**
+
+Et le diagnostic exact : *« le but est de passer d'un flyer qui explique très
+bien MoheliGo à un flyer qui donne immédiatement envie de l'utiliser. »*
+
+J'avais optimisé la **compréhension**. Ce n'est pas la même chose que l'**action**.
+Un visuel peut être clair, honnête, bien composé — et ne rien déclencher, parce
+qu'il ne dit pas *quoi faire maintenant*.
+
+### La règle des 3 secondes
+
+**Un flyer doit être compris par quelqu'un qui ne le regarde que 3 à 5 secondes.**
+Donc à chaque visuel, je liste ce qu'on voit **sans lire une seule phrase**. Sur
+le mode d'emploi V2, c'est : la promesse, les chiffres 1-2-3, le carré du QR,
+`moheligo.com`. Quatre choses. Le reste ne sert qu'à celui qui s'arrête.
+
+### Les six corrections, et ce qu'elles enseignent
+
+| Corrigé | Leçon réutilisable |
+|---|---|
+| « ta place est **prise** » → « **réservée** » | ⚠️ **relire chaque mot fort comme un malveillant.** « Prise » peut se lire « déjà prise par un autre » — l'inverse du message |
+| « Ton nom et ton numéro, **seulement ici** : trente secondes » → « **Ça prend 30 secondes.** » | écrire comme on parle. Une tournure qui sent la rédaction sent aussi la publicité |
+| « **Personne ne fait ça seul** » → « **Besoin d'aide ? On est là.** » | rassurer sans jamais suggérer que c'est difficile. La formule négative installe le doute qu'elle prétend lever |
+| ajout d'un **QR + « SCANNE ET RÉSERVE »**, adresse doublée de taille | **un support sans geste immédiat n'est pas un support de vente.** Le chemin doit être : voir → comprendre → scanner → réserver |
+| textes secondaires réduits d'environ 40 % | ce qu'on enlève au corps, on le donne à la promesse. Trois niveaux de hiérarchie, pas cinq |
+| moyens de paiement en clair (MVola, KartaPay) | les noms que le client connaît déjà valent mieux que « paiement sécurisé » |
+
+### 🚨 Le QR code : jamais sans vérification
+
+**Un QR code est illisible pour un humain.** S'il pointe vers la mauvaise adresse,
+personne ne s'en aperçoit — ni moi, ni le patron, ni le client. On l'imprimerait
+sur cent affiches avant de le découvrir.
+
+➡️ D'où `pub/flyers/qr.py` : il **génère** le code depuis une adresse écrite en
+clair, puis le **relit et le décode**, et **échoue** si l'adresse lue n'est pas la
+bonne. Correction d'erreur **Q** (jusqu'à 25 % du code abîmé) parce qu'une
+affiche collée dehors prend la pluie et les doigts.
+**Interdit : reprendre un QR trouvé dans le dossier sans l'avoir décodé.**
+
+### Ajouts à la checklist FLYER (§ 10)
+
+- [ ] Qu'est-ce qu'on voit **sans lire** ? (lister ; si c'est plus de 5 choses,
+      il y en a trop)
+- [ ] Quel **geste** ce visuel demande, et est-il possible **tout de suite** ?
+- [ ] Le **bénéfice client** est-il dans l'accroche, ou seulement la mécanique ?
+- [ ] Chaque mot fort relu **comme un malveillant** : peut-on le comprendre à
+      l'envers ?
+- [ ] Si QR : **décodé** par `qr.py` ?
+
+---
+
 ## 11. Ce que ce manuel m'interdit
 
 Écrit noir sur blanc pour que je ne recommence pas :
@@ -417,6 +474,9 @@ modèle de référence pour tout visuel **sans image fournie**.
   d'annulation de chaque compagnie. On écrit « **peuvent** ne pas partir » et on
   renvoie vers ceux qui décident. Informer, pas se tromper à voix haute.
 - ❌ Promettre qu'une traversée partira. On promet de **dire la mer avant**.
+- ❌ Publier un visuel avec un QR **non décodé** par `qr.py` (§ 10 quater).
+- ❌ Rendre un visuel qui explique bien mais ne demande **aucun geste faisable
+  tout de suite**. Expliquer n'est pas convertir.
 
 ---
 

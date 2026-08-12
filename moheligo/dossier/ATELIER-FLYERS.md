@@ -71,6 +71,40 @@ section « Flyer corporate ».
 
 ## Regénérer
 
+### 🗂️ Les scripts, et ce que chacun fait
+
+| Script | Ce qu'il fabrique | À savoir |
+|---|---|---|
+| `render.js` | HTML/CSS → PNG haute résolution | `node render.js source.html sortie.png 1080 1350 2` |
+| `page.py` | la page web du patron (flyers + textes + plan) | **jamais retoucher la page à la main** — modifier `FLYERS` et relancer |
+| `bulletin.py` | le bulletin mer daté + `bulletin.json` | à refaire chaque jour, les chiffres sont vrais |
+| `mer.py` | l'état de la mer d'un jour donné | `gros_temps()` → True / False / **None (= je ne sais pas)** |
+| `calendrier.py` | le programme de la semaine (`SEMAINE`, `MATIN`) | les visuels et textes viennent de `page.py`, jamais recopiés |
+| `programme.py` | publie midi (`--publier`) ou le matin (`--matin`) | consulte `mer.py` : mer forte → avis de mer, zéro pub |
+| `publier_fb.py` | l'envoi à l'API Graph | jeton de page dérivé tout seul ; voir `LIER-FACEBOOK.md` |
+| `rapport.py` | `pub/RAPPORT.md` | décision d'abord, puis les chiffres |
+| **`qr.py`** | **le QR code, généré ET vérifié** | voir l'avertissement ci-dessous |
+| `manuel_page.py` | la version lisible du manuel / de tout le dossier | `--dossier` assemble les huit documents |
+
+### 🚨 Le QR code ne se publie jamais sans être décodé
+
+```bash
+python3 qr.py                     # écrit qr-moheligo.png, puis le relit
+# ✅ Vérifié : le QR décode bien « https://moheligo.com/ »
+```
+
+**Un QR est illisible pour un humain.** S'il pointe vers la mauvaise adresse,
+personne ne s'en aperçoit — on l'imprimerait sur cent affiches avant de le
+découvrir. `qr.py` génère depuis une adresse écrite en clair, **relit le PNG
+produit, le décode, et échoue** si l'adresse lue n'est pas la bonne.
+Correction d'erreur **Q** : jusqu'à 25 % du code peut être abîmé (pluie, soleil,
+doigts) et il reste lisible.
+
+⚠️ La vérification utilise **OpenCV** (`pip install opencv-python-headless`), pas
+`pyzbar` : celui-ci réclame la bibliothèque système `zbar`, absente de cet
+environnement et impossible à installer. Avec `pyzbar`, la vérification aurait
+été annoncée mais jamais faite — le pire des deux mondes.
+
 ### La page que le patron ouvre
 
 ```bash

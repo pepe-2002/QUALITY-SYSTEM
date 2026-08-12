@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (LE BULLETIN DU SOIR PASSE EN BLEU ET BLANC)** — Le patron :
+  « je l'ai approuvé parce que je ne savais pas que tu pouvais faire d'aussi
+  beaux flyers ; **un beau flyer attire l'attention**. »
+  🎓 **Leçon sur moi-même, pas sur le design : une approbation obtenue quand le
+  client ne savait pas ce qui était possible n'est pas une validation, c'est un
+  plafond.** Je ne dois pas m'abriter derrière un « il a déjà dit oui » — c'est
+  à moi de proposer mieux quand je sais faire mieux.
+  ✅ **`flyer8-soir-fb.template.html` réécrit dans la famille** : coin blanc,
+  aplat marine, carte claire, bandeau d'or avec QR. **Plus de photo de fond** —
+  l'objet regardé est désormais **la donnée elle-même**, qui est notre seul actif
+  incopiable. Le verdict est l'accroche (« Demain matin, MER AGITÉE. »).
+  🔒 **Aucun script ni workflow touché** : les **dix-huit valeurs** du gabarit
+  gardent exactement leurs noms (OVER, TITRE_BULLETIN, ETAT, CONSEIL, HOULE,
+  VENT, DIRV, PERIODE, AMPLI, AMPLI_LAB, PLAGE, COURBE, AIRE, POINTS, HEURES,
+  GAUGE, GAUGE_LAB, MAJ). L'ancien gabarit est gardé sous
+  `flyer8-soir-v1.template.html` — on ne jette pas ce qui a servi.
+  🧪 **Vérifié de bout en bout, comme à 19h30** : `bulletin.py` a interrogé
+  Open-Meteo (jeudi 13/08 : mer agitée, houle 1,31 m, vent 27 km/h de sud,
+  période 7,5 s), rempli le gabarit, et le rendu est propre. **Zéro `{{` restant**
+  dans le HTML produit. Et le poids tombe de **2 656 ko à 945 ko** — la photo de
+  fond coûtait 1,7 Mo pour rien.
+  🐛 **Piège trouvé et corrigé : le gabarit se remplissait lui-même.** Les noms
+  des valeurs étaient cités **avec leurs doubles accolades dans le commentaire**
+  d'en-tête, donc `bulletin.py` remplaçait aussi la documentation, qui se
+  retrouvait pleine de chiffres du jour. **Règle : dans un gabarit, ne jamais
+  écrire un nom de valeur avec ses accolades ailleurs que là où il doit être
+  remplacé.**
+
 - **12/08/2026 (LA SEMAINE ENTIÈRE DANS LE ROBOT)** — « Fais tous les flyers
   jusqu'à mardi, mets-les dans le robot, car la limite de la semaine sera
   bientôt atteinte. » Fait : **la semaine complète tourne sans moi.**

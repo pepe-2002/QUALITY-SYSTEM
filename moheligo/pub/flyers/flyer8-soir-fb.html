@@ -1,299 +1,185 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
-<!-- GABARIT — ne pas modifier les {{JETONS}} : c'est bulletin.py qui les remplit
-     avec la vraie prévision de mer, puis écrit flyer8-soir-fb.html.
-     Publication de fin d'après-midi / début de soirée : on ne vend pas la
-     destination, on vend le fait de SAVOIR avant de partir.
-     Nouveautés de design par rapport au flyer promo :
-       - photo étalonnée « fin de journée » (soir.py) : ciel de crépuscule,
-         soleil bas, chemin de lumière, bloom ;
-       - panneau en VERRE DÉPOLI (backdrop-filter) posé sur la mer ;
-       - deux éléments pilotés par la donnée : la jauge d'état de la mer
-         (échelle Douglas) et la courbe de houle du matin. -->
+<!-- LE BULLETIN DU SOIR — V2, dans la famille bleu et blanc (12/08/2026).
+     Le patron : « je l'ai approuvé parce que je ne savais pas que tu pouvais
+     faire d'aussi beaux flyers ; un beau flyer attire l'attention. »
+     L'ancien gabarit (photo plein cadre, carte en verre) est conservé sous
+     `flyer8-soir-v1.template.html` — on ne jette pas ce qui a servi.
+
+     ⚠️ CE FICHIER EST UN GABARIT. `bulletin.py` remplace les valeurs entre
+     doubles accolades et écrit `flyer8-soir-fb.html`. Les noms sont EXACTEMENT
+     ceux de l'ancien gabarit, donc aucun script et aucun workflow n'a été
+     touché. Les dix-huit noms, écrits ici SANS accolades pour que bulletin.py
+     ne remplace pas la documentation elle-même :
+       OVER, TITRE_BULLETIN, ETAT, CONSEIL, HOULE, VENT, DIRV, PERIODE, AMPLI,
+       AMPLI_LAB, PLAGE, COURBE, AIRE, POINTS, HEURES, GAUGE, GAUGE_LAB, MAJ.
+     Ne jamais renommer une valeur ici sans la renommer dans bulletin.py.
+
+     CE QUI CHANGE, ET POURQUOI :
+       · même coin blanc, même aplat marine, même carte claire, même bandeau
+         d'or que le reste de la semaine — la régularité est l'actif (§ 1).
+       · plus de photo : l'objet regardé, c'est LA DONNÉE. Elle est à nous, elle
+         est vraie, et personne d'autre ne la publie (§ 3, levier autorité).
+       · le verdict EST l'accroche (§ 4, Ogilvy : les faits vendent).
+       · la courbe garde ses couleurs d'origine (marine et or) : elle est
+         fabriquée par bulletin.py, pas ici.
+     Rendu : node render.js flyer8-soir-fb.html flyer-soir-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
 <style>
-@import url('fonts/local-fonts.css');
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
 * { margin:0; padding:0; box-sizing:border-box; }
-:root{
-  --navy:#0F2A5C; --deep:#050F24; --gold:#F6BC1C; --paper:#F2F6FE; --grey:#5C6E8B;
-  --gold-metal:linear-gradient(142deg,#FFE595 0%,#FBC93C 38%,#F0AE0B 62%,#D89A05 100%);
-  --navy-metal:linear-gradient(180deg,#1B4A8E 0%,#12356D 46%,#0B2149 100%);
-  --bevel-gold:inset 0 2px 0 rgba(255,255,255,.62), inset 0 -7px 16px rgba(160,102,0,.26);
-  --bevel-navy:inset 0 1.5px 0 rgba(255,255,255,.26), inset 0 -6px 14px rgba(0,0,0,.22);
-  --pad:56px;
-}
-body { width:1080px; height:1350px; font-family:'Inter',Arial,sans-serif; color:var(--navy);
-       -webkit-font-smoothing:antialiased; overflow:hidden; background:var(--paper); }
-.page { position:relative; width:1080px; height:1350px; overflow:hidden;
-  background:linear-gradient(184deg,#FFFFFF 0%, var(--paper) 54%, #E7EEFA 100%); }
-.arch { font-family:'Archivo','Inter',Arial,sans-serif; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+.coin { position:absolute; top:0; left:0; width:392px; height:158px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4; display:flex;
+  align-items:center; gap:14px; padding:14px 0 26px 38px; box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:62px; height:62px; border-radius:15px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9px; font-weight:700; letter-spacing:1.8px;
+  color:#5C6E8B; margin-top:4px; }
+.ligne { position:absolute; top:56px; right:70px; z-index:4; text-align:right;
+  font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
+  color:rgba(255,255,255,.56); }
 
-/* ---------- photo du soir ---------- */
-.top { position:absolute; top:0; left:0; right:0; height:900px; overflow:hidden; background:var(--deep); }
-.top .shot { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  object-position:center 6%; transform:scale(1.10); transform-origin:56% 14%; }
-.top .veil { position:absolute; inset:0;
-  background:linear-gradient(178deg, rgba(5,15,36,.50) 0%, rgba(5,15,36,.10) 15%,
-                                     rgba(5,15,36,.34) 44%, rgba(5,15,36,.70) 74%, rgba(5,15,36,.90) 100%); }
-.top .wave { position:absolute; left:0; right:0; bottom:-2px; display:block; }
+/* la date et la fenêtre horaire : une ligne de bulletin, pas un titre */
+.sur { position:absolute; left:70px; top:190px; z-index:3; font-size:14px;
+  font-weight:700; letter-spacing:3px; color:#F6BC1C; }
 
-.head { position:absolute; top:44px; left:var(--pad); right:var(--pad); display:flex;
-  align-items:center; justify-content:flex-end; z-index:6; }
-.ident { display:flex; align-items:center; gap:15px; }
-.badge-app { position:relative; width:76px; height:76px; border-radius:18px;
-  background:linear-gradient(160deg,#fff 0%,#EFF4FD 100%); display:flex; align-items:center;
-  justify-content:center; box-shadow:0 26px 54px rgba(5,15,36,.42), inset 0 1.5px 0 #fff; overflow:hidden; }
-.badge-app img { width:58px; display:block; }
-.badge-app::after { content:''; position:absolute; left:-30%; top:-70%; width:110%; height:120%;
-  background:linear-gradient(#fff,rgba(255,255,255,0)); opacity:.55; transform:rotate(22deg); filter:blur(6px); }
-.word b { font-size:33px; font-weight:800; letter-spacing:-1px; color:#fff; display:block; line-height:1;
-  text-shadow:0 2px 14px rgba(0,0,0,.55); }
-.word b em { font-style:normal; background:var(--gold-metal);
-  -webkit-background-clip:text; background-clip:text; color:transparent; }
-.word small { display:block; margin-top:5px; font-size:11px; font-weight:700; letter-spacing:2.2px;
-  color:#DDE8F9; text-shadow:0 1px 8px rgba(0,0,0,.6); }
-.live { position:relative; display:inline-flex; align-items:center; gap:10px; background:var(--gold-metal);
-  color:#4A3806; font-size:13px; font-weight:900; letter-spacing:1.8px; padding:12px 22px; border-radius:999px;
-  box-shadow:var(--bevel-gold), 0 12px 26px rgba(5,15,36,.42); overflow:hidden; }
-.live i { width:9px; height:9px; border-radius:50%; background:#C2410C; display:block;
-  box-shadow:0 0 0 4px rgba(194,65,12,.22); }
-.live::after { content:''; position:absolute; left:-40%; top:-120%; width:60%; height:340%;
-  background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.75), rgba(255,255,255,0));
-  transform:rotate(18deg); filter:blur(4px); }
+.acc { position:absolute; left:70px; top:224px; width:940px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:86px; line-height:.97;
+  letter-spacing:-3.2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+.sous { position:absolute; left:70px; top:398px; width:880px; z-index:3;
+  font-size:22px; line-height:1.4; font-weight:500; color:#CBD9EF; }
 
+/* L'OBJET : la donnée. Elle est à nous, elle est vraie, elle est unique. */
+.carte { position:absolute; left:70px; top:470px; width:940px; z-index:3;
+  background:#F6F9FF; border-radius:22px; padding:26px 32px 28px;
+  box-shadow:0 26px 56px rgba(4,12,40,.42); }
+.tete { display:flex; align-items:baseline; justify-content:space-between;
+  font-size:11.5px; font-weight:700; letter-spacing:2.2px; color:#6B7C99; }
+.tete i { font-style:normal; color:#0F2A5C; }
+.tete .quand { letter-spacing:0; font-size:12.5px; font-weight:500;
+  color:#8493AD; }
 
-/* ---------- coin blanc en biais : notre en-tête de signature ---------- */
-.coin { position:absolute; top:0; left:0; width:436px; height:190px; background:#fff;
-  clip-path:polygon(0 0, 100% 0, 79% 100%, 0 100%); z-index:9;
-  display:flex; align-items:center; gap:16px; padding:24px 0 34px 44px;
-  box-shadow:0 20px 48px rgba(4,12,40,.42); }
-.coin img { width:74px; height:74px; border-radius:18px; display:block; }
-.coin b { font-family:'Archivo','Inter',sans-serif; font-weight:900; font-size:32px;
-  color:var(--navy); letter-spacing:-1px; line-height:1; display:block; }
-.coin b em { font-style:normal; color:var(--gold); }
-.coin small { display:block; font-size:10px; font-weight:700; letter-spacing:2px;
-  color:var(--grey); margin-top:6px; }
+.chiffre { display:flex; align-items:flex-end; gap:26px; margin-top:16px; }
+.chiffre .n { font-family:'Archivo',sans-serif; font-weight:900; font-size:118px;
+  line-height:.82; letter-spacing:-5px; color:#0F2A5C; font-variant-numeric:tabular-nums; }
+.chiffre .n em { font-style:normal; font-size:40px; letter-spacing:-1px; color:#F0A800;
+  margin-left:6px; }
+.chiffre .quoi { padding-bottom:12px; }
+.chiffre .quoi b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:25px; letter-spacing:-.7px; color:#0F2A5C; }
+.chiffre .quoi small { display:block; margin-top:5px; font-size:12px; font-weight:700;
+  letter-spacing:1.8px; color:#8493AD; }
 
-/* ---------- accroche ---------- */
-.claim { position:absolute; left:var(--pad); right:var(--pad); top:212px; color:#fff; z-index:6; }
-.claim .over { display:inline-block; font-size:13px; font-weight:800; letter-spacing:2.6px; color:#FFDFA0;
-  text-shadow:0 2px 10px rgba(0,0,0,.6); }
-.claim h1 { margin-top:15px; font-size:76px; font-weight:900; line-height:.99; letter-spacing:-2.1px; }
-.claim h1 .l1 { display:block; background:linear-gradient(178deg,#FFFFFF 0%,#FFFFFF 54%,#D6E3F8 100%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  filter:drop-shadow(0 10px 30px rgba(0,0,0,.6)); }
-.claim h1 .hl { position:relative; display:inline-block; word-spacing:3px; color:#3A2B03; z-index:1;
-  padding:0 20px 0 14px; margin-top:7px; }
-.claim h1 .hl::before { content:''; position:absolute; left:0; right:0; top:6px; bottom:12px; z-index:-1;
-  background:var(--gold-metal); border-radius:7px;
-  box-shadow:var(--bevel-gold), 0 16px 32px rgba(5,15,36,.46); }
-.claim h1 .hl::after { content:''; position:absolute; left:3%; right:44%; top:11px; height:26%; z-index:-1;
-  background:linear-gradient(rgba(255,255,255,.72),rgba(255,255,255,0)); border-radius:5px; filter:blur(1px); }
+/* la jauge de Douglas : cinq segments, un seul allumé */
+.jauge { display:flex; gap:9px; margin-top:20px; }
+.jauge div { flex:1; height:9px; border-radius:99px; background:#DDE6F4; }
+.jauge div.on { background:#F6BC1C; }
+.jauge-lab { display:flex; gap:9px; margin-top:9px; }
+.jauge-lab span { flex:1; font-size:10.5px; font-weight:700; letter-spacing:1.1px;
+  color:#A0AEC4; }
+.jauge-lab span.on { color:#0F2A5C; }
 
-/* ---------- panneau verre : le bulletin ---------- */
-.glass { position:absolute; left:var(--pad); right:var(--pad); top:448px; z-index:7;
-  padding:26px 30px 28px; border-radius:26px;
-  background:linear-gradient(180deg, rgba(10,28,62,.62) 0%, rgba(6,18,44,.72) 100%);
-  backdrop-filter:blur(18px) saturate(1.25); -webkit-backdrop-filter:blur(18px) saturate(1.25);
-  border:1px solid rgba(255,255,255,.20); color:#fff;
-  box-shadow:0 30px 60px rgba(3,10,26,.46), inset 0 1.5px 0 rgba(255,255,255,.28); }
-.glass .gh { display:flex; align-items:center; justify-content:space-between; }
-.glass .gh b { font-size:14px; font-weight:900; letter-spacing:2.4px; color:#FFDFA0; }
-.glass .gh span { font-size:13px; font-weight:800; letter-spacing:2px; color:#B9CDEC; }
+.faits { display:flex; margin-top:22px; padding-top:20px; border-top:1px solid #DDE6F4; }
+.faits div { flex:1; padding-right:18px; }
+.faits div + div { border-left:1px solid #DDE6F4; padding-left:18px; }
+.faits b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:30px; letter-spacing:-1px; color:#0F2A5C; }
+.faits b i { font-style:normal; font-size:16px; color:#F0A800; margin-left:3px; }
+.faits small { display:block; margin-top:6px; font-size:11px; font-weight:700;
+  letter-spacing:1.6px; color:#8493AD; }
 
-.verdict { margin-top:16px; display:flex; align-items:flex-end; justify-content:space-between; }
-.verdict .txt b { display:block; font-size:44px; font-weight:900; letter-spacing:-1.4px; line-height:1;
-  background:var(--gold-metal); -webkit-background-clip:text; background-clip:text; color:transparent; }
-.verdict .txt small { display:block; margin-top:7px; font-size:15.5px; font-weight:600; color:#D5E2F6; }
-.verdict .h { text-align:right; }
-.verdict .h b { display:block; font-size:40px; font-weight:900; letter-spacing:-1.4px; line-height:1; color:#fff; }
-.verdict .h small { display:block; margin-top:6px; font-size:12px; font-weight:800; letter-spacing:1.8px; color:#9FB9E0; }
+.courbe { margin-top:22px; padding-top:18px; border-top:1px solid #DDE6F4; }
+.courbe .t { display:flex; align-items:baseline; justify-content:space-between;
+  font-size:11px; font-weight:700; letter-spacing:1.9px; color:#6B7C99; }
+.courbe .t em { font-style:normal; text-transform:none; letter-spacing:0;
+  font-size:13px; color:#0F2A5C; }
+.courbe svg { display:block; width:100%; height:112px; margin-top:8px; }
+.heures { display:flex; justify-content:space-between; margin-top:4px; }
+.heures span { font-size:11.5px; font-weight:700; color:#8493AD; }
 
-/* jauge Douglas */
-.gauge { margin-top:18px; display:flex; gap:7px; }
-.gauge div { flex:1; height:9px; border-radius:999px; background:rgba(255,255,255,.16); }
-.gauge div.on { background:var(--gold-metal); box-shadow:0 0 16px rgba(246,188,28,.55); }
-.gauge-lab { margin-top:9px; display:flex; justify-content:space-between;
-  font-size:10.5px; font-weight:800; letter-spacing:1.2px; color:#93AFD8; }
-.gauge-lab span.on { color:#FFD98A; }
+.action { position:absolute; left:70px; top:1042px; width:940px; z-index:3;
+  display:flex; align-items:center; gap:26px;
+  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
+  border-radius:22px; padding:18px 28px; box-shadow:0 24px 52px rgba(4,12,40,.44); }
+.action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
+  padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
+.action .qr img { width:100%; height:100%; display:block; }
+.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
+  letter-spacing:.5px; color:#0A1D42; }
+.action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
+.action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }
 
-/* mesures */
-.metrics { margin-top:20px; display:flex; }
-.metric { flex:1; padding-left:20px; border-left:1px solid rgba(255,255,255,.18); }
-.metric:first-child { padding-left:0; border-left:0; }
-.metric b { display:block; font-size:27px; font-weight:900; letter-spacing:-.8px; }
-.metric b i { font-style:normal; font-size:15px; font-weight:800; color:#FFD98A; margin-left:3px; }
-.metric small { display:block; margin-top:4px; font-size:11.5px; font-weight:800; letter-spacing:1.7px; color:#9FB9E0; }
-
-/* courbe de houle */
-.chart { margin-top:20px; padding-top:18px; border-top:1px solid rgba(255,255,255,.16); }
-.chart .ct { display:flex; align-items:baseline; justify-content:space-between; }
-.chart .ct b { font-size:13px; font-weight:900; letter-spacing:1.9px; color:#D5E2F6; }
-.chart .ct span { font-size:12.5px; font-weight:700; color:#A9C1E4; }
-.chart svg { display:block; margin-top:8px; }
-.hours { margin-top:9px; display:flex; justify-content:space-between;
-  font-size:14px; font-weight:800; letter-spacing:.4px; color:#D5E2F6; }
-
-/* ---------- ligne d'action ---------- */
-.mid { position:absolute; left:var(--pad); right:var(--pad); top:952px; z-index:4; display:flex; gap:16px; }
-.chip { flex:1; display:flex; align-items:center; gap:13px; background:#fff; border-radius:18px;
-  padding:16px 18px; box-shadow:0 16px 36px rgba(15,42,92,.13), inset 0 1.5px 0 #fff;
-  border:1px solid rgba(15,42,92,.055); }
-.chip .ic { width:48px; height:48px; border-radius:14px; background:var(--gold-metal); flex:none;
-  display:flex; align-items:center; justify-content:center; box-shadow:var(--bevel-gold); }
-.chip b { font-size:17px; font-weight:800; letter-spacing:-.2px; color:var(--navy); }
-.chip small { display:block; margin-top:2px; font-size:13px; font-weight:600; color:var(--grey); }
-
-.source { position:absolute; left:var(--pad); right:var(--pad); top:1058px; z-index:4;
-  font-size:12px; font-weight:600; color:#7C8CA6; }
-.source b { font-weight:800; color:var(--navy); }
-
-/* ---------- bande d'action ---------- */
-.cta { position:absolute; left:0; right:0; bottom:0; height:246px; background:var(--gold-metal);
-  border-radius:28px 28px 0 0; padding:30px var(--pad) 0; z-index:5; overflow:hidden;
-  box-shadow:inset 0 2px 0 rgba(255,255,255,.7); }
-.cta::before { content:''; position:absolute; left:-25%; top:-60%; width:60%; height:230%;
-  background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.55), rgba(255,255,255,0));
-  transform:rotate(16deg); filter:blur(10px); }
-.cta .row { position:relative; display:flex; align-items:center; gap:24px; }
-.qr { width:128px; height:128px; background:#fff; border-radius:14px; padding:9px; flex:none;
-  box-shadow:0 14px 26px rgba(5,15,36,.24), inset 0 1.5px 0 #fff; }
-.qr img { width:100%; height:100%; display:block; }
-.go { flex:1; }
-.go .site { display:block; font-size:46px; font-weight:900; letter-spacing:-1.7px; line-height:1;
-  background:linear-gradient(178deg,#1B4A8E 0%,#0B2149 82%); -webkit-background-clip:text;
-  background-clip:text; color:transparent; filter:drop-shadow(0 2px 0 rgba(255,255,255,.5)); }
-.go .btn { position:relative; display:inline-flex; align-items:center; gap:12px; margin-top:13px;
-  background:var(--navy-metal); color:#fff; border-radius:999px; padding:14px 26px; overflow:hidden;
-  box-shadow:var(--bevel-navy), 0 14px 26px rgba(5,15,36,.34); }
-.go .btn span { position:relative; font-size:18.5px; font-weight:900; }
-.go .btn svg { position:relative; }
-.go .btn::after { content:''; position:absolute; left:0; right:0; top:0; height:48%;
-  background:linear-gradient(rgba(255,255,255,.22),rgba(255,255,255,0)); }
-.pills { display:flex; flex-direction:column; gap:11px; }
-.pill { position:relative; display:flex; align-items:center; gap:11px; background:var(--navy-metal);
-  color:#fff; border-radius:999px; padding:11px 20px 11px 12px; overflow:hidden;
-  box-shadow:var(--bevel-navy), 0 10px 20px rgba(5,15,36,.26); }
-.pill i { position:relative; width:32px; height:32px; border-radius:50%; display:flex; align-items:center;
-  justify-content:center; flex:none; box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45); }
-.pill .wa { background:linear-gradient(180deg,#3BE87C,#1FBE58); }
-.pill .fb { background:linear-gradient(180deg,#3B8DF7,#1266D8); }
-.pill span { position:relative; font-size:17.5px; font-weight:800; letter-spacing:-.2px; }
-.pill::after { content:''; position:absolute; left:0; right:0; top:0; height:46%;
-  background:linear-gradient(rgba(255,255,255,.20),rgba(255,255,255,0)); }
-.fineprint { position:relative; margin-top:16px; font-size:13px; font-weight:700; color:#5B4508; }
-.fineprint b { font-weight:900; color:#0F2A5C; }
-</style></head><body>
+.src { position:absolute; left:70px; right:70px; bottom:52px; z-index:3;
+  border-top:2px solid rgba(246,188,28,.5); padding-top:16px;
+  display:flex; justify-content:space-between; gap:24px;
+  font-size:11.5px; line-height:1.5; color:rgba(255,255,255,.5); }
+.src b { color:rgba(255,255,255,.72); font-weight:700; }
+</style>
 <div class="page">
+  <div class="eclat"></div>
+  <div class="coin"><img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
+  <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
 
-  <div class="top">
-    <img class="shot" src="plage-bulletin.jpg" alt="">
-    <div class="veil"></div>
-    <svg class="wave" width="1080" height="140" viewBox="0 0 1080 140" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="crete" x1="0" y1="0" x2="1080" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#F6BC1C" stop-opacity="0"/>
-          <stop offset=".36" stop-color="#FFE49A" stop-opacity=".8"/>
-          <stop offset=".64" stop-color="#F6BC1C" stop-opacity=".5"/>
-          <stop offset="1" stop-color="#F6BC1C" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <path d="M0 52 C168 0 320 14 470 54 C640 100 812 112 1080 48 L1080 140 L0 140 Z" fill="#F2F6FE"/>
-      <path d="M0 52 C168 0 320 14 470 54 C640 100 812 112 1080 48" fill="none" stroke="url(#crete)" stroke-width="3.2"/>
-    </svg>
-  </div>
+  <div class="sur">BULLETIN MER · JEUDI 13 AOÛT · 6H-10H</div>
+  <div class="acc">Demain matin,<span>MER AGITÉE.</span></div>
+  <div class="sous">Ça bouge : prévoyez, et suivez les consignes du commandant.</div>
 
-    <div class="coin">
-    <img src="logo-emblem.png" alt="">
-    <div><b>Moheli<em>Go</em></b><small>TRAVERSÉES MARITIMES</small></div>
-  </div>
+  <div class="carte">
+    <div class="tete"><span>JEUDI 13 AOÛT MATIN · <i>OUROVENI ▸ HOANI</i></span>
+      <span class="quand">Prévision relevée le 12/08 à 06h08</span></div>
 
-  <div class="head">
-    <span class="live arch"><i></i>BULLETIN DU JOUR</span>
-  </div>
-
-  <div class="claim">
-    <span class="over arch">BULLETIN MER · MERCREDI 12 AOÛT · 6H-10H</span>
-    <h1 class="arch"><span class="l1">LA MER DE DEMAIN,</span><span class="hl">CE SOIR</span></h1>
-  </div>
-
-  <div class="glass">
-    <div class="gh arch"><b>MERCREDI 12 AOÛT MATIN</b><span>OUROVENI &#9656; HOANI</span></div>
-
-    <div class="verdict">
-      <div class="txt arch"><b>MER PEU AGITÉE</b><small>Traversée normale, un peu de mouvement.</small></div>
-      <div class="h arch"><b>0,9 m</b><small>HAUTEUR DE HOULE</small></div>
+    <div class="chiffre">
+      <div class="n">1,3<em>m</em></div>
+      <div class="quoi"><b>de houle au matin</b><small>MOYENNE ENTRE 6H ET 10H</small></div>
     </div>
 
-    <div class="gauge"><div class="on"></div><div class="on"></div><div class=""></div><div class=""></div><div class=""></div></div>
-    <div class="gauge-lab arch"><span class="">BELLE</span><span class="on">PEU AGITÉE</span><span class="">AGITÉE</span><span class="">FORTE</span><span class="">TRÈS FORTE</span></div>
+    <div class="jauge"><div class="on"></div><div class="on"></div><div class="on"></div><div class=""></div><div class=""></div></div>
+    <div class="jauge-lab"><span class="">BELLE</span><span class="">PEU AGITÉE</span><span class="on">AGITÉE</span><span class="">FORTE</span><span class="">TRÈS FORTE</span></div>
 
-    <div class="metrics arch">
-      <div class="metric"><b>17<i>km/h</i></b><small>VENT SUD-EST</small></div>
-      <div class="metric"><b>9,0<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
-      <div class="metric"><b>0,9<i>m</i></b><small>HOULE RÉGULIÈRE 5H-13H</small></div>
+    <div class="faits">
+      <div><b>27<i>km/h</i></b><small>VENT DE SUD</small></div>
+      <div><b>7,5<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
+      <div><b>1,2–1,6<i>m</i></b><small>MATINÉE 5H-13H</small></div>
     </div>
 
-    <div class="chart">
-      <div class="ct arch"><b>HOULE HEURE PAR HEURE</b><span>régulière, autour de 0,9 m</span></div>
-      <svg width="908" height="116" viewBox="0 0 908 116" fill="none">
-        <defs>
-          <linearGradient id="aire" x1="0" y1="0" x2="0" y2="104" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#F6BC1C" stop-opacity=".42"/>
-            <stop offset="1" stop-color="#F6BC1C" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="trait" x1="0" y1="0" x2="908" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#FFE595"/><stop offset=".5" stop-color="#FBC93C"/>
-            <stop offset="1" stop-color="#F0AE0B"/>
-          </linearGradient>
-        </defs>
-        <path d="M0 28 H908 M0 66 H908 M0 104 H908" stroke="#FFFFFF" stroke-opacity=".15" stroke-width="1"/>
-        <path d="M0.0 60.8 L113.5 60.8 L227.0 60.8 L340.5 55.2 L454.0 55.2 L567.5 55.2 L681.0 55.2 L794.5 55.2 L908.0 55.2 L908.0 116 L0.0 116 Z" fill="url(#aire)"/>
-        <path d="M0.0 60.8 L113.5 60.8 L227.0 60.8 L340.5 55.2 L454.0 55.2 L567.5 55.2 L681.0 55.2 L794.5 55.2 L908.0 55.2" fill="none" stroke="url(#trait)" stroke-width="3.4"
+    <div class="courbe">
+      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 1,2 m à 1,6 m</em></div>
+      <svg viewBox="0 0 908 116" preserveAspectRatio="none">
+        <path d="M0.0 100.0 L113.5 88.0 L227.0 80.0 L340.5 68.0 L454.0 60.0 L567.5 52.0 L681.0 40.0 L794.5 32.0 L908.0 16.0 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
+        <path d="M0.0 100.0 L113.5 88.0 L227.0 80.0 L340.5 68.0 L454.0 60.0 L567.5 52.0 L681.0 40.0 L794.5 32.0 L908.0 16.0" stroke="#F0A800" stroke-width="3.4" fill="none"
               stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="0.0" cy="60.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="60.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="60.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="60.8" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="28.799999999999997" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="45.3" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 0,9 m</text>
+        <circle cx="0.0" cy="100.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="88.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="80.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="68.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="60.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="52.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="40.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="32.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="16.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="80.0" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="48.0" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="64.5" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 1,3 m</text>
       </svg>
-      <div class="hours arch"><span>5h</span><span>6h</span><span>7h</span><span>8h</span><span>9h</span><span>10h</span><span>11h</span><span>12h</span><span>13h</span></div>
+      <div class="heures"><span>5h</span><span>6h</span><span>7h</span><span>8h</span><span>9h</span><span>10h</span><span>11h</span><span>12h</span><span>13h</span></div>
     </div>
   </div>
 
-  <div class="mid">
-    <div class="chip">
-      <span class="ic"><svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#3A2B03" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="9" height="9" rx="1.6"/><rect x="16" y="3" width="9" height="9" rx="1.6"/>
-        <rect x="3" y="16" width="9" height="9" rx="1.6"/><path d="M16 16h4v4h-4zM24 16h1M16 24h1M21 21h4v4"/></svg></span>
-      <div><b>Billet QR direct</b><small>Reçu dès le paiement</small></div>
-    </div>
-    <div class="chip">
-      <span class="ic"><svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#3A2B03" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="7" y="2.5" width="14" height="23" rx="3"/><path d="M12 22.5h4M10.5 8h7M10.5 12h7"/>
-        <rect x="10.5" y="15.5" width="4" height="3" rx="1" fill="#3A2B03" stroke="none"/></svg></span>
-      <div><b>MVola &amp; KartaPay</b><small>Un proche peut payer</small></div>
-    </div>
-    <div class="chip">
-      <span class="ic"><svg width="24" height="24" viewBox="0 0 28 28" fill="none" stroke="#3A2B03" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2.5C18.7 2.5 22.5 6.3 22.5 11c0 6-8.5 14.5-8.5 14.5S5.5 17 5.5 11C5.5 6.3 9.3 2.5 14 2.5Z"/>
-        <circle cx="14" cy="11" r="3.1" fill="#3A2B03" stroke="none"/></svg></span>
-      <div><b>Suivi de la vedette</b><small>En direct pendant le trajet</small></div>
+  <div class="action">
+    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
+    <div>
+      <div class="scanne">RÉSERVE POUR DEMAIN</div>
+      <div class="adr">moheligo.com</div>
+      <div class="wa">MVola ou KartaPay · WhatsApp +269 479 43 28</div>
     </div>
   </div>
 
-  <div class="source"><b>Source : Open-Meteo Marine</b> — prévision relevée le 11/08 à 17h39 pour le couloir Ouroveni–Hoani. Photo : Radosław Botev (CC BY 3.0).
-    Le bulletin officiel affiché dans l'application fait foi avant l'embarquement.</div>
-
-  <div class="cta">
-    <div class="row">
-      <div class="qr"><img src="qr-moheligo.png" alt=""></div>
-      <div class="go arch">
-        <span class="site">moheligo.com</span>
-        <span class="btn"><span>RÉSERVE POUR DEMAIN</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FBC93C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h13M12.5 6l6 6-6 6"/></svg></span>
-      </div>
-      <div class="pills arch">
-        <div class="pill"><i class="wa"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.4 14.4c-.3-.15-1.8-.9-2.1-1-.3-.1-.5-.15-.7.15-.2.3-.8.95-.95 1.15-.15.2-.3.2-.6.05-.3-.15-1.15-.45-2.2-1.4-.8-.75-1.35-1.65-1.5-1.95-.15-.3 0-.45.15-.6.15-.15.35-.4.5-.6.15-.2.2-.35.3-.55.1-.2.05-.4-.05-.55-.1-.15-.7-1.7-.95-2.3-.25-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.75.4-.25.3-.95 1-.95 2.4 0 1.4 1 2.75 1.15 2.95.15.2 1.95 3.15 4.75 4.3 2.35.95 2.8.8 3.35.75.55-.05 1.75-.7 2-1.4.25-.7.25-1.3.2-1.4-.05-.1-.2-.15-.45-.3zM12 21.5c-1.65 0-3.25-.45-4.65-1.3l-3.85 1 1.05-3.75A9.4 9.4 0 012.5 12C2.5 6.75 6.75 2.5 12 2.5S21.5 6.75 21.5 12 17.25 21.5 12 21.5z"/></svg></i><span>+269 479 43 28</span></div>
-        <div class="pill"><i class="fb"><svg width="17" height="17" viewBox="0 0 36 36"><path d="M24.7 23.2l.8-5.2h-5v-3.4c0-1.4.7-2.8 2.9-2.8h2.3V7.4s-2-.35-4-.35c-4.1 0-6.8 2.5-6.8 7v4h-4.6v5.2h4.6V34h5.6V23.2h4.2z" fill="#fff"/></svg></i><span>MoheliGo</span></div>
-      </div>
-    </div>
-    <div class="fineprint"><b>Aucune application à installer.</b> Horaires, places restantes et tarifs en direct sur le site.</div>
+  <div class="src">
+    <span><b>Source : Open-Meteo Marine</b> — couloir Ouroveni–Hoani. Nous ne
+      décidons pas des départs : nous publions la mer.</span>
+    <span style="text-align:right;max-width:300px">Le bulletin officiel affiché à
+      l'embarquement fait toujours foi.</span>
   </div>
 </div>
-</body></html>

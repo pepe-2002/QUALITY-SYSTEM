@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (NETTOYER ET AGRANDIR UNE PHOTO — et le mot juste)** — Le patron :
+  « essaie de les décompresser et essaie un flyer. »
+  ⚠️ **On ne « décompresse » pas une photo.** Ce que le JPEG a jeté est
+  définitivement perdu, aucun programme ne le retrouve. Ce qu'on peut faire, et
+  qui change vraiment le rendu : **effacer les artefacts**, **agrandir en
+  Lanczos**, **remonter la netteté locale**. Le résultat est **plus propre,
+  jamais plus détaillé**.
+  ✅ **`pub/photos-partenaires/agrandir.py`** — et le point important : le
+  débruitage est **dosé sur une mesure**, pas au hasard. Netteté = variance du
+  laplacien ; artefacts = écart au filtre médian. Relevé sur les trois photos :
+  | Photo | Reçue | Netteté | Artefacts | Débruitage appliqué |
+  |---|---|---|---|---|
+  | ocean-indien | 1280 × 1280 | 1896 | 5,13 | 5 (la plus abîmée) |
+  | podium | 1080 × 856 | 1255 | 2,91 | 3 |
+  | 2e-challenger | 854 × 1280 | 176 | 0,67 | 0 (nette mais douce) |
+  Sortie ×2 : 2160 × 1712 pour le podium, 2560 × 2560 pour le portrait.
+  💡 **Réglage appris** : masque flou à **1,35 / −0,35**, pas 1,55 / −0,55 — la
+  première version créait des halos autour de la barbe. **Sur un visage, trop de
+  netteté se voit plus qu'un léger flou.**
+  🧪 **Essai livré : `flyer30-partenariat-fb.html` → `flyer-partenariat-facebook.png`**
+  « Ceux qui font bouger l'île. » Registre institutionnel, vouvoiement, photo
+  **tenue dans la carte claire** (famille bleu et blanc), crédit imprimé.
+  ⛔ **NON BRANCHÉ dans `page.py` NI dans `calendrier.py`, volontairement** : le
+  robot ne peut pas le publier par accident tant que la confirmation écrite sur
+  le droit à l'image n'existe pas. **Ne pas l'y ajouter avant cet accord.**
+  ✅ Vérifié : aucun chevauchement, rien hors cadre, et la photo est **nette à
+  cette taille** (source 2160 px réduite dans un cadre de 900 px).
+
 - **12/08/2026 (PREMIÈRES PHOTOS DE PARTENAIRE ARCHIVÉES)** — Le patron a envoyé
   **trois photos de Young Leader Mohéli** : « ils sont là, archive-les. » Fait,
   dans **`pub/photos-partenaires/`**, avec leur fiche de droits

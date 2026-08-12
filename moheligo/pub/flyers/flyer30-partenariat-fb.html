@@ -1,0 +1,120 @@
+<!-- 🧪 ESSAI — PARTENARIAT YOUNG LEADER MOHÉLI.
+     Le patron, 12/08/2026 : « essaie de les décompresser et essaie un flyer. »
+
+     ⛔⛔ NE PAS PUBLIER EN L'ÉTAT. ⛔⛔
+     Cette image montre TROIS PERSONNES IDENTIFIABLES. Le contrat avec Young
+     Leader Mohéli couvre le droit d'AUTEUR ; il manque la confirmation écrite
+     sur le droit à l'IMAGE des personnes (modèle de phrase dans
+     pub/photos-partenaires/CREDITS-PARTENAIRES.md). Tant que cette phrase
+     n'existe pas, ce visuel reste un essai montré au patron, rien de plus.
+     ⚠️ C'est pourquoi il n'est branché NI dans `page.py` NI dans `calendrier.py` :
+     le robot ne peut pas le publier par accident. Ne pas l'y ajouter avant
+     l'accord écrit.
+
+     LA PHOTO : `pub/photos-partenaires/young-leader-moheli-podium-2025-2026-net.jpg`
+     — nettoyée et agrandie par `agrandir.py` (1080×856 → 2160×1712). Le JPEG
+     perdu n'est pas récupéré : on a effacé les artefacts et agrandi proprement.
+     Elle est donc nette dans un cadre de cette taille, pas en plein cadre.
+
+     LE REGISTRE : institutionnel, celui du dimanche. VOUVOIEMENT. Le message
+     n'est pas « réserve », c'est « nous sommes d'ici et nous soutenons les
+     jeunes » — levier PREUVE SOCIALE (§ 3). Un portrait dit « on est sérieux » ;
+     il ne vend pas une traversée. D'où un seul appel, discret, en pied.
+     Rendu : node render.js flyer30-partenariat-fb.html flyer-partenariat-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.08) 50%, rgba(255,255,255,0) 60%); }
+.coin { position:absolute; top:0; left:0; width:392px; height:158px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4; display:flex;
+  align-items:center; gap:14px; padding:14px 0 26px 38px; box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:62px; height:62px; border-radius:15px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9px; font-weight:700; letter-spacing:1.8px;
+  color:#5C6E8B; margin-top:4px; }
+.ligne { position:absolute; top:56px; right:70px; z-index:4; text-align:right;
+  font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
+  color:rgba(255,255,255,.56); }
+
+.sur { position:absolute; left:70px; top:196px; z-index:3; font-size:13.5px;
+  font-weight:700; letter-spacing:3px; color:#F6BC1C; }
+.acc { position:absolute; left:70px; top:230px; width:940px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:80px; line-height:.98;
+  letter-spacing:-3px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+/* L'OBJET : la photo tenue dans la carte claire, comme le samedi. */
+.carte { position:absolute; left:70px; top:432px; width:940px; z-index:3;
+  background:#F6F9FF; border-radius:22px; padding:20px 20px 24px;
+  box-shadow:0 26px 56px rgba(4,12,40,.42); }
+.vue { position:relative; border-radius:14px; overflow:hidden; height:410px; }
+.vue img { width:100%; height:100%; object-fit:cover; object-position:center 26%;
+  display:block; }
+.vue .legende { position:absolute; left:0; right:0; bottom:0; padding:46px 20px 14px;
+  background:linear-gradient(180deg, rgba(10,29,66,0) 0%, rgba(10,29,66,.8) 100%);
+  font-size:12px; font-weight:700; letter-spacing:1.8px; color:#fff; }
+.dit { margin-top:20px; padding:0 12px; font-size:20px; line-height:1.44; color:#43567A; }
+.dit b { color:#0F2A5C; font-weight:700; }
+
+.trois { position:absolute; left:70px; right:70px; top:1024px; z-index:3;
+  display:flex; border-top:2px solid rgba(246,188,28,.55); padding-top:22px; }
+.trois div { flex:1; padding-right:22px; }
+.trois div + div { border-left:1px solid rgba(255,255,255,.18); padding-left:22px; }
+.trois b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:24px; letter-spacing:-.7px; color:#F6BC1C; }
+.trois p { margin-top:7px; font-size:16px; line-height:1.36; color:#CBD9EF; }
+
+.pied { position:absolute; left:70px; right:70px; bottom:52px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:24px; }
+.pied .g { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#fff;
+  letter-spacing:-.7px; }
+.pied .g small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:12.5px; letter-spacing:1.6px; color:#F6BC1C; margin-top:8px; }
+.pied .d { max-width:330px; text-align:right; font-size:11px; line-height:1.5;
+  color:rgba(255,255,255,.46); }
+</style>
+<div class="page">
+  <div class="eclat"></div>
+  <div class="coin"><img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
+  <div class="ligne">PARTENARIAT<br>YOUNG LEADER MOHÉLI</div>
+
+  <div class="sur">MOHÉLI · YOUNG LEADER 2025-2026</div>
+  <div class="acc">Ceux qui font<span>bouger l'île.</span></div>
+
+  <div class="carte">
+    <div class="vue">
+      <img src="../photos-partenaires/young-leader-moheli-podium-2025-2026-net.jpg"
+           alt="Les lauréats Young Leader Mohéli 2025-2026">
+      <div class="legende">YOUNG LEADER MOHÉLI 2025-2026 · LE LAURÉAT ET SES DEUX CHALLENGERS</div>
+    </div>
+    <div class="dit">MoheliGo est partenaire de <b>Young Leader Mohéli</b>.
+      Parce qu'une île qui bouge a besoin de deux choses : <b>des jeunes qui
+      prennent des responsabilités</b>, et <b>des liaisons sur lesquelles on peut
+      compter</b>.</div>
+  </div>
+
+  <div class="trois">
+    <div><b>D'ici</b><p>Une entreprise comorienne, pour des traversées comoriennes.</p></div>
+    <div><b>Avec eux</b><p>Nous soutenons ceux qui font quelque chose pour Mohéli.</p></div>
+    <div><b>Pour vous</b><p>Votre place réservée à l'avance, et la mer publiée
+      chaque soir.</p></div>
+  </div>
+
+  <div class="pied">
+    <div class="g">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
+    <div class="d">Photo : Young Leader Mohéli, utilisée avec leur accord.
+      Nettoyée et agrandie, sans retouche du contenu.</div>
+  </div>
+</div>

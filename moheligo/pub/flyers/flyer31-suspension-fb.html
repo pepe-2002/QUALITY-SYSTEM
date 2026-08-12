@@ -1,0 +1,153 @@
+<!-- L'AVIS DE SERVICE SUSPENDU — le visuel qui ne vend rien du tout.
+     Le patron, 12/08/2026 : « les traversées sont fermées jusqu'à nouvel ordre,
+     ouverture possible mardi », « à cause de la mer agitée. »
+
+     POURQUOI CE VISUEL EXISTE : pendant une fermeture, chaque publication qui
+     dit « réserve ta place » est une promesse qu'on ne peut pas tenir. Quelqu'un
+     descend au port, il n'y a pas de vedette, et on a perdu ce client pour de
+     bon. `service.py` porte l'état (OUVERT = False) ; `programme.py` le consulte
+     avant de publier et sort CE visuel à la place du message commercial.
+
+     DIFFÉRENCE AVEC flyer22 (grosse mer) : là-bas la mer est mauvaise UN jour et
+     les départs sont incertains. Ici le service est ARRÊTÉ, sur décision, pour
+     plusieurs jours. Deux nouvelles différentes, deux visuels différents.
+
+     ⚠️ CE QU'ON N'ÉCRIT JAMAIS : « les traversées reprennent mardi ». Le patron a
+     dit « ouverture POSSIBLE mardi ». Une date annoncée puis non tenue fait plus
+     de mal que pas de date du tout : on écrit « peut-être », et on renvoie vers
+     le WhatsApp pour la réponse du jour (§ 11 du manuel).
+
+     ⚠️ AUCUNE DATE DANS L'IMAGE, et c'est voulu : ce visuel doit resservir à la
+     prochaine fermeture sans être refait. Le jour, la raison et la suite sont
+     dans le texte de la publication, injectés par programme.py depuis page.py.
+
+     ⚠️ ZÉRO APPEL COMMERCIAL. Pas de QR, pas de prix, pas de « réserve ». C'est ça
+     qui rendra crédibles les publications du jour de la reprise.
+
+     ⚠️ ET ON NE DIT PAS NON PLUS « on ne te vend rien » — le patron, 12/08/2026 :
+     « on te vend rien, ça fait trop demander. » Il a raison : nommer la vente la
+     remet dans la tête du lecteur, et la phrase parle de NOUS au lieu de parler
+     de LUI. On écrit ce qu'il gagne (« tu le sais avant de descendre au port »),
+     jamais ce qu'on s'abstient de faire (manuel § 4).
+     Rendu : node render.js flyer31-suspension-fb.html flyer-suspension-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* le marine profond des jours d'avis, comme flyer22 : le registre n'est pas commercial */
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0A1D42; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 42%, rgba(255,255,255,.055) 50%, rgba(255,255,255,0) 58%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:1.9px;
+  color:#5C6E8B; margin-top:5px; }
+
+.ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
+  font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
+  color:rgba(255,255,255,.6); }
+
+.sur { position:absolute; left:76px; top:214px; z-index:3; font-size:14px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* Archivo 900 ≈ 0,47 × la taille par caractère : à 84px, 920px tiennent 23
+   caractères. « jusqu'à nouvel ordre. » en fait 21. Ne pas rallonger sans
+   redescendre la taille, sinon la ligne passe par-dessus le bloc suivant. */
+.acc { position:absolute; left:76px; top:252px; width:920px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:84px; line-height:.98;
+  letter-spacing:-3.2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.36)); }
+
+.dit { position:absolute; left:76px; top:444px; width:860px; z-index:3;
+  font-size:27px; line-height:1.44; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+/* l'avis : une carte claire à bandeau d'or. Un avis de service, pas une réclame. */
+.avis { position:absolute; left:76px; top:624px; width:928px; z-index:3;
+  background:#F6F9FF; border-radius:24px; overflow:hidden;
+  box-shadow:0 30px 64px rgba(3,10,32,.5); }
+.avis .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
+  font-weight:900; font-size:21px; letter-spacing:1.4px; color:#0A1D42; }
+.avis .corps { padding:26px 44px 28px; }
+.avis .corps > p { font-family:'Archivo',sans-serif; font-weight:900; font-size:36px;
+  line-height:1.14; letter-spacing:-1.2px; color:#0F2A5C; }
+.avis ul { margin-top:20px; list-style:none; }
+.avis li { display:flex; gap:18px; padding:13px 0; font-size:20.5px; line-height:1.38;
+  color:#43567A; border-top:1px solid #DDE6F4; }
+.avis li:first-child { border-top:0; padding-top:4px; }
+.avis li b { flex:0 0 224px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:21px; letter-spacing:-.4px; color:#0F2A5C; }
+
+.don { position:absolute; left:76px; right:76px; bottom:144px; z-index:3;
+  border-top:2px solid rgba(246,188,28,.6); padding-top:22px;
+  font-size:19px; line-height:1.42; color:#CFDDF3; }
+.don b { color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:22px; letter-spacing:-.4px; }
+
+.pied { position:absolute; left:76px; right:76px; bottom:58px; z-index:3;
+  display:flex; align-items:flex-end; justify-content:space-between; }
+.pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
+  letter-spacing:-.7px; }
+.pied .site small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:13px; letter-spacing:1.6px; color:#F6BC1C; margin-top:8px; }
+.pied .fin { max-width:340px; text-align:right; font-size:11.5px; line-height:1.5;
+  color:rgba(255,255,255,.46); }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="ligne">AVIS DE SERVICE<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
+
+  <div class="sur">MER AGITÉE · AVIS AUX VOYAGEURS</div>
+  <div class="acc">Pas de traversée<span>jusqu'à nouvel ordre.</span></div>
+
+  <div class="dit">La mer est agitée, les vedettes ne sortent pas.
+    <b>Tu le sais avant de descendre au port</b> : c'est pour ça qu'on publie.</div>
+
+  <div class="avis">
+    <div class="bande">CE QUE ÇA CHANGE POUR TOI, POINT PAR POINT</div>
+    <div class="corps">
+      <p>Ne descends pas au port pour rien.</p>
+      <ul>
+        <li><b>Si tu as un billet</b><span>Tu ne perds rien. Changer la date est
+          gratuit, et tant que la traversée n'est pas partie tu peux être
+          remboursé.</span></li>
+        <li><b>Quand ça reprend</b><span>Peut-être mardi — ce n'est pas une date
+          promise, c'est la mer qui décide. Écris-nous, on te dit ce qu'on sait
+          le jour même.</span></li>
+        <li><b>D'ici là</b><span>Chaque soir, la mer du lendemain sur cette page.
+          Tu verras le calme revenir en même temps que nous.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="don"><b>On préfère te le dire que te laisser descendre au port pour rien.</b>
+    C'est aussi ça, réserver chez nous : quand ça ne va pas, on te prévient.</div>
+
+  <div class="pied">
+    <div class="site">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
+    <div class="fin">Nous ne décidons pas des départs : nous publions l'état du
+      service et la mer, tous les jours.</div>
+  </div>
+</div>

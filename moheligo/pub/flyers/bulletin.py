@@ -28,6 +28,9 @@ import sys
 import time
 from datetime import date, datetime, timedelta, timezone
 
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+import service                                 # noqa: E402  (état du service)
+
 LAT, LON = -12.08, 43.54          # milieu du couloir Ouroveni – Hoani
 TZ = 'Indian%2FComoro'
 # Le proxy de session impose son propre certificat ; sur GitHub ce fichier
@@ -111,6 +114,9 @@ def main():
     v = sum(vent_matin) / len(vent_matin)
     dirv = cardinal(sum(dir_matin) / len(dir_matin))
     etat, conseil = next((n, c) for seuil, n, c in DOUGLAS if houle < seuil)
+    # tous les conseils de Douglas supposent qu'une vedette part : pendant une
+    # fermeture, celui-ci est remplacé (service.py, une seule source de vérité)
+    conseil = service.conseil_bulletin(conseil)
     niveau = next(i for i, (seuil, _, _) in enumerate(DOUGLAS) if houle < seuil)
 
     # --- courbe de houle : chemins SVG dans une boîte 908 x 104
@@ -176,6 +182,14 @@ def main():
         'GAUGE': gauge, 'GAUGE_LAB': gauge_lab, 'MAJ': maj,
     }
 
+    # --- le bandeau d'or dépend de l'état du service, pas de la mer ---------
+    # Fermé, « RÉSERVE POUR DEMAIN » serait un mensonge imprimé sur un bulletin
+    # par ailleurs exact. Le bulletin continue de partir (informer n'est pas
+    # vendre, et c'est les jours sans traversée qu'il se remarque), mais il
+    # n'appelle plus à réserver.
+    cta_titre, cta_adr, cta_wa = service.cta_bulletin()
+    vals.update({'CTA_TITRE': cta_titre, 'CTA_ADR': cta_adr, 'CTA_WA': cta_wa})
+
     html = open('flyer8-soir-fb.template.html').read()
     for k, val in vals.items():
         html = html.replace('{{' + k + '}}', str(val))
@@ -187,6 +201,25 @@ def main():
                'releve': maj, 'source': 'Open-Meteo Marine + Forecast'},
               open('bulletin.json', 'w'), ensure_ascii=False, indent=2)
 
+    # --- l'appel de fin, lui aussi suspendu quand le service l'est ----------
+    if service.ouvert():
+        appel = """Ta place pour demain se prend maintenant :
+• Tu choisis ton départ sur moheligo.com
+• Tu paies par MVola ou KartaPay
+• Ton billet QR arrive tout de suite
+
+moheligo.com — et demain matin, tu embarques tranquille."""
+    else:
+        # On ne réserve rien, et on le dit sans promettre de date de reprise.
+        appel = """⛔ RAPPEL : LES TRAVERSÉES SONT SUSPENDUES JUSQU'À NOUVEL ORDRE.
+On ne prend pas de réservation pour demain — et on continue à publier la mer
+chaque soir, pour que tu voies le calme revenir en même temps que nous.
+
+Si tu as un billet : changer la date est gratuit, et le remboursement est
+possible tant que la traversée n'est pas partie. Écris-nous sur WhatsApp.
+
+moheligo.com — WhatsApp +269 479 43 28"""
+
     # texte de publication prêt à copier, avec les chiffres du jour
     texte = f"""LA MER DE DEMAIN, CE SOIR.
 
@@ -197,12 +230,7 @@ Houle {vals['HOULE']} m, vent {vals['VENT']} km/h de {dirv}, période {vals['PER
 C'est ça, MoheliGo : tu sais avant de quitter la maison.
 La météo mer des 7 prochains jours est dans l'application, mise à jour en continu.
 
-Ta place pour demain se prend maintenant :
-• Tu choisis ton départ sur moheligo.com
-• Tu paies par MVola ou KartaPay
-• Ton billet QR arrive tout de suite
-
-moheligo.com — et demain matin, tu embarques tranquille.
+{appel}
 
 Prévision Open-Meteo relevée {maj}. Le bulletin officiel affiché dans
 l'application fait foi avant l'embarquement.

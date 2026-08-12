@@ -477,6 +477,25 @@ affiche collée dehors prend la pluie et les doigts.
 - ❌ Publier un visuel avec un QR **non décodé** par `qr.py` (§ 10 quater).
 - ❌ Rendre un visuel qui explique bien mais ne demande **aucun geste faisable
   tout de suite**. Expliquer n'est pas convertir.
+- ❌ **Publier un message commercial pendant une fermeture du service.** C'est
+  automatisé aussi (`pub/flyers/service.py`, consulté par `programme.py` avant
+  tout le reste). Pendant une fermeture, « réserve ta place » n'est pas une
+  maladresse : c'est un client qui descend au port pour rien, et qui ne revient
+  plus. Dans un pays où tout le monde se connaît, ça coûte plus cher que six
+  mois de publicité (§ 14.2, la faute de Better Place et de Quibi : promettre
+  avant de pouvoir tenir).
+- ❌ **Annoncer une date de reprise.** 12/08/2026 : le patron a dit « ouverture
+  **possible** mardi ». On écrit « peut-être mardi », jamais « ça reprend
+  mardi », et on renvoie vers le WhatsApp pour la réponse du jour. Une date
+  annoncée puis non tenue fait plus de mal que pas de date du tout — et elle se
+  retient, elle.
+- ❌ **Écrire « on ne te vend rien ».** Le patron, 12/08/2026 : « on te vend
+  rien, ça fait trop demander. » Il a raison, et c'est une règle d'écriture
+  générale (§ 4) : nommer la vente la remet dans la tête du lecteur, et la
+  phrase parle de **nous** (ce qu'on s'abstient de faire) au lieu de parler de
+  **lui** (ce qu'il gagne). On écrit « tu le sais avant de descendre au port ».
+  Même piège que « n'hésitez pas », « désolé de vous déranger », « juste un
+  petit message » : la formule qui s'excuse attire l'attention sur la demande.
 
 ---
 

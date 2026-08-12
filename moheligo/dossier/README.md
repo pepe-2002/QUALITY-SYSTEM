@@ -84,11 +84,20 @@ python3 page.py --sortie /tmp/flyers.html                 # les flyers et leurs 
 Ce tableau est le seul endroit à jour sur ce qui tourne tout seul. **Vérifier
 qu'il est encore vrai avant de l'annoncer au patron.**
 
+🚨 **DEPUIS LE 12/08/2026, LE SERVICE EST FERMÉ** (« jusqu'à nouvel ordre,
+ouverture possible mardi », à cause de la mer agitée). Donc **aucun message
+commercial ne part** : `pub/flyers/service.py` porte l'état, et `programme.py`
+le consulte avant tout le reste. **Pour rouvrir : `OUVERT = True` dans
+`service.py`, et pousser sur `main`.** Une seule ligne, un seul endroit.
+Et on n'écrit jamais « les traversées reprennent mardi » — seulement
+« peut-être », parce que c'est ce que le patron a dit.
+
 | Quoi | Quand | Interrupteur | État |
 |---|---|---|---|
-| **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs 19h30 | `PUBLIER_FB` | ✅ armé |
-| **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ✅ armé — **les 7 jours sont couverts par des visuels du système** |
+| **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs 19h30 | `PUBLIER_FB` | ✅ armé — pendant la fermeture, son bandeau dit « TRAVERSÉES SUSPENDUES » |
+| **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ⛔ **muette tant que `service.py` dit fermé** (sinon : les 7 jours sont couverts) |
 | **Démonstration du matin** | lundi et jeudi 7h30 | `PUBLIER_MATIN` | ⏸️ **désarmé**, attend la décision du patron |
+| **Avis de service suspendu** (remplace la pub) | le 1er jour de la fermeture ; `--avis` pour republier | `service.py` | ⏳ prêt, **attend l'accord du patron pour partir** |
 | **Avis de mer forte** (remplace la pub) | automatique, houle ≥ 2,50 m | — | ✅ actif |
 | **Frein d'urgence** | à tout moment | `PAUSE_FB = oui` | 🛑 arrête tout |
 

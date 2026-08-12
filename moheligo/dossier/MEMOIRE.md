@@ -370,6 +370,53 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (🚨🚨 LES TRAVERSÉES SONT FERMÉES — le robot vendait des places
+  qui n'existent pas)** — Le patron, en fin de journée : « les traversées sont
+  fermées jusqu'à nouvel ordre, ouverture possible mardi », puis « à cause de la
+  mer agitée ».
+  🚨 **Pourquoi c'était urgent** : le robot de midi publie « réserve ta place »
+  tous les jours, et le bulletin du soir finit par « RÉSERVE POUR DEMAIN ». Sans
+  rien faire, on aurait promis pendant six jours un départ inexistant. Quelqu'un
+  descend au port, il n'y a pas de vedette : ce client est perdu pour de bon, et
+  dans un pays où tout le monde se connaît ça coûte plus cher que six mois de
+  publicité.
+  ✅ **Ce qui a été fait, et où ça vit :**
+  - **`pub/flyers/service.py`** — la seule source de vérité sur « est-ce qu'on
+    vend ? ». `OUVERT = False`, le dictionnaire `FERMETURE` (depuis, annonce
+    mot pour mot, raison « mer agitée », date à revérifier), et deux fonctions
+    qui servent le bulletin : `cta_bulletin()` et `conseil_bulletin()`.
+    **Pour rouvrir : une seule ligne, `OUVERT = True`, puis pousser sur `main`.**
+  - **`programme.py`** consulte `service.py` **avant** le calendrier et avant le
+    garde-fou de la mer : fermé, aucun message commercial ne peut partir. À la
+    place, l'avis de suspension — **une seule fois, le premier jour** (règle sans
+    mémoire : on compare la date, le robot ne garde aucun état entre deux
+    exécutions). `programme.py --avis` le republie à la main.
+  - **`flyer31-suspension-fb.html` → `flyer-suspension-facebook.png`** : l'avis
+    public, dans la famille bleu et blanc. **Aucune date dans l'image** : il
+    resservira à la prochaine fermeture. Texte de publication dans `page.py`
+    (`{depuis}` et `{raison}` remplis par `programme.py`).
+  - **Le bulletin du soir continue** — informer n'est pas vendre, et c'est les
+    jours sans traversée qu'un bulletin gratuit se remarque. Mais son bandeau
+    d'or dit maintenant **« TRAVERSÉES SUSPENDUES »** (trois placeholders
+    ajoutés au gabarit : `CTA_TITRE`, `CTA_ADR`, `CTA_WA`, servis par
+    `service.py`), et le conseil de Douglas — qui suppose toujours qu'une
+    vedette part — est remplacé par « Service suspendu : aucun départ prévu ».
+  - **`verifier.js`** (nouveau) — le contrôleur de mise en page qu'on
+    réinventait à chaque flyer : il compare les rectangles des blocs et signale
+    chevauchements et débordements. `node verifier.js flyer31-suspension-fb.html`.
+  📌 **Deux règles apprises, écrites dans le manuel :**
+  1. **Ne jamais annoncer une date de reprise.** Le patron a dit « ouverture
+     POSSIBLE mardi » : on écrit « peut-être mardi », jamais « ça reprend
+     mardi ». Une date annoncée puis non tenue fait plus de mal que pas de date.
+  2. **Ne jamais écrire « on ne te vend rien ».** Le patron : « on te vend rien,
+     ça fait trop demander. » Nommer la vente la remet dans la tête du lecteur,
+     et la phrase parle de nous au lieu de parler de lui. On écrit ce qu'il
+     gagne (« tu le sais avant de descendre au port »). Corrigé sur l'avis de
+     suspension **et** sur l'avis de grosse mer, image et texte.
+  ⏳ **En attente de son accord** (catégorie C : ça change la promesse publique) :
+  publier l'avis de suspension sur la page. Le robot, lui, est déjà muet côté
+  commercial — c'était le point à ne pas rater.
+
 - **12/08/2026 (🚨 LE POSTE DE MIDI N'EST PAS PARTI — retard, pas panne)** — Le
   patron à 13h07 (Comores) : « le poste de midi n'est pas parti. »
   🔍 **Diagnostic** : aucune exécution **programmée** de `publication-du-jour` —

@@ -80,7 +80,9 @@ section « Flyer corporate ».
 | `bulletin.py` | le bulletin mer daté + `bulletin.json` | à refaire chaque jour, les chiffres sont vrais |
 | `mer.py` | l'état de la mer d'un jour donné | `gros_temps()` → True / False / **None (= je ne sais pas)** |
 | `calendrier.py` | le programme de la semaine (`SEMAINE`, `MATIN`) | les visuels et textes viennent de `page.py`, jamais recopiés |
-| `programme.py` | publie midi (`--publier`) ou le matin (`--matin`) | consulte `mer.py` : mer forte → avis de mer, zéro pub |
+| `programme.py` | publie midi (`--publier`), le matin (`--matin`), l'avis de fermeture (`--avis`) | consulte **`service.py` d'abord**, puis `mer.py` : fermé → avis de suspension ; mer forte → avis de mer ; dans les deux cas, zéro pub |
+| **`service.py`** | **l'état du service : est-ce qu'on vend ?** | `OUVERT = True/False` — **une seule ligne à changer** pour fermer ou rouvrir, et `programme.py` comme `bulletin.py` s'y plient (bandeau d'or et conseil de mer compris) |
+| **`verifier.js`** | **le contrôle de mise en page** | `node verifier.js flyer31-suspension-fb.html` — signale chevauchements et débordements ; un titre qui s'allonge passe SOUS le bloc suivant sans que ça se voie |
 | `publier_fb.py` | l'envoi à l'API Graph | jeton de page dérivé tout seul ; voir `LIER-FACEBOOK.md` |
 | `rapport.py` | `pub/RAPPORT.md` | décision d'abord, puis les chiffres |
 | **`qr.py`** | **le QR code, généré ET vérifié** | voir l'avertissement ci-dessous |

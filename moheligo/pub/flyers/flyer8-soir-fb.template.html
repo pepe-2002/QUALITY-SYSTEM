@@ -7,11 +7,20 @@
      ⚠️ CE FICHIER EST UN GABARIT. `bulletin.py` remplace les valeurs entre
      doubles accolades et écrit `flyer8-soir-fb.html`. Les noms sont EXACTEMENT
      ceux de l'ancien gabarit, donc aucun script et aucun workflow n'a été
-     touché. Les dix-huit noms, écrits ici SANS accolades pour que bulletin.py
+     touché. Les vingt et un noms, écrits ici SANS accolades pour que bulletin.py
      ne remplace pas la documentation elle-même :
        OVER, TITRE_BULLETIN, ETAT, CONSEIL, HOULE, VENT, DIRV, PERIODE, AMPLI,
-       AMPLI_LAB, PLAGE, COURBE, AIRE, POINTS, HEURES, GAUGE, GAUGE_LAB, MAJ.
+       AMPLI_LAB, PLAGE, COURBE, AIRE, POINTS, HEURES, GAUGE, GAUGE_LAB, MAJ,
+       CTA_TITRE, CTA_ADR, CTA_WA.
      Ne jamais renommer une valeur ici sans la renommer dans bulletin.py.
+
+     ⚠️ POURQUOI LE BANDEAU D'OR EST VARIABLE (12/08/2026) : il disait
+     « RÉSERVE POUR DEMAIN » en dur. Le jour où le service est suspendu (le
+     patron : « les traversées sont fermées jusqu'à nouvel ordre »), cette
+     phrase devient un mensonge imprimé sur un bulletin par ailleurs exact —
+     et c'est le bulletin qu'on croit le moins ensuite. Les trois lignes
+     viennent donc de `service.cta_bulletin()`, au même endroit que l'état du
+     service : impossible de rouvrir sans remettre l'appel, ni l'inverse.
 
      CE QUI CHANGE, ET POURQUOI :
        · même coin blanc, même aplat marine, même carte claire, même bandeau
@@ -170,9 +179,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="action">
     <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
     <div>
-      <div class="scanne">RÉSERVE POUR DEMAIN</div>
-      <div class="adr">moheligo.com</div>
-      <div class="wa">MVola ou KartaPay · WhatsApp +269 479 43 28</div>
+      <div class="scanne">{{CTA_TITRE}}</div>
+      <div class="adr">{{CTA_ADR}}</div>
+      <div class="wa">{{CTA_WA}}</div>
     </div>
   </div>
 

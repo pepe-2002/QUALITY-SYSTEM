@@ -7,11 +7,20 @@
      ⚠️ CE FICHIER EST UN GABARIT. `bulletin.py` remplace les valeurs entre
      doubles accolades et écrit `flyer8-soir-fb.html`. Les noms sont EXACTEMENT
      ceux de l'ancien gabarit, donc aucun script et aucun workflow n'a été
-     touché. Les dix-huit noms, écrits ici SANS accolades pour que bulletin.py
+     touché. Les vingt et un noms, écrits ici SANS accolades pour que bulletin.py
      ne remplace pas la documentation elle-même :
        OVER, TITRE_BULLETIN, ETAT, CONSEIL, HOULE, VENT, DIRV, PERIODE, AMPLI,
-       AMPLI_LAB, PLAGE, COURBE, AIRE, POINTS, HEURES, GAUGE, GAUGE_LAB, MAJ.
+       AMPLI_LAB, PLAGE, COURBE, AIRE, POINTS, HEURES, GAUGE, GAUGE_LAB, MAJ,
+       CTA_TITRE, CTA_ADR, CTA_WA.
      Ne jamais renommer une valeur ici sans la renommer dans bulletin.py.
+
+     ⚠️ POURQUOI LE BANDEAU D'OR EST VARIABLE (12/08/2026) : il disait
+     « RÉSERVE POUR DEMAIN » en dur. Le jour où le service est suspendu (le
+     patron : « les traversées sont fermées jusqu'à nouvel ordre »), cette
+     phrase devient un mensonge imprimé sur un bulletin par ailleurs exact —
+     et c'est le bulletin qu'on croit le moins ensuite. Les trois lignes
+     viennent donc de `service.cta_bulletin()`, au même endroit que l'état du
+     service : impossible de rouvrir sans remettre l'appel, ni l'inverse.
 
      CE QUI CHANGE, ET POURQUOI :
        · même coin blanc, même aplat marine, même carte claire, même bandeau
@@ -135,14 +144,14 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
   <div class="sur">BULLETIN MER · JEUDI 13 AOÛT · 6H-10H</div>
   <div class="acc">Demain matin,<span>MER AGITÉE.</span></div>
-  <div class="sous">Ça bouge : prévoyez, et suivez les consignes du commandant.</div>
+  <div class="sous">Service suspendu : aucun départ prévu. On publie la mer quand même.</div>
 
   <div class="carte">
     <div class="tete"><span>JEUDI 13 AOÛT MATIN · <i>OUROVENI ▸ HOANI</i></span>
-      <span class="quand">Prévision relevée le 12/08 à 06h08</span></div>
+      <span class="quand">Prévision relevée le 12/08 à 18h58</span></div>
 
     <div class="chiffre">
-      <div class="n">1,3<em>m</em></div>
+      <div class="n">1,4<em>m</em></div>
       <div class="quoi"><b>de houle au matin</b><small>MOYENNE ENTRE 6H ET 10H</small></div>
     </div>
 
@@ -150,18 +159,18 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div class="jauge-lab"><span class="">BELLE</span><span class="">PEU AGITÉE</span><span class="on">AGITÉE</span><span class="">FORTE</span><span class="">TRÈS FORTE</span></div>
 
     <div class="faits">
-      <div><b>27<i>km/h</i></b><small>VENT DE SUD</small></div>
-      <div><b>7,5<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
-      <div><b>1,2–1,6<i>m</i></b><small>MATINÉE 5H-13H</small></div>
+      <div><b>28<i>km/h</i></b><small>VENT DE SUD</small></div>
+      <div><b>8,0<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
+      <div><b>1,2–1,7<i>m</i></b><small>MATINÉE 5H-13H</small></div>
     </div>
 
     <div class="courbe">
-      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 1,2 m à 1,6 m</em></div>
+      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 1,2 m à 1,7 m</em></div>
       <svg viewBox="0 0 908 116" preserveAspectRatio="none">
-        <path d="M0.0 100.0 L113.5 88.0 L227.0 80.0 L340.5 68.0 L454.0 60.0 L567.5 52.0 L681.0 40.0 L794.5 32.0 L908.0 16.0 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
-        <path d="M0.0 100.0 L113.5 88.0 L227.0 80.0 L340.5 68.0 L454.0 60.0 L567.5 52.0 L681.0 40.0 L794.5 32.0 L908.0 16.0" stroke="#F0A800" stroke-width="3.4" fill="none"
+        <path d="M0.0 100.0 L113.5 93.0 L227.0 82.5 L340.5 75.5 L454.0 65.0 L567.5 51.0 L681.0 40.5 L794.5 26.5 L908.0 16.0 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
+        <path d="M0.0 100.0 L113.5 93.0 L227.0 82.5 L340.5 75.5 L454.0 65.0 L567.5 51.0 L681.0 40.5 L794.5 26.5 L908.0 16.0" stroke="#F0A800" stroke-width="3.4" fill="none"
               stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="0.0" cy="100.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="88.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="80.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="68.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="60.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="52.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="40.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="32.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="16.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="80.0" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="48.0" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="64.5" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 1,3 m</text>
+        <circle cx="0.0" cy="100.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="93.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="82.5" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="75.5" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="65.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="51.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="40.5" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="26.5" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="16.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="82.5" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="50.5" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="67.0" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 1,3 m</text>
       </svg>
       <div class="heures"><span>5h</span><span>6h</span><span>7h</span><span>8h</span><span>9h</span><span>10h</span><span>11h</span><span>12h</span><span>13h</span></div>
     </div>
@@ -170,9 +179,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="action">
     <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
     <div>
-      <div class="scanne">RÉSERVE POUR DEMAIN</div>
+      <div class="scanne">TRAVERSÉES SUSPENDUES</div>
       <div class="adr">moheligo.com</div>
-      <div class="wa">MVola ou KartaPay · WhatsApp +269 479 43 28</div>
+      <div class="wa">La mer chaque soir sur cette page · WhatsApp +269 479 43 28</div>
     </div>
   </div>
 

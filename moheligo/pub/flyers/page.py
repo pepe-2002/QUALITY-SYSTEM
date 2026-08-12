@@ -187,7 +187,7 @@ moheligo.com — WhatsApp +269 479 43 28
 #MoheliGo #Comores #Mohéli #Traversée #MVola"""),
     dict(png='flyer-grostemps-facebook.png', titre='⛈️ LES JOURS DE GROSSE MER',
          note="Sans date<br>publié tout seul quand la houle<br>dépasse 2,50 m au matin<br>{etat} et {houle} sont remplacés<br>par les vrais chiffres du jour<br>ZÉRO appel commercial",
-         texte="""AUJOURD'HUI, LA MER EST FORTE. ALORS ON NE TE VEND RIEN.
+         texte="""AUJOURD'HUI, LA MER EST FORTE. VOILÀ CE QU'ON SAIT.
 
 {etat} ce matin entre nos ports : houle de {houle} m.
 
@@ -211,6 +211,34 @@ moheligo.com — WhatsApp +269 479 43 28
 Prévision Open-Meteo Marine.
 
 #MoheliGo #Comores #Mohéli #MétéoMer #Sécurité"""),
+    dict(png='flyer-suspension-facebook.png', titre='⛔ SERVICE SUSPENDU',
+         note="Sans date · réutilisable<br>publié à la place de la pub<br>tant que service.py dit fermé<br>{depuis} et {raison} sont remplacés<br>« peut-être mardi », jamais promis<br>ZÉRO appel commercial",
+         texte="""AVIS AUX VOYAGEURS : PAS DE TRAVERSÉE JUSQU'À NOUVEL ORDRE.
+
+La mer est agitée. Depuis le {depuis}, les vedettes ne sortent pas et le service
+est suspendu jusqu'à nouvel ordre. Tu le sais avant de descendre au port : c'est
+pour ça qu'on publie tous les jours.
+
+NE DESCENDS PAS AU PORT POUR RIEN.
+Tant que cet avis est en ligne, il n'y a pas de départ. C'est aussi pour ça
+qu'on publie tous les jours : pour t'éviter le trajet et l'attente.
+
+SI TU AS DÉJÀ UN BILLET, TU NE PERDS RIEN.
+Changer la date est gratuit, sur la même liaison. Et tant que la traversée n'est
+pas partie, tu peux annuler et être remboursé. Écris-nous, on s'en occupe.
+
+QUAND ÇA REPREND : PEUT-ÊTRE MARDI.
+Ce n'est pas une date promise — c'est la mer qui décide, et nous ne décidons pas
+des départs. Le jour où ça rouvre, tu le liras ici en premier.
+
+D'ICI LÀ, LA MER CHAQUE SOIR.
+À 19h30 sur cette page, la houle et le vent du lendemain entre nos ports.
+Gratuitement, qu'elle soit belle ou mauvaise. Tu verras le calme revenir en même
+temps que nous.
+
+moheligo.com — WhatsApp +269 479 43 28
+
+#MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer #Sécurité"""),
     dict(png='flyer-modedemploi-v2-facebook.png', titre="⭐ MODE D'EMPLOI — V2",
          note="Sans date · celui qui publie<br>QR vérifié vers moheligo.com<br>lisible en 3 secondes :<br>promesse, 1-2-3, QR, adresse<br>les six corrections du patron",
          texte="""EN TROIS GESTES, TA PLACE EST RÉSERVÉE.

@@ -60,6 +60,25 @@ moheligo.com
 Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 
 #MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
+    dict(png='flyer-telephone-facebook.png', titre='⭐ LE TÉLÉPHONE — écran réel',
+         note="Sans date · l'accueil VRAI de<br>l'application, capturé (pas dessiné)<br>Ouroveni → Hoani<br>aucune personne dessus",
+         texte="""TON GUICHET, DANS TA POCHE.
+
+Choisis ton départ, paie, embarque. Sans passer au port pour chercher une place.
+
+• Tu vois les prix avant même de donner ton nom.
+• Tu paies avec MVola ou KartaPay, ce que tu utilises déjà.
+• Ton billet reste dans le téléphone, même sans réseau.
+
+Rien à installer : ça s'ouvre comme une page.
+
+Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant peut
+le faire avec toi.
+
+Scanne le code ou va sur moheligo.com
+WhatsApp +269 479 43 28 — quelqu'un répond.
+
+#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
     dict(png='flyer-abonner-facebook.png', titre='⭐ JEUDI — S\'ABONNER',
          note="Sans date · publie le jeudi<br>la seule demande de la semaine<br>qui n'est pas « réserve »<br>l'objet : les sept soirs",
          texte="""CHAQUE SOIR, LA MER DE DEMAIN. SUR CETTE PAGE, À 19H30.

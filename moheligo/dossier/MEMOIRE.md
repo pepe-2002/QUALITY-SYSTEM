@@ -413,9 +413,33 @@ recharger ce sujet ici, ce n'est pas du marketing.
      et la phrase parle de nous au lieu de parler de lui. On écrit ce qu'il
      gagne (« tu le sais avant de descendre au port »). Corrigé sur l'avis de
      suspension **et** sur l'avis de grosse mer, image et texte.
-  ⏳ **En attente de son accord** (catégorie C : ça change la promesse publique) :
-  publier l'avis de suspension sur la page. Le robot, lui, est déjà muet côté
-  commercial — c'était le point à ne pas rater.
+  ✅ **Il a donné les deux accords le soir même** : « publie l'avis et aussi pour
+  les Young Leader tu as le go. »
+  - **L'avis est parti**, lancé à la main depuis le workflow (nouvelle case
+    `avis_de_suspension` dans `publication-du-jour.yml`). ⚠️ Piège évité de
+    justesse : `PUBLIER_FB` étant armé en permanence, l'étape « Publier »
+    normale aurait envoyé le **même avis une deuxième fois** — d'où la condition
+    `&& !inputs.avis_de_suspension`. À se rappeler pour toute future case de ce
+    genre : deux étapes qui publient dans le même travail doivent s'exclure.
+  - 🔍 **Trouvé dans le journal de ce lancement, et corrigé** : l'étape de
+    diagnostic annonçait **« Publication DESARMEE »** dans les trois workflows,
+    alors que tout partait. La variable `PUBLIER_FB` vaut **« Oui »** avec une
+    majuscule : les conditions `if:` de GitHub ignorent la casse, mais le `bash`
+    du voyant, non. C'est ce voyant qui m'a fait chercher au mauvais endroit
+    quand le patron a signalé le poste de midi manquant. Normalisé en minuscules
+    dans les trois fichiers. **Leçon : un voyant qui ment coûte plus cher que
+    pas de voyant du tout** — vérifier ce qu'affiche un diagnostic avant de s'y
+    fier, et ne jamais comparer une variable saisie à la main sans la normaliser.
+  - **Young Leader autorisé.** `flyer30-partenariat` passe d'essai à visuel
+    publiable ; la trace est dans `pub/photos-partenaires/CREDITS-PARTENAIRES.md`
+    avec ses mots et la date. La phrase écrite du responsable **reste à
+    obtenir** : elle ne bloque plus rien, elle protège. Il entre dans `page.py`
+    et le **dimanche alterne** désormais institutionnel / partenariat — la
+    deuxième variante du dimanche redevient légitime parce que les deux visuels
+    sont du même système et du même registre (condition écrite dans
+    `calendrier.py`). Corrigé au passage la seule ligne du visuel qui promettait
+    une place (« votre place réservée à l'avance ») : elle parle maintenant de
+    l'état du service, vrai même pendant la fermeture.
 
 - **12/08/2026 (🚨 LE POSTE DE MIDI N'EST PAS PARTI — retard, pas panne)** — Le
   patron à 13h07 (Comores) : « le poste de midi n'est pas parti. »

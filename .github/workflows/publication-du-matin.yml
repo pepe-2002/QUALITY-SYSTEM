@@ -68,7 +68,12 @@ jobs:
             echo "::warning::FB_PAGE_ID absent — rien ne sera publie."
           elif [ -z "${{ secrets.FB_PAGE_TOKEN }}" ]; then
             echo "::warning::FB_PAGE_TOKEN absent — la liaison echouera."
-          elif [ "${{ vars.PUBLIER_MATIN }}" != "oui" ]; then
+          # ⚠️ 12/08/2026 : la variable vaut « Oui » avec une majuscule. Les
+          # conditions « if: » de GitHub ignorent la casse, mais PAS bash — ce
+          # voyant annoncait donc « DESARMEE » alors que tout partait. Un voyant
+          # qui ment coute des heures de diagnostic : on normalise avant de
+          # comparer, ici et partout ailleurs.
+          elif [ "$(echo "${{ vars.PUBLIER_MATIN }}" | tr '[:upper:]' '[:lower:]')" != "oui" ]; then
             echo "Liaison prete. Creneau du MATIN DESARME (PUBLIER_MATIN n'est pas a « oui ») : repetition a blanc seulement."
           else
             echo "Creneau du matin ARME."

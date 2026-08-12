@@ -370,6 +370,67 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (L'ÉCRAN RÉEL DE L'APPLICATION SUR LES VISUELS)** — « Tu peux
+  mettre l'accueil MoheliGo sur l'écran ? » Oui, et **sans rien dessiner**.
+  🎉 **Découverte importante : le site TOURNE en local depuis le dépôt.** Il
+  suffit de le servir (`python3 -m http.server 8899` depuis `moheligo/`) et de
+  l'ouvrir avec Chromium sur `127.0.0.1` — le navigateur n'a pas de réseau
+  extérieur, mais **localhost n'en a pas besoin**. L'application affiche son
+  accueil, ses cartes et **ses vrais ports**.
+  ✅ `pub/flyers/capture_accueil.js` → `ecran-accueil.png` (1170 × 2400) puis
+  `flyer29-telephone-fb.html` → `flyer-telephone-facebook.png` : l'écran est posé
+  dans un téléphone dessiné en CSS. **Un cadre n'est pas une fausse preuve ; un
+  écran inventé, si.** Départ **Ouroveni → Hoani** comme demandé par le patron.
+  🐛 **Trois pièges payés dans cette capture, tous consignés dans le script :**
+  ① **les ports arrivent APRÈS le chargement** — une attente fixe de 6 s
+  sélectionnait le port par défaut, puis la liste se remplissait juste avant la
+  photo : le patron a vu Chindini alors qu'on demandait Ouroveni. Solution :
+  `waitForFunction` sur la présence des options, puis `selectOption({label})` de
+  Playwright, qui attend et réessaie tout seul.
+  ② **l'écran de BIENVENUE se pose en dernier** (« Bienvenue sur MoheliGo »,
+  bouton « Passer ») : trop tôt on capture l'accueil, plus tard on capture la
+  bienvenue. Solution propre : poser **`localStorage.mg_ob_done = '1'`** avant le
+  chargement (`addInitScript`) — la clé que l'application utilise elle-même.
+  **Leçon : chercher le drapeau que le produit pose déjà, plutôt que de lutter
+  contre son interface.**
+  ③ **mon garde-fou testait la PRÉSENCE du texte, pas sa VISIBILITÉ** : le bloc
+  de bienvenue existe toujours dans le HTML, donc il était « trouvé » même caché
+  et refusait toutes les captures. **Un test de visibilité regarde
+  `offsetParent`, la taille, `visibility` et `opacity`.**
+  ✅ Le script **relit ce qu'il va photographier** et échoue si le départ affiché
+  n'est pas celui demandé, ou si ce n'est pas l'accueil. Une capture qui montre le
+  mauvais port est pire qu'une capture absente.
+  ⚙️ Deux retouches cosmétiques assumées et écrites dans le script : la date est
+  renseignée à demain (sinon « mm/dd/yyyy » fait croire à un formulaire cassé) et
+  les bulles flottantes sont masquées car elles recouvrent la carte. **Aucun
+  départ, aucun prix, aucun horaire inventé.**
+
+- **12/08/2026 (PHOTOS : CE QUI EST POSSIBLE ET CE QUI NE L'EST PAS)** — Le
+  patron : « prends les photos de **Young Leader Mohéli** sur Facebook et
+  Instagram, on a un contrat avec eux » et « trouve des photos sans droit
+  d'auteur sur Pinterest ».
+  ❌ **Je ne peux pas récupérer une image sur Facebook ni Instagram** : le
+  navigateur de la session n'a aucun accès réseau, et ces pages exigent une
+  connexion. **Et même avec le réseau, il ne faudrait pas** : les réseaux
+  sociaux recompressent à ~1080 px avec des artefacts, alors que nos visuels
+  sortent en 2160 px — une photo reprise d'un fil se voit sur une affiche.
+  ➡️ Il faut les **fichiers d'origine**, demandés à Young Leader Mohéli.
+  🚨 **Pinterest n'est PAS une source d'images libres** : c'est un répertoire
+  d'images prises partout sur le web, quasi toutes protégées. Une réclamation
+  peut faire **retirer une publication Facebook**. Les vraies sources sont
+  **Pexels, Unsplash, Pixabay** (usage commercial, sans attribution) et
+  **Wikimedia Commons** (attribution obligatoire en CC BY). Aucune n'a de photos
+  de Mohéli : pour Mohéli il n'y a que Wikimedia (rare) et nous.
+  ⚖️ **Distinction à ne pas confondre** : le contrat règle le droit d'**auteur**
+  (celui du photographe). Le droit à l'**image des personnes** est une autre
+  question — une association obtient souvent l'accord pour SA communication, pas
+  automatiquement pour la publicité d'une entreprise partenaire. D'où la phrase
+  écrite à obtenir une fois (modèle dans `pub/photos-partenaires/README.md`).
+  **Tant qu'elle n'existe pas : uniquement des photos où personne n'est
+  identifiable.** C'est un poste « C » (juridique) — jamais moi.
+  📁 Zone de dépôt créée : **`pub/photos-partenaires/`**, avec le mode d'emploi,
+  la liste des vérifications et ce que je fais dès que les fichiers arrivent.
+
 - **12/08/2026 (LE BULLETIN DU SOIR PASSE EN BLEU ET BLANC)** — Le patron :
   « je l'ai approuvé parce que je ne savais pas que tu pouvais faire d'aussi
   beaux flyers ; **un beau flyer attire l'attention**. »

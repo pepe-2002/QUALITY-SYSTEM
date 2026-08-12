@@ -1,0 +1,132 @@
+<!-- LE TÉLÉPHONE — l'écran d'accueil RÉEL de MoheliGo posé dans un appareil.
+     Le patron, 12/08/2026 : « tu peux mettre l'accueil MoheliGo sur l'écran ? »
+
+     ⚠️ L'ÉCRAN N'EST PAS DESSINÉ, IL EST CAPTURÉ. `capture_accueil.js` sert le
+     site du dépôt en local et photographie son vrai accueil : le HTML, le CSS et
+     la liste des ports sont ceux du produit. Départ Ouroveni → arrivée Hoani,
+     comme demandé. Seules retouches, cosmétiques et notées dans le script : la
+     date est renseignée à demain (un champ vide afficherait « mm/dd/yyyy ») et
+     les bulles flottantes sont masquées car elles recouvrent la carte.
+     AUCUN départ, AUCUN prix, AUCUN horaire inventé.
+
+     Le cadre du téléphone est dessiné en CSS : un cadre n'est pas une fausse
+     preuve, c'est un support. Ce qui serait malhonnête, c'est l'écran — et il
+     est vrai.
+     Rendu : node render.js flyer29-telephone-fb.html flyer-telephone-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+.coin { position:absolute; top:0; left:0; width:392px; height:158px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:5; display:flex;
+  align-items:center; gap:14px; padding:14px 0 26px 38px; box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:62px; height:62px; border-radius:15px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9px; font-weight:700; letter-spacing:1.8px;
+  color:#5C6E8B; margin-top:4px; }
+.ligne { position:absolute; top:56px; right:44px; z-index:5; text-align:right;
+  font-size:11px; font-weight:700; letter-spacing:2.2px; line-height:1.7;
+  color:rgba(255,255,255,.5); }
+
+/* ---------- LE TÉLÉPHONE : l'objet, à droite ---------- */
+.tel { position:absolute; right:44px; top:206px; width:430px; z-index:3;
+  background:#0A1526; border-radius:52px; padding:14px;
+  box-shadow:0 40px 90px rgba(3,10,32,.62), inset 0 2px 0 rgba(255,255,255,.14),
+             0 0 0 2px rgba(255,255,255,.08); }
+.tel .ecran { position:relative; border-radius:40px; overflow:hidden; background:#fff;
+  height:824px; }
+.tel .ecran img { width:100%; display:block; }
+/* l'encoche : elle dit « téléphone » en un trait, sans dessiner de marque */
+.tel .encoche { position:absolute; top:12px; left:50%; transform:translateX(-50%);
+  width:104px; height:20px; border-radius:99px; background:#0A1526; z-index:2; }
+
+/* ---------- la colonne de gauche ---------- */
+.acc { position:absolute; left:70px; top:238px; width:500px; z-index:4;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:62px; line-height:.98;
+  letter-spacing:-2.4px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+.sous { position:absolute; left:70px; top:388px; width:470px; z-index:4;
+  font-size:20px; line-height:1.42; font-weight:500; color:#BDD0EE; }
+.sous b { color:#fff; font-weight:700; }
+
+.trois { position:absolute; left:70px; top:502px; width:490px; z-index:4; }
+.trois div { padding:18px 0; border-top:1px solid rgba(255,255,255,.18); }
+.trois div:first-child { border-top:2px solid rgba(246,188,28,.55); }
+.trois b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:25px; letter-spacing:-.8px; color:#F6BC1C; }
+.trois p { margin-top:6px; font-size:17px; line-height:1.34; color:#CBD9EF; }
+
+.action { position:absolute; left:70px; top:836px; width:490px; z-index:4;
+  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%); border-radius:20px;
+  padding:20px 24px; display:flex; align-items:center; gap:20px;
+  box-shadow:0 24px 52px rgba(4,12,40,.44); }
+.action .qr { flex:0 0 108px; height:108px; background:#fff; border-radius:12px;
+  padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
+.action .qr img { width:100%; height:100%; display:block; }
+.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:19px;
+  letter-spacing:.4px; color:#0A1D42; }
+.action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:37px; letter-spacing:-1.4px; color:#0A1D42; line-height:1; }
+
+.aide { position:absolute; left:70px; top:1010px; width:490px; z-index:4;
+  font-size:17px; line-height:1.4; color:#CBD9EF; }
+.aide b { color:#fff; font-weight:700; }
+
+.pied { position:absolute; left:70px; right:44px; bottom:52px; z-index:4;
+  border-top:2px solid rgba(246,188,28,.5); padding-top:16px;
+  display:flex; justify-content:space-between; gap:24px;
+  font-size:11.5px; line-height:1.5; color:rgba(255,255,255,.5); }
+.pied b { color:rgba(255,255,255,.74); font-weight:700; }
+</style>
+<div class="page">
+  <div class="eclat"></div>
+  <div class="coin"><img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
+  <div class="ligne">OUROVENI · CHINDINI<br>HOANI · FOMBONI</div>
+
+  <div class="tel">
+    <div class="ecran">
+      <div class="encoche"></div>
+      <img src="ecran-accueil.png" alt="Écran d'accueil de MoheliGo">
+    </div>
+  </div>
+
+  <div class="acc">Ton guichet,<span>dans ta poche.</span></div>
+  <div class="sous">Choisis ton départ, paie, embarque. <b>Sans passer au port
+    pour chercher une place.</b></div>
+
+  <div class="trois">
+    <div><b>Tu vois les prix</b><p>Avant même de donner ton nom.</p></div>
+    <div><b>MVola ou KartaPay</b><p>Ce que tu utilises déjà, depuis ton téléphone.</p></div>
+    <div><b>Ton billet reste</b><p>Dans le téléphone, même sans réseau.</p></div>
+  </div>
+
+  <div class="action">
+    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
+    <div>
+      <div class="scanne">SCANNE ET RÉSERVE</div>
+      <div class="adr">moheligo.com</div>
+    </div>
+  </div>
+
+  <div class="aide"><b>Besoin d'aide ? On est là.</b> WhatsApp +269 479 43 28 —
+    un proche ou un commerçant peut le faire avec toi la première fois.</div>
+
+  <div class="pied">
+    <span><b>Écran réel de MoheliGo</b> — capturé depuis l'application, ports et
+      libellés d'origine.</span>
+    <span style="text-align:right;max-width:290px">Rien à installer : ça s'ouvre
+      comme une page.</span>
+  </div>
+</div>

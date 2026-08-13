@@ -121,13 +121,20 @@ def creneau(jour, matin, ferme):
     quand = '%s %s %s' % (JOURS[jour.weekday()], jour.isoformat(),
                           'matin' if matin else 'midi')
     if ferme:
+        # ⚠️ Ce bloc doit refléter EXACTEMENT programme.main() : un contrôle qui
+        # décrit un robot différent du vrai est pire que pas de contrôle.
+        if matin:
+            return '%-28s rien (le matin est le créneau démonstration)' % quand
         premier = jour.isoformat() == service.FERMETURE.get('depuis')
-        if not (premier and not matin):
-            return '%-28s rien (fermé, avis déjà annoncé)' % quand
-        visuel, texte = programme.avis_de_suspension()
+        if premier:
+            visuel, texte = programme.avis_de_suspension()
+            quoi = 'AVIS DE FERMETURE'
+        else:
+            visuel, texte = programme.point_du_service(jour)
+            quoi = 'POINT DU SERVICE (jour %d)' % service.jour_de_fermeture(jour)
         visuel_ok(visuel, quand)
         texte_ok(texte, quand, ferme)
-        return '%-28s AVIS DE FERMETURE — %s' % (quand, visuel)
+        return '%-28s %-26s %s' % (quand, quoi, visuel)
 
     prevu = calendrier.du_matin(jour) if matin else calendrier.du_jour(jour)
     if prevu is None:

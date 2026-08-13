@@ -370,6 +370,43 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **13/08/2026 (🚨 « LE FLYER DE 12 N'EST PAS PARTI » — ce n'était pas une panne,
+  et c'était quand même une erreur)** — Le patron, 15h20 : « le flyer de 12 n'est
+  pas parti. »
+  🔍 **Vérifié avant de répondre** : le travail programmé a bien tourné
+  (exécution `31690579346`, lancée à 10h19 UTC = **13h19 aux Comores**, soit
+  72 min après le cron de 12h07 — le retard habituel de GitHub, en pire), il
+  s'est terminé en succès, et il n'a rien publié **parce que le service est
+  fermé**. Le garde-fou écrit hier a fonctionné exactement comme prévu.
+  ⚠️ **Mais il avait raison de le remarquer, et j'avais tort de me satisfaire du
+  silence.** Ma règle d'hier (l'avis une fois, puis plus rien à midi) laissait la
+  page muette six jours d'affilée. Deux dégâts : la page perd l'habitude qu'elle
+  est en train de construire (c'est son seul actif, § 1 du manuel), et les gens
+  qui ne voient plus rien concluent tout seuls — « ils ont coulé », « ils ont
+  fermé ». Le silence n'est pas neutre : il est interprété.
+  ✅ **Corrigé — LE POINT DU SERVICE à midi, tous les jours de fermeture** :
+  `service.texte_du_point()` écrit l'état du jour (« OÙ EN EST LE SERVICE —
+  JOUR N »), **avec les vrais chiffres de la mer** relevés par `mer.niveau()`, et
+  sans eux si Open-Meteo ne répond pas. Visuel : celui de l'avis (un avis officiel
+  a le droit de se répéter, comme un panneau). **Zéro appel commercial, aucune
+  date de reprise.**
+  📌 **Ce qui distingue les trois messages, pour ne pas les confondre :**
+  · **l'avis** (jour 1) annonce la fermeture ;
+  · **le point de midi** dit où en est le SERVICE aujourd'hui ;
+  · **le bulletin du soir** dit où en sera la MER demain.
+  Trois angles, aucun doublon — c'est ce qui permet de publier deux fois par jour
+  pendant une fermeture sans fatiguer personne.
+  🔧 **Deux corrections de robustesse au passage** : le matin ne part plus du tout
+  pendant une fermeture (montrer *comment réserver* un jour où on ne peut pas
+  réserver n'a aucun sens), et `avis_de_gros_temps()` ne plante plus si
+  Open-Meteo répond au premier appel puis pas au second (il déballait trois
+  valeurs d'un `None`).
+  ⚠️ **`controle.py` a été remis en phase avec le vrai robot.** Il décrivait
+  encore l'ancien comportement (« rien ne part »). **Un contrôle qui décrit un
+  robot différent du vrai est pire que pas de contrôle** — c'est la même famille
+  d'erreur que le voyant menteur d'hier. À vérifier à chaque fois que
+  `programme.main()` change.
+
 - **12/08/2026 (LE VISUEL DE REPRISE — et pourquoi il n'est PAS dans le robot)** —
   Le patron : « fais un flyer de reprise alors, mais pas de date au cas où. Ne le
   donne pas au robot, donne-le-moi, je le publierai. »

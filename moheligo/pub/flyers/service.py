@@ -22,6 +22,12 @@ désactiver à la main, aucun interrupteur à oublier.
 que pas de date du tout. On écrit « peut-être mardi », et on renvoie vers le
 WhatsApp pour la réponse du jour.
 
+📌 CE QUI PART QUAND MÊME PENDANT LA FERMETURE (13/08/2026) : se taire n'est pas
+une option. Midi publie **le point du service** — l'état de la mer du jour et le
+rappel qu'aucune vedette ne part (voir `texte_du_point`), sans jamais rien
+vendre. Et le bulletin du soir continue. La page garde son rendez-vous ; c'est
+seulement la vente qui s'arrête.
+
 📌 QUAND ÇA ROUVRE, DEUX GESTES ET DANS CET ORDRE :
   1. le patron publie **à la main** le visuel de reprise
      (`flyer-reprise-facebook.png`, son texte est dans `page.py`). À la main, et
@@ -57,6 +63,61 @@ FERMETURE = dict(
 # Le visuel de l'avis public, et son texte, vivent avec les autres (page.py).
 # Ici on ne garde que l'ÉTAT : un seul endroit à changer quand ça rouvre.
 VISUEL_AVIS = 'flyer-suspension-facebook.png'
+
+
+def jour_de_fermeture(jour=None):
+    """Le nombre de jours de fermeture, 1 le premier jour."""
+    jour = jour or datetime.date.today()
+    debut = datetime.date.fromisoformat(FERMETURE['depuis'])
+    return (jour - debut).days + 1
+
+
+def texte_du_point(jour=None, etat=None, houle=None):
+    """Le texte du POINT DE MIDI pendant une fermeture.
+
+    🚨 POURQUOI IL EXISTE (13/08/2026). Le patron : « le flyer de 12 n'est pas
+    parti. » Il n'était pas parti parce que le service est fermé — le garde-fou
+    a fonctionné. Mais se taire six jours d'affilée est une erreur en soi : la
+    page perd l'habitude qu'elle est en train de construire, et les gens qui ne
+    voient rien concluent tout seuls (« ils ont coulé »). Or il y a une chose
+    vraie à dire chaque jour, qui ne vend rien : **où en est la mer, et où en est
+    le service.**
+
+    C'est du même bois que notre seul avantage : on informe même quand on ne
+    gagne rien. Un opérateur de transport qui donne un état quotidien pendant une
+    interruption est cru la fois suivante.
+
+    ⚠️ Il ne remplace pas le bulletin du soir et ne le répète pas : le bulletin
+    parle de la mer de DEMAIN, ce point parle du service D'AUJOURD'HUI.
+    ⚠️ Zéro appel commercial : pas de « réserve », pas de prix.
+    ⚠️ Aucune date de reprise annoncée.
+    """
+    n = jour_de_fermeture(jour)
+    mer = ''
+    if etat and houle is not None:
+        mer = ('Ce matin entre nos ports : %s — houle de %s m.\n\n'
+               % (etat.lower(), ('%.1f' % houle).replace('.', ',')))
+    return """OÙ EN EST LE SERVICE — JOUR %d.
+
+%sLe service est toujours suspendu : aucun départ aujourd'hui.
+
+NE DESCENDS PAS AU PORT POUR RIEN.
+Tant que cet avis est en ligne, il n'y a pas de vedette. Le jour où ça repart, tu
+le liras ici — avant de partir de chez toi.
+
+SI TU AS UN BILLET, TU NE PERDS RIEN.
+Il reste valable. Changer la date est gratuit, et le remboursement est possible
+tant que la traversée n'est pas partie. Écris-nous, on s'en occupe.
+
+Et ce soir, comme chaque soir, la mer de demain sur cette page. C'est comme ça
+que tu verras le calme revenir, en même temps que nous.
+
+moheligo.com — WhatsApp +269 479 43 28
+
+Prévision Open-Meteo Marine. Nous ne décidons pas des départs : nous publions la
+mer et l'état du service.
+
+#MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer""" % (n, mer)
 
 
 def ouvert(jour=None):

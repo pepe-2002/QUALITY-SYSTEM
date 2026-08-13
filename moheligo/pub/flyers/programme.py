@@ -43,9 +43,30 @@ MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
 def avis_de_gros_temps(jour):
     """(visuel, texte) de l'avis de mer forte, avec les vrais chiffres du jour."""
     modele = next(f['texte'] for f in page.FLYERS if f['png'] == GROS_TEMPS)
-    n, etat, houle = mer.niveau(jour)
+    r = mer.niveau(jour)
+    if r is None:
+        # Open-Meteo a répondu pour `gros_temps()` puis n'a plus répondu ici :
+        # rare, mais ça plantait la publication. On garde l'avis, sans chiffres.
+        return GROS_TEMPS, modele.replace('{etat} ce matin entre nos ports :'
+                                          ' houle de {houle} m.',
+                                          'La mer est forte ce matin entre nos ports.')
+    n, etat, houle = r
     return GROS_TEMPS, modele.format(etat=etat.capitalize(),
                                      houle=('%.1f' % houle).replace('.', ','))
+
+
+def point_du_service(jour):
+    """(visuel, texte) du point de midi pendant une fermeture.
+
+    Le patron, 13/08/2026 : « le flyer de 12 n'est pas parti. » Il avait raison de
+    le remarquer : le garde-fou marchait, mais se taire six jours n'est pas une
+    politique. On publie donc l'état du service — avec les vrais chiffres de la
+    mer du jour quand Open-Meteo répond, et sans eux quand il ne répond pas
+    (une météo indisponible ne doit jamais faire sauter la publication).
+    """
+    r = mer.niveau(jour)
+    etat, houle = (r[1], r[2]) if r else (None, None)
+    return service.VISUEL_AVIS, service.texte_du_point(jour, etat, houle)
 
 
 def avis_de_suspension():
@@ -102,22 +123,33 @@ def main():
     ouvert_service, etat_service = service.etat(jour)
     if not ouvert_service:
         print('⛔', etat_service)
-        # L'avis part UNE fois, le premier jour — pas tous les jours à
-        # l'identique : une page qui répète le même avis se fait masquer. Les
-        # jours suivants, c'est le bulletin du soir qui porte la nouvelle (son
-        # bandeau dit « TRAVERSÉES SUSPENDUES », voir service.cta_bulletin).
-        # Règle sans mémoire : le robot ne garde aucun état entre deux
-        # exécutions (le journal ne survit pas au serveur GitHub), donc on
-        # compare la date, et `--avis` sert à le republier à la main.
+        # DEUX MESSAGES DIFFÉRENTS, ET C'EST LA CORRECTION DU 13/08/2026 :
+        #  · le premier jour → L'AVIS (« pas de traversée jusqu'à nouvel ordre ») ;
+        #  · les jours suivants → LE POINT DU SERVICE, avec la mer du jour.
+        # Répéter le même avis à l'identique ferait masquer la page ; se taire
+        # (ce que je faisais jusqu'à ce que le patron le remarque) lui ferait
+        # perdre l'habitude qu'elle construit. On informe donc, autrement.
+        # Règle sans mémoire : le robot ne garde aucun état entre deux exécutions
+        # (le journal ne survit pas au serveur GitHub), donc on compare la date,
+        # et `--avis` sert à republier l'avis d'origine à la main.
         premier_jour = jour.isoformat() == service.FERMETURE.get('depuis')
-        if not (a.avis or (premier_jour and not a.matin)):
-            print('→ rien ne part : ni pub, ni avis (déjà annoncé le %s).'
-                  % service.FERMETURE.get('depuis'))
-            print('→ pour republier l\'avis : programme.py --avis --publier')
+        if a.matin:
+            # Le matin est le créneau de la DÉMONSTRATION : montrer comment
+            # réserver un jour où on ne peut pas réserver n'aurait aucun sens.
+            print('→ le matin ne part pas pendant une fermeture (c\'est le créneau'
+                  ' de la démonstration).')
             return
-        visuel, texte = avis_de_suspension()
-        envoyer(visuel, texte,
-                'AVIS DE SERVICE SUSPENDU — aucun message commercial', a)
+        if a.avis or premier_jour:
+            visuel, texte = avis_de_suspension()
+            quoi = 'AVIS DE SERVICE SUSPENDU — aucun message commercial'
+        else:
+            # Les jours suivants : le point du service. Se taire ferait perdre à
+            # la page l'habitude qu'elle construit, et les gens qui ne voient
+            # rien concluent tout seuls. Informer n'est pas vendre.
+            visuel, texte = point_du_service(jour)
+            quoi = ('POINT DU SERVICE, jour %d de fermeture — aucun message'
+                    ' commercial' % service.jour_de_fermeture(jour))
+        envoyer(visuel, texte, quoi, a)
         return
 
     if a.matin:

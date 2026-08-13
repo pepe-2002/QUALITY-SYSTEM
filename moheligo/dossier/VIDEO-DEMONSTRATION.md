@@ -1,5 +1,12 @@
 # 🎬 La vidéo de démonstration — ce qui manque, et pourquoi
 
+> 📌 **12/08/2026 — la suite est ailleurs.** Le patron confie une **vidéo promo à
+> Young Leader Mohéli** : le brief de tournage complet est dans
+> **`BRIEF-VIDEO-YOUNG-LEADER.md`**. Ce fichier-ci reste la référence pour la
+> vidéo de *démonstration* (les écrans de l'application, les matins du lundi et
+> du jeudi) — deux vidéos différentes, deux buts différents : celle-ci explique
+> le geste, celle de Young Leader donne envie de traverser.
+
 **Demande du patron, 11/08/2026** : « on peut pas ajouter un flyer ou vidéo de
 démonstration le matin ? »
 

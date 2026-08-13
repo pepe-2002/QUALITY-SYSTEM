@@ -32,6 +32,7 @@
 | **Une décision produit ou d'organisation** | `MANUEL-MARKETING.md` **§ 12 à 13** (les postes, l'adoption) et **§ 16** (checklist) ; la **règle A / B / C** au § 12.2 ter |
 | **Toucher à la publication Facebook** | `LIER-FACEBOOK.md` (la recette qui marche et les six pièges déjà payés) |
 | **La vidéo de démonstration** | `VIDEO-DEMONSTRATION.md` (ce qui manque, et ce que j'en ferai) |
+| **Commander une vidéo ou des photos à un prestataire** | **`BRIEF-VIDEO-YOUNG-LEADER.md`** — le message à envoyer, le déroulé plan par plan, les interdits de tournage, la liste des 30 photos qui nous manquent et les phrases de droits à obtenir |
 | **Regénérer un visuel, comprendre un script** | `ATELIER-FLYERS.md` |
 
 ⚠️ **En cas de doute entre « je décide » et « je demande au patron » : je
@@ -51,6 +52,7 @@ demande.** (Manuel § 12.2 ter — la règle A / B / C.)
 | **`TEXTES-PUBLICATIONS.md`** | ✍️ la bibliothèque des textes déjà écrits, par angle | moi |
 | **`LIER-FACEBOOK.md`** | 🔗 la recette de la liaison Facebook **qui marche**, et les six pièges déjà payés en heures perdues | moi, après chaque incident |
 | **`VIDEO-DEMONSTRATION.md`** | 🎬 pourquoi la vidéo n'existe pas encore, et les **4 captures d'écran** qu'il me faut | moi |
+| **`BRIEF-VIDEO-YOUNG-LEADER.md`** | 🎬 le **brief de tournage** confié à Young Leader Mohéli : message prêt à envoyer, déroulé 30 s plan par plan, version 15 s, ⛔ ce qu'on ne filme jamais, **30 photos** à ramener, droits, et les 3 chiffres qui diront si la vidéo marche | moi, révisé après le tournage |
 | **`ATELIER-FLYERS.md`** | 🛠️ le mode d'emploi technique : quel script fabrique quoi, comment regénérer | moi |
 
 ---

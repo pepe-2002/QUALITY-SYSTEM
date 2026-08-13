@@ -370,6 +370,33 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (LE VISUEL DE REPRISE — et pourquoi il n'est PAS dans le robot)** —
+  Le patron : « fais un flyer de reprise alors, mais pas de date au cas où. Ne le
+  donne pas au robot, donne-le-moi, je le publierai. »
+  `flyer32-reprise-fb.html` → **`flyer-reprise-facebook.png`**, texte dans
+  `page.py`. **Aucune date, aucun jour, aucune heure dans l'image** : il resservira
+  à la prochaine fermeture sans être refait.
+  📌 **Il a raison de le garder à la main** : le robot publie à 12h07, or une
+  reprise ne se décide pas à 12h07 — elle se décide quand la vedette part
+  vraiment. Un visuel de reprise parti une heure trop tôt serait exactement la
+  promesse qu'on a passé la semaine à ne pas faire.
+  ⚠️ Cette consigne ne tient pas dans un commentaire : **`controle.py` la
+  vérifie** désormais (dictionnaire `MANUELS`) et signale une erreur si le visuel
+  entre dans `calendrier.py`. Et la marche à suivre de la réouverture est écrite
+  en tête de `service.py` : **1)** le patron publie la reprise à la main,
+  **2)** `OUVERT = True` et pousser sur `main`. Faire le 2 sans le 1, c'est
+  reprendre la vente sans avoir annoncé la reprise.
+  🎨 **Ce qui porte le visuel** : le fond revient au bleu de tous les jours
+  (`#0F2A5C`) au lieu du marine profond des avis — le changement de fond EST le
+  message. Et la ligne qui paie toute la semaine d'honnêteté : « **Tu l'as su le
+  jour où ça s'est arrêté. Tu le sais le jour où ça repart.** » C'est le seul
+  visuel d'avis avec un appel commercial complet (QR, adresse, paiement) : les
+  jours de fermeture on ne demandait rien, donc ici on peut demander.
+  🔬 **Le contrôleur a servi tout de suite** : l'accroche était à 82px d'après ma
+  règle des 0,47 — elle passait à la ligne et recouvrait le bloc suivant.
+  `verifier.js` l'a vu, j'ai **mesuré** (876px à 78px dans 920 disponibles) au
+  lieu d'estimer. **La règle sert à viser, le contrôleur tranche.**
+
 - **12/08/2026 (LA VIDÉO PROMO CONFIÉE À YOUNG LEADER)** — Le patron : « fais-moi
   un prompt pour une vidéo promo de MoheliGo qui sera faite par Young Leader. »
   Écrit dans **`dossier/BRIEF-VIDEO-YOUNG-LEADER.md`**, et publié en page lisible :

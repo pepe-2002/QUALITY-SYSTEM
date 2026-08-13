@@ -56,6 +56,14 @@ INTERDITS = [
     ('les vedettes ne partent pas', 'affirme un seuil d\'annulation qu\'on ignore'),
 ]
 
+# Les visuels que le robot ne doit JAMAIS publier, et pourquoi. Le patron,
+# 12/08/2026 : « ne le donne pas au robot, donne-le-moi, je le publierai. »
+# Une consigne comme celle-là ne tient pas dans un commentaire : elle se vérifie.
+MANUELS = {
+    'flyer-reprise-facebook.png':
+        'la reprise ne se décide pas à 12h07 — le patron la publie à la main',
+}
+
 ennuis = []
 remarques = []
 
@@ -192,6 +200,17 @@ def main():
                 pb('bibliothèque : « %s » contient « %s » — %s'
                    % (f['png'], mot, pourquoi))
     print('  tous les fichiers et tous les textes ont été examinés.')
+
+    # --- ce que le robot n'a pas le droit de publier tout seul ---------------
+    print('\nLes visuels réservés à la main (le robot ne doit pas y toucher) :')
+    programmes = {v for variantes in calendrier.SEMAINE.values() for v, _ in variantes}
+    programmes |= {v for variantes in calendrier.MATIN.values() for v, _ in variantes}
+    for nom, pourquoi in MANUELS.items():
+        visuel_ok(nom, 'à la main')
+        if nom in programmes:
+            pb('« %s » est DANS le calendrier du robot — %s' % (nom, pourquoi))
+        else:
+            print('  %-38s hors du calendrier ✅  (%s)' % (nom, pourquoi))
 
     print()
     for r in remarques:

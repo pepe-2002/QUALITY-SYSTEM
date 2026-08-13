@@ -1,0 +1,166 @@
+<!-- LA REPRISE — le visuel du jour où les vedettes repartent.
+     Le patron, 12/08/2026 : « fais un flyer de reprise alors, mais pas de date au
+     cas où. Ne le donne pas au robot, donne-le-moi, je le publierai. »
+
+     🚨 CELUI-LÀ NE PART PAS TOUT SEUL, ET C'EST VOULU.
+     Il est dans `page.py` (pour que le patron l'ait sous la main) mais **PAS dans
+     `calendrier.py`** : le robot publie à heure fixe, or une reprise ne se décide
+     pas à 12h07 — elle se décide quand la vedette part vraiment. Un visuel qui
+     annonce la reprise une heure trop tôt est exactement la promesse qu'on a
+     passé la semaine à ne pas faire. ⛔ NE PAS l'ajouter à `calendrier.py`.
+
+     ⚠️ AUCUNE DATE, AUCUN JOUR, AUCUNE HEURE dans l'image — sa seule condition
+     d'usage : il est vrai le jour où le patron le publie, et il le restera à la
+     prochaine fermeture. C'est ce qui le rend réutilisable sans être refait.
+
+     POURQUOI IL REVIENT AU BLEU NORMAL (#0F2A5C) et pas au marine profond des
+     avis (#0A1D42) : le changement de fond EST le message. Les jours d'avis, le
+     fond s'assombrit ; le jour de la reprise, la marque reprend ses couleurs.
+     Celui qui a vu les deux le comprend sans lire.
+
+     LA LIGNE QUI PORTE TOUT : « Tu l'as su le jour où ça s'est arrêté. Tu le sais
+     le jour où ça repart. » C'est le paiement de toute la semaine d'honnêteté :
+     on n'a rien vendu pendant la fermeture, donc on est cru maintenant (§ 3 du
+     manuel, levier réciprocité, et § 1 : la régularité est l'actif).
+
+     ET C'EST LE SEUL JOUR OÙ L'APPEL COMMERCIAL EST PLEIN : QR, adresse,
+     paiement. Les jours d'avis on ne demandait rien — ici on demande, une fois,
+     clairement.
+     Rendu : node render.js flyer32-reprise-fb.html flyer-reprise-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+/* le bleu de tous les jours : la marque a repris ses couleurs */
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:1.9px;
+  color:#5C6E8B; margin-top:5px; }
+
+.ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
+  font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
+  color:rgba(255,255,255,.6); }
+
+.sur { position:absolute; left:76px; top:212px; z-index:3; font-size:14px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* ⚠️ MESURÉ, PAS ESTIMÉ. La règle « 0,47 × la taille par caractère » donnait 82px
+   pour « La houle est retombée. » (22 caractères) — et à 82px la ligne ne tient
+   pas dans les 920 px : elle passe à la ligne et recouvre le bloc suivant. À 78px
+   elle mesure 876px. La règle sert à viser ; c'est `verifier.js` qui tranche.
+   Ne pas remonter cette taille sans remesurer. */
+.acc { position:absolute; left:76px; top:250px; width:920px; z-index:3;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:78px; line-height:.98;
+  letter-spacing:-3.2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+.dit { position:absolute; left:76px; top:428px; width:880px; z-index:3;
+  font-size:26px; line-height:1.44; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+/* la carte claire : l'objet regardé, comme tous les jours de la semaine */
+.carte { position:absolute; left:76px; top:560px; width:928px; z-index:3;
+  background:#F6F9FF; border-radius:24px; overflow:hidden;
+  box-shadow:0 30px 64px rgba(4,12,40,.44); }
+.carte .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
+  font-weight:900; font-size:21px; letter-spacing:1.4px; color:#0A1D42; }
+.carte .corps { padding:24px 44px 26px; }
+.carte ul { list-style:none; }
+.carte li { display:flex; gap:20px; align-items:flex-start; padding:15px 0;
+  font-size:20.5px; line-height:1.38; color:#43567A; border-top:1px solid #DDE6F4; }
+.carte li:first-child { border-top:0; padding-top:2px; }
+.carte li em { flex:0 0 44px; height:44px; border-radius:12px; background:#0F2A5C;
+  color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
+  font-style:normal; display:flex; align-items:center; justify-content:center; }
+.carte li b { display:block; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:23px; letter-spacing:-.5px; color:#0F2A5C; margin-bottom:3px; }
+
+/* le bandeau d'or : le seul jour de la semaine où on demande vraiment */
+.action { position:absolute; left:76px; top:1046px; width:928px; z-index:3;
+  display:flex; align-items:center; gap:26px;
+  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
+  border-radius:22px; padding:18px 28px; box-shadow:0 24px 52px rgba(4,12,40,.44); }
+.action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
+  padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
+.action .qr img { width:100%; height:100%; display:block; }
+.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
+  letter-spacing:.5px; color:#0A1D42; }
+.action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
+.action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }
+
+.pied { position:absolute; left:76px; right:76px; bottom:56px; z-index:3;
+  border-top:2px solid rgba(246,188,28,.5); padding-top:18px;
+  display:flex; justify-content:space-between; align-items:flex-start; gap:30px;
+  font-size:14px; line-height:1.5; color:rgba(255,255,255,.62); }
+.pied b { color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:16px; letter-spacing:-.2px; }
+.pied .d { max-width:320px; text-align:right; font-size:11.5px;
+  color:rgba(255,255,255,.44); }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="ligne">SERVICE RÉTABLI<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
+
+  <div class="sur">AVIS AUX VOYAGEURS · LES DÉPARTS REPRENNENT</div>
+  <div class="acc">La houle est retombée.<span>On repart.</span></div>
+
+  <div class="dit"><b>Tu l'as su le jour où ça s'est arrêté.</b> Tu le sais le jour
+    où ça repart. C'est à ça que sert cette page.</div>
+
+  <div class="carte">
+    <div class="bande">CE QUE TU FAIS MAINTENANT, DANS L'ORDRE</div>
+    <div class="corps">
+      <ul>
+        <li><em>1</em><span><b>Regarde les départs</b>Sur moheligo.com : les horaires
+          du jour, les places qui restent et les prix — sans donner ton nom.</span></li>
+        <li><em>2</em><span><b>Prends ta place</b>MVola ou KartaPay, et ton billet
+          arrive tout de suite avec son code. Il reste dans le téléphone même sans
+          réseau.</span></li>
+        <li><em>3</em><span><b>Tu avais déjà un billet ?</b>Il reste valable. Et si la
+          date ne te va plus, la changer ne coûte rien — écris-nous.</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="action">
+    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
+    <div>
+      <div class="scanne">TA PLACE, MAINTENANT</div>
+      <div class="adr">moheligo.com</div>
+      <div class="wa">MVola ou KartaPay · WhatsApp +269 479 43 28</div>
+    </div>
+  </div>
+
+  <div class="pied">
+    <span><b>Et chaque soir, la mer du lendemain sur cette page.</b><br>
+      Comme pendant la fermeture — belle ou mauvaise, on la publie.</span>
+    <span class="d">Nous ne décidons pas des départs : nous publions la mer et
+      délivrons les billets. Le bulletin officiel affiché à l'embarquement fait foi.</span>
+  </div>
+</div>

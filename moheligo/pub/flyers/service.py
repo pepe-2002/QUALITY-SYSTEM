@@ -22,8 +22,16 @@ désactiver à la main, aucun interrupteur à oublier.
 que pas de date du tout. On écrit « peut-être mardi », et on renvoie vers le
 WhatsApp pour la réponse du jour.
 
-📌 QUAND ÇA ROUVRE : remettre `OUVERT = True` et vider `FERMETURE`, puis
-committer et pousser sur `main`. Une seule ligne à changer.
+📌 QUAND ÇA ROUVRE, DEUX GESTES ET DANS CET ORDRE :
+  1. le patron publie **à la main** le visuel de reprise
+     (`flyer-reprise-facebook.png`, son texte est dans `page.py`). À la main, et
+     pas par le robot : une reprise ne se décide pas à 12h07, elle se décide
+     quand la vedette part vraiment. Le patron, 12/08/2026 : « ne le donne pas
+     au robot, donne-le-moi, je le publierai. »
+  2. remettre `OUVERT = True` ici, committer, pousser sur `main` — et la semaine
+     normale repart toute seule dès le lendemain midi.
+Faire le 2 sans le 1, c'est reprendre la vente sans avoir annoncé la reprise :
+personne ne sait que c'est reparti.
 """
 
 import argparse

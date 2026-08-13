@@ -101,6 +101,7 @@ Et on n'écrit jamais « les traversées reprennent mardi » — seulement
 | **Démonstration du matin** | lundi et jeudi 7h30 | `PUBLIER_MATIN` | ⏸️ **désarmé**, attend la décision du patron |
 | **Avis de service suspendu** (remplace la pub) | le 1er jour de la fermeture ; case `avis_de_suspension` du workflow pour republier | `service.py` | ✅ **publié le 12/08/2026 à 19h09** (`…_122115200331374081`), sur accord du patron |
 | **Avis de mer forte** (remplace la pub) | automatique, houle ≥ 2,50 m | — | ✅ actif |
+| **Visuel de reprise** | le jour où ça repart | 🖐️ **à la main, par le patron** | ⏳ prêt — `flyer-reprise-facebook.png`, hors du calendrier exprès |
 | **Frein d'urgence** | à tout moment | `PAUSE_FB = oui` | 🛑 arrête tout |
 
 ⚠️ **Le robot ne voit que la branche `main`.** Un visuel commité seulement sur une

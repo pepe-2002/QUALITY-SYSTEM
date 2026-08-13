@@ -99,7 +99,7 @@ Et on n'écrit jamais « les traversées reprennent mardi » — seulement
 | **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs 19h30 | `PUBLIER_FB` | ✅ armé — pendant la fermeture, son bandeau dit « TRAVERSÉES SUSPENDUES » |
 | **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ⛔ **muette tant que `service.py` dit fermé** (sinon : les 7 jours sont couverts) |
 | **Démonstration du matin** | lundi et jeudi 7h30 | `PUBLIER_MATIN` | ⏸️ **désarmé**, attend la décision du patron |
-| **Avis de service suspendu** (remplace la pub) | le 1er jour de la fermeture ; `--avis` pour republier | `service.py` | ⏳ prêt, **attend l'accord du patron pour partir** |
+| **Avis de service suspendu** (remplace la pub) | le 1er jour de la fermeture ; case `avis_de_suspension` du workflow pour republier | `service.py` | ✅ **publié le 12/08/2026 à 19h09** (`…_122115200331374081`), sur accord du patron |
 | **Avis de mer forte** (remplace la pub) | automatique, houle ≥ 2,50 m | — | ✅ actif |
 | **Frein d'urgence** | à tout moment | `PAUSE_FB = oui` | 🛑 arrête tout |
 

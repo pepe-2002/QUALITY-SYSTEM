@@ -8,6 +8,12 @@
 > transmet en pièce jointe ou en message long. Le reste (§ 10 à 12) est pour
 > nous : ce que j'en ferai, ce qu'on mesure, et ce qu'on ne cède pas.
 >
+> 🔗 **La version lisible pour le patron** (page web, à ouvrir sur son téléphone,
+> avec un bouton qui copie le message d'un coup) :
+> https://claude.ai/code/artifact/9c05c5c9-f9d5-4b66-84dc-3154b314f9c4
+> — regénérée depuis ce fichier ; **en cas de contradiction, c'est CE fichier qui
+> fait foi.**
+>
 > ⚠️ **Un brief flou coûte plus cher qu'un tournage.** Une équipe qui ne sait pas
 > ce que la vidéo doit faire faire ramène de belles images inutilisables. Tout ce
 > qui suit sert à ce qu'ils reviennent avec exactement ce qui nous manque.

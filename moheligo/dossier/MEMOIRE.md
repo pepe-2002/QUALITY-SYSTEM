@@ -370,6 +370,37 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **12/08/2026 (LA VIDÉO PROMO CONFIÉE À YOUNG LEADER)** — Le patron : « fais-moi
+  un prompt pour une vidéo promo de MoheliGo qui sera faite par Young Leader. »
+  Écrit dans **`dossier/BRIEF-VIDEO-YOUNG-LEADER.md`**, et publié en page lisible :
+  https://claude.ai/code/artifact/9c05c5c9-f9d5-4b66-84dc-3154b314f9c4
+  Le document se lit dans les deux sens : le § 1 est **le message à envoyer tel
+  quel** (la page a un bouton qui le copie), les § 2 à 9 sont le brief à leur
+  transmettre, le reste est pour nous.
+  📌 **Les choix qui portent le brief, et pourquoi :**
+  · **un seul but** — que le spectateur ouvre moheligo.com. Une vidéo qui veut
+    tout dire ne fait rien faire, et un brief qui ne nomme pas le geste attendu
+    ramène de belles images inutilisables ;
+  · **vertical 9:16, 30 s + 15 s, lisible sans le son**, sous-titres incrustés :
+    Facebook coupe le son par défaut ;
+  · **commentaire en shimwali, sous-titres en français** — une pub en français
+    seul dit « c'est pour les gens de la ville » ; les sous-titres ouvrent à la
+    diaspora, qui paie souvent la traversée d'un proche ;
+  · **le déroulé en 7 plans** suit l'ordre qui fait agir (le doute → la solution →
+    la preuve → le geste), avec les textes à l'écran déjà écrits ;
+  · **les interdits de tournage** reprennent le § 11 du manuel : aucun horaire ni
+    prix promis, aucune fausse affluence, aucun billet de vrai client, rien de
+    généré, rien de dangereux à l'image ;
+  · **les 30 photos** — c'est la vraie demande cachée : nos affiches n'ont
+    toujours aucune photo à nous (vedette, ports, billet en main). Format
+    d'origine, minimum 3000 px, **jamais par WhatsApp** qui divise la qualité
+    par quatre ;
+  · **les deux phrases de droits** (auteur + personnes) à archiver dans
+    `CREDITS-PARTENAIRES.md` dès réception ;
+  · **la fermeture est prise en compte** : la moitié des plans se tourne cette
+    semaine, l'embarquement attend la reprise.
+  ⏳ **En attente** : leur délai et leur budget.
+
 - **12/08/2026 (🚨🚨 LES TRAVERSÉES SONT FERMÉES — le robot vendait des places
   qui n'existent pas)** — Le patron, en fin de journée : « les traversées sont
   fermées jusqu'à nouvel ordre, ouverture possible mardi », puis « à cause de la

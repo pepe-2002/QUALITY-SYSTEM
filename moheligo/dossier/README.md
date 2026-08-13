@@ -87,17 +87,24 @@ Ce tableau est le seul endroit à jour sur ce qui tourne tout seul. **Vérifier
 qu'il est encore vrai avant de l'annoncer au patron.**
 
 🚨 **DEPUIS LE 12/08/2026, LE SERVICE EST FERMÉ** (« jusqu'à nouvel ordre,
-ouverture possible mardi », à cause de la mer agitée). Donc **aucun message
-commercial ne part** : `pub/flyers/service.py` porte l'état, et `programme.py`
-le consulte avant tout le reste. **Pour rouvrir : `OUVERT = True` dans
-`service.py`, et pousser sur `main`.** Une seule ligne, un seul endroit.
-Et on n'écrit jamais « les traversées reprennent mardi » — seulement
-« peut-être », parce que c'est ce que le patron a dit.
+ouverture possible mardi », à cause de la mer agitée). `pub/flyers/service.py`
+porte l'état, et `programme.py` le consulte avant tout le reste.
+**Pour rouvrir : `OUVERT = True` dans `service.py`, et pousser sur `main`.**
+Une seule ligne, un seul endroit. Et on n'écrit jamais « les traversées reprennent
+mardi » — seulement « peut-être », parce que c'est ce que le patron a dit.
+
+🚦 **DÉCISION DU PATRON DU 13/08/2026 : les pubs continuent quand même**
+(`PUB_PENDANT_FERMETURE = True`). Elles partent donc normalement, mais **aucune
+ne sort sans la mention de fermeture** ajoutée automatiquement : « les départs
+sont suspendus ; tu peux réserver pour les jours qui viennent ; ne descends pas
+au port avant l'annonce de la reprise ». `controle.py` refuse toute publication
+commerciale qui n'en porte pas.
 
 | Quoi | Quand | Interrupteur | État |
 |---|---|---|---|
 | **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs 19h30 | `PUBLIER_FB` | ✅ armé — pendant la fermeture, son bandeau dit « TRAVERSÉES SUSPENDUES » |
-| **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ✅ armé — pendant la fermeture elle publie **le point du service** (état du jour, zéro vente), pas la pub |
+| **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ✅ armé — les 7 jours sont couverts, **+ la mention de fermeture** tant que le service est fermé |
+| **Point du service** (état du jour, zéro vente) | seulement si les pubs sont coupées ; `--point` à la main | `PUB_PENDANT_FERMETURE` | ⏸️ en réserve — les pubs ont la priorité (décision du 13/08) |
 | **Démonstration du matin** | lundi et jeudi 7h30 | `PUBLIER_MATIN` | ⏸️ **désarmé**, attend la décision du patron |
 | **Avis de service suspendu** (remplace la pub) | le 1er jour de la fermeture ; case `avis_de_suspension` du workflow pour republier | `service.py` | ✅ **publié le 12/08/2026 à 19h09** (`…_122115200331374081`), sur accord du patron |
 | **Avis de mer forte** (remplace la pub) | automatique, houle ≥ 2,50 m | — | ✅ actif |

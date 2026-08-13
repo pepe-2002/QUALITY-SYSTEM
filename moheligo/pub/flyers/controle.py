@@ -13,8 +13,10 @@ CE QU'IL VÉRIFIE, POUR CHAQUE JOUR ET CHAQUE CRÉNEAU (matin, midi, soir) :
   1. le visuel prévu EXISTE, au bon format (1080 × 1350 en 2×, sous 4 Mo) ;
   2. le texte existe, n'est pas vide, et ne contient plus AUCUN trou `{...}`
      non rempli — c'est l'erreur qui se voit le plus sur une page publique ;
-  3. pendant une fermeture, aucun mot commercial ne sort : ni « réserve »,
-     ni un prix, ni « ta place » (la liste est dans MOTS_QUI_VENDENT) ;
+  3. pendant une fermeture, selon la décision en vigueur dans `service.py` :
+     · pubs coupées → aucun mot commercial ne sort (liste MOTS_QUI_VENDENT) ;
+     · pubs maintenues (le choix du patron depuis le 13/08/2026) → **aucune
+       publication commerciale ne part sans la mention de fermeture** ;
   4. le bulletin du soir ne promet pas de départ pendant une fermeture ;
   5. l'avis de fermeture ne promet pas de date de reprise (« reprennent
      mardi »), et n'écrit pas « on ne te vend rien » (deux interdits du patron).
@@ -100,7 +102,15 @@ def visuel_ok(nom, ou):
                % (ou, nom, im.size[0], im.size[1]))
 
 
-def texte_ok(texte, ou, ferme):
+def texte_ok(texte, ou, ferme, commercial=False):
+    """Le texte est-il publiable tel quel ?
+
+    ⚠️ L'invariant CHANGE selon la décision du patron (13/08/2026) :
+      · pubs coupées pendant la fermeture → aucun mot commercial ne doit sortir ;
+      · **pubs maintenues** (le choix actuel) → un texte commercial doit
+        OBLIGATOIREMENT porter la mention de fermeture. C'est elle qui empêche le
+        seul dégât irréparable : quelqu'un qui descend au port pour rien.
+    """
     if not texte or not texte.strip():
         return pb('%s : le texte est VIDE' % ou)
     trous = re.findall(r'\{[a-z_]+\}', texte)
@@ -110,7 +120,13 @@ def texte_ok(texte, ou, ferme):
     for mot, pourquoi in INTERDITS:
         if mot in bas:
             pb('%s : contient « %s » — %s' % (ou, mot, pourquoi))
-    if ferme:
+    if not ferme:
+        return
+    if service.PUB_PENDANT_FERMETURE:
+        if commercial and 'LES DÉPARTS SONT SUSPENDUS' not in texte:
+            pb('%s : publication COMMERCIALE pendant la fermeture SANS la mention'
+               ' — c\'est le client qui descend au port pour rien' % ou)
+    else:
         for mot in MOTS_QUI_VENDENT:
             if mot in bas:
                 pb('%s : SERVICE FERMÉ et le texte dit « %s »' % (ou, mot))
@@ -120,11 +136,12 @@ def creneau(jour, matin, ferme):
     """Déroule un créneau comme le fera le robot, sans rien envoyer."""
     quand = '%s %s %s' % (JOURS[jour.weekday()], jour.isoformat(),
                           'matin' if matin else 'midi')
-    if ferme:
-        # ⚠️ Ce bloc doit refléter EXACTEMENT programme.main() : un contrôle qui
-        # décrit un robot différent du vrai est pire que pas de contrôle.
-        if matin:
-            return '%-28s rien (le matin est le créneau démonstration)' % quand
+    # ⚠️ Ce bloc doit refléter EXACTEMENT programme.main() : un contrôle qui décrit
+    # un robot différent du vrai est pire que pas de contrôle.
+    if ferme and matin:
+        return '%-28s rien (la démonstration attend la reprise)' % quand
+
+    if ferme and not service.PUB_PENDANT_FERMETURE:
         premier = jour.isoformat() == service.FERMETURE.get('depuis')
         if premier:
             visuel, texte = programme.avis_de_suspension()
@@ -140,8 +157,11 @@ def creneau(jour, matin, ferme):
     if prevu is None:
         return '%-28s rien de prévu (normal : le matin sort 2 jours sur 7)' % quand
     visuel, texte, quoi = prevu
+    if ferme:                                  # les pubs continuent : mention obligatoire
+        texte = service.avec_mention(texte)
+        quoi += ' + mention'
     visuel_ok(visuel, quand)
-    texte_ok(texte, quand, ferme)
+    texte_ok(texte, quand, ferme, commercial=True)
     return '%-28s %-42s %s' % (quand, visuel, quoi)
 
 
@@ -227,7 +247,10 @@ def main():
         for e in ennuis:
             print('  ⛔', e)
         sys.exit(1)
-    if ferme:
+    if ferme and service.PUB_PENDANT_FERMETURE:
+        print('\n✅ RIEN À SIGNALER. Les pubs continuent (décision du patron) et'
+              '\n   AUCUNE ne part sans la mention de fermeture.')
+    elif ferme:
         print('\n✅ RIEN À SIGNALER. Aucun message commercial ne peut partir tant'
               ' que\n   service.py dit fermé, et tous les visuels prévus existent.')
     else:

@@ -370,6 +370,40 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **13/08/2026 (🚨 DÉCISION DU PATRON : LES PUBS CONTINUENT PENDANT LA FERMETURE)** —
+  « Les pubs continuent même si c'est fermé jusqu'à mardi. »
+  J'avais recommandé l'inverse, et je l'avais dit clairement. **Il a tranché : sa
+  décision, son entreprise** (règle A/B/C, § 12.2 ter — la direction générale
+  garde ce poste). Exécuté sans discuter davantage.
+  📌 **Ce qui est juste dans sa décision, et que j'avais sous-estimé** : on ne
+  vend pas une traversée « pour demain », on vend **une place sur un départ à
+  venir**. Réserver aujourd'hui pour la semaine prochaine n'a jamais été un
+  mensonge. Et six jours de page commercialement muette coûtent une habitude
+  qu'on met des mois à bâtir. Mon garde-fou était juste sur le principe et trop
+  large dans son application.
+  ✅ **Ce que j'ai gardé, parce que ça ne coûte rien et que ça évite le seul
+  dégât irréparable** : `service.MENTION_FERMETURE`, collée automatiquement à
+  **chaque** publication commerciale tant que `OUVERT = False` —
+  « ⚠️ en ce moment les départs sont suspendus (mer agitée) ; tu peux prendre ta
+  place pour les jours qui viennent ; ne descends pas au port avant qu'on annonce
+  la reprise ici. » Elle dit la vérité, autorise la réservation à l'avance, et ne
+  promet aucune date. Placée **avant les mots-dièse** : au-dessus elle tuerait
+  l'offre, sous les hashtags personne ne la lirait.
+  🔧 **L'interrupteur** : `PUB_PENDANT_FERMETURE = True` dans `service.py`. Le
+  remettre à `False` recoupe les pubs et remet le point du service à midi
+  (`texte_du_point` reste écrit, et `programme.py --point` le publie à la main).
+  ⚠️ **Ce qui NE change pas, et pourquoi** :
+  · **le bandeau du bulletin du soir reste « TRAVERSÉES SUSPENDUES »** — lui parle
+    de la mer de DEMAIN, donc « réserve pour demain » y serait faux, mention ou
+    pas. C'est la seule chose que je n'ai pas rouverte.
+  · **le matin reste muet** : la démonstration explique le geste « réserve ton
+    départ », qui n'aboutit pas aujourd'hui.
+  🔬 **`controle.py` : l'invariant s'est INVERSÉ.** Avant : aucun mot commercial
+  pendant une fermeture. Maintenant : **aucune publication commerciale sans la
+  mention**. Vérifié dans les deux sens — en effaçant la mention exprès, le
+  contrôle crie ; en la remettant, il se taît. Un contrôle qu'on n'a pas testé
+  après avoir changé la règle ne vaut rien.
+
 - **13/08/2026 (🚨 « LE FLYER DE 12 N'EST PAS PARTI » — ce n'était pas une panne,
   et c'était quand même une erreur)** — Le patron, 15h20 : « le flyer de 12 n'est
   pas parti. »

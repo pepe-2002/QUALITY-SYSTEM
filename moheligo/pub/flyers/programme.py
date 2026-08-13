@@ -105,6 +105,8 @@ def main():
     ap.add_argument('--avis', action='store_true',
                     help='forcer l\'avis de service suspendu (le robot ne le sort '
                          'de lui-même que le premier jour de la fermeture)')
+    ap.add_argument('--point', action='store_true',
+                    help='forcer le point du service (état du jour, zéro vente)')
     a = ap.parse_args()
 
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
@@ -121,6 +123,26 @@ def main():
     # Ça passe AVANT le garde-fou de la mer : la fermeture est déjà la
     # conséquence de la mer, et c'est la nouvelle la plus importante du jour.
     ouvert_service, etat_service = service.etat(jour)
+
+    # ---- FERMÉ, MAIS LE PATRON VEUT QUE LES PUBS CONTINUENT ----------------
+    # Le patron, 13/08/2026 : « les pubs continuent même si c'est fermé jusqu'à
+    # mardi. » Sa décision (règle A/B/C : la direction générale tranche). On
+    # publie donc le calendrier normal — et `service.avec_mention()` colle à
+    # chaque texte la mention qui empêche le seul dégât irréparable : quelqu'un
+    # qui descend au port pour rien. Voir le pourquoi dans service.py.
+    if not ouvert_service and service.PUB_PENDANT_FERMETURE and not (a.avis or a.point):
+        print('⚠️ ', etat_service)
+        print('→ pubs MAINTENUES (décision du patron) + mention de fermeture.')
+        if a.matin:
+            # Le matin montre COMMENT réserver un départ. Le geste n'aboutit pas
+            # aujourd'hui : la démonstration attend la reprise.
+            print('→ sauf le matin : la démonstration attend la reprise.')
+            return
+        ouvert_service = True          # on continue comme un jour ouvert…
+        forcer_mention = True          # …mais aucun texte ne part sans la mention
+    else:
+        forcer_mention = False
+
     if not ouvert_service:
         print('⛔', etat_service)
         # DEUX MESSAGES DIFFÉRENTS, ET C'EST LA CORRECTION DU 13/08/2026 :
@@ -133,6 +155,11 @@ def main():
         # (le journal ne survit pas au serveur GitHub), donc on compare la date,
         # et `--avis` sert à republier l'avis d'origine à la main.
         premier_jour = jour.isoformat() == service.FERMETURE.get('depuis')
+        if a.point:
+            visuel, texte = point_du_service(jour)
+            envoyer(visuel, texte, 'POINT DU SERVICE, jour %d de fermeture'
+                    % service.jour_de_fermeture(jour), a)
+            return
         if a.matin:
             # Le matin est le créneau de la DÉMONSTRATION : montrer comment
             # réserver un jour où on ne peut pas réserver n'aurait aucun sens.
@@ -192,6 +219,13 @@ def main():
         # ferait des trous dans la régularité, qui est notre seul vrai actif.
         print('⚠️  État de la mer inconnu (Open-Meteo injoignable) :'
               ' publication normale, aucun message ne promet un départ.')
+
+    # La mention n'est pas décorative : c'est elle qui rend la publication vraie
+    # pendant une fermeture. Elle s'ajoute ICI, au dernier moment, pour qu'aucun
+    # chemin (calendrier ou avis de grosse mer) ne puisse l'oublier.
+    if forcer_mention:
+        texte = service.avec_mention(texte)
+        quoi += ' + mention de fermeture'
 
     envoyer(visuel, texte, quoi, a)
 

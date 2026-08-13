@@ -22,11 +22,18 @@ désactiver à la main, aucun interrupteur à oublier.
 que pas de date du tout. On écrit « peut-être mardi », et on renvoie vers le
 WhatsApp pour la réponse du jour.
 
-📌 CE QUI PART QUAND MÊME PENDANT LA FERMETURE (13/08/2026) : se taire n'est pas
-une option. Midi publie **le point du service** — l'état de la mer du jour et le
-rappel qu'aucune vedette ne part (voir `texte_du_point`), sans jamais rien
-vendre. Et le bulletin du soir continue. La page garde son rendez-vous ; c'est
-seulement la vente qui s'arrête.
+📌 CE QUI PART PENDANT LA FERMETURE — révisé le 13/08/2026 sur décision du
+patron (« les pubs continuent même si c'est fermé jusqu'à mardi ») :
+  · **midi** publie la publication normale de la semaine, **plus la mention de
+    fermeture** ajoutée automatiquement (`avec_mention`) : on peut réserver pour
+    les jours à venir, on ne descend pas au port avant l'annonce de la reprise ;
+  · **le soir**, le bulletin continue, et son bandeau reste « TRAVERSÉES
+    SUSPENDUES » — lui parle de la mer de DEMAIN, donc « réserve pour demain »
+    y serait faux, mention ou pas ;
+  · **le matin** reste muet : la démonstration explique comment réserver un
+    départ, geste qui n'aboutit pas aujourd'hui.
+  · `texte_du_point()` reste écrit et utilisable (`programme.py --point`) : il
+    resservira à la prochaine fermeture si on décide de couper les pubs.
 
 📌 QUAND ÇA ROUVRE, DEUX GESTES ET DANS CET ORDRE :
   1. le patron publie **à la main** le visuel de reprise
@@ -63,6 +70,48 @@ FERMETURE = dict(
 # Le visuel de l'avis public, et son texte, vivent avec les autres (page.py).
 # Ici on ne garde que l'ÉTAT : un seul endroit à changer quand ça rouvre.
 VISUEL_AVIS = 'flyer-suspension-facebook.png'
+
+# --- DÉCISION DU PATRON, 13/08/2026 -----------------------------------------
+# « Les pubs continuent même si c'est fermé jusqu'à mardi. »
+#
+# J'avais recommandé l'inverse et je l'ai dit clairement ; il a tranché, et c'est
+# son entreprise (règle A/B/C, § 12.2 ter : la direction générale décide). Donc
+# les pubs repartent.
+#
+# CE QUI EST VRAI DANS SA DÉCISION, ET QUE J'AVAIS SOUS-ESTIMÉ : on ne vend pas
+# une traversée « pour demain », on vend une place sur un départ à venir. Réserver
+# aujourd'hui pour la semaine prochaine n'a jamais été un mensonge. Et six jours
+# de page commercialement muette coûtent une habitude qu'on met des mois à bâtir.
+#
+# CE QUE JE NE PEUX PAS LAISSER TOMBER, ET QUI NE COÛTE RIEN : que personne ne
+# descende au port pour rien. D'où UNE mention ajoutée à chaque publication
+# commerciale tant que le service est fermé. Elle dit la vérité, autorise la
+# réservation à l'avance, et ne promet aucune date.
+#
+# ⚠️ Pour couper les pubs à nouveau : `PUB_PENDANT_FERMETURE = False`.
+PUB_PENDANT_FERMETURE = True
+
+MENTION_FERMETURE = """⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS (mer agitée).
+Tu peux prendre ta place pour les jours qui viennent — elle t'attend, et si la
+date ne te va plus, la changer ne coûte rien. Mais ne descends pas au port avant
+qu'on annonce la reprise ici : on la publiera dès qu'elle est décidée."""
+
+
+def avec_mention(texte):
+    """Ajoute la mention de fermeture à un texte commercial, avant les mots-dièse.
+
+    Placée AVANT les hashtags et le rappel de source : au-dessus, elle serait lue
+    comme une mauvaise nouvelle avant même l'offre ; en toute fin, sous les
+    hashtags, personne ne la lit. Juste avant, elle est vue par ceux qui lisent
+    jusqu'au bout — ceux qui, justement, s'apprêtaient à réserver.
+    """
+    if not texte or ouvert():
+        return texte
+    lignes = texte.rstrip().split('\n')
+    for i, l in enumerate(lignes):
+        if l.startswith('#'):
+            return '\n'.join(lignes[:i] + [MENTION_FERMETURE, ''] + lignes[i:]) + '\n'
+    return texte.rstrip() + '\n\n' + MENTION_FERMETURE + '\n'
 
 
 def jour_de_fermeture(jour=None):

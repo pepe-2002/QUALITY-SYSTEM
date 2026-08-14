@@ -370,6 +370,49 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **14/08/2026 (🎮 MOHELIGO LIFE v100 « LA DYNASTIE »)** — Le patron a demandé
+  d'aller voir les meilleurs simulateurs de vie du Play Store et d'en faire un
+  **meilleur** : les études, le travail, l'entreprise à côté qu'on peut faire
+  grandir jusqu'à quitter son emploi, l'héritage aux enfants, l'enfant qui
+  **repart de zéro ou pas**, une ou deux épouses, et « un design extra ».
+  ⚠️ **Le jeu existait déjà en v94 et n'était documenté NULLE PART dans le
+  dossier** — je l'ai découvert dans le code. C'est réparé ici (§ 7).
+  **Ce que la concurrence fait** : BitLife est la matrice (journal de vie
+  scrollable, événements en popup, un bouton pour avancer) ; sa mise à jour
+  Business est ce que les joueurs ont le plus salué. AltLife gagne sur les
+  menus propres et le peu de pubs. Infinite Life Simulation (2026) génère ses
+  événements au lieu de les lister. **Le trou du marché : aucun ne traite
+  sérieusement la transmission entre générations, ni un cadre culturel
+  non-occidental.** C'est là qu'on gagne — et c'est ce que le patron a demandé.
+  **Ce que j'ai ajouté** : ① 🎓 un vrai parcours d'études (lycée → licence →
+  master → doctorat, + formation pro), avec mérite mensuel, mentions, bourse au
+  mérite, petits boulots et redoublement — le diplôme ouvre 6 nouveaux métiers
+  (fonctionnaire, gestionnaire, ingénieur, avocat, médecin) ; ② la vie commence
+  à 18 ans par LE choix « étudier ou travailler » ; ③ 🏢 quitter son emploi donne
+  **+25 %** aux entreprises, et un enfant adulte peut en devenir **gérant** ;
+  ④ 💍 jusqu'à deux épouses pour un homme, avec l'obligation d'équité entre les
+  foyers, la jalousie qui monte toute seule si on ne fait rien, et le divorce
+  devant le cadi ; ⑤ 📜 un **testament** qu'on écrit de son vivant (chaque
+  entreprise, la maison, la règle de partage de l'argent) ; ⑥ 🕊️ à la mort,
+  l'héritier choisit : **accepter l'héritage** ou **tout refuser et partir de
+  zéro** (25 000 KMF, mais +15 % de revenus à vie et la fierté du self-made) ;
+  ⑦ 📖 les **chroniques** conservent toutes les générations passées.
+  **Vérifié, pas supposé** : banc d'essai sans navigateur qui pilote la logique
+  du jeu → **196 tests au vert**, plus une simulation de 75 vies complètes et de
+  4 générations enchaînées, sans une seule exception.
+  📌 **Deux défauts d'équilibrage que seule la simulation a révélés, et qui
+  existaient déjà en v94** : (a) les dépenses subissaient l'inflation mais **pas
+  les salaires** — au bout de 40 ans de jeu, un salarié finissait mécaniquement
+  à **−16 millions**, quoi qu'il fasse. Salaires, pensions et prix de vente sont
+  désormais indexés ; (b) agrandir une entreprise coûtait **le même prix à tous
+  les niveaux** alors que le gain s'accumulait → réinvestir la caisse suffisait
+  à atteindre 13 milliards. Le coût monte maintenant avec le niveau.
+  **Après correction** : ouvrier 2,2 M · étudiant 43,6 M · entrepreneur 337 M.
+  L'échelle risque/récompense tient, et **les études paient enfin**.
+  ⚠️ **Leçon à garder** : un chiffre d'équilibrage ne se devine pas en lisant le
+  code — il faut faire jouer la machine. Deux bugs vieux de plusieurs versions
+  sont sortis en une simulation de 30 secondes.
+
 - **13/08/2026 (🚨 DÉCISION DU PATRON : LES PUBS CONTINUENT PENDANT LA FERMETURE)** —
   « Les pubs continuent même si c'est fermé jusqu'à mardi. »
   J'avais recommandé l'inverse, et je l'avais dit clairement. **Il a tranché : sa
@@ -1431,3 +1474,78 @@ recharger ce sujet ici, ce n'est pas du marketing.
   (le code n'était sur aucun dépôt) → sauvegardé dans `moheligo/`. Produit
   4 pubs vidéo + textes de publication. Itérations selon retours patron
   (voix, bruit, poids). Nommé Directeur Marketing. Créé cette mémoire.
+
+---
+
+## 7. 🎮 MoheliGo Life — le jeu (fiche de référence)
+
+> **Créé en v94, resté non documenté jusqu'au 14/08/2026.** Cette fiche existe
+> pour qu'aucune session ne redécouvre le jeu dans le code, comme j'ai dû le faire.
+
+### Où c'est, et comment ça se charge
+
+| Quoi | Où |
+|---|---|
+| Tout le jeu | `moheligo/moheligo-life.js` (un seul fichier, ~1 800 lignes, IIFE) |
+| Le chargement | `moheligo/index.html` → `openLife()` — **chargé à la demande**, jamais au démarrage de l'app |
+| Le cache-buster | `index.html` : `moheligo-life.js?v=N` — **incrémenter N à chaque changement du jeu**, sinon les téléphones gardent l'ancienne version |
+| Sauvegarde | `localStorage.mg_life` + table Supabase `life_saves` (une ligne par joueur) |
+| Classement | table Supabase `life_scores` (pseudo, patrimoine, génération) |
+
+⚠️ **Le jeu n'a aucune dépendance sur le reste de l'app**, sauf une : il lit la
+**vraie prévision de mer** via `seaForDate()` quand elle est disponible — les
+métiers de la mer gagnent moins quand la mer de Mohéli est vraiment agitée.
+C'est le meilleur détail du jeu, à ne jamais casser.
+
+### La boucle de jeu
+
+Un appui sur 🌙 = **un mois**. Salaire → entreprises → dépenses → fatigue →
+fête religieuse éventuelle → bilan écrit dans le **journal de vie** → un
+**événement en popup** avec des choix. 12 mois = un an, on vieillit, les enfants
+grandissent. Puis on meurt, et **quelqu'un reprend**.
+
+### Les cinq systèmes
+
+1. **🎓 Études** — 5 cursus (`CURSUS`). Le **mérite** (0-100) monte avec l'énergie,
+   le moral, un ordinateur, internet et le fait de vivre à Fomboni. Sous 30 de
+   mérite à la fin → redoublement (3 échecs = abandon). Le diplôme donne
+   +15 %/niveau de salaire et **ouvre 6 métiers** (`reqDip` dans `METIERS`).
+2. **💼 Carrière** — 14 métiers. Certains suivent la météo, la saison, ou sont
+   variables. Le développeur est le seul grand métier **sans diplôme** : c'est
+   le pari « on peut s'en sortir seul », à garder.
+3. **🏢 Empire** — chaque entreprise a sa **caisse** ; le PDG se verse un salaire
+   plafonné (200 000 + 25 % du net). **Quitter son emploi = +25 %.** Un enfant
+   adulte peut être **gérant** (bonus selon son talent et son diplôme).
+4. **💍 Foyers** — jusqu'à **2 épouses** pour un homme, **1 époux** pour une femme.
+   Le bonheur de chaque épouse baisse tout seul quand il y en a deux : c'est
+   l'**équité** qui est le vrai coût de la polygamie, pas seulement l'argent.
+   Sous 12 de bonheur → séparation devant le cadi, elle part avec 25 % et les
+   jeunes enfants.
+5. **📜 Héritage** — testament de son vivant (`L.testament`), puis à la mort
+   l'héritier **accepte** ou **part de zéro** (+15 % de revenus à vie).
+   Les **chroniques** (`L.lignee`) gardent toutes les générations.
+
+### Ce qu'il faut savoir avant d'y toucher
+
+- **Le format de sauvegarde est versionné** (`L.v`, aujourd'hui **4**). Toute
+  nouvelle clé doit être gérée dans `migrer()` — **des joueurs ont des parties
+  en cours**, une migration ratée efface une vie de plusieurs heures.
+- **Les descriptions d'événements (`d()`) ne sont appelées qu'après `cond()`**,
+  mais elles sont malgré tout écrites défensivement : un écran blanc dans un jeu,
+  c'est un joueur perdu pour toujours.
+- **L'équilibrage se vérifie en simulant, pas en lisant.** Le banc d'essai
+  (196 tests) et la simulation longue sont dans le scratchpad de la session du
+  14/08 ; ils se reconstruisent en injectant un export des fonctions internes
+  juste avant la fermeture de l'IIFE, puis en neutralisant les fonctions
+  d'écran. **À refaire avant toute modification de l'économie.**
+- ⚠️ **`bizCapMois` (15 M/mois par entreprise) est le seul garde-fou** contre
+  l'explosion des revenus. L'entreprise technologique en est volontairement
+  exemptée — c'est son intérêt narratif.
+
+### Ce que le jeu apporte à MoheliGo
+
+Ce n'est pas un gadget : c'est **le seul contenu de l'app qu'on ouvre sans
+avoir de traversée à réserver**. Il fait revenir, il porte le partage récompensé
+(+10 000 KMF de jeu contre un partage, 3 fois par mois maximum), et il installe
+les noms des villages et des vedettes dans la tête des gens. **À mesurer** :
+combien de joueurs, et combien reviennent le lendemain.

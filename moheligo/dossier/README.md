@@ -33,6 +33,7 @@
 | **Toucher à la publication Facebook** | `LIER-FACEBOOK.md` (la recette qui marche et les six pièges déjà payés) |
 | **La vidéo de démonstration** | `VIDEO-DEMONSTRATION.md` (ce qui manque, et ce que j'en ferai) |
 | **Commander une vidéo ou des photos à un prestataire** | **`BRIEF-VIDEO-YOUNG-LEADER.md`** — le message à envoyer, le déroulé plan par plan, les interdits de tournage, la liste des 30 photos qui nous manquent et les phrases de droits à obtenir |
+| **Toucher au jeu MoheliGo Life** | **`MEMOIRE.md` § 7** — où est le fichier, les 5 systèmes, le format de sauvegarde versionné, et la règle : **l'équilibrage se vérifie en simulant, pas en lisant** |
 | **Regénérer un visuel, comprendre un script** | `ATELIER-FLYERS.md` |
 
 ⚠️ **En cas de doute entre « je décide » et « je demande au patron » : je

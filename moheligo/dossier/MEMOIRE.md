@@ -370,6 +370,40 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (🚨 « LES PUBS NE PARTENT PAS AUTOMATIQUEMENT » — elles partaient,
+  c'est le RAPPORT qui mentait)** — Le patron avait raison de s'inquiéter et tort
+  sur les faits, et c'est ma faute : il lisait un chiffre que je fabriquais mal.
+  🔍 **Les faits, relevés dans les journaux GitHub** (14 exécutions programmées) :
+  · **Bulletin du soir : 7 soirs sur 7**, du 11 au 17 août, tous en succès ;
+  · **Publication du jour : 5 jours sur 5**, du 13 au 17 août ;
+  · **Matin : lundi et jeudi**, exactement comme prévu (à blanc, `PUBLIER_MATIN`
+    est toujours désarmé).
+  Et la preuve qu'elles publiaient vraiment : lundi 17/08 à 12h54,
+  `…_122116129533374081` — « RIEN À INSTALLER. C'EST JUSTE UNE PAGE ».
+  ⏰ Retards de GitHub observés : de 26 min à 1 h 12. Le cron à `:07` avec marge
+  d'avance fait bien tomber la publication autour de midi. Rien à changer.
+  🚨 **LA VRAIE PANNE, ET ELLE ÉTAIT DANS MON RAPPORT** : `rapport.py` comptait
+  les lignes de `journal-publications.json`, un fichier écrit **sur le serveur
+  GitHub, effacé à la fin de chaque travail**. Il affichait donc « 1 publication
+  en 7 jours » tous les jours, quoi qu'il arrive. C'est ce chiffre que le patron
+  lisait — et il en a conclu, logiquement, que rien ne partait.
+  📌 **LA LEÇON, à ne jamais oublier** : *un compteur qui repart de zéro à chaque
+  exécution ne mesure rien.* Et surtout : **un chiffre faux dans un rapport coûte
+  plus cher qu'une panne.** Une panne se voit et se répare ; un chiffre faux
+  détruit la confiance dans tout le système, y compris dans ce qui marche.
+  Je connaissais ce défaut depuis le 12/08 et je l'avais classé « à faire plus
+  tard » : c'était une erreur de priorité.
+  ✅ **Corrigé** : `publier_fb.publications_recentes()` demande les vraies
+  publications à la page (`published_posts`, puis `feed` en secours). `rapport.py`
+  s'en sert comme source de vérité et n'utilise le journal local qu'en dernier
+  recours, **en écrivant noir sur blanc que le compte est alors incomplet**.
+  Nouvelle case `rapport_seulement` pour produire un rapport sans rien publier.
+  ⚠️ **Et le premier essai a produit un autre chiffre faux** : « 50 publications
+  en 7 jours », c'est-à-dire la limite de l'appel — **Facebook ignore le
+  paramètre `since`** sur ces deux bords. Le filtrage par date se fait maintenant
+  chez nous. Corriger un chiffre faux par un autre chiffre faux aurait été pire
+  que tout : **vérifier ce que renvoie une API avant de s'appuyer dessus**.
+
 - **18/08/2026 (✅ REPRISE DES TRAVERSÉES)** — Le patron, mardi au petit matin :
   « aujourd'hui c'est la reprise des traversées, publie maintenant. » La fermeture
   aura duré **six jours** (12 → 18/08) — et elle s'est terminée exactement le

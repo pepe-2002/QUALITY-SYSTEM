@@ -109,5 +109,11 @@ patron, raison) : c'est le modèle à recopier à la prochaine. **Pour refermer 
 ⚠️ **Le robot ne voit que la branche `main`.** Un visuel commité seulement sur une
 branche de travail n'existe pas pour les publications automatiques.
 
+⚠️ **Les minuteries de GitHub ont du retard, c'est normal** : de 26 min à 1 h 12
+observées entre le 11 et le 18/08. Les crons sont réglés **en avance** (`:07`)
+pour que le retard fasse tomber la publication à l'heure visée. Un lancement qui
+n'apparaît pas à la minute prévue n'est pas une panne — vérifier l'onglet Actions
+avant de conclure.
+
 ⚠️ **Le jeton Facebook expire vers le 10/10/2026.** À renouveler avant, sinon les
 publications s'arrêtent en silence.

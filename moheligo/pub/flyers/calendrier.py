@@ -56,6 +56,15 @@ INSTIT = 'flyer-institutionnel-facebook.png'    # dimanche
 PARTENARIAT = 'flyer-partenariat-facebook.png'  # dimanche, l'autre semaine
 RIEN = 'flyer-rien-installer-facebook.png'      # lundi
 SIGNATURE = 'flyer-signature-facebook.png'      # mardi (déjà validé par le patron)
+# --- la série du 18/08/2026, au lendemain de la reprise ----------------------
+# Le patron : « prépare les flyers de la semaine. » La semaine était couverte,
+# mais par EXACTEMENT les mêmes visuels que la précédente : les abonnés les
+# avaient déjà vus. Trois angles neufs, choisis pour ce qu'ils débloquent, pas
+# pour faire nombre — et placés en PREMIÈRE variante pour qu'ils sortent cette
+# semaine-ci (la rotation suit le numéro de semaine ISO, 34 % 2 = 0).
+GARANTIE = 'flyer-garantie-facebook.png'        # mardi : « et si ça ne part pas ? »
+PREMIERE = 'flyer-premierefois-facebook.png'    # lundi : jamais payé en ligne
+PORTS = 'flyer-ports-facebook.png'              # samedi : quel port de départ
 # visuels présents dans le dossier mais pas sur la page du patron
 DUOTONE = 'flyer-affiche-duotone-facebook.png'
 LUMINEUSE = 'flyer-affiche-lumineuse-facebook.png'
@@ -83,12 +92,15 @@ T_AFFICHE = "Variante courte pour l'affiche"
 # abîmer la marque. C'est la condition, et la seule : jamais un visuel d'avant le
 # système.
 SEMAINE = {
-    0: [(RIEN, VISUEL[RIEN])],                  # lundi : rien à installer
-    1: [(SIGNATURE, VISUEL[SIGNATURE])],        # mardi : l'île, registre émotion
+    0: [(PREMIERE, VISUEL[PREMIERE]),            # lundi : lever un blocage (une semaine sur deux)
+        (RIEN, VISUEL[RIEN])],
+    1: [(GARANTIE, VISUEL[GARANTIE]),            # mardi : la confiance, puis l'île
+        (SIGNATURE, VISUEL[SIGNATURE])],
     2: [(PRIX, VISUEL[PRIX])],                  # mercredi : les prix
     3: [(ABONNER, VISUEL[ABONNER])],            # jeudi : s'abonner
     4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
-    5: [(DESTINATION, VISUEL[DESTINATION])],    # samedi : la destination
+    5: [(PORTS, VISUEL[PORTS]),                  # samedi : le pratique, puis la destination
+        (DESTINATION, VISUEL[DESTINATION])],
     6: [(INSTIT, VISUEL[INSTIT]),               # dimanche : l'institutionnel
         (PARTENARIAT, VISUEL[PARTENARIAT])],    #   et, l'autre semaine, le partenariat
 }
@@ -126,8 +138,9 @@ def du_matin(jour=None):
 
 
 # Ce que le calendrier annonce, pour l'afficher sans publier.
-INTENTION = ['comment ça marche', "l'île", 'les prix', 's'"'"'abonner à la page',
-             'la diaspora', 'la destination',
+INTENTION = ['comment ça marche', "l'île ou la garantie", 'les prix',
+             's'"'"'abonner à la page',
+             'la diaspora', 'la destination ou les ports',
              # le dimanche alterne : le nom du visuel dit lequel des deux part
              "l'institutionnel ou le partenariat"]
 

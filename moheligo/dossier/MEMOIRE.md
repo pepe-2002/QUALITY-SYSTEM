@@ -370,6 +370,40 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (LA SEMAINE PRÉPARÉE — et la rotation qui existe enfin)** — Le
+  patron : « prépare les flyers de la semaine, note les traversées sont
+  ouvertes. » L'ouverture était déjà notée (`OUVERT = True`, poussé le matin même).
+  ⚠️ **Le vrai problème était ailleurs, et il fallait le voir** : la semaine était
+  déjà « couverte »… par **exactement les mêmes sept visuels que la semaine
+  précédente**. Les abonnés allaient revoir les mêmes, jour pour jour. Préparer
+  la semaine, ce n'était donc pas vérifier qu'elle est remplie : c'était la
+  **renouveler**.
+  🆕 **Trois angles neufs, choisis pour ce qu'ils débloquent, pas pour faire
+  nombre** — les trois répondent à une objection qu'aucun visuel ne traitait :
+  · **`flyer33-garantie`** — « et si la vedette ne part pas ? » C'est l'objection
+    numéro un dans un pays où la mer décide, et on venait de passer six jours à
+    la démontrer en public. Rien d'inventé : le changement de date gratuit et le
+    remboursement avant départ sont ceux qu'on annonce déjà les jours de mer
+    forte. Le visuel les sort de la crise pour en faire un argument permanent.
+    **La ligne du pied porte tout : « Nous ne garantissons pas la mer. Nous
+    garantissons ton argent. »** — on garantit le remboursement, jamais le départ.
+  · **`flyer34-premierefois`** — pour qui n'a jamais payé sur internet (§ 5 du
+    manuel). Il ne dit pas « c'est simple » (interdit § 11 : ça humilie celui qui
+    a peur de ne pas savoir) : il rattache le geste à **MVola**, que la personne
+    fait déjà. « C'est le même geste qu'envoyer du MVola. »
+  · **`flyer35-ports`** — « je pars d'où, moi ? » On nomme quatre ports dans tous
+    nos textes sans jamais dire lequel choisir. Un obstacle pratique non levé
+    arrête autant qu'un prix trop élevé (§ 13.3, audit de friction). **Aucun
+    horaire ni durée** : non vérifiés.
+  🔄 **La rotation par numéro de semaine ISO sert enfin à quelque chose** : lundi,
+  mardi et samedi ont maintenant deux variantes (comme dimanche depuis le 12/08),
+  et les neuves sont en **position [0]** pour sortir dès cette semaine (34 % 2 = 0).
+  Semaine 35 : les anciennes reviennent. **La condition écrite dans
+  `calendrier.py` est respectée — les deux variantes sont du même système.**
+  📌 **Ce que « préparer la semaine » veut dire, pour la prochaine fois** :
+  vérifier que chaque jour a un visuel, puis vérifier qu'il n'est pas le même que
+  la semaine d'avant. Le second contrôle est celui qui compte.
+
 - **18/08/2026 (🚨 « LES PUBS NE PARTENT PAS AUTOMATIQUEMENT » — elles partaient,
   c'est le RAPPORT qui mentait)** — Le patron avait raison de s'inquiéter et tort
   sur les faits, et c'est ma faute : il lisait un chiffre que je fabriquais mal.

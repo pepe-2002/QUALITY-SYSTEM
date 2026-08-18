@@ -193,14 +193,21 @@ def publications_recentes(jours=7):
     # `published_posts` demande pages_read_engagement ; `feed` marche parfois
     # quand l'autre échoue. On essaie les deux avant d'abandonner.
     for bord in ('published_posts', 'feed'):
-        rep = curl(f'{BASE}/{page}/{bord}?fields=created_time,message&limit=50'
+        rep = curl(f'{BASE}/{page}/{bord}?fields=created_time,message&limit=100'
                    f'&since={depuis}', jeton=jeton, strict=False)
         donnees = rep.get('data')
         if donnees is None:
             continue
+        # ⚠️ 18/08/2026 : `since` est IGNORÉ par Facebook sur ces deux bords —
+        # l'appel a renvoyé les 50 dernières publications de toute l'histoire de
+        # la page, et le rapport a affiché « 50 publications en 7 jours ».
+        # Exactement le genre de chiffre faux que cette fonction devait tuer.
+        # Donc on filtre NOUS-MÊMES sur la date, et on ne fait plus confiance à
+        # un paramètre qu'on n'a pas vérifié.
+        recentes = [p for p in donnees if p.get('created_time', '') >= depuis]
         return [{'quand': p.get('created_time', '')[:16].replace('T', ' à '),
                  'texte': (p.get('message') or '').strip()}
-                for p in donnees]
+                for p in recentes]
     return None
 
 

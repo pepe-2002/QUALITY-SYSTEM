@@ -42,6 +42,10 @@ on:
         description: 'Publier l avis de SERVICE SUSPENDU (pendant une fermeture)'
         type: boolean
         default: false
+      reprise:
+        description: 'Publier l annonce de REPRISE des traversees (jamais automatique)'
+        type: boolean
+        default: false
 
 # Sans ceci, Python met sa sortie en memoire tampon quand elle est redirigee :
 # les messages d'erreur (stderr, non tamponne) apparaissent AVANT les lignes
@@ -131,11 +135,24 @@ jobs:
           PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 programme.py --avis --publier
 
-      # ⚠️ « && !inputs.avis_de_suspension » : sans cette condition, un lancement
-      # avec la case ci-dessus publierait DEUX FOIS le meme avis, puisque
-      # PUBLIER_FB est arme en permanence.
+      # L'annonce de REPRISE. Jamais sur minuterie : le jour et l'heure sont
+      # decides par le patron, parce qu'une reprise se decide quand la vedette
+      # part vraiment. programme.py refuse de la publier si service.py dit encore
+      # « ferme » — les deux messages se contrediraient.
+      - name: Publier l'annonce de reprise
+        if: inputs.reprise
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: python3 programme.py --reprise --publier
+
+      # ⚠️ « && !inputs… » : sans ces conditions, un lancement avec une des cases
+      # ci-dessus publierait EN PLUS la publication du jour, puisque PUBLIER_FB
+      # est arme en permanence — deux posts d'un coup.
       - name: Publier
-        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension
+        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise
         working-directory: moheligo/pub/flyers
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}

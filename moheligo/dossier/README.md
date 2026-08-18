@@ -86,19 +86,14 @@ python3 page.py --sortie /tmp/flyers.html                 # les flyers et leurs 
 Ce tableau est le seul endroit à jour sur ce qui tourne tout seul. **Vérifier
 qu'il est encore vrai avant de l'annoncer au patron.**
 
-🚨 **DEPUIS LE 12/08/2026, LE SERVICE EST FERMÉ** (« jusqu'à nouvel ordre,
-ouverture possible mardi », à cause de la mer agitée). `pub/flyers/service.py`
-porte l'état, et `programme.py` le consulte avant tout le reste.
-**Pour rouvrir : `OUVERT = True` dans `service.py`, et pousser sur `main`.**
-Une seule ligne, un seul endroit. Et on n'écrit jamais « les traversées reprennent
-mardi » — seulement « peut-être », parce que c'est ce que le patron a dit.
+✅ **SERVICE ROUVERT LE 13/08/2026.** Le patron : « aujourd'hui c'est la reprise
+des traversées, publie maintenant. » `service.py` a `OUVERT = True`, la mention de
+fermeture ne s'ajoute plus, et le bandeau du bulletin du soir est redevenu
+« RÉSERVE POUR DEMAIN » — le tout automatiquement, en changeant une seule ligne.
 
-🚦 **DÉCISION DU PATRON DU 13/08/2026 : les pubs continuent quand même**
-(`PUB_PENDANT_FERMETURE = True`). Elles partent donc normalement, mais **aucune
-ne sort sans la mention de fermeture** ajoutée automatiquement : « les départs
-sont suspendus ; tu peux réserver pour les jours qui viennent ; ne descends pas
-au port avant l'annonce de la reprise ». `controle.py` refuse toute publication
-commerciale qui n'en porte pas.
+🗄️ **La fermeture du 12-13/08 reste archivée dans `service.py`** (dates, mots du
+patron, raison) : c'est le modèle à recopier à la prochaine. **Pour refermer :
+`OUVERT = False`, mettre `depuis` à jour, pousser sur `main`.**
 
 | Quoi | Quand | Interrupteur | État |
 |---|---|---|---|

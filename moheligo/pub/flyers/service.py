@@ -51,10 +51,16 @@ import argparse
 import datetime
 
 # --- l'état du service ------------------------------------------------------
-OUVERT = False
+# ✅ ROUVERT le 13/08/2026. Le patron : « aujourd'hui c'est la reprise des
+# traversées, publie maintenant. » La fermeture aura duré deux jours.
+OUVERT = True
 
 FERMETURE = dict(
+    # 🗄️ ARCHIVE de la fermeture du 12-13/08/2026, gardée exprès : c'est le
+    # modèle à recopier à la prochaine (les mots du patron, la raison, la date).
+    # Tant que OUVERT vaut True, rien ici n'est lu ni affiché.
     depuis='2026-08-12',
+    jusqu_au='2026-08-13',
     # Ce que le patron a dit, mot pour mot, sans l'arrondir :
     annonce="fermées jusqu'à nouvel ordre, ouverture possible mardi",
     # La date n'est PAS une promesse : elle sert seulement à savoir quand
@@ -89,7 +95,7 @@ VISUEL_AVIS = 'flyer-suspension-facebook.png'
 # réservation à l'avance, et ne promet aucune date.
 #
 # ⚠️ Pour couper les pubs à nouveau : `PUB_PENDANT_FERMETURE = False`.
-PUB_PENDANT_FERMETURE = True
+PUB_PENDANT_FERMETURE = True   # sans effet tant que OUVERT vaut True
 
 MENTION_FERMETURE = """⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS (mer agitée).
 Tu peux prendre ta place pour les jours qui viennent — elle t'attend, et si la

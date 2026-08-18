@@ -35,6 +35,7 @@ import publier_fb                              # noqa: E402
 import service                                 # noqa: E402
 
 GROS_TEMPS = 'flyer-grostemps-facebook.png'
+REPRISE = 'flyer-reprise-facebook.png'
 
 MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
         'août', 'septembre', 'octobre', 'novembre', 'décembre']
@@ -107,6 +108,9 @@ def main():
                          'de lui-même que le premier jour de la fermeture)')
     ap.add_argument('--point', action='store_true',
                     help='forcer le point du service (état du jour, zéro vente)')
+    ap.add_argument('--reprise', action='store_true',
+                    help='publier le visuel de REPRISE (jamais automatique : le '
+                         'jour et l\'heure sont décidés par le patron)')
     a = ap.parse_args()
 
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
@@ -114,6 +118,21 @@ def main():
         return
 
     jour = datetime.date.fromisoformat(a.jour) if a.jour else datetime.date.today()
+
+    # ---- LA REPRISE : à la demande, jamais sur minuterie ---------------------
+    # Le patron, 12/08 : « ne le donne pas au robot. » Puis, le 13/08 :
+    # « aujourd'hui c'est la reprise des traversées, publie maintenant. » D'où ce
+    # chemin explicite : il ne part que si on le demande, jamais tout seul.
+    # ⚠️ À ne lancer QU'APRÈS avoir remis OUVERT = True dans service.py, sinon la
+    # mention de fermeture viendrait se coller sous une annonce de reprise.
+    if a.reprise:
+        if not service.ouvert(jour):
+            sys.exit('service.py dit encore FERMÉ : remettre OUVERT = True avant '
+                     'd\'annoncer la reprise, sinon les deux messages se contredisent.')
+        visuel = REPRISE
+        texte = next(f['texte'] for f in page.FLYERS if f['png'] == REPRISE)
+        envoyer(visuel, texte, 'REPRISE DES TRAVERSÉES — annonce du patron', a)
+        return
 
     # ---- LE SERVICE EST-IL OUVERT ? (avant tout le reste) ------------------
     # Le patron, 12/08/2026 : « les traversées sont fermées jusqu'à nouvel ordre

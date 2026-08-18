@@ -370,6 +370,23 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **13/08/2026 (✅ REPRISE DES TRAVERSÉES)** — Le patron : « aujourd'hui c'est la
+  reprise des traversées, publie maintenant. » La fermeture aura duré **deux
+  jours** (12 → 13/08).
+  **Les deux gestes, dans l'ordre écrit dans `service.py`** :
+  1. `OUVERT = True` — et tout se remet en place tout seul : plus de mention de
+     fermeture sur les pubs, bandeau du soir redevenu « RÉSERVE POUR DEMAIN »,
+     conseil de mer normal, calendrier de la semaine reparti.
+  2. **l'annonce de reprise publiée** (`flyer-reprise-facebook.png`).
+  🔧 **Nouveau chemin `programme.py --reprise`** (+ case `reprise` dans le
+  workflow) : le patron avait dit « ne le donne pas au robot », puis « publie
+  maintenant » — les deux sont vrais, d'où un chemin **explicite, jamais sur
+  minuterie**. Et une sécurité : il **refuse de publier si `service.py` dit encore
+  fermé**, sinon l'annonce de reprise partirait sous la mention « les départs sont
+  suspendus » — deux messages qui se contredisent le même jour.
+  🗄️ **La fermeture est archivée, pas effacée** : dates, mots du patron, raison.
+  C'est le modèle de la prochaine. Refermer = `OUVERT = False` + `depuis` à jour.
+
 - **13/08/2026 (🚨 DÉCISION DU PATRON : LES PUBS CONTINUENT PENDANT LA FERMETURE)** —
   « Les pubs continuent même si c'est fermé jusqu'à mardi. »
   J'avais recommandé l'inverse, et je l'avais dit clairement. **Il a tranché : sa

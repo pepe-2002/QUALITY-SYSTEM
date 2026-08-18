@@ -8,7 +8,7 @@ Commande du patron (11/08/2026) : « je veux des rapports, au début il m'en fau
 beaucoup pour pouvoir améliorer ».
 
 Ce que ce rapport sait tout seul :
-  · les publications réellement parties (journal-publications.json)
+  · les publications réellement parties (demandées à la page Facebook)
   · le nombre d'abonnés de la page (API Graph, lecture seule)
   · la mer annoncée le jour même (bulletin.json)
 
@@ -48,6 +48,19 @@ def lire(nom, defaut):
         return defaut
 
 
+def lire_la_page(jours):
+    """Les publications réellement parties, demandées à Facebook. None si refusé."""
+    if not (os.environ.get('FB_PAGE_ID', '').strip()
+            and os.environ.get('FB_PAGE_TOKEN', '').strip()):
+        return None
+    sys.path.insert(0, str(ICI))
+    import publier_fb
+    try:
+        return publier_fb.publications_recentes(jours)
+    except SystemExit:          # un rapport ne doit jamais échouer pour ça
+        return None
+
+
 def abonnes():
     """Lecture seule, et tolérante : un rapport ne doit jamais échouer pour ça."""
     page = os.environ.get('FB_PAGE_ID', '').strip()
@@ -75,7 +88,27 @@ def main():
     maintenant = datetime.now(COMORES)
     depuis = (maintenant - timedelta(days=a.jours)).isoformat(timespec='minutes')
 
-    journal = [p for p in lire('journal-publications.json', []) if p.get('quand', '') >= depuis]
+    # --- ce qui est VRAIMENT parti : on le demande à Facebook, pas à nous ----
+    # 🚨 18/08/2026. Le patron : « les pubs ne partent pas automatiquement. »
+    # Elles partaient. C'est CE rapport qui disait le contraire : il comptait les
+    # lignes de `journal-publications.json`, un fichier écrit sur le serveur
+    # GitHub et effacé à la fin de chaque travail. Résultat : « 1 publication en
+    # 7 jours », tous les jours, quoi qu'il arrive. Un chiffre faux dans un
+    # rapport coûte plus cher qu'une panne : la panne se voit et se répare, le
+    # chiffre faux détruit la confiance dans tout le système.
+    # Désormais la source de vérité est la PAGE elle-même ; le journal local ne
+    # sert plus que de secours, et on dit quand on s'en sert.
+    source = 'la page Facebook'
+    publications = lire_la_page(a.jours)
+    if publications is None:
+        source = ('le journal local — ⚠️ **incomplet** : il est effacé à chaque '
+                  'exécution, le vrai compte est sur la page')
+        publications = [{'quand': p['quand'].replace('T', ' à ')[:16],
+                         'texte': p.get('accroche', ''),
+                         'visuel': p.get('visuel', '')}
+                        for p in lire('journal-publications.json', [])
+                        if p.get('quand', '') >= depuis]
+    journal = publications
     bulletin = lire('bulletin.json', {})
     abo = abonnes()
 
@@ -100,14 +133,15 @@ def main():
     L.append('\n## La décision\n\n' + decision)
 
     L.append('\n## Ce qui est parti sur la page\n')
+    L.append(f'_Compté depuis {source}._\n')
     if journal:
-        L.append('| Quand | Visuel | Accroche |')
-        L.append('|---|---|---|')
+        L.append('| Quand | Première ligne |')
+        L.append('|---|---|')
         for p in journal:
-            quand = p['quand'].replace('T', ' à ')[:16]
-            L.append(f"| {quand} | `{p.get('visuel','—')}` | {p.get('accroche','—')} |")
+            debut = (p.get('texte') or '—').splitlines()[0][:70]
+            L.append(f"| {p['quand']} | {debut} |")
     else:
-        L.append('_Aucune publication enregistrée._')
+        L.append('_Aucune publication sur la période._')
 
     L.append('\n## Ce que je peux mesurer seul\n')
     L.append(f"- **Abonnés de la page** : {abo if abo is not None else '_non lisible (jeton sans permission de lecture)_'}")

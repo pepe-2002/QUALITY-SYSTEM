@@ -86,12 +86,12 @@ python3 page.py --sortie /tmp/flyers.html                 # les flyers et leurs 
 Ce tableau est le seul endroit à jour sur ce qui tourne tout seul. **Vérifier
 qu'il est encore vrai avant de l'annoncer au patron.**
 
-✅ **SERVICE ROUVERT LE 13/08/2026.** Le patron : « aujourd'hui c'est la reprise
+✅ **SERVICE ROUVERT LE MARDI 18/08/2026.** Le patron : « aujourd'hui c'est la reprise
 des traversées, publie maintenant. » `service.py` a `OUVERT = True`, la mention de
 fermeture ne s'ajoute plus, et le bandeau du bulletin du soir est redevenu
 « RÉSERVE POUR DEMAIN » — le tout automatiquement, en changeant une seule ligne.
 
-🗄️ **La fermeture du 12-13/08 reste archivée dans `service.py`** (dates, mots du
+🗄️ **La fermeture du 12 au 18/08 (six jours) reste archivée dans `service.py`** (dates, mots du
 patron, raison) : c'est le modèle à recopier à la prochaine. **Pour refermer :
 `OUVERT = False`, mettre `depuis` à jour, pousser sur `main`.**
 

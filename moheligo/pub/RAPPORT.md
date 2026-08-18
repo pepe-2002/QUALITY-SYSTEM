@@ -1,6 +1,6 @@
-# Rapport MoheliGo — mardi 11 août
+# Rapport MoheliGo — mardi 18 août
 
-_Période : 7 derniers jours. Relevé à 17h29, heure des Comores._
+_Période : 7 derniers jours. Relevé à 06h05, heure des Comores._
 
 ## La décision
 
@@ -8,13 +8,15 @@ _Période : 7 derniers jours. Relevé à 17h29, heure des Comores._
 
 ## Ce qui est parti sur la page
 
-_Aucune publication enregistrée._
+_Compté depuis le journal local — ⚠️ **incomplet** : il est effacé à chaque exécution, le vrai compte est sur la page._
+
+_Aucune publication sur la période._
 
 ## Ce que je peux mesurer seul
 
 - **Abonnés de la page** : _non lisible (jeton sans permission de lecture)_
 - **Publications sur la période** : 0
-- **Dernier bulletin fabriqué** : 2026-08-12 — mer peu agitée, houle 0.93 m, vent 17 km/h sud-est
+- **Dernier bulletin fabriqué** : 2026-08-13 — mer agitée, houle 1.39 m, vent 28 km/h sud
 
 ## 🔴 Les trois chiffres qu'il me faut, et que je ne peux pas deviner
 

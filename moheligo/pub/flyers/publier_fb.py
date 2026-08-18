@@ -167,6 +167,43 @@ def verifier():
     print('Adresse :', rep.get('link', '—'))
 
 
+def publications_recentes(jours=7):
+    """Les publications RÉELLEMENT parties, lues sur Facebook lui-même.
+
+    🚨 POURQUOI CETTE FONCTION EXISTE (18/08/2026). Le patron : « les pubs ne
+    partent pas automatiquement. » Vérification faite : elles partaient — cinq
+    jours d'affilée, à l'heure. Ce qui ne partait pas, c'était **la preuve** : le
+    rapport comptait les publications dans `journal-publications.json`, un fichier
+    écrit sur le serveur GitHub… qui est effacé à la fin de chaque travail. Le
+    rapport annonçait donc « 1 publication en 7 jours » tous les jours, et c'est
+    ce chiffre-là que le patron lisait.
+
+    📌 LA LEÇON : un compteur qui repart de zéro à chaque exécution ne mesure
+    rien, et un chiffre faux dans un rapport détruit la confiance dans le
+    système entier — bien plus vite qu'une panne, qu'on voit et qu'on répare.
+    La source de vérité, c'est la PAGE, pas notre journal.
+
+    Renvoie une liste [{quand, texte}] triée du plus récent au plus ancien, ou
+    None si Facebook refuse la lecture (permission manquante) — dans ce cas
+    l'appelant retombe sur le journal local, en le disant.
+    """
+    page, jeton = config()
+    depuis = (datetime.now(timezone.utc)
+              - timedelta(days=jours)).strftime('%Y-%m-%dT%H:%M:%S+0000')
+    # `published_posts` demande pages_read_engagement ; `feed` marche parfois
+    # quand l'autre échoue. On essaie les deux avant d'abandonner.
+    for bord in ('published_posts', 'feed'):
+        rep = curl(f'{BASE}/{page}/{bord}?fields=created_time,message&limit=50'
+                   f'&since={depuis}', jeton=jeton, strict=False)
+        donnees = rep.get('data')
+        if donnees is None:
+            continue
+        return [{'quand': p.get('created_time', '')[:16].replace('T', ' à '),
+                 'texte': (p.get('message') or '').strip()}
+                for p in donnees]
+    return None
+
+
 def decouper(chemin):
     """Le texte du post, et le premier commentaire s'il y en a un."""
     brut = pathlib.Path(chemin).read_text()

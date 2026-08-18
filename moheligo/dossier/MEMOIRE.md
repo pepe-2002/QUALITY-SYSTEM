@@ -370,9 +370,18 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
-- **13/08/2026 (✅ REPRISE DES TRAVERSÉES)** — Le patron : « aujourd'hui c'est la
-  reprise des traversées, publie maintenant. » La fermeture aura duré **deux
-  jours** (12 → 13/08).
+- **18/08/2026 (✅ REPRISE DES TRAVERSÉES)** — Le patron, mardi au petit matin :
+  « aujourd'hui c'est la reprise des traversées, publie maintenant. » La fermeture
+  aura duré **six jours** (12 → 18/08) — et elle s'est terminée exactement le
+  mardi qu'il avait dit « possible » le 12.
+  📌 **La leçon vaut d'être gardée** : la date est tombée juste, et on a quand
+  même eu raison de ne jamais l'annoncer. Six jours à promettre mardi, c'était
+  six jours à jouer notre parole aux dés — le résultat ne change pas le calcul.
+  ⚠️ **Erreur de ma part, corrigée** : j'avais daté cette reprise du 13/08 dans
+  `service.py`, `MEMOIRE.md` et `README.md`, parce que ma session s'était arrêtée
+  ce jour-là. **Je n'ai aucune horloge entre deux messages du patron : cinq jours
+  peuvent passer sans que je le sache.** Vérifier la date réelle (`date -u`) avant
+  d'écrire un événement daté — surtout dans les fichiers qui font foi.
   **Les deux gestes, dans l'ordre écrit dans `service.py`** :
   1. `OUVERT = True` — et tout se remet en place tout seul : plus de mention de
      fermeture sur les pubs, bandeau du soir redevenu « RÉSERVE POUR DEMAIN »,

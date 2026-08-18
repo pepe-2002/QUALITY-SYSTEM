@@ -51,16 +51,21 @@ import argparse
 import datetime
 
 # --- l'état du service ------------------------------------------------------
-# ✅ ROUVERT le 13/08/2026. Le patron : « aujourd'hui c'est la reprise des
-# traversées, publie maintenant. » La fermeture aura duré deux jours.
+# ✅ ROUVERT le MARDI 18/08/2026, au petit matin. Le patron : « aujourd'hui c'est
+# la reprise des traversées, publie maintenant. »
+# La fermeture aura duré SIX jours (12 → 18 août) — et elle s'est terminée
+# exactement le mardi qu'il avait dit « possible » le 12. On a eu raison de ne
+# jamais l'annoncer comme une date : elle est tombée juste, mais on ne pouvait
+# pas le savoir, et une semaine à promettre mardi aurait été une semaine à jouer
+# notre parole aux dés.
 OUVERT = True
 
 FERMETURE = dict(
-    # 🗄️ ARCHIVE de la fermeture du 12-13/08/2026, gardée exprès : c'est le
+    # 🗄️ ARCHIVE de la fermeture du 12 au 18/08/2026 (six jours), gardée exprès : c'est le
     # modèle à recopier à la prochaine (les mots du patron, la raison, la date).
     # Tant que OUVERT vaut True, rien ici n'est lu ni affiché.
     depuis='2026-08-12',
-    jusqu_au='2026-08-13',
+    jusqu_au='2026-08-18',
     # Ce que le patron a dit, mot pour mot, sans l'arrondir :
     annonce="fermées jusqu'à nouvel ordre, ouverture possible mardi",
     # La date n'est PAS une promesse : elle sert seulement à savoir quand

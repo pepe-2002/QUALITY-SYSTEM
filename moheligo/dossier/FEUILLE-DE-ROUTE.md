@@ -73,7 +73,7 @@ sans en manquer un seul, les rapports du dimanche.
   client la première fois. C'est le levier le plus fort qu'on ait (§ 13.2 du
   manuel, la leçon M-Pesa) et il est gratuit.
 
-📈 **PREMIÈRE MESURE RÉELLE — 18/08/2026, donnée par le patron :**
+📈 **PREMIÈRE MESURE RÉELLE — 23/08/2026, donnée par le patron :**
 **les visites du site sont passées de 5-6 par jour à 25-26 par jour.** Environ
 ×4,5 après dix jours de publication quotidienne, et pendant une semaine où le
 service a été fermé six jours. Avec 26 abonnés Facebook, la page seule ne peut
@@ -86,13 +86,13 @@ serait exactement la mauvaise réponse.
 ⚠️ À ne pas surinterpréter : quelques jours ne font pas une tendance, et la
 reprise des traversées crée un pic mécanique.
 
-🎉 **PREMIÈRES VENTES — 18/08/2026 : TROIS TRAVERSÉES PAYÉES**, et les acheteurs
+🎉 **PREMIÈRES VENTES — 23/08/2026 : TROIS TRAVERSÉES PAYÉES**, et les acheteurs
 ont suivi la page ensuite. La chaîne complète — choisir un départ, payer par
 MVola, recevoir son billet — **fonctionne pour de vrai**. Ce n'est plus une
 hypothèse, et c'est ce que cette étape devait prouver.
 ➡️ **3 sur les 10 du seuil.**
 
-📊 **LE TUNNEL, MESURÉ LE 18/08/2026** — 140 ouvertures en 7 jours (**543 depuis
+📊 **LE TUNNEL, MESURÉ LE 23/08/2026** — 140 ouvertures en 7 jours (**543 depuis
 le lancement de juillet** : un quart de toute l'activité s'est faite cette
 semaine-là), **16 vues de l'écran Traversées, soit 11 %**, 21 vues de la Météo
 mer, et **6 paiements commencés dont 3 terminés**.

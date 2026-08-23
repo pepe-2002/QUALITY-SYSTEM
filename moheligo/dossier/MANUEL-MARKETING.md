@@ -35,7 +35,7 @@
 
 ## 1. La thèse : comment une marque grandit vraiment
 
-> 📈 **VÉRIFIÉ CHEZ NOUS — 18/08/2026.** Ce paragraphe n'est plus seulement de la
+> 📈 **VÉRIFIÉ CHEZ NOUS — 23/08/2026.** Ce paragraphe n'est plus seulement de la
 > théorie lue dans un livre. Dix jours de publication quotidienne (deux par jour,
 > sans en manquer une), dont **six jours de service fermé où l'on n'a rien vendu
 > du tout** : les visites du site sont passées de **5-6 à 25-26 par jour**. Avec
@@ -181,7 +181,7 @@ Ce qu'il gagne : partir tranquille.
 
 ## 5. 🎯 VENDRE À QUELQU'UN QUI N'A JAMAIS ACHETÉ EN LIGNE
 
-> 🚨 **LA LEÇON DU 18/08/2026 — ON NE VEND PAS CE QUE LE CLIENT ACHÈTE.**
+> 🚨 **LA LEÇON DU 23/08/2026 — ON NE VEND PAS CE QUE LE CLIENT ACHÈTE.**
 > Un client qui avait **déjà payé sa traversée** a posé deux questions par
 > WhatsApp : *« le bus part à quelle heure ? »* et *« à combien on paie pour le
 > bus ? »*

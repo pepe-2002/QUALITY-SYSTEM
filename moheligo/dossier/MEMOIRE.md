@@ -370,7 +370,54 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
-- **18/08/2026 (🚨 LE BLOCAGE N°1 EST HUMAIN, PAS TECHNIQUE — la phrase qui
+- **23/08/2026 (🔴 UNE VENTE PERDUE DONT ON CONNAÎT LA PHRASE EXACTE — et ce
+  qu'elle vaut)** — Le patron donne les faits du trajet terrestre **et** raconte
+  un appel : *« est-ce qu'on paie tous ces frais ici ? comme ça on va juste
+  là-bas pour voyager sans se casser la tête »* — réponse non — *« ça ne vaut pas
+  la peine alors »*. Le client n'a pas réservé.
+  📌 **Les faits** : bus au départ de **Kartala, à Moroni** (point de rendez-vous
+  des clients et des commandants, bus réservés par les commandants), **1 000 FC**
+  par client, **500 FC par colis**, **1 000 FC au port**. Tout est déjà écrit
+  dans l'application, partie « info pratique ».
+  🚨 **CE QUE LA VENTE PERDUE DIT VRAIMENT** : ce n'est pas le montant qui a fait
+  fuir — c'est de **payer trois fois, à trois endroits, sans connaître le total**.
+  Il n'achetait pas moins cher : il achetait **de ne plus avoir à y penser**.
+  C'est mot pour mot notre positionnement (§ 2) — *supprimer l'incertitude* — et
+  on l'a fait pour la place, l'heure et la mer, **mais pas pour l'argent**.
+  💡 **Décision proposée au patron (catégorie C) : le forfait tout compris** —
+  traversée + bus + port, un seul paiement en ligne. La chaîne existe déjà (les
+  commandants réservent les bus, le rendez-vous existe, on encaisse déjà) ; il ne
+  manque que d'encaisser le tout et de reverser. Les quatre points à regarder en
+  face (trésorerie, droit d'encaisser pour le port, remboursement total,
+  jours de mer forte) sont écrits dans `QUESTIONS-CLIENTS.md`.
+  ✅ **En attendant, ce qui ne coûte rien : tout dire.** `flyer37-vraiprix`
+  (« Ton voyage, sans surprise ») détaille les trois postes. Il ne supprime pas
+  les trois paiements, il supprime **la surprise** — et une surprise au port, la
+  valise à la main, coûte bien plus qu'un client qui renonce chez lui.
+  📌 **Et un enseignement qui vaut pour tout** : le patron précise que ces infos
+  **sont déjà dans l'application**. Les clients appellent quand même. **Une
+  information écrite au mauvais endroit n'existe pas.** On n'ouvre pas « info
+  pratique » avant de réserver, on l'ouvre quand on a déjà un problème. Le total
+  du voyage doit s'afficher **sur l'écran de réservation**.
+  ⭐ **Le témoignage est autorisé** : le patron a obtenu l'accord de la cliente,
+  à condition d'effacer son numéro. Le visuel reste à faire.
+
+- **23/08/2026 (⚠️ J'AI REDATÉ CINQ ENTRÉES — la même erreur, en pire)** — En
+  vérifiant le calendrier, je découvre qu'on est le **23 août au soir** (le 24 au
+  petit matin aux Comores) et non le 18. J'avais daté du 18/08 tout ce qui a été
+  écrit ce soir : le premier chiffre de visites, le tunnel, les trois ventes, les
+  conversations clients, le blocage humain. **Corrigé au 23/08.** Les trois
+  entrées du 18 qui restent (reprise, « les pubs ne partent pas », semaine
+  préparée) sont vérifiées par les exécutions GitHub, elles.
+  📌 **C'est la deuxième fois en une semaine.** La cause est structurelle : **je
+  n'ai aucune horloge entre deux messages du patron** — cinq jours peuvent passer
+  sans que rien ne me le signale, et je continue au dernier repère connu.
+  ✅ **La garde, désormais dans la règle en trois lignes du dossier** : *lancer
+  `date` AVANT d'écrire quoi que ce soit de daté.* Une leçon écrite mais non
+  outillée ne tient pas — celle-ci est maintenant dans le README, à l'endroit
+  qu'on lit en premier.
+
+- **23/08/2026 (🚨 LE BLOCAGE N°1 EST HUMAIN, PAS TECHNIQUE — la phrase qui
   renverse mon analyse)** — Le patron, à propos de deux des trois premières
   clientes : **« elles m'avaient appelé sur WhatsApp AVANT de valider le
   paiement, elles voulaient être sûres qu'il y avait quelqu'un derrière. »**
@@ -396,7 +443,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   l'écran de paiement**, pas dans un pied de page, avec « un doute ? appelle
   avant de payer ». C'est probablement le changement le plus rentable du site.
 
-- **18/08/2026 (🗣️ LES CONVERSATIONS CLIENTS — et le trou qu'elles révèlent dans
+- **23/08/2026 (🗣️ LES CONVERSATIONS CLIENTS — et le trou qu'elles révèlent dans
   le produit)** — Le patron montre deux échanges WhatsApp avec des acheteurs.
   **C'est la matière la plus utile qu'on ait eue depuis le début**, et ça a
   ouvert `dossier/QUESTIONS-CLIENTS.md`.
@@ -429,7 +476,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   doivent **jamais** y être déposées. Dans `QUESTIONS-CLIENTS.md` on ne garde que
   la question, jamais la personne.
 
-- **18/08/2026 (🎉 LES TROIS PREMIÈRES VENTES — la chaîne fonctionne de bout en
+- **23/08/2026 (🎉 LES TROIS PREMIÈRES VENTES — la chaîne fonctionne de bout en
   bout)** — Le patron : « 543 c'est depuis le lancement en juillet, et 3 personnes
   ont payé et suivi MoheliGo. »
   🚨 **C'est le jour le plus important du projet depuis le premier flyer.**
@@ -459,7 +506,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   flyer. Trois, ça se dit entre nous, pas en public — un chiffre trop petit
   affiché comme un exploit fait l'effet inverse.
 
-- **18/08/2026 (📊 LE TUNNEL COMPLET — et il dit que le trou n'est PAS où je le
+- **23/08/2026 (📊 LE TUNNEL COMPLET — et il dit que le trou n'est PAS où je le
   cherchais)** — Le patron envoie les statistiques d'écrans de l'application, et
   le chiffre d'abandon : **« 3 ont commencé et n'ont pas fini. »**
 
@@ -508,7 +555,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   passage météo → départs**. Publier plus n'y changerait rien : c'est un problème
   de produit, pas de publicité (§ 8 et § 13.3, audit de friction).
 
-- **18/08/2026 (📈 LE PREMIER CHIFFRE DE RÉSULTAT — les visites ont été
+- **23/08/2026 (📈 LE PREMIER CHIFFRE DE RÉSULTAT — les visites ont été
   multipliées par cinq)** — Le patron : « je commence à voir une montée des
   visiteurs sur le site, c'était 5-6 par jour, c'est monté à 25-26 par jour. »
   **C'est la première mesure qu'on obtient depuis le début du projet**, et c'est

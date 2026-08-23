@@ -1,6 +1,6 @@
 # 🗣️ LE REGISTRE DES QUESTIONS CLIENTS
 
-> **Ouvert le 18/08/2026**, après que le patron m'a montré ses conversations
+> **Ouvert le 23/08/2026**, après que le patron m'a montré ses conversations
 > WhatsApp avec les premiers acheteurs.
 >
 > **Pourquoi ce fichier est le plus précieux du dossier** : tout le reste
@@ -15,7 +15,7 @@
 
 ---
 
-## ⚠️ LA DÉCOUVERTE DU 18/08/2026 : LE VOYAGE NE COMMENCE PAS AU PORT
+## ⚠️ LA DÉCOUVERTE DU 23/08/2026 : LE VOYAGE NE COMMENCE PAS AU PORT
 
 Dans une seule conversation, un client qui avait **déjà payé sa traversée** pose
 deux questions d'affilée :
@@ -41,23 +41,89 @@ où on le cherche. On a passé des semaines à travailler le paiement et la
 réservation, et il reste une question à laquelle **aucun de nos supports ne
 répond** — alors qu'elle se pose à *chaque* voyageur de la Grande Comore.
 
-### 🔴 Ce que je dois savoir du patron avant d'écrire quoi que ce soit
+### ✅ LES FAITS, donnés par le patron le 23/08/2026
 
-Je n'écris rien là-dessus tant que je n'ai pas les faits (§ 11 : on n'invente
-jamais un horaire ni un prix).
+| | |
+|---|---|
+| **Le bus** | part de **Kartala, à Moroni** — c'est le point de départ des clients **et des commandants** |
+| **Qui réserve** | **les commandants** réservent les bus à l'avance |
+| **Prix du bus** | **1 000 FC** par client |
+| **Colis** | **500 FC** par colis |
+| **Le port** | **1 000 FC**, à régler sur place |
+| **Où c'est écrit** | dans l'application, partie **« info pratique »** |
 
-1. **Le bus, c'est nous ou pas ?** Est-ce un transport organisé par MoheliGo, ou
-   le client se débrouille ?
-2. **D'où part-il exactement**, et à quelle heure ?
-3. **Combien coûte-t-il**, et se paie-t-il à part ou avec le billet ?
-4. **Est-ce que ça vaut pour les deux liaisons** (Ouroveni et Chindini) ?
+⚠️ **L'heure reste inconnue.** Le patron a répondu « 7h00 » à la question du bus,
+mais la carte d'embarquement affiche aussi 07:00 pour la vedette : je ne sais pas
+si c'est la même heure ou une confusion. **Aucun horaire n'est imprimé nulle part
+tant que ce n'est pas tranché.**
 
-➡️ **Si c'est nous qui l'organisons, c'est un argument énorme et inutilisé** :
-« on ne te prend pas au port, on te prend en ville ». Ça supprime la plus grosse
-inconnue du voyage, et personne d'autre ne le dit.
-➡️ **Si ce n'est pas nous**, il faut quand même répondre à la question quelque
-part — au minimum sur le billet et dans un support — sinon chaque client posera
-la question par WhatsApp, une par une, à la main.
+---
+
+## 🔴 LA VENTE PERDUE, ET ON CONNAÎT SA PHRASE EXACTE
+
+Un client a appelé pour poser une seule question :
+
+> **« Est-ce qu'on paie tous ces frais ici ? Comme ça on va juste là-bas pour
+> voyager, sans se casser la tête à payer ça et ça. »**
+
+Réponse : **non**. Réponse du client : **« ça ne vaut pas la peine alors »** — et
+il n'a pas réservé.
+
+**Lisons-la correctement, parce qu'elle ne dit pas ce qu'on croit :**
+
+- ❌ Ce n'est **pas** le montant. 1 000 + 1 000 FC ne l'a pas fait fuir.
+- ✅ C'est **le fait de payer trois fois, à trois endroits, sans connaître le
+  total à l'avance**. Il n'achetait pas une traversée moins chère : il achetait
+  **de ne plus avoir à y penser**.
+
+**C'est mot pour mot notre positionnement** (§ 2 du manuel) : *supprimer
+l'incertitude*. On l'a fait pour la place, l'heure et la mer. On ne l'a pas fait
+pour l'argent.
+
+### 💡 LA DÉCISION QUI EN DÉCOULE — LE FORFAIT TOUT COMPRIS
+
+> **Vendre « Moroni → Mohéli, tout compris » : traversée + bus + frais de port,
+> un seul paiement en ligne. Le voyageur arrive à Kartala, il monte, il part.**
+
+**Pourquoi c'est faisable dès aujourd'hui, et pas un rêve** : la chaîne existe
+déjà. Les commandants réservent déjà les bus, le rendez-vous existe déjà, et
+nous encaissons déjà en ligne. Il ne manque que d'encaisser le tout et de
+reverser.
+
+**Ce que ça rapporterait** : la vente perdue ci-dessus, plus toutes celles qu'on
+ne connaît pas ; et jusqu'à **2 500 FC de panier supplémentaire** par voyageur.
+
+**Ce qu'il faut regarder en face avant de décider** — c'est une décision du
+patron (catégorie C, § 12.2 ter) :
+1. **la trésorerie** : on encaisse d'abord, on reverse ensuite aux transporteurs
+   et au port ;
+2. **le droit** : peut-on encaisser les 1 000 FC du port pour son compte ? Si
+   c'est une taxe portuaire officielle, il faut leur accord ;
+3. **le remboursement** : si la traversée n'a pas lieu, on doit rendre **tout**,
+   y compris ce qu'on a déjà reversé ;
+4. **les jours de mer forte** : le bus part-il quand même ?
+
+➡️ **En attendant la décision, on fait ce qui ne coûte rien : on dit tout.**
+C'est le visuel `flyer37-vraiprix` (« Ton voyage, sans surprise »), qui publie le
+jeudi. Il ne supprime pas les trois paiements, mais il supprime la **surprise** —
+et la surprise au port, la valise à la main, coûte bien plus qu'un client qui
+renonce chez lui.
+
+---
+
+## 📌 « TOUT ÇA EST DANS L'APPLI, PARTIE INFO PRATIQUE » — ET POURTANT ILS DEMANDENT
+
+Le patron l'a précisé : ces informations **sont déjà écrites** dans
+l'application. Et les clients appellent quand même.
+
+**C'est un enseignement à part entière, et il vaut pour tout le reste** : une
+information écrite au mauvais endroit n'existe pas. Personne n'ouvre « info
+pratique » avant de réserver — on ouvre « info pratique » quand on a **déjà** un
+problème.
+
+➡️ **La règle** : l'information doit être **là où naît la question**, pas dans
+une page qui la contient. Le total du voyage se dit **sur l'écran de
+réservation**, au moment où l'on regarde le prix. Pas ailleurs.
 
 ---
 
@@ -88,7 +154,7 @@ Réponse du client, sans qu'on lui demande rien :
 
 ## 🚨 LE BLOCAGE N°1, ET IL N'EST PAS TECHNIQUE
 
-Le patron, 18/08/2026, à propos de deux des trois premières clientes :
+Le patron, 23/08/2026, à propos de deux des trois premières clientes :
 
 > **« Elles m'avaient appelé sur WhatsApp AVANT de valider le paiement. Elles
 > voulaient être sûres qu'il y avait quelqu'un derrière. »**
@@ -128,8 +194,9 @@ là. Ces clientes **savaient** payer. Ce dont elles doutaient, c'était de **nou
 
 | Question du client | Répondue où ? | À faire |
 |---|---|---|
-| « Le bus part à quelle heure ? » | nulle part — WhatsApp à la main | ⏳ obtenir les faits, puis l'écrire une fois pour toutes |
-| « À combien on paie pour le bus ? » | nulle part | ⏳ idem |
+| « Le bus part à quelle heure ? » | WhatsApp à la main | 🔴 **l'heure n'est toujours pas sûre** — à trancher avec le patron |
+| « À combien on paie pour le bus ? » | app, « info pratique » — pas lue | ✅ visuel `flyer37-vraiprix`, publie le jeudi |
+| **« Est-ce qu'on paie tout ici ? »** *(vente perdue)* | non — et le client a renoncé | 🔴 **décision du forfait tout compris**, en attente |
 | « C'est ainsi ? » *(en montrant son billet)* | WhatsApp | 💡 le client doute que son billet soit valable : un mot de confirmation automatique après paiement lèverait ce doute |
 
 ---

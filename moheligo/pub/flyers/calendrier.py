@@ -68,6 +68,10 @@ GARANTIE = 'flyer-garantie-facebook.png'        # mardi : « et si ça ne part p
 # n'est pas technique, il est humain — d'où ce visuel, placé le mercredi, le
 # jour où l'on parle d'argent et donc où le doute est le plus vif.
 QUELQUUN = 'flyer-quelquun-facebook.png'        # mercredi : « il y a quelqu'un ? »
+# 18/08/2026 : une vente perdue, mot pour mot — « est-ce qu'on paie tous ces
+# frais ici ? » / non / « ça ne vaut pas la peine alors ». Le montant n'était pas
+# le problème : payer trois fois sans connaître le total, si.
+VRAIPRIX = 'flyer-vraiprix-facebook.png'        # jeudi : ce que coûte le voyage entier
 PREMIERE = 'flyer-premierefois-facebook.png'    # lundi : jamais payé en ligne
 PORTS = 'flyer-ports-facebook.png'              # samedi : quel port de départ
 # visuels présents dans le dossier mais pas sur la page du patron
@@ -96,17 +100,25 @@ T_AFFICHE = "Variante courte pour l'affiche"
 # même registre (partenaires, vouvoiement), donc l'alternance repose la page sans
 # abîmer la marque. C'est la condition, et la seule : jamais un visuel d'avant le
 # système.
+# 🕐 COMMENT LIRE CE DICTIONNAIRE, ET NE PLUS SE TROMPER (24/08/2026) :
+# le visuel publié est `variantes[numéro de semaine ISO % 2]`. Autrement dit
+# **le PREMIER de la liste sort les semaines PAIRES, le second les IMPAIRES.**
+# Je m'étais trompé en croyant que « premier = maintenant » : les cinq visuels
+# nés des vraies objections clients seraient sortis une semaine trop tard.
+# ⚠️ NE PAS RAISONNER : lancer `python3 calendrier.py`, il affiche le numéro de
+# semaine et ce qui part réellement.
 SEMAINE = {
-    0: [(PREMIERE, VISUEL[PREMIERE]),            # lundi : lever un blocage (une semaine sur deux)
-        (RIEN, VISUEL[RIEN])],
-    1: [(GARANTIE, VISUEL[GARANTIE]),            # mardi : la confiance, puis l'île
-        (SIGNATURE, VISUEL[SIGNATURE])],
-    2: [(QUELQUUN, VISUEL[QUELQUUN]),           # mercredi : le doute, puis les prix
-        (PRIX, VISUEL[PRIX])],
-    3: [(ABONNER, VISUEL[ABONNER])],            # jeudi : s'abonner
+    0: [(RIEN, VISUEL[RIEN]),                  # lundi
+        (PREMIERE, VISUEL[PREMIERE])],
+    1: [(SIGNATURE, VISUEL[SIGNATURE]),        # mardi
+        (GARANTIE, VISUEL[GARANTIE])],
+    2: [(PRIX, VISUEL[PRIX]),                  # mercredi
+        (QUELQUUN, VISUEL[QUELQUUN])],
+    3: [(ABONNER, VISUEL[ABONNER]),            # jeudi
+        (VRAIPRIX, VISUEL[VRAIPRIX])],
     4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
-    5: [(PORTS, VISUEL[PORTS]),                  # samedi : le pratique, puis la destination
-        (DESTINATION, VISUEL[DESTINATION])],
+    5: [(DESTINATION, VISUEL[DESTINATION]),    # samedi
+        (PORTS, VISUEL[PORTS])],
     6: [(INSTIT, VISUEL[INSTIT]),               # dimanche : l'institutionnel
         (PARTENARIAT, VISUEL[PARTENARIAT])],    #   et, l'autre semaine, le partenariat
 }
@@ -145,7 +157,7 @@ def du_matin(jour=None):
 
 # Ce que le calendrier annonce, pour l'afficher sans publier.
 INTENTION = ['comment ça marche', "l'île ou la garantie", 'les prix ou la confiance',
-             's'"'"'abonner à la page',
+             's'"'"'abonner ou le vrai prix',
              'la diaspora', 'la destination ou les ports',
              # le dimanche alterne : le nom du visuel dit lequel des deux part
              "l'institutionnel ou le partenariat"]

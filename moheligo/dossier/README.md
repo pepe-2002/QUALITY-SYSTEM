@@ -11,6 +11,11 @@
 
 ## ⚡ La règle, en trois lignes
 
+0. 🕐 **LANCER `date` AVANT TOUT.** Je n'ai aucune horloge entre deux messages
+   du patron : **plusieurs jours peuvent passer sans que rien ne me le signale**,
+   et je continue au dernier repère connu. C'est arrivé deux fois en une semaine,
+   et ça a mis de fausses dates dans les fichiers qui font foi. Une seconde de
+   vérification évite de réécrire l'histoire.
 1. **Début de session MoheliGo** → lire `MEMOIRE.md`. C'est l'état du projet et
    tout ce qui a été décidé. **Je n'ai aucun souvenir en dehors de ce fichier.**
 2. **Avant de produire quoi que ce soit** → lire la ligne correspondante du

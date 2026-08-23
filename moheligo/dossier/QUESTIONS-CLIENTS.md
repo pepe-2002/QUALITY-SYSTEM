@@ -119,18 +119,24 @@ c'est tout autre chose :
    taxi. Le manuel appelle ça la *disponibilité mentale* (§ 1) — et c'est
    précisément ce qui se construit par la régularité, pas par une remise.
 
-### 💡 LE RETOURNEMENT : DEVENIR L'ENDROIT OÙ ON VOIT TOUS LES PRIX
+### 💡 LE RETOURNEMENT PROPOSÉ — ⛔ IMPOSSIBLE AUJOURD'HUI, ET VOICI POURQUOI
 
-Aujourd'hui, pour connaître les prix, un voyageur doit **appeler ses commandants
-un par un**, et il n'a jamais la certitude d'avoir le meilleur.
+J'avais proposé ceci : *« si MoheliGo affiche les départs de plusieurs
+commandants avec leurs VRAIS prix, la guerre des prix cesse d'être notre
+problème : elle devient notre produit »*.
 
-> **Si MoheliGo affiche les départs de plusieurs commandants avec leurs VRAIS
-> prix, la guerre des prix cesse d'être notre problème : elle devient notre
-> produit.**
+⛔ **Le patron a répondu le 23/08/2026 : on a UN SEUL COMMANDANT.**
 
-C'est le seul endroit où l'on voit tout d'un coup — et cette fois la comparaison
-joue **pour** nous. Le voyageur ne compare plus « MoheliGo contre le commandant » :
-il compare **les commandants entre eux, chez nous**.
+Avec un seul fournisseur, **il n'y a rien à comparer** — l'idée est bonne mais
+elle n'a pas de matière. Elle est mise en réserve, et elle devient un **argument
+de recrutement** : le jour où il y a trois commandants, ce produit existe.
+
+📌 **Conséquence, et elle est structurelle** : recruter un 2ᵉ et un 3ᵉ commandant
+n'est pas un confort de croissance, c'est **la seule façon que le prix se règle
+par le marché au lieu de se régler par la négociation**. Et tant qu'il n'y en a
+qu'un, MoheliGo a **un point de panne unique** : s'il arrête, on n'a plus rien à
+vendre. *(Décision de catégorie C — c'est du commercial, elle appartient au
+patron.)*
 
 ### Et notre public, ce n'est pas celui qui a déjà son commandant
 
@@ -142,17 +148,77 @@ notre client de départ. Le sont :
 - **ceux qui traversent rarement**, et n'ont pas de « leur » commandant ;
 - **ceux qui ne veulent pas appeler cinq personnes** pour comparer.
 
-### 🔴 Ce qu'il reste à savoir (et je n'écris rien sur les prix avant)
+### ✅ LES QUATRE RÉPONSES DU PATRON (23/08/2026) — et ce qu'elles révèlent
 
-1. **Qui fixe le prix affiché sur MoheliGo — nous ou le commandant ?**
-2. **Les 10 % sont-ils pris SUR le prix, ou ajoutés PAR-DESSUS ?** Si le
-   voyageur les paie en plus, il a une raison d'éviter le site ; s'ils sont pris
-   dessus, le commandant touche 10 % de moins que sa vente directe et il faut lui
-   montrer ce que ça lui rapporte quand même.
-3. **Les 3 % KartaPay : et par MVola ?** Si MVola coûte moins cher, il doit être
-   proposé en premier.
-4. **Combien de commandants sont sur la plateforme ?** S'il y en a plusieurs,
-   l'affichage comparatif est possible **dès maintenant**.
+| Ma question | Sa réponse |
+|---|---|
+| Qui fixe le prix affiché ? | **« C'est nous qui écrivons les chiffres donnés par le commandant. »** |
+| Les 10 % ? | **compris DANS le prix** (pris dessus) |
+| Les 3 % KartaPay ? | **ajoutés PAR-DESSUS**, payés par le client |
+| KartaPay, c'est quoi ? | **une API qui permet le paiement MVola en ligne** |
+| Combien de commandants ? | **un seul** |
+
+#### 🚨 CE QUE LE CALCUL MONTRE, ET C'EST LA VRAIE CAUSE
+
+Un siège affiché **14 500 FC** se répartit ainsi :
+
+| | |
+|---|---|
+| **le client paie** | 14 500 × 1,03 = **14 935 FC** |
+| le commandant touche | 14 500 × 0,90 = **13 050 FC** |
+| MoheliGo touche | **1 450 FC** |
+| KartaPay touche | **435 FC** |
+
+**Le même commandant qui vend 12 500 FC en direct touche… 12 500 FC.**
+
+> ### ⚠️ En vendant chez nous à 14 500, le commandant gagne **550 FC de PLUS** par siège qu'en vendant lui-même à 12 500. Et le client paie **2 435 FC de plus.**
+
+**C'est ça, le mécanisme.** Le prix affiché est donné par le commandant, les 10 %
+sont pris dessus — donc **plus il annonce haut, plus il gagne**. Le système, tel
+qu'il est construit aujourd'hui, **le récompense de nous donner le tarif
+officiel**. Celui qui paie l'écart, c'est le client. Celui qui perd la vente,
+c'est nous.
+
+🚫 **Et ce n'est PAS une tricherie de sa part** — je me suis déjà trompé deux fois
+en cherchant un coupable. Il a donné le tarif officiel parce que **personne ne lui
+a jamais demandé autre chose**. Ce n'est pas une trahison, **c'est une
+conversation qui n'a jamais eu lieu.**
+
+#### 💰 CE QU'IL FAUDRAIT AFFICHER (décision de catégorie B — je propose, il tranche)
+
+Si le prix affiché est **tout compris** (les 3 % dedans, le client paie ce qu'il
+voit) :
+
+| Le client paie | Le commandant touche | MoheliGo touche |
+|---|---|---|
+| 15 000 FC | 13 107 | 1 456 |
+| **14 000 FC** ⬅️ **ma proposition** | **12 233** | **1 359** |
+| 13 500 FC | 11 796 | 1 311 |
+| 13 000 FC | 11 359 | 1 262 |
+
+➡️ **À 14 000 FC tout compris, le commandant touche 12 233 FC — soit 267 FC de
+moins que sa vente directe à 12 500**, sur des clients **qu'il n'aurait pas eus**
+(diaspora, voyageurs rares). C'est l'argument à lui porter. En dessous de 14 000,
+on lui demande de gagner franchement moins qu'en direct : ça ne se négocie qu'avec
+du volume à montrer, et on ne l'a pas encore.
+
+#### 🔴 LE PROBLÈME QU'ON PEUT RÉGLER SEULS, AUJOURD'HUI, GRATUITEMENT
+
+Le client voit **14 500** et paie **14 935**. Les 3 % apparaissent à la fin.
+
+**Notre propre flyer dit : « LE PRIX, TU LE CONNAIS AVANT DE PAYER. »** On se
+contredit nous-mêmes, sur la seule promesse qui nous distingue. **Le prix affiché
+doit être le prix payé** — les 3 % à l'intérieur, pas en supplément. Ça ne coûte
+rien, ça ne demande l'accord de personne d'autre que le patron, et ça répare la
+promesse.
+
+#### ✅ QUESTION KARTAPAY : CLASSÉE
+
+KartaPay **est** la passerelle MVola en ligne — il n'existe pas de « MVola moins
+cher » à côté. La seule alternative serait un virement MVola à la main : on
+économiserait 435 FC et on perdrait la confirmation automatique… c'est-à-dire
+qu'on rouvrirait le doute « **c'est ainsi ?** » déjà vu en WhatsApp. **Ça ne vaut
+pas 435 FC.**
 
 ### ⚠️ La décision de marketing tient toujours
 

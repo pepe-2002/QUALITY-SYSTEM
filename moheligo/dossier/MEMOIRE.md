@@ -370,6 +370,45 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **23/08/2026 (🚨 LA CAUSE DU PRIX TROUVÉE : LE COMMANDANT GAGNE PLUS QUAND IL
+  NOUS ANNONCE PLUS CHER)** — le patron a répondu à mes quatre questions, et le
+  calcul qui en découle règle le sujet.
+  📌 **Ses réponses** : « **c'est nous qui écrivons les chiffres donnés par le
+  commandant** » ; les **10 % sont compris** dans le prix ; les **3 % KartaPay
+  sont ajoutés** par-dessus ; **KartaPay est l'API qui permet le paiement MVola
+  en ligne** ; et **on n'a qu'UN SEUL commandant**.
+  🚨 **Le mécanisme, enfin identifié.** Sur un siège affiché 14 500 : le client
+  paie **14 935** (14 500 × 1,03), le commandant touche **13 050** (90 %),
+  MoheliGo **1 450**, KartaPay **435**. Or **le même commandant qui vend 12 500
+  en direct touche 12 500**. ➡️ **En passant par nous à 14 500, il gagne 550 FC
+  de PLUS par siège — et le client paie 2 435 FC de plus.** Le prix vient de lui,
+  les 10 % sont pris dessus : **plus il annonce haut, plus il gagne**. Le système
+  tel qu'il est construit **le récompense de nous donner le tarif officiel**.
+  🚫 **Ce n'est pas une tricherie** — je me suis déjà trompé deux fois en
+  cherchant un coupable. Il a donné le tarif officiel parce que **personne ne lui
+  a jamais demandé autre chose**. Ce n'est pas une trahison, **c'est une
+  conversation qui n'a jamais eu lieu**.
+  💰 **Proposition (catégorie B, le patron tranche) : afficher 14 000 FC TOUT
+  COMPRIS**, les 3 % à l'intérieur. Le commandant toucherait 12 233 FC, soit
+  **267 FC de moins que sa vente directe**, mais sur des clients qu'il n'aurait
+  pas eus (diaspora, voyageurs rares). En dessous de 14 000, on lui demande de
+  gagner franchement moins qu'en direct : ça ne se négocie qu'avec du volume, et
+  on ne l'a pas encore.
+  🔴 **Ce qu'on peut réparer seuls et gratuitement** : le client voit 14 500 et
+  paie 14 935. **Notre propre flyer dit « LE PRIX, TU LE CONNAIS AVANT DE
+  PAYER »** — on se contredit sur la seule promesse qui nous distingue. **Le prix
+  affiché doit être le prix payé.**
+  ⛔ **Le retournement « afficher tous les commandants » est mort pour l'instant** :
+  avec **un seul** commandant il n'y a rien à comparer. Il devient un argument de
+  recrutement. 📌 **Et c'est structurel** : recruter un 2ᵉ et un 3ᵉ commandant est
+  **la seule façon que le prix se règle par le marché au lieu de la négociation** —
+  et tant qu'il n'y en a qu'un, MoheliGo a **un point de panne unique**.
+  ✅ **Question KartaPay classée** : KartaPay **est** la passerelle MVola en ligne,
+  il n'y a pas de « MVola moins cher » à côté. L'alternative manuelle
+  économiserait 435 FC et rouvrirait le doute « c'est ainsi ? » vu en WhatsApp.
+  📌 **Leçon confirmée** : les quatre questions posées avant d'analyser ont donné
+  en un seul message ce que trois analyses confiantes n'avaient pas trouvé.
+
 - **23/08/2026 (🔴🔴 LE PRIX : ON VEND AU TARIF OFFICIEL DANS UN MARCHÉ QUI NE LE
   PRATIQUE PAS)** — ⚠️ **Il m'a fallu trois explications du patron pour
   comprendre**, et j'ai écrit deux analyses fausses que j'ai supprimées de ce

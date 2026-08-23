@@ -73,6 +73,19 @@ sans en manquer un seul, les rapports du dimanche.
   client la première fois. C'est le levier le plus fort qu'on ait (§ 13.2 du
   manuel, la leçon M-Pesa) et il est gratuit.
 
+📈 **PREMIÈRE MESURE RÉELLE — 18/08/2026, donnée par le patron :**
+**les visites du site sont passées de 5-6 par jour à 25-26 par jour.** Environ
+×4,5 après dix jours de publication quotidienne, et pendant une semaine où le
+service a été fermé six jours. Avec 26 abonnés Facebook, la page seule ne peut
+pas expliquer ce chiffre : ça circule ailleurs.
+➡️ **Conséquence sur cette étape** : l'audience n'est plus le frein. Ce qui reste
+à savoir, c'est **combien de ces visites deviennent une réservation**. Environ
+175 visites par semaine : si les réservations restent à zéro, le problème est
+dans le site ou le paiement, pas dans la publicité — et augmenter la publicité
+serait exactement la mauvaise réponse.
+⚠️ À ne pas surinterpréter : quelques jours ne font pas une tendance, et la
+reprise des traversées crée un pic mécanique.
+
 🚦 **SEUIL À 6 SEMAINES :**
 - **≥ 10 réservations d'inconnus** → l'offre tient, on passe à l'étape 2.
 - **entre 1 et 9** → l'offre tient mais quelque chose freine. On ne pousse pas la

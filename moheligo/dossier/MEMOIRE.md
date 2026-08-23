@@ -370,6 +370,37 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (📈 LE PREMIER CHIFFRE DE RÉSULTAT — les visites ont été
+  multipliées par cinq)** — Le patron : « je commence à voir une montée des
+  visiteurs sur le site, c'était 5-6 par jour, c'est monté à 25-26 par jour. »
+  **C'est la première mesure qu'on obtient depuis le début du projet**, et c'est
+  l'un des trois chiffres que je réclame chaque dimanche (§ 8 du manuel).
+  📊 **Ce que ça dit** : ×4 à ×5 en une semaine et demie de présence quotidienne.
+  Avec 26 abonnés Facebook, la page seule ne peut pas expliquer 25 visites par
+  jour — ça veut dire que ça circule ailleurs : partages, bouche-à-oreille, QR
+  des flyers, recherche. **C'est la meilleure nouvelle possible : l'audience
+  n'est plus le problème.**
+  ⚠️ **Ce que ça ne dit PAS, et qu'il ne faut pas surinterpréter** : quelques
+  jours ne font pas une tendance, la reprise des traversées crée forcément un
+  pic, et une visite n'est pas une réservation. Sur de petits nombres, un
+  quintuplement peut aussi être trois personnes curieuses de plus par jour.
+  🚦 **Ce que ça change dans la conduite** : la question n'est plus « comment
+  faire venir du monde » mais **« pourquoi ceux qui viennent ne réservent pas —
+  ou combien réservent »**. C'est le passage de l'acquisition à la conversion.
+  Le seuil de l'étape 1 de la feuille de route (**10 réservations d'inconnus en
+  6 semaines**) devient mesurable : ~175 visites par semaine, donc si les
+  réservations restent à 0, le problème est **dans le site ou le paiement**, pas
+  dans la publicité. Le manuel est formel : ne pas payer de publicité pour
+  remplir un seau percé.
+  📌 **Les deux chiffres qui manquent maintenant, et ils sont urgents** :
+  **1)** réservations payées sur la semaine ; **2)** réservations commencées
+  moins terminées (l'abandon au paiement). Sans le second, on ne saura pas si
+  c'est l'offre ou le tunnel de paiement qui bloque.
+  ✅ **Le hasard fait bien les choses** : le visuel de la garantie (« et si la
+  vedette ne part pas ? ») est parti aujourd'hui même. C'est exactement le
+  levier de conversion dont on a besoin maintenant — il lève la peur de perdre
+  son argent chez quelqu'un qui est déjà sur le site.
+
 - **18/08/2026 (LA SEMAINE PRÉPARÉE — et la rotation qui existe enfin)** — Le
   patron : « prépare les flyers de la semaine, note les traversées sont
   ouvertes. » L'ouverture était déjà notée (`OUVERT = True`, poussé le matin même).

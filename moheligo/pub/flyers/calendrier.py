@@ -63,6 +63,11 @@ SIGNATURE = 'flyer-signature-facebook.png'      # mardi (déjà validé par le p
 # pour faire nombre — et placés en PREMIÈRE variante pour qu'ils sortent cette
 # semaine-ci (la rotation suit le numéro de semaine ISO, 34 % 2 = 0).
 GARANTIE = 'flyer-garantie-facebook.png'        # mardi : « et si ça ne part pas ? »
+# 18/08/2026, le soir : deux des trois premières clientes ont APPELÉ avant de
+# payer « pour être sûres qu'il y avait quelqu'un derrière ». Le blocage nº1
+# n'est pas technique, il est humain — d'où ce visuel, placé le mercredi, le
+# jour où l'on parle d'argent et donc où le doute est le plus vif.
+QUELQUUN = 'flyer-quelquun-facebook.png'        # mercredi : « il y a quelqu'un ? »
 PREMIERE = 'flyer-premierefois-facebook.png'    # lundi : jamais payé en ligne
 PORTS = 'flyer-ports-facebook.png'              # samedi : quel port de départ
 # visuels présents dans le dossier mais pas sur la page du patron
@@ -96,7 +101,8 @@ SEMAINE = {
         (RIEN, VISUEL[RIEN])],
     1: [(GARANTIE, VISUEL[GARANTIE]),            # mardi : la confiance, puis l'île
         (SIGNATURE, VISUEL[SIGNATURE])],
-    2: [(PRIX, VISUEL[PRIX])],                  # mercredi : les prix
+    2: [(QUELQUUN, VISUEL[QUELQUUN]),           # mercredi : le doute, puis les prix
+        (PRIX, VISUEL[PRIX])],
     3: [(ABONNER, VISUEL[ABONNER])],            # jeudi : s'abonner
     4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
     5: [(PORTS, VISUEL[PORTS]),                  # samedi : le pratique, puis la destination
@@ -138,7 +144,7 @@ def du_matin(jour=None):
 
 
 # Ce que le calendrier annonce, pour l'afficher sans publier.
-INTENTION = ['comment ça marche', "l'île ou la garantie", 'les prix',
+INTENTION = ['comment ça marche', "l'île ou la garantie", 'les prix ou la confiance',
              's'"'"'abonner à la page',
              'la diaspora', 'la destination ou les ports',
              # le dimanche alterne : le nom du visuel dit lequel des deux part

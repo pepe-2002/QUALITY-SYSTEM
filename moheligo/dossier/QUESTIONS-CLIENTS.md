@@ -86,6 +86,44 @@ Réponse du client, sans qu'on lui demande rien :
 
 ---
 
+## 🚨 LE BLOCAGE N°1, ET IL N'EST PAS TECHNIQUE
+
+Le patron, 18/08/2026, à propos de deux des trois premières clientes :
+
+> **« Elles m'avaient appelé sur WhatsApp AVANT de valider le paiement. Elles
+> voulaient être sûres qu'il y avait quelqu'un derrière. »**
+
+**Ceci renverse toute mon analyse du tunnel.** Je cherchais le blocage dans la
+mécanique : trop d'étapes, MVola compliqué, prix pas assez clair. Il n'est pas
+là. Ces clientes **savaient** payer. Ce dont elles doutaient, c'était de **nous** :
+
+> *Est-ce qu'il y a un vrai humain derrière ce site, ou est-ce que je vais perdre
+> mon argent ?*
+
+**Trois conséquences, et elles changent l'ordre de tout :**
+
+1. **Le WhatsApp n'est pas notre service après-vente. C'est le dernier maillon de
+   la vente.** Sans cet appel, il n'y avait pas de vente. Et les **3 paiements
+   abandonnés** sont très probablement ceux de gens qui ont eu exactement le même
+   doute — sans jamais appeler.
+2. **Il ne faut pas chercher à éviter l'appel : il faut le provoquer.** Chaque
+   appel est une vente presque faite. C'est très exactement la leçon M-Pesa
+   (§ 13.2 du manuel) : ce qui a fait l'adoption, ce n'est pas l'application,
+   c'est **l'agent humain** à qui on pouvait parler.
+3. **Ce qui manque au site, ce n'est pas une fonction, c'est une preuve de vie** :
+   un numéro qui répond, un nom, un visage, un lieu. Les photos qu'on attend de
+   Young Leader servent aussi à ça.
+
+**Ce qui en découle, déjà fait ou à faire :**
+
+| | État |
+|---|---|
+| **Un visuel dont c'est le seul sujet** — « Tu veux être sûr qu'il y a quelqu'un ? » (`flyer36-quelquun`) | ✅ fait, il publie le mercredi |
+| **Le numéro WhatsApp visible AU MOMENT DU PAIEMENT**, pas dans un pied de page, avec « un doute ? appelle avant de payer » | ⏳ décision produit, à valider par le patron |
+| **Rappeler ceux qui abandonnent** — un message suffit | ⏳ le patron |
+
+---
+
 ## 📋 LES QUESTIONS DÉJÀ POSÉES (à compléter à chaque conversation)
 
 | Question du client | Répondue où ? | À faire |

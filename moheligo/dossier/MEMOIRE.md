@@ -370,6 +370,32 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (🚨 LE BLOCAGE N°1 EST HUMAIN, PAS TECHNIQUE — la phrase qui
+  renverse mon analyse)** — Le patron, à propos de deux des trois premières
+  clientes : **« elles m'avaient appelé sur WhatsApp AVANT de valider le
+  paiement, elles voulaient être sûres qu'il y avait quelqu'un derrière. »**
+  Je cherchais le blocage dans la mécanique du tunnel — trop d'étapes, MVola,
+  prix peu clair. **Il n'est pas là.** Ces clientes savaient payer. Elles
+  doutaient de NOUS : *y a-t-il un vrai humain derrière ce site, ou est-ce que je
+  vais perdre mon argent ?*
+  📌 **Les trois conséquences, écrites dans `QUESTIONS-CLIENTS.md`** :
+  1. **le WhatsApp n'est pas le service après-vente, c'est le dernier maillon de
+     la vente** — sans l'appel, pas de vente ; et les 3 paiements abandonnés sont
+     probablement ceux de gens qui ont eu le même doute sans appeler ;
+  2. **il ne faut pas éviter l'appel, il faut le provoquer** : chaque appel est
+     une vente presque faite. C'est exactement M-Pesa (§ 13.2) — l'adoption est
+     venue de l'agent humain, pas de l'application ;
+  3. **ce qui manque au site n'est pas une fonction, c'est une preuve de vie** :
+     un numéro qui répond, un nom, un visage, un lieu.
+  ✅ **`flyer36-quelquun` créé dans la foulée** — « Tu veux être sûr qu'il y a
+  quelqu'un ? C'est normal. Alors appelle avant de payer. » Placé le **mercredi**,
+  le jour où l'on parle d'argent et donc où le doute est le plus vif ; il sort
+  demain (semaine ISO 34). Il encourage l'appel au lieu de le dissuader, et il
+  utilise enfin le commandant nommé sur le billet comme preuve.
+  ⏳ **Décision produit proposée au patron** : mettre le numéro WhatsApp **dans
+  l'écran de paiement**, pas dans un pied de page, avec « un doute ? appelle
+  avant de payer ». C'est probablement le changement le plus rentable du site.
+
 - **18/08/2026 (🗣️ LES CONVERSATIONS CLIENTS — et le trou qu'elles révèlent dans
   le produit)** — Le patron montre deux échanges WhatsApp avec des acheteurs.
   **C'est la matière la plus utile qu'on ait eue depuis le début**, et ça a

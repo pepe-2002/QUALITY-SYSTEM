@@ -239,6 +239,9 @@ moheligo.com — WhatsApp +269 479 43 28
 Prévision Open-Meteo Marine.
 
 #MoheliGo #Comores #Mohéli #MétéoMer #Sécurité"""),
+    dict(png='flyer-quelquun-facebook.png', titre="🔥 MERCREDI — Y A-T-IL QUELQU'UN ?",
+         note="Sans date · publie le mercredi<br>une semaine sur deux<br>né d'une vraie cliente : elle a appelé<br>AVANT de payer pour être sûre<br>qu'un humain existait<br>le blocage nº1, et il n'est pas technique",
+         texte="TU VEUX ÊTRE SÛR QU'IL Y A QUELQU'UN DERRIÈRE ? C'EST NORMAL. ALORS APPELLE AVANT DE PAYER.\n\nPayer en ligne quelqu'un qu'on ne connaît pas, ça se réfléchit. On ne va pas te\ndire « fais-nous confiance » : on va te donner de quoi vérifier.\n\nÉCRIS OU APPELLE, MAINTENANT.\nWhatsApp +269 479 43 28. Quelqu'un répond — pas un robot, pas un répondeur. Pose\ntoutes tes questions avant de sortir un franc. Ça ne nous dérange pas : c'est le\ntravail.\n\nREGARDE TON BILLET.\nLe nom du commandant y est écrit. Tu sais qui pilote avant de monter à bord.\n\nET SI LA TRAVERSÉE NE PART PAS.\nChanger la date est gratuit, et tu es remboursé tant que la traversée n'est pas\npartie. Ton argent n'est jamais coincé chez nous.\n\nUNE ENTREPRISE COMORIENNE, AVEC DES GENS DEDANS.\nOn préfère répondre à dix questions plutôt que d'encaisser un doute.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Traversée #MVola"),
     dict(png='flyer-garantie-facebook.png', titre='🆕 MARDI — ET SI ÇA NE PART PAS ?',
          note="Sans date · publie le mardi<br>une semaine sur deux<br>répond à l'objection nº1 :<br>« je perds mon argent ? »<br>rien d'inventé : c'est ce qu'on<br>annonce déjà les jours de mer forte",
          texte="""ET SI LA VEDETTE NE PART PAS ? TU NE PERDS RIEN.

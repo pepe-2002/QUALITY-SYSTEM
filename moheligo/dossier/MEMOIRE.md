@@ -370,6 +370,52 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- ## ⏰ 23/08/2026 — RENDEZ-VOUS PRIS POUR LE **MARDI 25/08/2026**
+  **À LIRE EN PREMIER EN DÉBUT DE SESSION.** Le patron : « je te donne les
+  chiffres le mardi, et la conversation, et les améliorations sur mettre voir les
+  départs dans les endroits où on consulte le plus ». **Trois livraisons
+  attendues** — ne rien décider sur le prix avant de les avoir.
+
+  | # | Ce qu'il apporte | Ce que j'en fais |
+  |---|---|---|
+  | **1** | **les chiffres** (écrans 7 j + depuis le lancement, traversées payées, abonnés) | comparer semaine à semaine — c'est la 1ʳᵉ fois qu'on aura deux points |
+  | **2** | **la conversation avec le commandant** | le prix affiché qu'il accepte → alors seulement on touche au tarif |
+  | **3** | **les départs là où on consulte le plus** | son idée, et c'est la bonne : voir le plan chiffré ci-dessous |
+
+  ❓ **Les deux questions à lui reposer en même temps** :
+  · **« Accueil » (90) compte quoi** — des ouvertures distinctes, ou seulement les
+    retours à l'accueil ? Sans ça, le taux réel de la première marche est
+    incalculable (question ouverte depuis le 18/08).
+  · **Le commandant vend-il en direct à 12 500, ou descend-il à 10 000 ?** Tout le
+    calcul de commission repose sur son plancher réel.
+
+- **23/08/2026 (🎯 SON IDÉE : LES DÉPARTS LÀ OÙ ON REGARDE — et elle vise juste)** —
+  le patron propose de **montrer les départs dans les écrans les plus consultés**.
+  📌 **C'est exactement le chantier n°1 identifié le 18/08**, et il y arrive par
+  lui-même en regardant ses chiffres. Rappel de l'entonnoir : **140 ouvertures →
+  16 sur Traversées (11 %)**. Neuf personnes sur dix ouvrent l'application et **ne
+  voient jamais un départ**.
+  🚨 **Le plan, classé par le trafic réel (7 jours)** :
+
+  | Écran | vues | Ce qu'on y met | Pourquoi lui |
+  |---|---|---|---|
+  | **Accueil** | **41** | **le prochain départ en haut**, date + heure + bouton Réserver | **2,5× plus vu que Traversées**. Le départ doit aller au client, pas l'inverse |
+  | **Météo mer** | **21** | sous le bulletin : « mer calme mardi → prochain départ » + bouton | **plus consulté que les Traversées elles-mêmes** ; qui regarde la mer est en train de décider s'il part |
+  | **Découvrir** | 15 | en bas : « y aller : prochain départ le… » | il rêve de Mohéli — on lui donne la marche suivante |
+  | **Messagerie** | 11 | message d'accueil automatique avec le prochain départ | il nous parle déjà, c'est le plus chaud |
+
+  💡 **L'arithmétique qui rend ça prioritaire** : si **Accueil (41)** et **Météo
+  (21)** envoyaient seulement **un tiers** de leurs visiteurs vers un départ, ça
+  ferait **+20 vues** sur les 16 actuelles. ➡️ **On passerait de 11 % à ~26 % —
+  plus du double — SANS UN SEUL VISITEUR DE PLUS.** Aucune publicité ne donne ce
+  rendement.
+  ⚠️ **Et ça répare le revers signalé le 18/08** : la Météo est plus consultée que
+  les Traversées, on était en train de **devenir un service météo gratuit**. Un
+  pont de la Météo vers les départs transforme ce défaut en meilleur atout.
+  📌 **À retenir sur la méthode** : c'est **le patron** qui a proposé la bonne
+  priorité, à partir de ses propres chiffres. Les statistiques d'écrans sont la
+  donnée la plus rentable qu'il m'ait donnée — **les redemander chaque semaine**.
+
 - **23/08/2026 (💸 « ON PEUT RÉDUIRE NOTRE COMMISSION » — pourquoi j'ai répondu
   « pas d'abord »)** — le patron : « on peut réduire notre commission pour attirer
   les clients, je gagne ma vie avec un autre travail et le site ne coûte rien pour

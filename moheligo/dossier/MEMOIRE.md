@@ -370,46 +370,47 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
-- **23/08/2026 (🔴🔴 LE VRAI FREIN N°1 : NOTRE PROPRE CANAL NOUS SOUS-COTE)** —
-  ⚠️ **J'avais d'abord mal compris et j'ai écrit une analyse fausse**, que j'ai
-  supprimée de ce journal : j'avais cru que « les clients vont négocier au port ».
-  Le patron a corrigé : **« les gens ne peuvent pas négocier nos billets. Au port,
-  ce sont les COMMANDANTS qui amènent des clients à 12 500 et 10 000, alors que
-  nos billets sont à 14 500 plus frais, soit 15 000. »**
-  📌 **Ce ne sont donc pas des concurrents : ce sont nos propres commandants**,
-  ceux qui pilotent les traversées que nous vendons, et qui placent leurs clients
-  **5 000 FC moins cher que nous**.
-  🚨 **Pourquoi c'est bien plus grave qu'une concurrence ordinaire :**
-  1. **aucune plateforme ne survit en étant plus chère que son propre
-     fournisseur** — c'est la règle de base de tous les intermédiaires (hôtels,
-     taxis, transport) ; sinon la plateforme devient un simple catalogue ;
-  2. **et c'est peut-être déjà ce qui se passe** : beaucoup de consultations
-     (Traversées, Météo), très peu d'achats. Hypothèse à vérifier — **les gens
-     regardent chez nous puis appellent le commandant.** Nous ferions la
-     publicité, un autre encaisserait ;
-  3. **ce n'est pas un problème de marketing** : aucun flyer ne rattrape 5 000 FC
-     annoncés par le pilote lui-même. **C'est un accord commercial à passer avec
-     les commandants.**
-  💡 **La solution de fond : inverser qui paie la commission.** Aujourd'hui c'est
-  le CLIENT qui paie pour passer par nous — donc il a une raison de nous éviter.
-  Il faut que **le voyageur paie le même prix qu'en direct, et que le commandant
-  reverse une commission sur les places qu'on lui remplit**.
-  🗣️ **L'argument à porter aux commandants** : « vous bradez à 10 000 parce que
-  vous avez peur de partir à vide ; nous vendons vos places à l'avance, vous
-  n'avez plus besoin de brader le matin ». Une place vendue 12 500 trois jours
-  avant vaut mieux qu'une place à 10 000 le matin — et infiniment mieux qu'une
-  place vide. **MoheliGo ne doit pas leur coûter une commission : il doit leur
-  faire gagner le rabais qu'ils s'infligent.**
-  🔴 **Quatre questions posées au patron** : d'où viennent les 14 500 ? que touche
-  MoheliGo, et à qui vont les 500 FC de frais ? **le commandant reçoit-il plus ou
-  moins quand la vente passe par nous** (c'est la question qui décide de tout) ?
-  et **combien y a-t-il de commandants** — un accord se négocie avec trois
-  personnes, pas trente.
-  ✅ **Décision de marketing prise et signalée (catégorie B)** : **le flyer « les
-  prix » (14 500 en gros chiffres) sort de la rotation.** Tant qu'on est 45 %
-  au-dessus du prix annoncé sur le quai par le pilote, afficher notre prix en
-  grand revient à inviter à une comparaison qu'on perd. Le mercredi garde « Y
-  a-t-il quelqu'un ? ». Réversible en une ligne dans `calendrier.py`.
+- **23/08/2026 (🔴🔴 LE PRIX : ON VEND AU TARIF OFFICIEL DANS UN MARCHÉ QUI NE LE
+  PRATIQUE PAS)** — ⚠️ **Il m'a fallu trois explications du patron pour
+  comprendre**, et j'ai écrit deux analyses fausses que j'ai supprimées de ce
+  journal plutôt que corrigées : d'abord « les clients négocient au port », puis
+  « nos commandants nous sous-cotent déloyalement ». Les deux étaient à côté.
+  📌 **Ce qu'il a fini par me dire** : « **15 000, c'est le prix officiel, mais
+  personne ne paie ça.** Nous on a **10 % du billet**, et **3 % s'ajoutent pour
+  KartaPay**. Les commandants réduisent leurs prix pour avoir des clients, car
+  **les clients sont aussi habitués aux commandants**. »
+  🚨 **Les trois conclusions, qui renversent mes deux analyses précédentes :**
+  1. **Ce n'est pas de la déloyauté, c'est un marché.** Les commandants ne cassent
+     pas les prix *contre nous* : ils les cassent **entre eux**, pour capter des
+     clients déjà habitués à eux. Nous ne sommes même pas leur cible.
+  2. **Notre problème n'est pas la commission.** 10 % + 3 % sur 12 500 ≈ 1 600 FC.
+     **L'écart de 5 000 FC ne vient pas de notre marge, il vient du prix qu'on
+     affiche** : on vend au tarif officiel dans un marché qui ne l'applique
+     jamais. C'est afficher le prix du catalogue quand tout le monde est en solde.
+  3. **Le vrai concurrent n'est pas le prix, c'est l'HABITUDE.** On appelle son
+     commandant comme on appelle son taxi. C'est la *disponibilité mentale* du
+     § 1 — elle se construit par la régularité, jamais par une remise.
+  💡 **LE RETOURNEMENT PROPOSÉ** : aujourd'hui, pour comparer, un voyageur doit
+  appeler ses commandants un par un. **Si MoheliGo affiche les départs de
+  plusieurs commandants avec leurs VRAIS prix, la guerre des prix cesse d'être
+  notre problème : elle devient notre produit.** Le voyageur ne compare plus
+  « MoheliGo contre le commandant », il compare **les commandants entre eux, chez
+  nous**.
+  📌 **Et notre public n'est pas celui qui a déjà son commandant** — le § 1 le dit
+  et les chiffres le confirment : la croissance vient des **acheteurs légers**.
+  Nos clients sont la diaspora (qui n'a le numéro de personne), ceux qui
+  traversent rarement, et ceux qui ne veulent pas appeler cinq personnes.
+  🔴 **Quatre questions avant d'écrire quoi que ce soit sur les prix** : qui fixe
+  le prix affiché (nous ou le commandant) ? les 10 % sont-ils **pris sur** le prix
+  ou **ajoutés par-dessus** ? MVola coûte-t-il moins que les 3 % de KartaPay ?
+  et **combien de commandants sont sur la plateforme** — s'ils sont plusieurs,
+  l'affichage comparatif est possible tout de suite.
+  ⚠️ **Le flyer « les prix » reste hors rotation** : afficher un tarif que
+  personne ne pratique, c'est se présenter comme le plus cher du marché.
+  📌 **Leçon de méthode, la troisième de la journée** : j'ai produit deux analyses
+  complètes et confiantes sur des faits que je n'avais pas. **Sur un sujet
+  économique, poser les questions AVANT d'analyser** — une analyse fausse est plus
+  dangereuse qu'un chiffre faux, parce qu'elle ressemble à un raisonnement.
 
 - **23/08/2026 (⏰ L'HEURE DU BUS : 6H30 — et l'erreur que l'attente a évitée)** —
   Le patron tranche : **le bus part à 6h30**.

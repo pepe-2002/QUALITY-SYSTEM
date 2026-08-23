@@ -81,76 +81,84 @@ jeudi**, jour où il publie.
 
 ---
 
-## 🔴🔴 LE FREIN N°1 : NOTRE PROPRE CANAL NOUS SOUS-COTE
+## 🔴🔴 LE FREIN N°1 : ON VEND AU TARIF OFFICIEL DANS UN MARCHÉ QUI NE LE PRATIQUE PAS
 
-⚠️ **J'avais d'abord mal compris** — j'avais écrit que « les clients vont
-négocier au port ». Le patron a corrigé, et la réalité est bien plus sérieuse :
+⚠️ **Il m'a fallu trois explications du patron pour comprendre.** J'ai d'abord
+écrit « les clients négocient au port » (faux), puis « nos commandants nous
+sous-cotent déloyalement » (faux aussi). Voici ce qu'il a fini par me dire, et
+c'est tout autre chose :
 
-> **« Les gens ne peuvent pas aller négocier nos billets. Au port, ce sont les
-> COMMANDANTS qui amènent des clients à 12 500 et 10 000, alors que nos billets
-> sont à 14 500 plus frais, ce qui fait 15 000. »**
+> **« 15 000, c'est le prix officiel, mais personne ne paie ça. Nous, on a 10 %
+> du billet, et 3 % s'ajoutent pour KartaPay. Les commandants réduisent leurs
+> prix pour avoir des clients, car les clients sont aussi habitués aux
+> commandants. »**
 
-**Ce ne sont donc pas des concurrents. Ce sont nos propres commandants**, ceux
-qui pilotent les traversées que nous vendons, et qui placent leurs clients en
-direct **5 000 FC moins cher que nous**.
+### Ce que ça veut dire vraiment
 
-| | Prix payé par le voyageur |
+| | |
 |---|---|
-| **Par MoheliGo** | 14 500 + 500 de frais = **15 000 FC** |
-| **Par le commandant, en direct** | **10 000 à 12 500 FC** |
+| **15 000 FC** | le tarif **officiel** — un prix de référence, que **personne ne paie** |
+| **10 000 à 12 500 FC** | le prix **réel du marché**, celui que les commandants pratiquent |
+| **10 %** | ce que prend MoheliGo sur le billet |
+| **+ 3 %** | les frais KartaPay |
+| **La cause de la baisse des prix** | les commandants se disputent des clients **déjà habitués à eux** |
 
-### Pourquoi c'est bien plus grave qu'une concurrence ordinaire
+**Trois conclusions, et elles renversent mes deux analyses précédentes :**
 
-1. **Aucune plateforme ne survit en étant plus chère que son propre
-   fournisseur.** C'est la règle de base de tous les intermédiaires du monde
-   (hôtels, taxis, transport) : le prix via la plateforme ne doit **jamais** être
-   supérieur au prix direct. Sinon la plateforme devient un catalogue.
-2. **Et c'est peut-être déjà ce qui se passe.** Nos chiffres montrent beaucoup de
-   consultations (Traversées, Météo) et très peu d'achats. Un scénario possible,
-   à vérifier : **les gens regardent chez nous, puis appellent le commandant.**
-   Nous ferions la publicité, un autre encaisserait.
-3. **Ce n'est pas un problème de marketing.** Aucun flyer ne peut rattraper 5 000
-   FC d'écart annoncés par le pilote lui-même. **C'est un problème d'accord
-   commercial**, et il se règle avec les commandants, pas avec des visuels.
+1. **Ce n'est pas de la déloyauté, c'est un marché.** Les commandants ne cassent
+   pas les prix *contre nous* : ils les cassent **entre eux**, pour capter des
+   clients qui ont déjà leur habitude. Nous ne sommes pas leur cible — nous
+   sommes à côté.
+2. **Notre problème n'est pas la commission.** 10 % + 3 % sur un billet à 12 500,
+   c'est ~1 600 FC. **L'écart de 5 000 FC ne vient pas de notre marge : il vient
+   du prix qu'on affiche.** Nous vendons au tarif officiel dans un marché qui ne
+   l'applique jamais. C'est comme afficher le prix du catalogue quand tout le
+   monde vend en solde.
+3. **Le vrai concurrent n'est pas le prix, c'est l'HABITUDE.** « Les clients sont
+   habitués aux commandants » : on appelle son commandant comme on appelle son
+   taxi. Le manuel appelle ça la *disponibilité mentale* (§ 1) — et c'est
+   précisément ce qui se construit par la régularité, pas par une remise.
 
-### 💡 LA SOLUTION DE FOND : CHANGER QUI PAIE LA COMMISSION
+### 💡 LE RETOURNEMENT : DEVENIR L'ENDROIT OÙ ON VOIT TOUS LES PRIX
 
-Aujourd'hui, **c'est le client qui paie pour passer par nous** — donc il a une
-raison d'éviter MoheliGo. Il faut inverser :
+Aujourd'hui, pour connaître les prix, un voyageur doit **appeler ses commandants
+un par un**, et il n'a jamais la certitude d'avoir le meilleur.
 
-> **Le voyageur paie le même prix qu'en direct (ou moins). C'est le commandant
-> qui reverse une commission sur les places que nous lui remplissons.**
+> **Si MoheliGo affiche les départs de plusieurs commandants avec leurs VRAIS
+> prix, la guerre des prix cesse d'être notre problème : elle devient notre
+> produit.**
 
-C'est ainsi que fonctionnent toutes les plateformes qui tiennent. Et il y a un
-argument solide à porter aux commandants :
+C'est le seul endroit où l'on voit tout d'un coup — et cette fois la comparaison
+joue **pour** nous. Le voyageur ne compare plus « MoheliGo contre le commandant » :
+il compare **les commandants entre eux, chez nous**.
 
-**« Vous bradez à 10 000 parce que vous avez peur de partir à vide. Nous, on vend
-vos places à l'avance. Vous n'avez plus besoin de brader le matin. »**
+### Et notre public, ce n'est pas celui qui a déjà son commandant
 
-Une place vendue **12 500 trois jours avant** vaut mieux qu'une place à 10 000 le
-matin même — et infiniment mieux qu'une place vide. **MoheliGo ne doit pas leur
-coûter une commission : il doit leur faire gagner le rabais qu'ils s'infligent.**
+Le § 1 du manuel le dit et les chiffres le confirment : **la croissance vient des
+acheteurs légers**, ceux qui traversent une ou deux fois par an — pas des
+habitués. Quelqu'un qui a le numéro d'un commandant depuis dix ans n'est pas
+notre client de départ. Le sont :
+- **la diaspora**, qui n'a le numéro de personne ;
+- **ceux qui traversent rarement**, et n'ont pas de « leur » commandant ;
+- **ceux qui ne veulent pas appeler cinq personnes** pour comparer.
 
-### 🔴 Ce qu'il faut savoir avant de décider quoi que ce soit
+### 🔴 Ce qu'il reste à savoir (et je n'écris rien sur les prix avant)
 
-1. **D'où viennent les 14 500 ?** Prix imposé par les commandants, prix officiel,
-   ou prix commandant + notre marge ?
-2. **Que touche MoheliGo sur une vente ?** Et les 500 FC de frais, à qui vont-ils
-   (nous, MVola, KartaPay) ?
-3. **Le commandant reçoit combien quand la vente passe par nous ?** Plus ou moins
-   que ses 10 000 en direct ? **C'est la question qui décide de tout** : s'il
-   reçoit déjà plus, il n'a aucune raison de brader et la conversation est
-   simple.
-4. **Combien de commandants ?** Un accord se négocie avec trois personnes, pas
-   avec trente.
+1. **Qui fixe le prix affiché sur MoheliGo — nous ou le commandant ?**
+2. **Les 10 % sont-ils pris SUR le prix, ou ajoutés PAR-DESSUS ?** Si le
+   voyageur les paie en plus, il a une raison d'éviter le site ; s'ils sont pris
+   dessus, le commandant touche 10 % de moins que sa vente directe et il faut lui
+   montrer ce que ça lui rapporte quand même.
+3. **Les 3 % KartaPay : et par MVola ?** Si MVola coûte moins cher, il doit être
+   proposé en premier.
+4. **Combien de commandants sont sur la plateforme ?** S'il y en a plusieurs,
+   l'affichage comparatif est possible **dès maintenant**.
 
-### ⚠️ En attendant, une décision de marketing que je prends et que je signale
+### ⚠️ La décision de marketing tient toujours
 
-**Je sors le flyer « les prix » (14 500 en gros chiffres) de la rotation.** Tant
-que nous sommes 45 % au-dessus du prix que le pilote annonce lui-même sur le
-quai, **afficher notre prix en grand, c'est inviter à la comparaison qu'on
-perd**. Le mercredi garde « Y a-t-il quelqu'un ? ». C'est réversible en une
-ligne le jour où l'écart est réglé.
+**Le flyer « les prix » (14 500 en gros chiffres) reste hors rotation.** Afficher
+un tarif que personne ne pratique, c'est se présenter comme le plus cher du
+marché — exactement le contraire de ce qu'on veut.
 
 ---
 

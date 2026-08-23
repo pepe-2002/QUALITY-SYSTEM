@@ -112,8 +112,13 @@ SEMAINE = {
         (PREMIERE, VISUEL[PREMIERE])],
     1: [(SIGNATURE, VISUEL[SIGNATURE]),        # mardi
         (GARANTIE, VISUEL[GARANTIE])],
-    2: [(PRIX, VISUEL[PRIX]),                  # mercredi
-        (QUELQUUN, VISUEL[QUELQUUN])],
+    # ⚠️ 23/08/2026 — LE FLYER « PRIX » EST RETIRÉ DE LA ROTATION.
+    # Nos billets sont à 14 500 + 500 de frais, quand les commandants placent
+    # leurs clients à 10 000-12 500 en direct sur le quai. Tant que cet écart
+    # existe, afficher notre prix en gros chiffres, c'est inviter à une
+    # comparaison qu'on perd. Le remettre le jour où l'écart est réglé : il
+    # suffit de rétablir la paire ci-dessous.
+    2: [(QUELQUUN, VISUEL[QUELQUUN])],          # mercredi : la confiance
     3: [(ABONNER, VISUEL[ABONNER]),            # jeudi
         (VRAIPRIX, VISUEL[VRAIPRIX])],
     4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
@@ -156,7 +161,7 @@ def du_matin(jour=None):
 
 
 # Ce que le calendrier annonce, pour l'afficher sans publier.
-INTENTION = ['comment ça marche', "l'île ou la garantie", 'les prix ou la confiance',
+INTENTION = ['comment ça marche', "l'île ou la garantie", 'la confiance',
              's'"'"'abonner ou le vrai prix',
              'la diaspora', 'la destination ou les ports',
              # le dimanche alterne : le nom du visuel dit lequel des deux part

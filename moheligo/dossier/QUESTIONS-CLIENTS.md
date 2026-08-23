@@ -81,202 +81,76 @@ jeudi**, jour où il publie.
 
 ---
 
-## 🔴🔴 LE FREIN ÉCONOMIQUE N°1 : ON EST 45 % PLUS CHER QUE LE PORT
+## 🔴🔴 LE FREIN N°1 : NOTRE PROPRE CANAL NOUS SOUS-COTE
 
-Le patron, 23/08/2026 :
+⚠️ **J'avais d'abord mal compris** — j'avais écrit que « les clients vont
+négocier au port ». Le patron a corrigé, et la réalité est bien plus sérieuse :
 
-> **« Nos billets sont à 14 500. Les gens peuvent aller au port négocier un
-> billet à 12 500 ou 10 000. »**
+> **« Les gens ne peuvent pas aller négocier nos billets. Au port, ce sont les
+> COMMANDANTS qui amènent des clients à 12 500 et 10 000, alors que nos billets
+> sont à 14 500 plus frais, ce qui fait 15 000. »**
 
-**C'est le problème le plus sérieux du projet à ce jour**, et il explique
-probablement une partie des abandons : à 10 000 contre 14 500, l'écart est de
-**4 500 FC, soit 45 % de plus**.
+**Ce ne sont donc pas des concurrents. Ce sont nos propres commandants**, ceux
+qui pilotent les traversées que nous vendons, et qui placent leurs clients en
+direct **5 000 FC moins cher que nous**.
 
-### Ce qu'il ne faut PAS faire : s'aligner
-
-On ne gagne jamais une guerre de prix contre l'informel. Si on descend à 12 500,
-la négociation au port descendra à 9 000 : eux n'ont ni site, ni frais de
-paiement, ni engagement de remboursement. **Une baisse détruirait la marge sans
-supprimer l'écart.**
-
-### Ce qui est vrai et qu'on ne dit nulle part : l'écart n'est pas de 4 500 FC
-
-Celui qui va négocier au port :
-- doit **y être**, tôt, sans savoir s'il reste de la place ;
-- paie **quand même** le bus (1 000) et le port (1 000) ;
-- **risque le trajet pour rien** — et un seul déplacement inutile lui coûte plus
-  cher que les 4 500 FC qu'il croyait économiser ;
-- négocie **debout, devant tout le monde**, ce que beaucoup de gens détestent.
-
-### Et surtout : notre client n'est pas celui qui négocie
-
-Trois publics **ne peuvent pas** négocier au port, et ce sont exactement les
-nôtres :
-1. **la diaspora** — elle n'est pas sur place. C'est notre publication du
-   vendredi, et elle prend ici tout son sens ;
-2. **ceux dont le voyage ne souffre aucun aléa** — rendez-vous médical,
-   enterrement, examen, rentrée scolaire ;
-3. **ceux qui ne veulent pas marchander** : une femme seule, une personne âgée,
-   quelqu'un qui ne connaît pas le port.
-
-### 🔴 Les trois questions dont dépend toute la stratégie de prix
-
-Je ne touche à aucun prix ni à aucun visuel avant les réponses (décision de
-catégorie C — c'est le patron).
-
-1. **Sur les 14 500 FC, combien reste à MoheliGo ?** Quelle est la marge réelle ?
-2. **Le commandant encaisse combien via nous, contre 10 000 au port ?** S'il gagne
-   **plus** quand ça passe par MoheliGo, alors il a intérêt à nous envoyer ses
-   clients et à ne pas brader : **ce ne serait plus un problème de prix, mais un
-   problème d'alignement d'intérêts avec la filière** — et ça se règle par une
-   conversation, pas par une remise.
-3. **Le billet à 10 000, c'est quand ?** Si c'est du remplissage de dernière
-   minute pour des places invendues, alors **on ne vend pas le même produit** :
-   eux liquident un invendu, nous vendons une certitude à l'avance.
-
-### 💡 Et voilà pourquoi le FORFAIT TOUT COMPRIS devient stratégique
-
-Un forfait « Moroni → Mohéli, tout compris » ne fait pas que supprimer les trois
-paiements. **Il rend la comparaison impossible.**
-
-| | Chez nous | Au port |
-|---|---|---|
-| ce qu'on annonce | **un prix unique, tout compris, payé chez soi** | 10 000 FC… plus le bus, plus le port, plus le déplacement, plus le risque |
-
-On ne se bat plus sur le même terrain : **le seul moyen de sortir d'une guerre de
-prix est de cesser de vendre la même chose.** Le forfait n'est donc pas un
-confort — c'est la sortie.
-
----
-
-## 🔴 LA VENTE PERDUE, ET ON CONNAÎT SA PHRASE EXACTE
-
-Un client a appelé pour poser une seule question :
-
-> **« Est-ce qu'on paie tous ces frais ici ? Comme ça on va juste là-bas pour
-> voyager, sans se casser la tête à payer ça et ça. »**
-
-Réponse : **non**. Réponse du client : **« ça ne vaut pas la peine alors »** — et
-il n'a pas réservé.
-
-**Lisons-la correctement, parce qu'elle ne dit pas ce qu'on croit :**
-
-- ❌ Ce n'est **pas** le montant. 1 000 + 1 000 FC ne l'a pas fait fuir.
-- ✅ C'est **le fait de payer trois fois, à trois endroits, sans connaître le
-  total à l'avance**. Il n'achetait pas une traversée moins chère : il achetait
-  **de ne plus avoir à y penser**.
-
-**C'est mot pour mot notre positionnement** (§ 2 du manuel) : *supprimer
-l'incertitude*. On l'a fait pour la place, l'heure et la mer. On ne l'a pas fait
-pour l'argent.
-
-### 💡 LA DÉCISION QUI EN DÉCOULE — LE FORFAIT TOUT COMPRIS
-
-> **Vendre « Moroni → Mohéli, tout compris » : traversée + bus + frais de port,
-> un seul paiement en ligne. Le voyageur arrive à Kartala, il monte, il part.**
-
-**Pourquoi c'est faisable dès aujourd'hui, et pas un rêve** : la chaîne existe
-déjà. Les commandants réservent déjà les bus, le rendez-vous existe déjà, et
-nous encaissons déjà en ligne. Il ne manque que d'encaisser le tout et de
-reverser.
-
-**Ce que ça rapporterait** : la vente perdue ci-dessus, plus toutes celles qu'on
-ne connaît pas ; et jusqu'à **2 500 FC de panier supplémentaire** par voyageur.
-
-**Ce qu'il faut regarder en face avant de décider** — c'est une décision du
-patron (catégorie C, § 12.2 ter) :
-1. **la trésorerie** : on encaisse d'abord, on reverse ensuite aux transporteurs
-   et au port ;
-2. **le droit** : peut-on encaisser les 1 000 FC du port pour son compte ? Si
-   c'est une taxe portuaire officielle, il faut leur accord ;
-3. **le remboursement** : si la traversée n'a pas lieu, on doit rendre **tout**,
-   y compris ce qu'on a déjà reversé ;
-4. **les jours de mer forte** : le bus part-il quand même ?
-
-➡️ **En attendant la décision, on fait ce qui ne coûte rien : on dit tout.**
-C'est le visuel `flyer37-vraiprix` (« Ton voyage, sans surprise »), qui publie le
-jeudi. Il ne supprime pas les trois paiements, mais il supprime la **surprise** —
-et la surprise au port, la valise à la main, coûte bien plus qu'un client qui
-renonce chez lui.
-
----
-
-## 📌 « TOUT ÇA EST DANS L'APPLI, PARTIE INFO PRATIQUE » — ET POURTANT ILS DEMANDENT
-
-Le patron l'a précisé : ces informations **sont déjà écrites** dans
-l'application. Et les clients appellent quand même.
-
-**C'est un enseignement à part entière, et il vaut pour tout le reste** : une
-information écrite au mauvais endroit n'existe pas. Personne n'ouvre « info
-pratique » avant de réserver — on ouvre « info pratique » quand on a **déjà** un
-problème.
-
-➡️ **La règle** : l'information doit être **là où naît la question**, pas dans
-une page qui la contient. Le total du voyage se dit **sur l'écran de
-réservation**, au moment où l'on regarde le prix. Pas ailleurs.
-
----
-
-## ⭐ LE PREMIER TÉMOIGNAGE, ET IL EST SPONTANÉ
-
-Le lendemain d'une traversée, le patron écrit simplement **« Bien arrivé ? »**.
-Réponse du client, sans qu'on lui demande rien :
-
-> **« Oui alhamdoulillah. Remercie le commandant de notre part. Il est très
-> professionnel et bienveillant. »**
-
-**Trois choses à en tirer :**
-
-1. **C'est notre première preuve sociale**, le seul levier du § 3 qu'on n'avait
-   pas. Et elle est **non sollicitée**, ce qui vaut dix fois un avis demandé.
-   ⚠️ **Mais c'est un message privé.** On ne le publie pas sans l'accord de la
-   personne. Le demander coûte un message : *« votre mot nous a touchés — on peut
-   le partager, sans votre nom ? »*
-2. **Le commandant est un actif qu'on n'utilise pas.** Son nom figure déjà sur la
-   carte d'embarquement — donc le voyageur sait **qui pilote** avant de monter.
-   Dans un métier où la peur est réelle, c'est un argument de confiance rare, et
-   il est déjà dans le produit. Aucun de nos flyers n'en parle.
-3. **Le « Bien arrivé ? » du patron est du service client de très haut niveau.**
-   C'est probablement la raison pour laquelle les trois acheteurs ont suivi la
-   page ensuite. À garder comme règle : **on écrit toujours le lendemain.**
-
----
-
-## 🚨 LE BLOCAGE N°1, ET IL N'EST PAS TECHNIQUE
-
-Le patron, 23/08/2026, à propos de deux des trois premières clientes :
-
-> **« Elles m'avaient appelé sur WhatsApp AVANT de valider le paiement. Elles
-> voulaient être sûres qu'il y avait quelqu'un derrière. »**
-
-**Ceci renverse toute mon analyse du tunnel.** Je cherchais le blocage dans la
-mécanique : trop d'étapes, MVola compliqué, prix pas assez clair. Il n'est pas
-là. Ces clientes **savaient** payer. Ce dont elles doutaient, c'était de **nous** :
-
-> *Est-ce qu'il y a un vrai humain derrière ce site, ou est-ce que je vais perdre
-> mon argent ?*
-
-**Trois conséquences, et elles changent l'ordre de tout :**
-
-1. **Le WhatsApp n'est pas notre service après-vente. C'est le dernier maillon de
-   la vente.** Sans cet appel, il n'y avait pas de vente. Et les **3 paiements
-   abandonnés** sont très probablement ceux de gens qui ont eu exactement le même
-   doute — sans jamais appeler.
-2. **Il ne faut pas chercher à éviter l'appel : il faut le provoquer.** Chaque
-   appel est une vente presque faite. C'est très exactement la leçon M-Pesa
-   (§ 13.2 du manuel) : ce qui a fait l'adoption, ce n'est pas l'application,
-   c'est **l'agent humain** à qui on pouvait parler.
-3. **Ce qui manque au site, ce n'est pas une fonction, c'est une preuve de vie** :
-   un numéro qui répond, un nom, un visage, un lieu. Les photos qu'on attend de
-   Young Leader servent aussi à ça.
-
-**Ce qui en découle, déjà fait ou à faire :**
-
-| | État |
+| | Prix payé par le voyageur |
 |---|---|
-| **Un visuel dont c'est le seul sujet** — « Tu veux être sûr qu'il y a quelqu'un ? » (`flyer36-quelquun`) | ✅ fait, il publie le mercredi |
-| **Le numéro WhatsApp visible AU MOMENT DU PAIEMENT**, pas dans un pied de page, avec « un doute ? appelle avant de payer » | ⏳ décision produit, à valider par le patron |
-| **Rappeler ceux qui abandonnent** — un message suffit | ⏳ le patron |
+| **Par MoheliGo** | 14 500 + 500 de frais = **15 000 FC** |
+| **Par le commandant, en direct** | **10 000 à 12 500 FC** |
+
+### Pourquoi c'est bien plus grave qu'une concurrence ordinaire
+
+1. **Aucune plateforme ne survit en étant plus chère que son propre
+   fournisseur.** C'est la règle de base de tous les intermédiaires du monde
+   (hôtels, taxis, transport) : le prix via la plateforme ne doit **jamais** être
+   supérieur au prix direct. Sinon la plateforme devient un catalogue.
+2. **Et c'est peut-être déjà ce qui se passe.** Nos chiffres montrent beaucoup de
+   consultations (Traversées, Météo) et très peu d'achats. Un scénario possible,
+   à vérifier : **les gens regardent chez nous, puis appellent le commandant.**
+   Nous ferions la publicité, un autre encaisserait.
+3. **Ce n'est pas un problème de marketing.** Aucun flyer ne peut rattraper 5 000
+   FC d'écart annoncés par le pilote lui-même. **C'est un problème d'accord
+   commercial**, et il se règle avec les commandants, pas avec des visuels.
+
+### 💡 LA SOLUTION DE FOND : CHANGER QUI PAIE LA COMMISSION
+
+Aujourd'hui, **c'est le client qui paie pour passer par nous** — donc il a une
+raison d'éviter MoheliGo. Il faut inverser :
+
+> **Le voyageur paie le même prix qu'en direct (ou moins). C'est le commandant
+> qui reverse une commission sur les places que nous lui remplissons.**
+
+C'est ainsi que fonctionnent toutes les plateformes qui tiennent. Et il y a un
+argument solide à porter aux commandants :
+
+**« Vous bradez à 10 000 parce que vous avez peur de partir à vide. Nous, on vend
+vos places à l'avance. Vous n'avez plus besoin de brader le matin. »**
+
+Une place vendue **12 500 trois jours avant** vaut mieux qu'une place à 10 000 le
+matin même — et infiniment mieux qu'une place vide. **MoheliGo ne doit pas leur
+coûter une commission : il doit leur faire gagner le rabais qu'ils s'infligent.**
+
+### 🔴 Ce qu'il faut savoir avant de décider quoi que ce soit
+
+1. **D'où viennent les 14 500 ?** Prix imposé par les commandants, prix officiel,
+   ou prix commandant + notre marge ?
+2. **Que touche MoheliGo sur une vente ?** Et les 500 FC de frais, à qui vont-ils
+   (nous, MVola, KartaPay) ?
+3. **Le commandant reçoit combien quand la vente passe par nous ?** Plus ou moins
+   que ses 10 000 en direct ? **C'est la question qui décide de tout** : s'il
+   reçoit déjà plus, il n'a aucune raison de brader et la conversation est
+   simple.
+4. **Combien de commandants ?** Un accord se négocie avec trois personnes, pas
+   avec trente.
+
+### ⚠️ En attendant, une décision de marketing que je prends et que je signale
+
+**Je sors le flyer « les prix » (14 500 en gros chiffres) de la rotation.** Tant
+que nous sommes 45 % au-dessus du prix que le pilote annonce lui-même sur le
+quai, **afficher notre prix en grand, c'est inviter à la comparaison qu'on
+perd**. Le mercredi garde « Y a-t-il quelqu'un ? ». C'est réversible en une
+ligne le jour où l'écart est réglé.
 
 ---
 

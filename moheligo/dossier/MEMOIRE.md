@@ -370,35 +370,46 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
-- **23/08/2026 (🔴🔴 LE FREIN ÉCONOMIQUE N°1 : 45 % PLUS CHER QUE LE PORT)** — Le
-  patron : **« nos billets sont à 14 500, les gens peuvent aller au port négocier
-  à 12 500 ou 10 000. »** C'est le problème le plus sérieux du projet à ce jour,
-  et il explique probablement une part des abandons.
-  ❌ **Ce qu'il ne faut pas faire : s'aligner.** On ne gagne jamais une guerre de
-  prix contre l'informel — eux n'ont ni site, ni frais de paiement, ni engagement
-  de remboursement. Si on descend à 12 500, le port descendra à 9 000.
-  ✅ **Ce qui est vrai et qu'on ne dit nulle part** : l'écart réel n'est pas de
-  4 500 FC. Celui qui négocie au port doit y être tôt sans savoir s'il reste de la
-  place, paie quand même le bus et le port, **risque le trajet pour rien** — un
-  seul déplacement inutile coûte plus que ce qu'il croyait économiser — et
-  marchande debout devant tout le monde.
-  ✅ **Et notre client n'est pas celui qui négocie** : la diaspora (elle n'est pas
-  sur place), ceux dont le voyage ne souffre aucun aléa (médecin, enterrement,
-  examen), et ceux qui ne veulent pas marchander.
-  🔴 **Trois questions dont dépend toute la stratégie de prix, posées au patron**
-  (et je ne touche à aucun prix avant) : quelle marge nous reste sur 14 500 ? le
-  **commandant gagne-t-il plus via nous qu'au port** — si oui ce n'est plus un
-  problème de prix mais **d'alignement avec la filière**, et ça se règle en
-  parlant ; et le billet à 10 000, est-ce du **remplissage de dernière minute** ?
-  💡 **Ça rend le FORFAIT TOUT COMPRIS stratégique, plus seulement pratique** : un
-  prix unique tout compris **rend la comparaison impossible**. Le seul moyen de
-  sortir d'une guerre de prix est de cesser de vendre la même chose.
-  🕗 **Au passage, la vedette passe à 8h.** `flyer37-vraiprix` n'a pas besoin
-  d'être refait : il ne grave que l'heure du **bus** et renvoie au billet pour la
-  vedette. **Une heure susceptible de changer ne s'imprime jamais sur un support
-  qui dure** — vérifié en une journée.
-  🔴 **Reste à savoir** : le bus reste-t-il à 6h30 avec une vedette à 8h ? Si le
-  bus est décalé, le visuel est à refaire **avant jeudi**, jour où il publie.
+- **23/08/2026 (🔴🔴 LE VRAI FREIN N°1 : NOTRE PROPRE CANAL NOUS SOUS-COTE)** —
+  ⚠️ **J'avais d'abord mal compris et j'ai écrit une analyse fausse**, que j'ai
+  supprimée de ce journal : j'avais cru que « les clients vont négocier au port ».
+  Le patron a corrigé : **« les gens ne peuvent pas négocier nos billets. Au port,
+  ce sont les COMMANDANTS qui amènent des clients à 12 500 et 10 000, alors que
+  nos billets sont à 14 500 plus frais, soit 15 000. »**
+  📌 **Ce ne sont donc pas des concurrents : ce sont nos propres commandants**,
+  ceux qui pilotent les traversées que nous vendons, et qui placent leurs clients
+  **5 000 FC moins cher que nous**.
+  🚨 **Pourquoi c'est bien plus grave qu'une concurrence ordinaire :**
+  1. **aucune plateforme ne survit en étant plus chère que son propre
+     fournisseur** — c'est la règle de base de tous les intermédiaires (hôtels,
+     taxis, transport) ; sinon la plateforme devient un simple catalogue ;
+  2. **et c'est peut-être déjà ce qui se passe** : beaucoup de consultations
+     (Traversées, Météo), très peu d'achats. Hypothèse à vérifier — **les gens
+     regardent chez nous puis appellent le commandant.** Nous ferions la
+     publicité, un autre encaisserait ;
+  3. **ce n'est pas un problème de marketing** : aucun flyer ne rattrape 5 000 FC
+     annoncés par le pilote lui-même. **C'est un accord commercial à passer avec
+     les commandants.**
+  💡 **La solution de fond : inverser qui paie la commission.** Aujourd'hui c'est
+  le CLIENT qui paie pour passer par nous — donc il a une raison de nous éviter.
+  Il faut que **le voyageur paie le même prix qu'en direct, et que le commandant
+  reverse une commission sur les places qu'on lui remplit**.
+  🗣️ **L'argument à porter aux commandants** : « vous bradez à 10 000 parce que
+  vous avez peur de partir à vide ; nous vendons vos places à l'avance, vous
+  n'avez plus besoin de brader le matin ». Une place vendue 12 500 trois jours
+  avant vaut mieux qu'une place à 10 000 le matin — et infiniment mieux qu'une
+  place vide. **MoheliGo ne doit pas leur coûter une commission : il doit leur
+  faire gagner le rabais qu'ils s'infligent.**
+  🔴 **Quatre questions posées au patron** : d'où viennent les 14 500 ? que touche
+  MoheliGo, et à qui vont les 500 FC de frais ? **le commandant reçoit-il plus ou
+  moins quand la vente passe par nous** (c'est la question qui décide de tout) ?
+  et **combien y a-t-il de commandants** — un accord se négocie avec trois
+  personnes, pas trente.
+  ✅ **Décision de marketing prise et signalée (catégorie B)** : **le flyer « les
+  prix » (14 500 en gros chiffres) sort de la rotation.** Tant qu'on est 45 %
+  au-dessus du prix annoncé sur le quai par le pilote, afficher notre prix en
+  grand revient à inviter à une comparaison qu'on perd. Le mercredi garde « Y
+  a-t-il quelqu'un ? ». Réversible en une ligne dans `calendrier.py`.
 
 - **23/08/2026 (⏰ L'HEURE DU BUS : 6H30 — et l'erreur que l'attente a évitée)** —
   Le patron tranche : **le bus part à 6h30**.

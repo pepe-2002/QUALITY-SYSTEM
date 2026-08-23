@@ -370,6 +370,23 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **23/08/2026 (⏰ L'HEURE DU BUS : 6H30 — et l'erreur que l'attente a évitée)** —
+  Le patron tranche : **le bus part à 6h30**.
+  🚨 **Ça valide une prudence qui aurait pu passer pour de la lenteur.** Dans la
+  conversation WhatsApp montrée plus tôt, la réponse donnée au client était
+  **« 7h00 »** — qui est en réalité l'heure de la **vedette**, celle imprimée sur
+  la carte d'embarquement. **Un voyageur arrivé à 7h à Kartala aurait raté son
+  bus, et sa traversée avec.** Si j'avais imprimé « 7h00 » sur un visuel diffusé
+  à des centaines de personnes, on aurait industrialisé l'erreur.
+  📌 **La règle du § 11 (« jamais un horaire dont on n'est pas sûr ») vient de
+  payer pour la première fois de façon mesurable.**
+  📌 **Et un second enseignement** : répondre à la main, cent fois, finit
+  toujours par produire une erreur — un soir de fatigue, on donne l'heure de
+  l'autre chose. **Une information juste, écrite une fois au bon endroit, vaut
+  mieux que cent réponses de mémoire.**
+  ✅ `flyer37-vraiprix` distingue désormais explicitement les deux heures :
+  **6h30 le bus, l'heure du billet la vedette.**
+
 - **23/08/2026 (🔴 UNE VENTE PERDUE DONT ON CONNAÎT LA PHRASE EXACTE — et ce
   qu'elle vaut)** — Le patron donne les faits du trajet terrestre **et** raconte
   un appel : *« est-ce qu'on paie tous ces frais ici ? comme ça on va juste

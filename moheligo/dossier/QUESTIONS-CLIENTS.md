@@ -52,10 +52,23 @@ répond** — alors qu'elle se pose à *chaque* voyageur de la Grande Comore.
 | **Le port** | **1 000 FC**, à régler sur place |
 | **Où c'est écrit** | dans l'application, partie **« info pratique »** |
 
-⚠️ **L'heure reste inconnue.** Le patron a répondu « 7h00 » à la question du bus,
-mais la carte d'embarquement affiche aussi 07:00 pour la vedette : je ne sais pas
-si c'est la même heure ou une confusion. **Aucun horaire n'est imprimé nulle part
-tant que ce n'est pas tranché.**
+✅ **L'HEURE DU BUS : 6H30** (tranchée par le patron le 23/08/2026).
+
+🚨 **Et cette vérification a évité une vraie erreur.** Dans la conversation
+WhatsApp, la réponse donnée au client était **« 7h00 »** — qui est en fait
+l'heure de la **vedette**, celle imprimée sur la carte d'embarquement. Un
+voyageur qui serait arrivé à 7h à Kartala **aurait raté son bus, et sa traversée
+avec**.
+
+📌 **Deux enseignements, et ils valent pour tout le reste** :
+1. **On n'imprime jamais un horaire dont on n'est pas sûr** (§ 11 du manuel). Ici
+   l'attente a rapporté : le chiffre publié est juste.
+2. **Répondre à la main, cent fois, finit par produire une erreur.** Une heure
+   juste, écrite une fois pour toutes au bon endroit, vaut mieux que cent
+   réponses données de mémoire à 16h un jour de fatigue.
+
+➡️ **Il faut donc distinguer les deux heures partout** : **6h30 le bus**,
+**l'heure du billet la vedette**. C'est écrit ainsi sur `flyer37-vraiprix`.
 
 ---
 
@@ -194,7 +207,7 @@ là. Ces clientes **savaient** payer. Ce dont elles doutaient, c'était de **nou
 
 | Question du client | Répondue où ? | À faire |
 |---|---|---|
-| « Le bus part à quelle heure ? » | WhatsApp à la main | 🔴 **l'heure n'est toujours pas sûre** — à trancher avec le patron |
+| « Le bus part à quelle heure ? » | WhatsApp à la main, et **une fois de travers** | ✅ **6h30**, écrit sur `flyer37-vraiprix` — à mettre aussi dans l'app |
 | « À combien on paie pour le bus ? » | app, « info pratique » — pas lue | ✅ visuel `flyer37-vraiprix`, publie le jeudi |
 | **« Est-ce qu'on paie tout ici ? »** *(vente perdue)* | non — et le client a renoncé | 🔴 **décision du forfait tout compris**, en attente |
 | « C'est ainsi ? » *(en montrant son billet)* | WhatsApp | 💡 le client doute que son billet soit valable : un mot de confirmation automatique après paiement lèverait ce doute |

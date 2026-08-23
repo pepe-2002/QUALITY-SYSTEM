@@ -370,6 +370,50 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (📊 LE TUNNEL COMPLET — et il dit que le trou n'est PAS où je le
+  cherchais)** — Le patron envoie les statistiques d'écrans de l'application, et
+  le chiffre d'abandon : **« 3 ont commencé et n'ont pas fini. »**
+
+  | Écran | 7 jours | 30 jours |
+  |---|---|---|
+  | **Ouvertures de l'application** | **140** | **543** |
+  | Accueil | 41 | 90 |
+  | Messagerie | 11 | 74 |
+  | Traversées | 16 | 67 |
+  | Météo mer | 21 | 66 |
+  | Découvrir | 15 | 46 |
+  | Billets | 9 | 31 |
+  | Compte | 8 | 25 |
+
+  🚨 **CE QUE ÇA RÉVÈLE, ET C'EST LA DÉCOUVERTE LA PLUS IMPORTANTE DEPUIS LE
+  DÉBUT** : sur **140 ouvertures en 7 jours, seulement 16 vont voir les
+  Traversées** — **11 %**. Neuf personnes sur dix ouvrent l'application et ne
+  regardent jamais un départ. **Le trou n'est pas au paiement : il est tout en
+  haut du tunnel.**
+  📌 **Et la Météo mer (21) est plus consultée que les Traversées (16).** C'est à
+  double tranchant, et il faut le dire franchement :
+  · ✅ **la preuve que notre stratégie marche** — le bulletin du soir amène du
+    monde, c'est bien lui qui fait venir ;
+  · ⚠️ **et son revers** : on est en train de devenir un service météo. Les gens
+    viennent chercher ce qu'on donne gratuitement, prennent l'information, et
+    repartent sans jamais voir un départ. **Le pont entre les deux écrans est le
+    chantier n°1.**
+  📌 **L'abandon au paiement : 3 commencés, 0 fini** (le patron ne mentionne aucun
+  paiement abouti). Sur si peu, ça ne prouve pas que le paiement est cassé — mais
+  **3 personnes sont allées jusqu'à payer et aucune n'a terminé** : ça mérite un
+  essai réel, chronométré, avec un vrai MVola.
+  📌 **Messagerie : 74 ouvertures sur 30 jours**, plus que les Billets (31). Les
+  gens écrivent. Chaque message est une vente possible et une question à noter
+  (étape 1 de la feuille de route : 30 vraies conversations).
+  ⚠️ **Ce que je ne sais pas et que je n'invente pas** : pourquoi « Accueil » (90)
+  est très inférieur aux ouvertures (543) — écran distinct, ou seulement les
+  retours à l'accueil ? Sans le savoir, on ne peut pas calculer le taux réel de
+  la première étape. À demander avant de bâtir dessus.
+  ➡️ **Le renversement de priorité** : jusqu'ici je poussais l'acquisition. Les
+  chiffres disent que l'acquisition marche et que **la marche à monter est le
+  passage météo → départs**. Publier plus n'y changerait rien : c'est un problème
+  de produit, pas de publicité (§ 8 et § 13.3, audit de friction).
+
 - **18/08/2026 (📈 LE PREMIER CHIFFRE DE RÉSULTAT — les visites ont été
   multipliées par cinq)** — Le patron : « je commence à voir une montée des
   visiteurs sur le site, c'était 5-6 par jour, c'est monté à 25-26 par jour. »

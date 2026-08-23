@@ -86,6 +86,16 @@ serait exactement la mauvaise réponse.
 ⚠️ À ne pas surinterpréter : quelques jours ne font pas une tendance, et la
 reprise des traversées crée un pic mécanique.
 
+📊 **LE TUNNEL, MESURÉ LE 18/08/2026** — 140 ouvertures en 7 jours, **16 vues de
+l'écran Traversées (11 %)**, 21 vues de la Météo mer, **3 paiements commencés,
+aucun terminé**.
+➡️ **Conclusion qui change l'ordre des travaux** : l'acquisition fonctionne, la
+**conversion** non — et le point de fuite n'est pas le paiement (trois personnes
+seulement y arrivent), c'est **l'entrée dans l'écran des départs**. Neuf visiteurs
+sur dix ne voient jamais une traversée. Tant que ce chiffre ne monte pas, publier
+davantage ou payer de la publicité ne servirait qu'à faire venir plus de gens qui
+repartent.
+
 🚦 **SEUIL À 6 SEMAINES :**
 - **≥ 10 réservations d'inconnus** → l'offre tient, on passe à l'étape 2.
 - **entre 1 et 9** → l'offre tient mais quelque chose freine. On ne pousse pas la

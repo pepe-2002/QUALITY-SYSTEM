@@ -35,6 +35,20 @@
 
 ## 1. La thèse : comment une marque grandit vraiment
 
+> 📈 **VÉRIFIÉ CHEZ NOUS — 18/08/2026.** Ce paragraphe n'est plus seulement de la
+> théorie lue dans un livre. Dix jours de publication quotidienne (deux par jour,
+> sans en manquer une), dont **six jours de service fermé où l'on n'a rien vendu
+> du tout** : les visites du site sont passées de **5-6 à 25-26 par jour**. Avec
+> 26 abonnés seulement — donc ce n'est pas la page qui amène ces gens, c'est le
+> fait d'exister tous les jours au même endroit.
+> **Ce qui a construit ça n'est pas une belle publication : c'est de n'en avoir
+> manqué aucune**, et d'avoir dit la vérité les jours où elle ne rapportait rien.
+> ⚠️ Et ce que ça ne prouve PAS encore : une visite n'est pas une réservation.
+> Tant que le nombre de traversées payées est inconnu, cette hausse est une
+> promesse, pas un résultat. **Ne jamais laisser une bonne nouvelle remplacer une
+> mesure** — c'est précisément l'erreur de Webvan (§ 14.2) : grandir en ayant
+> cessé de regarder les chiffres qui comptent.
+
 C'est la découverte la plus solide du marketing moderne (Byron Sharp,
 Ehrenberg-Bass), et elle contredit l'intuition. Une marque ne grandit pas en
 fidélisant très fort quelques passionnés. **Elle grandit en étant connue et

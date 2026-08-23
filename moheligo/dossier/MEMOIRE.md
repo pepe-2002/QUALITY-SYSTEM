@@ -370,6 +370,36 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **23/08/2026 (💸 « ON PEUT RÉDUIRE NOTRE COMMISSION » — pourquoi j'ai répondu
+  « pas d'abord »)** — le patron : « on peut réduire notre commission pour attirer
+  les clients, je gagne ma vie avec un autre travail et le site ne coûte rien pour
+  le moment ». Il a raison sur la contrainte — rien ne nous oblige à gagner de
+  l'argent cette année. Mais le calcul dit que **ce levier est faible**.
+  🚨 **LE FAIT QUI TRANCHE** : le commandant doit toucher ses 12 500, et **les 3 %
+  KartaPay ne sont pas à nous** — on ne peut pas les offrir. Donc **même à ZÉRO
+  commission, le client paie 12 875 contre 12 500 au port**. Donner 100 % de notre
+  commission lui fait gagner **1 431 FC** et on reste **plus cher**. ➡️ **Si on
+  choisit le terrain du prix, on perd par construction.** C'est de l'arithmétique.
+  🔍 **Et le prix n'est pas le blocage prouvé** : l'entonnoir dit **140 → 16 → 6 →
+  3**. La perte massive est **140 → 16 (89 % partent avant de voir un prix)**, et
+  **6 → 3 = 50 %**, un bon taux parmi ceux qui ont vu le prix. **On n'a aucune
+  preuve que le prix nous tue ; on a la preuve que la portée nous tue.**
+  ⚠️ **Une baisse ne se reprend pas.** Les 4 350 FC gagnés depuis juillet (3 ×
+  1 450) disent deux choses : c'est **abordable** de les donner, et **ce n'est pas
+  la marge qui est cassée, c'est le volume**.
+  ✅ **Recommandation, dans cet ordre** : **1)** prix **tout compris à 14 000**
+  (358 FC/siège, on récupère notre promesse) ; **2) parler au commandant AVANT de
+  toucher à notre marge** — il a **550 FC de marge dont il ignore l'existence**,
+  s'il affiche 13 500 le client gagne **1 000 FC pour 0 FC de notre poche** ;
+  **3)** si on baisse, en faire **une offre visible, limitée et comptée** (« les 20
+  premiers billets de septembre : zéro commission »), réversible et **qui nous dit
+  enfin si le prix était le blocage**.
+  📌 **Le rapport décisif** : **une conversation avec le commandant déplace le prix
+  de 1 000 FC et ne coûte rien ; donner toute notre commission le déplace de
+  1 431 FC et coûte tout.** On commence par la conversation.
+  ⚠️ **Un prix bas en silence, personne ne le remarque** — on aurait payé sans rien
+  acheter. Si on baisse, ça doit être un **événement**.
+
 - **23/08/2026 (🚨 LA CAUSE DU PRIX TROUVÉE : LE COMMANDANT GAGNE PLUS QUAND IL
   NOUS ANNONCE PLUS CHER)** — le patron a répondu à mes quatre questions, et le
   calcul qui en découle règle le sujet.

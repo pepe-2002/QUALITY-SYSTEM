@@ -220,6 +220,73 @@ cher » à côté. La seule alternative serait un virement MVola à la main : on
 qu'on rouvrirait le doute « **c'est ainsi ?** » déjà vu en WhatsApp. **Ça ne vaut
 pas 435 FC.**
 
+### 💸 « ON PEUT RÉDUIRE NOTRE COMMISSION » — la proposition du patron (23/08/2026)
+
+> **« On peut réduire notre commission pour attirer les clients, je gagne ma vie
+> avec un autre travail et le site ne coûte rien pour le moment. »**
+
+Il a raison sur la contrainte : **rien ne nous oblige à gagner de l'argent cette
+année.** Mais le calcul dit que ce levier est plus faible qu'il n'en a l'air.
+
+#### 🚨 LE FAIT QUI TRANCHE : MÊME À ZÉRO COMMISSION, ON RESTE PLUS CHER
+
+Le commandant doit toucher ses **12 500 FC** (sinon il vend en direct). Les **3 %
+KartaPay ne sont pas à nous** — on ne peut pas les offrir. Donc :
+
+| Notre commission | Prix affiché | **Le client paie** | On gagne |
+|---|---|---|---|
+| 10 % | 13 889 | **14 306** | 1 389 |
+| 8 % | 13 587 | **13 995** | 1 087 |
+| 5 % | 13 158 | **13 553** | 658 |
+| 3 % | 12 887 | **13 273** | 387 |
+| **0 %** | 12 500 | **12 875** | **0** |
+
+> ### ⛔ En donnant 100 % de notre commission, le client économise 1 431 FC — et il paie encore **12 875 contre 12 500 au port**. On ne peut pas gagner sur le prix. C'est de l'arithmétique, pas une opinion.
+
+**Si on choisit le terrain du prix, on perd par construction.** Le seul terrain où
+on gagne est celui du manuel § 1 : la régularité, la certitude, la disponibilité
+mentale.
+
+#### 🔍 ET LE PRIX N'EST PAS LE BLOCAGE PROUVÉ
+
+L'entonnoir du 23/08 : **140 ouvertures → 16 sur Traversées → 6 paiements
+commencés → 3 payés.**
+
+- La perte massive est **140 → 16** : **89 % partent avant même de bien voir un
+  prix.**
+- Et **6 → 3, c'est 50 %** : parmi ceux qui ont vu le prix et commencé à payer,
+  **la moitié est allée au bout.** C'est un bon taux.
+
+📌 **On n'a aucune preuve que le prix nous tue. On a la preuve que la portée nous
+tue.** Baisser la commission, c'est payer pour un problème qu'on n'a pas démontré.
+
+#### ⚠️ ET UNE BAISSE DE PRIX NE SE REPREND PAS
+
+Un prix affiché descendu ne remonte pas sans que chaque client qui revient le
+voie. **C'est notre seul levier permanent, et il serait dépensé sur une
+hypothèse.** Les 4 350 FC que la commission a rapportés depuis juillet (3 × 1 450)
+disent deux choses à la fois : **c'est abordable de les donner**, et **ce n'est
+pas la marge qui est cassée, c'est le volume.**
+
+#### ✅ CE QUE JE RECOMMANDE — DANS CET ORDRE
+
+| # | Action | Ce que ça coûte | Ce que ça rapporte |
+|---|---|---|---|
+| **1** | **Prix TOUT COMPRIS à 14 000** (les 3 % dedans) | 358 FC/siège | on récupère notre promesse « le prix, tu le connais avant de payer » |
+| **2** | **Parler au commandant AVANT de toucher à notre marge** | **0 FC** | il a **550 FC de marge dont il ignore l'existence**. S'il affiche 13 500, le client gagne **1 000 FC** — presque autant que si on donnait TOUT |
+| **3** | Si on baisse : **une offre visible, limitée, comptée** | ~20 000 FC | « les 20 premiers billets de septembre : zéro commission MoheliGo ». Réversible, publiable, et **ça nous dit enfin si le prix était le blocage** |
+
+📌 **Le rapport décisif** : **une conversation avec le commandant déplace le prix
+de 1 000 FC et ne nous coûte rien. Donner toute notre commission le déplace de
+1 431 FC et nous coûte tout.** On commence par la conversation.
+
+⚠️ **Et si on baisse quand même, ça doit être un ÉVÉNEMENT, pas un prix silencieux
+plus bas.** Un prix bas en silence, personne ne le remarque — on aura payé sans
+rien acheter. Une offre annoncée et comptée, elle, produit de la connaissance :
+si 20 sièges à commission zéro ne partent pas, **le prix n'a jamais été le
+problème**, et on l'aura appris pour 20 000 FC au lieu de l'apprendre pour
+toujours.
+
 ### ⚠️ La décision de marketing tient toujours
 
 **Le flyer « les prix » (14 500 en gros chiffres) reste hors rotation.** Afficher

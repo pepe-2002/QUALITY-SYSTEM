@@ -86,15 +86,24 @@ serait exactement la mauvaise réponse.
 ⚠️ À ne pas surinterpréter : quelques jours ne font pas une tendance, et la
 reprise des traversées crée un pic mécanique.
 
-📊 **LE TUNNEL, MESURÉ LE 18/08/2026** — 140 ouvertures en 7 jours, **16 vues de
-l'écran Traversées (11 %)**, 21 vues de la Météo mer, **3 paiements commencés,
-aucun terminé**.
-➡️ **Conclusion qui change l'ordre des travaux** : l'acquisition fonctionne, la
-**conversion** non — et le point de fuite n'est pas le paiement (trois personnes
-seulement y arrivent), c'est **l'entrée dans l'écran des départs**. Neuf visiteurs
-sur dix ne voient jamais une traversée. Tant que ce chiffre ne monte pas, publier
-davantage ou payer de la publicité ne servirait qu'à faire venir plus de gens qui
-repartent.
+🎉 **PREMIÈRES VENTES — 18/08/2026 : TROIS TRAVERSÉES PAYÉES**, et les acheteurs
+ont suivi la page ensuite. La chaîne complète — choisir un départ, payer par
+MVola, recevoir son billet — **fonctionne pour de vrai**. Ce n'est plus une
+hypothèse, et c'est ce que cette étape devait prouver.
+➡️ **3 sur les 10 du seuil.**
+
+📊 **LE TUNNEL, MESURÉ LE 18/08/2026** — 140 ouvertures en 7 jours (**543 depuis
+le lancement de juillet** : un quart de toute l'activité s'est faite cette
+semaine-là), **16 vues de l'écran Traversées, soit 11 %**, 21 vues de la Météo
+mer, et **6 paiements commencés dont 3 terminés**.
+➡️ **Conclusion qui fixe l'ordre des travaux** :
+· l'**acquisition** fonctionne — le bulletin du soir amène du monde ;
+· le **paiement** aboutit une fois sur deux : perfectible, mais pas cassé, et
+  rappeler ceux qui abandonnent est le geste le plus rentable qui existe ;
+· le **vrai goulot est l'entrée dans l'écran des départs** — neuf visiteurs sur
+  dix ne voient jamais une traversée, et la Météo mer est plus consultée qu'elle.
+Tant que ce chiffre-là ne monte pas, publier davantage ou payer de la publicité
+ne ferait que faire venir plus de gens qui repartent.
 
 🚦 **SEUIL À 6 SEMAINES :**
 - **≥ 10 réservations d'inconnus** → l'offre tient, on passe à l'étape 2.

@@ -370,6 +370,36 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (🎉 LES TROIS PREMIÈRES VENTES — la chaîne fonctionne de bout en
+  bout)** — Le patron : « 543 c'est depuis le lancement en juillet, et 3 personnes
+  ont payé et suivi MoheliGo. »
+  🚨 **C'est le jour le plus important du projet depuis le premier flyer.**
+  Jusqu'ici, « quelqu'un peut réserver et payer une traversée depuis son
+  téléphone » était une hypothèse. **Ce n'en est plus une.** Trois personnes ont
+  choisi un départ, payé, et reçu leur billet — et elles ont suivi la page
+  ensuite, ce qui veut dire qu'elles n'ont pas été déçues.
+  📊 **Le tunnel réel, depuis juillet** : 543 ouvertures → 6 tentatives de
+  paiement → **3 payées**. Soit **une réussite sur deux au paiement** : pour un
+  marché où presque personne n'a jamais acheté en ligne, ce n'est pas mauvais.
+  Le vrai goulot reste plus haut (11 % seulement vont voir les Traversées).
+  🚦 **Position dans la feuille de route** : l'étape 1 demande **10 réservations
+  d'inconnus**. On est à **3**. Le seuil n'est plus théorique.
+  📌 **CE QUI DOIT ÊTRE FAIT MAINTENANT, ET QUI VAUT PLUS QUE DIX FLYERS** :
+  1. **Parler à ces trois personnes, une par une.** Comment ont-elles connu
+     MoheliGo ? Qu'est-ce qui les a fait hésiter ? Qu'ont-elles cru qui était
+     faux ? C'est la leçon d'Airbnb (§ 14.3) : aller voir ses premiers clients un
+     par un ne passe pas à l'échelle, et c'est exactement pour ça que ça marche.
+  2. **Rappeler les trois qui ont abandonné** — si leur numéro a été saisi avant
+     l'abandon. Un message simple (« on a vu que ça n'a pas abouti, on peut vous
+     aider ? ») peut en récupérer un : ce serait +33 % de ventes en une heure de
+     travail, sans un franc de publicité.
+  3. **Demander UN mot ou UNE photo du billet** à l'un des trois. Un témoignage
+     vrai vaut plus que tout ce que je peux dessiner — c'est le levier « preuve
+     sociale » (§ 3), le seul qu'on n'a pas encore.
+  ⚠️ **Ce qu'on ne fera PAS** : afficher « déjà 3 traversées réservées » sur un
+  flyer. Trois, ça se dit entre nous, pas en public — un chiffre trop petit
+  affiché comme un exploit fait l'effet inverse.
+
 - **18/08/2026 (📊 LE TUNNEL COMPLET — et il dit que le trou n'est PAS où je le
   cherchais)** — Le patron envoie les statistiques d'écrans de l'application, et
   le chiffre d'abandon : **« 3 ont commencé et n'ont pas fini. »**
@@ -398,13 +428,18 @@ recharger ce sujet ici, ce n'est pas du marketing.
     viennent chercher ce qu'on donne gratuitement, prennent l'information, et
     repartent sans jamais voir un départ. **Le pont entre les deux écrans est le
     chantier n°1.**
-  📌 **L'abandon au paiement : 3 commencés, 0 fini** (le patron ne mentionne aucun
-  paiement abouti). Sur si peu, ça ne prouve pas que le paiement est cassé — mais
-  **3 personnes sont allées jusqu'à payer et aucune n'a terminé** : ça mérite un
-  essai réel, chronométré, avec un vrai MVola.
+  ⚠️ **CORRIGÉ LE 18/08 — j'avais mal lu.** J'avais écrit « 3 commencés, 0 fini ».
+  Le patron a précisé : **3 personnes ONT PAYÉ**, en plus des 3 qui ont abandonné.
+  Le paiement aboutit donc **une fois sur deux** — ce qui, pour un marché sans
+  habitude d'achat en ligne, n'est pas mauvais du tout. Ne jamais compléter un
+  chiffre manquant par l'hypothèse la plus sombre : c'est encore inventer.
   📌 **Messagerie : 74 ouvertures sur 30 jours**, plus que les Billets (31). Les
   gens écrivent. Chaque message est une vente possible et une question à noter
   (étape 1 de la feuille de route : 30 vraies conversations).
+  ⚠️ **La colonne « 30 j » est en réalité « depuis le lancement en juillet »**
+  (précisé par le patron). Donc **140 ouvertures en 7 jours sur 543 depuis le
+  début = 26 % de toute l'activité de l'application s'est produite dans la
+  dernière semaine.** L'accélération n'est pas une impression.
   ⚠️ **Ce que je ne sais pas et que je n'invente pas** : pourquoi « Accueil » (90)
   est très inférieur aux ouvertures (543) — écran distinct, ou seulement les
   retours à l'accueil ? Sans le savoir, on ne peut pas calculer le taux réel de

@@ -70,6 +70,83 @@ avec**.
 ➡️ **Il faut donc distinguer les deux heures partout** : **6h30 le bus**,
 **l'heure du billet la vedette**. C'est écrit ainsi sur `flyer37-vraiprix`.
 
+🕗 **23/08/2026 — la vedette passe à 8h.** Le visuel n'a pas besoin d'être refait :
+il ne grave que l'heure du **bus** et renvoie au billet pour la vedette. C'était
+le bon choix, et ça vient de se vérifier en une journée : **une heure susceptible
+de changer ne s'imprime jamais sur un support qui dure.**
+🔴 **QUESTION EN ATTENTE** : le bus reste-t-il à **6h30** maintenant que la
+vedette est à 8h ? 6h30 → 7h laissait trente minutes ; 6h30 → 8h en laisse
+quatre-vingt-dix. Si le bus est décalé, `flyer37-vraiprix` est à refaire **avant
+jeudi**, jour où il publie.
+
+---
+
+## 🔴🔴 LE FREIN ÉCONOMIQUE N°1 : ON EST 45 % PLUS CHER QUE LE PORT
+
+Le patron, 23/08/2026 :
+
+> **« Nos billets sont à 14 500. Les gens peuvent aller au port négocier un
+> billet à 12 500 ou 10 000. »**
+
+**C'est le problème le plus sérieux du projet à ce jour**, et il explique
+probablement une partie des abandons : à 10 000 contre 14 500, l'écart est de
+**4 500 FC, soit 45 % de plus**.
+
+### Ce qu'il ne faut PAS faire : s'aligner
+
+On ne gagne jamais une guerre de prix contre l'informel. Si on descend à 12 500,
+la négociation au port descendra à 9 000 : eux n'ont ni site, ni frais de
+paiement, ni engagement de remboursement. **Une baisse détruirait la marge sans
+supprimer l'écart.**
+
+### Ce qui est vrai et qu'on ne dit nulle part : l'écart n'est pas de 4 500 FC
+
+Celui qui va négocier au port :
+- doit **y être**, tôt, sans savoir s'il reste de la place ;
+- paie **quand même** le bus (1 000) et le port (1 000) ;
+- **risque le trajet pour rien** — et un seul déplacement inutile lui coûte plus
+  cher que les 4 500 FC qu'il croyait économiser ;
+- négocie **debout, devant tout le monde**, ce que beaucoup de gens détestent.
+
+### Et surtout : notre client n'est pas celui qui négocie
+
+Trois publics **ne peuvent pas** négocier au port, et ce sont exactement les
+nôtres :
+1. **la diaspora** — elle n'est pas sur place. C'est notre publication du
+   vendredi, et elle prend ici tout son sens ;
+2. **ceux dont le voyage ne souffre aucun aléa** — rendez-vous médical,
+   enterrement, examen, rentrée scolaire ;
+3. **ceux qui ne veulent pas marchander** : une femme seule, une personne âgée,
+   quelqu'un qui ne connaît pas le port.
+
+### 🔴 Les trois questions dont dépend toute la stratégie de prix
+
+Je ne touche à aucun prix ni à aucun visuel avant les réponses (décision de
+catégorie C — c'est le patron).
+
+1. **Sur les 14 500 FC, combien reste à MoheliGo ?** Quelle est la marge réelle ?
+2. **Le commandant encaisse combien via nous, contre 10 000 au port ?** S'il gagne
+   **plus** quand ça passe par MoheliGo, alors il a intérêt à nous envoyer ses
+   clients et à ne pas brader : **ce ne serait plus un problème de prix, mais un
+   problème d'alignement d'intérêts avec la filière** — et ça se règle par une
+   conversation, pas par une remise.
+3. **Le billet à 10 000, c'est quand ?** Si c'est du remplissage de dernière
+   minute pour des places invendues, alors **on ne vend pas le même produit** :
+   eux liquident un invendu, nous vendons une certitude à l'avance.
+
+### 💡 Et voilà pourquoi le FORFAIT TOUT COMPRIS devient stratégique
+
+Un forfait « Moroni → Mohéli, tout compris » ne fait pas que supprimer les trois
+paiements. **Il rend la comparaison impossible.**
+
+| | Chez nous | Au port |
+|---|---|---|
+| ce qu'on annonce | **un prix unique, tout compris, payé chez soi** | 10 000 FC… plus le bus, plus le port, plus le déplacement, plus le risque |
+
+On ne se bat plus sur le même terrain : **le seul moyen de sortir d'une guerre de
+prix est de cesser de vendre la même chose.** Le forfait n'est donc pas un
+confort — c'est la sortie.
+
 ---
 
 ## 🔴 LA VENTE PERDUE, ET ON CONNAÎT SA PHRASE EXACTE
@@ -210,6 +287,7 @@ là. Ces clientes **savaient** payer. Ce dont elles doutaient, c'était de **nou
 | « Le bus part à quelle heure ? » | WhatsApp à la main, et **une fois de travers** | ✅ **6h30**, écrit sur `flyer37-vraiprix` — à mettre aussi dans l'app |
 | « À combien on paie pour le bus ? » | app, « info pratique » — pas lue | ✅ visuel `flyer37-vraiprix`, publie le jeudi |
 | **« Est-ce qu'on paie tout ici ? »** *(vente perdue)* | non — et le client a renoncé | 🔴 **décision du forfait tout compris**, en attente |
+| **« pourquoi 14 500 alors qu'au port c'est 10 000 ? »** *(pas encore posée à voix haute, mais elle l'est dans les têtes)* | nulle part | 🔴 les trois questions de marge ci-dessus, puis un visuel |
 | « C'est ainsi ? » *(en montrant son billet)* | WhatsApp | 💡 le client doute que son billet soit valable : un mot de confirmation automatique après paiement lèverait ce doute |
 
 ---

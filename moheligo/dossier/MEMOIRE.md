@@ -370,6 +370,36 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **23/08/2026 (🔴🔴 LE FREIN ÉCONOMIQUE N°1 : 45 % PLUS CHER QUE LE PORT)** — Le
+  patron : **« nos billets sont à 14 500, les gens peuvent aller au port négocier
+  à 12 500 ou 10 000. »** C'est le problème le plus sérieux du projet à ce jour,
+  et il explique probablement une part des abandons.
+  ❌ **Ce qu'il ne faut pas faire : s'aligner.** On ne gagne jamais une guerre de
+  prix contre l'informel — eux n'ont ni site, ni frais de paiement, ni engagement
+  de remboursement. Si on descend à 12 500, le port descendra à 9 000.
+  ✅ **Ce qui est vrai et qu'on ne dit nulle part** : l'écart réel n'est pas de
+  4 500 FC. Celui qui négocie au port doit y être tôt sans savoir s'il reste de la
+  place, paie quand même le bus et le port, **risque le trajet pour rien** — un
+  seul déplacement inutile coûte plus que ce qu'il croyait économiser — et
+  marchande debout devant tout le monde.
+  ✅ **Et notre client n'est pas celui qui négocie** : la diaspora (elle n'est pas
+  sur place), ceux dont le voyage ne souffre aucun aléa (médecin, enterrement,
+  examen), et ceux qui ne veulent pas marchander.
+  🔴 **Trois questions dont dépend toute la stratégie de prix, posées au patron**
+  (et je ne touche à aucun prix avant) : quelle marge nous reste sur 14 500 ? le
+  **commandant gagne-t-il plus via nous qu'au port** — si oui ce n'est plus un
+  problème de prix mais **d'alignement avec la filière**, et ça se règle en
+  parlant ; et le billet à 10 000, est-ce du **remplissage de dernière minute** ?
+  💡 **Ça rend le FORFAIT TOUT COMPRIS stratégique, plus seulement pratique** : un
+  prix unique tout compris **rend la comparaison impossible**. Le seul moyen de
+  sortir d'une guerre de prix est de cesser de vendre la même chose.
+  🕗 **Au passage, la vedette passe à 8h.** `flyer37-vraiprix` n'a pas besoin
+  d'être refait : il ne grave que l'heure du **bus** et renvoie au billet pour la
+  vedette. **Une heure susceptible de changer ne s'imprime jamais sur un support
+  qui dure** — vérifié en une journée.
+  🔴 **Reste à savoir** : le bus reste-t-il à 6h30 avec une vedette à 8h ? Si le
+  bus est décalé, le visuel est à refaire **avant jeudi**, jour où il publie.
+
 - **23/08/2026 (⏰ L'HEURE DU BUS : 6H30 — et l'erreur que l'attente a évitée)** —
   Le patron tranche : **le bus part à 6h30**.
   🚨 **Ça valide une prudence qui aurait pu passer pour de la lenteur.** Dans la

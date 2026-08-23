@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/08/2026 (🗣️ LES CONVERSATIONS CLIENTS — et le trou qu'elles révèlent dans
+  le produit)** — Le patron montre deux échanges WhatsApp avec des acheteurs.
+  **C'est la matière la plus utile qu'on ait eue depuis le début**, et ça a
+  ouvert `dossier/QUESTIONS-CLIENTS.md`.
+  🚨 **LA DÉCOUVERTE** : un client **qui avait déjà payé** demande *« le bus part
+  à quelle heure ? »* puis *« à combien on paie pour le bus ? »*. Il y a un point
+  de rendez-vous à terre avant l'embarquement.
+  **On vend une traversée de port à port ; le client, lui, achète un voyage de
+  chez lui jusqu'à Mohéli.** Le trou n'était ni dans le paiement, ni dans les
+  flyers : il est dans la **définition du produit**. Et la question qu'un client
+  pose *après* avoir payé est très probablement celle qui a fait renoncer ceux
+  qui n'ont pas payé.
+  ⛔ **Je n'écris rien là-dessus tant que je n'ai pas les faits** (§ 11 : jamais
+  d'horaire ni de prix inventé). Quatre questions posées au patron : le bus
+  est-il à nous ? d'où et à quelle heure part-il ? combien coûte-t-il ? vaut-il
+  pour les deux liaisons ?
+  ⭐ **PREMIER TÉMOIGNAGE, ET IL EST SPONTANÉ** : au « Bien arrivé ? » du patron,
+  le client répond *« Oui alhamdoulillah. Remercie le commandant de notre part.
+  Il est très professionnel et bienveillant. »* C'est le levier preuve sociale
+  (§ 3), le seul qui nous manquait — **mais c'est un message privé : on ne le
+  publie pas sans l'accord de la personne.**
+  💡 **Un actif qu'on n'utilisait pas : le commandant.** Son nom est **déjà
+  imprimé sur la carte d'embarquement** — le voyageur sait qui pilote avant de
+  monter. Dans un métier où la peur est réelle, c'est un argument de confiance
+  rare, déjà dans le produit, et absent de tous nos visuels.
+  📌 **Le « Bien arrivé ? » du lendemain est du service client de très haut
+  niveau** — probablement la raison pour laquelle les trois acheteurs ont suivi
+  la page. À garder comme règle de maison.
+  🔒 **RAPPEL DE SÉCURITÉ, dit au patron** : le dépôt est **public**. Les captures
+  de conversation contiennent nom, numéro et référence de billet : elles ne
+  doivent **jamais** y être déposées. Dans `QUESTIONS-CLIENTS.md` on ne garde que
+  la question, jamais la personne.
+
 - **18/08/2026 (🎉 LES TROIS PREMIÈRES VENTES — la chaîne fonctionne de bout en
   bout)** — Le patron : « 543 c'est depuis le lancement en juillet, et 3 personnes
   ont payé et suivi MoheliGo. »

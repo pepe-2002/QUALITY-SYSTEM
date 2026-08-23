@@ -181,6 +181,19 @@ Ce qu'il gagne : partir tranquille.
 
 ## 5. 🎯 VENDRE À QUELQU'UN QUI N'A JAMAIS ACHETÉ EN LIGNE
 
+> 🚨 **LA LEÇON DU 18/08/2026 — ON NE VEND PAS CE QUE LE CLIENT ACHÈTE.**
+> Un client qui avait **déjà payé sa traversée** a posé deux questions par
+> WhatsApp : *« le bus part à quelle heure ? »* et *« à combien on paie pour le
+> bus ? »*
+> Nous vendons une **traversée de port à port**. Lui achète **un voyage de chez
+> lui jusqu'à Mohéli** — et dans son calcul il y a le bus, son heure et son prix.
+> **Le trou n'était pas dans le paiement ni dans le flyer : il était dans la
+> définition même du produit**, et aucun de nos supports n'y répondait.
+> ➡️ **Règle qui en découle** : avant d'améliorer ce qu'on vend, vérifier qu'on
+> vend bien la chose entière que le client veut. La question qu'il pose *après*
+> avoir payé est celle qui a fait hésiter les dix autres qui n'ont pas payé.
+> ➡️ **Où ça vit** : `QUESTIONS-CLIENTS.md`. À relire avant chaque flyer.
+
 **C'est notre vrai métier commercial**, et la partie la plus importante de ce
 manuel. Aux Comores, beaucoup de nos clients n'ont jamais payé sur un site. La
 recherche sur les marchés émergents est unanime : **le premier obstacle n'est

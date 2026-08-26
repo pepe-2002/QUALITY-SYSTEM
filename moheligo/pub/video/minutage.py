@@ -37,9 +37,9 @@ MESURES = os.path.join(ICI, "voix", "durees.json")
 # Avec des phrases lâchées à toute vitesse, les blancs prenaient toute la place :
 # entre 0 et 5,4 s il n'y avait que 0,8 s de voix. Maintenant que le débit est
 # tenu, les phrases occupent le temps et les respirations peuvent être courtes.
-RESPIRATION = [1.20, 0.85, 0.85, 0.75, 0.85, 0.70, 0.95, 0.00]
-DEBUT = 1.60        # avant le premier mot : l'image s'installe, sans traîner
-QUEUE = 2.80        # après le dernier mot : la carte finale respire
+RESPIRATION = [0.95, 0.65, 0.65, 0.55, 0.65, 0.55, 0.75, 0.00]
+DEBUT = 1.30        # avant le premier mot : l'image s'installe, sans traîner
+QUEUE = 2.60        # après le dernier mot : la carte finale respire
 
 
 def _texte():

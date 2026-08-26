@@ -108,15 +108,24 @@ def _reparer_torchaudio():
 # 📌 LE DÉBIT N'EST PAS LE MÊME PARTOUT, ET C'EST VOULU. Un film qui fait rêver
 # n'a pas un métronome : le souvenir se dit lentement, le service se dit net, la
 # signature se pose. D'où une cible par phrase, écrite à la main.
+#
+# 🎯 CES CHIFFRES ONT ÉTÉ RÉGLÉS PAR L'OREILLE DU PATRON, EN DEUX PASSES :
+#   · 1re fournée, sans cible : 8,6 → 27,1 car/s. Lui : « la voix est accélérée ».
+#   · 2e fournée, cibles 11–13,5 : lui : « **c'est trop lent, on entend comme si
+#     je dormais** ». J'avais corrigé trop fort.
+#   · 3e fournée : 14–16. C'est la bande du parler normal en français.
+# ⚠️ Ne pas redescendre ces cibles « pour faire rêveur » : le rêve vient des
+# images et de la nappe, pas d'une voix ralentie. Une voix lente n'endort pas le
+# spectateur au figuré, elle l'endort pour de bon.
 DEBIT = [
-     8.0,   # « Mohéli. » — un seul mot, posé lentement : c'est le titre du film
-    11.0,   # le souvenir du port : lent exprès, c'est l'avant
-    13.5,   # « tu réserves depuis ton téléphone » : net, c'est une information
-    13.0,   # « tu paies par MVola »
-    13.5,   # le billet, le code QR, même sans réseau
-    13.0,   # « chaque soir, la mer de demain »
-    12.5,   # « tu sais avant de partir » : on ralentit, on arrive à la fin
-    12.0,   # la signature : la phrase la plus lente du film
+     9.0,   # « Mohéli. » — un seul mot, posé : c'est le titre du film
+    13.5,   # le souvenir du port : un peu plus lent que le reste, c'est l'avant
+    15.5,   # « tu réserves depuis ton téléphone » : net, c'est une information
+    15.0,   # « tu paies par MVola »
+    15.5,   # le billet, le code QR, même sans réseau
+    15.0,   # « chaque soir, la mer de demain »
+    15.0,   # « tu sais avant de partir »
+    14.0,   # la signature : la seule qu'on pose vraiment
 ]
 BANDE = 0.06        # ±6 % autour de la cible, c'est inaudible
 ESSAIS = 6
@@ -141,7 +150,14 @@ TEMPERATURE = 0.65
 # ⚠️ Conséquence pratique : deux lancements ne donnent pas le même résultat, et
 # une phrase peut rester à côté de sa cible (c'est arrivé à la 6). Si une prise
 # déplaît à l'oreille, **relancer suffit souvent** — c'est un nouveau tirage.
-VITESSE_MIN, VITESSE_MAX = 0.70, 1.35
+# 🚨 LA BORNE BASSE EST À 0,90, ET C'EST LE POINT LE PLUS IMPORTANT DU FICHIER.
+# Pour tenir des cibles trop lentes, la recherche était descendue à **0,72–0,77**
+# sur quatre phrases. À ce réglage, XTTS ne parle pas plus lentement : il
+# **traîne les voyelles**. Verdict du patron : « on entend comme si je dormais ».
+# 📌 Le débit et le traînage sont deux choses différentes. On règle le débit par
+# le CHOIX DE LA PRISE et par `atempo` (qui étire le temps sans déformer la
+# voix) — jamais en écrasant le réglage du modèle.
+VITESSE_MIN, VITESSE_MAX = 0.90, 1.15
 
 # Puis un rattrapage fin au montage, qui **conserve la hauteur de la voix**
 # (`atempo` étire le temps, pas le timbre). On s'interdit d'aller au-delà :

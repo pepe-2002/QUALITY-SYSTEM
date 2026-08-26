@@ -29,6 +29,12 @@ LA CHAÎNE, ÉTAGE PAR ÉTAGE (aucun n'est décoratif) :
   · alimiter + loudnorm .. −16 LUFS, la norme Facebook / Instagram. En dessous,
                            la plateforme remonte elle-même et ramène le souffle.
 
+📦 TROIS FORMATS, ET C'EST VOULU. Le patron n'arrivait pas à ouvrir le `.m4a` :
+un fichier son ne se lit pas partout, une VIDÉO si. On livre donc toujours
+`.m4a` (le montage), `.mp3` (n'importe quel téléphone) et un `.mp4` — une carte
+MoheliGo fixe avec le son dessus. **Un livrable qui ne s'ouvre pas n'est pas
+livré.**
+
 ⚠️ ON NE FABRIQUE JAMAIS UNE VOIX. Nettoyer l'enregistrement de quelqu'un qui
 nous l'a donné, oui. Synthétiser sa voix pour lui faire dire ce qu'il n'a pas
 dit, non — voir `identite.py`.

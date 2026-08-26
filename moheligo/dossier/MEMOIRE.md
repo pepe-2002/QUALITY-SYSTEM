@@ -370,6 +370,33 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🎙️ LA VOIX DU PATRON — nettoyée, et une limite à dire)** — le
+  patron envoie **36,5 s de sa propre voix** (vidéo noire, enregistrement pur) :
+  « utilise ma voix mais améliore-la un peu 😂 ».
+  ✅ **Nettoyée** : niveau moyen de **−30,4 dB → −17,2 dB** (norme des
+  plateformes), souffle retiré, +3,5 dB sur la bande de l'intelligibilité — la
+  seule qui compte sur un haut-parleur de téléphone. Chaîne complète et
+  raisonnée dans **`pub/video/voix.py`**.
+  📌 **La distinction qui compte** : nettoyer l'enregistrement de quelqu'un qui
+  nous le donne, **oui** ; synthétiser sa voix pour lui faire dire ce qu'il n'a
+  pas dit, **non**. Ce n'est pas la même chose, et le fichier le dit.
+  🔴 **CE QUE JE NE PEUX PAS FAIRE, ET QUI BLOQUE LE MONTAGE : je n'entends
+  pas.** Aucun outil de transcription ici. Je vois le niveau, les pauses, la
+  durée — **pas les mots**. Impossible de savoir quelle phrase va sur quelle
+  carte.
+  ➡️ **Demandé au patron** : écouter son propre enregistrement et me donner
+  **trois phrases avec leur seconde de départ**. Je découpe ses phrases exactes,
+  je fabrique les cartes qui disent mot pour mot ce qu'il dit, et je monte.
+  💡 **Et c'est une bonne nouvelle qu'il ait improvisé** (« je parlais juste,
+  j'avais pas de prompt ») : **une improvisation est la meilleure matière
+  première qui existe** — c'est là que sortent les phrases qu'un script ne trouve
+  jamais. Les siennes valent mieux que les miennes : « ça fait trop demander »,
+  « comme ça ça fait le boom ».
+  📦 **LEÇON DE LIVRAISON** : il n'arrivait pas à ouvrir le `.m4a`. **Un fichier
+  son ne se lit pas partout, une vidéo si.** On livre désormais du son en trois
+  formats — `.m4a`, `.mp3`, et un `.mp4` (carte fixe + son). **Un livrable qui ne
+  s'ouvre pas n'est pas livré.**
+
 - **26/08/2026 (🎬 TROIS FILMS D'IDENTITÉ, et le logo des flyers était coupé)** —
   ➊ **Le logo.** Le patron : « regarde le logo des flyers et celui de la page,
   celui du flyer est un peu coupé. » ✅ **Il avait raison.** `logo-emblem.png`

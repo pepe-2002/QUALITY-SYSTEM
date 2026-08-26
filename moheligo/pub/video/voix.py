@@ -55,15 +55,20 @@ dit, non — voir `identite.py`.
 """
 import argparse, os, subprocess
 
-CHAINE = ("highpass=f=85,"
-          "afftdn=nf=-26:nt=w,"
-          "equalizer=f=260:t=q:w=1.1:g=-3,"
-          "equalizer=f=3200:t=q:w=1.4:g=3.5,"
-          "equalizer=f=9000:t=h:g=2,"
-          "deesser=i=0.35,"
-          "acompressor=threshold=-20dB:ratio=3.2:attack=8:release=180:makeup=2,"
+# ✅ RÉGLAGE RETENU PAR LE PATRON LE 26/08/2026 : la « 1 · LÉGÈRE ».
+# Il trouvait la première version « trop grosse ». Celle-ci coupe plus haut
+# (125 Hz), creuse le bas-médium (−5 dB à 230, −2,5 dB à 420) et comprime deux
+# fois moins. Résultat : la même voix, mais dégraissée.
+CHAINE = ("highpass=f=125,"
+          "afftdn=nf=-24:nt=w,"
+          "equalizer=f=230:t=q:w=1.0:g=-5,"
+          "equalizer=f=420:t=q:w=1.2:g=-2.5,"
+          "equalizer=f=3600:t=q:w=1.4:g=3,"
+          "equalizer=f=10000:t=h:g=2.5,"
+          "deesser=i=0.4,"
+          "acompressor=threshold=-18dB:ratio=2:attack=12:release=220,"
           "alimiter=limit=0.94,"
-          "loudnorm=I=-16:TP=-1.5:LRA=11")
+          "loudnorm=I=-17:TP=-1.5:LRA=13")
 
 
 def niveau(f):

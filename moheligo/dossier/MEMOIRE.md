@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🌴 « MOHÉLI, LE RÊVE » — sa voix, notre musique, nos services)** —
+  le patron : « la 1, et mets une petite musique, et utilise ma voix pour les
+  voix off. Fais une vidéo qui fait rêver, ça sera bien de présenter nos
+  services. » → **`pub/video/MoheliGo-Moheli-le-reve.mp4`**, 42 s,
+  refabricable par `reve.py`.
+  🎚️ **Réglage de voix retenu : la « 1 · LÉGÈRE »** — il trouvait la première
+  « trop grosse ». Coupe à 125 Hz, −5 dB à 230 Hz, compression deux fois plus
+  douce. `voix.py` porte désormais ce réglage par défaut.
+  🎵 **LA MUSIQUE EST ÉCRITE ICI** (`musique.py`) — Ré · Si mineur · Sol · La,
+  une nappe sans percussion ni mélodie, **avec un creux de 7 dB entre 220 Hz et
+  4,2 kHz** : la bande de la parole, qu'on laisse libre au lieu de monter la
+  voix. 🚨 **Et ce n'est pas un caprice** : Facebook reconnaît les musiques du
+  commerce et **coupe le son de la publication**. Une musique à nous ne peut
+  être réclamée par personne — et devient un code de la marque de plus.
+  🎬 **LE MONTAGE SUIT SA RESPIRATION** : toutes les coupes tombent dans les
+  silences de sa voix, relevés au dixième de seconde. Trois longues pauses
+  (14,4 · 22,3 · 31,1 s) font les trois grandes transitions. 📌 **On ne coupe
+  jamais sur un mot** — ça s'entend même quand on ne saurait pas dire pourquoi.
+  📌 **POURQUOI LES PHOTOS REVIENNENT ICI**, alors qu'il les avait refusées pour
+  les films d'identité : **ce n'est pas le même film.** Un film d'identité fait
+  reconnaître la MARQUE — une photo y dilue le propos. Ici le sujet EST Mohéli.
+  **On ne fait pas rêver avec une carte marine.** La marque tient par le décor :
+  le coin blanc sur chaque image, la vague dorée, la carte finale.
+  🔴 **CE QUE JE N'AI TOUJOURS PAS PU VÉRIFIER : je n'entends pas ce qu'il dit.**
+  Les quatre bandeaux de service sont posés **dans ses silences** — ils ne
+  couvrent donc jamais une phrase — mais si l'un tombe à côté du propos, il se
+  déplace en changeant une seconde dans `reve.BANDEAUX`.
+
 - **26/08/2026 (🎙️ LA VOIX DU PATRON — nettoyée, et une limite à dire)** — le
   patron envoie **36,5 s de sa propre voix** (vidéo noire, enregistrement pur) :
   « utilise ma voix mais améliore-la un peu 😂 ».

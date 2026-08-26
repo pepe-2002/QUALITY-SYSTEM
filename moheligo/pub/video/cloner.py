@@ -125,13 +125,22 @@ ESSAIS = 6
 # fantaisie, on a besoin qu'il lise deux fois pareil.
 TEMPERATURE = 0.65
 
-# 🔎 COMMENT ON CHERCHE LA BONNE VITESSE — et pourquoi pas « à la règle de trois »
-# Premier réflexe : mesurer l'écart et corriger proportionnellement. Mesuré :
-# **vitesse 1,00 → 8,1 car/s ; vitesse 1,30 → 23,5 car/s.** Le réglage n'est pas
-# linéaire du tout, et la règle de trois dépasse la cible à chaque coup.
-# ➡️ On fait donc une **dichotomie** : trop lent, on monte la borne basse ; trop
-# rapide, on descend la borne haute ; on essaie au milieu. Six essais réduisent
-# l'intervalle à 1 %, quelle que soit la forme de la courbe.
+# 🔎 COMMENT ON CHERCHE LA BONNE VITESSE — et ce que les mesures ont démenti
+# Premier réflexe : régler `speed` à la règle de trois. Faux — le réglage n'est
+# pas linéaire (1,00 → 8,1 car/s ; 1,30 → 23,5 car/s) et on dépasse à chaque coup.
+# Deuxième réflexe : la dichotomie. C'est ce que fait le code ci-dessous, et il
+# faut savoir POURQUOI ça marche, parce que ce n'est pas pour la raison prévue.
+# 📉 Relevé réel sur la phrase 1, quatre essais dans un mouchoir de poche :
+#     vitesse 0,85 → 8,9   ·   0,93 → 14,9   ·   0,89 → 17,1   ·   0,86 → 9,7
+# ➡️ **Le hasard de la prise pèse bien plus lourd que le réglage.** XTTS
+# rééchantillonne sa prosodie à chaque appel ; `speed` ne fait que déplacer un
+# centre autour duquel il tire au sort, largement.
+# 📌 Donc ce qu'on fait vraiment, c'est **tirer plusieurs prises et garder la
+# meilleure** — la dichotomie sert à orienter le tirage, pas à converger. Ne pas
+# lire ce code comme une recherche exacte : c'est un casting, pas un calcul.
+# ⚠️ Conséquence pratique : deux lancements ne donnent pas le même résultat, et
+# une phrase peut rester à côté de sa cible (c'est arrivé à la 6). Si une prise
+# déplaît à l'oreille, **relancer suffit souvent** — c'est un nouveau tirage.
 VITESSE_MIN, VITESSE_MAX = 0.70, 1.35
 
 # Puis un rattrapage fin au montage, qui **conserve la hauteur de la voix**

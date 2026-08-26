@@ -399,6 +399,42 @@ recharger ce sujet ici, ce n'est pas du marketing.
   🎯 **Il écoute et il valide avant toute publication.** Je n'entends pas le
   résultat : lui seul peut dire si c'est lui. Livré en `.mp3` **et** dans le film.
 
+- **26/08/2026 (🎚️ « LA VOIX EST ACCÉLÉRÉE ET PARFOIS ON N'ENTEND RIEN »)** — le
+  patron, après avoir regardé le film. **Deux défauts distincts**, tous les deux
+  mesurables — et que je n'avais pas mesurés avant de livrer.
+  🚨 **(1) LE DÉBIT PARTAIT DANS TOUS LES SENS : de 8,6 à 27,1 caractères par
+  seconde d'une phrase à l'autre**, du simple au triple. XTTS ne tient aucun
+  rythme. ✅ Chaque phrase a maintenant un **débit visé** dans `cloner.DEBIT` —
+  et pas le même partout, c'est voulu : le souvenir du port lent (11), les
+  services nets (13–13,5), la signature la plus lente du film (12). Résultat :
+  **8,2 à 14,2 car/s**.
+  🚨 **(2) « ON N'ENTEND RIEN » — trois causes cumulées, pas une** :
+  · les phrases sortaient entre −19,9 et −15,0 LUFS ; **5 dB d'écart**, et les
+    plus faibles passaient sous la musique → égalisées une par une (`egaliser()`),
+    écart ramené à moins de 2 dB, crêtes à −3 dB (XTTS sort collé à 0 dBFS) ;
+  · la musique était à **volume fixe** → maintenant elle **s'abaisse sous la voix
+    et remonte dans les blancs** (`sidechaincompress` dans `reve.py`). Deux
+    effets d'un coup : la voix n'est jamais couverte, et les respirations ne sont
+    plus des trous ;
+  · les blancs étaient trop longs — **entre 0 et 5,4 s il n'y avait que 0,8 s de
+    voix**. Intro 2,4 → 1,6 s, respirations raccourcies.
+  🐛 **ET UN DÉFAUT QU'IL N'AVAIT PAS VU** : sur « Mohéli. » (7 lettres) le modèle
+  **bavardait 3,6 s** — du contenu audible, pas du souffle : aucun seuil de
+  silence ne l'enlève. Détecté au débit (très en dessous de la cible = bavardage),
+  prise jetée, relance. 4,31 s → 0,86 s.
+  📌 **LA LEÇON, ET ELLE EST DURE** : j'ai livré un film sans avoir mesuré la
+  seule chose qui définissait sa qualité — le débit et le volume de la voix.
+  J'avais vérifié ce que je savais vérifier (les images, le calage) et déclaré le
+  reste « invérifiable parce que je n'entends pas ». **Faux.** Je n'entends pas le
+  timbre, mais le débit et le niveau se mesurent en trois commandes. *Ne jamais
+  ranger dans « invérifiable » ce qui est seulement « pas encore mesuré ».*
+  🎲 **CE QUE J'AI CRU ET QUI EST FAUX** : que `speed` réglait le débit. Relevé
+  sur une même phrase — 0,85 → 8,9 car/s ; 0,93 → 14,9 ; 0,89 → 17,1 ; 0,86 → 9,7.
+  **Le hasard de la prise pèse plus lourd que le réglage.** Ce que fait vraiment
+  `cloner.py`, c'est **tirer plusieurs prises et garder la meilleure** : un
+  casting, pas un calcul. ⚠️ Donc **deux lancements ne donnent pas le même
+  résultat**, et si une prise déplaît à l'oreille, **relancer suffit souvent**.
+
 - **26/08/2026 (⏱️ LA VOIX MÈNE, L'IMAGE SUIT — l'erreur de méthode du jour)** —
   j'avais écrit le texte avec des **créneaux fixes** (« phrase 2 : de 6,4 s à
   12,6 s ») en attendant que la voix y rentre. **Elle n'est pas rentrée** : trois

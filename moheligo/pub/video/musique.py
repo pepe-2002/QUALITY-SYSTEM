@@ -98,13 +98,29 @@ def creux_parole(x):
     return np.fft.irfft(X * np.minimum(gain, 1.0), len(x))
 
 
+# 🐛 LE BOGUE QUI A FAIT SEPT SECONDES DE VIDE (trouvé le 26/08 au soir, après
+# « parfois tu n'entends rien »). La durée d'un accord était calculée comme
+# `durée du film / 4` : quatre accords, un seul cycle. Mais les accords se
+# CHEVAUCHENT de 22 %, donc quatre accords ne couvrent que 78 % du film —
+# **la musique s'arrêtait à 37,7 s sur un film de 45,2 s.** Elle s'arrêtait déjà
+# avant la fin dans la version de 42 s, et je ne l'avais pas vu.
+# ✅ La durée d'un accord est maintenant FIXE, et on enchaîne autant de cycles
+# qu'il en faut pour couvrir le film, quelle que soit sa longueur.
+# 📌 Au passage c'est mieux musicalement : 11 s par accord, c'est glacial ;
+# 5,5 s, la marche s'entend et le cycle revient assez souvent pour être reconnu.
+PAR_ACCORD = 5.5
+CHEVAUCHEMENT = 0.78        # chaque accord démarre à 78 % du précédent
+
+
 def composer(duree):
-    par_accord = duree / 4 * 1.0
-    cycles = max(1, int(np.ceil(duree / (par_accord * 4))))
+    par_accord = PAR_ACCORD
     n_acc = int(par_accord * TE)
+    pas = par_accord * CHEVAUCHEMENT
+    # +1 accord de marge : le dernier doit ENTRER avant la fin, pas finir dessus
+    accords = int(np.ceil(duree / pas)) + 1
     piste = np.zeros(int(duree * TE) + n_acc)
     pos = 0
-    for c in range(cycles * 4):
+    for c in range(accords):
         notes = ACCORDS[c % 4]
         bloc = np.zeros(n_acc)
         for j, f in enumerate(notes):
@@ -113,7 +129,7 @@ def composer(duree):
         bloc *= enveloppe(n_acc, par_accord * 0.42, par_accord * 0.46)
         fin = min(len(piste), pos + n_acc)
         piste[pos:fin] += bloc[:fin - pos]
-        pos += int(n_acc * 0.78)                 # les accords se chevauchent
+        pos += int(n_acc * CHEVAUCHEMENT)        # les accords se chevauchent
     piste = piste[:int(duree * TE)]
     piste /= np.max(np.abs(piste)) + 1e-9
     piste = passe_bas(piste, 2600)

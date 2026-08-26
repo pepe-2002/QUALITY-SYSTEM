@@ -418,6 +418,22 @@ recharger ce sujet ici, ce n'est pas du marketing.
     plus des trous ;
   · les blancs étaient trop longs — **entre 0 et 5,4 s il n'y avait que 0,8 s de
     voix**. Intro 2,4 → 1,6 s, respirations raccourcies.
+  🐛 **ET UN TROISIÈME, LE PIRE, TROUVÉ EN VÉRIFIANT LE RÉSULTAT** : **la musique
+  s'arrêtait à 37,7 s sur un film de 45,2 s.** `musique.py` calculait la durée
+  d'un accord comme `durée du film / 4` — mais les accords se chevauchent de
+  22 %, donc quatre accords ne couvrent que 78 % du film. ⚠️ **Le défaut existait
+  déjà dans la version de 42 s** et je ne l'avais pas vu : c'était sûrement la
+  moitié de son « on n'entend rien ». La durée d'un accord est maintenant FIXE
+  (5,5 s) et on enchaîne autant de cycles qu'il faut, quelle que soit la
+  longueur du film.
+  🛠️ **`reve.py --son-seul`** (nouveau) : refait le mélange sur l'image déjà
+  rendue, `-c:v copy`, **5 secondes au lieu de 8 minutes**. Sans ça je n'aurais
+  pas essayé trois réglages de fondu — et c'est exactement pour ça qu'on n'en
+  essayait qu'un.
+  ✅ **VÉRIFIÉ, ET C'EST LA VÉRIFICATION QUI COMPTE** : la voix garde **11 à
+  19 dB d'avance** sur la musique abaissée pendant chaque phrase (l'usage en
+  radio est 10 dB), et le niveau du mélange reste entre −13,7 et −19,3 dB d'un
+  bout à l'autre du film, hors fondu de fin. Plus un seul trou.
   🐛 **ET UN DÉFAUT QU'IL N'AVAIT PAS VU** : sur « Mohéli. » (7 lettres) le modèle
   **bavardait 3,6 s** — du contenu audible, pas du souffle : aucun seuil de
   silence ne l'enlève. Détecté au débit (très en dessous de la cible = bavardage),

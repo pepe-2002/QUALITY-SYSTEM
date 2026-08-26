@@ -158,6 +158,39 @@ def vague(a, b, avancee):
                     .astype(np.uint8), out)
 
 
+def sonoriser(source_video, sortie):
+    """LE SON SEUL, sur une image déjà rendue.
+
+    📌 Pourquoi ça existe : refaire les 1 355 images pour corriger une piste
+    audio coûte huit minutes de calcul pour rien. Ici on recopie le flux vidéo
+    tel quel (`-c:v copy`, aucune recompression, aucune perte) et on ne
+    refabrique que le mélange. Deux secondes."""
+    tmp = sortie + ".tmp.mp4"
+    subprocess.run(
+        ["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", source_video,
+         "-i", VOIX, "-i", NAPPE, "-filter_complex",
+         # sa voix devant, la nappe qui s'efface dessous et remonte dans les
+         # blancs. 🚨 LE DÉFAUT SIGNALÉ PAR LE PATRON — « parfois tu n'entends
+         # rien ». Avant, la nappe était à volume fixe : sous une phrase un peu
+         # faible elle passait devant, et dans les silences il ne restait
+         # presque rien. Maintenant la voix COMMANDE la musique : elle parle →
+         # la nappe recule ; elle se tait → la nappe revient.
+         "[1:a]adelay=0|0,volume=1.0,asplit=2[v][cle];"
+         # ⚠️ FONDU COURT, ET TARD. Avec 3 s de fondu, la carte de marque finissait
+         # à −38 dB : le film se terminait dans le silence, et c'est encore un
+         # « on n'entend rien ». La nappe tient sous la carte, puis s'éteint.
+         f"[2:a]volume=0.30,afade=t=out:st={DUREE - 1.8:.2f}:d=1.8[m];"
+         # attaque courte (elle doit reculer dès la première syllabe), retour
+         # lent (400 ms) : un retour rapide s'entend comme une pompe
+         "[m][cle]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=400"
+         ":makeup=1[md];"
+         "[v][md]amix=inputs=2:duration=first:dropout_transition=0,"
+         f"apad,atrim=0:{DUREE},loudnorm=I=-15:TP=-1.5:LRA=12[a]",
+         "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
+         "-movflags", "+faststart", tmp], check=True)
+    os.replace(tmp, sortie)
+
+
 def fabriquer(sortie, travail="/tmp/reve-moheligo"):
     os.makedirs(travail, exist_ok=True)
     emblem = Image.open(os.path.join(RACINE, "pub", "flyers", "logo-emblem.png")).convert("RGBA")
@@ -200,35 +233,20 @@ def fabriquer(sortie, travail="/tmp/reve-moheligo"):
     tube.stdin.close()
     tube.wait()
 
-    # LE SON : sa voix devant, la nappe qui s'efface dessous et remonte dans les
-    # blancs. 🚨 LE DÉFAUT SIGNALÉ PAR LE PATRON — « parfois tu n'entends rien ».
-    # Avant, la nappe était à volume fixe : sous une phrase un peu faible elle
-    # passait devant, et dans les silences il ne restait presque rien. Maintenant
-    # c'est un ABAISSEMENT AUTOMATIQUE (`sidechaincompress`) : la voix commande
-    # la musique. Elle parle → la nappe recule ; elle se tait → la nappe revient.
-    # 📌 Deux effets d'un coup : la voix n'est jamais couverte, et les respirations
-    # ne sont plus des trous — c'est la musique qui les tient.
-    subprocess.run(
-        ["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", muet,
-         "-i", VOIX, "-i", NAPPE, "-filter_complex",
-         "[1:a]adelay=0|0,volume=1.0,asplit=2[v][cle];"
-         f"[2:a]volume=0.30,afade=t=out:st={DUREE - 3.0:.2f}:d=3[m];"
-         # attaque courte (elle doit reculer dès la première syllabe), retour
-         # lent (400 ms) : un retour rapide s'entend comme une pompe
-         "[m][cle]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=400"
-         ":makeup=1[md];"
-         "[v][md]amix=inputs=2:duration=first:dropout_transition=0,"
-         f"apad,atrim=0:{DUREE},loudnorm=I=-15:TP=-1.5:LRA=12[a]",
-         "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
-         "-movflags", "+faststart", sortie], check=True)
+    sonoriser(muet, sortie)
     os.unlink(muet)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--sortie", default=os.path.join(ICI, "MoheliGo-Moheli-le-reve.mp4"))
+    ap.add_argument("--son-seul", action="store_true",
+                    help="refait le mélange sur l'image déjà rendue (2 s au lieu de 8 min)")
     a = ap.parse_args()
-    fabriquer(a.sortie)
+    if a.son_seul:
+        sonoriser(a.sortie, a.sortie)
+    else:
+        fabriquer(a.sortie)
     d = subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration",
                         "-of", "csv=p=0", a.sortie], capture_output=True, text=True).stdout.strip()
     print(f"✅ {os.path.basename(a.sortie)}  {float(d):.1f} s")

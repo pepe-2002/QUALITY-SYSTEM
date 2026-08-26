@@ -77,6 +77,7 @@ on finit par corriger la copie au lieu de la source, et les deux se contredisent
 | `pub/flyers/bulletin.json` | idem | les chiffres de mer du jour |
 | `pub/photos-cc/CREDITS.md` | avec les photos | l'attribution doit rester collée aux fichiers qu'elle couvre |
 | `pub/demo/ecrans/` | avec le script de capture | c'est là que le patron dépose ses captures |
+| `pub/video/MoheliGo-YoungLeader.mp4` | à côté de `monter.py` | **monté par un programme** — corriger le script, jamais le .mp4 |
 
 **Les pages lisibles pour le patron sont générées, jamais recopiées :**
 

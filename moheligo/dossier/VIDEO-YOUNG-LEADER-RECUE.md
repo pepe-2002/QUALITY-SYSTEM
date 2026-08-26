@@ -154,6 +154,21 @@ carte finale elle doit être exacte**.
 
 ---
 
+## ✅ MONTÉE LE 26/08/2026 — le patron a donné le feu vert
+
+> « tu peux utiliser cette vidéo et des images pour en faire une vraie et
+> corriger les fautes… la dernière photo c'est le port de Hoani »
+
+**Fait** : `pub/video/MoheliGo-YoungLeader.mp4` (40,4 s), refabricable par
+`pub/video/monter.py`. Les six défauts réparables ci-dessus le sont ; il reste
+les deux réserves du bas de page (fichier d'origine, droits écrits).
+
+**La trouvaille** : les anciens sous-titres étaient incrustés dans l'image. On
+les efface en **coupant 150 px en bas puis en rezoomant** — calé à gauche, sinon
+le logo MoheliGo d'origine est rogné.
+
+---
+
 ## ⚖️ CE QUE JE RECOMMANDE
 
 **Ne pas publier tel quel** — non pas parce que le travail est mauvais, mais

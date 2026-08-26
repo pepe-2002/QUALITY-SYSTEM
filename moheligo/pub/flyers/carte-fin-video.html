@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+@import url('fonts/local-fonts.css');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1920px; font-family:'Inter'; color:#fff; overflow:hidden; }
+
+.carte { position:relative; width:1080px; height:1920px; background:#071c3d;
+  background-image:
+    radial-gradient(900px 620px at 50% 14%, rgba(56,120,220,.34) 0%, rgba(7,28,61,0) 70%),
+    radial-gradient(760px 520px at 50% 96%, rgba(250,204,21,.16) 0%, rgba(7,28,61,0) 72%);
+  display:flex; flex-direction:column; align-items:center; }
+
+/* vague décorative en bas */
+.vague { position:absolute; left:0; right:0; bottom:0; height:360px; opacity:.26; }
+
+.marque { margin-top:168px; display:flex; flex-direction:column; align-items:center; gap:30px; }
+.tuile { width:188px; height:188px; border-radius:48px; background:#fff;
+  display:flex; align-items:center; justify-content:center; box-shadow:0 26px 60px rgba(0,0,0,.45); }
+.tuile img { width:150px; height:150px; object-fit:contain; }
+.nom { font-family:'Montserrat'; font-weight:900; font-size:78px; letter-spacing:-1.5px; }
+.nom em { font-style:normal; color:#facc15; }
+
+.signature { margin-top:132px; text-align:center; padding:0 76px; }
+.signature .l1 { font-family:'Montserrat'; font-weight:800; font-size:70px; line-height:1.12;
+  color:#dbeafe; letter-spacing:-1px; }
+.signature .l2 { font-family:'Montserrat'; font-weight:900; font-size:82px; line-height:1.1;
+  margin-top:16px; color:#facc15; letter-spacing:-1.5px; }
+
+.trait { width:190px; height:7px; border-radius:4px; background:#facc15; margin:126px 0 0; opacity:.95; }
+
+.action { margin-top:126px; text-align:center; }
+.action small { display:block; font-size:30px; font-weight:600; letter-spacing:6px; color:#93c5fd; }
+.action b { display:block; font-family:'Montserrat'; font-weight:900; font-size:112px; margin-top:24px;
+  letter-spacing:-2px; text-shadow:0 8px 30px rgba(0,0,0,.4); }
+
+.credit { position:absolute; left:0; right:0; bottom:104px; text-align:center; }
+.credit span { font-size:27px; font-weight:600; letter-spacing:2.5px; color:#a9c2e4; }
+.credit b { display:block; margin-top:11px; font-family:'Montserrat'; font-weight:700;
+  font-size:33px; letter-spacing:1px; color:#e2ecfb; }
+</style></head><body>
+<div class="carte">
+
+  <svg class="vague" viewBox="0 0 1080 300" preserveAspectRatio="none">
+    <path d="M0,150 C170,84 330,196 540,150 C750,104 900,196 1080,140 L1080,300 L0,300 Z" fill="#facc15"/>
+    <path d="M0,196 C190,140 340,238 540,196 C740,154 910,238 1080,190 L1080,300 L0,300 Z" fill="#ffffff" opacity=".35"/>
+  </svg>
+
+  <div class="marque">
+    <div class="tuile"><img src="../../MoheliGo-logo.png" alt=""></div>
+    <div class="nom">Moheli<em>Go</em></div>
+  </div>
+
+  <div class="signature">
+    <div class="l1">La mer décide.</div>
+    <div class="l2">Nous, on te le dit avant.</div>
+  </div>
+
+  <div class="trait"></div>
+
+  <div class="action">
+    <small>RÉSERVE TA TRAVERSÉE SUR</small>
+    <b>moheligo.com</b>
+  </div>
+
+  <div class="credit">
+    <span>AVEC</span>
+    <b>EL FAROUK SAINDOU · Young Leader Mohéli 2026</b>
+  </div>
+
+</div>
+</body></html>

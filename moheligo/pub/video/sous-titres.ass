@@ -1,0 +1,26 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 576
+PlayResY: 1024
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+
+[V4+ Styles]
+Format: Name,Fontname,Fontsize,PrimaryColour,SecondaryColour,OutlineColour,BackColour,Bold,Italic,Underline,StrikeOut,ScaleX,ScaleY,Spacing,Angle,BorderStyle,Outline,Shadow,Alignment,MarginL,MarginR,MarginV,Encoding
+Style: ST,Inter,37,&H00FFFFFF,&H00FFFFFF,&H00301A08,&HB4000000,-1,0,0,0,100,100,0.4,0,1,3.4,1.6,2,40,40,118,1
+
+[Events]
+Format: Layer,Start,End,Style,Name,MarginL,MarginR,MarginV,Effect,Text
+Dialogue: 0,0:00:00.00,0:00:04.94,ST,,0,0,0,,VOUS QUI NOUS REGARDEZ\NAUX QUATRE COINS DU MONDE
+Dialogue: 0,0:00:05.70,0:00:06.95,ST,,0,0,0,,QUE LA PAIX SOIT AVEC VOUS.
+Dialogue: 0,0:00:07.05,0:00:09.40,ST,,0,0,0,,JE SUIS DEVANT VOUS AUJOURD'HUI\NAVEC JOIE
+Dialogue: 0,0:00:10.04,0:00:14.45,ST,,0,0,0,,POUR VOUS PROPOSER\NUNE APPLICATION
+Dialogue: 0,0:00:14.91,0:00:16.35,ST,,0,0,0,,QUI FACILITE\NNOS VOYAGES MARITIMES
+Dialogue: 0,0:00:16.66,0:00:18.45,ST,,0,0,0,,ENTRE MOHÉLI ET NGAZIDJA
+Dialogue: 0,0:00:18.66,0:00:19.82,ST,,0,0,0,,SANS QUE VOUS AYEZ\NÀ VOUS RENDRE AU PORT
+Dialogue: 0,0:00:19.88,0:00:21.15,ST,,0,0,0,,ET CETTE APPLICATION\NN'EST RIEN D'AUTRE QUE :
+Dialogue: 0,0:00:21.30,0:00:22.35,ST,,0,0,0,,{\c&H16CDFA&\fs52}MoheliGo
+Dialogue: 0,0:00:22.45,0:00:25.72,ST,,0,0,0,,DONC JE VOUS INVITE\NÀ VOUS ABONNER
+Dialogue: 0,0:00:26.20,0:00:31.95,ST,,0,0,0,,ET CLIQUEZ SUR LE LIEN\NPOUR PLUS D'INFOS.
+Dialogue: 0,0:00:32.52,0:00:34.68,ST,,0,0,0,,AVEC {\c&H16CDFA&}MoheliGo{\c&HFFFFFF&},\NC'EST LA MER QUI DÉCIDE,
+Dialogue: 0,0:00:35.13,0:00:36.30,ST,,0,0,0,,NOUS, ON TE LE DIT AVANT !

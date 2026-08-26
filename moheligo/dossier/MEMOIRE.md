@@ -370,6 +370,35 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (✅ LA VIDÉO EST MONTÉE — 52,5 s → 40,4 s, fautes corrigées)** —
+  le patron : « tu peux utiliser cette vidéo et des images pour en faire une
+  vraie et corriger les fautes… la dernière photo c'est le port de Hoani ».
+  ➡️ **`pub/video/MoheliGo-YoungLeader.mp4`**, refabricable par
+  **`pub/video/monter.py`** (tout est commenté en tête du script).
+  🛠️ **Ce qui a été corrigé** : **(1)** carte finale aux couleurs de la marque
+  avec la **signature exacte du manuel** et **`moheligo.com`** — la vidéo avait
+  zéro adresse ; **(2)** notre **logo dès la 1ʳᵉ seconde** au lieu de la 25ᵉ ;
+  **(3) sous-titres entièrement refaits**, les 5 fautes corrigées et
+  **`MoheliGo` écrit correctement partout**, en or ; **(4) 4 photos réelles**
+  couvrent la voix, dont **le port de Hoani exactement sur « sans que vous ayez
+  à vous rendre au port »** ; **(5)** 52,5 s → **40,4 s**.
+  🔑 **La trouvaille technique qui a tout débloqué** : les anciens sous-titres
+  fautifs étaient **incrustés dans l'image**, impossibles à effacer. Solution :
+  **couper 150 px en bas puis rezoomer** — ça supprime d'un coup les vieux
+  sous-titres ET le bandeau du nom. ⚠️ Et le recadrage doit être **calé à
+  gauche** : centré, il rognait le logo MoheliGo incrusté d'origine.
+  📌 **Les temps des sous-titres ne sont pas devinés** : ils viennent du relevé
+  des **silences de la bande son** (`silencedetect`), donc ils collent à la voix.
+  ⚠️ **Je n'ai pas d'oreilles** — je n'ai vérifié que les images. **Le patron doit
+  la regarder une fois en entier** avant publication.
+  ✅ **Nom du partenaire vérifié en haute résolution avant de l'écrire** :
+  **EL FAROUK SAINDOU** (et non « Sandou », ma première lecture). Crédité sur la
+  carte finale. **Se tromper sur le nom d'un partenaire ne se rattrape pas.**
+  🔴 **Deux réserves avant publication** : le fichier source est la version
+  **compressée par WhatsApp** (redemander l'original, puis relancer `monter.py`
+  avec `--source`), et **la phrase de droits à l'image n'est toujours pas
+  obtenue par écrit**.
+
 - **26/08/2026 (🎬 LA VIDÉO DU YOUNG LEADER EST ARRIVÉE)** — le patron envoie
   « la pub faite par le Young Leader ». **Analysée image par image** (1 575
   images extraites, sous-titres relevés en entier) → **`VIDEO-YOUNG-LEADER-RECUE.md`**.

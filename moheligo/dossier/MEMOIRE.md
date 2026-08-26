@@ -370,6 +370,42 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🔴 DEUXIÈME FERMETURE — mer agitée, et un mensonge trouvé dans le bulletin)** —
+  le patron : « les liaisons maritimes sont fermées, la mer est agitée ; vérifie
+  le flyer de ce soir ». ✅ `service.py` : **`OUVERT = False`**, `depuis
+  2026-08-26`, raison « mer agitée », **et AUCUNE date de reprise** — contrairement
+  au 12/08 il n'a rien annoncé, donc on n'écrit rien et **on ne déduit pas une
+  date de la fermeture précédente**. Poussé sur `main` à 15h00 UTC, **1 h 07 avant
+  le cron du bulletin (16h07 UTC)**.
+  🚨 **CE QUE LA VÉRIFICATION A TROUVÉ, ET C'ÉTAIT GRAVE** : le texte du bulletin
+  disait correctement « on ne prend pas de réservation pour demain » — mais **le
+  premier commentaire était écrit en dur dans `bulletin.py` : « Ta traversée de
+  demain : moheligo.com »**. Le même envoi se contredisait à deux lignes d'écart,
+  et la contradiction tombait **pile sur la phrase qu'on ne doit jamais dire
+  pendant une fermeture**. ✅ Corrigé : `service.commentaire_bulletin()` — il vit
+  désormais **dans le fichier de l'état**, comme le bandeau.
+  📌 **LA RÈGLE QUI EN SORT** : **tout ce qui promet une traversée doit être dans
+  `service.py`, jamais écrit en dur ailleurs.** Le garde-fou ne protège que ce
+  qu'il voit ; une phrase commerciale codée en dur passe à travers.
+  ➕ **Deuxième mensonge corrigé le même jour** : `python3 service.py` affichait
+  « AUCUN message commercial ne part » alors que `PUB_PENDANT_FERMETURE = True`
+  les fait partir. **Deuxième indicateur faux en deux semaines** (après
+  « DÉSARMÉE » qui publiait). **Un indicateur faux est pire que pas
+  d'indicateur — on décide dessus.**
+  ⚠️ **LA PUBLICATION DE MIDI ÉTAIT DÉJÀ PARTIE** (09h53 UTC, succès), donc
+  **sans la mention de fermeture** : le service était encore ouvert à cette
+  heure-là. Il y a en ce moment sur la page un message qui invite à réserver sans
+  prévenir. ➡️ **Proposé au patron de publier l'avis de suspension** (case
+  `avis_de_suspension` du workflow) pour couvrir la journée.
+  ✅ **Vérifié pour ce soir** : bandeau « TRAVERSÉES SUSPENDUES », titre « Demain
+  matin, MER AGITÉE », sous-titre « Service suspendu : aucun départ prévu. On
+  publie la mer quand même », houle 1,5 m, vent 21 km/h sud. `controle.py` et
+  `verifier.js` : rien à signaler.
+  📌 **Deuxième fermeture en quinze jours, même cause.** C'est la saison — et
+  c'est ce qui rend le bulletin du soir plus précieux que n'importe quelle
+  publicité : **le seul endroit où l'on dit la vérité tous les jours, y compris
+  les jours où l'on ne vend rien.**
+
 - **26/08/2026 (🤝 3ᵉ PASSE : LE LOGO DU PARTENAIRE, ET UNE PHOTO QUI NE VA PAS)** —
   le patron : « ajoute aussi le logo de Young Leader quelque part c'est notre
   partenaire, et la photo que tu vas mettre le lien n'est pas beau ».

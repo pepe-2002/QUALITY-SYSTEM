@@ -64,8 +64,16 @@ env:
 permissions:
   contents: read
 
+# ⚠️ 26/08/2026 — LE VERROU S'EST BLOQUÉ, ET IL A FALLU LE RENOMMER.
+# Une exécution est restée fantôme : GitHub l'annonçait « en file » et refusait
+# de l'annuler (« cannot cancel a workflow run that has not been queued yet »).
+# Elle a gardé le verrou, et les DEUX lancements suivants sont morts en
+# « startup_failure » sans jamais démarrer. Renommer le groupe libère les
+# nouvelles exécutions : le fantôme garde l'ancien nom, tout seul.
+# 📌 Si ça se reproduit : incrémenter le numéro ci-dessous. Le verrou reste utile
+# (il empêche deux publications simultanées), il ne doit juste pas être éternel.
 concurrency:
-  group: publication-du-jour
+  group: publication-du-jour-2
   cancel-in-progress: false
 
 jobs:

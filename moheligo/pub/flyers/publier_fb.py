@@ -329,6 +329,21 @@ def publier_video(video, texte, pour_de_vrai, titre=None):
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
         print('PAUSE_FB = oui → publication suspendue, rien n\'a été envoyé.')
         return
+    # 🚨 GARDE-FOU AJOUTÉ LE 26/08/2026, sur décision du patron : « ne publie pas
+    # aujourd'hui, on la garde pour le jour de la réouverture, comme ça ça fait
+    # le boom. » Il a raison : une vidéo qui dit « réserve ta traversée » sortie
+    # un jour de fermeture se dépense pour rien, et sortie le jour où ça repart
+    # elle EST l'annonce de la reprise.
+    # Une vidéo est un message commercial : elle suit donc l'état du service,
+    # comme tout le reste (§ « tout ce qui promet une traversée est dans
+    # service.py »). Pour passer outre : VIDEO_MALGRE_FERMETURE=oui.
+    import service
+    if not service.ouvert() and \
+            os.environ.get('VIDEO_MALGRE_FERMETURE', '').strip().lower() != 'oui':
+        print('SERVICE FERMÉ → la vidéo n\'est PAS publiée.')
+        print('Une vidéo qui dit « réserve ta traversée » attend la réouverture.')
+        print('Pour forcer malgré tout : VIDEO_MALGRE_FERMETURE=oui')
+        return
     v = pathlib.Path(video)
     if not v.exists():
         raise SystemExit('vidéo introuvable : %s' % v)

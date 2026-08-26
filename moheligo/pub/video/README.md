@@ -23,6 +23,7 @@ on corrigerait la copie au lieu de la source.
 | `polices/` | Inter 700 de la marque, convertie en TTF pour ffmpeg |
 | `port-hoani.jpg` | le port de Hoani, envoyé par le patron le 26/08/2026 |
 | `bande-lien.png` | la pastille `moheligo.com`, affichée quand il parle du lien |
+| `../photos-partenaires/young-leader-logo.png` | **le logo du Comité Young Leader**, détouré depuis leur propre générique |
 | `../flyers/carte-fin-video.html` | la carte finale, rendue par l'atelier des flyers |
 
 ## Ce qui a été corrigé
@@ -53,6 +54,17 @@ on corrigerait la copie au lieu de la source.
 ⚠️ **La leçon** : les sous-titres du tournage sont la seule vérité disponible sur
 qui dit quoi et quand — **ils ont été écrits par quelqu'un qui entendait**. Les
 silences ne disent que « il parle / il ne parle pas ».
+
+## 🔁 Troisième passe (26/08/2026)
+
+> « ajoute aussi le logo de Young Leader quelque part, c'est notre partenaire —
+> et la photo où tu vas mettre le lien n'est pas belle »
+
+| Demande | Ce qui a été fait |
+|---|---|
+| **le logo du partenaire** | détouré depuis **leur propre générique** (l'image la plus nette où le badge est entier), posé sur la carte finale **à côté de son nom**. 📌 **Un partenaire se cite avec son logo, pas seulement son nom** — c'est ce qui lui donne envie de recommencer. |
+| **la photo du lien** | `moheli-beach` (palme au premier plan, délavée) → **`plage-vedettes`** : la plage vivante avec les barques et le morne vert. Elle **termine le voyage** que racontent les trois autres : la mer → les deux îles → le port → **l'arrivée**. |
+| *(trouvé en la recadrant)* | une **voiture rouge** au premier plan. Le script accepte maintenant une **zone de recadrage** par photo : on jette les 22 % du bas. Une voiture n'a rien à faire dans une image qui doit donner envie de traverser. |
 
 ## ⚠️ Deux réserves à lever avant publication
 

@@ -14,10 +14,10 @@ deux façons. L'analyse complète est dans `dossier/VIDEO-YOUNG-LEADER-RECUE.md`
 On ne pouvait pas refilmer. Tout ce qui suit se règle au montage :
 
 1. COUPE — on garde trois blocs de parole et on jette le reste :
-     A 2,00 → 8,95   la salutation (« aux quatre coins du monde » : la diaspora)
-     B 11,75 → 24,65 le message
-     C 26,20 → 42,60 le nom, l'appel, et la signature
-   Sont retirés : les 2 s de logo d'un autre organisme en ouverture, la
+     A 2,10 → 7,30   la salutation (« aux quatre coins du monde » : la diaspora)
+     B 11,40 → 23,58 le message
+     C 24,80 → 42,85 le nom, l'appel, et la signature
+   Sont retirés : les 2 s de générique d'un autre organisme en ouverture, la
    présentation de 3 s non sous-titrée, « pour des informations quelconques »
    (tournure fautive), et les 10 s de fin sans appel à l'action.
 
@@ -27,17 +27,28 @@ On ne pouvait pas refilmer. Tout ce qui suit se règle au montage :
    logo MoheliGo incrusté dans la vidéo d'origine.
 
 3. SOUS-TITRES — refaits à zéro dans `sous-titres.ass`, fautes corrigées et
-   **MoheliGo écrit correctement partout**. Les temps ne sont pas devinés : ils
-   viennent du relevé des silences de la bande son (`silencedetect`), donc ils
-   collent à la voix.
+   **MoheliGo écrit correctement partout**. ⚠️ Les temps viennent du **relevé
+   exact des sous-titres d'origine** (masque du jaune, pas de 0,1 s), PAS des
+   silences : les silences disent seulement « il parle / il ne parle pas ».
+   La police est `polices/Inter-700.ttf`, convertie depuis **`Inter-700-latin`** :
+   le sous-ensemble `latin-ext` **ne contient pas la lettre A**.
 
 4. IMAGES — quatre photos réelles couvrent la voix aux moments qu'elles
-   illustrent. La plus importante est **le port de Hoani** (envoyée par le
-   patron le 26/08) exactement sur « sans que vous ayez à vous rendre au port ».
+   illustrent, chacune entrant **0,5 s avant sa phrase**. La plus importante est
+   **le port de Hoani** (envoyée par le patron le 26/08) exactement sur « sans
+   que vous ayez à vous rendre au port ». Les quatre racontent un voyage :
+   la mer → les deux îles → le port → l'arrivée.
 
-5. CARTE FINALE — `../flyers/carte-fin-video.html`, rendue par l'atelier des
+5. LE LIEN — une vidéo ne peut pas contenir de lien cliquable. On affiche donc
+   la pastille `bande-lien.png` (**moheligo.com**) pile quand il en parle ; le
+   lien sur lequel on appuie est dans le texte de la publication, écrit dans
+   `dossier/TEXTES-PUBLICATIONS.md`.
+
+6. CARTE FINALE — `../flyers/carte-fin-video.html`, rendue par l'atelier des
    flyers pour rester aux couleurs de la marque : la signature exacte du manuel,
-   **moheligo.com**, et le crédit du Young Leader.
+   **moheligo.com**, et le crédit du Young Leader **avec le logo de son Comité**
+   (`../photos-partenaires/young-leader-logo.png`, détouré depuis leur propre
+   générique). Un partenaire se cite avec son logo, pas seulement son nom.
 
 ⚠️ Le fichier reçu est une version compressée par WhatsApp (576×1024). Avec
 l'original, ne rien changer d'autre que `--source`.
@@ -67,7 +78,11 @@ PLANS = [
     ("pub/photos/vedette-mer.jpg",     10.60, 13.05),  # « nos voyages maritimes »
     ("pub/photos/ilot.jpg",            13.05, 15.05),  # « entre Mohéli et Ngazidja »
     ("PORT_HOANI",                     15.05, 17.36),  # « sans vous rendre au port »
-    ("pub/photos-cc/moheli-beach.jpg", 27.00, 30.20),  # pendant l'appel à l'action
+    # 4ᵉ champ facultatif : la ZONE de la photo à utiliser (x0, y0, x1, y1 en
+    # fractions), avant le cadrage 4:5. Ici on jette les 22 % du bas — il y a une
+    # voiture au premier plan, et une voiture n'a rien à faire dans une image
+    # qui doit donner envie de traverser.
+    ("pub/photos/plage-vedettes.jpg",  27.00, 30.20, (0.0, 0.0, 1.0, 0.78)),
 ]
 
 # La pastille moheligo.com, pile quand il dit « cliquez sur le lien ». Une vidéo
@@ -83,12 +98,19 @@ def sh(cmd):
     return r.stdout.strip()
 
 
-def fabriquer_plan(src, dest):
+def fabriquer_plan(src, dest, zone=None):
     """Photo en 4:5 sur un fond flouté tiré d'elle-même, voile sombre en bas
-    pour que les sous-titres restent lisibles."""
+    pour que les sous-titres restent lisibles.
+
+    `zone` = (x0, y0, x1, y1) en fractions : la partie de la photo à garder
+    avant le cadrage 4:5. Sert à écarter ce qui traîne au premier plan."""
     im = cv2.imread(src)
     if im is None:
         sys.exit("photo introuvable : " + src)
+    if zone:
+        H0, W0 = im.shape[:2]
+        x0, y0, x1, y1 = zone
+        im = im[int(y0 * H0):int(y1 * H0), int(x0 * W0):int(x1 * W0)]
     h, w = im.shape[:2]
     s = max(W / w, H / h) * 1.3
     bg = cv2.resize(im, (int(w * s), int(h * s)))
@@ -138,9 +160,11 @@ def main():
     sh(f'ffmpeg -hide_banner -v error -y -f concat -safe 0 -i "{liste}" -c copy "{base}"')
 
     # 2. les plans de coupe et le filigrane
-    for i, (rel, _, _) in enumerate(PLANS):
+    for i, pl in enumerate(PLANS):
+        rel = pl[0]
+        zone = pl[3] if len(pl) > 3 else None
         src = a.port_hoani if rel == "PORT_HOANI" else os.path.join(RACINE, rel)
-        fabriquer_plan(src, os.path.join(T, f"plan{i}.png"))
+        fabriquer_plan(src, os.path.join(T, f"plan{i}.png"), zone)
     lg = cv2.imread(os.path.join(RACINE, "MoheliGo-logo.png"), cv2.IMREAD_UNCHANGED)
     lw = 185
     cv2.imwrite(os.path.join(T, "logo.png"),
@@ -159,7 +183,8 @@ def main():
     ch = ("[0:v]crop=576:%d:0:0,scale=-2:1024:flags=lanczos,crop=576:1024:0:0,"
           "eq=saturation=1.06:contrast=1.03[z];" % (H - BAS_COUPE))
     prec = "z"
-    for i, (_, d, fin) in enumerate(PLANS):
+    for i, pl in enumerate(PLANS):
+        d, fin = pl[1], pl[2]
         ch += f"[{prec}][{i+2}:v]overlay=0:0:enable='between(t,{d},{fin})'[p{i}];"
         prec = f"p{i}"
     # la pastille du lien, par-dessus les plans de coupe

@@ -370,6 +370,29 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🤝 3ᵉ PASSE : LE LOGO DU PARTENAIRE, ET UNE PHOTO QUI NE VA PAS)** —
+  le patron : « ajoute aussi le logo de Young Leader quelque part c'est notre
+  partenaire, et la photo que tu vas mettre le lien n'est pas beau ».
+  ✅ **Le logo du Comité Young Leader** est maintenant sur la **carte finale, à
+  côté de son nom** — détouré depuis **leur propre générique** (j'ai cherché
+  l'image où le badge est entier ET la plus nette : il glisse et il est flou sur
+  la plupart). Rangé dans `pub/photos-partenaires/young-leader-logo.png`.
+  📌 **La leçon, et elle vaut pour tous les partenariats** : **un partenaire se
+  cite avec son logo, pas seulement avec son nom.** C'est ce qui lui donne envie
+  de recommencer — et on avait justement coupé ses 3 s de générique d'ouverture.
+  ✅ **La photo remplacée** : `moheli-beach` (palme au premier plan, délavée) →
+  **`plage-vedettes`**, la plage vivante avec les barques et le morne vert. Elle
+  **termine le voyage** que racontent les trois autres images : la mer → les deux
+  îles → le port → **l'arrivée**. 📌 **Quatre images doivent raconter une suite,
+  pas être quatre jolies photos.**
+  ➕ **Trouvé en la recadrant** : une **voiture rouge** au premier plan. `monter.py`
+  accepte désormais une **zone de recadrage par photo** ; on jette les 22 % du
+  bas. Une voiture n'a rien à faire dans une image qui doit donner envie de
+  traverser.
+  📌 **Et sur la façon de travailler** : il a dit « je préfère te le dire
+  maintenant ». **C'est exactement ce qu'il faut** — une remarque de goût donnée
+  tôt coûte un recadrage, donnée après publication elle coûte la publication.
+
 - **26/08/2026 (🔁 2ᵉ PASSE SUR LA VIDÉO — le patron a trouvé trois défauts, tous réels)** —
   « entre Mohéli et Ngazidja il parle avant et l'image vient après ; il y a des A
   qui sont trop petits ; il a parlé de lien et on voit pas le lien cliquable ».

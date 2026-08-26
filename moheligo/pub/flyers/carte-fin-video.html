@@ -33,10 +33,19 @@ body { width:1080px; height:1920px; font-family:'Inter'; color:#fff; overflow:hi
 .action b { display:block; font-family:'Montserrat'; font-weight:900; font-size:112px; margin-top:24px;
   letter-spacing:-2px; text-shadow:0 8px 30px rgba(0,0,0,.4); }
 
-.credit { position:absolute; left:0; right:0; bottom:104px; text-align:center; }
-.credit span { font-size:27px; font-weight:600; letter-spacing:2.5px; color:#a9c2e4; }
-.credit b { display:block; margin-top:11px; font-family:'Montserrat'; font-weight:700;
-  font-size:33px; letter-spacing:1px; color:#e2ecfb; }
+/* le crédit du partenaire : son logo compte autant que son nom */
+.credit { position:absolute; left:0; right:0; bottom:92px;
+  display:flex; align-items:center; justify-content:center; gap:30px; }
+.credit .badge { width:150px; height:150px; border-radius:50%; background:#fff;
+  display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+  box-shadow:0 12px 34px rgba(0,0,0,.42); }
+.credit .badge img { width:150px; height:150px; object-fit:contain; }
+.credit .qui { text-align:left; }
+.credit .qui span { display:block; font-size:26px; font-weight:600; letter-spacing:3px; color:#a9c2e4; }
+.credit .qui b { display:block; margin-top:8px; font-family:'Montserrat'; font-weight:800;
+  font-size:36px; letter-spacing:.5px; color:#fff; }
+.credit .qui small { display:block; margin-top:5px; font-size:25px; font-weight:600;
+  letter-spacing:.5px; color:#cfe0f6; }
 </style></head><body>
 <div class="carte">
 
@@ -63,8 +72,12 @@ body { width:1080px; height:1920px; font-family:'Inter'; color:#fff; overflow:hi
   </div>
 
   <div class="credit">
-    <span>AVEC</span>
-    <b>EL FAROUK SAINDOU · Young Leader Mohéli 2026</b>
+    <div class="badge"><img src="../photos-partenaires/young-leader-logo.png" alt=""></div>
+    <div class="qui">
+      <span>AVEC</span>
+      <b>EL FAROUK SAINDOU</b>
+      <small>Comité Young Leader Mohéli 2026</small>
+    </div>
   </div>
 
 </div>

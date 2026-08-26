@@ -33,9 +33,13 @@ PHRASES_DIR = os.path.join(ICI, "voix", "phrases")
 MESURES = os.path.join(ICI, "voix", "durees.json")
 
 # la respiration APRÈS chaque phrase (la dernière n'en a pas : c'est la queue)
-RESPIRATION = [1.50, 1.00, 1.00, 0.90, 1.00, 0.80, 1.10, 0.00]
-DEBUT = 2.40        # avant le premier mot : l'image s'installe
-QUEUE = 3.05        # après le dernier mot : la carte finale respire
+# ⚠️ RACCOURCIES le 26/08 au soir. Le patron : « parfois tu n'entends rien ».
+# Avec des phrases lâchées à toute vitesse, les blancs prenaient toute la place :
+# entre 0 et 5,4 s il n'y avait que 0,8 s de voix. Maintenant que le débit est
+# tenu, les phrases occupent le temps et les respirations peuvent être courtes.
+RESPIRATION = [1.20, 0.85, 0.85, 0.75, 0.85, 0.70, 0.95, 0.00]
+DEBUT = 1.60        # avant le premier mot : l'image s'installe, sans traîner
+QUEUE = 2.80        # après le dernier mot : la carte finale respire
 
 
 def _texte():
@@ -57,13 +61,11 @@ def duree_fichier(chemin):
 
 
 def fichier(i):
-    """La phrase serrée si elle existe, sinon la brute. `None` si aucune des
-    deux : la voix n'est pas dans le dépôt, on retombera sur `durees.json`."""
-    for nom in ("%02d-serre.wav" % i, "%02d.wav" % i):
-        c = os.path.join(PHRASES_DIR, nom)
-        if os.path.exists(c):
-            return c
-    return None
+    """La phrase telle que `cloner.py` la laisse : déjà serrée et mise au bon
+    volume. `None` si elle n'est pas là — la voix n'est pas dans le dépôt, on
+    retombera sur `durees.json`."""
+    c = os.path.join(PHRASES_DIR, "%02d.wav" % i)
+    return c if os.path.exists(c) else None
 
 
 def durees():

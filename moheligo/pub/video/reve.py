@@ -200,13 +200,24 @@ def fabriquer(sortie, travail="/tmp/reve-moheligo"):
     tube.stdin.close()
     tube.wait()
 
-    # LE SON : sa voix devant, la nappe 14 dB dessous
+    # LE SON : sa voix devant, la nappe qui s'efface dessous et remonte dans les
+    # blancs. 🚨 LE DÉFAUT SIGNALÉ PAR LE PATRON — « parfois tu n'entends rien ».
+    # Avant, la nappe était à volume fixe : sous une phrase un peu faible elle
+    # passait devant, et dans les silences il ne restait presque rien. Maintenant
+    # c'est un ABAISSEMENT AUTOMATIQUE (`sidechaincompress`) : la voix commande
+    # la musique. Elle parle → la nappe recule ; elle se tait → la nappe revient.
+    # 📌 Deux effets d'un coup : la voix n'est jamais couverte, et les respirations
+    # ne sont plus des trous — c'est la musique qui les tient.
     subprocess.run(
         ["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", muet,
          "-i", VOIX, "-i", NAPPE, "-filter_complex",
-         "[1:a]adelay=0|0,volume=1.0[v];"
-         f"[2:a]volume=0.20,afade=t=out:st={DUREE - 3.0:.2f}:d=3[m];"
-         "[v][m]amix=inputs=2:duration=first:dropout_transition=0,"
+         "[1:a]adelay=0|0,volume=1.0,asplit=2[v][cle];"
+         f"[2:a]volume=0.30,afade=t=out:st={DUREE - 3.0:.2f}:d=3[m];"
+         # attaque courte (elle doit reculer dès la première syllabe), retour
+         # lent (400 ms) : un retour rapide s'entend comme une pompe
+         "[m][cle]sidechaincompress=threshold=0.03:ratio=8:attack=15:release=400"
+         ":makeup=1[md];"
+         "[v][md]amix=inputs=2:duration=first:dropout_transition=0,"
          f"apad,atrim=0:{DUREE},loudnorm=I=-15:TP=-1.5:LRA=12[a]",
          "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",
          "-movflags", "+faststart", sortie], check=True)

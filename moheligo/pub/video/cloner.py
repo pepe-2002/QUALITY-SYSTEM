@@ -94,6 +94,78 @@ def _reparer_torchaudio():
     torchaudio.load, torchaudio.save = load, save
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 🚨 LE DÉFAUT QUI A FAIT REFAIRE LA VOIX (patron, 26/08 : « il y a des parties
+# dont la voix est accélérée, ça fait pas beau, et parfois tu n'entends rien »)
+#
+# XTTS ne tient PAS un débit constant d'une phrase à l'autre. Mesuré sur la
+# première fournée : **de 8,6 à 27,1 caractères par seconde**, du simple au
+# triple. À l'oreille, une phrase sur deux est lâchée à toute vitesse.
+# ➡️ On ne subit plus : on **vise un débit**, on mesure ce qui sort, et on
+# relance avec la vitesse corrigée jusqu'à tomber dans la bande. Cinq essais
+# suffisent toujours ; on garde le meilleur si aucun ne tombe pile.
+#
+# 📌 LE DÉBIT N'EST PAS LE MÊME PARTOUT, ET C'EST VOULU. Un film qui fait rêver
+# n'a pas un métronome : le souvenir se dit lentement, le service se dit net, la
+# signature se pose. D'où une cible par phrase, écrite à la main.
+DEBIT = [
+     8.0,   # « Mohéli. » — un seul mot, posé lentement : c'est le titre du film
+    11.0,   # le souvenir du port : lent exprès, c'est l'avant
+    13.5,   # « tu réserves depuis ton téléphone » : net, c'est une information
+    13.0,   # « tu paies par MVola »
+    13.5,   # le billet, le code QR, même sans réseau
+    13.0,   # « chaque soir, la mer de demain »
+    12.5,   # « tu sais avant de partir » : on ralentit, on arrive à la fin
+    12.0,   # la signature : la phrase la plus lente du film
+]
+BANDE = 0.06        # ±6 % autour de la cible, c'est inaudible
+ESSAIS = 6
+# ⚠️ Température basse = prosodie plus stable d'un essai à l'autre. Par défaut
+# XTTS est à 0,75 et repart dans tous les sens ; on n'a pas besoin de sa
+# fantaisie, on a besoin qu'il lise deux fois pareil.
+TEMPERATURE = 0.65
+
+# 🔎 COMMENT ON CHERCHE LA BONNE VITESSE — et pourquoi pas « à la règle de trois »
+# Premier réflexe : mesurer l'écart et corriger proportionnellement. Mesuré :
+# **vitesse 1,00 → 8,1 car/s ; vitesse 1,30 → 23,5 car/s.** Le réglage n'est pas
+# linéaire du tout, et la règle de trois dépasse la cible à chaque coup.
+# ➡️ On fait donc une **dichotomie** : trop lent, on monte la borne basse ; trop
+# rapide, on descend la borne haute ; on essaie au milieu. Six essais réduisent
+# l'intervalle à 1 %, quelle que soit la forme de la courbe.
+VITESSE_MIN, VITESSE_MAX = 0.70, 1.35
+
+# Puis un rattrapage fin au montage, qui **conserve la hauteur de la voix**
+# (`atempo` étire le temps, pas le timbre). On s'interdit d'aller au-delà :
+# au-delà de ±18 %, ça s'entend, et une voix qui « sonne trafiquée » est pire
+# qu'une voix un peu rapide.
+RATTRAPAGE = (0.84, 1.18)
+
+# 🐛 LE BAVARDAGE DE XTTS. Sur un énoncé très court, le modèle ne s'arrête pas :
+# pour « Mohéli. » (7 lettres) il a produit **3,6 s de contenu audible** — ce
+# n'est pas du souffle, aucun seuil de silence ne l'enlève. Un débit très en
+# dessous de la cible est la signature de ce défaut : on jette la prise et on
+# relance, sans toucher aux bornes (le réglage n'y est pour rien).
+BAVARDAGE = 0.55        # en dessous de 55 % de la cible, la prise est jetée
+
+
+def parole(chemin):
+    """Le temps RÉELLEMENT parlé : total moins les silences. C'est là-dessus
+    qu'on mesure un débit — sinon une phrase pleine de blancs passe pour lente."""
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-v", "info", "-i", chemin,
+                        "-af", "silencedetect=n=-45dB:d=0.12", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    total, mute, debut = minutage.duree_fichier(chemin), 0.0, None
+    for l in r.splitlines():
+        if "silence_start" in l:
+            debut = float(l.split("silence_start:")[1])
+        elif "silence_end" in l and debut is not None:
+            mute += float(l.split("silence_end:")[1].split("|")[0]) - debut
+            debut = None
+    if debut is not None:
+        mute += total - debut
+    return max(0.05, total - mute)
+
+
 def cloner(reference, dossier):
     _reparer_torchaudio()
     from TTS.api import TTS
@@ -101,32 +173,87 @@ def cloner(reference, dossier):
     tts = TTS(MODELE, progress_bar=False)
     os.makedirs(dossier, exist_ok=True)
     for i, texte in enumerate(PHRASES):
-        out = os.path.join(dossier, f"{i:02d}.wav")
-        tts.tts_to_file(text=texte, speaker_wav=reference, language="fr",
-                        file_path=out, split_sentences=True)
-        print(f"  {i}  « {texte[:56]}… »", flush=True)
+        final = os.path.join(dossier, f"{i:02d}.wav")
+        brut = os.path.join(dossier, f"_essai{i:02d}.wav")
+        cible = DEBIT[i]
+        lo, hi, vitesse = VITESSE_MIN, VITESSE_MAX, 1.0
+        meilleur, jetees = None, 0
+        for essai in range(ESSAIS):
+            tts.tts_to_file(text=texte, speaker_wav=reference, language="fr",
+                            file_path=brut, split_sentences=True,
+                            speed=vitesse, temperature=TEMPERATURE)
+            serrer_un(brut, final)
+            d = len(texte) / parole(final)
+            if d < cible * BAVARDAGE and jetees < 3:
+                # le modèle a bavardé après la phrase : prise jetée, on relance
+                # à la MÊME vitesse — les bornes ne sont pas en cause
+                jetees += 1
+                print("    essai %d  vitesse %.2f → %.1f car/s  ⛔ bavardage, prise jetée"
+                      % (essai + 1, vitesse, d), flush=True)
+                continue
+            ecart = abs(d / cible - 1)
+            print("    essai %d  vitesse %.2f → %.1f car/s  (cible %.1f)"
+                  % (essai + 1, vitesse, d, cible), flush=True)
+            if meilleur is None or ecart < meilleur[0]:
+                meilleur = (ecart, d, open(final, "rb").read())
+            if ecart <= BANDE:
+                break
+            if d > cible:            # trop rapide → la bonne vitesse est plus basse
+                hi = vitesse
+            else:                    # trop lent → elle est plus haute
+                lo = vitesse
+            vitesse = (lo + hi) / 2
+        open(final, "wb").write(meilleur[2])
+        d = meilleur[1]
+        # rattrapage fin, à hauteur de voix conservée
+        k = d / cible
+        if abs(k - 1) > BANDE and RATTRAPAGE[0] <= 1 / k <= RATTRAPAGE[1]:
+            subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", final,
+                            "-af", "atempo=%.4f" % (1 / k), final + ".t.wav"], check=True)
+            os.replace(final + ".t.wav", final)
+            print("    rattrapage ×%.3f  → %.1f car/s" % (1 / k, cible), flush=True)
+        elif abs(k - 1) > BANDE:
+            print("    ⚠️ resté à %.1f car/s (cible %.1f) — hors de portée du "
+                  "rattrapage, on garde la meilleure prise" % (d, cible), flush=True)
+        if os.path.exists(brut):
+            os.unlink(brut)
+        print("  %d  %5.2f s  « %s… »" % (i, minutage.duree_fichier(final), texte[:48]),
+              flush=True)
+    egaliser(dossier)
     return dossier
 
 
-# XTTS respire là où un lecteur respirerait — mais il respire LARGE, et il laisse
-# du blanc avant le premier mot et après le dernier. On enlève ce blanc-là, et on
-# ramène les pauses internes à 0,34 s : c'est ce qui a fait tomber la phrase la
-# plus longue de 9,83 s à 8,55 s sans toucher au débit.
-SERRER = ("silenceremove=start_periods=1:start_silence=0.06:start_threshold=-45dB:"
-          "stop_periods=-1:stop_silence=0.34:stop_threshold=-45dB,"
-          "apad=pad_dur=0.12")
+# XTTS laisse du blanc avant le premier mot et après le dernier, et respire
+# large au milieu. On enlève le blanc des bords et on plafonne les pauses
+# internes — sans descendre trop bas en seuil, sinon on mange les consonnes
+# douces et c'est ÇA qui donne l'impression d'une voix hachée.
+SERRER = ("silenceremove=start_periods=1:start_silence=0.06:start_threshold=-48dB:"
+          "stop_periods=-1:stop_silence=0.30:stop_threshold=-48dB,"
+          "apad=pad_dur=0.10")
 
 
-def serrer(dossier):
-    """`NN.wav` → `NN-serre.wav`. C'est la version serrée que lit `minutage.py`."""
+def serrer_un(entree, sortie):
+    subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", entree,
+                    "-af", SERRER, sortie], check=True)
+
+
+def egaliser(dossier):
+    """MÊME VOLUME POUR TOUTES LES PHRASES — l'autre moitié du défaut.
+
+    Les phrases sortaient entre −19,9 et −15,0 LUFS : 5 dB d'écart, et sous la
+    musique les plus faibles disparaissaient (« parfois tu n'entends rien »).
+    Un `loudnorm` sur le mélange final ne répare pas ça : il règle la moyenne,
+    pas l'écart entre les phrases. On les met donc toutes au même niveau ICI.
+    📌 Et on redescend les crêtes à −3 dB : XTTS sort à 0,0 dBFS, collé au
+    plafond, et ça s'entend comme une voix dure."""
     for i in range(len(PHRASES)):
-        brut = os.path.join(dossier, f"{i:02d}.wav")
-        out = os.path.join(dossier, f"{i:02d}-serre.wav")
-        subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", brut,
-                        "-af", SERRER, out], check=True)
-        print("  phrase %d : %5.2f s → %5.2f s"
-              % (i, minutage.duree_fichier(brut), minutage.duree_fichier(out)))
-    return dossier
+        f = os.path.join(dossier, f"{i:02d}.wav")
+        tmp = f + ".tmp.wav"
+        subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", f,
+                        "-af", "loudnorm=I=-18:TP=-3:LRA=9", "-ar", "24000", tmp],
+                       check=True)
+        os.replace(tmp, f)
+    print("  volumes égalisés : toutes les phrases à −18 LUFS, crêtes à −3 dB")
 
 
 def assembler(sortie):
@@ -146,7 +273,11 @@ def assembler(sortie):
         etiquettes.append(f"[a{i}]")
     chaine = ";".join(filtres) + ";" + "".join(etiquettes) + \
         f"amix=inputs={len(creneaux)}:normalize=0,apad,atrim=0:{duree}," \
-        "alimiter=limit=0.95,loudnorm=I=-17:TP=-1.5:LRA=13[out]"
+        "alimiter=limit=0.95,loudnorm=I=-17:TP=-2:LRA=7[out]"
+    # ⚠️ LRA=7 et pas 13. Une plage large laisse revenir l'écart de volume entre
+    # les phrases — celui-là même qui faisait qu'on n'entendait plus certaines.
+    # Les phrases sont déjà égalisées une par une par `egaliser()` : ici on
+    # règle le niveau, on ne redistribue plus la dynamique.
     subprocess.run(["ffmpeg", "-hide_banner", "-v", "error", "-y"] + entrees +
                    ["-filter_complex", chaine, "-map", "[out]",
                     "-c:a", "aac", "-b:a", "192k", sortie], check=True)
@@ -168,5 +299,4 @@ if __name__ == "__main__":
             fabriquer_reference(a.source, a.reference,
                                 [(4.60, 7.15), (10.50, 13.80), (16.50, 19.75), (23.50, 25.85)])
         cloner(a.reference, dossier)
-        serrer(dossier)
     assembler(a.sortie)

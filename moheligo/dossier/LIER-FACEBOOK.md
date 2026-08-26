@@ -243,3 +243,40 @@ choisies.
 Instagram se branche sur le même jeton, à condition que le compte Instagram soit
 un compte **professionnel rattaché à la page**. Ça se fait en ajoutant une
 requête dans `publier_fb.py`. À faire seulement quand la page Facebook tourne.
+
+
+---
+
+## 🚨 PIÈGE N°7 — LE VERROU DE CONCURRENCE PEUT SE BLOQUER (26/08/2026)
+
+**Symptôme** : on déclenche une publication, elle ne part jamais. GitHub affiche
+l'exécution « en file d'attente » pendant des heures, et **refuse de l'annuler** :
+
+> `cannot cancel a workflow run that has not been queued yet`
+
+Puis **tous les lancements suivants meurent en `startup_failure`** — sans le
+moindre journal, sans démarrer une seule étape. Rien n'indique la cause.
+
+**Ce qui se passe** : une exécution reste coincée entre « déclenchée » et « mise
+en file ». Elle garde le **verrou de concurrence** (`concurrency: group:`), et
+comme elle ne finit jamais, elle le garde pour toujours. Les suivantes ne peuvent
+ni attendre ni démarrer.
+
+**Le remède** : **renommer le groupe de concurrence** dans le workflow
+(`publication-du-jour` → `publication-du-jour-2`), pousser sur `main`, relancer.
+Le fantôme reste seul sur l'ancien nom. Le verrou garde son utilité (il empêche
+deux publications simultanées), il change juste de serrure.
+
+⚠️ **Trois choses à retenir** :
+1. **Un déclenchement n'est pas toujours annulable.** Entre le clic et la mise en
+   file, il n'existe aucun moyen d'arrêter une publication. **On réfléchit avant
+   de cocher, pas après.**
+2. **`startup_failure` ne veut pas dire « le code est cassé ».** Il veut souvent
+   dire « GitHub n'a pas pu démarrer », et la cause est ailleurs.
+3. **Chaque workflow a SON verrou.** Le bulletin du soir (`bulletin-du-soir`) n'a
+   pas été touché par ce blocage — c'est ce qui a sauvé la publication du soir.
+
+📌 **Et le vrai filet de sécurité, ce jour-là, a été la main** : le visuel et le
+texte se publient depuis le téléphone en deux minutes. **Un système automatique
+doit toujours avoir une sortie manuelle**, et elle doit être prête AVANT d'en
+avoir besoin.

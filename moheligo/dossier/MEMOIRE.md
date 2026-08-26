@@ -370,6 +370,31 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (⚙️ PANNE GITHUB : le verrou de concurrence bloqué par un fantôme)** —
+  le patron : « c'est pas encore parti sur Facebook ». **Vérifié, et il avait
+  raison.** Diagnostic complet :
+  · exécution 37 (15h11, avis) → **`startup_failure`**, jamais démarrée ;
+  · exécution 38 (15h14, vidéo) → **fantôme** : affichée « en file » pendant plus
+    d'une heure, **impossible à annuler** (« cannot cancel a workflow run that has
+    not been queued yet », essayé cinq fois) ;
+  · exécution 39 (15h42, avis relancé) → **`startup_failure`** aussi.
+  🚨 **La cause** : le fantôme garde le **verrou de concurrence** du workflow et
+  ne le rend jamais. Les exécutions suivantes ne peuvent ni attendre ni démarrer.
+  ✅ **Remède appliqué** : renommer le groupe (`publication-du-jour` →
+  `publication-du-jour-2`) et relancer. Écrit dans **`LIER-FACEBOOK.md`, piège
+  n°7**, avec la marche à suivre si ça recommence.
+  ✅ **Le bulletin du soir n'a pas été touché** : il a **son propre verrou**
+  (`bulletin-du-soir`). 📌 **C'est ce cloisonnement qui a sauvé la publication du
+  soir** — un verrou par workflow, jamais un verrou commun.
+  🖐️ **Et le vrai filet de sécurité a été la main** : visuel + texte envoyés au
+  patron pour qu'il publie depuis son téléphone en deux minutes. 📌 **Un système
+  automatique doit toujours avoir une sortie manuelle, prête AVANT d'en avoir
+  besoin.**
+  📌 **Deux leçons dures** : **(1)** un déclenchement n'est **pas toujours
+  annulable** — entre le clic et la mise en file, rien ne peut arrêter une
+  publication ; **(2)** `startup_failure` ne veut pas dire « le code est cassé »,
+  souvent la cause est ailleurs. J'ai failli chercher dans le mauvais fichier.
+
 - **26/08/2026 (🚨 L'AVIS ALLAIT ANNONCER UN MARDI QUE PERSONNE N'AVAIT PROMIS)** —
   le patron : « relance l'avis ». **La répétition à blanc a évité la faute.**
   L'avis contenait, **écrit en dur dans le texte ET gravé dans l'image** :

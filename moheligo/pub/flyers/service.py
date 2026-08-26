@@ -220,6 +220,35 @@ def cta_bulletin():
             'La mer chaque soir sur cette page · WhatsApp +269 479 43 28')
 
 
+JOURS = ('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche')
+
+
+def paragraphe_reprise():
+    """Le paragraphe « QUAND ÇA REPREND » de l'avis de suspension.
+
+    🚨 AJOUTÉ LE 26/08/2026, et il a évité une faute grave. L'avis contenait
+    **« QUAND ÇA REPREND : PEUT-ÊTRE MARDI »** écrit EN DUR — un reste de la
+    fermeture du 12/08, où le patron avait dit « ouverture possible mardi ».
+    Cette fois il n'a donné AUCUNE date. L'avis serait parti en annonçant un
+    mardi que personne n'a promis.
+
+    C'est précisément ce que l'en-tête de ce fichier interdit : « une date
+    annoncée puis non tenue fait plus de mal que pas de date du tout ». La règle
+    ne suffit pas si le texte qui la viole vit ailleurs — **d'où ce paragraphe,
+    ici, piloté par `FERMETURE['reouverture_possible']`.**
+    """
+    d = FERMETURE.get('reouverture_possible')
+    if d:
+        jour = JOURS[datetime.date.fromisoformat(d).weekday()]
+        titre = 'QUAND ÇA REPREND : PEUT-ÊTRE %s.' % jour.upper()
+    else:
+        titre = 'QUAND ÇA REPREND : ON NE LE SAIT PAS ENCORE.'
+    return (titre + '\n'
+            'Ce n\'est pas une date promise — c\'est la mer qui décide, et nous ne '
+            'décidons pas\ndes départs. Le jour où ça rouvre, tu le liras ici en '
+            'premier.')
+
+
 def commentaire_bulletin():
     """Le PREMIER COMMENTAIRE du bulletin du soir.
 

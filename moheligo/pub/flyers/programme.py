@@ -76,7 +76,10 @@ def avis_de_suspension():
     d = datetime.date.fromisoformat(service.FERMETURE['depuis'])
     return service.VISUEL_AVIS, modele.format(
         depuis='%d %s' % (d.day, MOIS[d.month - 1]),
-        raison=service.FERMETURE.get('raison') or 'la mer')
+        raison=service.FERMETURE.get('raison') or 'la mer',
+        # ⚠️ jamais écrit en dur : une date de reprise ne sort que si le patron
+        # en a donné une (service.paragraphe_reprise)
+        reprise=service.paragraphe_reprise())
 
 
 def envoyer(visuel, texte, quoi, a):

@@ -366,9 +366,7 @@ SI TU AS DÉJÀ UN BILLET, TU NE PERDS RIEN.
 Changer la date est gratuit, sur la même liaison. Et tant que la traversée n'est
 pas partie, tu peux annuler et être remboursé. Écris-nous, on s'en occupe.
 
-QUAND ÇA REPREND : PEUT-ÊTRE MARDI.
-Ce n'est pas une date promise — c'est la mer qui décide, et nous ne décidons pas
-des départs. Le jour où ça rouvre, tu le liras ici en premier.
+{reprise}
 
 D'ICI LÀ, LA MER CHAQUE SOIR.
 À 19h30 sur cette page, la houle et le vent du lendemain entre nos ports.

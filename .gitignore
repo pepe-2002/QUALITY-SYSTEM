@@ -1,2 +1,10 @@
 __pycache__/
 *.pyc
+
+# 🔒 LA VOIX DU PATRON — le dépôt est PUBLIC.
+# `reference-patron.wav` est exactement l'extrait qu'il faut à n'importe qui
+# pour cloner sa voix, et les phrases synthétisées en sont une source aussi
+# bonne. On ne les met pas en ligne. Le montage reste refabricable :
+# `pub/video/voix/durees.json` garde les mesures, et rien d'autre.
+moheligo/pub/video/voix/reference-patron.wav
+moheligo/pub/video/voix/phrases/

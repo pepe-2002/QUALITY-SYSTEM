@@ -16,12 +16,14 @@ Ici, le sujet EST Mohéli. **On ne fait pas rêver avec une carte marine.** Les
 photos reprennent donc la première place, et la marque tient par le décor : le
 coin blanc, la vague dorée qui coupe, la carte finale.
 
-🎬 LE MONTAGE SUIT SA RESPIRATION, PAS UNE HORLOGE
-Les coupes tombent **dans les silences de sa voix**, relevés au dixième de
-seconde. Trois longues pauses (14,4 s · 22,3 s · 31,1 s) découpent naturellement
-son propos en quatre parties : ce sont les trois grandes transitions.
-📌 **On ne coupe jamais sur un mot.** Une coupe dans une phrase s'entend même
-quand on ne saurait pas dire pourquoi.
+🎬 AUCUNE SECONDE N'EST ÉCRITE DANS CE FICHIER
+Les plans, les bandeaux, la durée du film : tout vient de `minutage.py`, qui
+mesure la voix telle qu'elle sort et en déduit le montage. J'avais d'abord fait
+l'inverse — des créneaux fixes, à charge pour la voix d'y rentrer — et trois
+phrases débordaient. **La voix mène, l'image suit.**
+📌 Une coupe tombe donc toujours au début d'une phrase, jamais au milieu d'un
+mot, et la respiration qui suit une phrase reste sur l'image de cette phrase :
+couper dans le silence donne l'impression d'avoir coupé trop tôt.
 
 🔊 TROIS COUCHES DE SON
   · sa voix, réglage « 1 · LÉGÈRE », devant ;
@@ -30,15 +32,15 @@ quand on ne saurait pas dire pourquoi.
   · rien d'autre. Pas d'effet, pas de « whoosh » sur les transitions : la vague
     dorée se voit, elle n'a pas besoin de s'entendre.
 
-⚠️ CE QUE JE NE PEUX PAS VÉRIFIER : je n'entends pas ce qu'il dit. Les bandeaux
-de service sont posés **dans ses silences**, donc ils ne couvrent jamais une
-phrase — mais si l'un d'eux tombe à côté du propos, il se déplace en changeant
-une seconde dans `BANDEAUX`.
+🗣️ LA VOIX EST SA VOIX, CLONÉE (`cloner.py`), sur un texte que j'ai écrit et
+qu'il a demandé. Les règles de `cloner.py` s'appliquent : c'est un gain de
+prises, pas un remplacement de sa parole. **Il écoute et valide avant toute
+publication** — je n'entends pas le résultat, lui seul peut dire si c'est lui.
 """
 import argparse, os, subprocess
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
-import cartes
+import cartes, minutage
 
 ICI = os.path.dirname(os.path.abspath(__file__))
 RACINE = os.path.abspath(os.path.join(ICI, "..", ".."))
@@ -47,38 +49,18 @@ OR = (246, 188, 28)
 MARINE = (15, 42, 92)
 BALAYAGE = 0.55
 
-VOIX = os.path.join(ICI, "voix", "patron-voix-off.m4a")
+VOIX = os.path.join(ICI, "voix", "voix-off-clonee.m4a")
 NAPPE = os.path.join(ICI, "musique", "nappe-mer.wav")
-FIN_VOIX = 36.6                       # sa dernière syllabe
-DUREE = 42.0                          # + la carte finale
 
 
 def p(x):
     return os.path.join(RACINE, x)
 
 
-# (photo, fin du plan en secondes, zone de recadrage éventuelle)
-# ⚠️ Les fins tombent TOUTES dans un silence relevé sur sa bande son.
-PLANS = [
-    (p("pub/photos-cc/ile-aerienne.jpg"),            4.2,  None),
-    (p("pub/photos-cc/nioumachoua-ilot-fatima.jpg"), 7.6,  None),
-    (p("pub/photos/horizon.jpg"),                    9.1,  None),
-    (p("pub/photos-cc/moheli-beach.jpg"),           15.4,  None),
-    (p("pub/photos-cc/plage-pirogues.jpg"),         20.1,  None),
-    (p("pub/photos-cc/tortues.jpg"),                22.8,  None),
-    (p("pub/photos/vedette-mer.jpg"),               26.6,  None),
-    (p("pub/photos/plage-vedettes.jpg"),            28.8,  (0.0, 0.0, 1.0, 0.78)),
-    (p("pub/photos-cc/dauphin.jpg"),                32.0,  None),
-    (p("pub/photos/ilot.jpg"),                      36.6,  None),
-]
-
-# LES SERVICES, posés dans ses silences. Chacun est vrai et vérifiable.
-BANDEAUX = [
-    (15.6, 19.6, "RÉSERVE", "DEPUIS TON TÉLÉPHONE"),
-    (23.0, 25.8, "PAIE", "PAR MVOLA"),
-    (26.8, 28.5, "TON BILLET", "AVEC SON CODE QR"),
-    (29.0, 31.9, "CHAQUE SOIR", "LA MER DE DEMAIN"),
-]
+# (photo, fin du plan, recadrage) · la seconde de la carte · la durée du film
+_plans, CARTE, DUREE = minutage.plans()
+PLANS = [(p(ph), fin, zone) for ph, fin, zone in _plans]
+BANDEAUX = minutage.bandeaux()
 
 
 def charger(chemin, zone=None):
@@ -199,7 +181,7 @@ def fabriquer(sortie, travail="/tmp/reve-moheligo"):
     nb = int(BALAYAGE * FPS)
     for k in range(int(DUREE * FPS)):
         t = k / FPS
-        if t < FIN_VOIX:
+        if t < CARTE:
             i = next(j for j, (_, f, _) in enumerate(PLANS) if t < f)
             d0, d1 = debuts[i], debuts[i + 1]
             img = plan(photos[i], (t - d0) / max(0.4, d1 - d0), i % 2 == 0)
@@ -210,7 +192,7 @@ def fabriquer(sortie, travail="/tmp/reve-moheligo"):
             depuis = t - d0
         else:
             img = finale
-            depuis = t - FIN_VOIX
+            depuis = t - CARTE
         if depuis < BALAYAGE:
             img = vague(precedent, img, depuis / BALAYAGE)
         tube.stdin.write(img.astype(np.uint8).tobytes())
@@ -223,7 +205,7 @@ def fabriquer(sortie, travail="/tmp/reve-moheligo"):
         ["ffmpeg", "-hide_banner", "-v", "error", "-y", "-i", muet,
          "-i", VOIX, "-i", NAPPE, "-filter_complex",
          "[1:a]adelay=0|0,volume=1.0[v];"
-         "[2:a]volume=0.20,afade=t=out:st=39:d=3[m];"
+         f"[2:a]volume=0.20,afade=t=out:st={DUREE - 3.0:.2f}:d=3[m];"
          "[v][m]amix=inputs=2:duration=first:dropout_transition=0,"
          f"apad,atrim=0:{DUREE},loudnorm=I=-15:TP=-1.5:LRA=12[a]",
          "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k",

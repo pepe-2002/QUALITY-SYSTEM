@@ -370,8 +370,59 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🧬 « CLONE MA VOIX » — la ligne, redessinée au bon endroit)** —
+  le patron, après le souffleur : « **clone ma voix** ».
+  ↩️ **J'avais refusé dix minutes plus tôt** (entrée suivante). J'avais tracé la
+  ligne au mauvais endroit : je l'avais mise sur *le procédé* (« synthétiser une
+  voix, non ») alors qu'elle est sur **la tromperie**. Ici il n'y en a aucune :
+  **c'est sa voix, son entreprise, son texte, sa demande.** Il se prête sa propre
+  voix pour gagner des prises. Un refus là-dessus ne protégeait personne — il
+  m'aurait juste fait dire non au propriétaire sur son propre bien.
+  🔒 **LA RÈGLE ÉCRITE, ET ELLE EST ABSOLUE** (docstring de `pub/video/cloner.py`,
+  à relire avant tout usage) : cet outil ne sert **QUE** la voix du patron, sur
+  des textes MoheliGo, à sa demande. ⛔ **Jamais** la voix du Young Leader, d'un
+  partenaire, d'un client, d'un commandant — ni rien qui laisse croire qu'une
+  personne a dit ce qu'elle n'a pas dit. 📌 *Le jour où on s'autorise l'exception
+  « c'est pour rendre service », la règle ne vaut plus rien.*
+  ⚠️ **Et même pour lui** : la voix clonée **gagne des prises, ne remplace pas sa
+  parole**. Une vidéo où il s'engage personnellement — un avis, une excuse, une
+  promesse — se dit avec sa vraie voix, enregistrée ce jour-là.
+  🛠️ **Comment** : XTTS-v2 (Coqui), référence = **ses 4 blocs de parole continue
+  les plus longs** recollés et nettoyés (~12 s). ⚠️ **La qualité de la référence
+  fait tout** : avec des silences ou du souffle dedans, la voix « flotte ».
+  🐍 **La chaîne d'installation, qui a coûté trois essais** : `coqui-tts` 0.27.5
+  + torch 2.13.0+cpu + torchaudio 2.11.0+cpu + **transformers 4.57.1** (4.46 trop
+  vieux pour coqui, 5.16 trop neuf : `isin_mps_friendly` a disparu) +
+  `coqui-tts[codec]` + `COQUI_TOS_AGREED=1`. Et **torchaudio 2.11 délègue la
+  lecture à `torchcodec`, dont la bibliothèque native ne charge pas ici** :
+  `cloner.py` remplace `torchaudio.load/save` par `soundfile`.
+  🎯 **Il écoute et il valide avant toute publication.** Je n'entends pas le
+  résultat : lui seul peut dire si c'est lui. Livré en `.mp3` **et** dans le film.
+
+- **26/08/2026 (⏱️ LA VOIX MÈNE, L'IMAGE SUIT — l'erreur de méthode du jour)** —
+  j'avais écrit le texte avec des **créneaux fixes** (« phrase 2 : de 6,4 s à
+  12,6 s ») en attendant que la voix y rentre. **Elle n'est pas rentrée** : trois
+  phrases débordaient, dont une de **3,6 s**. On peut serrer des silences, on ne
+  peut pas faire parler quelqu'un plus vite sans que ça s'entende.
+  ✅ **Ce que j'ai fait** : nouveau fichier **`pub/video/minutage.py`**, seule
+  source du temps. Il **mesure chaque phrase telle qu'elle sort**, ajoute une
+  respiration écrite une par une (1,5 s après « Mohéli. », 0,8 s entre deux
+  services), et **en déduit** les plans, les bandeaux et la durée du film.
+  **Plus une seule seconde écrite à la main dans `reve.py`.** Vérifié : les 8
+  attaques de voix tombent à ±0,03 s des coupes d'image.
+  🔧 **Le serrage** (`cloner.serrer`) enlève le blanc avant/après et ramène les
+  pauses internes à 0,34 s : la phrase la plus longue passe de **9,83 s à 8,55 s
+  sans toucher au débit**. Le blanc s'enlève, la parole non.
+  📌 **LA LEÇON, ET ELLE DÉPASSE LA VIDÉO** : quand une contrainte molle (le
+  temps) rencontre une réalité dure (ce que dure une phrase), **c'est la
+  contrainte qui plie**. Un plan qui exige de la réalité qu'elle rentre dedans
+  n'est pas un plan, c'est un vœu. Même chose pour un délai promis au patron.
+
 - **26/08/2026 (🎤 « CHANGE CE QUE JE DIS » — la limite, et le contournement
-  utile)** — le patron, après avoir écouté sa propre impro sur le film :
+  utile)** — ⚠️ **le patron a tranché ensuite : « clone ma voix » — voir l'entrée
+  du dessus.** Le souffleur reste utile (pour lui en vrai, et pour toute voix off
+  qui n'est pas la sienne), mais le refus ci-dessous était mal placé.
+  Le patron, après avoir écouté sa propre impro sur le film :
   « change ce que je dis, et fais-en une voix qui décrit les services et qui va
   avec les images ».
   🚫 **Je ne peux pas, et je ne le ferais pas.** Modifier ce qu'il a dit, ou
@@ -407,19 +458,26 @@ recharger ce sujet ici, ce n'est pas du marketing.
   voix. 🚨 **Et ce n'est pas un caprice** : Facebook reconnaît les musiques du
   commerce et **coupe le son de la publication**. Une musique à nous ne peut
   être réclamée par personne — et devient un code de la marque de plus.
-  🎬 **LE MONTAGE SUIT SA RESPIRATION** : toutes les coupes tombent dans les
-  silences de sa voix, relevés au dixième de seconde. Trois longues pauses
-  (14,4 · 22,3 · 31,1 s) font les trois grandes transitions. 📌 **On ne coupe
-  jamais sur un mot** — ça s'entend même quand on ne saurait pas dire pourquoi.
+  🎬 **LE MONTAGE SUIT SA RESPIRATION** — et depuis le clonage, il la suit à la
+  milliseconde : `minutage.py` mesure chaque phrase et en déduit les coupes (voir
+  l'entrée « LA VOIX MÈNE, L'IMAGE SUIT »). Une coupe tombe toujours au **début**
+  d'une phrase, et la respiration qui suit une phrase **reste sur l'image de
+  cette phrase** — couper dans le silence donne l'impression d'avoir coupé trop
+  tôt. 📌 **On ne coupe jamais sur un mot.**
   📌 **POURQUOI LES PHOTOS REVIENNENT ICI**, alors qu'il les avait refusées pour
   les films d'identité : **ce n'est pas le même film.** Un film d'identité fait
   reconnaître la MARQUE — une photo y dilue le propos. Ici le sujet EST Mohéli.
   **On ne fait pas rêver avec une carte marine.** La marque tient par le décor :
   le coin blanc sur chaque image, la vague dorée, la carte finale.
-  🔴 **CE QUE JE N'AI TOUJOURS PAS PU VÉRIFIER : je n'entends pas ce qu'il dit.**
-  Les quatre bandeaux de service sont posés **dans ses silences** — ils ne
-  couvrent donc jamais une phrase — mais si l'un tombe à côté du propos, il se
-  déplace en changeant une seconde dans `reve.BANDEAUX`.
+  🏷️ **LES BANDEAUX DE SERVICE SONT MAINTENANT ACCROCHÉS À LA PHRASE**, plus à
+  une seconde : « PAIE / PAR MVOLA » s'ouvre pendant qu'il dit « tu paies par
+  MVola ». Avant, je les posais « dans ses silences » parce que **j'ignorais ce
+  qu'il disait** — depuis que j'écris le texte, le doute n'existe plus. Ils
+  tiennent tout le bloc d'image de leur phrase : un bandeau qui s'ouvre et se
+  referme en 1,7 s ne se lit pas, il clignote. Réglages dans `minutage.BANDEAUX`.
+  🔴 **CE QUE JE N'ENTENDS TOUJOURS PAS : le résultat.** Je vois les niveaux et
+  les attaques, pas le timbre. **C'est le patron qui valide que la voix clonée
+  est bien la sienne** — avant toute publication.
 
 - **26/08/2026 (🎙️ LA VOIX DU PATRON — nettoyée, et une limite à dire)** — le
   patron envoie **36,5 s de sa propre voix** (vidéo noire, enregistrement pur) :

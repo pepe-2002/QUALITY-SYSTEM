@@ -370,6 +370,42 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🎨 UN AUDIT EXTÉRIEUR NOTE LE FLYER 8/10 — et trouve une vraie
+  dérive que je n'avais pas vue)** — le patron a fait auditer un flyer par
+  ChatGPT en disant que je suis son directeur marketing. Note **8/10**, avis
+  élogieux. ➕ **Et il donne le chiffre qui compte : 3 000 vues de la page en
+  28 jours.**
+  ⚖️ **Mon jugement honnête sur cet audit** : **l'essentiel de ses conseils décrit
+  ce qu'on fait déjà** (couleurs verrouillées, polices fixes, forme propriétaire,
+  ton défini, ne pas changer de style). Ce n'est pas un reproche — un audit qui
+  confirme, ça vaut aussi. **Mais il ne faut pas refaire ce qui existe parce qu'un
+  avis extérieur le redécouvre.**
+  🚨 **SAUF SUR UN POINT, OÙ IL AVAIT RAISON ET MOI TORT.** « Ne plus changer les
+  couleurs selon chaque flyer » — j'ai vérifié en comptant dans les 43 fichiers :
+  **deux ors (`#F6BC1C` ×203 et `#facc15` ×17) et trois marines** (`#0F2A5C` ×153,
+  `#0A1D42` ×39, `#071c3d` ×3). **Et les fichiers hors palette étaient la carte
+  finale de la vidéo Young Leader et sa pastille — faites par moi le jour même.**
+  ✅ **Corrigé** : palette officielle **`#0F2A5C` + `#F6BC1C`**, carte et pastille
+  réalignées, vidéo refabriquée.
+  📄 **Créé : `CHARTE-MARQUE.md`** — la charte sur une page. ⚠️ **Chaque valeur y
+  est COMPTÉE dans les fichiers réels, jamais décidée à la volée.**
+  ❌ **Ce que j'ai refusé de l'audit** : remplacer notre signature par « MoheliGo —
+  vous savez avant de partir ». C'est la même idée en plus vague, et elle perd ce
+  qui rend la nôtre croyable : **« La mer décide » dit d'abord ce qu'on ne
+  maîtrise PAS.** Une signature qui marche ne se remplace pas parce qu'un avis
+  extérieur en propose une autre.
+  ✅ **Ce que j'ai pris** : les **cinq familles de publication** nommées (avis,
+  bulletin, réserver, découvrir, institutionnel) — on les fabriquait déjà sans
+  les nommer ; et **pousser le coin blanc sur les 43 visuels** (il n'est que sur
+  25).
+  🚨 **ET LE PLUS IMPORTANT, ÉCRIT EN TÊTE DE LA CHARTE** : l'audit propose de
+  viser « le niveau grand groupe ». **Ce n'est pas notre goulot.** 3 000 vues en
+  28 jours, mais **140 ouvertures de l'app → 16 sur Traversées (11 %)** et **3
+  traversées payées depuis juillet**. **Aucun flyer, même 10/10, ne répare ça.**
+  📌 **La phrase à retenir** : *un design à 8/10 répété cent fois bat un design à
+  10/10 changé chaque semaine — et les deux ensemble ne valent rien si personne
+  ne trouve le bouton Réserver.*
+
 - **26/08/2026 (⏱️ « LE BULLETIN N'EST PAS PARTI » — il n'était pas encore dû, et
   ça a révélé un vrai défaut de réglage)** — le patron à **19h26 aux Comores**,
   pour un bulletin annoncé à 19h30. ✅ **Vérifié : rien d'anormal.** Mais au lieu

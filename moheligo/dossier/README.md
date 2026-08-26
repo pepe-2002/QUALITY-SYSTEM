@@ -29,7 +29,7 @@
 
 | Ce que je vais faire | Ce que je lis d'abord |
 |---|---|
-| **Un flyer, un visuel** | `MANUEL-MARKETING.md` § 1-4 (marque, positionnement, écriture), **§ 10 bis et 10 ter** (pourquoi mes visuels faisaient débutant, et pourquoi sobre ≠ vide), § 10 checklist « avant de publier un FLYER » |
+| **Un flyer, un visuel** | **`CHARTE-MARQUE.md` D'ABORD** (couleurs, polices, formes — les valeurs exactes), puis `MANUEL-MARKETING.md` § 1-4 (marque, positionnement, écriture), **§ 10 bis et 10 ter** (pourquoi mes visuels faisaient débutant, et pourquoi sobre ≠ vide), § 10 checklist « avant de publier un FLYER » |
 | **Présenter MoheliGo** (partenaire, bio de page, message) | `PRESENTATION.md` — quatre longueurs déjà écrites, **et la liste de ce qu'on ne dit pas** |
 | **Un texte de publication** | `MANUEL-MARKETING.md` § 4 (écrire), **§ 5 (vendre à qui n'a jamais acheté en ligne)**, § 10 checklist « TEXTE » ; `TEXTES-PUBLICATIONS.md` pour ne pas me répéter |
 | **Un rapport** | `MANUEL-MARKETING.md` § 8 (mesurer : cinq chiffres et un seuil) et § 10 checklist « RAPPORT » ; `FEUILLE-DE-ROUTE.md` pour savoir à quelle étape on est |
@@ -61,6 +61,7 @@ demande.** (Manuel § 12.2 ter — la règle A / B / C.)
 | **`BRIEF-VIDEO-YOUNG-LEADER.md`** | 🎬 le **brief de tournage** confié à Young Leader Mohéli : message prêt à envoyer, déroulé 30 s plan par plan, version 15 s, ⛔ ce qu'on ne filme jamais, **30 photos** à ramener, droits, et les 3 chiffres qui diront si la vidéo marche | moi, révisé après le tournage |
 | **`QUESTIONS-CLIENTS.md`** | 🗣️ **le registre des vraies questions des clients**, tirées des conversations WhatsApp. Le fichier le plus précieux : partout ailleurs c'est moi qui parle, ici c'est le client. ⚠️ aucune donnée personnelle, le dépôt est public | le patron et moi, à chaque conversation |
 | **`VIDEO-YOUNG-LEADER-RECUE.md`** | 🎬 **l'analyse image par image de la vidéo reçue du Young Leader** : déroulé, texte intégral, ce qui est réussi, les 7 défauts, et ce qui se répare au montage | moi, 26/08/2026 |
+| **`CHARTE-MARQUE.md`** | 🎨 **la charte, sur une page** : les 2 couleurs officielles, les 3 polices, la forme propriétaire, le ton, la signature, les 5 familles. **Chaque valeur est comptée dans les fichiers réels, pas décidée** | moi, 26/08/2026 |
 | **`ATELIER-FLYERS.md`** | 🛠️ le mode d'emploi technique : quel script fabrique quoi, comment regénérer | moi |
 
 ---

@@ -112,7 +112,7 @@ pousser sur `main`. Faire le 2 sans le 1, c'est revendre sans avoir annoncé.
 
 | Quoi | Quand | Interrupteur | État |
 |---|---|---|---|
-| **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs 19h30 | `PUBLIER_FB` | ✅ armé — pendant la fermeture, son bandeau dit « TRAVERSÉES SUSPENDUES » |
+| **Bulletin mer** (daté, fabriqué le jour même) | tous les soirs **≈19h30** (cron 15h54 UTC + retard GitHub mesuré) | `PUBLIER_FB` | ✅ armé — pendant la fermeture, son bandeau dit « TRAVERSÉES SUSPENDUES » |
 | **Publication du jour** (calendrier de la semaine) | tous les jours 12h30 | `PUBLIER_FB` | ✅ armé — les 7 jours sont couverts, **+ la mention de fermeture** tant que le service est fermé |
 | **Point du service** (état du jour, zéro vente) | seulement si les pubs sont coupées ; `--point` à la main | `PUB_PENDANT_FERMETURE` | ⏸️ en réserve — les pubs ont la priorité (décision du 13/08) |
 | **Démonstration du matin** | lundi et jeudi 7h30 | `PUBLIER_MATIN` | ⏸️ **désarmé**, attend la décision du patron |
@@ -125,11 +125,18 @@ pousser sur `main`. Faire le 2 sans le 1, c'est revendre sans avoir annoncé.
 ⚠️ **Le robot ne voit que la branche `main`.** Un visuel commité seulement sur une
 branche de travail n'existe pas pour les publications automatiques.
 
-⚠️ **Les minuteries de GitHub ont du retard, c'est normal** : de 26 min à 1 h 12
-observées entre le 11 et le 18/08. Les crons sont réglés **en avance** (`:07`)
-pour que le retard fasse tomber la publication à l'heure visée. Un lancement qui
-n'apparaît pas à la minute prévue n'est pas une panne — vérifier l'onglet Actions
-avant de conclure.
+⚠️ **Les minuteries de GitHub ont du retard, c'est normal — et ce retard se
+MESURE, il ne se devine pas.** Relevé sur les 11 bulletins du 15 au 25/08/2026 :
+**29 min au mieux, 44 au pire, 36 en moyenne.** Avec l'ancien cron de 16h07, le
+bulletin tombait à **19h42 en moyenne et jamais avant 19h36**, pour une heure
+annoncée de 19h30. **Corrigé le 26/08 : cron à 15h54 UTC**, fourchette attendue
+19h23–19h38.
+
+🚨 **UN LANCEMENT QUI N'APPARAÎT PAS À LA MINUTE PRÉVUE N'EST PAS UNE PANNE.**
+Le 26/08 j'ai déclaré le système mort à 16h01 alors qu'il publiait à 16h01:07.
+**Vérifier l'onglet Actions, et attendre le retard habituel, avant de conclure.**
+📌 **À revérifier tous les quinze jours** : si le retard de GitHub change, le cron
+doit être recalculé sur les vrais départs.
 
 ⚠️ **Le jeton Facebook expire vers le 10/10/2026.** À renouveler avant, sinon les
 publications s'arrêtent en silence.

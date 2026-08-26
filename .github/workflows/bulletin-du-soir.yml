@@ -19,10 +19,19 @@ name: Bulletin du soir
 
 on:
   schedule:
-    # 16h07 UTC = 19h07 aux Comores : minute creuse et marge d'avance, pour que
-    # le retard habituel de GitHub fasse tomber le bulletin vers 19h30 (voir
-    # publication-du-jour.yml pour la mesure qui a motivé ce choix).
-    - cron: '7 16 * * *'
+    # ⏱️ 15h54 UTC = 18h54 aux Comores. La marge d'avance n'est PAS une estimation :
+    # elle est mesurée sur les 11 derniers bulletins programmés (15 → 25/08/2026).
+    #
+    #   retard réel de GitHub : 29 min au mieux, 44 au pire, 36 en moyenne
+    #   avec l'ancien cron (16h07) le bulletin tombait à 19h42 en moyenne,
+    #   et n'est JAMAIS parti avant 19h36 — pour une cible annoncée à 19h30.
+    #
+    # 16h07 − 36 min de retard moyen = 15h54 : le bulletin vise enfin l'heure
+    # qu'on annonce. Fourchette attendue : 19h23 – 19h38.
+    #
+    # 📌 À revérifier dans deux semaines : si le retard de GitHub change, ce
+    # chiffre doit être recalculé sur les vrais départs, jamais deviné.
+    - cron: '54 15 * * *'
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
       publier_sur_facebook:

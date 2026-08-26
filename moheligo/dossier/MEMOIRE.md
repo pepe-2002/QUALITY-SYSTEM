@@ -370,6 +370,35 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (⏱️ « LE BULLETIN N'EST PAS PARTI » — il n'était pas encore dû, et
+  ça a révélé un vrai défaut de réglage)** — le patron à **19h26 aux Comores**,
+  pour un bulletin annoncé à 19h30. ✅ **Vérifié : rien d'anormal.** Mais au lieu
+  de répondre « attends », j'ai relevé **les heures de départ réelles des 11
+  derniers bulletins** (15 → 25/08) :
+
+  | | |
+  |---|---|
+  | retard de GitHub | **29 min au mieux, 44 au pire, 36 en moyenne** |
+  | heure d'arrivée réelle | **19h42 en moyenne** |
+  | jamais parti avant | **19h36** |
+  | heure annoncée | **19h30** |
+
+  🚨 **On annonçait donc une heure qu'on ne tenait jamais.** Le cron était réglé
+  « en avance » à 16h07 UTC, mais l'avance avait été **estimée**, pas mesurée.
+  ✅ **Corrigé : cron à 15h54 UTC** (16h07 − 36 min de retard moyen). Fourchette
+  attendue **19h23–19h38**. À revérifier dans quinze jours **sur les vrais
+  départs, jamais deviné**.
+  📌 **La leçon, et c'est la deuxième fois aujourd'hui** : ce matin j'ai déclaré
+  le robot en panne à 16h01 alors qu'il publiait à 16h01:07 ; ce soir le patron
+  a cru le bulletin perdu à 19h26 alors qu'il n'est jamais parti avant 19h36.
+  **Un système lent ressemble à un système mort — la seule différence, c'est la
+  mesure.** D'où la règle écrite dans le README : vérifier l'onglet Actions ET
+  attendre le retard habituel avant de conclure.
+  📌 **Et un défaut de fond corrigé au passage** : promettre 19h30 et livrer
+  19h42, c'est exactement ce que le manuel interdit ailleurs (§ 11, on n'imprime
+  pas un horaire dont on n'est pas sûr). **On tenait la règle pour les horaires
+  de vedette et pas pour les nôtres.**
+
 - **26/08/2026 (⚙️ PANNE GITHUB : le verrou de concurrence bloqué par un fantôme)** —
   le patron : « c'est pas encore parti sur Facebook ». **Vérifié, et il avait
   raison.** Diagnostic complet :

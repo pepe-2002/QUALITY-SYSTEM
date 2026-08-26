@@ -370,6 +370,29 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🚨 L'AVIS ALLAIT ANNONCER UN MARDI QUE PERSONNE N'AVAIT PROMIS)** —
+  le patron : « relance l'avis ». **La répétition à blanc a évité la faute.**
+  L'avis contenait, **écrit en dur dans le texte ET gravé dans l'image** :
+  **« QUAND ÇA REPREND : PEUT-ÊTRE MARDI »** — un reste de la fermeture du 12/08,
+  où le patron avait dit « ouverture possible mardi ». **Cette fois il n'a donné
+  aucune date.** J'avais bien mis `reouverture_possible=None` dans `service.py`…
+  mais la phrase vivait ailleurs, donc le garde-fou ne la voyait pas.
+  🚨 **C'est la faute que l'en-tête de `service.py` interdit noir sur blanc** :
+  « une date annoncée puis non tenue fait plus de mal que pas de date du tout ».
+  On l'aurait commise en la publiant nous-mêmes.
+  ✅ **Corrigé aux DEUX endroits** : `service.paragraphe_reprise()` produit le
+  paragraphe selon `FERMETURE['reouverture_possible']` (avec date si le patron en
+  a donné une, « on ne le sait pas encore » sinon), et `flyer31-suspension-fb.html`
+  ne grave plus **aucune** date — regénéré et revérifié.
+  📌 **LA RÈGLE, TROISIÈME FOIS EN UNE JOURNÉE** : après le commentaire du
+  bulletin et le diagnostic menteur, voici le troisième texte qui promettait
+  quelque chose sans passer par `service.py`. **Tout ce qui promet une traversée
+  OU une date vit dans `service.py`, jamais écrit en dur ailleurs — texte comme
+  image.**
+  📌 **Et une leçon propre aux images** : **une date gravée dans un visuel ne se
+  corrige pas une fois publiée.** On n'en met jamais. L'état du jour se dit dans
+  le texte, qui, lui, suit l'état du service.
+
 - **26/08/2026 (🛑 ARRÊT DEMANDÉ — la vidéo attendra la réouverture)** — le
   patron, revenant sur sa consigne de dix minutes plus tôt : « **donc ne publie
   pas aujourd'hui, on la garde pour le jour de la réouverture, comme ça ça fait

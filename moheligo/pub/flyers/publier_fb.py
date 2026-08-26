@@ -312,6 +312,63 @@ def publier(image, texte, pour_de_vrai, essai=False):
     print('À voir sur la page : https://facebook.com/' + str(page))
 
 
+def publier_video(video, texte, pour_de_vrai, titre=None):
+    """Publie une VIDÉO sur la page.
+
+    ⚠️ Facebook a un point d'entrée DIFFÉRENT pour la vidéo : `/videos`, et non
+    `/photos`. Même jeton, même permission (`pages_manage_posts`), mais le champ
+    du texte s'appelle `description` et non `message`. Une vidéo envoyée sur
+    `/photos` est refusée sans explication utile.
+
+    📌 Ajouté le 26/08/2026 : le patron a demandé de publier la vidéo montée avec
+    le Young Leader. Le robot ne savait poster que des images.
+
+    ⚠️ L'envoi est en un seul morceau. C'est bon jusqu'à ~100 Mo ; au-delà,
+    Facebook veut un envoi repris en plusieurs fois. Nos vidéos font ~9 Mo.
+    """
+    if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
+        print('PAUSE_FB = oui → publication suspendue, rien n\'a été envoyé.')
+        return
+    v = pathlib.Path(video)
+    if not v.exists():
+        raise SystemExit('vidéo introuvable : %s' % v)
+    page, jeton = config()
+    post, commentaire = decouper(texte)
+
+    print('Page       :', page)
+    print('Vidéo      : %s (%d ko)' % (v.name, v.stat().st_size // 1024))
+    print('Description: %d caractères' % len(post))
+    print('Commentaire:', ('%d caractères' % len(commentaire)) if commentaire else 'aucun')
+    if not pour_de_vrai:
+        print('\n--- RÉPÉTITION À BLANC : rien n\'a été publié. ---')
+        print('\n' + post)
+        return
+
+    with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False) as fh:
+        fh.write(post)
+        msg = fh.name
+    formulaires = [f'source=@{v}', f'description=<{msg}']
+    if titre:
+        formulaires.append(f'title={titre}')
+    rep = curl(f'{BASE}/{page}/videos', 'POST', jeton=jeton, formulaires=formulaires)
+    os.unlink(msg)
+    vid = rep.get('id')
+    print('Vidéo publiée :', vid)
+
+    if commentaire and vid:
+        with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False) as fh:
+            fh.write(commentaire)
+            cmt = fh.name
+        # comme pour les photos : un commentaire refusé ne fait jamais échouer
+        # une publication déjà en ligne (permission `pages_manage_engagement`)
+        r = curl(f'{BASE}/{vid}/comments', 'POST', jeton=jeton,
+                 formulaires=[f'message=<{cmt}'], strict=False)
+        os.unlink(cmt)
+        print('Commentaire :', r.get('id') or 'refusé (le post reste en ligne)')
+
+    journaliser(page, vid, v.name, post)
+    return vid
+
 def journaliser(page, post_id, visuel, texte):
     """Chaque publication est consignée : c'est la matière première des rapports.
 
@@ -343,9 +400,14 @@ def main():
     ap.add_argument('--essai', action='store_true',
                     help='envoie la photo en NON PUBLIÉE : prouve le droit de publier '
                          'sans que personne ne voie quoi que ce soit')
+    ap.add_argument('--video', help='publie une VIDÉO au lieu d\'une image '
+                                    '(point d\'entrée /videos, voir publier_video)')
+    ap.add_argument('--titre', help='titre de la vidéo (facultatif)')
     a = ap.parse_args()
     if a.verifier:
         verifier()
+    elif a.video:
+        publier_video(a.video, a.texte, a.publier, titre=a.titre)
     else:
         publier(a.image, a.texte, a.publier or a.essai, essai=a.essai)
 

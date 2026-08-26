@@ -46,6 +46,10 @@ on:
         description: 'Publier l annonce de REPRISE des traversees (jamais automatique)'
         type: boolean
         default: false
+      video_young_leader:
+        description: 'Publier la VIDEO Young Leader (moheligo/pub/video)'
+        type: boolean
+        default: false
       rapport_seulement:
         description: 'Ne RIEN publier : seulement produire le rapport (diagnostic)'
         type: boolean
@@ -152,11 +156,28 @@ jobs:
           PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 programme.py --reprise --publier
 
+      # LA VIDEO. Point d'entree /videos et non /photos (voir publier_video dans
+      # publier_fb.py). Jamais sur minuterie : une video se publie quand on l'a
+      # decide, pas a 12h07. Le texte porte deja la mention de fermeture quand le
+      # service est ferme — il est ecrit a la main dans pub/video.
+      - name: Publier la video Young Leader
+        if: inputs.video_young_leader && !inputs.rapport_seulement
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+        run: |
+          python3 publier_fb.py --publier \
+            --video ../video/MoheliGo-YoungLeader.mp4 \
+            --texte ../video/texte-publication.txt \
+            --titre "MoheliGo - La mer decide. Nous, on te le dit avant."
+
       # ⚠️ « && !inputs… » : sans ces conditions, un lancement avec une des cases
       # ci-dessus publierait EN PLUS la publication du jour, puisque PUBLIER_FB
       # est arme en permanence — deux posts d'un coup.
       - name: Publier
-        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise && !inputs.rapport_seulement
+        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise && !inputs.video_young_leader && !inputs.rapport_seulement
         working-directory: moheligo/pub/flyers
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}

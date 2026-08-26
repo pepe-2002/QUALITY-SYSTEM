@@ -370,6 +370,38 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🛑 ARRÊT DEMANDÉ — la vidéo attendra la réouverture)** — le
+  patron, revenant sur sa consigne de dix minutes plus tôt : « **donc ne publie
+  pas aujourd'hui, on la garde pour le jour de la réouverture, comme ça ça fait
+  le boom.** » **Il a raison, et c'est mieux que ce que je faisais.**
+  💡 **Pourquoi c'est juste** : une vidéo qui dit « réserve ta traversée », sortie
+  un jour de fermeture, se dépense pour rien — au mieux avec une mention qui la
+  contredit. **Sortie le jour où ça repart, elle EST l'annonce de la reprise.**
+  Le même fichier vaut dix fois plus à une autre date. **Ça ne se rattrape pas :
+  une vidéo ne se publie qu'une fois.**
+  ✅ **CE QUI A ÉTÉ PUBLIÉ : RIEN.** L'avis de suspension (exécution 37) s'est
+  arrêté en `startup_failure` sans jamais démarrer. La vidéo (exécution 38) était
+  encore en file.
+  🚨 **ET GITHUB A REFUSÉ DE L'ANNULER** — « cannot cancel a workflow run that has
+  not been queued yet », trois fois de suite : entre le déclenchement et la mise
+  en file, une exécution n'est **ni annulable ni arrêtable**. 📌 **Leçon dure :
+  déclencher une publication, c'est un geste qu'on ne peut pas toujours reprendre.
+  On réfléchit AVANT de cocher la case, pas après.**
+  ✅ **Ce qui a servi de frein, et qui est la bonne solution de toute façon** :
+  `publier_video()` **refuse de publier tant que `service.ouvert()` est faux**
+  (échappatoire explicite `VIDEO_MALGRE_FERMETURE=oui`). Le robot va chercher
+  `main` au démarrage — le frein était donc en place avant qu'il ne puisse
+  s'exécuter. **Vérifié en lançant la commande exacte du workflow** : « SERVICE
+  FERMÉ → la vidéo n'est PAS publiée. »
+  📌 **La règle générale, encore une fois** : **une vidéo est un message
+  commercial, elle suit l'état du service comme tout le reste.** Rien qui promet
+  une traversée ne vit en dehors de `service.py`.
+  🎬 **PRÊTE POUR LA RÉOUVERTURE** : le texte de la publication a été réécrit pour
+  ce jour-là — il commence désormais par « **LES TRAVERSÉES REPRENNENT** » et
+  rappelle qu'on a publié la mer chaque soir pendant l'arrêt. La procédure de
+  réouverture de `service.py` passe de deux à **trois gestes** : visuel de reprise
+  à la main → `OUVERT = True` → **la vidéo**.
+
 - **26/08/2026 (📹 LE ROBOT SAIT PUBLIER UNE VIDÉO + avis et pub lancés)** —
   le patron : « oui mais ajoute aussi la vidéo, la dernière qu'on a faite toi et
   moi, publie-la maintenant avant le flyer de 19h ».

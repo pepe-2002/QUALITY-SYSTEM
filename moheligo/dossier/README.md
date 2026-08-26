@@ -119,6 +119,7 @@ pousser sur `main`. Faire le 2 sans le 1, c'est revendre sans avoir annoncé.
 | **Avis de service suspendu** (remplace la pub) | le 1er jour de la fermeture ; case `avis_de_suspension` du workflow pour republier | `service.py` | ✅ **publié le 12/08/2026 à 19h09** (`…_122115200331374081`), sur accord du patron |
 | **Avis de mer forte** (remplace la pub) | automatique, houle ≥ 2,50 m | — | ✅ actif |
 | **Visuel de reprise** | le jour où ça repart | 🖐️ **à la main, par le patron** | ⏳ prêt — `flyer-reprise-facebook.png`, hors du calendrier exprès |
+| **Vidéo Young Leader** | 🎬 **le jour de la réouverture** | case `video_young_leader` | ⏳ **prête et en attente** — refuse de partir tant que le service est fermé |
 | **Frein d'urgence** | à tout moment | `PAUSE_FB = oui` | 🛑 arrête tout |
 
 ⚠️ **Le robot ne voit que la branche `main`.** Un visuel commité seulement sur une

@@ -35,7 +35,7 @@ patron (« les pubs continuent même si c'est fermé jusqu'à mardi ») :
   · `texte_du_point()` reste écrit et utilisable (`programme.py --point`) : il
     resservira à la prochaine fermeture si on décide de couper les pubs.
 
-📌 QUAND ÇA ROUVRE, DEUX GESTES ET DANS CET ORDRE :
+📌 QUAND ÇA ROUVRE, TROIS GESTES ET DANS CET ORDRE :
   1. le patron publie **à la main** le visuel de reprise
      (`flyer-reprise-facebook.png`, son texte est dans `page.py`). À la main, et
      pas par le robot : une reprise ne se décide pas à 12h07, elle se décide
@@ -43,6 +43,12 @@ patron (« les pubs continuent même si c'est fermé jusqu'à mardi ») :
      au robot, donne-le-moi, je le publierai. »
   2. remettre `OUVERT = True` ici, committer, pousser sur `main` — et la semaine
      normale repart toute seule dès le lendemain midi.
+  3. 🎬 **PUIS LA VIDÉO YOUNG LEADER** : case `video_young_leader` du workflow.
+     Décision du patron du 26/08/2026 : « on la garde pour le jour de la
+     réouverture, comme ça ça fait le boom. » Son texte
+     (`pub/video/texte-publication.txt`) est DÉJÀ écrit pour ce jour-là — il
+     commence par « LES TRAVERSÉES REPRENNENT ». ⚠️ Elle ne peut pas partir
+     avant : `publier_video()` refuse tant que `OUVERT` est False.
 Faire le 2 sans le 1, c'est reprendre la vente sans avoir annoncé la reprise :
 personne ne sait que c'est reparti.
 """

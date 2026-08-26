@@ -159,7 +159,7 @@ carte finale elle doit être exacte**.
 > « tu peux utiliser cette vidéo et des images pour en faire une vraie et
 > corriger les fautes… la dernière photo c'est le port de Hoani »
 
-**Fait** : `pub/video/MoheliGo-YoungLeader.mp4` (40,4 s), refabricable par
+**Fait** : `pub/video/MoheliGo-YoungLeader.mp4` (39,5 s), refabricable par
 `pub/video/monter.py`. Les six défauts réparables ci-dessus le sont ; il reste
 les deux réserves du bas de page (fichier d'origine, droits écrits).
 

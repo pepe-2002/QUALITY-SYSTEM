@@ -19,7 +19,7 @@ on corrigerait la copie au lieu de la source.
 | Fichier | Ce que c'est |
 |---|---|
 | `monter.py` | le montage complet, commenté |
-| `sous-titres.ass` | **les sous-titres refaits**, fautes corrigées, calés sur les silences de la voix |
+| `sous-titres.ass` | **les sous-titres refaits**, fautes corrigées, calés sur les bornes relevées des sous-titres d'origine |
 | `polices/` | Inter 700 de la marque, convertie en TTF pour ffmpeg |
 | `port-hoani.jpg` | le port de Hoani, envoyé par le patron le 26/08/2026 |
 | `bande-lien.png` | la pastille `moheligo.com`, affichée quand il parle du lien |

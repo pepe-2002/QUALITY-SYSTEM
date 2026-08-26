@@ -51,30 +51,29 @@ import argparse
 import datetime
 
 # --- l'état du service ------------------------------------------------------
-# ✅ ROUVERT le MARDI 18/08/2026, au petit matin. Le patron : « aujourd'hui c'est
-# la reprise des traversées, publie maintenant. »
-# La fermeture aura duré SIX jours (12 → 18 août) — et elle s'est terminée
-# exactement le mardi qu'il avait dit « possible » le 12. On a eu raison de ne
-# jamais l'annoncer comme une date : elle est tombée juste, mais on ne pouvait
-# pas le savoir, et une semaine à promettre mardi aurait été une semaine à jouer
-# notre parole aux dés.
-OUVERT = True
+# 🔴 REFERMÉ le MERCREDI 26/08/2026. Le patron : « les liaisons maritimes sont
+# fermées, la mer est agitée. »
+# ⚠️ AUCUNE DATE CETTE FOIS. Le 12/08 il avait dit « ouverture possible mardi » ;
+# ici il n'a rien dit de tel, donc on n'écrit NULLE PART une date de reprise,
+# et on n'en invente pas une par analogie avec la fermeture précédente.
+#
+# 🗄️ Précédente fermeture : du 12 au 18/08/2026, six jours, même cause (mer
+# agitée). Deuxième épisode en quinze jours — c'est la saison, et c'est
+# exactement pourquoi le bulletin du soir vaut plus que n'importe quelle
+# publicité : il est le seul endroit où l'on dit la vérité tous les jours.
+OUVERT = False
 
 FERMETURE = dict(
-    # 🗄️ ARCHIVE de la fermeture du 12 au 18/08/2026 (six jours), gardée exprès : c'est le
-    # modèle à recopier à la prochaine (les mots du patron, la raison, la date).
-    # Tant que OUVERT vaut True, rien ici n'est lu ni affiché.
-    depuis='2026-08-12',
-    jusqu_au='2026-08-18',
+    depuis='2026-08-26',
+    jusqu_au=None,             # inconnue — et on ne la devine pas
     # Ce que le patron a dit, mot pour mot, sans l'arrondir :
-    annonce="fermées jusqu'à nouvel ordre, ouverture possible mardi",
-    # La date n'est PAS une promesse : elle sert seulement à savoir quand
-    # revérifier auprès du patron. Elle ne s'affiche jamais comme une garantie.
-    reouverture_possible='2026-08-18',
-    # Le patron, 12/08/2026 : « à cause de la mer agitée. » On le dit : une
-    # fermeture expliquée rassure (« ils savent ce qu'ils font »), une fermeture
-    # muette inquiète (« ils ont un problème »). Et c'est vérifiable par
-    # n'importe qui depuis la plage — donc c'est un bon argument.
+    annonce="les liaisons maritimes sont fermées, la mer est agitée",
+    # Pas de date annoncée par le patron → rien à afficher, rien à revérifier
+    # à une date précise. On redemande, on n'extrapole pas.
+    reouverture_possible=None,
+    # Une fermeture expliquée rassure (« ils savent ce qu'ils font »), une
+    # fermeture muette inquiète (« ils ont un problème »). Et c'est vérifiable
+    # par n'importe qui depuis la plage — donc c'est un bon argument.
     raison='mer agitée',
 )
 
@@ -215,6 +214,29 @@ def cta_bulletin():
             'La mer chaque soir sur cette page · WhatsApp +269 479 43 28')
 
 
+def commentaire_bulletin():
+    """Le PREMIER COMMENTAIRE du bulletin du soir.
+
+    🚨 AJOUTÉ LE 26/08/2026, deuxième jour de fermeture de l'été. Le texte du
+    bulletin disait correctement « on ne prend pas de réservation pour demain »
+    — et le premier commentaire, lui, était écrit en dur : « Ta traversée de
+    demain : moheligo.com ». Le même envoi se contredisait à deux lignes
+    d'écart, et la contradiction tombait sur la seule phrase qu'on ne doit
+    jamais dire pendant une fermeture.
+
+    Il vit ici, avec l'état du service, pour la même raison que `cta_bulletin` :
+    **on ne peut pas changer l'un en oubliant l'autre.** Tout ce qui promet une
+    traversée doit être dans ce fichier, jamais écrit en dur ailleurs.
+    """
+    if ouvert():
+        return ('Ta traversée de demain : moheligo.com\n'
+                'WhatsApp : +269 479 43 28')
+    return ('Les départs sont suspendus : la mer, chaque soir, ici — et la '
+            'reprise dès qu\'elle est décidée.\n'
+            'Un billet déjà pris ? Changement de date gratuit.\n'
+            'moheligo.com — WhatsApp : +269 479 43 28')
+
+
 def etat(jour=None):
     """(ouvert, description courte) — pour les journaux et les rapports."""
     jour = jour or datetime.date.today()
@@ -239,6 +261,17 @@ def main():
     print()
     if ok:
         print('→ publications commerciales AUTORISÉES.')
+    elif PUB_PENDANT_FERMETURE:
+        # ⚠️ Ce diagnostic DOIT suivre PUB_PENDANT_FERMETURE. Il a déjà menti une
+        # fois (il annonçait le silence pendant que les pubs partaient) : un
+        # indicateur faux est pire que pas d'indicateur, on prend des décisions
+        # dessus. Décision du patron, 13/08/2026 : « les pubs continuent. »
+        print('→ les publications de midi CONTINUENT (décision du patron du 13/08),')
+        print('   avec la mention de fermeture ajoutée automatiquement.')
+        print('→ le bulletin du soir continue, bandeau « TRAVERSÉES SUSPENDUES ».')
+        print('→ le matin reste muet : la démonstration explique un geste')
+        print('   qui n\'aboutit pas aujourd\'hui.')
+        print('→ l\'avis de suspension se publie à la main : case « avis_de_suspension ».')
     else:
         print('→ AUCUN message commercial ne part.')
         print('→ à la place : l\'avis de service suspendu (une fois par jour).')

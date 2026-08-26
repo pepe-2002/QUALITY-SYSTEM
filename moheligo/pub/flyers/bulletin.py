@@ -221,6 +221,10 @@ possible tant que la traversée n'est pas partie. Écris-nous sur WhatsApp.
 moheligo.com — WhatsApp +269 479 43 28"""
 
     # texte de publication prêt à copier, avec les chiffres du jour
+    # le premier commentaire vit dans service.py, comme le bandeau : tout ce
+    # qui promet une traversée doit suivre l'état du service
+    commentaire = service.commentaire_bulletin()
+
     texte = f"""LA MER DE DEMAIN, CE SOIR.
 
 Demain matin entre Ouroveni et Hoani : {etat.lower()}.
@@ -238,8 +242,7 @@ l'application fait foi avant l'embarquement.
 #MoheliGo #Mohéli #Comores #MétéoMer #Traversée #Ouroveni #Hoani
 
 --- premier commentaire ---
-Ta traversée de demain : moheligo.com
-WhatsApp : +269 479 43 28
+{commentaire}
 """
     open('texte-du-jour.txt', 'w').write(texte)
 

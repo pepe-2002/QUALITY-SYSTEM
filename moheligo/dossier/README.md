@@ -95,14 +95,20 @@ python3 page.py --sortie /tmp/flyers.html                 # les flyers et leurs 
 Ce tableau est le seul endroit à jour sur ce qui tourne tout seul. **Vérifier
 qu'il est encore vrai avant de l'annoncer au patron.**
 
-✅ **SERVICE ROUVERT LE MARDI 18/08/2026.** Le patron : « aujourd'hui c'est la reprise
-des traversées, publie maintenant. » `service.py` a `OUVERT = True`, la mention de
-fermeture ne s'ajoute plus, et le bandeau du bulletin du soir est redevenu
-« RÉSERVE POUR DEMAIN » — le tout automatiquement, en changeant une seule ligne.
+🔴 **SERVICE REFERMÉ LE MERCREDI 26/08/2026.** Le patron : « les liaisons
+maritimes sont fermées, la mer est agitée. » `service.py` a `OUVERT = False`.
+**⚠️ AUCUNE DATE DE REPRISE cette fois** — contrairement au 12/08 (« ouverture
+possible mardi »), il n'a rien annoncé : on n'écrit donc nulle part une date, et
+on n'en déduit pas une de la fermeture précédente.
 
-🗄️ **La fermeture du 12 au 18/08 (six jours) reste archivée dans `service.py`** (dates, mots du
-patron, raison) : c'est le modèle à recopier à la prochaine. **Pour refermer :
-`OUVERT = False`, mettre `depuis` à jour, pousser sur `main`.**
+📌 **Deuxième fermeture en quinze jours, même cause.** La première a duré six
+jours (12 → 18/08). C'est la saison — et c'est exactement ce qui rend le bulletin
+du soir plus précieux que n'importe quelle publicité : c'est le seul endroit où
+l'on dit la vérité tous les jours, y compris les jours où l'on ne vend rien.
+
+🗄️ **Pour rouvrir, deux gestes DANS CET ORDRE** : 1) le patron publie **à la
+main** `flyer-reprise-facebook.png` ; 2) `OUVERT = True` dans `service.py`, puis
+pousser sur `main`. Faire le 2 sans le 1, c'est revendre sans avoir annoncé.
 
 | Quoi | Quand | Interrupteur | État |
 |---|---|---|---|

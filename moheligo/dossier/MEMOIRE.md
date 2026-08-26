@@ -370,6 +370,40 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🎬 LA VIDÉO DU YOUNG LEADER EST ARRIVÉE)** — le patron envoie
+  « la pub faite par le Young Leader ». **Analysée image par image** (1 575
+  images extraites, sous-titres relevés en entier) → **`VIDEO-YOUNG-LEADER-RECUE.md`**.
+  ✅ **Ce qui est réussi** : **il a repris NOTRE phrase** (« c'est la mer qui
+  décide, nous on te le dit avant ») — **le brief est arrivé jusqu'à lui**, notre
+  signature sort de la bouche de quelqu'un d'autre que nous. Vrai visage
+  mohélien en écharpe officielle, format **vertical ✅**, **sous-titres
+  incrustés ✅**, décor réel, notre logo bien dessiné sur la moitié du film.
+  🔴 **Ce qui empêche de publier tel quel** : **(1) aucun appel à l'action** — la
+  vidéo dit « cliquez sur le lien » et **ne montre jamais `moheligo.com`** ;
+  l'écran final est noir 5,5 s avec un texte illisible. **La dernière image est
+  celle qui convertit, ici elle ne convertit rien.** **(2)** le nom MoheliGo
+  n'arrive qu'à la **25ᵉ seconde** (les 3 premières sont le logo d'un autre
+  organisme). **(3) cinq fautes de français incrustées** (proposez/entre…vers/
+  rendiez/abonnez/sur lien) — et **notre cible est la diaspora, qui les verra**.
+  **(4)** notre nom écrit **deux fois différemment** dans le même film
+  (« Moheligo » puis « MoheliGo ») — c'est **`MoheliGo`, G majuscule, toujours**.
+  **(5)** un seul plan fixe de 50 s : **on ne voit jamais la mer, la vedette, ni
+  l'application**. **(6)** 576×1024 = **compression WhatsApp, redemander
+  l'original**. **(7)** 52,5 s au lieu des 30 s du brief.
+  🛠️ **Presque tout se répare au montage**, de notre côté : refaire les
+  sous-titres, couper à 30 s, poser notre logo dès la 1ʳᵉ seconde, **remplacer la
+  carte finale** par la signature exacte + `moheligo.com`.
+  📌 **Ton à tenir** : ce qu'il a donné — sa figure, son écharpe, notre phrase
+  dans sa bouche — **on ne pouvait pas le produire seuls**. Le reste est de la
+  technique, **et la technique est notre métier, pas le sien**. On lui demande
+  **une seule chose** : le fichier d'origine.
+  🔴 **La phrase de droits à l'image n'est toujours pas obtenue par écrit** —
+  à demander **avant** publication.
+  ⚠️ **Le rendez-vous du mardi 25/08 n'a pas eu lieu** : les trois livraisons
+  (chiffres, conversation avec le commandant, départs dans les écrans) sont
+  toujours attendues. Le flyer des prix reste hors rotation, rien n'est écrit sur
+  les tarifs.
+
 - ## ⏰ 23/08/2026 — RENDEZ-VOUS PRIS POUR LE **MARDI 25/08/2026**
   **À LIRE EN PREMIER EN DÉBUT DE SESSION.** Le patron : « je te donne les
   chiffres le mardi, et la conversation, et les améliorations sur mettre voir les

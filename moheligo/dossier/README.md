@@ -60,6 +60,7 @@ demande.** (Manuel § 12.2 ter — la règle A / B / C.)
 | **`VIDEO-DEMONSTRATION.md`** | 🎬 pourquoi la vidéo n'existe pas encore, et les **4 captures d'écran** qu'il me faut | moi |
 | **`BRIEF-VIDEO-YOUNG-LEADER.md`** | 🎬 le **brief de tournage** confié à Young Leader Mohéli : message prêt à envoyer, déroulé 30 s plan par plan, version 15 s, ⛔ ce qu'on ne filme jamais, **30 photos** à ramener, droits, et les 3 chiffres qui diront si la vidéo marche | moi, révisé après le tournage |
 | **`QUESTIONS-CLIENTS.md`** | 🗣️ **le registre des vraies questions des clients**, tirées des conversations WhatsApp. Le fichier le plus précieux : partout ailleurs c'est moi qui parle, ici c'est le client. ⚠️ aucune donnée personnelle, le dépôt est public | le patron et moi, à chaque conversation |
+| **`VIDEO-YOUNG-LEADER-RECUE.md`** | 🎬 **l'analyse image par image de la vidéo reçue du Young Leader** : déroulé, texte intégral, ce qui est réussi, les 7 défauts, et ce qui se répare au montage | moi, 26/08/2026 |
 | **`ATELIER-FLYERS.md`** | 🛠️ le mode d'emploi technique : quel script fabrique quoi, comment regénérer | moi |
 
 ---

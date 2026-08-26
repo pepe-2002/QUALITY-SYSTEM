@@ -35,6 +35,20 @@ un fichier son ne se lit pas partout, une VIDÉO si. On livre donc toujours
 MoheliGo fixe avec le son dessus. **Un livrable qui ne s'ouvre pas n'est pas
 livré.**
 
+🎚️ QUAND LE PATRON DIT « TROP GROS » — ON NE DEVINE PAS, ON FAIT ÉCOUTER.
+Le 26/08 il a trouvé sa voix « trop grosse ». Une remarque de goût ne se règle
+pas en tâtonnant : on fabrique **trois réglages sur le même extrait**, annoncés
+à l'écran, et il rend un numéro. `voix/COMPARE-3-reglages.mp4`.
+
+  1. LÉGÈRE ..... coupe à 125 Hz, −5 dB à 230 Hz, −2,5 dB à 420 Hz, compression
+                  douce (2:1). C'est le réglage qui dégraisse une voix épaisse.
+  2. NATURELLE .. souffle et niveau, RIEN d'autre. Aucune couleur ajoutée.
+  3. la chaîne ci-dessus (celle qu'il a trouvée trop grosse).
+
+📌 **Trois options valent mieux que dix questions.** Sur une question de goût,
+l'oreille du patron tranche en douze secondes ce qu'un échange de messages ne
+tranche pas en dix minutes.
+
 ⚠️ ON NE FABRIQUE JAMAIS UNE VOIX. Nettoyer l'enregistrement de quelqu'un qui
 nous l'a donné, oui. Synthétiser sa voix pour lui faire dire ce qu'il n'a pas
 dit, non — voir `identite.py`.

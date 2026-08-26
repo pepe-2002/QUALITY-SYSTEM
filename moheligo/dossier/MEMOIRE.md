@@ -370,6 +370,44 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🎬 TROIS FILMS D'IDENTITÉ, et le logo des flyers était coupé)** —
+  ➊ **Le logo.** Le patron : « regarde le logo des flyers et celui de la page,
+  celui du flyer est un peu coupé. » ✅ **Il avait raison.** `logo-emblem.png`
+  faisait 167×115 et **le dessin touchait les quatre bords** : la proue tranchée
+  à droite, la vague dorée coupée des deux côtés. Redécoupé depuis la source avec
+  8 % de marge et un détourage propre (le blanc EXTÉRIEUR seul devient
+  transparent, le blanc du dessin reste). `object-fit:contain` ajouté sur 25
+  flyers, **26 visuels regénérés**.
+  ➋ **Les trois films.** `identite.py` + `cartes.py` → **LA MER DÉCIDE** (la
+  promesse), **DEUX RIVES** (la géographie), **CHAQUE SOIR** (la preuve), ~17 s
+  chacun, 1080×1920. Fichier : `pub/video/FILMS-IDENTITE.md`.
+  🚨 **DEUX CORRECTIONS DU PATRON EN COURS DE ROUTE, TOUTES DEUX JUSTES** :
+  · **« sans logo ni le dire, c'était une façon de parler »** — j'avais pris la
+    consigne au pied de la lettre et supprimé le logo. Il projetait une ambition
+    (« devenir une grande marque »), pas une contrainte technique. 📌 **Une
+    ambition n'est pas un cahier des charges : demander plutôt qu'exécuter.**
+  · **« les photos ne sont pas assez neutres, crée des flyers à nous »** — et
+    c'est la meilleure idée de la journée. **Une photo appartient à son sujet ;
+    une carte dessinée n'appartient qu'à nous.** Les films sont devenus nos
+    flyers en mouvement : même grille, même coin blanc, même vague.
+  ➌ **« Enlève même les jours où on ne vend rien »** — **la même règle que le
+  12/08 avec « on te vend rien »**, appliquée par lui pour la deuxième fois.
+  Nommer la vente la remet dans la tête du lecteur. Remplacé par **« Tu le sais
+  avant de partir de chez toi »** : ce que le client gagne, jamais ce dont on
+  s'abstient.
+  🎙️ **LA VOIX — la limite que j'ai posée.** Le patron : « la voix doit être
+  naturelle, tu peux utiliser celle du Young Leader. » ✅ **J'utilise UNE PHRASE
+  QU'IL A RÉELLEMENT DITE** (« avec MoheliGo, c'est la mer qui décide, nous on te
+  le dit avant »), extraite telle quelle et posée sur la carte qui dit la même
+  chose. 🚫 **Je ne fabrique pas sa voix pour lui faire dire des phrases qu'il n'a
+  jamais prononcées** — c'est mettre des mots dans la bouche de quelqu'un, et on
+  n'a même pas encore sa phrase de droit à l'image. **Pour une voix sur toute la
+  durée, il doit enregistrer : le script est écrit, trois prises de moins de dix
+  secondes.**
+  📌 **Le geste signature des films** : **la vague dorée qui balaie l'écran** à
+  chaque changement de carte. C'est elle — pas le logo — qui doit faire dire
+  « c'est eux » dans un fil. Identique dans les trois, et elle doit le rester.
+
 - **26/08/2026 (🎨 UN AUDIT EXTÉRIEUR NOTE LE FLYER 8/10 — et trouve une vraie
   dérive que je n'avais pas vue)** — le patron a fait auditer un flyer par
   ChatGPT en disant que je suis son directeur marketing. Note **8/10**, avis

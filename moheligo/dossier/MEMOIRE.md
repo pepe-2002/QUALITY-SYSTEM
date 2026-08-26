@@ -370,6 +370,36 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (🔁 2ᵉ PASSE SUR LA VIDÉO — le patron a trouvé trois défauts, tous réels)** —
+  « entre Mohéli et Ngazidja il parle avant et l'image vient après ; il y a des A
+  qui sont trop petits ; il a parlé de lien et on voit pas le lien cliquable ».
+  🚨 **(1) L'image arrivait après la voix** — j'avais calé les sous-titres sur le
+  relevé des **silences** de la bande son. Ça dit « il parle / il ne parle pas »,
+  **pas ce qu'il dit** : trois phrases tombaient sur la mauvaise. ✅ Corrigé en
+  relevant **les bornes exactes des sous-titres d'origine** (masque du jaune, pas
+  de 0,1 s) — **ils ont été écrits par quelqu'un qui entendait la bande son, c'est
+  la seule vérité disponible**. Et désormais **chaque plan démarre 0,5 s AVANT sa
+  phrase** : on coupe sur l'idée qui entre, jamais après elle.
+  🚨 **(2) Les « A » trop petits** — faute technique de ma part : j'avais converti
+  le sous-ensemble **`Inter-700-latin-ext`**, qui **ne contient pas la lettre A**
+  (ni É, À…). libass remplaçait chaque A par une police de secours plus petite.
+  ✅ `polices/Inter-700.ttf` vient maintenant de **`Inter-700-latin`**, vérifié
+  glyphe par glyphe avant usage. 📌 **Vérifier la couverture d'une police AVANT de
+  s'en servir** — un sous-ensemble web n'est pas une police complète.
+  🚨 **(3) Le lien cliquable** — et là il a raison sur le fond : **une vidéo ne
+  peut pas contenir de lien cliquable.** ✅ Deux réponses : une **pastille
+  `moheligo.com`** s'affiche pile quand il en parle (pour qu'on retienne
+  l'adresse), et **le lien cliquable est dans le texte de la publication**, écrit
+  dans `TEXTES-PUBLICATIONS.md`. **Une phrase qui envoie vers un lien absent est
+  une vente perdue.**
+  ➕ **Défaut trouvé au passage** : « pour des informations quelconques » était
+  encore **à moitié dans le son**, sans sous-titre — ma coupe s'arrêtait 1 s trop
+  tard. Refaite.
+  ➡️ **39,5 s.** 📌 **La leçon de la journée** : j'ai livré une vidéo en disant
+  « je n'ai pas d'oreilles, regarde-la » — et c'est exactement ce qui a permis de
+  trouver les trois défauts. **Annoncer précisément ce qu'on n'a PAS pu vérifier
+  vaut mieux que de livrer en silence.**
+
 - **26/08/2026 (✅ LA VIDÉO EST MONTÉE — 52,5 s → 40,4 s, fautes corrigées)** —
   le patron : « tu peux utiliser cette vidéo et des images pour en faire une
   vraie et corriger les fautes… la dernière photo c'est le port de Hoani ».

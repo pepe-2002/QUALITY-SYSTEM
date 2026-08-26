@@ -667,3 +667,44 @@ moheligo.com — WhatsApp +269 479 43 28
 
 #MoheliGo #Comores #Mohéli #Traversée #MVola
 ```
+
+---
+
+## 🎬 Le texte qui accompagne la vidéo Young Leader (26/08/2026)
+
+> ⚠️ **C'EST ICI QUE VIT LE LIEN CLIQUABLE.** Le patron a fait remarquer qu'on
+> entend « cliquez sur le lien » sans voir de lien. **Une vidéo ne peut pas
+> contenir de lien cliquable** — c'est une image qui bouge, rien n'y est
+> cliquable. Le cliquable, c'est **le texte de la publication**. Dans la vidéo,
+> l'adresse est désormais affichée en toutes lettres (pastille `moheligo.com`
+> pendant qu'il en parle, puis carte finale) pour qu'on la retienne ; **le lien
+> sur lequel on appuie est ci-dessous, et il ne doit jamais manquer.**
+
+```
+Il est de Mohéli. Il parle à ceux qui sont partis.
+
+« Vous qui nous regardez aux quatre coins du monde, que la paix soit
+avec vous. »
+
+El Farouk Saindou, Young Leader Mohéli 2026, présente MoheliGo :
+réserver sa traversée Ngazidja ↔ Mohéli depuis son téléphone, sans se
+déplacer au port pour demander s'il y a une place.
+
+Tu paies par MVola. Tu reçois ton billet avec son code QR. Et le soir,
+on te dit l'état de la mer du lendemain — parce que la mer décide, et
+que nous, on te le dit avant.
+
+👉 moheligo.com
+
+Merci à El Farouk Saindou et au Comité Young Leader Mohéli.
+
+#MoheliGo #Comores #Mohéli #Ngazidja #Traversée #MVola #Diaspora
+```
+
+📌 **Trois règles pour toute publication vidéo, apprises ici :**
+1. **Le lien cliquable est toujours dans le texte**, jamais seulement dit à
+   l'oral. Une phrase qui envoie vers un lien absent est une vente perdue.
+2. **L'adresse doit AUSSI être lisible à l'écran** : beaucoup regardent sans
+   jamais dérouler le texte.
+3. **On cite le partenaire dans le texte**, pas seulement à l'image — c'est ce
+   qui lui donne envie de recommencer.

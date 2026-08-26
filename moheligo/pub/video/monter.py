@@ -50,17 +50,30 @@ RACINE = os.path.abspath(os.path.join(ICI, "..", ".."))
 W, H = 576, 1024
 PW, PH = 576, 730                     # la photo, en 4:5, occupe 71 % de la hauteur
 
-# (début, durée) des blocs de parole gardés, en secondes de la vidéo d'origine
-SEGMENTS = [(2.00, 6.95), (11.75, 12.90), (26.20, 16.40)]
+# (début, durée) des blocs de parole gardés, en secondes de la vidéo d'origine.
+# ⚠️ Ces bornes ne sont PAS estimées : elles viennent du relevé exact des
+# sous-titres d'origine (masque du jaune, pas de 0,1 s). Les sous-titres du
+# tournage sont la seule vérité disponible sur QUI dit QUOI et QUAND — ils ont
+# été écrits par quelqu'un qui entendait la bande son. Ma première version les
+# avait devinés à partir des silences, et trois phrases tombaient à côté.
+SEGMENTS = [(2.10, 5.20), (11.40, 12.18), (24.80, 18.05)]
 BAS_COUPE = 150                       # px retirés en bas : anciens sous-titres + bandeau
 
 # (photo, début, fin) dans le montage — cale sur la phrase qu'elles illustrent
+# ⚠️ Chaque plan démarre ~0,5 s AVANT la phrase qu'il illustre. Le patron a vu le
+# défaut : « il parle avant et l'image vient après ». On coupe sur l'idée qui
+# entre, jamais après elle.
 PLANS = [
-    ("pub/photos/vedette-mer.jpg",   14.85, 16.45),   # « nos voyages maritimes »
-    ("pub/photos/ilot.jpg",          16.55, 18.50),   # « entre Mohéli et Ngazidja »
-    ("PORT_HOANI",                   18.58, 19.84),   # « sans vous rendre au port »
-    ("pub/photos-cc/moheli-beach.jpg", 28.60, 31.95), # « pour plus d'infos »
+    ("pub/photos/vedette-mer.jpg",     10.60, 13.05),  # « nos voyages maritimes »
+    ("pub/photos/ilot.jpg",            13.05, 15.05),  # « entre Mohéli et Ngazidja »
+    ("PORT_HOANI",                     15.05, 17.36),  # « sans vous rendre au port »
+    ("pub/photos-cc/moheli-beach.jpg", 27.00, 30.20),  # pendant l'appel à l'action
 ]
+
+# La pastille moheligo.com, pile quand il dit « cliquez sur le lien ». Une vidéo
+# ne peut pas contenir de lien cliquable : le cliquable va dans le texte de la
+# publication Facebook, l'adresse à l'écran sert à ce qu'on la retienne.
+BANDE_LIEN = (25.58, 31.28)
 
 
 def sh(cmd):
@@ -141,15 +154,19 @@ def main():
 
     # 4. recadrage (efface les anciens sous-titres), plans, filigrane, sous-titres
     entrees = f'-i "{base}" -loop 1 -i {T}/logo.png ' + \
-              " ".join(f'-loop 1 -i {T}/plan{i}.png' for i in range(len(PLANS)))
+              " ".join(f'-loop 1 -i {T}/plan{i}.png' for i in range(len(PLANS))) + \
+              f' -loop 1 -i "{ICI}/bande-lien.png"'
     ch = ("[0:v]crop=576:%d:0:0,scale=-2:1024:flags=lanczos,crop=576:1024:0:0,"
           "eq=saturation=1.06:contrast=1.03[z];" % (H - BAS_COUPE))
     prec = "z"
     for i, (_, d, fin) in enumerate(PLANS):
         ch += f"[{prec}][{i+2}:v]overlay=0:0:enable='between(t,{d},{fin})'[p{i}];"
         prec = f"p{i}"
-    # le filigrane s'arrête quand le logo incrusté d'origine apparaît (21,5 s)
-    ch += f"[{prec}][1:v]overlay=24:26:enable='lt(t,21.5)'[e];"
+    # la pastille du lien, par-dessus les plans de coupe
+    ch += (f"[{prec}][{len(PLANS)+2}:v]overlay=0:0:"
+           f"enable='between(t,{BANDE_LIEN[0]},{BANDE_LIEN[1]})'[lien];")
+    # le filigrane s'arrête quand le logo incrusté d'origine apparaît (19,4 s)
+    ch += "[lien][1:v]overlay=24:26:enable='lt(t,19.4)'[e];"
     ch += f"[e]subtitles={ICI}/sous-titres.ass:fontsdir={ICI}/polices[v]"
     corps = os.path.join(T, "corps.mp4")
     sh(f'ffmpeg -hide_banner -v error -y {entrees} -filter_complex "{ch}" '

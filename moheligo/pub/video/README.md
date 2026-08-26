@@ -1,6 +1,6 @@
 # 🎬 La publicité Young Leader — le montage
 
-**`MoheliGo-YoungLeader.mp4`** — 40,4 s, 576×1024 vertical, sous-titres incrustés.
+**`MoheliGo-YoungLeader.mp4`** — 39,5 s, 576×1024 vertical, sous-titres incrustés.
 Montée le 26/08/2026 à partir de la vidéo tournée par **El Farouk Saindou,
 Young Leader Mohéli 2026**, sur commande du patron : *« tu peux utiliser cette
 vidéo et des images pour en faire une vraie et corriger les fautes ».*
@@ -22,6 +22,7 @@ on corrigerait la copie au lieu de la source.
 | `sous-titres.ass` | **les sous-titres refaits**, fautes corrigées, calés sur les silences de la voix |
 | `polices/` | Inter 700 de la marque, convertie en TTF pour ffmpeg |
 | `port-hoani.jpg` | le port de Hoani, envoyé par le patron le 26/08/2026 |
+| `bande-lien.png` | la pastille `moheligo.com`, affichée quand il parle du lien |
 | `../flyers/carte-fin-video.html` | la carte finale, rendue par l'atelier des flyers |
 
 ## Ce qui a été corrigé
@@ -33,7 +34,25 @@ on corrigerait la copie au lieu de la source.
 | 5 fautes incrustées (*proposez, entre…vers, rendiez, abonnez, sur lien*) | **sous-titres entièrement refaits** |
 | « Moheligo » puis « MoheliGo » | **`MoheliGo` partout**, en or |
 | 50 s d'un seul plan fixe | **4 photos réelles** dont le port de Hoani |
-| 52,5 s | **40,4 s** |
+| 52,5 s | **39,5 s** |
+
+## 🔁 Deuxième passe — les trois défauts vus par le patron (26/08/2026)
+
+> « entre Mohéli et Ngazidja il parle avant et l'image vient après ; il y a des A
+> qui sont trop petits ; il a parlé de lien et on voit pas le lien cliquable »
+
+| Défaut | Cause | Correction |
+|---|---|---|
+| **l'image arrive après la voix** | mes temps venaient des **silences** de la bande son — trois phrases tombaient à côté | **relevé exact des sous-titres d'origine** (masque du jaune, pas de 0,1 s) ; chaque plan démarre **0,5 s avant** sa phrase |
+| **les « A » trop petits** | j'avais pris le sous-ensemble **`latin-ext`** de la police Inter — **il ne contient pas le « A »**, une police de secours le remplaçait | `polices/Inter-700.ttf`, converti depuis **`Inter-700-latin`**, qui a tout |
+| **pas de lien cliquable** | **une vidéo ne peut pas en contenir** | pastille **`moheligo.com`** affichée pendant qu'il en parle + le lien cliquable dans le **texte de la publication** (`dossier/TEXTES-PUBLICATIONS.md`) |
+
+📌 **Et un défaut trouvé au passage** : « pour des informations quelconques »
+était encore **à moitié dans le son**, sans sous-titre. La coupe a été refaite.
+
+⚠️ **La leçon** : les sous-titres du tournage sont la seule vérité disponible sur
+qui dit quoi et quand — **ils ont été écrits par quelqu'un qui entendait**. Les
+silences ne disent que « il parle / il ne parle pas ».
 
 ## ⚠️ Deux réserves à lever avant publication
 

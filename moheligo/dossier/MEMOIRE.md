@@ -390,6 +390,20 @@ recharger ce sujet ici, ce n'est pas du marketing.
   patron pour qu'il publie depuis son téléphone en deux minutes. 📌 **Un système
   automatique doit toujours avoir une sortie manuelle, prête AVANT d'en avoir
   besoin.**
+  ✅ **RÉSULTAT (vérifié)** : l'exécution 40, lancée à **16h00:16** juste après le
+  renommage du verrou, a **réussi en 51 secondes** (16h01:07). **C'est bien le
+  verrou qui bloquait, et le renommer l'a débloqué.** Une fois partie, la
+  publication prend moins d'une minute — tout le temps perdu était du diagnostic.
+  ⏱️ **Chronologie complète** : 15h11 échec démarrage · 15h14 fantôme qui prend le
+  verrou · 15h42 échec démarrage · **16h00 renommage → succès en 51 s.**
+  ⚠️ **Le fantôme (exécution 38) est toujours là**, éternellement « en file ». Il
+  tient l'ANCIEN nom de verrou, donc il ne gêne plus rien. **Et la vidéo n'est
+  jamais partie** — vérifié : l'exécution n'a jamais démarré, et le frein
+  l'aurait arrêtée de toute façon. ⚠️ **Ne PAS remettre le verrou à son ancien nom
+  tant que ce fantôme existe.**
+  📌 **Ce que j'ai dit de travers au patron** : « ça n'a pas encore débloqué » —
+  je regardais à 16h01, à la seconde où l'exécution se terminait. **Un système
+  lent n'est pas un système en panne, et je l'ai déclaré mort trop vite.**
   📌 **Deux leçons dures** : **(1)** un déclenchement n'est **pas toujours
   annulable** — entre le clic et la mise en file, rien ne peut arrêter une
   publication ; **(2)** `startup_failure` ne veut pas dire « le code est cassé »,

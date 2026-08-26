@@ -262,10 +262,16 @@ en file ». Elle garde le **verrou de concurrence** (`concurrency: group:`), et
 comme elle ne finit jamais, elle le garde pour toujours. Les suivantes ne peuvent
 ni attendre ni démarrer.
 
-**Le remède** : **renommer le groupe de concurrence** dans le workflow
-(`publication-du-jour` → `publication-du-jour-2`), pousser sur `main`, relancer.
-Le fantôme reste seul sur l'ancien nom. Le verrou garde son utilité (il empêche
-deux publications simultanées), il change juste de serrure.
+**Le remède, VÉRIFIÉ le 26/08/2026** : **renommer le groupe de concurrence** dans
+le workflow (`publication-du-jour` → `publication-du-jour-2`), pousser sur `main`,
+relancer. ✅ **L'exécution suivante a réussi en 51 secondes.** Le fantôme reste
+seul sur l'ancien nom. Le verrou garde son utilité (il empêche deux publications
+simultanées), il change juste de serrure.
+
+⚠️ **Ne pas remettre l'ancien nom tant que le fantôme existe** : il le tient
+encore. Et **ne jamais conclure « c'est en panne » avant d'avoir attendu** : une
+publication met moins d'une minute une fois partie, mais la mise en file peut
+prendre une heure.
 
 ⚠️ **Trois choses à retenir** :
 1. **Un déclenchement n'est pas toujours annulable.** Entre le clic et la mise en

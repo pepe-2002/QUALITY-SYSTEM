@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/08/2026 (📹 LE ROBOT SAIT PUBLIER UNE VIDÉO + avis et pub lancés)** —
+  le patron : « oui mais ajoute aussi la vidéo, la dernière qu'on a faite toi et
+  moi, publie-la maintenant avant le flyer de 19h ».
+  🚧 **Deux obstacles réels, dits avant d'improviser** : **(1)** je n'ai **aucun
+  jeton Facebook dans ma session** — seul GitHub Actions a les secrets, donc je
+  ne peux publier qu'en **déclenchant un workflow** ; **(2)** `publier_fb.py` ne
+  savait poster que des **photos**. Facebook a un point d'entrée **différent**
+  pour la vidéo : **`/videos` et non `/photos`**, et le champ du texte s'appelle
+  **`description`** et non `message`. Une vidéo envoyée sur `/photos` est refusée
+  sans explication utile.
+  ✅ **Ajouté** : `publier_fb.publier_video()` (+ options `--video` / `--titre`),
+  et la case **`video_young_leader`** dans le workflow. Envoi en un seul morceau
+  — bon jusqu'à ~100 Mo, la nôtre fait 8,4 Mo. Le commentaire reste tolérant
+  à l'échec, comme pour les photos.
+  🔴 **LE POINT ÉDITORIAL QUI COMPTE** : la vidéo dit « réserve ta traversée » et
+  **le service est fermé aujourd'hui**. Publier ça sans rien dire, c'est
+  exactement la contradiction que je venais de corriger dans le bulletin. Le
+  texte de la publication (`pub/video/texte-publication.txt`) **porte donc la
+  mention de fermeture**, conformément à la décision du patron du 13/08 (« les
+  pubs continuent »). ⚠️ **Ce texte est écrit à la main, donc il ne suit PAS
+  `service.py` tout seul : à la réouverture, il faudra en retirer la mention.**
+  📌 **Deux lancements** : l'avis de suspension, puis la vidéo. Elles s'exécutent
+  l'une après l'autre (`concurrency: publication-du-jour`), et le bulletin du soir
+  est un workflow séparé — aucun risque de collision à 16h07 UTC.
+  ⚠️ **La phrase de droits à l'image n'était toujours pas obtenue par écrit** ; je
+  l'ai signalée trois fois, le patron a décidé de publier. C'est sa décision et
+  son entreprise (règle A/B/C). **Reste à obtenir, maintenant plutôt qu'après.**
+
 - **26/08/2026 (🔴 DEUXIÈME FERMETURE — mer agitée, et un mensonge trouvé dans le bulletin)** —
   le patron : « les liaisons maritimes sont fermées, la mer est agitée ; vérifie
   le flyer de ce soir ». ✅ `service.py` : **`OUVERT = False`**, `depuis

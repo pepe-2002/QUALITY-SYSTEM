@@ -370,6 +370,58 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **27/08/2026, soir (🫀 LE BATTEMENT — sortir de la dépendance au
+  planificateur)** — le patron : « la météo n'est pas partie », puis
+  « **corrige le système** ».
+  🔴 **MON CORRECTIF DU MATIN N'A RIEN CORRIGÉ.** J'avais ajouté un second cron
+  à chaque robot en expliquant que « GitHub en oublie un de temps en temps ».
+  Le soir même, **les DEUX rendez-vous du bulletin ont été ignorés**, comme les
+  deux de midi. Le diagnostic était faux : ce n'est pas un oubli occasionnel,
+  **le planificateur de GitHub ne délivre plus pour ce dépôt**.
+  🔍 **Vérifié dans tous les sens, et tout est bon chez nous** : branche par
+  défaut `main` ✅, workflows en état `active` ✅, cron relu par un analyseur
+  YAML ✅, fichiers bien sur `main` ✅, déclenchement manuel ✅. Rien à réparer
+  de notre côté — et c'est précisément pour ça qu'il fallait changer de moyen,
+  pas chercher plus longtemps.
+  ✅ **LE BATTEMENT.** Un *rendez-vous* peut être oublié ; un *push* est un
+  **événement**, et GitHub le livre toujours. Deux fichiers,
+  `pub/flyers/battement.txt` (midi) et `battement-soir.txt` (bulletin) ; les
+  workflows écoutent `on: push` **filtré sur ces chemins**. Un surveillant
+  extérieur y écrit une ligne et pousse.
+  ⚠️ **Le filtre `paths` n'est pas un détail** : sans lui, CHAQUE commit sur
+  `main` publierait sur Facebook. Et deux fichiers séparés, sinon un battement
+  déclencherait les deux robots et le flyer de midi partirait le soir.
+  📏 **Mesuré : le battement déclenche en 2 SECONDES**, contre 29 à 44 minutes
+  de retard pour un cron. Le filet est plus rapide que ce qu'il remplace.
+  🤖 **Le surveillant** : deux Routines hors de GitHub, 10h40 et 17h20 UTC
+  (13h40 et 20h20 aux Comores). Elles ne savent faire qu'une chose — ajouter
+  une ligne et pousser.
+  🚨 **LE PIÈGE ÉVITÉ, ET IL AURAIT TOUT ANNULÉ** : ma première Routine passait
+  par l'API GitHub. Le système m'a averti que **les sessions déclenchées n'ont
+  PAS les outils `mcp__github__*`**. Le filet aurait été inerte — et pire qu'un
+  filet absent, parce qu'on aurait cru être protégé. D'où `git push`, qui est
+  ce dont elles disposent réellement. 📌 *Un filet non testé n'est pas un filet.*
+  ✅ **LE GARDE-FOU ANTI-DOUBLON A PASSÉ SON EXAMEN EN VRAI.** Mon commit créait
+  les deux fichiers d'un coup : il a déclenché les deux robots alors que le
+  bulletin venait de partir à la main. Trois exécutions concurrentes, **une
+  seule publication sur la page**. Preuve : le rapport d'une exécution
+  suivante, produit APRÈS sa propre étape de publication, ne liste qu'un seul
+  bulletin (18h21) — s'il avait republié, il y aurait une ligne à 18h31.
+  Signature visible aussi dans les durées : 8 s pour l'étape qui publie, **3 s
+  pour celle qui refuse**.
+  🔴 **CE QUE ÇA NE RÉPARE PAS, ET IL FAUT LE DIRE** : si GitHub Actions tombe
+  entièrement (pas seulement son planificateur), le battement arrive mais rien
+  ne tourne. Ce soir une exécution est restée bloquée **3 minutes** sur son
+  `checkout` — la plateforme allait mal. Si ça devient régulier, la marche
+  suivante est de sortir les publications de GitHub. **Décision du patron, pas
+  la mienne.**
+  📌 **LA LEÇON** : deux jours de suite j'ai livré un correctif fondé sur une
+  cause plausible mais non prouvée — le verrou de concurrence, puis « GitHub en
+  oublie un ». Les deux fois, le vrai défaut était plus profond, et le
+  correctif a tenu moins de vingt-quatre heures. *Tant qu'on n'a pas éliminé sa
+  propre configuration point par point, on ne corrige pas une cause : on
+  décore une hypothèse.*
+
 - **27/08/2026 (🎤 BIEN ENREGISTRER SA VOIX — et le juge qui le lui dit)** — le
   patron : « donne un truc pour bien mettre ma voix ».
   🥇 **LE TRUC, ET CE N'EST PAS LE MICRO : C'EST LA PIÈCE.** Un téléphone

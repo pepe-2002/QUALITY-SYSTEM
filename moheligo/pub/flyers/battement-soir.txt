@@ -17,3 +17,4 @@
 # (Le doublon, lui, est bloqué par `publier_fb.deja_publie()`, qui lit la page.)
 #
 # Une ligne par battement, la plus récente en bas.
+2026-08-27 18:29 UTC — battement du soir (essai du mécanisme)

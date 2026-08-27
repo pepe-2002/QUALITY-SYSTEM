@@ -43,6 +43,18 @@ on:
     # mer de DEMAIN, il reste vrai à 20h15. `publier_fb.deja_publie()` empêche
     # le doublon quand le premier rendez-vous a bien fonctionné.
     - cron: '41 16 * * *'
+
+  # 🫀 LE BATTEMENT — voir `publication-du-jour.yml` pour le raisonnement complet.
+  # Le 27/08/2026 les deux rendez-vous du bulletin ont été ignorés comme ceux de
+  # midi : ce n'est pas un oubli occasionnel, c'est le planificateur de GitHub
+  # qui ne délivre plus pour ce dépôt. Un `push` est toujours livré.
+  # ⚠️ Fichier de battement PROPRE au bulletin : s'ils partageaient le même,
+  # un battement déclencherait les deux robots, et le flyer de midi partirait
+  # le soir.
+  push:
+    branches: [main]
+    paths: ['moheligo/pub/flyers/battement-soir.txt']
+
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
       publier_sur_facebook:

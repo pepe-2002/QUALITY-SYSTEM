@@ -1,0 +1,19 @@
+# 🫀 BATTEMENT — flyer de midi
+#
+# Ce fichier n'a qu'un rôle : être modifié et poussé sur `main` pour DÉCLENCHER
+# la publication de midi. Le workflow `publication-du-jour.yml` écoute les push
+# sur ce chemin, et sur ce chemin seulement.
+#
+# 🚨 POURQUOI IL EXISTE (27/08/2026)
+# Le planificateur de GitHub a cessé de délivrer les rendez-vous programmés de
+# ce dépôt : le flyer de midi et le bulletin du soir ont été ignorés, sans
+# aucune trace d'exécution — ni réussite, ni échec, rien. Vérifié dans tous les
+# sens : branche par défaut `main` ✅, workflows `active` ✅, cron valide ✅,
+# déclenchement manuel ✅. Le défaut n'est pas chez nous.
+# Un `push`, lui, est un ÉVÉNEMENT : GitHub le livre toujours.
+#
+# ⛔ NE JAMAIS toucher ce fichier « pour faire propre » : chaque modification
+# poussée sur `main` DÉCLENCHE UNE PUBLICATION SUR FACEBOOK.
+# (Le doublon, lui, est bloqué par `publier_fb.deja_publie()`, qui lit la page.)
+#
+# Une ligne par battement, la plus récente en bas.

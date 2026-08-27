@@ -39,6 +39,23 @@ on:
     # compare le TEXTE déjà en ligne, pas la date). Coût : quelques secondes de
     # lecture. Gain : une journée sans publication devient très improbable.
     - cron: '13 11 * * *'
+
+  # 🫀 LE BATTEMENT — le déclencheur qui ne dépend PAS du planificateur.
+  # 🚨 27/08/2026 : les DEUX rendez-vous ont été ignorés. Le second cron ne
+  # servait à rien, parce que le défaut n'est pas « GitHub en oublie un de temps
+  # en temps » : c'est **son planificateur qui ne délivre plus pour ce dépôt**.
+  # Vérifié : branche par défaut `main` ✅, workflows `active` ✅, cron valide ✅,
+  # déclenchement manuel ✅. Tout est bon chez nous.
+  # ➡️ Un `push`, lui, est TOUJOURS livré — c'est un événement, pas un
+  # rendez-vous. Un surveillant extérieur à GitHub écrit une ligne dans
+  # `battement.txt` et pousse ; ce push déclenche la publication.
+  # 📌 Le filtre `paths` est essentiel : sans lui, CHAQUE commit sur `main`
+  # publierait sur Facebook. Seul ce fichier-là déclenche, et rien d'autre ne
+  # doit jamais y toucher.
+  push:
+    branches: [main]
+    paths: ['moheligo/pub/flyers/battement.txt']
+
   workflow_dispatch:
     inputs:
       publier_sur_facebook:

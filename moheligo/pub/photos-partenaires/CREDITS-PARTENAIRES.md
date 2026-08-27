@@ -92,3 +92,57 @@ photo du podium (registre institutionnel, dimanche une semaine sur deux), et les
 visuels commerciaux restent sur le produit. Deux registres, deux usages — et on
 ne mélange pas. Les deux portraits individuels sont gardés en réserve : trois
 publications de partenariat d'affilée diraient qu'on n'a rien d'autre à montrer.
+
+---
+
+# 💳 kartaPay — fiche ouverte le 27/08/2026, **fichiers pas encore reçus**
+
+> Le patron m'envoie deux liens Facebook de kartaPay (un post du 16/08 « en
+> collaboration avec MoheliGo », 5 images ; et un reel), puis : « pour kartaPay
+> j'ai demandé, et pour ça prends les images, mets-les quelque part pour des
+> vidéos futures ».
+>
+> ⛔ **JE NE PEUX PAS ALLER LES CHERCHER** — voir `README.md` § 1 : aucun accès
+> aux contenus Facebook, et de toute façon un réseau social recompresse les
+> images à ~1080 px quand nos visuels sortent en 2160.
+> ➡️ **Il faut les fichiers d'origine, demandés à kartaPay.** C'est un message,
+> pas un obstacle — et il a déjà demandé.
+
+## L'état des droits — à remplir, ne rien publier avant
+
+| Question | État au 27/08/2026 |
+|---|---|
+| Fichiers reçus | ❌ non — dossier vide côté kartaPay |
+| Logo (PNG fond transparent) | ❌ demandé par le patron le 27/08 |
+| Droit d'utiliser **leur logo** sur nos visuels | 🟠 le patron a demandé, réponse attendue |
+| Droit d'utiliser **leurs images** dans nos vidéos | 🟠 à confirmer **explicitement** — un post commun ne vaut pas autorisation de réemploi |
+| Personnes identifiables sur les images | ❓ inconnu tant que je ne les ai pas vues |
+| Orthographe exacte du nom | 🟠 **ils écrivent « kartaPay » (petit k)**, nos flyers écrivent « KartaPay ». À vérifier sur leur logo, puis corriger partout |
+
+📌 **LA LEÇON QU'ON A DÉJÀ PAYÉE UNE FOIS** : pour Young Leader, la phrase écrite
+sur le droit à l'image est réclamée depuis le 12/08 et n'est **toujours pas
+obtenue** — parce qu'on a commencé à produire avant de l'avoir, et qu'ensuite
+plus personne n'a eu de raison urgente de la demander. Ici on ouvre la fiche
+AVANT les fichiers, pour que la question ne se pose pas après les visuels.
+
+## Ce qui est prévu avec (préparé, publié à la réouverture)
+
+Trois visuels co-marqués, un par peur du client, avec une **barre partenaire** en
+bas (notre logo à gauche, le leur à droite, un trait entre les deux) :
+
+| Visuel | La peur à laquelle il répond |
+|---|---|
+| « Tu paies comme tu envoies de l'argent » | *je ne sais pas payer sur internet* |
+| « Ta place est bloquée en 15 minutes » | *je paie et il ne se passe rien* |
+| « Ton billet reste dans ton téléphone » | *je perds mon argent* |
+
+⚠️ Ces trois visuels envoient réserver : **ils ne partent pas pendant la
+fermeture.** Ils font partie de la reprise, avec la vidéo Young Leader.
+
+## Ce qu'il me faut, en un message
+
+1. les **5 images** du post du 16/08, en fichiers d'origine ;
+2. la **vidéo du reel**, en fichier (le lien ne me montre rien) ;
+3. le **logo** en PNG fond transparent ;
+4. une phrase de leur part : *« kartaPay autorise MoheliGo à utiliser son logo et
+   les visuels transmis dans ses supports de communication. »*

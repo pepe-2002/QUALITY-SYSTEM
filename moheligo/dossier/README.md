@@ -79,6 +79,7 @@ on finit par corriger la copie au lieu de la source, et les deux se contredisent
 | `pub/photos-cc/CREDITS.md` | avec les photos | l'attribution doit rester collée aux fichiers qu'elle couvre |
 | `pub/demo/ecrans/` | avec le script de capture | c'est là que le patron dépose ses captures |
 | `pub/video/MoheliGo-Moheli-le-reve.mp4` | à côté de `reve.py` | **le film de présentation** — sa voix clonée, notre musique. ⏱️ le temps vient de `minutage.py`, qui **mesure la voix** : ne jamais écrire une seconde à la main dans `reve.py` |
+| `pub/video/juger-prise.py` | à côté des autres outils vidéo | 🎤 **« est-ce que mon enregistrement est bon ? »** — le patron enregistre 15 s, on lance `python3 juger-prise.py sa-prise.m4a`, et l'outil dit le défaut ET le geste qui le corrige. ⚠️ **sur le fichier BRUT**, jamais sur une version nettoyée |
 | `pub/video/voix/` | à côté de `cloner.py` | sa voix de référence et les phrases synthétisées. 🔒 **lire la règle en tête de `cloner.py` avant tout usage** : cet outil ne sert que SA voix, sur des textes MoheliGo, à SA demande |
 | `pub/video/MoheliGo-identite-*.mp4` | à côté de `identite.py` | **3 films d'identité** — corriger le script, jamais le .mp4 |
 | `pub/video/MoheliGo-YoungLeader.mp4` | à côté de `monter.py` | **monté par un programme** — corriger le script, jamais le .mp4 |

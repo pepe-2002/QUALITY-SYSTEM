@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **27/08/2026 (🎤 BIEN ENREGISTRER SA VOIX — et le juge qui le lui dit)** — le
+  patron : « donne un truc pour bien mettre ma voix ».
+  🥇 **LE TRUC, ET CE N'EST PAS LE MICRO : C'EST LA PIÈCE.** Un téléphone
+  enregistre très bien une voix ; ce qu'il enregistre mal, c'est une pièce vide.
+  **L'écho ne se répare pas après** — on enlève du souffle, jamais un rebond.
+  Le geste : une couverture sur la tête ET sur le téléphone, ou parler dans
+  l'armoire au milieu des habits. C'est ce que font les studios avec des
+  panneaux à 400 €.
+  🛠️ **`pub/video/juger-prise.py`** — il enregistre 15 s, on mesure, on répond en
+  une ligne : le défaut **et le geste** qui le corrige. 📌 Pourquoi un programme
+  et pas seulement des conseils : **il ne peut pas entendre le défaut lui-même.**
+  L'oreille s'habitue en trois secondes à un écho ou à un souffle ; un chiffre ne
+  s'habitue pas.
+  📊 **CE QUE LA MESURE A APPRIS SUR SES PRISES, et qui change mes conseils** :
+  · sa pièce est **bonne** (traîne 0,16 s, largement sous la limite) — la
+    couverture n'est PAS son problème, contrairement à ce que j'allais lui dire ;
+  · sa vraie faute n°1 : **il parle trop doucement / trop loin** (−24,8 dB) ;
+  · sa vraie faute n°2 : **il s'arrête entre chaque phrase.** Son plus long bloc
+    de parole continue fait **6,1 s** — c'est exactement pour ça qu'il a fallu
+    recoller quatre morceaux pour fabriquer la référence de clonage.
+  ⚠️ **À LANCER SUR LE FICHIER BRUT.** Vérifié : la même prise nettoyée annonce
+  3,8 s de parole continue au lieu de 6,1 — le débruiteur creuse les
+  micro-silences et le juge les compte comme des coupures.
+  📌 **LA LEÇON DE MÉTHODE** : j'avais le conseil général prêt (la couverture) et
+  il était juste dans l'absolu — mais **faux pour lui**. Mesurer d'abord a
+  remplacé un bon conseil générique par les deux vraies corrections. *Un conseil
+  qui n'a pas été confronté au cas ne vaut pas mieux qu'un proverbe.*
+
 - **27/08/2026 (⏰ GITHUB NE DÉCLENCHE PAS TOUJOURS — deux rendez-vous au lieu
   d'un)** — le patron : « le flyer d'aujourd'hui 12h n'est pas parti ».
   🔍 **Ce que j'ai trouvé, et ce n'est pas ce que je cherchais.** Il n'y a eu ni

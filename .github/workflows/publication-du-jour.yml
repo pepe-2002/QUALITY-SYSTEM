@@ -28,6 +28,17 @@ on:
     #  · on programme donc EN AVANCE, pour que le retard habituel (20 à 40 min)
     #    fasse tomber la publication autour de 12h30, l'heure visée.
     - cron: '7 9 * * *'
+    # 🔁 LE SECOND RENDEZ-VOUS — 11h13 UTC = 14h13 aux Comores.
+    # 🚨 27/08/2026 : le rendez-vous de midi n'a PAS été déclenché. Pas un
+    # échec — AUCUNE exécution, ni réussite ni erreur. Le bulletin du soir avait
+    # raté le sien la veille de la même façon. Les rendez-vous programmés de
+    # GitHub sont « au mieux » : la documentation prévient qu'ils peuvent être
+    # retardés, et abandonnés quand la charge est forte.
+    # 📌 On ne répare pas GitHub, on arrête d'en dépendre : deux rendez-vous, et
+    # `publier_fb.deja_publie()` empêche le second de faire un doublon (il
+    # compare le TEXTE déjà en ligne, pas la date). Coût : quelques secondes de
+    # lecture. Gain : une journée sans publication devient très improbable.
+    - cron: '13 11 * * *'
   workflow_dispatch:
     inputs:
       publier_sur_facebook:

@@ -370,6 +370,40 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **27/08/2026 (⏰ GITHUB NE DÉCLENCHE PAS TOUJOURS — deux rendez-vous au lieu
+  d'un)** — le patron : « le flyer d'aujourd'hui 12h n'est pas parti ».
+  🔍 **Ce que j'ai trouvé, et ce n'est pas ce que je cherchais.** Il n'y a eu ni
+  échec, ni erreur : **aucune exécution du tout.** Les rendez-vous programmés
+  avaient tourné tous les jours du 18 au 26/08, puis rien le 27. Et en vérifiant
+  l'autre robot : **le bulletin du soir a exactement le même trou le 26/08** — sa
+  dernière exécution automatique date du 25, celle du 26 était mon lancement à la
+  main. C'est donc ça, la vraie cause du « le bulletin n'est pas parti » d'hier,
+  que j'avais mise sur le compte du verrou de concurrence.
+  📌 **La documentation de GitHub le dit** : les rendez-vous programmés peuvent
+  être retardés, et **abandonnés quand la charge est forte**. Ce n'est pas une
+  panne à réparer, c'est une garantie qui n'existe pas.
+  ✅ **Ce qu'on fait à la place : on arrête d'en dépendre.** Chaque robot a
+  maintenant **deux rendez-vous** — midi 09h07 + 11h13 UTC, bulletin 15h54 +
+  16h41 UTC. Si GitHub en oublie un, l'autre passe.
+  🛡️ **Et le filet ne doit pas créer le mal qu'il évite** : `publier_fb.deja_publie()`
+  lit **la page Facebook elle-même** et refuse d'envoyer ce qui est déjà en ligne
+  aujourd'hui.
+  ⚠️ **Le piège que j'ai failli poser** : je comparais les 80 premiers caractères.
+  Or le bulletin commence par « OÙ EN EST LE SERVICE — JOUR 3. Ce matin entre nos
+  ports : mer agitée… » : **l'état de la mer est dans les 80 premiers
+  caractères**, et il se recalcule à chaque exécution. Entre les deux rendez-vous
+  il peut passer de « agitée » à « forte » → l'empreinte ne colle plus → doublon,
+  exactement ce que le filet doit empêcher. ➡️ On compare **la ligne de titre**,
+  qui ne porte aucun chiffre qui bouge. Testé dans les deux sens (6 cas).
+  🧭 **Et le sens du doute est écrit** : si Facebook refuse la lecture, **on
+  publie**. Un doublon se supprime en dix secondes ; un rendez-vous manqué ne se
+  rattrape pas.
+  📌 **LA LEÇON** : j'avais expliqué le bulletin manquant du 26/08 par le verrou
+  de concurrence, parce que j'avais un coupable sous la main. Le vrai coupable
+  était ailleurs, et il a récidivé le lendemain. *Une explication qui tombe bien
+  n'est pas une cause vérifiée — tant qu'on n'a pas regardé si le même mal frappe
+  ailleurs, on n'a rien démontré.*
+
 - **26/08/2026 (🧬 « CLONE MA VOIX » — la ligne, redessinée au bon endroit)** —
   le patron, après le souffleur : « **clone ma voix** ».
   ↩️ **J'avais refusé dix minutes plus tôt** (entrée suivante). J'avais tracé la

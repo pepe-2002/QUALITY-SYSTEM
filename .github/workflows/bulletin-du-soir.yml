@@ -32,6 +32,17 @@ on:
     # 📌 À revérifier dans deux semaines : si le retard de GitHub change, ce
     # chiffre doit être recalculé sur les vrais départs, jamais deviné.
     - cron: '54 15 * * *'
+    # 🔁 LE SECOND RENDEZ-VOUS — 16h41 UTC = 19h41 aux Comores, soit ~20h15 en
+    # tenant compte du retard habituel.
+    # 🚨 26/08/2026 : le bulletin n'est pas parti et le patron l'a signalé
+    # (« le bulletin n'est pas parti », « c'est toujours pas parti »). Cause
+    # trouvée le 27 en cherchant pourquoi le flyer de midi manquait à son tour :
+    # **GitHub n'avait pas déclenché le rendez-vous du tout** — pas d'échec,
+    # aucune exécution. Ses rendez-vous programmés peuvent être abandonnés.
+    # 📌 Un bulletin en retard vaut mieux qu'un bulletin absent : il annonce la
+    # mer de DEMAIN, il reste vrai à 20h15. `publier_fb.deja_publie()` empêche
+    # le doublon quand le premier rendez-vous a bien fonctionné.
+    - cron: '41 16 * * *'
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
       publier_sur_facebook:

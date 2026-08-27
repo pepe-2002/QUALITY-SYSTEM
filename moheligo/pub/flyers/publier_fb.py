@@ -246,6 +246,67 @@ def preparer(image):
     return tmp, tmp
 
 
+def deja_publie(post):
+    """Ce texte est-il DÉJÀ sur la page aujourd'hui ?
+
+    🚨 POURQUOI (27/08/2026). Le patron : « le flyer d'aujourd'hui 12h n'est pas
+    parti. » Vérification : GitHub **n'a pas déclenché le rendez-vous du tout** —
+    ni réussite, ni échec, aucune exécution. Le bulletin du soir avait raté le
+    sien la veille de la même façon. Les rendez-vous programmés de GitHub sont
+    au mieux « on essaiera » : la documentation prévient qu'ils peuvent être
+    retardés, et abandonnés quand la charge est forte.
+    📌 On ne peut pas réparer ça chez GitHub. On peut **arrêter d'en dépendre** :
+    chaque robot a maintenant DEUX rendez-vous, et ce garde-fou empêche le
+    second de publier ce que le premier a déjà mis en ligne.
+
+    ⚠️ On compare le TEXTE, pas la date. Un simple « quelque chose est parti
+    aujourd'hui » ferait sauter le flyer de midi les jours où seul le bulletin
+    du soir est passé — et on perdrait la publication qu'on voulait sauver.
+    ➡️ Si Facebook refuse la lecture, on renvoie False : **dans le doute on
+    publie**. Un doublon se supprime en dix secondes ; un rendez-vous manqué ne
+    se rattrape pas.
+    """
+    recentes = publications_recentes(jours=2)
+    if recentes is None:
+        print('⚠️ lecture de la page impossible : on ne peut pas savoir si '
+              'c\'est déjà parti. Dans le doute, on publie.')
+        return False
+    # la date des Comores (UTC+3), pas celle du serveur
+    aujourdhui = (datetime.now(timezone.utc) + timedelta(hours=3)).strftime('%Y-%m-%d')
+    cherchee = _empreinte(post)
+    for p in recentes:
+        if p['quand'][:10] != aujourdhui:
+            continue
+        if _empreinte(p['texte']) == cherchee:
+            print('→ DÉJÀ PUBLIÉ aujourd\'hui (%s). Rien n\'est renvoyé.' % p['quand'])
+            return True
+    return False
+
+
+def _empreinte(texte):
+    """La LIGNE DE TITRE, pas les premiers caractères.
+
+    ⚠️ Piège évité de justesse : je comparais les 80 premiers caractères. Or le
+    bulletin commence par « OÙ EN EST LE SERVICE — JOUR 3. Ce matin entre nos
+    ports : mer agitée — houle de… » : **l'état de la mer est dedans**. Il se
+    recalcule à chaque exécution, donc entre les deux rendez-vous il peut passer
+    de « agitée » à « forte » — l'empreinte ne correspondrait plus et le filet
+    de sécurité publierait un doublon, exactement ce qu'il doit empêcher.
+    ➡️ La première ligne, elle, est un titre : « OÙ EN EST LE SERVICE — JOUR 3. »
+    Elle ne porte aucun chiffre qui bouge dans la journée.
+    📌 Si un titre est très court, on prend la ligne suivante avec : une
+    empreinte de trois mots pourrait confondre deux publications différentes.
+    """
+    lignes = [' '.join(l.split()) for l in texte.strip().splitlines()]
+    lignes = [l for l in lignes if l]
+    if not lignes:
+        return ''
+    empreinte = lignes[0]
+    if len(empreinte) < 16 and len(lignes) > 1:
+        empreinte += ' | ' + lignes[1]
+    return empreinte[:90]
+
+
 def publier(image, texte, pour_de_vrai, essai=False):
     # frein d'urgence : une variable de dépôt suffit à tout arrêter
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
@@ -265,6 +326,14 @@ def publier(image, texte, pour_de_vrai, essai=False):
         print('\n--- RÉPÉTITION À BLANC : rien n\'a été publié. '
               'Relancer avec --publier pour de vrai. ---')
         print('\n' + post)
+        return
+
+    # 🔁 LE FILET DE SÉCURITÉ. Chaque robot a deux rendez-vous depuis le
+    # 27/08/2026 ; celui-ci empêche le second de faire un doublon. Un essai
+    # d'écriture (`--essai`) n'apparaît pas sur la page, donc il ne compte pas.
+    if not essai and deja_publie(post):
+        if jetable:
+            os.unlink(jetable)
         return
 
     # le message passe par un fichier : « -F champ=<fichier » lit la VALEUR

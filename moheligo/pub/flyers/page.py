@@ -52,7 +52,7 @@ Pour y être, il suffit de traverser. Et la traversée se réserve depuis votre
 téléphone, en deux minutes :
 
 • Ouroveni ou Chindini au départ, Hoani ou Fomboni à l'arrivée.
-• Paiement MVola ou KartaPay, billet QR immédiat.
+• Paiement MVola ou kartaPay, billet QR immédiat.
 • L'état de la mer sur 7 jours, consulté avant de partir.
 
 moheligo.com
@@ -67,7 +67,7 @@ Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
 Choisis ton départ, paie, embarque. Sans passer au port pour chercher une place.
 
 • Tu vois les prix avant même de donner ton nom.
-• Tu paies avec MVola ou KartaPay, ce que tu utilises déjà.
+• Tu paies avec MVola ou kartaPay, ce que tu utilises déjà.
 • Ton billet reste dans le téléphone, même sans réseau.
 
 Rien à installer : ça s'ouvre comme une page.
@@ -109,7 +109,7 @@ Tu es à Marseille, à Mayotte, à Dubaï. Elle n'a rien à avancer, ni à compr
 
 TOI, DE L'AUTRE CÔTÉ :
 • Tu choisis le départ et la date sur moheligo.com.
-• Tu paies avec MVola ou KartaPay, depuis là où tu es.
+• Tu paies avec MVola ou kartaPay, depuis là où tu es.
 • Tu mets SON nom et SON numéro à elle, pas le tien.
 
 ELLE, AUX COMORES :
@@ -135,7 +135,7 @@ Les îlots de Nioumachoua, un matin sans vent. Pour y être, il suffit de traver
 • Ta place prise d'avance, depuis le téléphone, sans aller la chercher au port.
 
 Scanne le code ou va sur moheligo.com
-Paiement MVola ou KartaPay · WhatsApp +269 479 43 28
+Paiement MVola ou kartaPay · WhatsApp +269 479 43 28
 
 Photo : Fatima771 — îlots de Nioumachoua, Mohéli (CC BY 3.0, Wikimedia Commons).
 
@@ -150,7 +150,7 @@ réserver et payer à l'avance.
 Ouroveni (Grande Comore) → Hoani (Mohéli)
 Chindini (Grande Comore) → Fomboni (Mohéli)
 
-• Billetterie en ligne : paiement MVola ou KartaPay, billet à code délivré
+• Billetterie en ligne : paiement MVola ou kartaPay, billet à code délivré
   immédiatement.
 • État de la mer publié chaque soir pour le lendemain, source citée.
 • Assistance : un numéro WhatsApp tenu par une personne, pas un répondeur.
@@ -205,7 +205,7 @@ moheligo.com et c'est ouvert — comme n'importe quel site.
 • Rien à donner d'abord : tu regardes les traversées et les prix avant de te
   connecter.
 
-Ta place est bloquée 15 minutes le temps de payer, avec MVola ou KartaPay.
+Ta place est bloquée 15 minutes le temps de payer, avec MVola ou kartaPay.
 
 Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant peut
 t'accompagner.
@@ -241,7 +241,7 @@ Prévision Open-Meteo Marine.
 #MoheliGo #Comores #Mohéli #MétéoMer #Sécurité"""),
     dict(png='flyer-vraiprix-facebook.png', titre='🔥 JEUDI — LE VRAI PRIX DU VOYAGE',
          note="Sans date · publie le jeudi<br>une semaine sur deux<br>né d'une VENTE PERDUE : « on paie tout<br>ici ? » — non — « ça ne vaut pas la peine »<br>bus 6h30 · vedette : voir le billet<br>⚠️ à refaire si le forfait tout compris arrive",
-         texte="LE BUS PART À 6H30 DE KARTALA. ET VOILÀ TOUT CE QUE TU PAIES EN ROUTE.\n\nPersonne n'aime découvrir un prix au dernier moment, la valise à la main. Alors\non écrit tout — même ce qui ne va pas dans notre poche.\n\n1. TA TRAVERSÉE.\nRéservée et payée à l'avance sur moheligo.com, par MVola ou KartaPay. Le prix\ns'affiche avant même que tu donnes ton nom.\n\n2. LE BUS : DÉPART 6H30, 1 000 FC.\nLe bus part de Kartala, à Moroni, à 6h30. C'est là que se retrouvent les\nvoyageurs et les commandants, et les bus sont déjà réservés par eux. Si tu as un\ncolis : 500 FC par colis.\n\n⚠️ Retiens bien 6h30 : c'est l'heure du BUS. L'heure inscrite sur ton billet,\nelle, est celle de la vedette.\n\n3. LE PORT : 1 000 FC.\nÀ régler sur place, comme pour tout le monde.\n\nC'est tout. Rien d'autre ne t'attend en route.\n\nLe détail complet est dans l'application, partie « info pratique ». Et si une\nquestion te reste, écris-nous avant de partir : quelqu'un répond.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Moroni #Traversée"),
+         texte="LE BUS PART À 6H30 DE KARTALA. ET VOILÀ TOUT CE QUE TU PAIES EN ROUTE.\n\nPersonne n'aime découvrir un prix au dernier moment, la valise à la main. Alors\non écrit tout — même ce qui ne va pas dans notre poche.\n\n1. TA TRAVERSÉE.\nRéservée et payée à l'avance sur moheligo.com, par MVola ou kartaPay. Le prix\ns'affiche avant même que tu donnes ton nom.\n\n2. LE BUS : DÉPART 6H30, 1 000 FC.\nLe bus part de Kartala, à Moroni, à 6h30. C'est là que se retrouvent les\nvoyageurs et les commandants, et les bus sont déjà réservés par eux. Si tu as un\ncolis : 500 FC par colis.\n\n⚠️ Retiens bien 6h30 : c'est l'heure du BUS. L'heure inscrite sur ton billet,\nelle, est celle de la vedette.\n\n3. LE PORT : 1 000 FC.\nÀ régler sur place, comme pour tout le monde.\n\nC'est tout. Rien d'autre ne t'attend en route.\n\nLe détail complet est dans l'application, partie « info pratique ». Et si une\nquestion te reste, écris-nous avant de partir : quelqu'un répond.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Moroni #Traversée"),
     dict(png='flyer-quelquun-facebook.png', titre="🔥 MERCREDI — Y A-T-IL QUELQU'UN ?",
          note="Sans date · publie le mercredi<br>une semaine sur deux<br>né d'une vraie cliente : elle a appelé<br>AVANT de payer pour être sûre<br>qu'un humain existait<br>le blocage nº1, et il n'est pas technique",
          texte="TU VEUX ÊTRE SÛR QU'IL Y A QUELQU'UN DERRIÈRE ? C'EST NORMAL. ALORS APPELLE AVANT DE PAYER.\n\nPayer en ligne quelqu'un qu'on ne connaît pas, ça se réfléchit. On ne va pas te\ndire « fais-nous confiance » : on va te donner de quoi vérifier.\n\nÉCRIS OU APPELLE, MAINTENANT.\nWhatsApp +269 479 43 28. Quelqu'un répond — pas un robot, pas un répondeur. Pose\ntoutes tes questions avant de sortir un franc. Ça ne nous dérange pas : c'est le\ntravail.\n\nREGARDE TON BILLET.\nLe nom du commandant y est écrit. Tu sais qui pilote avant de monter à bord.\n\nET SI LA TRAVERSÉE NE PART PAS.\nChanger la date est gratuit, et tu es remboursé tant que la traversée n'est pas\npartie. Ton argent n'est jamais coincé chez nous.\n\nUNE ENTREPRISE COMORIENNE, AVEC DES GENS DEDANS.\nOn préfère répondre à dix questions plutôt que d'encaisser un doute.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Traversée #MVola"),
@@ -283,7 +283,7 @@ Les départs, les places qui restent et les prix — sans donner ton nom, sans r
 créer, sans rien installer.
 
 2. TU PAIES.
-Avec MVola ou KartaPay, comme quand tu envoies de l'argent. Ta place est bloquée
+Avec MVola ou kartaPay, comme quand tu envoies de l'argent. Ta place est bloquée
 15 minutes, le temps de payer tranquillement.
 
 3. TU REÇOIS TON BILLET.
@@ -312,7 +312,7 @@ Le chef-lieu de Mohéli, au sud de l'île.
 
 DANS LES DEUX CAS, C'EST PAREIL :
 • Tu vois les places et le prix avant de réserver, sans donner ton nom.
-• Tu paies par MVola ou KartaPay.
+• Tu paies par MVola ou kartaPay.
 • Ton billet arrive avec son code, et reste dans le téléphone sans réseau.
 
 TU NE SAIS PAS LEQUEL TE CONVIENT ?
@@ -333,7 +333,7 @@ Tu l'as su le jour où ça s'est arrêté. Tu le sais le jour où ça repart —
 CE QUE TU FAIS MAINTENANT, DANS L'ORDRE.
 1. Regarde les départs du jour sur moheligo.com : les horaires, les places qui
    restent et les prix, sans avoir à donner ton nom.
-2. Prends ta place : MVola ou KartaPay, et ton billet arrive tout de suite avec
+2. Prends ta place : MVola ou kartaPay, et ton billet arrive tout de suite avec
    son code. Il reste dans le téléphone même sans réseau.
 3. Tu avais déjà un billet ? Il reste valable. Et si la date ne te va plus, la
    changer ne coûte rien — écris-nous, on s'en occupe.
@@ -389,7 +389,7 @@ Départ, arrivée, date. Tu vois les horaires et les prix sans rien donner.
 Ton nom et ton numéro. Ça prend 30 secondes.
 
 3. TU PAIES, TU EMBARQUES
-MVola ou KartaPay, depuis ton téléphone. Ton billet arrive avec son code, et il
+MVola ou kartaPay, depuis ton téléphone. Ton billet arrive avec son code, et il
 reste dans le téléphone même sans réseau.
 
 Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant
@@ -415,7 +415,7 @@ Ta place est bloquée quinze minutes, le temps de payer tranquillement.
 Personne ne te la prend pendant ce temps-là.
 
 3. TU PAIES, TU EMBARQUES.
-MVola ou KartaPay, depuis ton téléphone — ce que tu utilises déjà. Ton billet
+MVola ou kartaPay, depuis ton téléphone — ce que tu utilises déjà. Ton billet
 arrive avec son code, et il reste dans le téléphone même sans réseau. C'est lui
 que le commandant scanne.
 
@@ -444,7 +444,7 @@ Ce qui est déjà compris dans ce prix :
 • Changer la date de ton billet ne coûte rien, sur la même liaison.
 • Tu annules avant le départ : ton argent revient, moins les frais de transaction.
 
-Tu paies avec MVola ou KartaPay, depuis ton téléphone. Rien de nouveau à
+Tu paies avec MVola ou kartaPay, depuis ton téléphone. Rien de nouveau à
 apprendre. Et si quelqu'un de ta famille est à l'étranger, il peut payer pour toi
 depuis là-bas : tu reçois ton billet ici, tu n'avances rien.
 
@@ -493,7 +493,7 @@ Votre place est prise avant même d'arriver au port, et votre billet est déjà
 dans votre poche.
 
 1. Vous choisissez votre départ sur moheligo.com
-2. Vous payez par MVola ou KartaPay
+2. Vous payez par MVola ou kartaPay
 3. Vous embarquez, billet QR en main
 
 À partir de 15 000 FC la traversée.
@@ -517,7 +517,7 @@ vers Mohéli ?
 Depuis ton téléphone, sur moheligo.com :
 
 • Tu choisis le port, la date et la place.
-• Tu paies par MVola ou KartaPay.
+• Tu paies par MVola ou kartaPay.
 • Ton proche reçoit son billet QR sur son téléphone. Il n'avance rien.
 
 À partir de 15 000 FC la traversée.
@@ -546,7 +546,7 @@ Une question ? WhatsApp +269 479 43 28
 TEXTES = [
     dict(titre="Faire s'abonner — version manuel", texte="CHAQUE SOIR, LA MER DE DEMAIN. GRATUITEMENT.\n\nCe soir, sur cette page : houle 0,9 m, vent 17 km/h de sud-est, mer peu agitée\ndemain matin entre Ouroveni et Hoani.\n\nDemain soir, les chiffres du jour suivant. Et le soir d'après aussi.\n\nPersonne d'autre ne le publie. Nous le faisons parce que traverser sans savoir,\nc'est se lever à 4 heures pour rien — et ça, ça suffit.\n\nTu n'as rien à payer, rien à installer, rien à donner.\nAppuie sur « S'abonner », et tu sauras avant de quitter la maison.\n\nMoheliGo — moheligo.com\n\n#MoheliGo #Comores #Mohéli #MétéoMer #Traversée"),
     dict(titre='Faire créer un compte — version manuel', texte="LA PREMIÈRE FOIS PREND TROIS MINUTES. LES SUIVANTES, TRENTE SECONDES.\n\nQuand tu crées ton compte sur moheligo.com :\n\n• Tes billets restent dedans. Tu les retrouves même sans connexion.\n• Ton nom et ton numéro sont déjà remplis la fois d'après.\n• Tu vois l'historique de tes traversées, et celles de ta famille si tu paies\n  pour elle.\n\nC'est tout. Pas de carte à donner, pas d'abonnement, pas de frais.\n\nUn compte, c'est une place prise en trente secondes le jour où tu es pressé.\n\nmoheligo.com — crée ton compte maintenant, tu remercieras ton téléphone\nla prochaine fois.\n\n#MoheliGo #Comores #Mohéli #BilletQR"),
-    dict(titre="⭐ Convaincre celui qui n'a jamais acheté en ligne", texte="« ET SI JE PAIE ET QU'IL N'Y A PAS DE PLACE ? »\n\nC'est la question qu'on nous pose le plus. Voici les réponses, sans détour.\n\nTU PAIES AVEC CE QUE TU CONNAIS DÉJÀ.\nMVola ou KartaPay, depuis ton téléphone. Pas de carte bancaire, rien de\nnouveau à apprendre.\n\nTU REÇOIS UN BILLET, PAS UNE PROMESSE.\nDès le paiement, un billet avec un code QR arrive dans ton téléphone. Il y\nreste, même sans réseau. C'est lui que le commandant scanne à l'embarquement.\n\nQUELQU'UN RÉPOND, TOUJOURS.\nWhatsApp +269 479 43 28. Un vrai numéro, une vraie personne. Avant, pendant,\naprès.\n\nTU PEUX LE FAIRE ACCOMPAGNÉ.\nLa première fois, demande à un boutiquier, à un hôtelier, ou à un proche à\nl'étranger de le faire avec toi. Il n'y a aucune honte à ça : la deuxième fois,\ntu le feras seul en trois minutes.\n\nET SI QUELQU'UN PAIE POUR TOI.\nTon frère à Marseille, ta sœur à Mayotte : ils réservent et paient depuis\nlà-bas, tu reçois ton billet ici. Tu n'avances rien.\n\nTraverser sans savoir si on embarque, c'était normal. Ça ne l'est plus.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Traversée #MVola"),
+    dict(titre="⭐ Convaincre celui qui n'a jamais acheté en ligne", texte="« ET SI JE PAIE ET QU'IL N'Y A PAS DE PLACE ? »\n\nC'est la question qu'on nous pose le plus. Voici les réponses, sans détour.\n\nTU PAIES AVEC CE QUE TU CONNAIS DÉJÀ.\nMVola ou kartaPay, depuis ton téléphone. Pas de carte bancaire, rien de\nnouveau à apprendre.\n\nTU REÇOIS UN BILLET, PAS UNE PROMESSE.\nDès le paiement, un billet avec un code QR arrive dans ton téléphone. Il y\nreste, même sans réseau. C'est lui que le commandant scanne à l'embarquement.\n\nQUELQU'UN RÉPOND, TOUJOURS.\nWhatsApp +269 479 43 28. Un vrai numéro, une vraie personne. Avant, pendant,\naprès.\n\nTU PEUX LE FAIRE ACCOMPAGNÉ.\nLa première fois, demande à un boutiquier, à un hôtelier, ou à un proche à\nl'étranger de le faire avec toi. Il n'y a aucune honte à ça : la deuxième fois,\ntu le feras seul en trois minutes.\n\nET SI QUELQU'UN PAIE POUR TOI.\nTon frère à Marseille, ta sœur à Mayotte : ils réservent et paient depuis\nlà-bas, tu reçois ton billet ici. Tu n'avances rien.\n\nTraverser sans savoir si on embarque, c'était normal. Ça ne l'est plus.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Traversée #MVola"),
     dict(titre='Texte institutionnel — « grand conglomérat »', texte="""ENTRE DEUX ÎLES, IL Y A UN SERVICE.
 
 Pendant longtemps, traverser vers Mohéli voulait dire se lever avant le jour,
@@ -604,7 +604,7 @@ La première fois, ça prend deux minutes :
 
 1. Ouvrez moheligo.com.
 2. Choisissez votre port de départ, la date, le nombre de places.
-3. Payez par MVola ou KartaPay.
+3. Payez par MVola ou kartaPay.
 4. Votre billet QR arrive aussitôt — et il reste dans votre téléphone, même
    sans connexion.
 
@@ -685,7 +685,7 @@ payer en ligne un bateau qu'ils ont toujours payé en espèces au port.</p>
       et affiches au port.</li>
   <li><b>La confiance</b> — « Si je paie, j'embarque vraiment ? » → des preuves :
       vrais billets, vrais clients, bulletin mer.</li>
-  <li><b>La friction</b> — « Comment je paie, moi ? » → MVola et KartaPay
+  <li><b>La friction</b> — « Comment je paie, moi ? » → MVola et kartaPay
       expliqués en trois images, et un WhatsApp qui répond vite.</li>
 </ul>
 <p class="attention">Ne jamais payer de la publicité pour envoyer des gens dans

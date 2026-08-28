@@ -42,35 +42,35 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
-.coin { position:absolute; top:0; left:0; width:392px; height:158px; background:#fff;
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
   clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:4; display:flex;
-  align-items:center; gap:14px; padding:14px 0 26px 38px; box-shadow:0 20px 48px rgba(4,12,40,.4); }
-.coin img { width:62px; height:62px; border-radius:15px; display:block;  object-fit:contain;}
-.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:27px; color:#0F2A5C;
+  align-items:center; gap:15px; padding:18px 0 28px 40px; box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block;  object-fit:contain;}
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
   letter-spacing:-.9px; line-height:1; display:block; }
 .coin b i { color:#F6BC1C; font-style:normal; }
 .coin small { display:block; font-size:9px; font-weight:700; letter-spacing:1.8px;
   color:#5C6E8B; margin-top:4px; }
-.ligne { position:absolute; top:56px; right:70px; z-index:4; text-align:right;
+.ligne { position:absolute; top:56px; right:76px; z-index:4; text-align:right;
   font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
   color:rgba(255,255,255,.56); }
 
 /* la date et la fenêtre horaire : une ligne de bulletin, pas un titre */
-.sur { position:absolute; left:70px; top:190px; z-index:3; font-size:14px;
+.sur { position:absolute; left:76px; top:190px; z-index:3; font-size:14px;
   font-weight:700; letter-spacing:3px; color:#F6BC1C; }
 
-.acc { position:absolute; left:70px; top:224px; width:940px; z-index:3;
+.acc { position:absolute; left:76px; top:224px; width:928px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:86px; line-height:.97;
   letter-spacing:-3.2px; color:#fff; }
 .acc span { display:block;
   background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
-.sous { position:absolute; left:70px; top:398px; width:880px; z-index:3;
+.sous { position:absolute; left:76px; top:398px; width:880px; z-index:3;
   font-size:22px; line-height:1.4; font-weight:500; color:#CBD9EF; }
 
 /* L'OBJET : la donnée. Elle est à nous, elle est vraie, elle est unique. */
-.carte { position:absolute; left:70px; top:470px; width:940px; z-index:3;
+.carte { position:absolute; left:76px; top:470px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:22px; padding:26px 32px 28px;
   box-shadow:0 26px 56px rgba(4,12,40,.42); }
 .tete { display:flex; align-items:baseline; justify-content:space-between;
@@ -117,7 +117,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .heures { display:flex; justify-content:space-between; margin-top:4px; }
 .heures span { font-size:11.5px; font-weight:700; color:#8493AD; }
 
-.action { position:absolute; left:70px; top:1042px; width:940px; z-index:3;
+.action { position:absolute; left:76px; top:1042px; width:928px; z-index:3;
   display:flex; align-items:center; gap:26px;
   background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
   border-radius:22px; padding:18px 28px; box-shadow:0 24px 52px rgba(4,12,40,.44); }
@@ -130,7 +130,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
 .action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }
 
-.src { position:absolute; left:70px; right:70px; bottom:52px; z-index:3;
+.src { position:absolute; left:76px; right:76px; bottom:52px; z-index:3;
   border-top:2px solid rgba(246,188,28,.5); padding-top:16px;
   display:flex; justify-content:space-between; gap:24px;
   font-size:11.5px; line-height:1.5; color:rgba(255,255,255,.5); }
@@ -142,16 +142,16 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
   <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
 
-  <div class="sur">BULLETIN MER · JEUDI 27 AOÛT · 6H-10H</div>
+  <div class="sur">BULLETIN MER · SAMEDI 29 AOÛT · 6H-10H</div>
   <div class="acc">Demain matin,<span>MER AGITÉE.</span></div>
   <div class="sous">Service suspendu : aucun départ prévu. On publie la mer quand même.</div>
 
   <div class="carte">
-    <div class="tete"><span>JEUDI 27 AOÛT MATIN · <i>OUROVENI ▸ HOANI</i></span>
-      <span class="quand">Prévision relevée le 26/08 à 17h59</span></div>
+    <div class="tete"><span>SAMEDI 29 AOÛT MATIN · <i>OUROVENI ▸ HOANI</i></span>
+      <span class="quand">Prévision relevée le 29/08 à 02h55</span></div>
 
     <div class="chiffre">
-      <div class="n">1,5<em>m</em></div>
+      <div class="n">2,5<em>m</em></div>
       <div class="quoi"><b>de houle au matin</b><small>MOYENNE ENTRE 6H ET 10H</small></div>
     </div>
 
@@ -159,18 +159,18 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div class="jauge-lab"><span class="">BELLE</span><span class="">PEU AGITÉE</span><span class="on">AGITÉE</span><span class="">FORTE</span><span class="">TRÈS FORTE</span></div>
 
     <div class="faits">
-      <div><b>21<i>km/h</i></b><small>VENT DE SUD</small></div>
-      <div><b>8,9<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
-      <div><b>1,5–1,6<i>m</i></b><small>MATINÉE 5H-13H</small></div>
+      <div><b>19<i>km/h</i></b><small>VENT DE SUD-EST</small></div>
+      <div><b>11,4<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
+      <div><b>2,4–2,5<i>m</i></b><small>MATINÉE 5H-13H</small></div>
     </div>
 
     <div class="courbe">
-      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 1,5 m à 1,6 m</em></div>
+      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 2,4 m à 2,5 m</em></div>
       <svg viewBox="0 0 908 116" preserveAspectRatio="none">
-        <path d="M0.0 83.2 L113.5 77.6 L227.0 72.0 L340.5 60.8 L454.0 55.2 L567.5 49.6 L681.0 44.0 L794.5 38.4 L908.0 32.8 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
-        <path d="M0.0 83.2 L113.5 77.6 L227.0 72.0 L340.5 60.8 L454.0 55.2 L567.5 49.6 L681.0 44.0 L794.5 38.4 L908.0 32.8" stroke="#F0A800" stroke-width="3.4" fill="none"
+        <path d="M0.0 69.2 L113.5 63.6 L227.0 58.0 L340.5 52.4 L454.0 46.8 L567.5 46.8 L681.0 46.8 L794.5 46.8 L908.0 46.8 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
+        <path d="M0.0 69.2 L113.5 63.6 L227.0 58.0 L340.5 52.4 L454.0 46.8 L567.5 46.8 L681.0 46.8 L794.5 46.8 L908.0 46.8" stroke="#F0A800" stroke-width="3.4" fill="none"
               stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="0.0" cy="83.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="77.6" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="72.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="60.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="49.6" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="44.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="38.4" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="32.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="72.0" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="40.0" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="56.5" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 1,5 m</text>
+        <circle cx="0.0" cy="69.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="63.6" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="58.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="52.4" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="58.0" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="26.0" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="42.5" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 2,4 m</text>
       </svg>
       <div class="heures"><span>5h</span><span>6h</span><span>7h</span><span>8h</span><span>9h</span><span>10h</span><span>11h</span><span>12h</span><span>13h</span></div>
     </div>

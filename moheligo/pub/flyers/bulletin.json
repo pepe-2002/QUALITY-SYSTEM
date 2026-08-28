@@ -1,21 +1,21 @@
 {
-  "date": "2026-08-27",
+  "date": "2026-08-29",
   "etat": "MER AGITÉE",
-  "houle_m": 1.53,
-  "periode_s": 8.9,
-  "vent_kmh": 21,
-  "vent_direction": "sud",
+  "houle_m": 2.46,
+  "periode_s": 11.4,
+  "vent_kmh": 19,
+  "vent_direction": "sud-est",
   "courbe_5h_13h": [
-    1.46,
-    1.48,
-    1.5,
-    1.54,
-    1.56,
-    1.58,
-    1.6,
-    1.62,
-    1.64
+    2.4,
+    2.42,
+    2.44,
+    2.46,
+    2.48,
+    2.48,
+    2.48,
+    2.48,
+    2.48
   ],
-  "releve": "le 26/08 à 17h59",
+  "releve": "le 29/08 à 02h55",
   "source": "Open-Meteo Marine + Forecast"
 }

@@ -215,7 +215,7 @@ def cta_bulletin():
     """
     if ouvert():
         return ('RÉSERVE POUR DEMAIN', 'moheligo.com',
-                'MVola ou KartaPay · WhatsApp +269 479 43 28')
+                'MVola ou kartaPay · WhatsApp +269 479 43 28')
     return ('TRAVERSÉES SUSPENDUES', 'moheligo.com',
             'La mer chaque soir sur cette page · WhatsApp +269 479 43 28')
 

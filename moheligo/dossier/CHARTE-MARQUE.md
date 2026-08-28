@@ -164,10 +164,22 @@ parce que chaque écart est petit.
 bleu foncé (RVB 24/98/155) : il disparaît sur le marine. D'où la barre
 partenaire en `#F6F9FF`.
 
-### 🔴 Ce qui reste à faire
+### ✅ Fait le 29/08/2026 — toute la bibliothèque est alignée
 
-Les **27 flyers antérieurs** portent encore les anciennes valeurs (marge 70,
-coin 392). Ils ne sont pas faux, ils sont **inégaux** — et l'inégalité ne se
-voit que quand on les met côte à côte, ce que fait justement une campagne.
-📌 À reprendre en une fois, avec `controle.py` derrière, **pas à la va-vite** :
-27 fichiers à retoucher et à refabriquer, c'est un travail à faire éveillé.
+**Neuf flyers** portaient un second système complet et cohérent entre eux
+(marges 70, coin 392 × 158, emblème 62 px, nom 27 px) : ce n'était pas de la
+négligence, c'était **une autre charte non écrite**. Tous ramenés aux valeurs
+ci-dessus, coin remplacé en bloc pour que son contenu grandisse avec lui.
+⚠️ Le bulletin du soir se régénère depuis `flyer8-soir-fb.template.html` : c'est
+**le gabarit** qu'il fallait modifier, pas le fichier produit. Vérifié en
+refabriquant un vrai bulletin.
+
+**Le nom du partenaire** : 54 occurrences de « KartaPay » corrigées en
+« kartaPay » dans 30 fichiers, dont 18 dans `page.py` qui alimente les textes
+publiés. On écrit le nom d'un partenaire sous contrat comme il l'écrit.
+
+**Et un défaut trouvé en passant** : quatre visuels (`signature`, `envie`,
+`grostemps`, `suspension`) étaient **plus vieux que leur source** — leur PNG ne
+correspondait plus au fichier qui le décrit, et personne ne l'avait vu.
+📌 D'où le contrôle ajouté ce jour-là : **comparer la date de chaque PNG à celle
+de son HTML.** Un visuel périmé ne se voit pas à l'œil, seulement à l'horloge.

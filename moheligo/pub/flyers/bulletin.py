@@ -205,7 +205,7 @@ def main():
     if service.ouvert():
         appel = """Ta place pour demain se prend maintenant :
 • Tu choisis ton départ sur moheligo.com
-• Tu paies par MVola ou KartaPay
+• Tu paies par MVola ou kartaPay
 • Ton billet QR arrive tout de suite
 
 moheligo.com — et demain matin, tu embarques tranquille."""

@@ -18,3 +18,4 @@
 #
 # Une ligne par battement, la plus récente en bas.
 2026-08-28 09:50 UTC — battement de midi
+2026-08-28 10:26 UTC — battement de midi (essai du telechargement partiel)

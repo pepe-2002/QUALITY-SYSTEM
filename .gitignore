@@ -11,3 +11,7 @@ moheligo/pub/video/voix/phrases/
 
 # fichier de travail de reve.py : la vidéo sans le son, effacée en fin de montage
 moheligo/pub/video/*-muet.mp4
+
+# 🙈 Le patron veut rester discret (28/08/2026 : « enlève ma photo, j'aime être
+# discret »). Son portrait ne revient pas dans le dépôt, même par mégarde.
+moheligo/pub/photos/fondateur-portrait.jpg

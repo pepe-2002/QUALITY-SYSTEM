@@ -9,12 +9,13 @@
      dessus — l'application n'est pas connectée. Une maquette dessinée aurait
      menti sur le produit ; là, ce que le lecteur voit est ce qu'il aura.
 
-     👤 LE PORTRAIT EST PETIT, ET C'EST UN CALCUL, PAS UN CHOIX ESTHÉTIQUE
-     La photo du patron fait 256 px à l'origine (512 après nettoyage). Le
-     médaillon est fixé à 256 px de large : au rendu ×2, cela fait 512 px réels,
-     soit exactement la taille du fichier. **Un pixel affiché pour un pixel
-     disponible : aucun agrandissement, donc aucun flou.** L'agrandir davantage
-     le rendrait mou, et c'est précisément ce qui fait « débutant ».
+     🙈 AUCUN VISAGE, ET C'EST VOULU
+     Le patron, 28/08/2026 : « enlève ma photo, j'aime être discret. » Le
+     portrait qui occupait cette place a été retiré du visuel ET du dépôt.
+     Ce qui le remplace dit la même chose sans montrer personne : dans un pays
+     où l'on a peur de payer en ligne, « une vraie personne répond » est
+     l'argument, pas le visage de celui qui répond. Le numéro est déjà public
+     sur nos autres flyers.
 
      🤝 LE LOGO kartaPay EST BLEU FONCÉ (mesuré : RVB 24/98/155). Il lui faut donc
      un FOND CLAIR — d'où la barre partenaire crème en bas. Posé tel quel sur le
@@ -84,14 +85,17 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .tel .encoche { position:absolute; left:50%; transform:translateX(-50%); top:19px;
   width:112px; height:22px; border-radius:12px; background:#08132C; z-index:2; }
 
-/* LE MÉDAILLON — 256 px : exactement la taille du fichier au rendu ×2 */
-.moi { position:absolute; left:76px; top:920px; width:256px; height:256px; z-index:5;
-  border-radius:50%; overflow:hidden; box-shadow:0 0 0 6px #F6BC1C, 0 26px 54px rgba(2,8,26,.55); }
-.moi img { width:100%; height:100%; object-fit:cover; display:block; }
-.qui { position:absolute; left:364px; top:996px; z-index:5; width:300px; }
-.qui .r { font-size:13px; font-weight:700; letter-spacing:2.8px; color:#F6BC1C; }
-.qui .n { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#fff;
-  line-height:1.12; margin-top:9px; letter-spacing:-.8px; }
+/* ⛔ PLUS DE PORTRAIT. Le patron, 28/08/2026 : « enlève ma photo, j'aime être
+   discret. » Sa décision, appliquée partout : le visuel, le dépôt, et la fiche.
+   ✅ Ce qui reste dit la MÊME chose sans montrer son visage — dans un pays où
+   l'on a peur de payer en ligne, savoir qu'un humain répond vaut le portrait du
+   fondateur. Et le numéro, lui, est déjà public sur nos autres flyers. */
+.confiance { position:absolute; left:76px; top:960px; width:568px; z-index:5;
+  background:rgba(255,255,255,.07); border-left:6px solid #F6BC1C;
+  border-radius:0 18px 18px 0; padding:26px 32px; }
+.confiance .p { font-size:13px; font-weight:700; letter-spacing:2.8px; color:#F6BC1C; }
+.confiance .n { font-family:'Archivo',sans-serif; font-weight:900; font-size:34px;
+  color:#fff; letter-spacing:-1px; margin-top:10px; }
 
 /* LA BARRE PARTENAIRE — fond clair OBLIGATOIRE : le logo kartaPay est bleu foncé */
 .barre { position:absolute; left:76px; top:1212px; width:928px; height:96px; z-index:5;
@@ -137,18 +141,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div class="ecran"><img src="ecran-appli.png" alt=""></div>
   </div>
 
-  <div class="moi"><img src="../photos/fondateur-portrait.jpg" alt=""></div>
-  <div class="qui">
-    <!-- ⛔ PAS DE CITATION INVENTÉE. J'avais d'abord écrit « On a construit ça
-         depuis Mohéli » entre guillemets. Il ne l'a jamais dit : mettre une
-         phrase dans la bouche de quelqu'un, même flatteuse, même pour lui,
-         c'est fabriquer une parole. Même règle que pour sa voix clonée.
-         ✅ Ce qui est écrit ici est VRAI et vérifiable : le patron garde le
-         service client (répartition des postes du 11/08, manuel § 12.2), donc
-         c'est bien lui qui répond sur le WhatsApp imprimé sur nos flyers.
-         S'il veut une vraie citation, il me la donne et je la mets. -->
-    <div class="r">LE FONDATEUR</div>
-    <div class="n">C'est lui qui répond<br>quand tu écris.</div>
+  <div class="confiance">
+    <div class="p">UNE VRAIE PERSONNE RÉPOND</div>
+    <div class="n">WhatsApp +269 479 43 28</div>
   </div>
 
   <div class="barre">

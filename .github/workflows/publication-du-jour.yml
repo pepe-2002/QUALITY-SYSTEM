@@ -57,6 +57,20 @@ on:
         description: 'Ne RIEN publier : seulement produire le rapport (diagnostic)'
         type: boolean
         default: false
+      # 🎯 PUBLIER UN VISUEL CHOISI, hors calendrier.
+      # Ajouté le 28/08/2026 : le patron voulait publier le flyer
+      # « digitalisation », qui n'est dans aucun créneau. Jusque-là les robots ne
+      # savaient sortir QUE la publication du jour — donc tout visuel hors
+      # calendrier demandait une manipulation à la main, et rien de reproductible.
+      # 📌 Sert aussi pour les films d'identité et le flyer destination.
+      visuel:
+        description: 'Publier UN visuel precis (nom du PNG dans pub/flyers)'
+        type: string
+        default: ''
+      texte:
+        description: 'Le fichier texte qui va avec (dans pub/flyers)'
+        type: string
+        default: ''
 
 # Sans ceci, Python met sa sortie en memoire tampon quand elle est redirigee :
 # les messages d'erreur (stderr, non tamponne) apparaissent AVANT les lignes
@@ -203,8 +217,28 @@ jobs:
       # ⚠️ « && !inputs… » : sans ces conditions, un lancement avec une des cases
       # ci-dessus publierait EN PLUS la publication du jour, puisque PUBLIER_FB
       # est arme en permanence — deux posts d'un coup.
+      # Un visuel choisi à la main, hors calendrier.
+      # ⚠️ LES NOMS DE FICHIERS PASSENT PAR L'ENVIRONNEMENT, JAMAIS DANS LE
+      # SCRIPT. Écrire `--image ${{ inputs.visuel }}` collerait le texte saisi
+      # directement dans la commande : n'importe qui pouvant lancer ce workflow
+      # y ferait exécuter ce qu'il veut. Avec `env:` + guillemets, la valeur
+      # reste une donnée.
+      - name: Publier un visuel choisi
+        if: inputs.visuel != '' && !inputs.rapport_seulement
+        working-directory: moheligo/pub/flyers
+        env:
+          FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PAUSE_FB: ${{ vars.PAUSE_FB }}
+          VISUEL: ${{ inputs.visuel }}
+          TEXTE: ${{ inputs.texte }}
+        run: |
+          test -f "$VISUEL" || { echo "::error::visuel introuvable : $VISUEL"; exit 1; }
+          test -f "$TEXTE"  || { echo "::error::texte introuvable : $TEXTE";  exit 1; }
+          python3 publier_fb.py --publier --image "$VISUEL" --texte "$TEXTE"
+
       - name: Publier
-        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise && !inputs.video_young_leader && !inputs.rapport_seulement
+        if: inputs.visuel == '' && (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise && !inputs.video_young_leader && !inputs.rapport_seulement
         working-directory: moheligo/pub/flyers
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}

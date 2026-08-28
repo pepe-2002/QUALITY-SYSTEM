@@ -1,0 +1,110 @@
+<!-- ON NE VISITE PAS MOHÉLI, ON Y REVIENT — le registre DESTINATION.
+     Fait le 28/08/2026 à la demande du patron : « c'est mon neveu, il peut faire
+     les pubs », puis « son père a accepté ».
+
+     👦 LA PHOTO EST CELLE D'UN ENFANT, ET ÇA CHANGE DEUX CHOSES
+     · l'accord vient du PÈRE (accord oral rapporté par le patron le 28/08,
+       consigné dans ../photos/CREDITS-FAMILLE.md — c'est la seule trace) ;
+     · le fichier d'origine reste HORS du dépôt public. Ce qui est versionné,
+       c'est la photo nettoyée qui sert au visuel, rien d'autre.
+
+     🎯 POURQUOI CE REGISTRE ET PAS « LA DIGITALISATION »
+     Le patron voulait d'abord son neveu sur le flyer « l'ère de la
+     digitalisation ». Refusé, et pas pour une raison de droit : cette pub-là
+     montre quelqu'un qui RÉSERVE ET QUI PAIE depuis son téléphone. Un enfant de
+     cinq ans ne réserve pas de traversée, donc le lecteur ne peut pas se
+     reconnaître dans ce visage. Ici, au contraire, le sujet EST l'île — et un
+     enfant qui rentre avec une goyave dit Mohéli mieux qu'une plage vide.
+
+     ⚠️ AUCUNE DATE, AUCUNE MENTION DE FERMETURE SUR L'IMAGE. Leçon du 26/08 :
+     un visuel qui grave « peut-être mardi » devient inutilisable le mercredi.
+     La mention de fermeture va dans le TEXTE du post (service.avec_mention),
+     qui, lui, se régénère à chaque publication.
+
+     Rendu : node render.js flyer38-revenir-fb.html flyer-revenir-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* LA PHOTO — cadrée sur l'enfant (42 % du haut : la tête et la goyave tiennent). */
+.photo { position:absolute; top:0; left:0; width:1080px; height:838px; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 42%; display:block; }
+/* le marine remonte DANS la photo : sans ce fondu, la coupure se voit comme un collage */
+.fondu { position:absolute; left:0; top:558px; width:1080px; height:300px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.55) 46%,
+             rgba(15,42,92,.94) 82%, #0F2A5C 100%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+/* ⚠️ L'espacement se règle ICI, PAS en écrivant « T R A V E R S É E S » dans le
+   texte : les deux se cumulent, et le « S » final passait sous la diagonale du
+   coin. Même défaut qu'en août sur l'en-tête du bulletin. */
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:800px; z-index:5; font-size:14px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* mesuré au rendu : « ON NE VISITE PAS MOHÉLI. » tient dans 928 px à 62 px */
+.acc { position:absolute; left:76px; top:838px; width:928px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:62px; line-height:1.02;
+  letter-spacing:-2.2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+.dit { position:absolute; left:76px; top:1000px; width:840px; z-index:5;
+  font-size:27px; line-height:1.48; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+/* le trait d'or : le même séparateur que sur les autres visuels de la marque */
+.trait { position:absolute; left:76px; top:1168px; width:96px; height:6px;
+  border-radius:3px; background:#F6BC1C; z-index:5; }
+
+.pied { position:absolute; left:76px; top:1206px; z-index:5; }
+.pied .quoi { font-size:13px; font-weight:700; letter-spacing:2.6px; color:#8FA8CC; }
+.pied .ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:40px;
+  color:#fff; letter-spacing:-1.2px; margin-top:6px; }
+
+/* LA VAGUE DORÉE — signature de la marque, en bas de chaque visuel */
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:4; }
+</style>
+
+<div class="page">
+  <div class="photo"><img src="../photos/moheli-enfant-goyave.jpg" alt=""></div>
+  <div class="fondu"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · COMORES</div>
+  <div class="acc">ON NE VISITE PAS MOHÉLI.<span>ON Y REVIENT.</span></div>
+
+  <div class="dit">La lumière de six heures, les bananiers derrière la maison,
+    une goyave cueillie en rentrant. <b>Rien de tout ça n'est mis en scène.</b></div>
+
+  <div class="trait"></div>
+  <div class="pied">
+    <div class="quoi">TRAVERSÉES MARITIMES DES COMORES</div>
+    <div class="ou">moheligo.com</div>
+  </div>
+
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

@@ -1,6 +1,6 @@
 # Le « tuyau » du bulletin du soir MoheliGo.
 #
-# Chaque jour à 19h30 (heure des Comores), GitHub refait le flyer avec la vraie
+# Chaque soir à 19h25 (heure des Comores), GitHub refait le flyer avec la vraie
 # prévision de mer du lendemain, et le dépose sur la branche `bulletin-du-jour`.
 # Le patron ouvre toujours la même adresse et trouve le flyer du jour :
 #
@@ -11,46 +11,21 @@
 # le dépôt ne grossit pas, alors qu'un PNG de 2,6 Mo commité chaque jour
 # ajouterait près d'un gigaoctet par an.
 #
-# ⚠️ Une tâche planifiée ne tourne QUE depuis la branche par défaut : ce
-# fichier doit être fusionné dans `main` pour que l'horaire s'applique.
-# En attendant, le bouton « Run workflow » permet de la lancer à la main.
+# 🫀 CE ROBOT N'A PLUS DE RENDEZ-VOUS PROGRAMMÉ — et c'est voulu.
+# 🚨 28/08/2026, la mesure qui a tranché : les deux `cron` du 27 au soir ont bien
+# fini par être livrés… **à 00h37 et 01h06 le lendemain**, soit 8 h 43 et 8 h 25
+# de retard. Le bulletin est donc parti à 3h38 du matin, heure des Comores, et le
+# second n'a été arrêté que par `publier_fb.deja_publie()`.
+# 📌 Un rendez-vous qui arrive huit heures plus tard n'est pas « en retard », il
+# est NUISIBLE : il publie quand personne ne regarde, et il occupe la place du
+# jour — celui de 19h25 se fait alors refuser comme doublon.
+# ➡️ Le seul déclencheur est le BATTEMENT : une Routine hors de GitHub pousse une
+# ligne dans `battement-soir.txt` à 19h25 (heure des Comores), et le `push` part
+# en 2 secondes. Le bouton « Run workflow » reste là pour la main.
 
 name: Bulletin du soir
 
 on:
-  schedule:
-    # ⏱️ 15h54 UTC = 18h54 aux Comores. La marge d'avance n'est PAS une estimation :
-    # elle est mesurée sur les 11 derniers bulletins programmés (15 → 25/08/2026).
-    #
-    #   retard réel de GitHub : 29 min au mieux, 44 au pire, 36 en moyenne
-    #   avec l'ancien cron (16h07) le bulletin tombait à 19h42 en moyenne,
-    #   et n'est JAMAIS parti avant 19h36 — pour une cible annoncée à 19h30.
-    #
-    # 16h07 − 36 min de retard moyen = 15h54 : le bulletin vise enfin l'heure
-    # qu'on annonce. Fourchette attendue : 19h23 – 19h38.
-    #
-    # 📌 À revérifier dans deux semaines : si le retard de GitHub change, ce
-    # chiffre doit être recalculé sur les vrais départs, jamais deviné.
-    - cron: '54 15 * * *'
-    # 🔁 LE SECOND RENDEZ-VOUS — 16h41 UTC = 19h41 aux Comores, soit ~20h15 en
-    # tenant compte du retard habituel.
-    # 🚨 26/08/2026 : le bulletin n'est pas parti et le patron l'a signalé
-    # (« le bulletin n'est pas parti », « c'est toujours pas parti »). Cause
-    # trouvée le 27 en cherchant pourquoi le flyer de midi manquait à son tour :
-    # **GitHub n'avait pas déclenché le rendez-vous du tout** — pas d'échec,
-    # aucune exécution. Ses rendez-vous programmés peuvent être abandonnés.
-    # 📌 Un bulletin en retard vaut mieux qu'un bulletin absent : il annonce la
-    # mer de DEMAIN, il reste vrai à 20h15. `publier_fb.deja_publie()` empêche
-    # le doublon quand le premier rendez-vous a bien fonctionné.
-    - cron: '41 16 * * *'
-
-  # 🫀 LE BATTEMENT — voir `publication-du-jour.yml` pour le raisonnement complet.
-  # Le 27/08/2026 les deux rendez-vous du bulletin ont été ignorés comme ceux de
-  # midi : ce n'est pas un oubli occasionnel, c'est le planificateur de GitHub
-  # qui ne délivre plus pour ce dépôt. Un `push` est toujours livré.
-  # ⚠️ Fichier de battement PROPRE au bulletin : s'ils partageaient le même,
-  # un battement déclencherait les deux robots, et le flyer de midi partirait
-  # le soir.
   push:
     branches: [main]
     paths: ['moheligo/pub/flyers/battement-soir.txt']
@@ -119,7 +94,7 @@ jobs:
           - \`texte-du-jour.txt\` : le texte du post et le premier commentaire.
           - \`bulletin.json\` : les chiffres bruts.
 
-          Refait ET publié automatiquement chaque jour à 19h30, heure des Comores.
+          Refait ET publié automatiquement chaque soir, heure des Comores.
           Ne jamais republier le flyer de la veille : il annonce une date.
           EOF
           cd /tmp/depot

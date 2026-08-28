@@ -370,6 +370,29 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (👁️ L'ŒIL EXTÉRIEUR — à quoi il sert, et à quoi il ne sert pas)** —
+  le patron fait relire la campagne par ChatGPT : 9/10, avec trois reproches.
+  Deuxième fois (le 26/08, c'était 8/10 sur un flyer).
+  ✅ **DEUX FOIS SUR DEUX, IL A EU RAISON SUR LA COHÉRENCE** — les deux ors et
+  les trois marines le 26/08, la dérive de charte le 29/08. Et les deux fois,
+  **c'est moi qui avais fabriqué chaque pièce en la trouvant juste.** C'est
+  précisément là qu'un œil extérieur est imbattable : chaque visuel paraît bon
+  quand on vient de le faire ; l'écart ne se voit qu'en les mettant côte à côte.
+  📌 **LA RÈGLE QUE J'EN TIRE** : quand un relecteur signale une INCOHÉRENCE, on
+  ne discute pas — on **mesure**. Ici la mesure a trouvé plus que la remarque :
+  il parlait de deux flyers, la dérive touchait toute la bibliothèque
+  (marge 76/70, coin 404/392/412, vague 74/56).
+  ⛔ **CE POUR QUOI IL NE SERT PAS : la stratégie et le résultat.** Il ne sait pas
+  que le service est fermé, que la page a 33 abonnés, ni si une seule réservation
+  est née de tout ça. Sa note ne mesure pas l'efficacité — elle mesure la
+  ressemblance avec ce à quoi une bonne pub ressemble. Ce n'est pas rien, mais
+  ce n'est pas le résultat.
+  🔴 **ET C'EST LE VRAI SUJET** : deux relectures élogieuses sur la forme, pendant
+  que **les trois chiffres réclamés depuis le 18/08 ne sont toujours pas
+  arrivés** (réservations payées, visites du site, abandon au paiement). On
+  polit ce qu'on voit parce qu'on ne mesure pas ce qui compte.
+
+
 - **28/08/2026, nuit (✅ LE RÉVEIL DE MA PROPRE SESSION — ce qui manquait depuis
   trois jours)** — quatrième tentative sur le même problème, et la première
   prouvée avant d'être annoncée.

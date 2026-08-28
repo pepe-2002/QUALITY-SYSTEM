@@ -1,0 +1,164 @@
+<!-- L'ÈRE DE LA DIGITALISATION — le registre INSTITUTIONNEL, avec kartaPay.
+     Titre voulu par le patron le 28/08/2026 : « fais l'ère de la digitalisation
+     avec ma photo ».
+
+     📱 L'ÉCRAN EST LE VRAI, ET C'EST TOUT L'INTÉRÊT
+     `ecran-appli.png` n'est pas une maquette : c'est `moheligo/index.html` rendu
+     dans Chromium au format d'un téléphone (voir
+     ../demo/ecrans/COMMENT-CES-ECRANS-SONT-FAITS.md). Aucune donnée personnelle
+     dessus — l'application n'est pas connectée. Une maquette dessinée aurait
+     menti sur le produit ; là, ce que le lecteur voit est ce qu'il aura.
+
+     👤 LE PORTRAIT EST PETIT, ET C'EST UN CALCUL, PAS UN CHOIX ESTHÉTIQUE
+     La photo du patron fait 256 px à l'origine (512 après nettoyage). Le
+     médaillon est fixé à 256 px de large : au rendu ×2, cela fait 512 px réels,
+     soit exactement la taille du fichier. **Un pixel affiché pour un pixel
+     disponible : aucun agrandissement, donc aucun flou.** L'agrandir davantage
+     le rendrait mou, et c'est précisément ce qui fait « débutant ».
+
+     🤝 LE LOGO kartaPay EST BLEU FONCÉ (mesuré : RVB 24/98/155). Il lui faut donc
+     un FOND CLAIR — d'où la barre partenaire crème en bas. Posé tel quel sur le
+     marine, il disparaîtrait.
+     ⚠️ Ils écrivent « kartaPay » avec un k minuscule. On écrit le nom d'un
+     partenaire comme il l'écrit.
+
+     Rendu : node render.js flyer39-digitalisation-fb.html flyer-digitalisation-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+/* une lueur derrière le téléphone : il doit se détacher du marine */
+.halo { position:absolute; right:-120px; top:170px; width:720px; height:820px; z-index:1;
+  background:radial-gradient(ellipse at center, rgba(94,160,255,.30) 0%, rgba(15,42,92,0) 68%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:214px; z-index:5; font-size:14px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* colonne de gauche : 560 px. « DIGITALISATION » (14 signes) y tient à 64 px. */
+.acc { position:absolute; left:76px; top:252px; width:568px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:64px; line-height:1.03;
+  letter-spacing:-2.4px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+.dit { position:absolute; left:76px; top:474px; width:548px; z-index:5;
+  font-size:25px; line-height:1.46; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.points { position:absolute; left:76px; top:648px; width:548px; z-index:5; }
+.points div { position:relative; padding-left:38px; margin-bottom:19px;
+  font-size:22px; line-height:1.36; color:#EAF1FF; }
+.points div::before { content:''; position:absolute; left:0; top:9px; width:16px; height:16px;
+  border-radius:5px; background:#F6BC1C; }
+.points b { font-weight:700; }
+
+/* LE TÉLÉPHONE — châssis sombre, écran réel dedans */
+.tel { position:absolute; right:74px; top:262px; width:336px; height:688px; z-index:4;
+  background:#08132C; border-radius:46px; padding:11px;
+  box-shadow:0 46px 92px rgba(2,8,26,.62), 0 0 0 2px rgba(255,255,255,.10); }
+.tel .ecran { width:100%; height:100%; border-radius:36px; overflow:hidden; background:#fff; }
+/* ⚠️ `width:100%` seul laissait une bande blanche sous la barre de navigation :
+   la capture est plus étroite de proportion que le châssis. On remplit en
+   hauteur et on rogne par le bas, où il n'y a rien à perdre. */
+.tel .ecran img { width:100%; height:100%; object-fit:cover; object-position:50% 0; display:block; }
+.tel .encoche { position:absolute; left:50%; transform:translateX(-50%); top:19px;
+  width:112px; height:22px; border-radius:12px; background:#08132C; z-index:2; }
+
+/* LE MÉDAILLON — 256 px : exactement la taille du fichier au rendu ×2 */
+.moi { position:absolute; left:76px; top:920px; width:256px; height:256px; z-index:5;
+  border-radius:50%; overflow:hidden; box-shadow:0 0 0 6px #F6BC1C, 0 26px 54px rgba(2,8,26,.55); }
+.moi img { width:100%; height:100%; object-fit:cover; display:block; }
+.qui { position:absolute; left:364px; top:996px; z-index:5; width:300px; }
+.qui .r { font-size:13px; font-weight:700; letter-spacing:2.8px; color:#F6BC1C; }
+.qui .n { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#fff;
+  line-height:1.12; margin-top:9px; letter-spacing:-.8px; }
+
+/* LA BARRE PARTENAIRE — fond clair OBLIGATOIRE : le logo kartaPay est bleu foncé */
+.barre { position:absolute; left:76px; top:1212px; width:928px; height:96px; z-index:5;
+  background:#F6F9FF; border-radius:22px; display:flex; align-items:center;
+  padding:0 34px; gap:28px; box-shadow:0 22px 50px rgba(2,8,26,.42); }
+.barre .mg { display:flex; align-items:center; gap:12px; }
+.barre .mg img { width:44px; height:44px; object-fit:contain; }
+.barre .mg b { font-family:'Archivo',sans-serif; font-weight:900; font-size:25px;
+  color:#0F2A5C; letter-spacing:-.8px; }
+.barre .mg b i { color:#F6BC1C; font-style:normal; }
+.barre .sep { width:2px; height:44px; background:#D6E2F5; }
+.barre .kp img { height:34px; display:block; }
+.barre .web { margin-left:auto; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:28px; color:#0F2A5C; letter-spacing:-.8px; }
+
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:56px; z-index:3; }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+  <div class="halo"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · COMORES</div>
+  <div class="acc">L'ÈRE DE LA<span>DIGITALISATION</span>COMMENCE ICI.</div>
+
+  <div class="dit">Descendre au port, demander, attendre. <b>Ce temps-là est
+    derrière nous.</b> La traversée se réserve depuis le téléphone qu'on a déjà
+    dans la poche.</div>
+
+  <div class="points">
+    <div>Tu paies par <b>MVola</b>, avec kartaPay.</div>
+    <div>Ton billet arrive avec son <b>code QR</b>, et il reste dans ton téléphone.</div>
+    <div>Chaque soir, on publie <b>la mer du lendemain</b>.</div>
+  </div>
+
+  <div class="tel">
+    <div class="encoche"></div>
+    <div class="ecran"><img src="ecran-appli.png" alt=""></div>
+  </div>
+
+  <div class="moi"><img src="../photos/fondateur-portrait.jpg" alt=""></div>
+  <div class="qui">
+    <!-- ⛔ PAS DE CITATION INVENTÉE. J'avais d'abord écrit « On a construit ça
+         depuis Mohéli » entre guillemets. Il ne l'a jamais dit : mettre une
+         phrase dans la bouche de quelqu'un, même flatteuse, même pour lui,
+         c'est fabriquer une parole. Même règle que pour sa voix clonée.
+         ✅ Ce qui est écrit ici est VRAI et vérifiable : le patron garde le
+         service client (répartition des postes du 11/08, manuel § 12.2), donc
+         c'est bien lui qui répond sur le WhatsApp imprimé sur nos flyers.
+         S'il veut une vraie citation, il me la donne et je la mets. -->
+    <div class="r">LE FONDATEUR</div>
+    <div class="n">C'est lui qui répond<br>quand tu écris.</div>
+  </div>
+
+  <div class="barre">
+    <div class="mg"><img src="logo-emblem.png" alt=""><b>Moheli<i>Go</i></b></div>
+    <div class="sep"></div>
+    <div class="kp"><img src="kartapay-logo.png" alt="kartaPay"></div>
+    <div class="web">moheligo.com</div>
+  </div>
+
+  <svg class="vague" viewBox="0 0 1080 56" preserveAspectRatio="none">
+    <path d="M0,26 C170,2 330,48 540,30 C750,12 910,44 1080,22 L1080,56 L0,56 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

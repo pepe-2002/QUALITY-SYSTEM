@@ -307,7 +307,7 @@ def _empreinte(texte):
     return empreinte[:90]
 
 
-def publier(image, texte, pour_de_vrai, essai=False):
+def publier(image, texte, pour_de_vrai, essai=False, forcer=False):
     # frein d'urgence : une variable de dépôt suffit à tout arrêter
     if os.environ.get('PAUSE_FB', '').strip().lower() == 'oui':
         print('PAUSE_FB = oui → publication suspendue, rien n\'a été envoyé.')
@@ -331,7 +331,7 @@ def publier(image, texte, pour_de_vrai, essai=False):
     # 🔁 LE FILET DE SÉCURITÉ. Chaque robot a deux rendez-vous depuis le
     # 27/08/2026 ; celui-ci empêche le second de faire un doublon. Un essai
     # d'écriture (`--essai`) n'apparaît pas sur la page, donc il ne compte pas.
-    if not essai and deja_publie(post):
+    if not essai and not forcer and deja_publie(post):
         if jetable:
             os.unlink(jetable)
         return
@@ -487,13 +487,26 @@ def main():
     ap.add_argument('--video', help='publie une VIDÉO au lieu d\'une image '
                                     '(point d\'entrée /videos, voir publier_video)')
     ap.add_argument('--titre', help='titre de la vidéo (facultatif)')
+    # 🔓 LA SOUPAPE DU GARDE-FOU ANTI-DOUBLON.
+    # 🚨 Le cas qui l'a rendue nécessaire (28/08/2026) : un `cron` livré avec
+    # 8 h 30 de retard a publié le bulletin à 3h38 du matin. Celui de 19h25,
+    # pourtant porteur d'une AUTRE prévision, se faisait alors refuser — le
+    # garde-fou compare la ligne de titre, et celle du bulletin est toujours
+    # « LA MER DE DEMAIN, CE SOIR. »
+    # 📌 À n'utiliser que quand on SAIT que le contenu diffère. Sans ça, on
+    # republie la même chose deux fois dans la journée, et la page se fait
+    # masquer par les abonnés.
+    ap.add_argument('--forcer', action='store_true',
+                    help='publier MÊME si un texte au même titre est déjà '
+                         'paru aujourd\'hui (à n\'utiliser qu\'à bon escient)')
     a = ap.parse_args()
     if a.verifier:
         verifier()
     elif a.video:
         publier_video(a.video, a.texte, a.publier, titre=a.titre)
     else:
-        publier(a.image, a.texte, a.publier or a.essai, essai=a.essai)
+        publier(a.image, a.texte, a.publier or a.essai, essai=a.essai,
+                forcer=a.forcer)
 
 
 if __name__ == '__main__':

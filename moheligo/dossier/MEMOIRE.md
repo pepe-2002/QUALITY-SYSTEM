@@ -370,6 +370,37 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **28/08/2026, nuit (✅ LE RÉVEIL DE MA PROPRE SESSION — ce qui manquait depuis
+  trois jours)** — quatrième tentative sur le même problème, et la première
+  prouvée avant d'être annoncée.
+  🔴 **POURQUOI LES TROIS PRÉCÉDENTES ONT ÉCHOUÉ.** Mes surveillants créaient une
+  **session neuve** à chaque réveil. Or **une session neuve n'a pas le droit
+  d'écrire dans le dépôt** : elle démarrait, ne pouvait rien pousser, et se
+  terminait en `SUCCEEDED`. Le 28/08 les deux ont tourné à 19h20 et 19h25 — et
+  `main` n'a pas bougé d'un commit. Prouvé ensuite par un test dédié : la
+  branche d'essai `essai-battement` n'a jamais été créée.
+  📌 **Un « réussi » de ce système-là veut dire « la session s'est terminée sans
+  planter ». Pas « le travail est fait ».** Je m'étais fié à ce voyant : c'est
+  le troisième indicateur menteur en deux semaines.
+  ✅ **CE QUI MARCHE : je me réveille MOI-MÊME.** Une Routine peut réveiller la
+  session en cours (`persist_session: true`) au lieu d'en ouvrir une neuve. Et
+  cette session-ci, elle, pousse et publie très bien — elle l'avait fait deux
+  fois le soir même. Testé pour de vrai à 23h38 avant de basculer quoi que ce
+  soit ; `git fetch` + lecture de `main` depuis la session réveillée : OK.
+  ⏰ **Les deux rendez-vous quotidiens** sont maintenant attachés à cette
+  session : **09h05 UTC (12h05 aux Comores)** pour le flyer de midi,
+  **16h25 UTC (19h25)** pour le bulletin. Ils poussent un battement, puis
+  **attendent et LISENT le rapport** avant de dire quoi que ce soit — avec la
+  signature apprise ce soir : l'étape de publication dure **6 à 9 s quand elle
+  publie, 3 s quand le garde-fou refuse un doublon**.
+  📌 **LA LEÇON, ET ELLE EST PLUS LARGE QUE CE PROBLÈME** : j'ai passé trois
+  jours à réparer le déclencheur (cron → second cron → battement → surveillant)
+  alors que le vrai obstacle était **une permission**. Chaque correctif était
+  bon en soi et aucun ne pouvait marcher. *Quand trois réparations différentes
+  échouent au même endroit, ce n'est plus le mécanisme qu'il faut changer :
+  c'est qu'on n'a pas encore trouvé ce qui bloque.*
+
+
 - **27/08/2026, soir (🫀 LE BATTEMENT — sortir de la dépendance au
   planificateur)** — le patron : « la météo n'est pas partie », puis
   « **corrige le système** ».

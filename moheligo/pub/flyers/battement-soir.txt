@@ -18,3 +18,4 @@
 #
 # Une ligne par battement, la plus récente en bas.
 2026-08-27 18:29 UTC — battement du soir (essai du mécanisme)
+2026-08-28 17:09 UTC — battement du soir FORCER (bulletin de 3h38 deja parti, celui-ci porte une autre prevision)

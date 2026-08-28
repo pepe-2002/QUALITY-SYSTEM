@@ -17,3 +17,4 @@
 # (Le doublon, lui, est bloqué par `publier_fb.deja_publie()`, qui lit la page.)
 #
 # Une ligne par battement, la plus récente en bas.
+2026-08-28 09:50 UTC — battement de midi

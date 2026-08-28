@@ -55,8 +55,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 /* colonne de gauche : 560 px. « DIGITALISATION » (14 signes) y tient à 64 px. */
 .acc { position:absolute; left:76px; top:252px; width:568px; z-index:5;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:64px; line-height:1.03;
-  letter-spacing:-2.4px; color:#fff; }
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:62px; line-height:1.02;
+  letter-spacing:-2.2px; color:#fff; }
 .acc span { display:block;
   background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
@@ -111,7 +111,10 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .barre .web { margin-left:auto; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:28px; color:#0F2A5C; letter-spacing:-.8px; }
 
-.vague { position:absolute; left:0; bottom:0; width:1080px; height:56px; z-index:3; }
+/* ⚠️ 74 px, COMME SUR TOUS LES AUTRES VISUELS. Elle était à 56 ici : une
+   signature de marque à deux tailles n'est plus une signature. Mesuré le
+   29/08 en comparant les deux flyers ligne à ligne. */
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:3; }
 </style>
 
 <div class="page">
@@ -126,9 +129,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="sur">MOHÉLI · COMORES</div>
   <div class="acc">L'ÈRE DE LA<span>DIGITALISATION</span>COMMENCE ICI.</div>
 
-  <div class="dit">Descendre au port, demander, attendre. <b>Ce temps-là est
-    derrière nous.</b> La traversée se réserve depuis le téléphone qu'on a déjà
-    dans la poche.</div>
+  <div class="dit">Descendre au port, demander, attendre.
+    <b>Ce temps-là est derrière nous.</b></div>
 
   <div class="points">
     <div>Tu paies par <b>MVola</b>, avec kartaPay.</div>
@@ -153,7 +155,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div class="web">moheligo.com</div>
   </div>
 
-  <svg class="vague" viewBox="0 0 1080 56" preserveAspectRatio="none">
-    <path d="M0,26 C170,2 330,48 540,30 C750,12 910,44 1080,22 L1080,56 L0,56 Z" fill="#F6BC1C"/>
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
   </svg>
 </div>

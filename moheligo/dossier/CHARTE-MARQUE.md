@@ -125,3 +125,49 @@ consultés**, et régler le prix affiché.
 
 > **Un design à 8/10 répété cent fois bat un design à 10/10 changé chaque semaine.
 > Et les deux ensemble ne valent rien si personne ne trouve le bouton Réserver.**
+
+---
+
+## 📏 LES DIMENSIONS — ajoutées le 29/08/2026, et voilà pourquoi
+
+Un relecteur extérieur a noté la campagne 9/10 avec un seul reproche de fond :
+« **maintenir exactement la même charte sur toute la campagne : typographies,
+marges, jaune, bleu, position du logo.** » Vérification faite en comparant les
+fichiers ligne à ligne — **il avait raison, et c'était pire que sur deux
+flyers** :
+
+| Élément | Ce que j'ai trouvé |
+|---|---|
+| Marge gauche du titre | **76 px sur 12 flyers, 70 px sur 9** |
+| Largeur du coin blanc | **404 px sur 14, 392 px sur 9, 412 px sur 2** |
+| Hauteur de la vague dorée | **74 px sur l'un, 56 px sur l'autre** — la signature de la marque à deux tailles |
+
+📌 **La cause n'est pas de la négligence : la charte nommait ces éléments sans
+jamais les CHIFFRER.** « La vague dorée en pied » n'est pas une spécification.
+Un élément non mesuré dérive à chaque nouveau visuel, et personne ne le voit
+parce que chaque écart est petit.
+
+### Les valeurs de référence (format Facebook 1080 × 1350, rendu ×2)
+
+| Élément | Valeur | Remarque |
+|---|---|---|
+| **Marge gauche** de tout le texte | **76 px** | surtitre, titre, paragraphe, pied : tous alignés |
+| **Coin blanc** | **404 × 172 px**, diagonale à **78 %** | `clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%)` |
+| Emblème dans le coin | **68 × 68 px**, `object-fit: contain` | ⚠️ `contain`, jamais `cover` : le logo est carré, il se ferait rogner |
+| Sous-titre du coin | Inter 700, **9,5 px, interlettre 3,4 px** | ⚠️ l'espacement se règle en CSS UNIQUEMENT — écrire « T R A V E R S É E S » en plus fait passer le S final sous la diagonale |
+| **Surtitre** doré | Inter 700, **14 px, interlettre 3,4 px**, `#F6BC1C` | |
+| **Titre** | Archivo 900, **62 px, interligne 1,02, interlettre −2,2 px** | monter la taille seulement si la ligne la plus longue tient, mesurée au rendu |
+| **Vague dorée** | **74 px de haut**, pleine largeur | `viewBox="0 0 1080 74"`, tracé identique partout |
+| Fond | `#0F2A5C` | dégradé vers `#0A1D42` autorisé |
+
+⚠️ **Un partenaire au logo sombre exige un fond clair.** Le logo kartaPay est
+bleu foncé (RVB 24/98/155) : il disparaît sur le marine. D'où la barre
+partenaire en `#F6F9FF`.
+
+### 🔴 Ce qui reste à faire
+
+Les **27 flyers antérieurs** portent encore les anciennes valeurs (marge 70,
+coin 392). Ils ne sont pas faux, ils sont **inégaux** — et l'inégalité ne se
+voit que quand on les met côte à côte, ce que fait justement une campagne.
+📌 À reprendre en une fois, avec `controle.py` derrière, **pas à la va-vite** :
+27 fichiers à retoucher et à refabriquer, c'est un travail à faire éveillé.

@@ -71,13 +71,23 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .dit b { color:#fff; font-weight:700; }
 
 /* le trait d'or : le même séparateur que sur les autres visuels de la marque */
-.trait { position:absolute; left:76px; top:1168px; width:96px; height:6px;
+.trait { position:absolute; left:76px; top:1140px; width:96px; height:6px;
   border-radius:3px; background:#F6BC1C; z-index:5; }
 
-.pied { position:absolute; left:76px; top:1206px; z-index:5; }
-.pied .quoi { font-size:13px; font-weight:700; letter-spacing:2.6px; color:#8FA8CC; }
-.pied .ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:40px;
-  color:#fff; letter-spacing:-1.2px; margin-top:6px; }
+/* 🎯 L'APPEL À L'ACTION. Il manquait, et c'était le vrai défaut du visuel : on
+   donnait une adresse (moheligo.com) sans jamais donner de VERBE. Une adresse
+   dit où aller ; elle ne dit pas quoi faire, ni pourquoi maintenant.
+   La pastille dorée porte l'action, l'adresse reste dessous en second. */
+.pied { position:absolute; left:76px; top:1176px; z-index:5;
+  display:flex; align-items:center; gap:26px; }
+.pied .cta { background:#F6BC1C; border-radius:16px; padding:19px 30px;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.pied .ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:34px;
+  color:#fff; letter-spacing:-1.1px; }
+.pied .ou small { display:block; font-family:'Inter',sans-serif; font-size:12px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:5px; }
 
 /* LA VAGUE DORÉE — signature de la marque, en bas de chaque visuel */
 .vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:4; }
@@ -100,8 +110,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
   <div class="trait"></div>
   <div class="pied">
-    <div class="quoi">TRAVERSÉES MARITIMES DES COMORES</div>
-    <div class="ou">moheligo.com</div>
+    <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+    <div class="ou"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
   </div>
 
   <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">

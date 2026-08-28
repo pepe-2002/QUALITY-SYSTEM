@@ -108,7 +108,23 @@ jobs:
   publier:
     runs-on: ubuntu-latest
     steps:
+      # 🪶 ON NE TÉLÉCHARGE QUE CE QU'ON OUVRE.
+      # Le patron, 28/08/2026 : « supprime des flyers pour alléger le système ».
+      # Mesuré avant de supprimer quoi que ce soit : l'arbre fait 278 Mo, dont
+      # ~150 Mo de VIDÉOS que ce robot n'ouvre jamais. Il n'y avait donc rien à
+      # supprimer — il y avait à ne pas télécharger.
+      # 📌 Les quatre dossiers ci-dessous sont exactement ce que les scripts de
+      # `pub/flyers/` atteignent (relevé sur leurs chemins relatifs : `../photos`,
+      # `../photos-cc`, `../../dossier`). ⚠️ Si un script se met un jour à lire
+      # ailleurs, il faut l'ajouter ICI, sinon la publication casse — et une
+      # publication qui casse coûte plus cher que les secondes gagnées.
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            moheligo/pub/flyers
+            moheligo/pub/photos
+            moheligo/pub/photos-cc
+            moheligo/dossier
 
       - uses: actions/setup-python@v5
         with:

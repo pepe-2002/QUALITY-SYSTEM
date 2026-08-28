@@ -95,7 +95,7 @@ publications de partenariat d'affilée diraient qu'on n'a rien d'autre à montre
 
 ---
 
-# 💳 kartaPay — fiche ouverte le 27/08/2026, **fichiers pas encore reçus**
+# 💳 kartaPay — partenaire sous contrat de publicité
 
 > Le patron m'envoie deux liens Facebook de kartaPay (un post du 16/08 « en
 > collaboration avec MoheliGo », 5 images ; et un reel), puis : « pour kartaPay
@@ -108,16 +108,26 @@ publications de partenariat d'affilée diraient qu'on n'a rien d'autre à montre
 > ➡️ **Il faut les fichiers d'origine, demandés à kartaPay.** C'est un message,
 > pas un obstacle — et il a déjà demandé.
 
-## L'état des droits — à remplir, ne rien publier avant
+## L'état des droits
 
-| Question | État au 27/08/2026 |
+> ✅ **28/08/2026 — LE PATRON TRANCHE** : « **on a un contrat de publicité avec
+> eux, on peut publier.** » C'est son domaine (partenariats = poste C du manuel,
+> § 12.2 ter) et sa décision. Ce fichier est la seule trace qu'un accord existe.
+
+| Question | État au 28/08/2026 |
 |---|---|
-| Fichiers reçus | ❌ non — dossier vide côté kartaPay |
-| Logo (PNG fond transparent) | ❌ demandé par le patron le 27/08 |
-| Droit d'utiliser **leur logo** sur nos visuels | 🟠 le patron a demandé, réponse attendue |
-| Droit d'utiliser **leurs images** dans nos vidéos | 🟠 à confirmer **explicitement** — un post commun ne vaut pas autorisation de réemploi |
-| Personnes identifiables sur les images | ❓ inconnu tant que je ne les ai pas vues |
-| Orthographe exacte du nom | 🟠 **ils écrivent « kartaPay » (petit k)**, nos flyers écrivent « KartaPay ». À vérifier sur leur logo, puis corriger partout |
+| Droit d'utiliser **leur logo** sur nos visuels | ✅ **oui** — contrat de publicité, confirmé par le patron le 28/08 |
+| Référence du contrat (date, signataires, durée) | 🟠 **à ajouter ici** dès qu'il me la donne — un contrat qu'on ne peut pas retrouver ne protège personne |
+| Logo | ✅ **on l'a** : `moheligo/kartapay-logo.png` (600 × 139, fond transparent). Il était déjà dans le dépôt. |
+| Fichiers photo/vidéo de kartaPay | ❌ pas reçus — et je ne peux pas les prendre sur Facebook (aucun accès réseau, et un réseau social recompresse à ~1080 px quand nos visuels sortent en 2160) |
+| Droit d'utiliser **leurs images** dans nos vidéos | 🟠 le contrat couvre la publicité commune ; **le réemploi de LEURS visuels dans les nôtres reste à confirmer** si un jour on en reçoit |
+| Orthographe exacte du nom | ✅ **« kartaPay »**, petit k — relevé sur leur logo et sur leur page. Appliqué sur `flyer39-digitalisation`. ⚠️ Reste à corriger dans les anciens flyers, qui écrivent « KartaPay » |
+
+## ✅ Ce qui est déjà publié avec leur logo
+
+| Quand | Quoi |
+|---|---|
+| 28/08/2026 à 23h26 UTC (02h26 aux Comores) | `flyer-digitalisation-facebook.png` — « L'ÈRE DE LA DIGITALISATION COMMENCE ICI », barre partenaire MoheliGo + kartaPay, publié sur la page |
 
 📌 **LA LEÇON QU'ON A DÉJÀ PAYÉE UNE FOIS** : pour Young Leader, la phrase écrite
 sur le droit à l'image est réclamée depuis le 12/08 et n'est **toujours pas

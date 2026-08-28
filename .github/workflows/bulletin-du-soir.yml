@@ -158,7 +158,22 @@ jobs:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
           PAUSE_FB: ${{ vars.PAUSE_FB }}
-        run: python3 publier_fb.py --publier
+        # 🔓 LE BATTEMENT PEUT PORTER L'ORDRE DE FORCER.
+        # Cas qui l'a rendu nécessaire (28/08/2026) : un `cron` livré avec 8 h 30
+        # de retard a publié le bulletin à 3h38 du matin. Celui du soir, porteur
+        # d'une AUTRE prévision, se faisait refuser — le garde-fou compare la
+        # ligne de titre, et celle du bulletin ne change jamais.
+        # ⚠️ ON NE REGARDE QUE LA DERNIÈRE LIGNE, et c'est capital : si un
+        # battement normal arrive après le battement forcé, sa ligne devient la
+        # dernière et la publication redevient protégée. Avec `tail -3`, le
+        # second battement aurait forcé lui aussi — et publié le doublon.
+        run: |
+          if [ "$(tail -1 battement-soir.txt | grep -c FORCER)" -gt 0 ]; then
+            echo "::warning::Battement marqué FORCER : le garde-fou anti-doublon est contourné pour CETTE publication."
+            python3 publier_fb.py --publier --forcer
+          else
+            python3 publier_fb.py --publier
+          fi
 
       - name: Rapport
         if: always() && vars.FB_PAGE_ID != ''

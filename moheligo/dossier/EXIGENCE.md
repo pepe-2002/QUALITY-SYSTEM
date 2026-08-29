@@ -140,8 +140,12 @@ sous-ensembles latins. Un signe absent **ne lève aucune erreur** — Chromium l
 remplace en silence. Le 29/08, la flèche `↔` s'est affichée « .. » sur un visuel
 fini. **Un caractère absent ne fait pas un bug, il fait un visuel faux.**
 
-Et deux règles de composition :
+Et trois règles de composition :
 - **Aucun mot seul sur la dernière ligne** d'un paragraphe (une « ligne veuve »).
+- **Aucune date, aucun nombre, aucun numéro coupé en fin de ligne.** Vu le
+  29/08 : « 2025-2026 » se cassait en « 2025- » / « 2026 ». ⚠️ On ne corrige PAS
+  avec un trait insécable U+2011 — il est hors de nos woff2 et disparaîtrait en
+  silence. La seule solution propre est `white-space: nowrap` en CSS.
 - **L'espacement des lettres se règle en CSS, jamais en tapant des espaces.**
   Écrire `T R A V E R S É E S` puis appliquer `letter-spacing` cumule les deux :
   le `S` final est passé sous la diagonale du coin, en août.
@@ -180,7 +184,15 @@ Et deux règles de composition :
 4. un **fait opérationnel lu dans le code** et non confirmé par le patron —
    moyens de paiement, prix, lignes ouvertes, horaires, délais. Le dépôt dit ce
    qui a été prévu, pas ce qui marche (manuel § 12.2 quater) ;
-5. un visuel **non regardé à l'œil** après rendu. Nos contrôles savent dire
+6. 🚩 **une image qui porte des MOTS, et un texte qui ne les reprend pas
+   exactement.** Une image écrite est une SOURCE : la contredire, même par
+   imprécision, est une erreur de fait, pas de style.
+   *Né le 29/08 :* l'écharpe du lauréat dit « YOUNG LEADER · OCÉAN INDIEN ·
+   2025-2026 ». J'avais écrit « Young Leader Mohéli distingue ceux qui font
+   avancer l'île » — **rabaissant sa distinction d'un niveau régional à un
+   niveau local, sur un visuel censé lui rendre hommage.** Le patron l'a vu en
+   une seconde. Depuis : quand l'image parle, on la cite.
+7. un visuel **non regardé à l'œil** après rendu. Nos contrôles savent dire
    « le fichier est là » ; ils ne savent pas dire « l'image est juste ».
 
 ---

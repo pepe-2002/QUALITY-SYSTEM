@@ -15,6 +15,23 @@
      protégerait MoheliGo si la personne photographiée revenait dessus. Un
      message WhatsApp suffit. En attente depuis le 12/08.
 
+     🚩 LE TEXTE DIT MOT POUR MOT CE QUE L’ÉCHARPE DIT — corrigé le 29/08.
+     Première version : « Young Leader Mohéli distingue ceux qui font avancer
+     l’île. » L’écharpe, elle, dit « YOUNG LEADER · OCÉAN INDIEN · 2025-2026 ».
+     J’avais donc RABAISSÉ sa distinction d’un niveau régional à un niveau
+     local, sur un visuel censé lui rendre hommage. Le patron l’a vu tout de
+     suite : « c’est écrit Young Leader Océan Indien. »
+     📌 RÈGLE QUI ENTRE DANS LA NORME (§ 7.6) : quand une image porte des MOTS,
+     le visuel les reprend EXACTEMENT. Une image écrite est une source ; la
+     contredire, même par imprécision, est une erreur de fait — pas de style.
+
+     ❓ CE QUE JE NE PEUX PAS SAVOIR ET QUI RESTE À CONFIRMER : le lauréat
+     est-il mohélien ? Le titre est « Océan Indien », les photos viennent de
+     Young Leader Mohéli, mais rien dans le dépôt ne dit son origine. Tant que
+     ce n’est pas confirmé, « ON A DE QUOI ÊTRE FIERS » repose sur un lien
+     que je n’ai pas vérifié. À demander au patron avant toute publication
+     (manuel § 12.2 quater : un fait ne se lit pas dans le dépôt).
+
      🎯 CE QUE CE VISUEL PROMET, ET CE QU’IL NE PROMET PAS
      Il dit que Mohéli produit des gens dont on peut être fier, et que MoheliGo
      est partenaire de Young Leader Mohéli. **Il ne dit PAS que nous les
@@ -84,6 +101,12 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .dit { position:absolute; left:76px; top:716px; width:392px; z-index:5;
   font-size:21px; line-height:1.52; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
+/* ⚠️ UNE DATE NE SE COUPE PAS. Au rendu, « 2025-2026 » se cassait en fin de
+   ligne : « 2025- » puis « 2026 ». On ne peut pas régler ça avec un trait
+   insécable U+2011 — il est hors de nos woff2 latins, et un signe absent ne
+   lève aucune erreur, il fait un visuel faux (leçon de la flèche ↔).
+   La seule solution propre est le CSS. */
+.dit .lie { white-space:nowrap; }
 
 .trait { position:absolute; left:76px; top:876px; width:82px; height:5px;
   border-radius:3px; background:#F6BC1C; z-index:5; }
@@ -120,11 +143,11 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
   </div>
 
-  <div class="sur">MOHÉLI · OCÉAN INDIEN</div>
+  <div class="sur">DISTINCTION · OCÉAN INDIEN</div>
   <div class="acc">ON A DE QUOI<span>ÊTRE FIERS.</span></div>
 
-  <div class="dit">Young Leader Mohéli distingue ceux qui font avancer l’île.
-    <b>MoheliGo est partenaire.</b></div>
+  <div class="dit">Young Leader Océan Indien, <span class="lie">2025-2026</span>.
+    <b>MoheliGo est partenaire de Young Leader Mohéli.</b></div>
 
   <div class="trait"></div>
   <div class="cta">RÉSERVE TA TRAVERSÉE</div>

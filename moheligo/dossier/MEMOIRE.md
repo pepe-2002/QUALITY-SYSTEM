@@ -370,6 +370,28 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🚩 « C'EST ÉCRIT YOUNG LEADER OCÉAN INDIEN » — quand l'image
+  parle, on la cite)** — sur le flyer 45, j'avais écrit « Young Leader Mohéli
+  distingue ceux qui font avancer l'île ». **L'écharpe, elle, dit « YOUNG
+  LEADER · OCÉAN INDIEN · 2025-2026 ».** J'avais donc rabaissé sa distinction
+  d'un niveau RÉGIONAL à un niveau LOCAL — sur un visuel censé lui rendre
+  hommage. Le patron l'a vu en une seconde.
+  📌 **NOUVELLE RÈGLE, § 7.6 de la norme : une image qui porte des mots est une
+  SOURCE. Le texte les reprend exactement.** La contredire, même par
+  imprécision, est une erreur de FAIT, pas de style. C'est la même famille que
+  « le code n'est pas la vérité du service » : je m'étais fié à ce que je savais
+  du partenaire au lieu de lire ce que l'image montrait.
+  ✅ Corrigé : « Young Leader Océan Indien, 2025-2026. MoheliGo est partenaire
+  de Young Leader Mohéli. » — les deux faits, chacun à sa place.
+  ✍️ **Et une règle de composition en prime** : « 2025-2026 » se cassait en fin
+  de ligne. On ne peut pas le réparer avec un trait insécable U+2011 (hors de
+  nos woff2, il disparaîtrait en silence) — `white-space: nowrap` en CSS.
+  ❓ **CE QUE JE NE PEUX TOUJOURS PAS SAVOIR** : le lauréat est-il mohélien ?
+  Le titre est « Océan Indien », les photos viennent de Young Leader Mohéli,
+  et **rien dans le dépôt ne dit son origine**. Tant que ce n'est pas confirmé,
+  « ON A DE QUOI ÊTRE FIERS » repose sur un lien non vérifié. À demander au
+  patron avant toute publication — manuel § 12.2 quater.
+
 - **29/08/2026 (🏅 DEUXIÈME EXEMPLE DE LA BARRE — Young Leader, et deux règles
   corrigées par l'usage)** — `flyer45-fiers-fb.html`, SENTIMENT : LA FIERTÉ.
   ⚖️ **Droits vérifiés AVANT de dessiner** : le patron a donné le go le

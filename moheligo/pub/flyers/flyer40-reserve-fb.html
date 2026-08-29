@@ -122,7 +122,13 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   color:#0F2A5C; letter-spacing:-.8px; }
 .barre .mg b i { color:#F6BC1C; font-style:normal; }
 .barre .sep { width:2px; height:44px; background:#D6E2F5; }
-.barre .kp img { height:34px; display:block; }
+/* ⚖️ QUI EST LE HÉROS ? Nous. kartaPay est le MOYEN, pas l'annonceur — sans
+   quoi le lecteur se demande de quelle marque est la pub. Le partenaire garde
+   sa place et sa lisibilité, il perd juste l'égalité de rang. */
+.barre .kp { display:flex; flex-direction:column; justify-content:center; gap:3px; }
+.barre .kp small { font-size:8.5px; font-weight:700; letter-spacing:2px; color:#8095B4; }
+.barre .kp img { height:27px; display:block; }
+.barre .mg b { font-size:29px; }
 .barre .web { margin-left:auto; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:28px; color:#0F2A5C; letter-spacing:-.8px; }
 
@@ -143,8 +149,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
   <div class="etapes">
     <div class="e"><div class="n">1</div><div class="l">Choisis ton départ.</div></div>
-    <div class="e"><div class="n">2</div><div class="l">Paie avec MVola.</div></div>
-    <div class="e"><div class="n">3</div><div class="l">Reçois ton billet.</div></div>
+    <div class="e"><div class="n">2</div><div class="l">Paie avec MVola ou Holo.</div></div>
+    <div class="e"><div class="n">3</div><div class="l">Reçois ton billet en quelques secondes.</div></div>
   </div>
 
   <div class="tel">
@@ -160,18 +166,18 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
             fill="#F6BC1C"/>
     </svg>
     <div class="t">
-      <div class="p">UNE VRAIE PERSONNE RÉPOND</div>
+      <div class="p">UNE VRAIE PERSONNE TE RÉPOND</div>
       <div class="n">WhatsApp +269 479 43 28</div>
     </div>
   </div>
 
   <div class="preuve">Billet à <b>code QR</b>, il reste dans ton téléphone.
-    Et <b>chaque soir</b>, on publie la mer du lendemain.</div>
+    Et <b>chaque soir</b>, on publie l'état de la mer du lendemain.</div>
 
   <div class="barre">
     <div class="mg"><img src="logo-emblem.png" alt=""><b>Moheli<i>Go</i></b></div>
     <div class="sep"></div>
-    <div class="kp"><img src="kartapay-logo.png" alt="kartaPay"></div>
+    <div class="kp"><small>PAIEMENT PAR</small><img src="kartapay-logo.png" alt="kartaPay"></div>
     <div class="web">moheligo.com</div>
   </div>
 

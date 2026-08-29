@@ -370,6 +370,46 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📐 « CONSTRUIRE UNE MARQUE » — les trois affirmations du relecteur,
+  MESURÉES)** — le patron demande si on peut viser le niveau Apple / LVMH. Le
+  relecteur affirme trois choses ; au lieu d'acquiescer, on a fabriqué
+  `pub/flyers/mesure-marque.py` et on a compté. **Il a raison sur les trois, et
+  c'est pire que ce qu'il croyait** :
+  · **la vague** — 12 visuels sur 45 en portent une, en **14 tracés différents**.
+    33 s'en passent complètement. Ce n'est pas une signature, c'est une habitude
+    récente (les 3 derniers flyers seulement partagent le même tracé) ;
+  · **l'or** — moyenne 7,0 %, très proche de sa règle des 10 %. Mais l'ÉCART va
+    de **0,1 % à 19,8 %**, et 27 visuels sur 39 sont hors de la bande 8–15 %.
+    Ce n'est pas la moyenne qui cloche, c'est l'absence de règle ;
+  · **l'emblème** — réduit à 32 px (taille d'une pastille d'appli), il garde
+    **414 nuances** et se referme en tache. C'est une ILLUSTRATION (un navire de
+    trois quarts avec ses ponts), pas un SYMBOLE. Le test « cache le mot » échoue.
+  📌 **La règle du 29/08 tient une seconde fois** : quand un relecteur signale une
+  incohérence, on ne discute pas, on mesure — et la mesure trouve plus que la
+  remarque. Comme pour la charte le matin même.
+  ⛔ **CE QUE JE N'AI PAS PRIS, et pourquoi ça compte** : il proposait de
+  remplacer « on publie la mer du lendemain » par « les départs du lendemain sont
+  publiés ». **C'est faux** : on publie l'état de la MER, pas les départs. Sa
+  remarque de fond (c'est obscur) était juste, sa correction aurait menti.
+  Corrigé en « l'état de la mer du lendemain » — clair ET vrai.
+  ✅ **Trouvé en vérifiant ses dires** : l'appli accepte **MVola ET Holo** (119 et
+  14 occurrences dans `index.html`), tous deux via kartaPay. Écrire « Paie avec
+  MVola » excluait les clients Holo. Ce n'était pas un risque futur comme il le
+  pensait — c'était une omission présente. Corrigé.
+  ✅ Appliqué aussi : « une vraie personne TE répond » (un seul registre, on
+  tutoie partout), « en quelques secondes » (le mot de nos propres CGV, pas
+  « instantanément » qui va plus loin qu'elles), et la barre partenaire remise en
+  hiérarchie — MoheliGo héros, « PAIEMENT PAR kartaPay » en second.
+  🔴 **CE QUE JE REFUSE POUR L'INSTANT** : l'architecture de marque en six
+  filiales (TRAVEL / DISCOVER / STAY / MOVE / BUSINESS / ADS). Une route, fermée
+  depuis le 26/08, 33 abonnés, zéro réservation mesurée. Nommer six divisions
+  d'une entreprise qui n'a pas prouvé une vente, c'est l'erreur de fondateur
+  déjà consignée au manuel. À garder comme carte à trois ans, pas comme chantier.
+  🔴 **ET LE CONSEIL DANGEREUX À NOTRE STADE** : « moins publicitaire, laisse
+  respirer, le premium ne crie pas ». Vrai pour qui a déjà la distribution.
+  **Apple chuchote parce que tout le monde écoute déjà.** Nous avons 33
+  personnes qui écoutent : chuchoter, c'est se taire.
+
 - **29/08/2026 (🚩 UNE DATE À L'ENVERS SUR L'ÉCRAN DU PRODUIT — et deux défauts
   que seul le rendu a montrés)** — en fabriquant la variante « Réserve ta
   traversée » (flyer 40), trois choses sont apparues, toutes invisibles au code :

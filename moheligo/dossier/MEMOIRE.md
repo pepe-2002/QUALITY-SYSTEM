@@ -403,6 +403,14 @@ recharger ce sujet ici, ce n'est pas du marketing.
   💰 **L'argument de calendrier, en sa faveur** : 33 abonnés et 39 visuels — le
   changement ne coûtera JAMAIS moins cher qu'aujourd'hui.
   ⚖️ Décision à lui (§ 12.2 ter) : le logo est son identité, pas ma matière.
+  📌 **SA DÉCISION, LE JOUR MÊME : « on le fait après. »** Le chantier du
+  symbole est donc AJOURNÉ, pas abandonné — les quatre candidats sont dessinés
+  et testés, `pub/marque/emblemes.html` est prêt à reprendre tel quel.
+  ⚠️ **Ce qu'une session future doit savoir avant de le rouvrir** : l'argument
+  de calendrier joue CONTRE l'attente (33 abonnés aujourd'hui, le changement ne
+  coûtera jamais moins cher), mais il a raison sur le fond — un symbole ne
+  produit pas de réservation, et c'est de réservations qu'on manque. **Ne pas
+  relancer ce sujet de moi-même : il l'a rangé sciemment.**
 
 - **29/08/2026 (📷 « NIVEAU APPLE » — ce que je peux, ce que je ne peux PAS, et
   où est vraiment le problème)** — le patron envoie neuf photos de lui avec un

@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (⬛ LA BARRE — le patron relève le niveau, et ça devient
+  mesurable)** — « je ne joue plus dans la cour des entreprises comoriennes, je
+  veux m'imposer comme numéro un. Les petits détails comptent. »
+  📄 **`dossier/EXIGENCE.md`** — la norme. Règle de rédaction : **chaque exigence
+  est vérifiable par un chiffre ou par une machine.** « Plus premium », « plus
+  soigné » n'y entrent pas — ce sont des vœux, pas des exigences.
+  🤖 **`pub/flyers/exigence.py`** — l'instrument qui REFUSE. Une norme qu'on
+  relit de bonne volonté est une intention.
+  🚩 **CE QU'IL A TROUVÉ EN UNE COMMANDE, sur 43 visuels : 1 conforme.**
+  · **186 apostrophes droites `'`, ZÉRO typographique `’` — 100 % de fautes**,
+    invisibles depuis trois semaines. C'est très exactement la différence entre
+    un texte tapé et un texte composé ;
+  · 42 visuels sans SENTIMENT déclaré ; 31 sans appel à l'action structuré ;
+    13 titres qui parlent de nous et non du lecteur ; 11 caractères hors de nos
+    woff2 (le même piège que la flèche `↔` affichée « .. »).
+  ✅ **Les contrastes, eux, sont TOUS conformes WCAG AA** — mesurés : blanc
+  13,94:1, or 8,05:1, texte courant 10,15:1, petites capitales 5,74:1. Le gap
+  n'était pas là. Mesurer évite de réparer ce qui marche.
+  🎯 **LA SYNTHÈSE RETENUE, contre le conseil « choisis un ton »** : le marché
+  comorien IMPOSE d'expliquer — une grande partie des gens n'a jamais payé en
+  ligne, supprimer le « comment » supprimerait ce qui convertit. Mais expliquer
+  n'autorise pas à baisser le niveau. **Un seul univers, deux moments :
+  l'émotion ouvre, le produit livre, dans la même lumière.** L'explication monte
+  au niveau de l'émotion, jamais l'inverse.
+  🖼️ **`flyer44-quelquun-fb.html`** — l'exemple, conforme au premier passage.
+  Titre « TU PARS VOIR QUELQU'UN. » : 4 mots, parle au lecteur, aucun mot
+  abstrait. Corps : 13 mots qui portent le produit sans changer de voix. Une
+  vedette minuscule sur une mer immense — l'image ne montre pas un produit, elle
+  montre la distance entre deux personnes, et le titre ne fait que la nommer.
+  📌 **Les quatre sentiments déclarables, et rien d'autre** : LE SOULAGEMENT,
+  LA PROXIMITÉ, LA FIERTÉ, LA CONFIANCE. Un visuel qui n'en déclare aucun n'est
+  pas fini ; un visuel qui en vise deux n'en transmet aucun.
+
 - **29/08/2026 (🗓️ « TOUT EST LÀ » PROGRAMMÉ LUNDI, et la date rendue
   périssable-proof)** — le patron valide lundi 31/08 midi, en ajoutant :
   « regarde la date du flyer ». Il avait raison de la regarder.

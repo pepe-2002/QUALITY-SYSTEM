@@ -145,3 +145,17 @@ doit être recalculé sur les vrais départs.
 
 ⚠️ **Le jeton Facebook expire vers le 10/10/2026.** À renouveler avant, sinon les
 publications s'arrêtent en silence.
+
+
+## ⬛ `EXIGENCE.md` — la barre (29/08/2026)
+
+La norme de communication, posée par le patron : « je ne joue plus dans la
+cour des entreprises comoriennes ». **À lire avant tout flyer, tout texte,
+toute vidéo.** Chaque exigence y est vérifiable par un chiffre ou par une
+machine — le reste est un vœu et n'y figure pas.
+
+🤖 Contrôle obligatoire avant publication :
+```
+cd moheligo/pub/flyers && python3 exigence.py <fichier.html>
+```
+Il **refuse**. Au 29/08, il déclarait **1 visuel conforme sur 43**.

@@ -1,0 +1,132 @@
+<!-- TU PARS VOIR QUELQU’UN — l’exemple de la BARRE, 29/08/2026.
+
+     SENTIMENT : LA PROXIMITÉ
+
+     Fait à la demande du patron : « je ne joue plus dans la cour des entreprises
+     comoriennes, je veux m’imposer comme numéro un. Les petits détails comptent.
+     Fais-moi un flyer d’exemple. »
+     Norme complète : ../../dossier/EXIGENCE.md — contrôle : `python3 exigence.py`.
+
+     🎯 CE QU’IL DÉMONTRE : UN SEUL UNIVERS, DEUX MOMENTS.
+     Le titre porte l’émotion, le corps porte le produit — sans changer de
+     lumière, de typographie, ni de calme. C’est la synthèse retenue contre le
+     conseil « choisis un ton » : le marché comorien IMPOSE d’expliquer (une
+     grande partie des gens n’a jamais payé en ligne), mais expliquer n’autorise
+     pas à baisser le niveau. L’explication monte au niveau de l’émotion, jamais
+     l’inverse.
+
+     ✅ POURQUOI CETTE IMAGE ET PAS UNE PLAGE
+     Une vedette minuscule sur une mer immense. Elle ne montre pas un produit :
+     elle montre la distance entre deux personnes. C’est ce que le titre dit.
+     Le titre ne fait que nommer ce que l’image montre déjà — règle du 26/08.
+     Les ombres sont poussées vers notre marine (`traiter.etalonner`) : cette
+     mer devient NOTRE mer, sans qu’on sache dire pourquoi.
+
+     📏 CE QUE LA MACHINE A VÉRIFIÉ AVANT PUBLICATION
+     · titre : 4 mots, 12 et 10 signes — sous les maximums de 6 mots et 32 signes ;
+     · le titre parle au LECTEUR (« TU »), pas de nous ;
+     · aucun mot abstrait, aucun point d’exclamation, aucun superlatif ;
+     · apostrophes typographiques ’ partout — la bibliothèque en comptait 186
+       de droites et zéro de bonnes le matin même ;
+     · un seul appel à l’action, verbe à l’impératif, avec l’adresse dessous ;
+     · marge 76, coin 404 × 172, vague 74, format 1080 × 1350.
+
+     ⚠️ AUCUNE DATE SUR LE VISUEL. Un post reste sur la page pour toujours ;
+     la mention de fermeture va dans le TEXTE du post, qui se régénère.
+
+     Rendu : node render.js flyer44-quelquun-fb.html flyer-quelquun-v2-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* LA MER PLEIN CADRE. L’horizon est haut : ce qui domine, c’est l’étendue —
+   c’est elle qui porte le sentiment, pas le bateau. */
+.photo { position:absolute; inset:0; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 12%; display:block; }
+
+/* Le marine monte DANS la mer. Les arrêts sont calculés pour que le fondu soit
+   déjà total à 66 %, là où le titre commence : un titre posé sur un dégradé en
+   cours de route perd son contraste ligne après ligne. */
+.fondu { position:absolute; inset:0; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 30%, rgba(15,42,92,.42) 47%,
+             rgba(15,42,92,.88) 59%, #0F2A5C 66%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+/* ⚠️ L’espacement se règle ICI, jamais en tapant des espaces dans le texte :
+   les deux se cumulent et le S final passe sous la diagonale. Vécu en août. */
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:812px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* 72 px : « QUELQU’UN. » (10 signes) tient dans 928 px avec de l’air. */
+.acc { position:absolute; left:76px; top:850px; width:928px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:72px; line-height:1.0;
+  letter-spacing:-2.8px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+/* LE PRODUIT, dans le même calme que l’émotion. Deux phrases, 13 mots.
+   Ce n’est pas une notice — c’est la suite de la même voix. */
+.dit { position:absolute; left:76px; top:1024px; width:600px; z-index:5;
+  font-size:24px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.trait { position:absolute; left:76px; top:1122px; width:82px; height:5px;
+  border-radius:3px; background:#F6BC1C; z-index:5; }
+
+.pied { position:absolute; left:76px; top:1166px; z-index:5;
+  display:flex; align-items:center; gap:26px; }
+.cta { background:#F6BC1C; border-radius:16px; padding:17px 26px;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:25px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+  color:#fff; letter-spacing:-1.1px; }
+.ou small { display:block; font-family:'Inter',sans-serif; font-size:11px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:4; }
+</style>
+
+<div class="page">
+  <div class="photo"><img src="mer-vedette-4x5.jpg" alt=""></div>
+  <div class="fondu"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">TU PARS VOIR<span>QUELQU’UN.</span></div>
+
+  <div class="dit">La mer, c’est le chemin.
+    <b>Ta place se prend d’ici, depuis ton téléphone.</b></div>
+
+  <div class="trait"></div>
+  <div class="pied">
+    <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+    <div class="ou"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+  </div>
+
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

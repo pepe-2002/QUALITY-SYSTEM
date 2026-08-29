@@ -370,6 +370,41 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📅 TROIS JOURS PROGRAMMÉS, ET LA BARRE ENTRE DANS LE ROBOT)** —
+  relecture extérieure des deux exemples : « Tu pars voir quelqu'un » **9/10,
+  le meilleur de la bibliothèque** ; « On a de quoi être fiers » **7/10, en
+  retrait**. Le verdict est juste, et je le prends tel quel.
+  ✅ **Deux corrections faites, parce qu'elles étaient justes** : cadrage
+  resserré (1120 px au lieu de 1536 sur 2560 — la vedette occupe 1,4 fois plus
+  de surface, l'ampleur reste parce que l'horizon est haut), et dégradé du bas
+  à **six arrêts au lieu de quatre** (à quatre, une marche était perceptible
+  vers 55 %).
+  ⛔ **UNE REMARQUE REFUSÉE, ET C'EST LA NORME QUI TRANCHE** : « le CTA reste
+  générique, après un slogan aussi humain un CTA plus aligné serait plus
+  puissant. » **Non.** La norme § 4 dit : un seul appel, toujours le même verbe,
+  toujours la même adresse. Un appel qui change à chaque visuel n'est plus
+  reconnu — c'est exactement la discipline que les trois relecteurs nous
+  reprochent de ne pas avoir. **On ne peut pas réclamer de la cohérence et
+  varier l'appel à l'action.**
+  🩹 **TROUVÉ EN VÉRIFIANT LE TEXTE DU POST** : `service.MENTION_FERMETURE`
+  contenait **3 apostrophes droites**. C'est le passage le plus lu de tout ce
+  qu'on écrit — il part sur CHAQUE publication pendant une fermeture. Corrigé.
+  🗓️ **PROGRAMMÉ, parce que la session va se réinitialiser** :
+  · dimanche 30/08 → le neveu (`trig_01Nt6n9uZH8DrBk7KRbbztoH`)
+  · lundi 31/08 → « TOUT EST LÀ », produit (`trig_01EmmwFfX2g2hyMLdfq8Q8ki`)
+  · mardi 01/09 → « TU PARS VOIR QUELQU'UN », émotion (`trig_014LwshHHbBh3QcTP8k888Xx`)
+  **Un seul univers, deux moments : produit lundi, émotion mardi.**
+  ⬛ **LA BARRE EST ENTRÉE DANS LE ROBOT DE MIDI** : `exigence.py` est désormais
+  exécuté AVANT chaque battement, tous les jours. Si le visuel du jour n'est pas
+  conforme, **on ne publie pas** — on prévient et on corrige. Au 29/08, 1 sur 43
+  passe : le contrôle va donc refuser souvent. **C'est le but. On ne publie plus
+  un visuel hors norme parce qu'il est l'heure.**
+  ⚠️ **FRAGILITÉ CONNUE À DIRE** : ces Routines sont liées à CETTE session. Une
+  Routine qui ouvre une session neuve n'a pas les droits d'écriture sur le dépôt
+  (mesuré le 28/08) — elle tourne, ne pousse rien, et se déclare réussie. Si la
+  session est réinitialisée, il faut vérifier que les publications sortent
+  vraiment, et ne jamais se fier au statut « SUCCEEDED ».
+
 - **29/08/2026 (🚩 « C'EST ÉCRIT YOUNG LEADER OCÉAN INDIEN » — quand l'image
   parle, on la cite)** — sur le flyer 45, j'avais écrit « Young Leader Mohéli
   distingue ceux qui font avancer l'île ». **L'écharpe, elle, dit « YOUNG

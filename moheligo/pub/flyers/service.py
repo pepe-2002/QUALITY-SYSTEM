@@ -107,10 +107,15 @@ VISUEL_AVIS = 'flyer-suspension-facebook.png'
 # ⚠️ Pour couper les pubs à nouveau : `PUB_PENDANT_FERMETURE = False`.
 PUB_PENDANT_FERMETURE = True   # sans effet tant que OUVERT vaut True
 
+# ✍️ APOSTROPHES TYPOGRAPHIQUES ’ ET NON ' — corrigé le 29/08/2026.
+# Ce texte part sur CHAQUE publication pendant une fermeture : une apostrophe
+# droite ici se répète des dizaines de fois sur la page. C'est le passage le
+# plus lu de tout ce qu'on écrit, et c'était le seul qui restait fautif après
+# la mise aux normes (norme § 5).
 MENTION_FERMETURE = """⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS (mer agitée).
-Tu peux prendre ta place pour les jours qui viennent — elle t'attend, et si la
+Tu peux prendre ta place pour les jours qui viennent — elle t’attend, et si la
 date ne te va plus, la changer ne coûte rien. Mais ne descends pas au port avant
-qu'on annonce la reprise ici : on la publiera dès qu'elle est décidée."""
+qu’on annonce la reprise ici : on la publiera dès qu’elle est décidée."""
 
 
 def avec_mention(texte):

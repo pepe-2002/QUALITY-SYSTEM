@@ -392,10 +392,27 @@ recharger ce sujet ici, ce n'est pas du marketing.
   publiés ». **C'est faux** : on publie l'état de la MER, pas les départs. Sa
   remarque de fond (c'est obscur) était juste, sa correction aurait menti.
   Corrigé en « l'état de la mer du lendemain » — clair ET vrai.
-  ✅ **Trouvé en vérifiant ses dires** : l'appli accepte **MVola ET Holo** (119 et
-  14 occurrences dans `index.html`), tous deux via kartaPay. Écrire « Paie avec
-  MVola » excluait les clients Holo. Ce n'était pas un risque futur comme il le
-  pensait — c'était une omission présente. Corrigé.
+  🚩 **MON ERREUR DU JOUR, ET C'EST LA PLUS INSTRUCTIVE DE LA SEMAINE.** En
+  vérifiant sa crainte « ne devenez pas l'appli MVola des bateaux », j'ai compté
+  dans `index.html` : MVola 119 fois, **Holo 14 fois**, tous deux via kartaPay.
+  J'en ai conclu qu'on acceptait Holo, et j'ai écrit « Paie avec MVola ou Holo »
+  sur le flyer. **Le patron, dans la minute : « on n'accepte pas Holo. »**
+  📌 **LA RÈGLE QUE J'EN TIRE, ET ELLE VAUT POUR TOUT LE RESTE** : *le code n'est
+  pas la vérité du service.* Il dit ce qui a été PRÉVU, pas ce qui MARCHE
+  aujourd'hui. Un moyen de paiement, un prix, un horaire, un port ouvert, un
+  délai : **ça se demande au patron, ça ne se lit pas dans le dépôt.** J'ai
+  passé la semaine à me féliciter de « mesurer au lieu de croire » — et j'ai
+  mesuré la mauvaise source. Une mesure exacte sur le mauvais objet reste fausse.
+  ✅ Retiré du flyer avant toute publication. **Holo n'a atteint aucun support
+  publié** (vérifié sur tout `pub/` et `dossier/`).
+  🔴 **MAIS LE SITE EN PRODUCTION, LUI, PROMET HOLO À 7 ENDROITS** — dont les
+  **CGV** (« le paiement s'effectue via KartaPay (Mobile Money MVola / Holo) »),
+  la fiche Paiement de l'accueil, et trois réponses automatiques de la réception.
+  Un client qui choisit Holo se heurte à un paiement qui échoue, et les CGV sont
+  un document contractuel. ⚠️ **Ce dépôt est une COPIE du site** (récupérée le
+  02/08) : aucun workflow ne déploie moheligo.com d'ici — vérifié. Corriger
+  `index.html` ici ne corrige donc RIEN en production. **À faire par le patron
+  sur le vrai site, ou me dire par où il se déploie.**
   ✅ Appliqué aussi : « une vraie personne TE répond » (un seul registre, on
   tutoie partout), « en quelques secondes » (le mot de nos propres CGV, pas
   « instantanément » qui va plus loin qu'elles), et la barre partenaire remise en

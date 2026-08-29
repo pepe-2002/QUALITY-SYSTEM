@@ -370,6 +370,37 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📏 « L'AUTOCOLLANT N'EST PAS À LA MÊME TAILLE QUE LE TÉLÉPHONE »
+  — il voit ce que mes mesures ratent)** — deux défauts réels, et le premier
+  vient d'une mesure que je croyais faite.
+  🐛 **DÉFAUT 1 — MES COINS D'ÉCRAN ÉTAIENT FAUX, et je pouvais le savoir.**
+  `coins_ecran()` cherchait les extrêmes d'une zone sombre dans une fenêtre
+  serrée. Vérification faite après coup : **les quatre coins touchaient les
+  bords de ma fenêtre** — 610 pixels sombres débordaient à droite. Je n'avais
+  pas détecté l'écran, j'avais détecté MA PROPRE BOÎTE.
+  📌 **La règle : un résultat qui tombe pile sur les bornes qu'on a fixées n'est
+  pas un résultat, c'est une saturation.** Toujours vérifier qu'un extremum
+  n'est pas collé à la contrainte.
+  Deuxième tentative (composante connexe depuis une graine) : la région
+  **fuit** dans l'ombre entre ses doigts, le bord gauche part à x=537.
+  Troisième (ajustement des quatre droites) : même fuite, ses doigts occultent
+  le bord gauche de l'écran. ➡️ **Aucune détection automatique ne pouvait
+  marcher** : le bord est CACHÉ. Coins finalement lus à la loupe sur une grille
+  de 10 px — (602,634) (886,628) (881,1262) (611,1259).
+  🐛 **DÉFAUT 2 — LA CAPTURE N'AVAIT PAS LE RAPPORT DE SON ÉCRAN.** Son écran
+  fait **0,443** (277 × 626 px) ; notre capture faisait **0,493**. 10 % d'écart,
+  donc une appli écrasée en largeur. Invisible en la regardant seule, évident
+  dans la main. ✅ Corrigé à la SOURCE : `capture.js` prend maintenant
+  `LARGEUR`/`HAUTEUR` en variables — `HAUTEUR=995` donne 1320 × 2985, soit
+  0,442. ⛔ On ne rogne PAS les côtés : les cartes de l'appli ont des marges
+  étroites, on couperait dedans.
+  🙈 **« Je ne veux pas mon visage sur le flyer. »** Recadré sous le menton ET
+  sous le cou : le téléphone commence à y=628, le cadre est calé à 604. Il ne
+  reste que la main, le téléphone et le polo.
+  📐 Et `object-position` est désormais CALCULÉ, plus tâtonné : la fenêtre fait
+  614 px, l'écran tombe à 387→688 après mise à l'échelle, donc le décalage doit
+  être entre 104 et 357 px — 200 px = 42 %. À 8 %, le téléphone sortait du cadre.
+
 - **29/08/2026 (🎯 « C'EST TOUJOURS PAS ESTHÉTIQUE » — six défauts, un seul
   geste pour les régler)** — le patron rejette le flyer 42. Il a raison, et
   aucun des défauts n'était une question de couleur :

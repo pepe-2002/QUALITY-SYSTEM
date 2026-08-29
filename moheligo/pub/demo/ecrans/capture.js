@@ -30,12 +30,26 @@ const { chromium } = require('playwright');
 const path = require('path');
 
 const APPLI = path.resolve(__dirname, '../../../index.html');
-const SORTIE = path.join(__dirname, 'accueil-reservation.png');
+const SORTIE = process.env.SORTIE || path.join(__dirname, 'accueil-reservation.png');
 
 // 440 px et pas 390 : à 390, « MoheliGo » et « Commandants » sont tronqués en
 // « Mohel… ». Densité 3 → 1320 x 2700 pixels réels, largement de quoi tenir
 // dans un châssis de téléphone sur un visuel 2160 x 2700.
-const LARGEUR = 440, HAUTEUR = 892, DENSITE = 3;
+const LARGEUR = +(process.env.LARGEUR || 440);
+const HAUTEUR = +(process.env.HAUTEUR || 892);
+const DENSITE = 3;
+
+/* 📐 POURQUOI LA HAUTEUR EST RÉGLABLE — 29/08/2026.
+ * Pour incruster cet écran dans la main de quelqu'un, la capture doit avoir LE
+ * MÊME RAPPORT que l'écran du téléphone photographié, sinon elle est écrasée.
+ * Mesuré sur la prise du patron : son écran fait 0,443 (277 x 626 px) ; la
+ * capture par défaut fait 0,493. Écart de 10 % — invisible à l'œil nu ligne à
+ * ligne, mais le patron l'a vu tout de suite sur le flyer : « l'autocollant
+ * n'est pas à la même taille que le téléphone ».
+ * ⛔ On ne corrige PAS en rognant les côtés : les cartes de l'appli ont des
+ * marges étroites et on couperait dedans. On capture PLUS HAUT :
+ *     LARGEUR=440 HAUTEUR=995 SORTIE=... node capture.js   -> 0,442
+ */
 
 const dans = (jours) => {
   const d = new Date(Date.now() + jours * 86400000);

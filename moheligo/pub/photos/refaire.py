@@ -5,6 +5,8 @@ Une seule commande pour rejouer toute la chaîne — sinon chaque réglage
 demande de retrouver l'ordre exact des opérations, et l'ordre compte :
 la balance des blancs se mesure sur le MUR, donc AVANT qu'il soit remplacé.
 """
+import os
+import subprocess
 import sys
 from PIL import Image, ImageFilter
 sys.path.insert(0, '/home/user/QUALITY-SYSTEM/moheligo/pub/photos')
@@ -33,7 +35,18 @@ CORPS = [(558, 592), (930, 584), (923, 1300), (565, 1308)]
 POUCE = []
 
 photo = Image.open(PRISE).convert('RGB')
-tel = ms.telephone_propre(Image.open('/tmp/photos/ecran-haut.png'))
+# 📅 LA CAPTURE SE REFAIT ICI, À CHAQUE FOIS — elle n'est pas un fichier qu'on
+# garde. La date affichée dans l'appli vaut « aujourd'hui + 7 jours » ; figée,
+# elle montre une réservation pour une date PASSÉE quelques jours plus tard, et
+# un post Facebook reste sur la page pour toujours.
+# ⚠️ HAUTEUR=995 : il faut le rapport de l'écran photographié (0,443), pas
+# celui de la capture par défaut (0,493), sinon l'appli est écrasée en largeur.
+ECRAN = '/tmp/ecran-haut.png'
+subprocess.run(['node', 'capture.js'], check=True,
+               cwd=os.path.join(os.path.dirname(__file__), '..', 'demo', 'ecrans'),
+               env={**os.environ, 'LARGEUR': '440', 'HAUTEUR': '995', 'SORTIE': ECRAN,
+                    'NODE_PATH': os.environ.get('NODE_PATH', '/opt/node22/lib/node_modules')})
+tel = ms.telephone_propre(Image.open(ECRAN))
 # ⚠️ `adoucir=0.6` et non 1,4 : un bord de masque trop flou laissait
 # transparaître la coque claire en un LISERÉ PÂLE le long du bord gauche,
 # entre les doigts et le châssis. Le patron : « à droite des autres doigts on

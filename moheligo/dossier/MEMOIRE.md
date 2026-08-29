@@ -370,6 +370,30 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🗓️ « TOUT EST LÀ » PROGRAMMÉ LUNDI, et la date rendue
+  périssable-proof)** — le patron valide lundi 31/08 midi, en ajoutant :
+  « regarde la date du flyer ». Il avait raison de la regarder.
+  📅 **LE VISUEL PORTAIT LE 05/09** — valable lundi, mais **un post Facebook
+  reste sur la page pour toujours**. Après le 5 septembre, le flyer montre une
+  réservation pour une date passée : le lecteur en conclut que le service est
+  mort. C'est le troisième défaut de date de la journée, et le plus insidieux :
+  il n'apparaît qu'en différé.
+  ✅ **Corrigé au niveau de la CHAÎNE, pas du fichier** : `refaire.py` relance
+  maintenant `capture.js` lui-même à chaque fabrication (avec HAUTEUR=995 pour
+  le rapport 0,442 de l'écran photographié). La date se recalcule donc toujours
+  à « aujourd'hui + 7 jours ». Le visuel n'est plus un actif qu'on garde : c'est
+  une sortie qu'on refait.
+  🗓️ **Programmation** : Routine ponctuelle `trig_01EmmwFfX2g2hyMLdfq8Q8ki`,
+  lundi 31/08 à 09h05 UTC. Elle REFABRIQUE avant de publier, et elle porte
+  **trois contrôles à l'œil** avant publication : date au futur et au format
+  JJ/MM, aucun visage, aucun trait vertical au bord gauche. Si un contrôle
+  échoue, on ne publie pas.
+  ⚠️ L'exception de la Routine quotidienne couvre désormais **dimanche 30 ET
+  lundi 31** — sinon deux publications à trois minutes d'écart les deux jours.
+  📝 Texte du post : `pub/flyers/texte-toutestla.txt`, passé par
+  `service.avec_mention()` (vérifié : la mention de suspension s'insère bien
+  avant les mots-dièse).
+
 - **29/08/2026 (⚠️ DEUX ROUTINES À LA MÊME MINUTE — trouvé en cherchant un
   créneau)** — en cherchant quand publier le flyer 43, j'ai listé les Routines
   et découvert que **deux d'entre elles partaient dimanche 30/08 à 09h05 UTC** :

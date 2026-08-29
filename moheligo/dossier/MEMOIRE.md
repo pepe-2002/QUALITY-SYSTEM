@@ -370,6 +370,38 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🎯 « C'EST TOUJOURS PAS ESTHÉTIQUE » — six défauts, un seul
+  geste pour les régler)** — le patron rejette le flyer 42. Il a raison, et
+  aucun des défauts n'était une question de couleur :
+  1. photo d'identité — plaqué au mur, centré, bras tendu, face objectif ;
+  2. le mur reste taché, moisi, plinthe sale, même après balance des blancs ;
+  3. la tête touchait presque le bord : aucune respiration ;
+  4. le fondu coupait le corps à l'horizontale — ça lisait « photo collée sur
+     un rectangle bleu », pas une image ;
+  5. le bas était une dalle marine avec quatre blocs de texte empilés ;
+  6. deux points de fixation en concurrence : son visage ET le téléphone.
+  ✅ **UN SEUL GESTE LES RÈGLE : SERRER LE CADRE.** Le cadre serré tue le mur,
+  la posture et le bord d'un coup, et fait passer le visage dans le flou —
+  présent, mais plus concurrent.
+  📷 **`profondeur()` — le geste qui manquait depuis le début.** Un capteur de
+  téléphone a TOUT net, du premier plan au fond ; l'œil lit ça comme
+  « amateur » sans savoir pourquoi. On refabrique une mise au point : net sur
+  le téléphone, décroché au-delà.
+  🐛 **Bug instructif** : je peignais le masque du plus PETIT disque au plus
+  grand — chaque grand disque, plus sombre, recouvrait le petit disque net déjà
+  posé, et toute l'image sortait floue, téléphone compris. **Un dégradé se peint
+  de l'extérieur vers le centre.** Le fond part à 0, pas à 255.
+  ☀️ **LA SURFACE CLAIRE, déclarée et non subie** (`flyer43-toutestla-fb.html`).
+  Le mur derrière lui est clair : poser un fondu marine dessus, c'était forcer
+  la photo dans la maquette — la même erreur qu'au flyer 41. Donc mêmes
+  couleurs, mêmes polices, même vague, mêmes marges de 76 px, mais le marine
+  passe du FOND au TEXTE et l'or reste l'action. Le coin blanc en biais ne peut
+  pas exister sur fond clair : le logotype est posé nu.
+  📌 **Deux surfaces DÉCLARÉES valent mieux qu'une charte contournée au cas par
+  cas** — c'est exactement la dérive mesurée le matin même (marge 76/70, coin
+  404/392/412, vague 74/56). À faire valider par le patron comme surface
+  officielle, sinon c'est une exception de plus.
+
 - **29/08/2026 (📱 « JE SAIS QUE TU PEUX LE FAIRE » — il avait raison, j'avais
   répondu trop vite)** — j'avais dit au patron que je ne pouvais pas travailler
   ses photos. Il insiste : « rends la photo claire, et le téléphone, les gens

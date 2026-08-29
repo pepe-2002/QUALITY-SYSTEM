@@ -165,3 +165,32 @@ if __name__ == '__main__':
     im = adoucir_peau(im)
     im.save(sortie, quality=95, subsampling=0)
     print(f'OK -> {sortie}  {im.size[0]}x{im.size[1]}')
+
+
+def profondeur(im, centre, rayon, force=14):
+    """Simule une faible profondeur de champ : net sur le téléphone, flou ailleurs.
+
+    C'est LE geste qui sépare une photo de téléphone d'une photo de campagne.
+    Un capteur de téléphone a tout net du premier plan à l'arrière-plan ; l'œil
+    lit ça comme « amateur » sans savoir pourquoi. On refabrique la mise au
+    point : net dans le disque du sujet, flou croissant au-delà.
+    ⚠️ Le dégradé du masque doit être LONG (ici 1,9 × le rayon). Une transition
+    courte fait une auréole nette autour du sujet — le défaut classique.
+    """
+    from PIL import ImageDraw
+    L, H = im.size
+    cx, cy = centre
+    flou = im.filter(ImageFilter.GaussianBlur(force))
+    # ⚠️ ON PEINT DU PLUS GRAND AU PLUS PETIT, et le fond part à 0 (tout flou).
+    # Fait dans l'autre sens la première fois : chaque grand disque, plus sombre,
+    # recouvrait le petit disque net déjà posé — et TOUTE l'image sortait floue,
+    # y compris le téléphone. Un dégradé se peint de l'extérieur vers le centre.
+    m = Image.new('L', (L // 4, H // 4), 0)
+    d = ImageDraw.Draw(m)
+    etapes = 44
+    for i in reversed(range(etapes)):
+        r = (rayon * (1 + 1.9 * i / etapes)) / 4
+        d.ellipse([cx / 4 - r, cy / 4 - r, cx / 4 + r, cy / 4 + r],
+                  fill=int(255 * (1 - i / etapes) ** 1.3))
+    m = m.resize((L, H), Image.BICUBIC).filter(ImageFilter.GaussianBlur(L / 40))
+    return Image.composite(im, flou, m)

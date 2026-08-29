@@ -1,0 +1,120 @@
+<!-- TOUT EST LÀ — la SURFACE CLAIRE de la marque, 29/08/2026.
+     Le patron, sur le flyer 42 : « c'est toujours pas esthétique. » Il avait
+     raison, et le défaut n'était pas la couleur.
+
+     🔍 LES SIX DÉFAUTS DU 42, NOMMÉS AVANT D'ÊTRE CORRIGÉS
+     1. photo d'identité : plaqué au mur, centré, bras tendu, face objectif ;
+     2. le mur, même corrigé, reste taché, moisi, avec une plinthe sale ;
+     3. la tête touchait presque le bord — aucune respiration ;
+     4. le fondu coupait le corps à l'horizontale, comme un rideau : ça lisait
+        « photo collée sur un rectangle bleu », pas une image ;
+     5. le bas était une dalle marine avec quatre blocs de texte empilés ;
+     6. deux points de fixation en concurrence : son visage ET le téléphone.
+
+     ✅ CE QUI LES RÈGLE, ET C'EST UN SEUL GESTE : SERRER LE CADRE.
+     Un cadre serré tue le mur, la posture et le bord d'un coup. Le visage passe
+     dans le flou — présent mais plus concurrent. Et `profondeur()` refabrique
+     une mise au point : net sur le téléphone, décroché au-delà. C'est ÇA qui
+     sépare une photo de téléphone d'une photo de campagne — un capteur de
+     téléphone a tout net, et l'œil lit ça comme « amateur » sans savoir pourquoi.
+
+     ☀️ POURQUOI CLAIR, ET POURQUOI CE N'EST PAS UNE DÉRIVE DE CHARTE
+     Le mur derrière lui est clair. Poser un fondu marine dessus, c'était forcer
+     la photo dans une maquette — l'erreur déjà faite au flyer 41. Ce fichier
+     assume donc la SURFACE CLAIRE : mêmes couleurs, mêmes polices, même vague,
+     mêmes marges. Le marine passe du fond au texte, l'or reste l'action.
+     ⚠️ Le coin blanc en biais ne peut pas exister sur fond clair : il disparaît.
+     Le logotype est donc posé nu, à la même marge de 76 px.
+     📌 Deux surfaces déclarées valent mieux qu'une charte qu'on contourne au cas
+     par cas — c'est exactement la dérive mesurée le matin même (marge 76/70,
+     coin 404/392/412, vague 74/56).
+
+     ⛔ PAS PUBLIABLE TANT QUE le patron n'a pas confirmé qu'il revient sur
+     « enlève ma photo, j'aime être discret » (28/08). La photo est hors dépôt.
+
+     Rendu : node render.js flyer43-toutestla-fb.html flyer-toutestla-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#F4F7FD; }
+
+/* LA PHOTO À DROITE. Le fondu part de SA GAUCHE vers le fond clair : le mur de
+   la photo et le fond de la page sont tous deux clairs, la couture disparaît.
+   C'est l'inverse exact du flyer 42, où le marine tranchait net dans la photo. */
+.photo { position:absolute; right:0; top:0; width:566px; height:1350px; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:52% 46%; display:block; }
+.fondu { position:absolute; right:0; top:0; width:566px; height:1350px; z-index:2;
+  background:linear-gradient(90deg, #F4F7FD 0%, rgba(244,247,253,.86) 14%,
+             rgba(244,247,253,.28) 34%, rgba(244,247,253,0) 56%); }
+
+/* le logotype nu : sur fond clair, le coin blanc en biais n'existe plus */
+.marque { position:absolute; left:76px; top:88px; z-index:6;
+  display:flex; align-items:center; gap:15px; }
+.marque img { width:62px; height:62px; object-fit:contain; display:block; }
+.marque b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+  color:#0F2A5C; letter-spacing:-.9px; line-height:1; display:block; }
+.marque b i { color:#F6BC1C; font-style:normal; }
+.marque small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#7C8CA8; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:452px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#B08405; }
+
+/* 424 px de colonne : « TOUT » tient à 84 px, mesuré. Le titre est GROS et
+   court — trois mots, une promesse. C'est la seule chose à lire en trois
+   secondes. */
+.acc { position:absolute; left:76px; top:492px; width:424px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:84px; line-height:.98;
+  letter-spacing:-3.4px; color:#0F2A5C; }
+.acc span { color:#C98A05; }
+
+.dit { position:absolute; left:76px; top:766px; width:400px; z-index:5;
+  font-size:23px; line-height:1.5; color:#4A5C78; }
+.dit b { color:#0F2A5C; font-weight:700; }
+
+.trait { position:absolute; left:76px; top:892px; width:82px; height:5px;
+  border-radius:3px; background:#F6BC1C; z-index:5; }
+
+.cta { position:absolute; left:76px; top:944px; z-index:5;
+  background:#F6BC1C; border-radius:16px; padding:19px 28px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:26px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 16px 34px rgba(150,100,4,.30); }
+
+.web { position:absolute; left:76px; top:1058px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:31px;
+  color:#0F2A5C; letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:11px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA0BC; margin-bottom:4px; }
+
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:7; }
+</style>
+
+<div class="page">
+  <div class="photo"><img src="photo-modele-produit.jpg" alt=""></div>
+  <div class="fondu"></div>
+
+  <div class="marque">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">TOUT<br>EST <span>LÀ.</span></div>
+
+  <div class="dit">Ton port, ton départ, ton billet.
+    <b>Dans le téléphone que tu tiens déjà.</b></div>
+
+  <div class="trait"></div>
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

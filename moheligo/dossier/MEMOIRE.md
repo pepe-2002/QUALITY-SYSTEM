@@ -370,6 +370,46 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📷 « NIVEAU APPLE » — ce que je peux, ce que je ne peux PAS, et
+  où est vraiment le problème)** — le patron envoie neuf photos de lui avec un
+  téléphone : « fais des photos très belles retouches, et fais-moi porter
+  d'autres vêtements […] esthétique niveau Apple ».
+  ⛔ **LA LIMITE, DITE AVANT DE TRAVAILLER** : je n'ai **aucun modèle de
+  génération d'image** dans cette session. Je ne peux ni changer un vêtement, ni
+  remodeler un visage, ni inventer un décor. Je travaille les pixels qui
+  existent. Le dire tout de suite coûte moins cher que de le découvrir après :
+  il aurait attendu une chemise blanche qui ne serait jamais venue.
+  ✅ **CE QUE JE PEUX, ET QUI EST LE VRAI MÉTIER** : `pub/photos/traiter.py` —
+  balance des blancs mesurée sur les hautes lumières (le mur crème et le
+  carrelage orange renvoyaient **rouge +30 sur le bleu** ; sa peau et son polo
+  étaient jaunes), cadrage 4:5, courbe en S douce, **ombres poussées vers notre
+  marine** (c'est ça qui fait qu'une photo « appartient » à une marque),
+  vignetage, grain, netteté. Le polo redevient un vrai bleu, proche du nôtre.
+  📐 `flyer41-dici-fb.html` monte le résultat dans la charte — titre « TU NE VAS
+  PLUS AU PORT », une seule promesse, celle que l'image porte honnêtement.
+  🔁 **LEÇON DE MONTAGE** : premier essai photo à droite, son visage tombait en
+  plein dans le fondu. Dans la prise il se tient sur le bord GAUCHE du cadre :
+  aucun `object-position` ne peut le déplacer, `cover` ne montre que ce qui
+  existe. **On ne force pas une photo dans une maquette — on met la maquette du
+  côté où le sujet est déjà.** Bénéfice en prime : le fondu recouvre le pan de
+  mur taché, qui était le vrai défaut du décor.
+  🚩 **CE QUI BLOQUE LA PUBLICATION, ET CE N'EST PAS LES VÊTEMENTS** : sur
+  **quatre des neuf prises**, l'écran de verrouillage du téléphone montre la
+  **photo d'une troisième personne** et des notifications lisibles. Publier
+  ça, c'est publier l'image de quelqu'un qui n'a rien demandé. Les photos
+  restent hors du dépôt public (.gitignore) — un dépôt public garde tout dans
+  son historique, effacer ensuite n'efface rien.
+  ⚠️ **Et un revirement à confirmer** : la veille il disait « enlève ma photo,
+  j'aime être discret », et j'avais retiré son portrait du flyer 39 ET du dépôt.
+  Il redevient le sujet des visuels. C'est son droit — mais je le lui fais
+  confirmer avant de rendre la chose irréversible.
+  📌 **LE DIAGNOSTIC HONNÊTE SUR « NIVEAU APPLE »** : le problème n'est pas le
+  vêtement, c'est la LUMIÈRE. Lumière frontale plate de ciel couvert, aucun
+  modelé, mur taché, sujet raide. Chez Apple la photo est 90 % de lumière et
+  10 % de retouche — **aucun étalonnage ne fabrique une lumière qui n'était pas
+  là.** Une reprise de prises de vue avec cinq règles simples coûte zéro franc
+  et bat n'importe quelle retouche.
+
 - **29/08/2026 (📐 « CONSTRUIRE UNE MARQUE » — les trois affirmations du relecteur,
   MESURÉES)** — le patron demande si on peut viser le niveau Apple / LVMH. Le
   relecteur affirme trois choses ; au lieu d'acquiescer, on a fabriqué

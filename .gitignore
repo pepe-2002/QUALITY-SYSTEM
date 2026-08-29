@@ -15,3 +15,18 @@ moheligo/pub/video/*-muet.mp4
 # 🙈 Le patron veut rester discret (28/08/2026 : « enlève ma photo, j'aime être
 # discret »). Son portrait ne revient pas dans le dépôt, même par mégarde.
 moheligo/pub/photos/fondateur-portrait.jpg
+
+# 📷 29/08/2026 — les neuf photos du patron avec un téléphone.
+# C'est LUI sur l'image (« fais MOI porter d'autres vêtements ») : l'accord ne
+# se pose pas, il est le sujet et le demandeur. Deux raisons quand même de les
+# garder hors du dépôt PUBLIC :
+#   1. il disait la veille « enlève ma photo, j'aime être discret » — un
+#      revirement se confirme avant de devenir irréversible, et un dépôt public
+#      garde tout dans son historique ;
+#   2. 🚩 LES ÉCRANS DE TÉLÉPHONE. Sur quatre des neuf prises, l'écran de
+#      verrouillage montre la photo d'une TROISIÈME personne, plus des
+#      notifications lisibles. Publier ces prises-là, c'est publier l'image de
+#      quelqu'un qui n'a rien demandé — et l'effacer d'un dépôt public ne
+#      l'efface pas de l'historique.
+moheligo/pub/flyers/photo-modele-*.jpg
+moheligo/pub/photos/modele-*.jpg

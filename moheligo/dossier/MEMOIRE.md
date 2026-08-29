@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🏅 DEUXIÈME EXEMPLE DE LA BARRE — Young Leader, et deux règles
+  corrigées par l'usage)** — `flyer45-fiers-fb.html`, SENTIMENT : LA FIERTÉ.
+  ⚖️ **Droits vérifiés AVANT de dessiner** : le patron a donné le go le
+  12/08 (« pour les Young Leader tu as le go »). Reste la phrase écrite du
+  responsable — elle ne bloque plus, elle protège, et elle manque depuis 17 jours.
+  🎯 **Ce que le visuel promet, et ce qu'il ne promet pas.** Il dit que Mohéli
+  produit des gens dont on peut être fier et que MoheliGo est partenaire. **Il
+  ne dit PAS qu'on les sponsorise ni que le lauréat est client** — nous avons un
+  contrat publicitaire, pas un mécénat. Norme § 7.1.
+  ✨ **L'écharpe est dorée** : la couleur de la marque, sans qu'on l'ait
+  cherchée. C'est ce qui fait tenir la photo dans notre univers.
+  🖼️ **Cadrage décentré imposé par le sujet** : l'écharpe court de haut en bas,
+  donc aucun voile par le bas n'est possible sans manger « OCÉAN INDIEN ». On
+  dégage la colonne à gauche, sur le mur.
+  ⛔ **Bandeau partenaire essayé puis RETIRÉ** : posé en travers, il coupait
+  l'écharpe en deux — le sujet — et le logo y était illisible à 30 px. La
+  mention honnête est déjà dans le texte. *Une ligne juste vaut mieux qu'un
+  bandeau qui abîme la photo.*
+  📏 **Titre à 56 px et non 72, et c'est calculé** : la colonne fait 400 px.
+  *On ne rétrécit pas la photo pour agrandir un titre — c'est le titre qui
+  s'adapte au sujet.*
+  🔧 **DEUX FAUX POSITIFS DU CONTRÔLE, CORRIGÉS DANS LE CONTRÔLE** :
+  · « +269 479 43 28 » était pris pour un chiffre inventé ;
+  · « Young Leader » était pris pour le superlatif « leader ».
+  📌 **La règle que j'en tire : un contrôle qui punit un fait exact rend la
+  norme absurde, et une norme absurde finit contournée.** On corrige
+  l'instrument, on ne contourne jamais la règle.
+
 - **29/08/2026 (⬛ LA BARRE — le patron relève le niveau, et ça devient
   mesurable)** — « je ne joue plus dans la cour des entreprises comoriennes, je
   veux m'imposer comme numéro un. Les petits détails comptent. »

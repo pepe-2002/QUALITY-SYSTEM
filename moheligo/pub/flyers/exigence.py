@@ -101,8 +101,16 @@ def controler(chemin):
     for a in ABSTRAITS:
         if re.search(r'\b' + a, vis, re.I):
             alerte('2', f'mot abstrait « {a} » — un seul toléré dans le corps')
+    # ⚠️ ON RETIRE D'ABORD LES NOMS PROPRES. « Young Leader Mohéli » est le nom
+    # de notre partenaire, pas une prétention. Faux positif vu le 29/08 : la
+    # règle refusait un visuel parce qu'il nommait correctement quelqu'un.
+    # 📌 Un contrôle qui punit un fait exact rend la norme absurde, et une norme
+    # absurde finit contournée. On la corrige, on ne contourne pas.
+    sans_noms = vis
+    for propre in ('Young Leader', 'kartaPay', 'MoheliGo'):
+        sans_noms = re.sub(propre, ' ', sans_noms, flags=re.I)
     for s in SUPERLATIFS:
-        if s in vis.lower():
+        if s in sans_noms.lower():
             refuse('2', f'superlatif invérifiable « {s} »')
     # ⚠️ on retire d'abord les numéros de téléphone : « +269 479 43 28 » n'est
     # pas un volume inventé. Faux positif vu au premier essai sur le flyer 40.

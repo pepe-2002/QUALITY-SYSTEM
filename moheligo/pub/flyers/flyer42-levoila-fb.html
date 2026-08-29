@@ -1,0 +1,115 @@
+<!-- TU VEUX VOIR ? LE VOILÀ — le registre PREUVE, 29/08/2026.
+     Le patron : « le téléphone, les gens doivent voir l'appli MoheliGo. »
+
+     📱 L'ÉCRAN EST INCRUSTÉ, ET C'EST NOTRE VRAI ÉCRAN
+     `../photos/mise_en_scene.py` mesure les quatre coins de l'écran (une grande
+     zone sombre : on la seuille, on prend les extrêmes des diagonales) et y pose
+     `../demo/ecrans/accueil-reservation.png` en perspective, avec un reflet
+     oblique très faible — sans lui, ça fait autocollant.
+     ⛔ Rien n'a été INVENTÉ : la capture existe, elle est seulement déplacée.
+     Aucun vêtement remplacé, aucun trait de visage déplacé.
+     ✅ Le polo est ramené vers notre marine en gardant SON modelé (on déplace la
+     teinte, pas la luminosité : un aplat ferait un autocollant bleu).
+
+     🔒 L'INCRUSTATION RÈGLE UN PROBLÈME DE DROIT, PAS SEULEMENT D'ESTHÉTIQUE
+     L'écran de verrouillage d'origine montrait la photo d'une TROISIÈME personne
+     et des notifications lisibles. Il est intégralement recouvert. Ce qui
+     s'affiche maintenant est à nous.
+
+     🎯 UNE SEULE PROMESSE, ET C'EST CELLE DE L'IMAGE
+     Il tend son téléphone vers le lecteur. Le titre ne fait que dire ce geste.
+     Dans un pays où personne n'a jamais payé en ligne, la question n'est pas
+     « est-ce pratique ? » mais « est-ce que ça existe vraiment ? ». La réponse
+     est l'écran lui-même.
+     ⚠️ AUCUNE DATE, AUCUNE MENTION DE FERMETURE SUR L'IMAGE (leçon du 26/08) :
+     elle va dans le TEXTE du post, qui se régénère à chaque publication.
+
+     ⛔ PAS ENCORE PUBLIABLE : la photo reste hors du dépôt (.gitignore), et le
+     patron doit confirmer qu'il revient sur « enlève ma photo, j'aime être
+     discret » (28/08).
+
+     Rendu : node render.js flyer42-levoila-fb.html flyer-levoila-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* ⬇️ LE FONDU VIENT DU BAS, PAS DU CÔTÉ — et c'est la prise qui l'impose.
+   Il est CENTRÉ dans le cadre et occupe presque toute la largeur : une colonne
+   de texte latérale n'aurait eu que 194 px, mesuré. Ce qu'on peut sacrifier,
+   c'est le bas du corps — jamais le visage ni le téléphone. */
+.photo { position:absolute; left:0; top:0; width:1080px; height:1350px; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 0; display:block; }
+.fondu { position:absolute; left:0; top:0; width:1080px; height:1350px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 46%, rgba(15,42,92,.34) 58%,
+             rgba(15,42,92,.88) 66%, #0F2A5C 72%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:930px; z-index:5; font-size:14px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+.acc { position:absolute; left:76px; top:968px; width:928px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:66px; line-height:1.02;
+  letter-spacing:-2.2px; color:#fff; }
+.acc span {
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+.dit { position:absolute; left:76px; top:1082px; width:600px; z-index:5;
+  font-size:24px; line-height:1.46; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.pied { position:absolute; left:76px; top:1178px; z-index:5;
+  display:flex; align-items:center; gap:26px; }
+.pied .cta { background:#F6BC1C; border-radius:16px; padding:18px 28px;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:27px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.pied .ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:32px;
+  color:#fff; letter-spacing:-1.1px; }
+.pied .ou small { display:block; font-family:'Inter',sans-serif; font-size:11px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:4; }
+</style>
+
+<div class="page">
+  <div class="photo"><img src="photo-modele-appli.jpg" alt=""></div>
+  <div class="fondu"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">TU VEUX VOIR ? <span>LE VOILÀ.</span></div>
+
+  <div class="dit">L'application MoheliGo, telle qu'elle est.
+    <b>Choisis ton port, paie, embarque.</b></div>
+
+  <div class="pied">
+    <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+    <div class="ou"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+  </div>
+
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

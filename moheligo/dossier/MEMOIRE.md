@@ -370,6 +370,41 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📱 « JE SAIS QUE TU PEUX LE FAIRE » — il avait raison, j'avais
+  répondu trop vite)** — j'avais dit au patron que je ne pouvais pas travailler
+  ses photos. Il insiste : « rends la photo claire, et le téléphone, les gens
+  doivent voir l'appli MoheliGo. » **Il avait raison sur trois points sur
+  quatre.**
+  📌 **MON ERREUR DE RAISONNEMENT, ET ELLE EST INSTRUCTIVE** : j'ai entendu
+  « retouche » comme un seul bloc, j'ai constaté que le bloc était impossible,
+  et j'ai répondu non à tout. **Une demande impossible dans son ensemble peut
+  être faisable à 80 % dans le détail.** Il fallait découper avant de refuser.
+  ✅ **CE QUI ÉTAIT FAISABLE, ET QUI EST FAIT** (`pub/photos/mise_en_scene.py`) :
+  · **l'incrustation de l'écran** — les quatre coins de l'écran sont MESURÉS
+    (grande zone sombre : on seuille, on prend les extrêmes des diagonales ;
+    écran trouvé à 264 × 608 px), puis notre capture réelle y est posée en
+    PERSPECTIVE avec un reflet oblique faible. Sans le reflet, ça fait
+    autocollant. ⚠️ La fenêtre de détection doit être SERRÉE : trop large, les
+    cheveux et l'ombre du col sont plus sombres que l'écran et emportent les
+    extrêmes ;
+  · **l'éclaircissement** avec un gain qui décroît avec la luminosité — une
+    simple multiplication aurait cramé le mur, déjà à 240 ;
+  · **le polo vers notre marine** en gardant SON modelé : on déplace la teinte,
+    pas la luminosité. Un aplat aurait fait un autocollant bleu à la place d'un
+    vêtement ;
+  · **l'adoucissement du teint**, protégé sur les bords (yeux, barbe, contours) :
+    aucun trait n'est déplacé.
+  ⛔ **CE QUI RESTE IMPOSSIBLE, ET POURQUOI** : remplacer le polo par une chemise.
+  Il faudrait FABRIQUER des pixels ; je n'ai pas de modèle de génération d'image.
+  Ce n'est pas de la prudence, c'est une capacité absente.
+  🔒 **BÉNÉFICE NON DEMANDÉ, ET IL VAUT PLUS QUE L'ESTHÉTIQUE** : l'écran de
+  verrouillage d'origine montrait la photo d'une TROISIÈME personne et des
+  notifications lisibles. L'incrustation le recouvre intégralement. Le problème
+  de droit à l'image sur ces prises **disparaît** — ce qui s'affiche est à nous.
+  📐 `flyer42-levoila-fb.html` — registre PREUVE, « TU VEUX VOIR ? LE VOILÀ. »
+  Fondu par le BAS et non par le côté : il est centré et large dans le cadre,
+  une colonne latérale n'aurait fait que 194 px (mesuré).
+
 - **29/08/2026 (🔵 « POURQUOI PAS MG ? » — le patron trouve le bon problème)** —
   il propose de remplacer l'emblème par un monogramme MG. **Il vise juste, et
   sans avoir vu ma mesure du matin** : l'emblème actuel garde 414 nuances à

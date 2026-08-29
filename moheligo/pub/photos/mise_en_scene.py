@@ -241,3 +241,59 @@ def remplacer_mur(im, couleur=(15, 42, 92), lum_bas=155, lum_haut=200,
         ImageFilter.GaussianBlur(adoucir))
     fond = Image.new('RGB', im.size, tuple(couleur))
     return Image.composite(fond, im.convert('RGB'), m)
+
+
+def telephone_propre(capture, larg=930, haut=1995, chassis=(8, 19, 44), arrondi=0.132):
+    """Dessine le châssis propre des flyers 39/40, avec la capture dedans.
+
+    29/08/2026. Le patron : « utilise la photo de téléphone d'hier, couvre mon
+    téléphone en entier. » Sa coque est transparente, jaunie et fendue ; la
+    recouvrir en entier vaut mieux que d'incruster seulement l'écran.
+    Le châssis reprend exactement celui des flyers 39 et 40 : marine très
+    sombre, coins très arrondis, encoche centrée.
+    """
+    tel = Image.new('RGBA', (larg, haut), (0, 0, 0, 0))
+    d = ImageDraw.Draw(tel)
+    # ⚠️ `arrondi` un peu MOINS rond que le vrai téléphone (0,132 au lieu de
+    # 0,155) : la coque du patron a des renforts d'angle qui débordent, et un
+    # châssis trop arrondi les laissait affleurer en doré dans les coins.
+    d.rounded_rectangle([0, 0, larg - 1, haut - 1], radius=int(larg * arrondi),
+                        fill=chassis + (255,))
+    b = int(larg * 0.039)                                  # la tranche du châssis
+    ecran = capture.convert('RGB').resize((larg - 2 * b, haut - 2 * b), Image.LANCZOS)
+    m = Image.new('L', ecran.size, 0)
+    ImageDraw.Draw(m).rounded_rectangle([0, 0, ecran.size[0] - 1, ecran.size[1] - 1],
+                                        radius=int(larg * 0.125), fill=255)
+    tel.paste(ecran, (b, b), m)
+    d.rounded_rectangle([larg // 2 - int(larg * .19), int(haut * .011),
+                         larg // 2 + int(larg * .19), int(haut * .011) + int(haut * .019)],
+                        radius=int(haut * .010), fill=chassis + (255,))
+    return tel
+
+
+def couvrir_telephone(photo, tel, quad, doigts=(), adoucir=1.4):
+    """Pose le châssis propre sur le corps entier du téléphone, en perspective.
+
+    `doigts` : les zones à REMETTRE PAR-DESSUS, en (x, y, rayon). Ici seul le
+    pouce mord le bord droit de la coque — les quatre autres doigts passent
+    DERRIÈRE le téléphone, donc ils ne sont jamais recouverts.
+    ⚠️ On ne peut pas les retrouver par la couleur : la coque est transparente et
+    laisse voir la peau à travers. Mesuré — coque : lum 140, sat 0,43 ; pouce :
+    lum 146, sat 0,45. Deux valeurs identiques. D'où le repérage à la main.
+    """
+    L, H = photo.size
+    tl, th = tel.size
+    co = _coeffs(quad, [(0, 0), (tl, 0), (tl, th), (0, th)])
+    corps = tel.convert('RGB').transform((L, H), Image.PERSPECTIVE, co, Image.BICUBIC)
+    m = tel.split()[3].transform((L, H), Image.PERSPECTIVE, co, Image.BICUBIC)
+    m = m.filter(ImageFilter.GaussianBlur(adoucir))
+    out = Image.composite(corps, photo.convert('RGB'), m)
+
+    if doigts:
+        md = Image.new('L', (L, H), 0)
+        dd = ImageDraw.Draw(md)
+        for x, y, r in doigts:
+            dd.ellipse([x - r, y - r, x + r, y + r], fill=255)
+        md = md.filter(ImageFilter.GaussianBlur(r * 0.28))
+        out = Image.composite(photo.convert('RGB'), out, md)
+    return out

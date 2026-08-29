@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📱 COUVRIR LE TÉLÉPHONE EN ENTIER — le châssis du flyer 40 posé
+  sur le vrai)** — le patron : « utilise la photo de téléphone d'hier, couvre
+  mon téléphone en entier », puis il envoie le flyer 40 en montrant le châssis.
+  Incruster seulement l'ÉCRAN laissait voir sa coque : transparente, jaunie,
+  fendue. On recouvre donc le CORPS entier.
+  🔎 **VÉRIFIÉ AVANT D'AGIR** : « hier » ne désignait pas une des neuf photos —
+  elles portent toutes 13:36, même séance, et aucune n'a d'EXIF. C'était bien
+  le châssis dessiné des flyers 39/40. Vérifier avant de deviner a évité de
+  refaire tout le travail sur la mauvaise image.
+  🚩 **CE QUI RENDAIT LA CHOSE RISQUÉE, ET QUI S'EST RÉVÉLÉ FAUX** : je craignais
+  d'effacer ses doigts. Mesure faite : **la coque est indissociable de la peau**
+  — coque lum 140 sat 0,43, pouce lum 146 sat 0,45. Deux valeurs identiques,
+  parce que la coque est TRANSPARENTE et laisse voir la main à travers. Aucune
+  séparation par la couleur n'est possible.
+  ✅ **Mais le problème n'existait pas** : en regardant la prise, les quatre
+  doigts passent DERRIÈRE le téléphone. Seul le pouce mord le bord droit — une
+  seule zone à remettre par-dessus, repérée à la main.
+  📌 **La leçon : quand une mesure dit qu'un problème est insoluble, regarder si
+  le problème existe.** J'allais construire une détection de doigts pour des
+  doigts qui n'étaient pas devant.
+  🔧 **Trois passes pour supprimer le liseré doré** : la coque a des renforts
+  d'angle qui débordent. Élargir le quadrilatère ne suffisait pas ; il a fallu
+  AUSSI **arrondir le châssis un peu moins** (0,132 au lieu de 0,155) pour que
+  ses coins couvrent les bossages.
+  🛠️ `pub/photos/refaire.py` rejoue toute la chaîne d'une commande. **L'ordre
+  compte** : la balance des blancs se mesure sur le MUR, donc obligatoirement
+  AVANT que `remplacer_mur()` le supprime.
+
 - **29/08/2026 (🎨 « ON CHERCHE LA SOLUTION SUR LE MUR » — il pose la bonne
   question, et ma solution précédente était une capitulation)** — le patron :
   « recadre encore un peu le téléphone […] on utilise toujours nos couleurs, on

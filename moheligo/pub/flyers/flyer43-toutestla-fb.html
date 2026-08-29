@@ -18,16 +18,19 @@
      sépare une photo de téléphone d'une photo de campagne — un capteur de
      téléphone a tout net, et l'œil lit ça comme « amateur » sans savoir pourquoi.
 
-     ☀️ POURQUOI CLAIR, ET POURQUOI CE N'EST PAS UNE DÉRIVE DE CHARTE
-     Le mur derrière lui est clair. Poser un fondu marine dessus, c'était forcer
-     la photo dans une maquette — l'erreur déjà faite au flyer 41. Ce fichier
-     assume donc la SURFACE CLAIRE : mêmes couleurs, mêmes polices, même vague,
-     mêmes marges. Le marine passe du fond au texte, l'or reste l'action.
-     ⚠️ Le coin blanc en biais ne peut pas exister sur fond clair : il disparaît.
-     Le logotype est donc posé nu, à la même marge de 76 px.
-     📌 Deux surfaces déclarées valent mieux qu'une charte qu'on contourne au cas
-     par cas — c'est exactement la dérive mesurée le matin même (marge 76/70,
-     coin 404/392/412, vague 74/56).
+     🎨 LE MUR EST DEVENU NOTRE MARINE — et c'était la bonne question.
+     Le patron : « on utilise toujours nos couleurs, on cherche la solution sur
+     le mur. » J'avais contourné le problème en passant le flyer sur fond clair
+     pour épouser le mur gris. C'était se soumettre au décor. La vraie réponse
+     est de SUPPRIMER le décor : `remplacer_mur()` sépare le mur du sujet sur
+     deux critères mesurés — clair ET désaturé (mur : lum 210-238, sat 0,02-0,11 ;
+     peau : lum 170, sat 0,30 ; polo : lum 83, sat 0,76). La peau est à trois
+     fois la saturation maximale du mur : la marge est confortable.
+     ✅ CONSÉQUENCE HEUREUSE : le fond de la photo étant EXACTEMENT #0F2A5C, il
+     est la même couleur que la page. La photo n'a plus de bord — elle EST la
+     page. Aucun fondu à fabriquer, aucune couture à cacher.
+     ➡️ La surface claire est donc abandonnée. On garde une seule surface, la
+     nôtre, et le coin blanc en biais revient.
 
      ⛔ PAS PUBLIABLE TANT QUE le patron n'a pas confirmé qu'il revient sur
      « enlève ma photo, j'aime être discret » (28/08). La photo est hors dépôt.
@@ -41,7 +44,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
 
-.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#F4F7FD; }
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
 
 /* LA PHOTO À DROITE. Le fondu part de SA GAUCHE vers le fond clair : le mur de
    la photo et le fond de la page sont tous deux clairs, la couture disparaît.
@@ -56,38 +59,45 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    La fenêtre visible fait 614 px, on peut donc décaler de 0 à 466 px ; pour
    que l'écran tienne entier avec de l'air, il faut décaler entre 104 et 357.
    200 px = 42 %. À 8 %, le téléphone sortait par la droite — vu au rendu. */
-/* 46 px d'air en haut : sans eux le châssis du téléphone touchait le bord et
-   ça se lisait comme un accident, pas comme un cadrage. */
-.photo { position:absolute; right:0; top:46px; width:614px; height:1304px; overflow:hidden; }
-.photo img { width:100%; height:100%; object-fit:cover; object-position:47% 0%; display:block; }
+/* 📐 620 px, ET AUCUN FONDU. Le fond de la photo vaut #0F2A5C, la page aussi :
+   il n'y a plus de frontière à camoufler. `object-position` à 13 % est calculé —
+   l'écran tombe à 138→521 après mise à l'échelle, la fenêtre fait 620 px, donc
+   le décalage doit rester sous 108 px ; 60 px = 13 %. */
+.photo { position:absolute; right:0; top:46px; width:620px; height:1304px; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:13% 50%; display:block; }
 .fondu { position:absolute; right:0; top:0; width:614px; height:1350px; z-index:2;
-  background:linear-gradient(90deg, #F4F7FD 0%, rgba(244,247,253,.82) 11%,
-             rgba(244,247,253,.24) 28%, rgba(244,247,253,0) 48%); }
+  background:linear-gradient(90deg, #0F2A5C 0%, rgba(15,42,92,.55) 9%,
+             rgba(15,42,92,0) 24%); }
 
-/* le logotype nu : sur fond clair, le coin blanc en biais n'existe plus */
-.marque { position:absolute; left:76px; top:88px; z-index:6;
-  display:flex; align-items:center; gap:15px; }
-.marque img { width:62px; height:62px; object-fit:contain; display:block; }
-.marque b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
-  color:#0F2A5C; letter-spacing:-.9px; line-height:1; display:block; }
-.marque b i { color:#F6BC1C; font-style:normal; }
-.marque small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
-  color:#7C8CA8; margin-top:5px; }
+/* le coin blanc en biais revient : 404 x 172, clip-path de la charte */
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
 
 .sur { position:absolute; left:76px; top:452px; z-index:5; font-size:13px;
-  font-weight:700; letter-spacing:3.4px; color:#B08405; }
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
 /* 424 px de colonne : « TOUT » tient à 84 px, mesuré. Le titre est GROS et
    court — trois mots, une promesse. C'est la seule chose à lire en trois
    secondes. */
 .acc { position:absolute; left:76px; top:492px; width:424px; z-index:5;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:84px; line-height:.98;
-  letter-spacing:-3.4px; color:#0F2A5C; }
-.acc span { color:#C98A05; }
+  letter-spacing:-3.4px; color:#fff; }
+.acc span {
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
 
 .dit { position:absolute; left:76px; top:766px; width:400px; z-index:5;
-  font-size:23px; line-height:1.5; color:#4A5C78; }
-.dit b { color:#0F2A5C; font-weight:700; }
+  font-size:23px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
 
 .trait { position:absolute; left:76px; top:892px; width:82px; height:5px;
   border-radius:3px; background:#F6BC1C; z-index:5; }
@@ -96,13 +106,13 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   background:#F6BC1C; border-radius:16px; padding:19px 28px; display:inline-block;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:26px;
   color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
-  box-shadow:0 16px 34px rgba(150,100,4,.30); }
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
 
 .web { position:absolute; left:76px; top:1058px; z-index:5;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:31px;
-  color:#0F2A5C; letter-spacing:-1.1px; }
+  color:#fff; letter-spacing:-1.1px; }
 .web small { display:block; font-family:'Inter',sans-serif; font-size:11px;
-  font-weight:700; letter-spacing:2.4px; color:#8FA0BC; margin-bottom:4px; }
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 
 .vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:7; }
 </style>
@@ -111,7 +121,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="photo"><img src="photo-modele-produit.jpg" alt=""></div>
   <div class="fondu"></div>
 
-  <div class="marque">
+  <div class="coin">
     <img src="logo-emblem.png" alt="">
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
   </div>

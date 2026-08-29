@@ -194,3 +194,50 @@ def profondeur(im, centre, rayon, force=14):
                   fill=int(255 * (1 - i / etapes) ** 1.3))
     m = m.resize((L, H), Image.BICUBIC).filter(ImageFilter.GaussianBlur(L / 40))
     return Image.composite(im, flou, m)
+
+
+def remplacer_mur(im, couleur=(15, 42, 92), lum_bas=155, lum_haut=200,
+                  sat_bas=0.10, sat_haut=0.24, adoucir=2.6):
+    """Remplace le mur par une couleur de marque, sans détourage manuel.
+
+    29/08/2026. Le patron : « on utilise toujours nos couleurs, on cherche la
+    solution sur le mur. » Le mur est le dernier défaut de la prise — taché,
+    gris, sans intérêt. On ne peut pas le nettoyer ; on peut le SUPPRIMER.
+
+    📐 CE QUI REND LA SÉPARATION POSSIBLE, ET C'EST MESURÉ :
+        mur   luminosité 210-238   saturation 0,02-0,11
+        peau  luminosité 170       saturation 0,30
+        polo  luminosité  83       saturation 0,76
+    La peau est à trois fois la saturation maximale du mur : la marge est
+    confortable. On combine donc DEUX critères — clair ET désaturé — parce que
+    la luminosité seule prendrait les doigts éclairés, et la saturation seule
+    prendrait les ombres neutres du châssis.
+
+    ⚠️ ON NE GARDE QUE LES ZONES TOUCHANT UN BORD DE L'IMAGE. Sans ça, le blanc
+    des cartes de l'appli (clair et désaturé lui aussi) serait pris pour du mur
+    et l'écran se remplirait de marine.
+
+    ⚠️ ET ON ADOUCIT LE MASQUE : le mur est flou (profondeur de champ), donc le
+    contour du sujet est progressif. Un masque net y découperait une silhouette
+    en carton.
+    """
+    from scipy import ndimage
+    a = np.asarray(im.convert('RGB')).astype(float)
+    mx, mn = a.max(2), a.min(2)
+    sat = (mx - mn) / np.maximum(mx, 1)
+    lum = a.sum(2) / 3
+
+    f = np.clip((lum - lum_bas) / (lum_haut - lum_bas), 0, 1)
+    g = np.clip((sat_haut - sat) / (sat_haut - sat_bas), 0, 1)
+    score = f * g
+
+    lab, n = ndimage.label(score > 0.5)
+    bords = set(lab[0, :]) | set(lab[-1, :]) | set(lab[:, 0]) | set(lab[:, -1])
+    bords.discard(0)
+    relie = np.isin(lab, list(bords))
+    score = score * ndimage.binary_dilation(relie, np.ones((9, 9)))
+
+    m = Image.fromarray((score * 255).astype(np.uint8)).filter(
+        ImageFilter.GaussianBlur(adoucir))
+    fond = Image.new('RGB', im.size, tuple(couleur))
+    return Image.composite(fond, im.convert('RGB'), m)

@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🎨 « ON CHERCHE LA SOLUTION SUR LE MUR » — il pose la bonne
+  question, et ma solution précédente était une capitulation)** — le patron :
+  « recadre encore un peu le téléphone […] on utilise toujours nos couleurs, on
+  cherche la solution sur le mur. »
+  📌 **CE QU'IL CORRIGE CHEZ MOI, ET C'EST UN DÉFAUT DE MÉTHODE.** Le mur gris
+  et taché me gênait ; j'avais répondu en passant TOUT LE FLYER sur fond clair
+  pour l'épouser. **C'était me soumettre au décor et abandonner nos couleurs
+  pour cacher un défaut.** La bonne réponse n'est pas de s'adapter au mur, c'est
+  de le SUPPRIMER.
+  ✅ `remplacer_mur()` sépare le mur du sujet sur **deux critères mesurés** —
+  clair ET désaturé :
+      mur   luminosité 210-238   saturation 0,02-0,11
+      peau  luminosité 170       saturation 0,30
+      polo  luminosité  83       saturation 0,76
+  La peau est à **trois fois** la saturation maximale du mur : la marge est
+  confortable. Un seul critère ne suffirait pas — la luminosité seule prendrait
+  les doigts éclairés, la saturation seule prendrait les ombres neutres du
+  châssis.
+  ⚠️ **On ne garde que les zones qui TOUCHENT un bord de l'image.** Sans ça, le
+  blanc des cartes de l'appli — clair et désaturé lui aussi — passerait pour du
+  mur et l'écran se remplirait de marine.
+  ⚠️ **Et le masque s'adoucit** : le mur est flou (profondeur de champ), donc le
+  contour du sujet est progressif. Un masque net y découpe une silhouette en
+  carton.
+  ✨ **LA CONSÉQUENCE QUE JE N'AVAIS PAS VUE VENIR** : le fond de la photo valant
+  désormais EXACTEMENT #0F2A5C, il est la même couleur que la page. **La photo
+  n'a plus de bord — elle EST la page.** Plus aucun fondu à fabriquer, plus
+  aucune couture à cacher. Le problème qui m'occupait depuis trois versions
+  (flyer 41 le fondu latéral, flyer 42 le fondu horizontal, flyer 43 la surface
+  claire) disparaît de lui-même.
+  ➡️ **LA SURFACE CLAIRE EST ABANDONNÉE.** Une seule surface, la nôtre. Le coin
+  blanc en biais revient. La question que je lui posais est tranchée par lui.
+
 - **29/08/2026 (📏 « L'AUTOCOLLANT N'EST PAS À LA MÊME TAILLE QUE LE TÉLÉPHONE »
   — il voit ce que mes mesures ratent)** — deux défauts réels, et le premier
   vient d'une mesure que je croyais faite.

@@ -370,6 +370,27 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (⚠️ DEUX ROUTINES À LA MÊME MINUTE — trouvé en cherchant un
+  créneau)** — en cherchant quand publier le flyer 43, j'ai listé les Routines
+  et découvert que **deux d'entre elles partaient dimanche 30/08 à 09h05 UTC** :
+  la quotidienne de midi (calendrier → `flyer-partenariat`) et la Routine
+  ponctuelle du flyer du neveu. Deux publications à trois minutes d'intervalle
+  sur une page de **33 abonnés**, ça se voit.
+  📌 **Comment le défaut est né** : j'ai créé la Routine du neveu le 28/08 à
+  23h28, puis la quotidienne de midi à 23h41 — treize minutes plus tard, sans
+  regarder ce qui existait déjà. **Créer un rendez-vous sans lister les
+  rendez-vous existants, c'est fabriquer une collision.**
+  ✅ Corrigé sans toucher au calendrier ni supprimer quoi que ce soit : la
+  Routine quotidienne porte maintenant une exception explicite pour le seul
+  dimanche 30/08 — elle ne pousse pas le battement ce jour-là et le dit au
+  patron. Le neveu part seul, comme il l'avait demandé (« l'autre sera le
+  dimanche »).
+  🗓️ **Créneau proposé pour le flyer 43** : lundi 31/08 à 12h05, à la place de
+  « rien à installer ». Raison : même famille (l'appli est simple et immédiate),
+  mais le 43 MONTRE au lieu d'affirmer — et le lundi est le jour où l'on
+  planifie sa semaine. **On n'ajoute pas un post, on en remplace un** : sur une
+  page de 33 abonnés, améliorer vaut mieux qu'ajouter.
+
 - **29/08/2026 (📏 « IL Y A UNE LIGNE LÀ » — six pixels recopiés à la main)** —
   le patron voit un trait vertical sur toute la hauteur du flyer 43. Il ne dit
   pas où ; je l'ai cherché en MESURANT le profil de la ligne de pixels au lieu

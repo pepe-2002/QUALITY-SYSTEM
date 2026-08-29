@@ -1,0 +1,66 @@
+<!-- 🔵 LES CANDIDATS AU SYMBOLE MoheliGo — 29/08/2026.
+     Le patron : « pourquoi ne pas changer notre logo en MG ».
+
+     ⚖️ CE FICHIER NE DÉCIDE RIEN. Le logo est son identité, pas ma matière
+     (manuel § 12.2 ter, règle A / B / C : dans le doute, je propose). Il
+     fabrique les options et les soumet au MÊME test que l'emblème actuel :
+     réduit à 32 px, combien de nuances restent ? L'actuel en garde 414 et
+     devient une tache — mesuré le matin même par `../flyers/mesure-marque.py`.
+
+     Les quatre cases, dans l'ordre :
+       0. l'emblème ACTUEL, pour comparer honnêtement
+       1. LA PROUE — l'actuel simplifié : on garde le sens, on enlève le détail
+       2. MG — exactement ce qu'il demande, dessiné sérieusement et pas en
+          épouvantail : une idée ne se juge qu'à sa meilleure version
+       3. LE M-VAGUE — le compromis : la lisibilité d'un monogramme ET la mer
+
+     Rendu : node ../flyers/render.js emblemes.html /tmp/emblemes.png 2048 512 1 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(../flyers/fonts/Archivo-900-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:2048px; height:512px; display:flex; background:#fff; }
+.case { width:512px; height:512px; display:flex; align-items:center; justify-content:center; }
+svg { width:420px; height:420px; display:block; }
+</style>
+
+<div class="case"><img src="../flyers/logo-emblem.png" style="width:420px;height:420px;object-fit:contain"></div>
+
+<!-- 1. LA PROUE — trois formes, pas trente. L'arc dit l'île et l'horizon, la
+     coque pleine dit le bateau, la vague dit la mer. Rien d'autre ne survit à
+     32 px, donc rien d'autre n'a le droit d'être là. -->
+<div class="case">
+  <svg viewBox="0 0 100 100">
+    <path d="M 14 64 A 38 38 0 1 1 86 64" fill="none" stroke="#0F2A5C"
+          stroke-width="10" stroke-linecap="round"/>
+    <path d="M 25 50 L 78 39 L 68 68 L 33 68 Z" fill="#0F2A5C"/>
+    <path d="M 10 82 Q 30 72 50 82 T 90 82" fill="none" stroke="#F6BC1C"
+          stroke-width="9" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- 2. MG — la demande du patron, dessinée pour de vrai : Archivo 900, le G en
+     or, la vague en socle pour qu'il reste quelque chose de maritime. C'est la
+     version la plus forte possible de cette idée. -->
+<div class="case">
+  <svg viewBox="0 0 100 100">
+    <rect x="6" y="6" width="88" height="88" rx="22" fill="#0F2A5C"/>
+    <text x="50" y="60" text-anchor="middle" font-family="Archivo" font-weight="900"
+          font-size="42" letter-spacing="-2" fill="#fff">M<tspan fill="#F6BC1C">G</tspan></text>
+    <path d="M 20 76 Q 35 68 50 76 T 80 76" fill="none" stroke="#F6BC1C"
+          stroke-width="7" stroke-linecap="round"/>
+  </svg>
+</div>
+
+<!-- 3. LE M-VAGUE — le M dont les deux montants SONT deux crêtes. On lit une
+     lettre à 32 px et une mer à 512. C'est la seule des trois qui réponde aux
+     deux exigences à la fois : le monogramme qu'il veut, le sens qu'on a. -->
+<div class="case">
+  <svg viewBox="0 0 100 100">
+    <path d="M 16 74 L 16 40 Q 16 28 26 34 L 44 58 Q 50 65 56 58 L 74 34 Q 84 28 84 40 L 84 74"
+          fill="none" stroke="#0F2A5C" stroke-width="14"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 10 88 Q 30 78 50 88 T 90 88" fill="none" stroke="#F6BC1C"
+          stroke-width="10" stroke-linecap="round"/>
+  </svg>
+</div>

@@ -370,6 +370,40 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🔵 « POURQUOI PAS MG ? » — le patron trouve le bon problème)** —
+  il propose de remplacer l'emblème par un monogramme MG. **Il vise juste, et
+  sans avoir vu ma mesure du matin** : l'emblème actuel garde 414 nuances à
+  32 px et se referme en tache. Le problème est réel.
+  📐 Fabriqué `pub/marque/emblemes.html` — quatre candidats passés au même test
+  (rendu 512 px, réduit à 32, regardé) : l'ACTUEL, LA PROUE (ma simplification),
+  MG (sa demande, dessinée sérieusement et non en épouvantail), LE M-VAGUE.
+  👁️ **Le comptage de nuances ne discrimine pas** : l'anticrénelage en fabrique
+  autant pour tous (201 à 305). Le seul juge est l'œil, et il tranche net :
+  · ACTUEL → tache bleue, illisible ;
+  · LA PROUE → **ma propre proposition est la plus faible** : à 32 px l'arc
+    referme la coque et ça lit « panier » ou « sac à main », pas « bateau ».
+    Plus lisible que l'actuel, mais le SENS s'est dégradé ;
+  · **MG → le seul immédiatement lisible.** La pastille arrondie (forme d'icône
+    d'application) y est pour beaucoup. Sa demande gagne le test ;
+  · LE M-VAGUE → lisible aussi, et il garde la mer.
+  📌 **Le point que je ne pouvais pas deviner et qu'il a vu** : MoheliGo s'écrit
+  avec DEUX capitales, M et G. Le monogramme est déjà dans le logotype.
+  ⚠️ **Les deux objections, et elles sont stratégiques, pas graphiques** :
+  1. « MG » est un raccourci pour un nom que **personne ne connaît encore**
+     (33 abonnés). Un monogramme est la sténographie d'une marque apprise —
+     LV, CC. Il ne fabrique pas la notoriété, il la suppose.
+  2. « MG » est **déjà pris et très occupé** : c'est une marque automobile
+     britannique vendue mondialement. Secteur différent, donc pas de conflit
+     de droit — mais concurrence de mémoire, ce qui est le vrai enjeu.
+  ✅ **Ce que je recommande, et qui n'est ni A ni B** : garder « MoheliGo » en
+  LOGOTYPE (c'est le nom qu'il faut faire apprendre) et lui adjoindre un
+  SYMBOLE qui tient à 32 px pour l'icône, la coque des vedettes et la broderie
+  des polos. Pour ce symbole, **le M-vague plutôt que MG** : aussi lisible, il
+  garde la mer, et il n'appartient qu'à nous.
+  💰 **L'argument de calendrier, en sa faveur** : 33 abonnés et 39 visuels — le
+  changement ne coûtera JAMAIS moins cher qu'aujourd'hui.
+  ⚖️ Décision à lui (§ 12.2 ter) : le logo est son identité, pas ma matière.
+
 - **29/08/2026 (📷 « NIVEAU APPLE » — ce que je peux, ce que je ne peux PAS, et
   où est vraiment le problème)** — le patron envoie neuf photos de lui avec un
   téléphone : « fais des photos très belles retouches, et fais-moi porter

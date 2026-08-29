@@ -370,6 +370,30 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🔍 DEUX DÉFAUTS QU'IL VOIT ET QUE JE NE VOYAIS PAS)** — le
+  patron : « le doigt tache un peu l'écran, et à droite des autres doigts on
+  voit une petite ligne, elle doit pas être là. » Les deux étaient réels, et
+  **les deux venaient de MES corrections**, pas de la photo.
+  🐛 **LA TACHE SUR L'ÉCRAN — une fausse bonne idée qui coûtait sans rapporter.**
+  Je remettais le pouce par-dessus le châssis avec un disque flou. Au zoom, ce
+  disque recollait aussi **un morceau de l'ancienne coque jaunie, en plein sur
+  l'écran de l'appli**. Et la restauration ne servait à rien : sans elle, le
+  pouce s'arrête au bord du châssis, donc il passe DERRIÈRE le téléphone — ce
+  que fait exactement une main qui tient un téléphone.
+  📌 **Une correction qui a un coût visible doit avoir un bénéfice visible.**
+  Celle-ci n'en avait aucun ; elle était là par prudence, pas par nécessité.
+  🐛 **LA PETITE LIGNE — mon masque était trop flou.** `adoucir=1,4` laissait
+  transparaître la coque claire en un liseré pâle le long du bord gauche, entre
+  les doigts et le châssis. Ramené à 0,6 : **un châssis a un bord net.** Le
+  flou du masque servait au mur (contour progressif à cause de la profondeur de
+  champ) ; je l'avais repris sans réfléchir pour un objet rigide.
+  ✅ Corrigé, plus quadrilatère élargi de 10 px à gauche.
+  📌 **CE QUE CETTE SÉRIE M'APPREND SUR LUI** : sur cinq allers-retours, il a
+  signalé cinq défauts RÉELS que mes vérifications n'avaient pas attrapés —
+  l'écran écrasé, le cadrage lâche, le mur, la tache, le liseré. **Mes contrôles
+  savent dire « le fichier est là » ; son œil dit « l'image est juste ».**
+  Ne jamais lui envoyer un visuel en disant qu'il est fini.
+
 - **29/08/2026 (📱 COUVRIR LE TÉLÉPHONE EN ENTIER — le châssis du flyer 40 posé
   sur le vrai)** — le patron : « utilise la photo de téléphone d'hier, couvre
   mon téléphone en entier », puis il envoie le flyer 40 en montrant le châssis.

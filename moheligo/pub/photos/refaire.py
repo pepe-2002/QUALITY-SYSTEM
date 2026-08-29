@@ -19,12 +19,26 @@ SORTIE = '/home/user/QUALITY-SYSTEM/moheligo/pub/flyers/photo-modele-produit.jpg
 # premiers essais laissaient un liseré doré de l'ancienne coque affleurer à
 # droite et en bas à gauche. Mieux vaut mordre un peu sur la main que laisser
 # voir un bout de coque jaunie — la main, elle, est floue à cet endroit.
-CORPS = [(568, 594), (928, 586), (921, 1298), (575, 1306)]
-POUCE = [(903, 985, 44)]        # seul doigt qui passe DEVANT la coque
+CORPS = [(558, 592), (930, 584), (923, 1300), (565, 1308)]
+
+# ⛔ PLUS AUCUNE RESTAURATION DE DOIGT — et c'était une fausse bonne idée.
+# Je remettais le pouce par-dessus le châssis avec un disque flou. Résultat vu
+# au zoom : le disque recollait aussi un morceau de l'ANCIENNE COQUE jaunie,
+# en plein sur l'écran de l'appli. Le patron : « le doigt tache un peu
+# l'écran. »
+# 📌 Et la restauration ne servait à rien : sans elle, le pouce s'arrête au
+# bord du châssis, donc il passe DERRIÈRE le téléphone — ce qui est exactement
+# ce que fait une main qui tient un téléphone. Le défaut coûtait quelque chose
+# et ne rapportait rien.
+POUCE = []
 
 photo = Image.open(PRISE).convert('RGB')
 tel = ms.telephone_propre(Image.open('/tmp/photos/ecran-haut.png'))
-im = ms.couvrir_telephone(photo, tel, CORPS, doigts=POUCE)
+# ⚠️ `adoucir=0.6` et non 1,4 : un bord de masque trop flou laissait
+# transparaître la coque claire en un LISERÉ PÂLE le long du bord gauche,
+# entre les doigts et le châssis. Le patron : « à droite des autres doigts on
+# voit une petite ligne, elle doit pas être là. » Un châssis a un bord NET.
+im = ms.couvrir_telephone(photo, tel, CORPS, doigts=POUCE, adoucir=0.6)
 im = ms.eclaircir(im)
 im = ms.polo_vers_marine(im)
 im = ms.adoucir_peau(im)

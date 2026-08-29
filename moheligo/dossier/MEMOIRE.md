@@ -370,6 +370,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (🚩 UNE DATE À L'ENVERS SUR L'ÉCRAN DU PRODUIT — et deux défauts
+  que seul le rendu a montrés)** — en fabriquant la variante « Réserve ta
+  traversée » (flyer 40), trois choses sont apparues, toutes invisibles au code :
+  1. **Le téléphone n'était pas là.** Le bloc `.tel` existait dans le CSS, il
+     manquait dans le corps du document. Aucune erreur : Chromium rend une page
+     valide avec un trou. Le fichier sortait à la bonne taille, `controle.py`
+     disait ✅. **Un visuel n'est vérifié que quand on l'a REGARDÉ.**
+  2. **La flèche `↔` s'affichait « .. »** — nos woff2 sont des sous-ensembles
+     latins, le signe n'y est pas, et le remplacement est silencieux.
+     📌 Règle : **aucun caractère hors latin de base dans un texte de flyer.**
+  3. 🚩 **Le champ Date de l'application affichait `09/05/2026`.** Ce n'était pas
+     une date périmée : c'était le **5 septembre écrit à l'américaine**. Un
+     client comorien y lit *9 mai* — donc une réservation pour une date passée,
+     donc un service mort. Cause : le calendrier natif d'un `<input type=date>`
+     suit **la langue de l'interface du navigateur**, pas l'`Accept-Language` ;
+     `locale:'fr-FR'` ne suffit pas, il faut lancer Chromium avec `--lang=fr-FR`.
+  ✅ **Corrigé, et rendu non répétable** : le script de capture est passé de
+  `/tmp` au dépôt (`pub/demo/ecrans/capture.js`), la date y est **calculée**
+  (aujourd'hui + 7 j) au lieu d'être figée, et le double `pub/flyers/ecran-appli.png`
+  a été supprimé — les flyers 39 et 40 pointent désormais la seule copie.
+  Un double se corrige d'un côté et pas de l'autre : c'est la même cause que les
+  quatre visuels retrouvés en retard sur leur source ce matin.
+  📌 **LA LEÇON, PLUS LARGE QUE CE SCRIPT** : ces trois défauts ont en commun de
+  **ne lever aucune erreur**. Le rendu réussit, le poids est bon, le contrôle
+  automatique passe. Nos garde-fous savent dire « le fichier est là » ; ils ne
+  savent pas dire « l'image est juste ». **Tout visuel neuf se regarde à l'œil
+  avant d'être poussé — et le champ date se relit après chaque capture.**
+
 - **29/08/2026 (👁️ L'ŒIL EXTÉRIEUR — à quoi il sert, et à quoi il ne sert pas)** —
   le patron fait relire la campagne par ChatGPT : 9/10, avec trois reproches.
   Deuxième fois (le 26/08, c'était 8/10 sur un flyer).

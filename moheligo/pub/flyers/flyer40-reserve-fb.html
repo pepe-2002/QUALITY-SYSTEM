@@ -1,0 +1,181 @@
+<!-- RÉSERVE TA TRAVERSÉE — la VARIANTE DIRECTE du flyer digitalisation.
+     Proposée le 29/08/2026 après une relecture extérieure : « pour quelqu'un qui
+     découvre MoheliGo en 2 secondes, le bénéfice concret pourrait être encore
+     plus évident ».
+
+     ⚖️ CE FICHIER NE REMPLACE RIEN. Le patron avait choisi lui-même le titre
+     « L'ère de la digitalisation ». On ne change pas le titre du patron sur
+     l'avis d'un tiers : on fabrique la variante et il tranche en voyant les deux.
+     · flyer39 = registre INSTITUTIONNEL (« voici ce que devient le pays »)
+     · flyer40 = registre PRODUIT (« voici ce que tu peux faire, maintenant »)
+     Les deux sont légitimes ; ils ne parlent pas au même lecteur.
+
+     CE QUI CHANGE, ET POURQUOI
+     · le titre dit le BÉNÉFICE, pas la catégorie : un verbe à l'impératif ;
+     · les trois gestes deviennent trois ÉTAPES NUMÉROTÉES. Ce n'est pas du texte
+       en plus : c'est la même phrase, montrée comme une séquence. Le lecteur
+       compte 1-2-3 avant même de lire, et il sait que c'est court ;
+     · le téléphone gagne 30 % de surface. C'est LUI la preuve que le service
+       existe ; le texte ne fait que le commenter ;
+     · le numéro WhatsApp devient un vrai bouton.
+     ⚠️ Pas de logo WhatsApp : je n'ai pas le fichier officiel, et redessiner une
+     marque déposée de mémoire est pire que ne pas la mettre. Une bulle de
+     message dit la même chose sans copier personne.
+
+     🔤 AUCUN SIGNE HORS LATIN DANS LE TEXTE. Le premier rendu portait
+     « MOHÉLI ↔ GRANDE COMORE » : nos woff2 sont des sous-ensembles latins, la
+     flèche n'y est pas et Chromium l'a remplacée par deux points. Un caractère
+     absent ne fait pas d'erreur, il fait un visuel faux. On s'en tient au point
+     médian, déjà utilisé partout ailleurs.
+
+     Rendu : node render.js flyer40-reserve-fb.html flyer-reserve-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+.eclat { position:absolute; inset:0; background:linear-gradient(116deg,
+  rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
+.halo { position:absolute; right:-140px; top:340px; width:760px; height:900px; z-index:1;
+  background:radial-gradient(ellipse at center, rgba(94,160,255,.30) 0%, rgba(15,42,92,0) 68%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:214px; z-index:5; font-size:14px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* pleine largeur : c'est ce qui permet au titre direct d'être GROS. Dans une
+   colonne de 568 px il serait tombé à 41 px, plus petit que l'institutionnel.
+   Le téléphone commence donc SOUS le titre (412 px), pas à côté. */
+.acc { position:absolute; left:76px; top:252px; width:928px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:66px; line-height:1.02;
+  letter-spacing:-2.2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+/* LES TROIS ÉTAPES. Colonne de 500 px : elle s'arrête à 576 px, le téléphone
+   commence à 634 px — 58 px d'air entre les deux, jamais de collision. */
+.etapes { position:absolute; left:76px; top:440px; width:500px; z-index:5; }
+.etapes .e { display:flex; align-items:center; gap:22px; margin-bottom:88px; }
+.etapes .e:last-child { margin-bottom:0; }
+.etapes .n { flex:none; width:54px; height:54px; border-radius:16px; background:#F6BC1C;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:30px; color:#0A1D42;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(150,100,4,.34); }
+.etapes .l { font-size:27px; line-height:1.2; color:#fff; font-weight:700; }
+
+/* LE TÉLÉPHONE — 380 x 778, soit 30 % de surface de plus que sur le flyer 39.
+   Bas à 1190 px : la barre partenaire commence à 1212, ils ne se touchent pas.
+   Rapport respecté : la capture fait 1320 x 2700 (0,489), le châssis 0,4884. */
+.tel { position:absolute; right:66px; top:412px; width:380px; height:778px; z-index:4;
+  background:#08132C; border-radius:50px; padding:12px;
+  box-shadow:0 46px 92px rgba(2,8,26,.62), 0 0 0 2px rgba(255,255,255,.10); }
+.tel .ecran { width:100%; height:100%; border-radius:40px; overflow:hidden; background:#fff; }
+/* ⚠️ `width:100%` seul laisse une bande blanche sous la barre de navigation :
+   la capture est plus étroite de proportion que le châssis. On remplit en
+   hauteur et on rogne par le bas, où il n'y a rien à perdre. */
+.tel .ecran img { width:100%; height:100%; object-fit:cover; object-position:50% 0; display:block; }
+.tel .encoche { position:absolute; left:50%; transform:translateX(-50%); top:21px;
+  width:122px; height:24px; border-radius:13px; background:#08132C; z-index:2; }
+
+/* 🟡 LE JAUNE = L'ACTION. C'est la règle proposée par le relecteur, et elle est
+   bonne — à une nuance près qu'il ne pouvait pas connaître : l'or est AUSSI
+   notre couleur de marque (203 emplois mesurés). On ne peut donc pas dire
+   « tout ce qui est or est une action ». Ce qu'on peut tenir, et qui suffit :
+   **toute action est en or.** */
+.wa { position:absolute; left:76px; top:876px; z-index:5;
+  display:inline-flex; align-items:center; gap:16px;
+  background:#F6BC1C; border-radius:18px; padding:20px 30px;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.wa .bulle { width:38px; height:38px; flex:none; }
+.wa .t .p { font-size:11px; font-weight:700; letter-spacing:2.2px; color:#7A5A05; }
+.wa .t .n { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+  color:#0A1D42; letter-spacing:-.9px; margin-top:2px; }
+
+/* ⚠️ MVola est déjà dit à l'étape 2 : on ne le répète pas ici. Une preuve qui
+   répète l'étape n'apporte rien et rallonge le seul bloc qu'on veut court. */
+.preuve { position:absolute; left:76px; top:1014px; width:500px; z-index:5;
+  font-size:20px; line-height:1.5; color:#9FB6D8; }
+.preuve b { color:#EAF1FF; font-weight:700; }
+
+.barre { position:absolute; left:76px; top:1212px; width:928px; height:96px; z-index:5;
+  background:#F6F9FF; border-radius:22px; display:flex; align-items:center;
+  padding:0 34px; gap:28px; box-shadow:0 22px 50px rgba(2,8,26,.42); }
+.barre .mg { display:flex; align-items:center; gap:12px; }
+.barre .mg img { width:44px; height:44px; object-fit:contain; }
+.barre .mg b { font-family:'Archivo',sans-serif; font-weight:900; font-size:25px;
+  color:#0F2A5C; letter-spacing:-.8px; }
+.barre .mg b i { color:#F6BC1C; font-style:normal; }
+.barre .sep { width:2px; height:44px; background:#D6E2F5; }
+.barre .kp img { height:34px; display:block; }
+.barre .web { margin-left:auto; font-family:'Archivo',sans-serif; font-weight:900;
+  font-size:28px; color:#0F2A5C; letter-spacing:-.8px; }
+
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:3; }
+</style>
+
+<div class="page">
+  <div class="eclat"></div>
+  <div class="halo"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">RÉSERVE TA TRAVERSÉE<span>DEPUIS TON TÉLÉPHONE.</span></div>
+
+  <div class="etapes">
+    <div class="e"><div class="n">1</div><div class="l">Choisis ton départ.</div></div>
+    <div class="e"><div class="n">2</div><div class="l">Paie avec MVola.</div></div>
+    <div class="e"><div class="n">3</div><div class="l">Reçois ton billet.</div></div>
+  </div>
+
+  <div class="tel">
+    <div class="encoche"></div>
+    <div class="ecran"><img src="../demo/ecrans/accueil-reservation.png" alt=""></div>
+  </div>
+
+  <div class="wa">
+    <svg class="bulle" viewBox="0 0 40 40" fill="none">
+      <path d="M20 4C11.2 4 4 10.7 4 19c0 3.1 1 6 2.8 8.4L5 36l8.9-1.7A17.6 17.6 0 0 0 20 34c8.8 0 16-6.7 16-15S28.8 4 20 4Z"
+            fill="#0A1D42"/>
+      <path d="M14.6 13.4c-.3-.7-.6-.7-.9-.7h-.8c-.3 0-.8.1-1.2.6-.4.5-1.6 1.5-1.6 3.6s1.6 4.2 1.9 4.5c.2.3 3.1 4.9 7.7 6.7 3.8 1.5 4.6 1.2 5.4 1.1.8-.1 2.6-1 3-2 .4-1 .4-1.8.3-2-.1-.2-.4-.3-.9-.5-.4-.2-2.6-1.3-3-1.4-.4-.2-.7-.2-1 .2-.3.4-1.1 1.4-1.4 1.7-.2.3-.5.3-.9.1-.4-.2-1.9-.7-3.6-2.2-1.3-1.2-2.2-2.6-2.5-3-.2-.4 0-.7.2-.9l.7-.8c.2-.3.3-.5.4-.8.1-.3.1-.6 0-.8l-1.2-3Z"
+            fill="#F6BC1C"/>
+    </svg>
+    <div class="t">
+      <div class="p">UNE VRAIE PERSONNE RÉPOND</div>
+      <div class="n">WhatsApp +269 479 43 28</div>
+    </div>
+  </div>
+
+  <div class="preuve">Billet à <b>code QR</b>, il reste dans ton téléphone.
+    Et <b>chaque soir</b>, on publie la mer du lendemain.</div>
+
+  <div class="barre">
+    <div class="mg"><img src="logo-emblem.png" alt=""><b>Moheli<i>Go</i></b></div>
+    <div class="sep"></div>
+    <div class="kp"><img src="kartapay-logo.png" alt="kartaPay"></div>
+    <div class="web">moheligo.com</div>
+  </div>
+
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

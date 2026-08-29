@@ -370,6 +370,28 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **29/08/2026 (📏 « IL Y A UNE LIGNE LÀ » — six pixels recopiés à la main)** —
+  le patron voit un trait vertical sur toute la hauteur du flyer 43. Il ne dit
+  pas où ; je l'ai cherché en MESURANT le profil de la ligne de pixels au lieu
+  de scruter l'image : R passait de 15 à 55 puis revenait à 15 **en six
+  pixels**, à x=460 exactement.
+  🐛 **LA CAUSE, ET ELLE EST BÊTE** : `.photo` fait 620 px de large, `.fondu`
+  en faisait **614**. Six pixels de photo restaient à nu, et comme le fond de
+  la photo y est un peu plus clair que #0F2A5C, ça dessinait une frontière.
+  📌 **DEUX RÈGLES QUE J'EN TIRE**
+  1. **Deux dimensions qui doivent être égales ne se recopient pas à la main.**
+     J'avais élargi `.photo` de 614 à 620 et oublié le voile — exactement le
+     genre d'écart que la charte a déjà subi (marge 76/70, coin 404/392/412).
+  2. **Un fond « presque » de la bonne couleur est pire qu'un fond franchement
+     différent : l'œil ne voit pas une nuance, il voit une frontière.**
+  ✅ Corrigé : voile à 620 px, et les 4 premiers pour cent restent OPAQUES avant
+  que le fondu commence — sinon le bord n'est couvert qu'à 84 %.
+  ✅ Durci aussi le masque de `remplacer_mur()` (score × 1,7) : le mur n'était
+  remplacé qu'à moitié dans les zones un peu plus sombres.
+  🔍 **MÉTHODE À GARDER** : quand il signale un défaut sans dire où, ne pas
+  chercher à l'œil — **tracer le profil de pixels et chercher la marche.** Ça a
+  donné la position exacte en une commande, et la cause dans la foulée.
+
 - **29/08/2026 (🔍 DEUX DÉFAUTS QU'IL VOIT ET QUE JE NE VOYAIS PAS)** — le
   patron : « le doigt tache un peu l'écran, et à droite des autres doigts on
   voit une petite ligne, elle doit pas être là. » Les deux étaient réels, et

@@ -237,6 +237,14 @@ def remplacer_mur(im, couleur=(15, 42, 92), lum_bas=155, lum_haut=200,
     relie = np.isin(lab, list(bords))
     score = score * ndimage.binary_dilation(relie, np.ones((9, 9)))
 
+    # ⚠️ ON DURCIT LE SCORE. Sans ça, le mur n'est remplacé qu'À MOITIÉ là où il
+    # est un peu plus sombre (ombre, vignetage) : le fond sort à R≈36 au lieu de
+    # R=15, et cet écart se voit comme un TRAIT CLAIR au bord de la photo dès
+    # qu'elle est posée sur la page. Signalé par le patron le 29/08.
+    # 📌 Un fond « presque » de la bonne couleur est pire qu'un fond franchement
+    # différent : l'œil ne voit pas une nuance, il voit une frontière.
+    score = np.clip(score * 1.7, 0, 1)
+
     m = Image.fromarray((score * 255).astype(np.uint8)).filter(
         ImageFilter.GaussianBlur(adoucir))
     fond = Image.new('RGB', im.size, tuple(couleur))

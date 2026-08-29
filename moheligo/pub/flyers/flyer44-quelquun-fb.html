@@ -50,12 +50,16 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .photo { position:absolute; inset:0; overflow:hidden; }
 .photo img { width:100%; height:100%; object-fit:cover; object-position:50% 12%; display:block; }
 
-/* Le marine monte DANS la mer. Les arrêts sont calculés pour que le fondu soit
-   déjà total à 66 %, là où le titre commence : un titre posé sur un dégradé en
+/* Le marine monte DANS la mer. SIX arrêts et non quatre — sur remarque
+   extérieure : « on pourrait affiner la transition pour qu’elle soit plus
+   naturelle ». Juste. Un dégradé à quatre arrêts fait une marche perceptible
+   vers 55 % ; à six, la mer se referme sans qu’on voie où.
+   ⚠️ Il reste TOTAL à 69 %, avant le titre : un titre posé sur un dégradé en
    cours de route perd son contraste ligne après ligne. */
 .fondu { position:absolute; inset:0; z-index:2;
-  background:linear-gradient(180deg, rgba(15,42,92,0) 30%, rgba(15,42,92,.42) 47%,
-             rgba(15,42,92,.88) 59%, #0F2A5C 66%); }
+  background:linear-gradient(180deg, rgba(15,42,92,0) 22%, rgba(15,42,92,.14) 34%,
+             rgba(15,42,92,.40) 45%, rgba(15,42,92,.72) 54%,
+             rgba(15,42,92,.93) 62%, #0F2A5C 69%); }
 
 .coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
   clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;

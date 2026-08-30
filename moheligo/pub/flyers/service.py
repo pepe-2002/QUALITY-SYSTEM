@@ -74,9 +74,19 @@ FERMETURE = dict(
     jusqu_au=None,             # inconnue — et on ne la devine pas
     # Ce que le patron a dit, mot pour mot, sans l'arrondir :
     annonce="les liaisons maritimes sont fermées, la mer est agitée",
-    # Pas de date annoncée par le patron → rien à afficher, rien à revérifier
-    # à une date précise. On redemande, on n'extrapole pas.
-    reouverture_possible=None,
+    # ✅ RENSEIGNÉ LE 30/08/2026 À 19H30. Le patron, mot pour mot :
+    # « la réouverture des traversées est prévue Mardi ».
+    # 📌 SON MOT EST « PRÉVUE », PAS « POSSIBLE » — et on ne bouge ni dans un
+    # sens ni dans l'autre. Le 12/08 il avait dit « ouverture POSSIBLE mardi »
+    # et le texte disait « peut-être mardi » : c'était juste. Aujourd'hui il dit
+    # « prévue », donc le texte dit « c'est prévu ». Arrondir vers le haut ferait
+    # une promesse qu'il n'a pas faite ; arrondir vers le bas effacerait la seule
+    # bonne nouvelle qu'on ait à donner depuis cinq jours.
+    # ⚠️ CE QUI NE CHANGE PAS POUR AUTANT : `OUVERT` reste False. Une reprise
+    # PRÉVUE n'est pas une reprise CONSTATÉE, et c'est la vedette qui part —
+    # pas le calendrier — qui rouvre le service. La marche à suivre du jour J
+    # est en tête de ce fichier, en trois gestes et dans cet ordre.
+    reouverture_possible='2026-09-01',
     # Une fermeture expliquée rassure (« ils savent ce qu'ils font »), une
     # fermeture muette inquiète (« ils ont un problème »). Et c'est vérifiable
     # par n'importe qui depuis la plage — donc c'est un bon argument.
@@ -112,10 +122,46 @@ PUB_PENDANT_FERMETURE = True   # sans effet tant que OUVERT vaut True
 # droite ici se répète des dizaines de fois sur la page. C'est le passage le
 # plus lu de tout ce qu'on écrit, et c'était le seul qui restait fautif après
 # la mise aux normes (norme § 5).
-MENTION_FERMETURE = """⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS (mer agitée).
+# 🚩 DEVENUE UNE FONCTION LE 30/08/2026, et pour une raison précise.
+# Le patron a donné une date de reprise. Une mention écrite en dur aurait dit
+# « la reprise est prévue MARDI » — y compris LE MARDI, et y compris le
+# mercredi si personne ne repasse derrière. Un texte qui parle d'un jour doit
+# savoir quel jour on est, sinon il devient faux tout seul, en silence.
+# 📌 C'est la même règle que pour les dates gravées dans un visuel (norme § 7.3) :
+# ce qui porte une date se REGÉNÈRE, jamais ne se garde.
+def mention_fermeture(jour=None):
+    """La mention ajoutée à CHAQUE publication commerciale pendant la fermeture.
+
+    ✍️ Apostrophes typographiques ’ et non ' — corrigé le 29/08/2026. Ce texte
+    part sur chaque publication pendant une fermeture : c'est le passage le plus
+    lu de tout ce qu'on écrit (norme § 5).
+    """
+    jour = jour or datetime.date.today()
+    d = FERMETURE.get('reouverture_possible')
+    if not d:
+        quand = ('Ne descends pas au port avant qu’on annonce la reprise ici :\n'
+                 'on la publiera dès qu’elle est décidée.')
+    else:
+        d = datetime.date.fromisoformat(d)
+        if jour < d:
+            quand = ('La reprise est prévue %s. Ce n’est pas une promesse — c’est '
+                     'la mer qui\ndécide — mais c’est ce qui est prévu, et tu le '
+                     'liras ici le jour où ça repart.' % JOURS[d.weekday()])
+        elif jour == d:
+            quand = ('La reprise est prévue pour aujourd’hui. Attends notre '
+                     'annonce ici avant de\ndescendre au port : c’est la vedette '
+                     'qui part qui rouvre la ligne, pas le calendrier.')
+        else:
+            # La date est passée sans qu'on ait rouvert : on ne la répète pas.
+            quand = ('Ne descends pas au port avant qu’on annonce la reprise ici :\n'
+                     'on la publiera dès qu’elle est décidée.')
+    # 📌 La nouvelle a son propre paragraphe. Collée en fin de phrase, elle se
+    # lisait comme une précision de plus ; seule, elle se voit.
+    return ("""⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS (mer agitée).
 Tu peux prendre ta place pour les jours qui viennent — elle t’attend, et si la
-date ne te va plus, la changer ne coûte rien. Mais ne descends pas au port avant
-qu’on annonce la reprise ici : on la publiera dès qu’elle est décidée."""
+date ne te va plus, la changer ne coûte rien.
+
+""" + quand)
 
 
 def avec_mention(texte):
@@ -128,11 +174,12 @@ def avec_mention(texte):
     """
     if not texte or ouvert():
         return texte
+    mention = mention_fermeture()
     lignes = texte.rstrip().split('\n')
     for i, l in enumerate(lignes):
         if l.startswith('#'):
-            return '\n'.join(lignes[:i] + [MENTION_FERMETURE, ''] + lignes[i:]) + '\n'
-    return texte.rstrip() + '\n\n' + MENTION_FERMETURE + '\n'
+            return '\n'.join(lignes[:i] + [mention, ''] + lignes[i:]) + '\n'
+    return texte.rstrip() + '\n\n' + mention + '\n'
 
 
 def jour_de_fermeture(jour=None):
@@ -241,15 +288,22 @@ def paragraphe_reprise():
     annoncée puis non tenue fait plus de mal que pas de date du tout ». La règle
     ne suffit pas si le texte qui la viole vit ailleurs — **d'où ce paragraphe,
     ici, piloté par `FERMETURE['reouverture_possible']`.**
+
+    🚩 30/08/2026 — « PEUT-ÊTRE » EST DEVENU « PRÉVU », ET LE MOT VIENT DE LUI.
+    Le 12/08 le patron disait « ouverture POSSIBLE mardi » → « peut-être mardi ».
+    Le 30/08 il dit « la réouverture est PRÉVUE mardi » → « c’est prévu mardi ».
+    On ne traduit pas son mot, on le reprend. Arrondir vers le haut invente une
+    promesse ; arrondir vers le bas efface la nouvelle. La phrase de prudence,
+    elle, ne bouge pas : c’est la mer qui décide.
     """
     d = FERMETURE.get('reouverture_possible')
     if d:
         jour = JOURS[datetime.date.fromisoformat(d).weekday()]
-        titre = 'QUAND ÇA REPREND : PEUT-ÊTRE %s.' % jour.upper()
+        titre = 'QUAND ÇA REPREND : C’EST PRÉVU %s.' % jour.upper()
     else:
         titre = 'QUAND ÇA REPREND : ON NE LE SAIT PAS ENCORE.'
     return (titre + '\n'
-            'Ce n\'est pas une date promise — c\'est la mer qui décide, et nous ne '
+            'Ce n’est pas une date promise — c’est la mer qui décide, et nous ne '
             'décidons pas\ndes départs. Le jour où ça rouvre, tu le liras ici en '
             'premier.')
 

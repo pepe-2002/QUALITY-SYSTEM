@@ -210,10 +210,20 @@ def main():
 
 moheligo.com — et demain matin, tu embarques tranquille."""
     else:
-        # On ne réserve rien, et on le dit sans promettre de date de reprise.
-        appel = """⛔ RAPPEL : LES TRAVERSÉES SONT SUSPENDUES JUSQU’À NOUVEL ORDRE.
-On ne prend pas de réservation pour demain — et on continue à publier la mer
-chaque soir, pour que tu voies le calme revenir en même temps que nous.
+        # 🚩 30/08/2026 — CE BLOC NE DIT PLUS « JUSQU’À NOUVEL ORDRE » EN DUR.
+        # Le patron a donné une date de reprise (prévue mardi). « Jusqu’à nouvel
+        # ordre » resterait vrai au sens strict et FAUX au sens utile : on aurait
+        # une nouvelle et on continuerait à dire qu’on n’en a pas. Le bulletin du
+        # soir est le rendez-vous quotidien — c’est là que la nouvelle doit
+        # tomber, pas dans un post commercial.
+        # 📌 La phrase vient de `service.paragraphe_reprise()`, pas d’ici : une
+        # date de reprise ne doit exister qu’à UN endroit dans tout le dépôt,
+        # sinon on en corrige une et on en oublie trois (leçon du 26/08).
+        appel = """⛔ RAPPEL : LES TRAVERSÉES SONT ENCORE SUSPENDUES CE SOIR.
+On ne prend pas de réservation pour demain matin — et on continue à publier la
+mer chaque soir, pour que tu voies le calme revenir en même temps que nous.
+
+""" + service.paragraphe_reprise() + """
 
 Si tu as un billet : changer la date est gratuit, et le remboursement est
 possible tant que la traversée n’est pas partie. Écris-nous sur WhatsApp.

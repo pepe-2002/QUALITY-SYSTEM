@@ -123,9 +123,18 @@ def controler(chemin):
         alerte('2', 'aucun bloc `.acc` trouvé — titre non contrôlable')
     else:
         plat, lignes = t
-        mots = len(plat.split())
-        if mots > 6:
-            refuse('2', f'titre de {mots} mots (maximum 6) : « {plat} »')
+        # 🚩 6 MOTS PAR LIGNE, ET NON PAR TITRE — corrigé le 30/08/2026.
+        # La règle « 6 mots pour tout le titre » refusait « ON NE VISITE PAS
+        # MOHÉLI. ON Y REVIENT. » (8 mots) — une de nos meilleures lignes, notée
+        # 9/10 par un relecteur extérieur, et deux phrases de 5 et 3 mots.
+        # 📌 Une règle qui refuse ce qu'on a fait de mieux n'est pas une règle
+        # exigeante : c'est une règle mal écrite. La vraie contrainte est ce que
+        # l'œil saisit d'un coup, donc elle se compte PAR LIGNE. Les 32 signes
+        # par ligne restent la limite qui mord vraiment.
+        for l in lignes:
+            if len(l.split()) > 6:
+                refuse('2', f'ligne de titre de {len(l.split())} mots '
+                            f'(maximum 6 par ligne) : « {l} »')
         for l in lignes:
             if len(l) > 32:
                 refuse('2', f'ligne de titre de {len(l)} signes (maximum 32) : « {l} »')

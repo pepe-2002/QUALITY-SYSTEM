@@ -142,6 +142,14 @@ fini. **Un caractère absent ne fait pas un bug, il fait un visuel faux.**
 
 Et trois règles de composition :
 - **Aucun mot seul sur la dernière ligne** d'un paragraphe (une « ligne veuve »).
+  🤖 Mesuré par `node lignes.js <flyer.html>` — ajouté le 30/08 parce que cette
+  règle était écrite depuis la veille et que **rien ne la faisait respecter** :
+  « embarques. » est resté seul sous deux lignes pleines dans un visuel qui
+  passait tous les autres contrôles. ⚠️ L'outil ne juge que les coupures
+  **automatiques** : là où le dessinateur a coupé lui-même (`<br>`, span doré en
+  `display:block`, `<small>` de signature), il n'y a rien à signaler.
+  📌 Et ce n'est pas la COLONNE qu'on élargit, c'est la PHRASE qu'on recoupe :
+  le 30/08, 400 px et 424 px donnaient la même veuve.
 - **Aucune date, aucun nombre, aucun numéro coupé en fin de ligne.** Vu le
   29/08 : « 2025-2026 » se cassait en « 2025- » / « 2026 ». ⚠️ On ne corrige PAS
   avec un trait insécable U+2011 — il est hors de nos woff2 et disparaîtrait en
@@ -205,6 +213,19 @@ Le patron signale souvent un défaut **sans dire où**. Trois fois sur trois le
 > **On trace le profil de pixels et on cherche la marche.**
 > Le trait vertical a été localisé en une commande : le rouge passait de 15 à 55
 > puis revenait à 15, **en six pixels**, à x = 460.
+
+Le 30/08, la même commande a trouvé un défaut que **personne n'avait signalé** :
+le rouge passait de 15 à 114 en un pixel au bord haut de la photo — une épaule
+tranchée à plat. 📌 **Le profil de pixels ne sert pas qu'à retrouver un défaut
+qu'on vous montre ; il en trouve qu'on ne vous montre pas.** À passer sur les
+quatre bords de chaque photo détourée, avant de dire qu'un visuel est fini.
+
+⚠️ **ET LA SONDE NE DOIT PAS MODIFIER CE QU'ELLE MESURE.** Le 30/08, un outil
+qui entourait chaque mot d'un `<span>` pour lire sa position a annoncé « 3
+lignes, ligne veuve » sur un titre qui en fait deux : `.acc span` est en
+`display:block`, ses propres spans avaient cassé la mise en page. **Une mesure
+qui déplace son sujet ne mesure rien.** On lit avec des `Range`, jamais en
+réécrivant la page.
 
 Et pour ses remarques de fond, la règle posée le 29/08 tient trois fois :
 **quand un relecteur signale une incohérence, on ne discute pas — on mesure.**

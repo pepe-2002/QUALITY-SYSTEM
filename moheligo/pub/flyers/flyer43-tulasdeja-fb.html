@@ -1,6 +1,33 @@
-<!-- TOUT EST LÀ — la SURFACE CLAIRE de la marque, 29/08/2026.
-     Le patron, sur le flyer 42 : « c'est toujours pas esthétique. » Il avait
-     raison, et le défaut n'était pas la couleur.
+<!-- TU L’AS DÉJÀ — le moment PRODUIT de la barre, 29/08, retitré le 30/08/2026.
+
+     SENTIMENT : LE SOULAGEMENT
+
+     🚩 LE TITRE A CHANGÉ, ET C’EST LA NORME QUI L’A EXIGÉ — 30/08/2026.
+     Il disait « TOUT EST LÀ. » Le contrôle l’a refusé au § 2 : « le titre ne
+     parle pas au lecteur ». Et le contrôle a raison — « tout est là » est une
+     phrase sur NOTRE produit, pas sur la personne qui regarde. C’est exactement
+     ce que le patron a demandé d’arrêter le 29/08 : « on vend de l’émotion et
+     l’appel à utiliser MoheliGo. »
+     📌 Deux corrections de règle en deux jours, et elles vont dans des sens
+     opposés — c’est normal : le 30/08 au matin, une règle mal écrite refusait
+     notre meilleure ligne, on a corrigé la RÈGLE ; ici la règle est juste et
+     c’est le VISUEL qui était faible, on corrige le VISUEL. La question n’est
+     jamais « qui a tort », c’est « lequel des deux est mal écrit ».
+
+     ✅ POURQUOI « TU L’AS DÉJÀ. »
+     C’est la même idée (rien à installer, rien à aller chercher), mais dite au
+     lecteur, et elle répond à l’objection réelle de notre marché : les gens
+     croient qu’il leur manque quelque chose pour réserver en ligne. Non — ils
+     l’ont déjà dans la main, et l’image le montre avant que le texte le dise.
+     Le titre ne fait que nommer ce que l’image montre (règle du 26/08).
+     📐 84 px, et les deux lignes sont MESURÉES dans notre Archivo 900, pas
+     estimées : « TU L’AS » = 310 px, « DÉJÀ. » = 257 px, colonne = 424 px.
+     Au passage la mesure a écarté « TOUT EST DANS TA MAIN. » — 641 px sur une
+     seule ligne, 505 px même à 62 px. On ne rétrécit pas la photo pour loger
+     un titre : c’est le titre qui s’adapte au sujet.
+
+     ⬛ L’HISTOIRE DU DESSIN — le patron, sur le flyer 42 : « c'est toujours pas
+     esthétique. » Il avait raison, et le défaut n'était pas la couleur.
 
      🔍 LES SIX DÉFAUTS DU 42, NOMMÉS AVANT D'ÊTRE CORRIGÉS
      1. photo d'identité : plaqué au mur, centré, bras tendu, face objectif ;
@@ -32,10 +59,19 @@
      ➡️ La surface claire est donc abandonnée. On garde une seule surface, la
      nôtre, et le coin blanc en biais revient.
 
-     ⛔ PAS PUBLIABLE TANT QUE le patron n'a pas confirmé qu'il revient sur
-     « enlève ma photo, j'aime être discret » (28/08). La photo est hors dépôt.
+     ✅ LA RÉSERVE SUR LA PHOTO EST LEVÉE, et voilà comment.
+     Le 28/08 : « enlève ma photo, j’aime être discret. » Puis le 29/08, sur
+     ces prises précisément : « on va utiliser ces photos pour les pubs et les
+     flyers », et « je ne veux pas mon visage sur le flyer ». Les deux tiennent
+     ensemble : ce qu’il refuse, c’est d’être RECONNAISSABLE, pas d’apparaître.
+     Le cadrage est calé sous le cou — le téléphone commence à y=628 dans la
+     prise, le cadre à 604, soit 24 px d’air. Aucun visage, aucune main
+     identifiable. La photo source reste hors dépôt (dépôt public).
+     ⚠️ À REVÉRIFIER À L’ŒIL À CHAQUE RENDU : `refaire.py` refabrique la photo
+     avant chaque publication. Un cadrage juste hier ne l’est pas d’office
+     aujourd’hui.
 
-     Rendu : node render.js flyer43-toutestla-fb.html flyer-toutestla-facebook.png 1080 1350 2 -->
+     Rendu : node render.js flyer43-tulasdeja-fb.html flyer-tulasdeja-facebook.png 1080 1350 2 -->
 <meta charset="utf-8">
 <style>
 @font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
@@ -80,6 +116,23 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   background:linear-gradient(90deg, #0F2A5C 0%, #0F2A5C 4%,
              rgba(15,42,92,.55) 12%, rgba(15,42,92,0) 26%); }
 
+/* 🚩 LA COUPURE DU HAUT — trouvée le 30/08 en traçant le profil de pixels.
+   `.photo` commence à top:46px : au-dessus c'est la page, en dessous c'est
+   l'épaule. À x=1900 du rendu, le rouge passait de 15 à 114 EN UN PIXEL — une
+   épaule tranchée à l'horizontale sur une bande marine. Ça ne lit pas « photo
+   cadrée », ça lit « rectangle collé ».
+   ⛔ CE QU'IL NE FALLAIT PAS FAIRE : mettre la photo en pleine hauteur. Essayé,
+   rendu, regardé : le téléphone grossit de 3,5 %, son sommet et sa droite
+   sortent du cadre et il chevauche le coin blanc. Les 46 px avaient une raison.
+   ✅ On dissout au lieu de recadrer. Et c'est EXACT, pas approximatif : le fond
+   de la photo vaut #0F2A5C depuis `remplacer_mur()`, la page aussi. Ce voile
+   n'est donc pas une teinte « presque » juste posée sur une autre — c'est la
+   même couleur qui se retire. 46/150 = 30,7 % : le dégradé ne commence
+   qu'après la bande, puis 104 px pour disparaître. */
+.haut-fondu { position:absolute; right:0; top:0; width:620px; height:150px; z-index:3;
+  background:linear-gradient(180deg, #0F2A5C 0%, #0F2A5C 30.7%,
+             rgba(15,42,92,.55) 62%, rgba(15,42,92,0) 100%); }
+
 /* le coin blanc en biais revient : 404 x 172, clip-path de la charte */
 .coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
   clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
@@ -95,18 +148,33 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .sur { position:absolute; left:76px; top:452px; z-index:5; font-size:13px;
   font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
-/* 424 px de colonne : « TOUT » tient à 84 px, mesuré. Le titre est GROS et
-   court — trois mots, une promesse. C'est la seule chose à lire en trois
-   secondes. */
+/* 424 px de colonne, et les deux lignes y sont MESURÉES à 84 px dans notre
+   Archivo 900 : « TU L’AS » = 310 px, « DÉJÀ. » = 257 px. Trois mots, une
+   promesse — la seule chose à lire en trois secondes. */
 .acc { position:absolute; left:76px; top:492px; width:424px; z-index:5;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:84px; line-height:.98;
   letter-spacing:-3.4px; color:#fff; }
-.acc span {
+/* 🚩 `display:block` — ce n’est PAS cosmétique. Dans un `.acc`, un `<span>` est
+   une LIGNE : c’est ainsi qu’on dore la seconde. Le contrôle compte les lignes
+   du titre en lisant ce `display:block` ; un span resté en ligne y compterait
+   pour une ligne de plus et ferait refuser un visuel juste. Ici les deux disent
+   la même chose — l’œil et la machine voient deux lignes. */
+.acc span { display:block;
   background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
 
-.dit { position:absolute; left:76px; top:766px; width:400px; z-index:5;
+/* 🚩 LIGNE VEUVE — corrigé le 30/08/2026, et la découpe est MESURÉE.
+   Première version : « … tu paies, tu embarques. » laissait « embarques. »
+   TOUT SEUL sur la troisième ligne. La norme § 5 l’interdit, et c’est visible :
+   un mot isolé sous deux lignes pleines fait bafouiller la lecture juste avant
+   l’appel à l’action.
+   📌 On n’a pas corrigé à l’œil. Un programme a rendu sept formulations, lu la
+   position de chaque mot et compté les mots de la dernière ligne. Élargir la
+   colonne ne réglait rien (400 comme 424 px : toujours veuve) — c’est la PHRASE
+   qui était mal coupée, pas la colonne.
+   ✅ Retenu : deux lignes pleines, dernière ligne à 7 mots. */
+.dit { position:absolute; left:76px; top:782px; width:400px; z-index:5;
   font-size:23px; line-height:1.5; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
@@ -131,6 +199,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 <div class="page">
   <div class="photo"><img src="photo-modele-produit.jpg" alt=""></div>
   <div class="fondu"></div>
+  <div class="haut-fondu"></div>
 
   <div class="coin">
     <img src="logo-emblem.png" alt="">
@@ -138,10 +207,10 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   </div>
 
   <div class="sur">MOHÉLI · GRANDE COMORE</div>
-  <div class="acc">TOUT<br>EST <span>LÀ.</span></div>
+  <div class="acc">TU L’AS<span>DÉJÀ.</span></div>
 
-  <div class="dit">Ton port, ton départ, ton billet.
-    <b>Dans le téléphone que tu tiens déjà.</b></div>
+  <div class="dit">Ton guichet tient dans ta main.
+    <b>Tu choisis ton port, tu paies, tu pars.</b></div>
 
   <div class="trait"></div>
   <div class="cta">RÉSERVE TA TRAVERSÉE</div>

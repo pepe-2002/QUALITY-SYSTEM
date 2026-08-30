@@ -59,14 +59,27 @@ def _entete(html):
 
 
 def _titre(html):
-    """Le contenu de `.acc` — l'accroche, la seule chose lue en trois secondes."""
+    """Le contenu de `.acc` — l'accroche, la seule chose lue en trois secondes.
+
+    🚩 CORRIGÉ LE 30/08/2026 : UN `<span>` NE COUPE PAS TOUJOURS LA LIGNE.
+    On coupait le titre à chaque `<span>`. Or un span ne fait une ligne que s'il
+    est en `display:block` — sinon il dore quelques mots À L'INTÉRIEUR de la
+    ligne. Le flyer 43 écrivait `EST <span>LÀ.</span>` : deux lignes à l'œil,
+    trois pour le contrôle, qui refusait un visuel juste.
+    📌 Une machine qui compte autre chose que ce que le lecteur voit ne mesure
+    rien — elle invente. On lit donc la règle CSS avant de compter.
+    """
     m = re.search(r'class="acc"[^>]*>(.*?)</div>', html, flags=re.S)
     if not m:
         return None
+    coupe = r'<br\s*/?>'
+    bloc = re.search(r'\.acc\s+span\s*\{[^}]*display\s*:\s*block', html)
+    if bloc:
+        coupe += r'|<span[^>]*>|</span>'
     t = re.sub(r'<[^>]+>', ' | ', m.group(1))
     return ' '.join(t.replace('|', ' ').split()), [
-        ' '.join(l.split()) for l in re.split(r'<br\s*/?>|<span[^>]*>|</span>',
-                                              m.group(1)) if l.strip()]
+        ' '.join(re.sub(r'<[^>]+>', ' ', l).split())
+        for l in re.split(coupe, m.group(1)) if l.strip()]
 
 
 def controler(chemin):

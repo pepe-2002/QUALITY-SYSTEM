@@ -370,6 +370,84 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **30/08/2026 (⬛ LA BARRE A REFUSÉ UN VISUEL DÉJÀ PROGRAMMÉ, ET ELLE AVAIT
+  RAISON)** — journée où le contrôle a servi pour de vrai, deux fois, dans les
+  deux sens opposés.
+
+  ✅ **PUBLIÉ ET VÉRIFIÉ** : le flyer du neveu « ON NE VISITE PAS MOHÉLI. ON Y
+  REVIENT. » est sorti le 30/08 à 09:11 UTC (`1166058113262206_122118691707374081`),
+  confirmé dans le rapport du workflow, qui le recompte depuis la page.
+  🩹 **Et j'ai raté mon premier envoi** : les chemins passés au workflow étaient
+  ceux du dépôt (`moheligo/pub/flyers/…`) alors que l'étape travaille DÉJÀ dans
+  `moheligo/pub/flyers`. Le garde-fou `test -f` a arrêté la course 48, **rien
+  n'est parti**, et c'est exactement son travail. Course 49 relancée avec les
+  noms nus : publiée. 📌 **Les entrées du workflow sont relatives à
+  `working-directory`, jamais à la racine du dépôt.**
+
+  🚩 **CORRECTION DE RÈGLE N°1 (le matin) — la règle était mal écrite.**
+  « 6 mots maximum par titre » refusait « ON NE VISITE PAS MOHÉLI. ON Y
+  REVIENT. » (8 mots), noté 9/10 dehors. **Une règle qui refuse ce qu'on a fait
+  de mieux n'est pas exigeante, elle est mal écrite.** La vraie contrainte est
+  ce que l'œil saisit d'un coup : elle se compte **par ligne**. Corrigé.
+
+  🚩 **CORRECTION DE VISUEL N°2 (l'après-midi) — là, la règle avait raison.**
+  `flyer43` était programmé pour lundi sous le titre « TOUT EST LÀ. ». Le
+  contrôle l'a refusé au § 2 : *le titre ne parle pas au lecteur*. Et c'est
+  vrai — « tout est là » est une phrase sur NOTRE produit, pas sur la personne
+  qui regarde ; c'est précisément ce que le patron a demandé d'arrêter le 29/08.
+  Retitré **« TU L'AS DÉJÀ. »** : même idée (rien à installer, rien à aller
+  chercher), dite au lecteur, et elle répond à l'objection réelle du marché —
+  les gens croient qu'il leur manque quelque chose pour réserver en ligne.
+  Fichiers renommés `flyer43-tulasdeja-fb.html` / `flyer-tulasdeja-facebook.png`
+  / `texte-tulasdeja.txt`, et **les trois Routines mises à jour en conséquence**.
+  📌 **LA LEÇON DES DEUX, ENSEMBLE** : quand la machine et le visuel se
+  contredisent, la question n'est jamais « qui a tort » mais **« lequel des deux
+  est mal écrit »**. Le matin c'était la règle ; l'après-midi c'était le visuel.
+
+  📐 **TROIS DÉFAUTS TROUVÉS EN MESURANT, PAS EN REGARDANT** :
+  · **ligne veuve** — « embarques. » restait seul sous deux lignes pleines. La
+    norme § 5 l'interdisait depuis le 29/08 et **rien ne la faisait respecter**.
+    D'où `pub/flyers/lignes.js`, qui lit la découpe réelle des blocs de texte.
+    Élargir la colonne ne réglait rien (400 comme 424 px) : c'était la PHRASE
+    qui était mal coupée. Retenue : « Ton guichet tient dans ta main. Tu
+    choisis ton port, tu paies, tu pars. » — deux lignes pleines.
+  · **coupure du haut** — `.photo` commence à `top:46px` : à x=1900 du rendu, le
+    rouge passait de 15 à 114 **en un pixel**, une épaule tranchée à plat sur
+    une bande marine. Mettre la photo en pleine hauteur a été essayé, rendu,
+    **regardé** : le téléphone grossit de 3,5 % et sort du cadre. On dissout au
+    lieu de recadrer (`.haut-fondu`), et c'est exact et non approximatif — le
+    fond de la photo vaut #0F2A5C depuis `remplacer_mur()`, la page aussi.
+  · **le titre a été MESURÉ, pas estimé** — « TU L'AS » 310 px, « DÉJÀ. » 257 px
+    dans 424 px de colonne. Au passage la mesure a écarté « TOUT EST DANS TA
+    MAIN. » : 641 px sur une ligne, encore 505 px à 62 px de corps.
+
+  🪞 **ET MON PROPRE OUTIL M'A MENTI, une fois.** Pour lire les lignes, mon
+  premier jet entourait chaque mot d'un `<span>`. Ça marchait sur le corps de
+  texte et **ça a menti sur le titre** : `.acc span` est en `display:block`, mes
+  spans ont donc mis chaque mot sur sa propre ligne et l'outil a annoncé « 3
+  lignes, ligne veuve » sur un titre qui en fait deux. 📌 **Une sonde qui
+  modifie ce qu'elle mesure ne mesure rien.** Refait avec des `Range`, qui
+  lisent sans rien changer. Le même défaut existait dans `exigence.py`, qui
+  coupait le titre à chaque `<span>` : il lit maintenant la règle CSS avant de
+  compter. Et `lignes.js` ne crie plus au loup sur les coupures VOULUES (un
+  `<br>`, un span doré en bloc, un `<small>` de signature) — une veuve, c'est un
+  mot que le retour à la ligne **automatique** a laissé seul.
+
+  🩹 **APOSTROPHES DROITES, LÀ OÙ ÇA COMPTE LE PLUS** : 5 dans
+  `texte-revenir.txt` (le post du jour), puis **dans les sources qui fabriquent
+  le texte du soir** — `bulletin.py` (le post « LA MER DE DEMAIN, CE SOIR »,
+  publié TOUS LES SOIRS) et `service.py` (le point de midi de fermeture), plus
+  `texte-digitalisation.txt`. 📌 **On corrige la SOURCE, jamais la copie** :
+  `texte-du-jour.txt` est généré par `bulletin.py` — le corriger à la main
+  aurait été effacé au prochain bulletin. Il se régénère propre à 19h25.
+
+  ❓ **CE QUI RESTE EN L'AIR, ET QUE JE NE PEUX PAS RÉSOUDRE SEUL** : les trois
+  chiffres (réservations payées, visites, abandon au paiement) demandés depuis
+  le 18/08 ; la date de reprise ; la phrase écrite d'autorisation d'image des
+  Young Leader (18 jours) ; le lauréat est-il mohélien — tant que non, « ON A DE
+  QUOI ÊTRE FIERS » ne part pas ; les ~40 visuels encore hors norme ; le jeton
+  Facebook expire vers le 10/10/2026.
+
 - **29/08/2026 (📅 TROIS JOURS PROGRAMMÉS, ET LA BARRE ENTRE DANS LE ROBOT)** —
   relecture extérieure des deux exemples : « Tu pars voir quelqu'un » **9/10,
   le meilleur de la bibliothèque** ; « On a de quoi être fiers » **7/10, en

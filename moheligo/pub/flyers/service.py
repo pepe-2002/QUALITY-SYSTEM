@@ -169,23 +169,23 @@ def texte_du_point(jour=None, etat=None, houle=None):
                % (etat.lower(), ('%.1f' % houle).replace('.', ',')))
     return """OÙ EN EST LE SERVICE — JOUR %d.
 
-%sLe service est toujours suspendu : aucun départ aujourd'hui.
+%sLe service est toujours suspendu : aucun départ aujourd’hui.
 
 NE DESCENDS PAS AU PORT POUR RIEN.
-Tant que cet avis est en ligne, il n'y a pas de vedette. Le jour où ça repart, tu
+Tant que cet avis est en ligne, il n’y a pas de vedette. Le jour où ça repart, tu
 le liras ici — avant de partir de chez toi.
 
 SI TU AS UN BILLET, TU NE PERDS RIEN.
 Il reste valable. Changer la date est gratuit, et le remboursement est possible
-tant que la traversée n'est pas partie. Écris-nous, on s'en occupe.
+tant que la traversée n’est pas partie. Écris-nous, on s’en occupe.
 
-Et ce soir, comme chaque soir, la mer de demain sur cette page. C'est comme ça
+Et ce soir, comme chaque soir, la mer de demain sur cette page. C’est comme ça
 que tu verras le calme revenir, en même temps que nous.
 
 moheligo.com — WhatsApp +269 479 43 28
 
 Prévision Open-Meteo Marine. Nous ne décidons pas des départs : nous publions la
-mer et l'état du service.
+mer et l’état du service.
 
 #MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer""" % (n, mer)
 

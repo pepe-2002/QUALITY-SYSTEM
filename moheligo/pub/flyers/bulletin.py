@@ -211,18 +211,18 @@ def main():
 moheligo.com — et demain matin, tu embarques tranquille."""
     else:
         # On ne réserve rien, et on le dit sans promettre de date de reprise.
-        appel = """⛔ RAPPEL : LES TRAVERSÉES SONT SUSPENDUES JUSQU'À NOUVEL ORDRE.
+        appel = """⛔ RAPPEL : LES TRAVERSÉES SONT SUSPENDUES JUSQU’À NOUVEL ORDRE.
 On ne prend pas de réservation pour demain — et on continue à publier la mer
 chaque soir, pour que tu voies le calme revenir en même temps que nous.
 
 Si tu as un billet : changer la date est gratuit, et le remboursement est
-possible tant que la traversée n'est pas partie. Écris-nous sur WhatsApp.
+possible tant que la traversée n’est pas partie. Écris-nous sur WhatsApp.
 
 moheligo.com — WhatsApp +269 479 43 28"""
 
     # texte de publication prêt à copier, avec les chiffres du jour
     # le premier commentaire vit dans service.py, comme le bandeau : tout ce
-    # qui promet une traversée doit suivre l'état du service
+    # qui promet une traversée doit suivre l’état du service
     commentaire = service.commentaire_bulletin()
 
     texte = f"""LA MER DE DEMAIN, CE SOIR.
@@ -231,13 +231,13 @@ Demain matin entre Ouroveni et Hoani : {etat.lower()}.
 Houle {vals['HOULE']} m, vent {vals['VENT']} km/h de {dirv}, période {vals['PERIODE']} secondes.
 {conseil}
 
-C'est ça, MoheliGo : tu sais avant de quitter la maison.
-La météo mer des 7 prochains jours est dans l'application, mise à jour en continu.
+C’est ça, MoheliGo : tu sais avant de quitter la maison.
+La météo mer des 7 prochains jours est dans l’application, mise à jour en continu.
 
 {appel}
 
 Prévision Open-Meteo relevée {maj}. Le bulletin officiel affiché dans
-l'application fait foi avant l'embarquement.
+l’application fait foi avant l’embarquement.
 
 #MoheliGo #Mohéli #Comores #MétéoMer #Traversée #Ouroveni #Hoani
 

@@ -14,10 +14,31 @@
 > donc publiable, et il est entré dans le calendrier (dimanche, une semaine sur
 > deux).
 >
-> 📌 **Ce qui reste à faire, et pourquoi ça compte quand même** : obtenir la
-> phrase écrite du responsable (modèle plus bas). Elle ne bloque plus rien —
-> c'est simplement la seule pièce qui protégerait MoheliGo si l'une des trois
-> personnes photographiées revenait dessus. Un message WhatsApp suffit.
+> ✅ **01/09/2026 — L'ASSOCIATION A AUTORISÉ.** Le patron, mot pour mot :
+> **« ils ont autorisé »**, en me demandant de publier la vidéo Young Leader.
+> C'est la réponse attendue depuis le 12/08 (20 jours). La question du droit à
+> l'image des personnes est donc réglée à la source, et pas seulement par
+> l'accord du patron : c'est l'association qui a dit oui.
+>
+> ⚠️ **CE QUE J'AI, ET CE QUE JE N'AI PAS — à dire franchement.** J'ai la parole
+> du patron rapportant celle de l'association. Je n'ai pas le message lui-même.
+> Ça suffit pour publier (le juridique est un poste **C**, § 12.2 ter : sa
+> décision), et ça ne suffirait pas devant un tiers. 📌 **La pièce à ranger ici
+> reste la même : une capture du message WhatsApp de l'association**, ou son
+> texte recopié avec la date et le nom du responsable. Trente secondes pour lui,
+> et le dossier est clos pour de bon.
+>
+> 🎬 **CE QUI A ÉTÉ PUBLIÉ SOUS CET ACCORD** : la vidéo
+> `pub/video/MoheliGo-YoungLeader.mp4` (39 s, El Farouk Saindou), le 01/09/2026,
+> jour de la réouverture — sa décision du 26/08 : « on la garde pour le jour de
+> la réouverture, comme ça ça fait le boom. »
+>
+> ❓ **UNE QUESTION QUI RESTE, ET QUI PORTE SUR UNE PERSONNE RÉELLE** : l'écharpe
+> qu'il porte dit « YOUNG LEADER · MOHÉLI · 2026 », et le texte du post le cite
+> exactement (règle § 7.6). Mais le carton de fin, que j'ai fabriqué, le présente
+> comme « Comité Young Leader Mohéli 2026 ». **Lauréat ou membre du comité ?**
+> Les deux ne se disent pas pareil, et se tromper sur le titre de quelqu'un est
+> une erreur de fait. À faire confirmer par le patron, et à corriger ici.
 
 ---
 

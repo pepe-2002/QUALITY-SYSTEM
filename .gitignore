@@ -30,3 +30,8 @@ moheligo/pub/photos/fondateur-portrait.jpg
 #      l'efface pas de l'historique.
 moheligo/pub/flyers/photo-modele-*.jpg
 moheligo/pub/photos/modele-*.jpg
+
+# La prise BRUTE du portrait Young Leader : elle montre quatre autres personnes
+# identifiables au second plan, qui n'ont rien demande. Seule la version
+# detouree — qui les retire — entre dans le depot public.
+moheligo/pub/photos/portrait-young-leader-source.jpg

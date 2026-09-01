@@ -107,6 +107,20 @@ jobs:
       # `../photos-cc`, `../../dossier`). ⚠️ Si un script se met un jour à lire
       # ailleurs, il faut l'ajouter ICI, sinon la publication casse — et une
       # publication qui casse coûte plus cher que les secondes gagnées.
+      # 🚩 `moheligo/pub/video` N'ETAIT PAS DANS CETTE LISTE — corrige le 01/09/2026.
+      # L'etape « Publier la video Young Leader » a ete ecrite le 26/08 et mise en
+      # attente le jour meme (« on la garde pour la reouverture »). Le jour ou on
+      # s'en est servi, elle a echoue en ZERO seconde : « video introuvable ». Le
+      # fichier etait bien sur main — c'est le runner qui ne le telechargeait pas.
+      # 📌 UN CHEMIN DE CODE JAMAIS EXECUTE N'EST PAS UN CHEMIN DE CODE QUI MARCHE.
+      # Il avait l'air fini : etape ecrite, case dans le formulaire, garde-fou de
+      # service, fonction testee. Personne ne l'avait lance une seule fois.
+      #
+      # ⚖️ POURQUOI C'EST CONDITIONNEL et non ajoute a la liste fixe : le dossier
+      # video pese ~37 Mo. Le telecharger a chaque publication de midi, tous les
+      # jours, pour un fichier qui sert deux fois par an, serait payer tous les
+      # jours pour un cas rare. L'expression s'evalue a la chaine vide quand la
+      # case n'est pas cochee (declenchement par cron ou par battement).
       - uses: actions/checkout@v4
         with:
           sparse-checkout: |
@@ -114,6 +128,7 @@ jobs:
             moheligo/pub/photos
             moheligo/pub/photos-cc
             moheligo/dossier
+            ${{ inputs.video_young_leader && 'moheligo/pub/video' || '' }}
 
       - uses: actions/setup-python@v5
         with:

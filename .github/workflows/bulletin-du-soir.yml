@@ -11,17 +11,35 @@
 # le dépôt ne grossit pas, alors qu'un PNG de 2,6 Mo commité chaque jour
 # ajouterait près d'un gigaoctet par an.
 #
-# 🫀 CE ROBOT N'A PLUS DE RENDEZ-VOUS PROGRAMMÉ — et c'est voulu.
-# 🚨 28/08/2026, la mesure qui a tranché : les deux `cron` du 27 au soir ont bien
-# fini par être livrés… **à 00h37 et 01h06 le lendemain**, soit 8 h 43 et 8 h 25
-# de retard. Le bulletin est donc parti à 3h38 du matin, heure des Comores, et le
-# second n'a été arrêté que par `publier_fb.deja_publie()`.
-# 📌 Un rendez-vous qui arrive huit heures plus tard n'est pas « en retard », il
-# est NUISIBLE : il publie quand personne ne regarde, et il occupe la place du
-# jour — celui de 19h25 se fait alors refuser comme doublon.
-# ➡️ Le seul déclencheur est le BATTEMENT : une Routine hors de GitHub pousse une
-# ligne dans `battement-soir.txt` à 19h25 (heure des Comores), et le `push` part
-# en 2 secondes. Le bouton « Run workflow » reste là pour la main.
+# 🫀 DEUX DÉCLENCHEURS, ET LE SECOND EST UN FILET — pas un remplaçant.
+#
+# 1️⃣ LE BATTEMENT reste le déclencheur normal : une Routine pousse une ligne dans
+#    `battement-soir.txt` à 19h25 (heure des Comores) et le `push` part en 2 s.
+#    C'est net, c'est à l'heure, ça reste la voie principale.
+#
+# 2️⃣ LE `schedule:` EST REVENU LE 01/09/2026, à la demande du patron, APRÈS avoir
+#    été retiré le 28/08. Les deux décisions sont justes, et voici pourquoi :
+#    🚨 28/08 — la mesure qui l'avait fait retirer : les deux `cron` du 27 au soir
+#    ont été livrés **à 00h37 et 01h06 le lendemain**, soit 8 h 43 et 8 h 25 de
+#    retard. Le bulletin est parti **à 3h38 du matin**, heure des Comores. Un
+#    rendez-vous livré huit heures plus tard n'est pas « en retard », il est
+#    NUISIBLE : il publie quand personne ne regarde, et il occupe la place du
+#    jour — celui de 19h25 se fait ensuite refuser comme doublon.
+#    🔴 31/08 — la mesure inverse : la session Claude n'avait plus de crédit. Les
+#    trois Routines ont sonné, aucune n'a pu s'exécuter. **Ni flyer, ni bulletin,
+#    page muette toute la journée.** Le point de défaillance unique de tout le
+#    système n'est pas GitHub : c'est la session qui pousse le battement.
+#
+# ➡️ LA SYNTHÈSE : on ne choisit pas entre les deux pannes, on supprime le DÉGÂT
+#    de la seconde solution. Le `cron` est réarmé, MAIS le travail refuse de
+#    publier hors de la fenêtre du soir (18h00-22h00, heure des Comores). Un cron
+#    livré à 3h38 fabrique alors le flyer, le dépose sur la branche, et **ne
+#    publie pas**. Trois horaires plutôt qu'un, pour qu'un retard modéré tombe
+#    quand même dans la fenêtre.
+# 📌 LA RÈGLE GÉNÉRALE : quand un outil est peu fiable sur QUAND il agit, on ne
+#    le supprime pas et on ne lui fait pas confiance — on lui interdit d'agir au
+#    mauvais moment. Le battement, lui, n'est jamais bridé : il arrive à l'heure
+#    par construction, et il porte l'ordre FORCER quand il faut passer outre.
 
 name: Bulletin du soir
 
@@ -29,6 +47,15 @@ on:
   push:
     branches: [main]
     paths: ['moheligo/pub/flyers/battement-soir.txt']
+
+  # ⏰ Heures des Comores = UTC+3. 16:20 UTC = 19h20 ; 17:00 = 20h00 ; 17:40 = 20h40.
+  # Le premier arrivé publie, les suivants se font refuser comme doublons par
+  # `publier_fb.deja_publie()` (~3 s, sans effet). C'est exactement ce qu'on veut :
+  # trois chances, une seule publication.
+  schedule:
+    - cron: '20 16 * * *'
+    - cron: '0 17 * * *'
+    - cron: '40 17 * * *'
 
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
@@ -151,8 +178,32 @@ jobs:
           PAUSE_FB: ${{ vars.PAUSE_FB }}
         run: python3 publier_fb.py
 
+      # 🚧 LE GARDE-FOU D'HEURE — c'est lui qui rend le `schedule:` inoffensif.
+      # Il ne bride QUE les exécutions déclenchées par l'horloge de GitHub. Un
+      # battement (push) et le bouton « Run workflow » passent toujours : ils
+      # arrivent quand quelqu'un l'a décidé, pas quand une file d'attente se
+      # vide. Le 27/08, un cron livré à 00h37 a publié le bulletin à 3h38 du
+      # matin ; avec cette étape, il aurait fabriqué le flyer et s'est tu.
+      - name: Sommes-nous dans la fenêtre du soir ?
+        id: fenetre
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Déclenché par ${{ github.event_name }} — pas de bridage horaire."
+            echo "ok=oui" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Heure des Comores = UTC+3, sans changement d'heure dans l'année.
+          H=$(TZ=Indian/Comoro date +%H)
+          echo "Il est ${H}h aux Comores (déclenchement par l'horloge GitHub)."
+          if [ "$H" -ge 18 ] && [ "$H" -lt 22 ]; then
+            echo "ok=oui" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=non" >> "$GITHUB_OUTPUT"
+            echo "::notice::Hors de la fenêtre du soir (18h-22h aux Comores) : le flyer est fabriqué et déposé, mais RIEN n'est publié. Un rendez-vous livré en retard ne doit pas publier quand personne ne regarde."
+          fi
+
       - name: Publier sur la page Facebook
-        if: vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook
+        if: (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && steps.fenetre.outputs.ok == 'oui'
         working-directory: moheligo/pub/flyers
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}

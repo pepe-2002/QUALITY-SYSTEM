@@ -370,6 +370,55 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **01/09/2026 (suite — 🎬 LA VIDÉO YOUNG LEADER EST SORTIE, et ce qu'elle a
+  révélé)** — le patron : « envoie la vidéo **ils ont autorisé** », et « on a
+  10 abonnés de plus, plus de gens demandent à propos du service ».
+
+  ✅ **PUBLIÉE ET VÉRIFIÉE** : `Vidéo publiée : 1085106587247853`, 01/09 à 04:20
+  UTC. Et son post de reprise à lui était déjà sorti à 04:06 —
+  « LA HOULE EST RETOMBÉE. ON REPART. », lu dans le rapport, compté depuis la
+  page. La séquence de réouverture s'est déroulée dans l'ordre prévu depuis le
+  12/08 : son annonce à la main, puis la vidéo.
+
+  ⚖️ **LES DROITS** : l'association a autorisé. C'est la réponse attendue depuis
+  le 12/08 (20 jours). ⚠️ J'ai sa parole rapportant la leur, **pas le message
+  lui-même** — noté tel quel dans `CREDITS-PARTENAIRES.md`. Ça suffit pour
+  publier (juridique = poste C), pas devant un tiers.
+
+  🚩 **LE PREMIER ESSAI A ÉCHOUÉ EN ZÉRO SECONDE : « vidéo introuvable ».**
+  Le fichier était bien sur `main` — c'est le `sparse-checkout` du workflow qui
+  ne prenait pas `moheligo/pub/video`. L'étape avait été écrite le 26/08 et mise
+  en attente **le jour même** ; elle n'avait donc jamais tourné une seule fois.
+  📌 **UN CHEMIN DE CODE JAMAIS EXÉCUTÉ N'EST PAS UN CHEMIN DE CODE QUI MARCHE.**
+  Elle avait pourtant tout l'air d'être finie : étape écrite, case dans le
+  formulaire, garde-fou de service, fonction testée. C'est la même famille que le
+  visuel de reprise « prêt depuis le 12/08 » qui a été refusé le jour J. **Ce
+  qu'on garde en réserve se vérifie AVANT d'en avoir besoin, pas au moment où on
+  s'en sert** — sinon le seul moment où on découvre le défaut est le pire.
+
+  🩹 **ET UNE PANNE ANCIENNE, RECONFIRMÉE** : `Commentaire : refusé (le post
+  reste en ligne)`. Le premier commentaire — celui qui porte le lien de
+  réservation — **ne part pas**, faute de la permission `pages_manage_engagement`
+  sur le jeton (connu depuis le 11/08, rendu non bloquant le jour même). Tous nos
+  « premiers commentaires » écrits avec soin sont donc inertes depuis le début.
+  ➡️ À régler avec le patron en même temps que le renouvellement du jeton
+  Facebook (il expire vers le 10/10/2026) : c'est la même manipulation.
+
+  📈 **CE QUE JE MESURE** : 43 abonnés (41 le 30/08), 16 publications sur
+  7 jours. Le patron en compte 10 de plus — Facebook distingue « abonnés » et
+  « j'aime la Page », et je ne lis que le premier. À vérifier ensemble.
+
+  ⏰ **LE BULLETIN DU SOIR A DE NOUVEAU UN RENDEZ-VOUS GITHUB**, à sa demande —
+  mais avec le garde-fou qui manquait en août. Deux mesures opposées, toutes deux
+  vraies : le 28/08 les `cron` arrivaient avec 8 h 25 à 8 h 43 de retard et le
+  bulletin est parti à 3h38 du matin ; le 31/08 la session n'avait plus de crédit
+  et la page est restée muette. **On ne choisit pas entre les deux pannes, on
+  supprime le dégât de la seconde** : trois `cron` (19h20, 20h00, 20h40) et une
+  étape qui refuse de publier hors de la fenêtre 18h-22h. Un `cron` livré à 3h38
+  fabrique le flyer et se tait. 📌 **Quand un outil est peu fiable sur QUAND il
+  agit, on ne le supprime pas et on ne lui fait pas confiance : on lui interdit
+  d'agir au mauvais moment.**
+
 - **01/09/2026 (🟢 LE SERVICE ROUVRE — et un jour de silence complet)** —
   le patron, au matin : **« les traversées sont ouvertes »** et, dans la même
   phrase, **« on a rien publié hier, j'avais pas de token Claude Code »**.

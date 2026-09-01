@@ -24,7 +24,16 @@ MARINE = np.array([92, 42, 15], np.float32)          # #0F2A5C en BGR
 im = cv2.imread('source.jpg'); H, L = im.shape[:2]
 
 m = np.full((H, L), cv2.GC_PR_BGD, np.uint8)
-cv2.fillPoly(m, [np.array([[1180, 740], [1700, 900], [1720, 1500], [1620, 2100],
+# 🚩 LE HAUT DU POLYGONE EST PLAT À y=700, ET NON EN DIAGONALE — corrigé le
+# 01/09 après que le patron a dit « regarde les cheveux ». Il allait de
+# (1180,740) à (1700,900) : à x=1640, il coupait donc à y=881 alors que la
+# coiffure monte jusqu'à 820. Ce n'était pas grabCut qui ratait les cheveux,
+# c'était MON TRAIT qui les tranchait — et ça se voyait comme une facette
+# droite en haut à droite de l'afro.
+# 📌 Quand un détourage a l'air « taillé au couteau », regarder d'abord les
+# bornes qu'on lui a données soi-même. Une coupe droite dans une forme organique
+# ne vient jamais de l'algorithme : elle vient d'une contrainte qu'on a posée.
+cv2.fillPoly(m, [np.array([[1200, 700], [1720, 700], [1720, 1500], [1620, 2100],
                            [1560, H], [745, H], [745, 1850], [900, 1500],
                            [1150, 1000]])], cv2.GC_PR_FGD)
 for x0, y0, x1, y1 in [(1330, 830, 1580, 900),      # les cheveux (défaut n°1)
@@ -60,7 +69,7 @@ cv2.fillPoly(s, [np.array([[1120, 1185], [1270, 1185], [1270, 1282],
 n, lab, stats, _ = cv2.connectedComponentsWithStats(s, 8)
 if n > 1:
     s = np.where(lab == 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA]), 255, 0).astype(np.uint8)
-s = cv2.morphologyEx(s, cv2.MORPH_CLOSE, np.ones((11, 11), np.uint8))
+s = cv2.morphologyEx(s, cv2.MORPH_CLOSE, np.ones((5, 5), np.uint8))
 
 # 🚩 DÉFAUT n°5 — DES TROUS DANS LE GILET. La règle du mur (B−R entre −12 et
 # +18) a aussi mangé les zones sombres du gilet et le passepoil bleu marine, qui

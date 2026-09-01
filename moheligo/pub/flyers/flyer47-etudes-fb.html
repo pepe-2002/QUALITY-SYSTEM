@@ -1,0 +1,144 @@
+<!-- TU PARS. TU REVIENS. — 01/09/2026.
+
+     SENTIMENT : LA PROXIMITÉ
+
+     🚩 IL REMPLACE `flyer46`, QUI AFFIRMAIT UNE CHOSE FAUSSE SUR QUELQU’UN.
+     J’avais titré ce visuel « PARTENARIAT · YOUNG LEADER MOHÉLI » sur cette
+     photo. Le patron : « lui c’est pas un Young Leader, c’est un jeune de
+     Mohéli, étudiant à l’école de santé à Moroni. »
+     📌 COMMENT L’ERREUR EST ARRIVÉE, PARCE QUE C’EST LA PARTIE UTILE : le
+     patron m’a dit « on a un partenariat avec Young Leader Mohéli, pas Océan
+     Indien », puis, au message suivant, « utilise celui-ci ». J’ai lu la
+     seconde phrase comme la RÉPONSE à la première. Elle ne l’était pas : il me
+     donnait une photo, pas une identité.
+     ⛔ **UNE APPARTENANCE NE SE DÉDUIT JAMAIS DU CONTEXTE. Elle se dit, ou elle
+     ne s’écrit pas.** Troisième fois en quatre jours que j’attribue un titre à
+     quelqu’un sans qu’on me l’ait donné (29/08 « Océan Indien », 01/09 matin
+     « Comité », 01/09 soir « Young Leader »). Les trois fois, j’ai comblé un
+     trou d’information avec ce qui était plausible autour.
+
+     ✅ CE QUE CE VISUEL AFFIRME, ET C’EST TOUT : que beaucoup de Mohéliens
+     partent étudier ou travailler, et qu’on réserve depuis son téléphone.
+     Aucune affirmation sur la personne photographiée — ni son nom, ni ses
+     études, ni aucune appartenance. Elle est le VISAGE de la traversée, pas
+     un cas nommé. C’est aussi ce qui protège sa vie privée : ce qu’il fait
+     dans la vie ne regarde pas une page Facebook.
+
+     ⚠️ CE QUI RESTE À RÉGLER AVANT PUBLICATION — et ça ne dépend pas de moi :
+     son ACCORD. Norme § 7.2 : jamais l’image d’une personne sans son accord
+     écrit. Pour les photos Young Leader il y avait au moins une association et
+     un contrat derrière ; ici c’est un particulier, il n’y a rien. Un message
+     WhatsApp de sa part suffit, et il faut l’avoir AVANT, pas après.
+
+     🖼️ LA PHOTO EST DÉTOURÉE, et ce n’est pas qu’un choix de style : la prise
+     d’origine montre quatre autres personnes identifiables au second plan.
+     Le détourage les retire. `../photos/detourer-portrait.py` — reproductible,
+     et les six défauts trouvés à l’œil y sont documentés un par un.
+
+     Rendu : node render.js flyer47-etudes-fb.html flyer-etudes-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* Un halo derrière lui, très bas en intensité : sur un aplat, un sujet détouré
+   a l’air posé dessus. Le halo lui rend une profondeur sans réinventer un
+   décor qu’on vient justement de retirer. */
+.halo { position:absolute; right:-60px; top:120px; width:900px; height:900px; z-index:1;
+  background:radial-gradient(circle, rgba(246,188,28,.13) 0%, rgba(246,188,28,.05) 42%,
+             rgba(15,42,92,0) 68%); }
+
+.sujet { position:absolute; right:-24px; bottom:0; width:600px; z-index:2; }
+.sujet img { width:100%; display:block; }
+
+.pied-fondu { position:absolute; left:0; bottom:0; width:1080px; height:260px; z-index:3;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.55) 52%,
+             rgba(15,42,92,.94) 84%, #0F2A5C 100%); }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:498px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* 🚩 « TES ÉTUDES LÀ-BAS. TA FAMILLE ICI. » A ÉTÉ ABANDONNÉ, ET C’EST `lignes.js`
+   QUI L’A DIT. À l’écrit il faisait deux phrases ; RENDU, il en faisait QUATRE
+   lignes — « TES ÉTUDES » / « LÀ-BAS. » / « TA FAMILLE » / « ICI. » — alors que
+   la norme en autorise deux. `exigence.py` l’avait laissé passer : il compte les
+   lignes DÉCLARÉES (un `<br>`, un span en bloc), pas celles que le navigateur
+   fabrique en repliant le texte.
+   📌 DEUX CONTRÔLES QUI COMPTENT LA MÊME CHOSE DIFFÉREMMENT NE FONT PAS DOUBLE
+   EMPLOI : celui qui mesure le RENDU a toujours raison contre celui qui lit le
+   code. La colonne ne fait que 400 px — le sujet occupe le reste — soit environ
+   douze signes par ligne à cette taille. Le titre devait donc rétrécir, pas la
+   colonne s’élargir.
+   ✅ « TU PARS. TU REVIENS. » : quatre mots, deux lignes vérifiées au rendu, et
+   c’est la même famille que notre meilleure ligne (« on ne visite pas Mohéli,
+   on y revient », 9/10 en relecture extérieure). */
+.acc { position:absolute; left:76px; top:536px; width:400px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:56px; line-height:1.04;
+  letter-spacing:-2px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+.dit { position:absolute; left:76px; top:712px; width:392px; z-index:5;
+  font-size:21px; line-height:1.52; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.trait { position:absolute; left:76px; top:872px; width:82px; height:5px;
+  border-radius:3px; background:#F6BC1C; z-index:5; }
+
+.cta { position:absolute; left:76px; top:918px; z-index:5;
+  background:#F6BC1C; border-radius:16px; padding:17px 24px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+
+.web { position:absolute; left:76px; top:1024px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px;
+  color:#fff; letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+
+.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:7; }
+</style>
+
+<div class="page">
+  <div class="halo"></div>
+  <div class="sujet"><img src="jeune-moheli.png" alt=""></div>
+  <div class="pied-fondu"></div>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">TU PARS.<span>TU REVIENS.</span></div>
+
+  <div class="dit">On part étudier, on part travailler.
+    <b>Ta place se prend depuis ton téléphone.</b></div>
+
+  <div class="trait"></div>
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+
+  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
+  </svg>
+</div>

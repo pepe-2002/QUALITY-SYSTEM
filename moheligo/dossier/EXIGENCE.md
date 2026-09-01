@@ -211,6 +211,20 @@ Et trois règles de composition :
    de noms qui se ressemblent** — et avant de mettre l'image d'une personne sur
    un visuel, on vérifie qu'elle entre dans le PÉRIMÈTRE de l'accord, pas
    seulement qu'un accord existe.
+   *Et le 01/09 au soir, la même faute une TROISIÈME fois en quatre jours* :
+   j'avais titré un visuel « PARTENARIAT · YOUNG LEADER MOHÉLI » sur la photo
+   d'un jeune homme. Le patron : « lui c'est pas un Young Leader, c'est un jeune
+   de Mohéli. » Il m'avait dit la veille que notre partenariat était avec Young
+   Leader Mohéli, puis, au message suivant, « utilise celui-ci » — et j'ai lu la
+   seconde phrase comme la RÉPONSE à la première. Elle ne l'était pas : il me
+   donnait une photo, pas une identité.
+   ⛔ **UNE APPARTENANCE NE SE DÉDUIT JAMAIS DU CONTEXTE. Elle se dit, ou elle
+   ne s'écrit pas.** Trois fois de suite, j'ai comblé un trou d'information avec
+   ce qui était plausible autour. Le remède n'est pas « faire plus attention » :
+   c'est que **le visuel ne doit rien affirmer sur la personne qu'il montre**
+   tant que la phrase exacte n'a pas été donnée. Un visage peut être le VISAGE
+   d'une idée sans être un CAS NOMMÉ — et c'est aussi ce qui protège sa vie
+   privée.
    📌 **DEUX FOIS LA MÊME FAUTE, C'EST UN RÉFLEXE À CORRIGER, PAS UN ACCIDENT :**
    quand un visuel nomme une personne, son titre ne s'écrit pas de mémoire ni par
    déduction — **il se relit sur l'image, ou il se demande.** Une organisation et

@@ -370,6 +370,30 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **01/09/2026 (midi — 🚩 DEUX ROUTINES CONTRADICTOIRES, ET C'EST MOI QUI AI
+  CRÉÉ LA CONTRADICTION)** — les deux Routines de 12h05 ont sonné à 35 secondes
+  d'intervalle. La Routine du jour disait « regarde la page avant de décider » ;
+  la Routine quotidienne, elle, disait « marche normale, pousse le battement ».
+
+  **Pourquoi elles se contredisaient : en réécrivant la quotidienne ce matin,
+  j'ai remplacé ses trois exceptions datées par une seule (mercredi 02/09) — et
+  j'ai supprimé celle du 01/09 sans la remplacer.** Prise au mot, elle aurait
+  publié un TROISIÈME post aujourd'hui, après l'annonce de reprise (04:06) et la
+  vidéo (04:20), sur une page de 43 abonnés.
+  📌 **QUAND ON RÉÉCRIT UNE CONSIGNE, ON VÉRIFIE CE QU'ON EN A RETIRÉ, PAS
+  SEULEMENT CE QU'ON Y A MIS.** J'ai relu ma nouvelle consigne et je l'ai trouvée
+  meilleure ; je n'ai pas relu l'ancienne pour voir ce qui disparaissait.
+  ✅ Ce qui a sauvé la mise n'est pas la consigne, c'est la RÈGLE : décider en
+  lisant la page, jamais en croyant un texte — même le mien. Rapport lancé sans
+  rien publier (toutes les étapes de publication sautées) : deux posts déjà
+  sortis aujourd'hui, donc rien de plus à midi.
+  ✅ **ET LA VIDÉO EST CONFIRMÉE SUR LA PAGE** : le compteur est passé de 16 à 17
+  publications entre 04:17 et 09:09. Elle n'est pas seulement acceptée par l'API,
+  elle est comptée par la page.
+  ⚠️ Plus de collision demain : les deux Routines datées étaient des `run_once`,
+  elles ont fini leur vie. Seule la quotidienne reste, et elle porte les
+  instructions du mercredi.
+
 - **01/09/2026 (suite — 🎬 LA VIDÉO YOUNG LEADER EST SORTIE, et ce qu'elle a
   révélé)** — le patron : « envoie la vidéo **ils ont autorisé** », et « on a
   10 abonnés de plus, plus de gens demandent à propos du service ».

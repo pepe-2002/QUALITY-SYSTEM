@@ -204,6 +204,13 @@ Et trois règles de composition :
    de fin de la vidéo présentait le lauréat comme « **Comité** Young Leader
    Mohéli 2026 » alors que son écharpe dit « YOUNG LEADER · MOHÉLI · 2026 ».
    Le patron : « c'est le vrai Young Leader. »
+   *Et le 01/09 au soir, la vraie leçon arrive* : « on a un partenariat avec
+   Young Leader **Mohéli**, pas Océan Indien. » Le visuel entier est retiré.
+   Je m'étais demandé si le lauréat était mohélien ; la bonne question était
+   ailleurs. **Un accord porte sur une organisation précise, pas sur une famille
+   de noms qui se ressemblent** — et avant de mettre l'image d'une personne sur
+   un visuel, on vérifie qu'elle entre dans le PÉRIMÈTRE de l'accord, pas
+   seulement qu'un accord existe.
    📌 **DEUX FOIS LA MÊME FAUTE, C'EST UN RÉFLEXE À CORRIGER, PAS UN ACCIDENT :**
    quand un visuel nomme une personne, son titre ne s'écrit pas de mémoire ni par
    déduction — **il se relit sur l'image, ou il se demande.** Une organisation et

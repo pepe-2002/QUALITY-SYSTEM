@@ -1,5 +1,25 @@
 # 📸 CRÉDITS ET DROITS — photos de partenaires
 
+> ⛔ **01/09/2026 — LA PORTÉE DU PARTENARIAT, ET CE QU'ELLE INTERDIT.**
+> Le patron : **« on a un partenariat avec Young Leader Mohéli, pas Océan
+> Indien. »** Le visuel `flyer45-fiers` et la photo à l'écharpe « YOUNG LEADER ·
+> OCÉAN INDIEN » ont donc été **retirés du dépôt**. Jamais publiés, jamais
+> branchés au calendrier — vérifié avant de supprimer.
+>
+> 📌 **CE QUE J'AVAIS RATÉ, ET CE N'EST PAS UN DÉTAIL DE FORME.** Je m'étais
+> demandé le 29/08 « le lauréat est-il mohélien ? » — la bonne question était
+> ailleurs. Un accord porte sur une ORGANISATION précise, pas sur une famille de
+> distinctions qui se ressemblent. « Young Leader Mohéli », « Young Leader Océan
+> Indien » et « Young Leader des Îles Comores » partagent un nom et ne partagent
+> pas notre contrat. **Un partenariat a un périmètre, et on ne l'élargit pas par
+> ressemblance de nom.**
+> ⚠️ Conséquence immédiate : la photo « 2ᵉ challenger des Îles Comores » tombe
+> sous le même doute et passe en attente (ligne ci-dessous).
+> ⚠️ Et la suppression ne vaut que pour l'avenir : ces images restent dans
+> l'HISTORIQUE git, qui est public. Les en purger demande de réécrire
+> l'historique — à demander au patron, avec la photo du patron lui-même
+> (commit `5404a0a`).
+
 > Reçues du patron le **12/08/2026** : « les photos de Young Leader Mohéli, on a
 > un contrat avec eux. » Archivées ici, telles qu'il les a envoyées.
 >
@@ -54,8 +74,8 @@
 
 | Fichier | Ce qu'on voit | Taille reçue | Personnes identifiables | Utilisable ? |
 |---|---|---|---|---|
-| `young-leader-ocean-indien-2025-2026.jpg` | Un lauréat en costume, écharpe dorée **« YOUNG LEADER · OCÉAN INDIEN · 2025-2026 »**, devant un mur de briques. Portrait vertical serré. | 1280 × 1280 | **oui, un visage net** | ✅ **oui** (même accord) — pas encore utilisée sur un visuel |
-| `young-leader-2e-challenger-comores-2026.jpg` | Un lauréat en chemise blanche, écharpe verte **« 2ᵉ CHALLENGER · YOUNG LEADER · DES ÎLES COMORES 2026 »**, extérieur, végétation et maison au toit rouge. | 854 × 1280 | **oui, un visage net** | ✅ **oui** (même accord) — pas encore utilisée sur un visuel |
+| ~~`young-leader-ocean-indien-2025-2026.jpg`~~ **SUPPRIMÉE** | Un lauréat en costume, écharpe dorée **« YOUNG LEADER · OCÉAN INDIEN · 2025-2026 »**. | 1280 × 1280 | **oui, un visage net** | ⛔ **NON — retirée du dépôt le 01/09/2026.** Voir ci-dessous. |
+| `young-leader-2e-challenger-comores-2026.jpg` | Un lauréat en chemise blanche, écharpe verte **« 2ᵉ CHALLENGER · YOUNG LEADER · DES ÎLES COMORES 2026 »**, extérieur, végétation et maison au toit rouge. | 854 × 1280 | **oui, un visage net** | ❓ **À TRANCHER** — « des Îles Comores », pas « Mohéli ». Même question que celle qui a fait retirer la photo Océan Indien. Ne pas utiliser avant réponse du patron. |
 | `young-leader-moheli-podium-2025-2026.jpg` | Trois lauréats côte à côte, écharpes blanches **« 1ᵉʳ CHALLENGERS »**, **« YOUNG LEADER MOHÉLI »** (avec collier de fleurs), **« 2ᵉ CHALLENGERS »**, 2025-2026. Affiche imprimée en fond. | 1080 × 856 | **oui, trois visages nets** | ✅ **oui** — accord du patron du 12/08/2026, publiée sur `flyer30-partenariat` |
 
 **Auteur / source** : Young Leader Mohéli (transmises par le patron).

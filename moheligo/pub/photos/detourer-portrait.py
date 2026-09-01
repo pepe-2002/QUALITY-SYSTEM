@@ -125,8 +125,37 @@ alpha[anneau] = (poids * doux + (1 - poids) * alpha)[anneau]
 print('anneau des cheveux : %d px, dont %d en opacite partielle'
       % (anneau.sum(), ((alpha > .05) & (alpha < .95) & anneau).sum()))
 alpha = cv2.GaussianBlur(alpha, (0, 0), 1.2)
-c = np.clip(im.astype(np.float32) * alpha[..., None] + MARINE * (1 - alpha[..., None]), 0, 255)
+# ── 🚩 L'ENVELOPPE DE LUMIÈRE — c'est ELLE qui enlève l'effet « découpé » ────
+# Le patron, trois fois : « on voit que c'est coupé. » Ce n'était ni la forme
+# ni le liseré. C'était le CONTRASTE DU BORD, mesuré au profil de pixels :
+#   · dans la photo d'origine, l'épaule passait de 214 à 125 (le fond flou) ;
+#   · sur notre marine, elle passait de 214 à 50, EN CINQ PIXELS.
+# J'avais plus que doublé le contraste du contour. Aucun appareil ne produit
+# ça : dans une vraie prise, le fond ÉCLAIRE le sujet et déteint sur ses bords.
+# 📌 Un sujet détouré n'a pas l'air collé parce que la découpe est imprécise,
+# mais parce qu'il est éclairé par une scène qui n'existe plus.
+# ➡️ On rend au sujet la lumière de son nouveau fond : le marine déteint sur ses
+# bords, d'autant plus qu'on est près du contour. `flou` mesure « combien de
+# fond y a-t-il autour de moi » ; la différence avec alpha est maximale juste à
+# l'intérieur du bord et s'annule au centre du corps.
+flou = cv2.GaussianBlur(alpha, (0, 0), 20)
+enveloppe = np.clip(alpha - flou, 0, 1) * 0.9
+im_f = im.astype(np.float32)
+im_f = im_f * (1 - enveloppe[..., None]) + MARINE * enveloppe[..., None]
+
+c = np.clip(im_f * alpha[..., None] + MARINE * (1 - alpha[..., None]), 0, 255)
 cv2.imwrite('alpha-doux.png', (alpha * 255).astype(np.uint8))
+
+# ── LA DÉCOUPE LIVRÉE AU FLYER ──────────────────────────────────────────────
+# ⚠️ Elle porte les couleurs APRÈS enveloppe de lumière, pas la photo brute :
+# recomposer ailleurs à partir de l'original perdrait justement la correction
+# qui empêche l'effet « découpé ».
+ys, xs = np.where(alpha > 0.02)
+x0, x1, y0, y1 = xs.min(), xs.max() + 1, ys.min(), ys.max() + 1
+rgba = np.dstack([im_f, alpha * 255]).astype(np.uint8)[y0:y1, x0:x1]
+haut = int(rgba.shape[0] * 1400 / rgba.shape[1])
+cv2.imwrite('jeune-moheli.png', cv2.resize(rgba, (1400, haut), interpolation=cv2.INTER_AREA))
+print('découpe livrée : 1400 × %d' % haut)
 cv2.imwrite('sur-marine.png', c.astype(np.uint8))
 cv2.imwrite('alpha.png', s)
 cv2.imwrite('zoom-epaule.png', cv2.resize(c[1050:1450, 1050:1450].astype(np.uint8), (500, 500)))

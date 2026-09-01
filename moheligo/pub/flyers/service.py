@@ -17,10 +17,17 @@ Donc : `programme.py` et `bulletin.py` consultent CE fichier avant de publier.
 Fermé → aucun message commercial ne part. Rien d'autre à penser, rien à
 désactiver à la main, aucun interrupteur à oublier.
 
-⚠️ CE QU'ON N'ÉCRIT JAMAIS : « les traversées reprennent mardi ». Le patron a dit
-« ouverture POSSIBLE mardi ». Une date annoncée puis non tenue fait plus de mal
-que pas de date du tout. On écrit « peut-être mardi », et on renvoie vers le
-WhatsApp pour la réponse du jour.
+⚠️ CE QU'ON N'ÉCRIT JAMAIS : « les traversées REPRENNENT mardi » — un présent qui
+affirme. Une date annoncée puis non tenue fait plus de mal que pas de date du
+tout. On reprend le mot exact du patron, ni plus fort ni plus faible :
+  · 12/08, « ouverture POSSIBLE mardi »  → on écrivait « peut-être mardi » ;
+  · 30/08, « la réouverture est PRÉVUE Mardi » → on écrit « c'est prévu mardi ».
+Et dans les deux cas la phrase de prudence reste collée derrière : c'est la mer
+qui décide, on ne décide pas des départs.
+📌 UNE SEULE SOURCE : `FERMETURE['reouverture_possible']`, lue par
+`reouverture()`, `paragraphe_reprise()` et `mention_fermeture()`. Rien qui parle
+de la reprise ne s'écrit ailleurs — deux fois (26/08 et 30/08) la faute est
+venue d'un texte de reprise qui vivait dans son coin.
 
 📌 CE QUI PART PENDANT LA FERMETURE — révisé le 13/08/2026 sur décision du
 patron (« les pubs continuent même si c'est fermé jusqu'à mardi ») :
@@ -57,21 +64,31 @@ import argparse
 import datetime
 
 # --- l'état du service ------------------------------------------------------
-# 🔴 REFERMÉ le MERCREDI 26/08/2026. Le patron : « les liaisons maritimes sont
-# fermées, la mer est agitée. »
-# ⚠️ AUCUNE DATE CETTE FOIS. Le 12/08 il avait dit « ouverture possible mardi » ;
-# ici il n'a rien dit de tel, donc on n'écrit NULLE PART une date de reprise,
-# et on n'en invente pas une par analogie avec la fermeture précédente.
+# 🟢 ROUVERT LE MARDI 01/09/2026. Le patron, mot pour mot : « les traversées sont
+# ouvertes ». La reprise était prévue ce jour-là depuis le 30/08 : elle a eu lieu.
+# 📌 SEPT JOURS DE FERMETURE (26/08 → 01/09), la plus longue des deux de l'été.
+# Ce qui repart tout seul en passant cette ligne à True : la mention de fermeture
+# disparaît de toutes les publications, le bandeau du bulletin redevient
+# « RÉSERVE POUR DEMAIN », le premier commentaire redevient commercial, et la
+# vidéo Young Leader cesse d'être bloquée. **Un seul interrupteur, exprès.**
+#
+# 🔴 Historique : REFERMÉ le MERCREDI 26/08/2026. Le patron : « les liaisons
+# maritimes sont fermées, la mer est agitée. »
+# ⚠️ PENDANT QUATRE JOURS, AUCUNE DATE : il n'avait rien dit, donc on n'écrivait
+# nulle part une date de reprise, et on n'en inventait pas une par analogie avec
+# la fermeture précédente. ✅ Le 30/08 au soir il en a donné une — voir
+# `reouverture_possible` ci-dessous. La règle n'a pas changé : on n'invente pas,
+# on attend qu'il parle.
 #
 # 🗄️ Précédente fermeture : du 12 au 18/08/2026, six jours, même cause (mer
 # agitée). Deuxième épisode en quinze jours — c'est la saison, et c'est
 # exactement pourquoi le bulletin du soir vaut plus que n'importe quelle
 # publicité : il est le seul endroit où l'on dit la vérité tous les jours.
-OUVERT = False
+OUVERT = True
 
 FERMETURE = dict(
     depuis='2026-08-26',
-    jusqu_au=None,             # inconnue — et on ne la devine pas
+    jusqu_au='2026-09-01',     # rouvert ce jour-là, confirmé par le patron
     # Ce que le patron a dit, mot pour mot, sans l'arrondir :
     annonce="les liaisons maritimes sont fermées, la mer est agitée",
     # ✅ RENSEIGNÉ LE 30/08/2026 À 19H30. Le patron, mot pour mot :
@@ -321,14 +338,46 @@ def commentaire_bulletin():
     Il vit ici, avec l'état du service, pour la même raison que `cta_bulletin` :
     **on ne peut pas changer l'un en oubliant l'autre.** Tout ce qui promet une
     traversée doit être dans ce fichier, jamais écrit en dur ailleurs.
+
+    🚩 30/08/2026 — LA MÊME FAUTE A FAILLI RECOMMENCER, EN PLUS DOUX.
+    Le post du soir annonçait « QUAND ÇA REPREND : C’EST PRÉVU MARDI » et ce
+    commentaire, trois lignes plus bas, disait encore « la reprise dès qu’elle
+    est décidée » — comme si on n’avait toujours pas de date. Ce n’est pas un
+    mensonge, c’est pire à sa manière : le même envoi ne se souvient pas de ce
+    qu’il vient de dire. 📌 Il tire donc sa phrase de la MÊME source que le
+    post : `reouverture()`.
+    ✍️ Et il portait une apostrophe droite dans `qu\\'elle` — échappée, donc
+    invisible au détecteur qui cherchait une lettre avant l’apostrophe.
+    **Une faute qu’un contrôle ne peut pas voir est une faute qui reste.**
     """
     if ouvert():
         return ('Ta traversée de demain : moheligo.com\n'
                 'WhatsApp : +269 479 43 28')
-    return ('Les départs sont suspendus : la mer, chaque soir, ici — et la '
-            'reprise dès qu\'elle est décidée.\n'
-            'Un billet déjà pris ? Changement de date gratuit.\n'
-            'moheligo.com — WhatsApp : +269 479 43 28')
+    return ('Les départs sont suspendus : la mer, chaque soir, ici — %s\n'
+            'Un billet déjà pris ? Changement de date gratuit.\n'
+            'moheligo.com — WhatsApp : +269 479 43 28' % reouverture())
+
+
+def reouverture():
+    """La reprise, en UNE phrase, tirée d’un seul endroit.
+
+    Tout ce qui parle de la reprise passe par ici : le post du soir (via
+    `paragraphe_reprise`), le premier commentaire, la mention des publications
+    commerciales. Le 26/08, une date écrite en dur avait survécu à la fermeture
+    suivante ; le 30/08, un commentaire ignorait une date que le post annonçait.
+    Les deux fois, la cause est la même : **la reprise vivait à plusieurs
+    endroits.**
+    """
+    d = FERMETURE.get('reouverture_possible')
+    if not d:
+        return 'et la reprise dès qu’elle est décidée.'
+    d = datetime.date.fromisoformat(d)
+    aujourdhui = datetime.date.today()
+    if aujourdhui < d:
+        return 'et la reprise, prévue %s, dès qu’elle est confirmée.' % JOURS[d.weekday()]
+    if aujourdhui == d:
+        return 'et la reprise, prévue aujourd’hui, dès qu’elle est confirmée.'
+    return 'et la reprise dès qu’elle est décidée.'
 
 
 def etat(jour=None):

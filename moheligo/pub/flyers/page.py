@@ -325,29 +325,29 @@ moheligo.com — WhatsApp +269 479 43 28
          note="⚠️ <b>PAS dans le robot</b> — c'est toi qui le publies<br>le jour où les vedettes repartent vraiment<br>aucune date dans l'image : il resservira<br>le seul visuel d'avis avec un appel complet<br>QR vérifié vers moheligo.com",
          texte="""LA HOULE EST RETOMBÉE. ON REPART.
 
-Les traversées reprennent aujourd'hui entre nos ports.
+Les traversées reprennent aujourd’hui entre nos ports.
 
-Tu l'as su le jour où ça s'est arrêté. Tu le sais le jour où ça repart — c'est à
+Tu l’as su le jour où ça s’est arrêté. Tu le sais le jour où ça repart — c’est à
 ça que sert cette page.
 
-CE QUE TU FAIS MAINTENANT, DANS L'ORDRE.
+CE QUE TU FAIS MAINTENANT, DANS L’ORDRE.
 1. Regarde les départs du jour sur moheligo.com : les horaires, les places qui
    restent et les prix, sans avoir à donner ton nom.
 2. Prends ta place : MVola ou kartaPay, et ton billet arrive tout de suite avec
    son code. Il reste dans le téléphone même sans réseau.
 3. Tu avais déjà un billet ? Il reste valable. Et si la date ne te va plus, la
-   changer ne coûte rien — écris-nous, on s'en occupe.
+   changer ne coûte rien — écris-nous, on s’en occupe.
 
-MERCI D'AVOIR ATTENDU.
+MERCI D’AVOIR ATTENDU.
 On ne décide pas des départs, on décide seulement de te dire les choses au
-moment où on les sait. C'est ce qu'on a fait pendant la fermeture, et c'est ce
-qu'on fera la prochaine fois.
+moment où on les sait. C’est ce qu’on a fait pendant la fermeture, et c’est ce
+qu’on fera la prochaine fois.
 
 Et chaque soir, la mer du lendemain sur cette page. Belle ou mauvaise.
 
 moheligo.com — WhatsApp +269 479 43 28
 
-Le bulletin officiel affiché à l'embarquement fait toujours foi.
+Le bulletin officiel affiché à l’embarquement fait toujours foi.
 
 #MoheliGo #Comores #Mohéli #Traversée #Ouroveni #Hoani"""),
     dict(png='flyer-suspension-facebook.png', titre='⛔ SERVICE SUSPENDU',

@@ -2,6 +2,24 @@
      Le patron, 12/08/2026 : « fais un flyer de reprise alors, mais pas de date au
      cas où. Ne le donne pas au robot, donne-le-moi, je le publierai. »
 
+     SENTIMENT : LA CONFIANCE
+
+     ✅ UTILISÉ POUR DE VRAI LE 01/09/2026 — première sortie. Fermeture du 26/08
+     au 01/09, sept jours. Le patron : « les traversées sont ouvertes ».
+
+     ⬛ MIS AUX NORMES LE 01/09/2026, AVANT DE SERVIR. Il dormait depuis le 12/08
+     et le contrôle l’a refusé sur trois points le jour où on en avait besoin :
+     5 apostrophes droites, aucun SENTIMENT déclaré, et surtout **aucun appel à
+     l’action que la machine puisse lire** — le bandeau d’or disait « TA PLACE,
+     MAINTENANT », qui n’est pas un verbe. C’est devenu « PRENDS TA PLACE ».
+     📌 LA LEÇON : un visuel qu’on garde « prêt pour le jour J » n’est pas prêt.
+     La norme a bougé après lui ; c’est LUI qui doit la rattraper, et le seul
+     moment où on s’en aperçoit est le pire — celui où il faut publier vite.
+     ⚠️ RESTE UNE RÉSERVE ASSUMÉE (alerte, pas refus) : pas de vague dorée de
+     74 px. En ajouter une obligerait à déplacer le pied de page, un jour de
+     reprise, sur le visuel le plus important du mois. On ne redessine pas dans
+     l’urgence ce qui n’est pas faux.
+
      🚨 CELUI-LÀ NE PART PAS TOUT SEUL, ET C'EST VOULU.
      Il est dans `page.py` (pour que le patron l'ait sous la main) mais **PAS dans
      `calendrier.py`** : le robot publie à heure fixe, or une reprise ne se décide
@@ -18,7 +36,7 @@
      fond s'assombrit ; le jour de la reprise, la marque reprend ses couleurs.
      Celui qui a vu les deux le comprend sans lire.
 
-     LA LIGNE QUI PORTE TOUT : « Tu l'as su le jour où ça s'est arrêté. Tu le sais
+     LA LIGNE QUI PORTE TOUT : « Tu l’as su le jour où ça s’est arrêté. Tu le sais
      le jour où ça repart. » C'est le paiement de toute la semaine d'honnêteté :
      on n'a rien vendu pendant la fermeture, donc on est cru maintenant (§ 3 du
      manuel, levier réciprocité, et § 1 : la régularité est l'actif).
@@ -101,7 +119,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
   padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
 .action .qr img { width:100%; height:100%; display:block; }
-.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
+.action .cta { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
   letter-spacing:.5px; color:#0A1D42; }
 .action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
@@ -130,11 +148,11 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="sur">AVIS AUX VOYAGEURS · LES DÉPARTS REPRENNENT</div>
   <div class="acc">La houle est retombée.<span>On repart.</span></div>
 
-  <div class="dit"><b>Tu l'as su le jour où ça s'est arrêté.</b> Tu le sais le jour
-    où ça repart. C'est à ça que sert cette page.</div>
+  <div class="dit"><b>Tu l’as su le jour où ça s’est arrêté.</b> Tu le sais le jour
+    où ça repart. C’est à ça que sert cette page.</div>
 
   <div class="carte">
-    <div class="bande">CE QUE TU FAIS MAINTENANT, DANS L'ORDRE</div>
+    <div class="bande">CE QUE TU FAIS MAINTENANT, DANS L’ORDRE</div>
     <div class="corps">
       <ul>
         <li><em>1</em><span><b>Regarde les départs</b>Sur moheligo.com : les horaires
@@ -151,7 +169,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="action">
     <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
     <div>
-      <div class="scanne">TA PLACE, MAINTENANT</div>
+      <div class="cta">PRENDS TA PLACE</div>
       <div class="adr">moheligo.com</div>
       <div class="wa">MVola ou kartaPay · WhatsApp +269 479 43 28</div>
     </div>
@@ -161,6 +179,6 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <span><b>Et chaque soir, la mer du lendemain sur cette page.</b><br>
       Comme pendant la fermeture — belle ou mauvaise, on la publie.</span>
     <span class="d">Nous ne décidons pas des départs : nous publions la mer et
-      délivrons les billets. Le bulletin officiel affiché à l'embarquement fait foi.</span>
+      délivrons les billets. Le bulletin officiel affiché à l’embarquement fait foi.</span>
   </div>
 </div>

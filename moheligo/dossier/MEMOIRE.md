@@ -370,6 +370,55 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **01/09/2026 (🟢 LE SERVICE ROUVRE — et un jour de silence complet)** —
+  le patron, au matin : **« les traversées sont ouvertes »** et, dans la même
+  phrase, **« on a rien publié hier, j'avais pas de token Claude Code »**.
+
+  🔴 **LUNDI 31/08 : PAGE MUETTE, JOURNÉE ENTIÈRE.** Les trois Routines ont bien
+  sonné (12h05 quotidienne, 12h05 « TU L'AS DÉJÀ », 19h25 bulletin) — et aucune
+  n'a pu s'exécuter, faute de crédit. Ni flyer, ni bulletin du soir. Vérifié :
+  la dernière chose sortie est le bulletin du dimanche soir.
+  📌 **CE QUE ÇA APPREND, ET CE N'EST PAS « IL FAUT DU CRÉDIT »** : tout notre
+  système de publication passe par une session Claude qui pousse un battement.
+  **Le point de défaillance unique n'est pas GitHub, c'est la session.** Les
+  workflows, eux, marchent seuls dès qu'un commit arrive. À proposer au patron :
+  un `schedule:` cron directement dans les workflows GitHub, pour que le bulletin
+  du soir parte même quand aucune session ne tourne. Le rendez-vous quotidien
+  vaut plus que son contenu — et il vient de sauter.
+
+  🟢 **RÉOUVERTURE APRÈS SEPT JOURS** (26/08 → 01/09), la plus longue des deux
+  fermetures de l'été. `OUVERT = True` dans `service.py`, et **un seul
+  interrupteur a suffi** : mention de fermeture retirée de toutes les
+  publications, bandeau du bulletin repassé à « RÉSERVE POUR DEMAIN », premier
+  commentaire redevenu commercial, vidéo Young Leader débloquée. C'est
+  exactement ce pour quoi l'état du service vit à un seul endroit.
+
+  ⬛ **LE VISUEL DE REPRISE ÉTAIT « PRÊT » DEPUIS LE 12/08. IL NE L'ÉTAIT PAS.**
+  Le contrôle l'a refusé le jour même où il fallait s'en servir : 5 apostrophes
+  droites, aucun SENTIMENT déclaré, et surtout **aucun appel à l'action lisible**
+  — le bandeau d'or disait « TA PLACE, MAINTENANT », qui n'est pas un verbe.
+  Devenu « PRENDS TA PLACE ». 📌 **Un visuel gardé « pour le jour J » n'est pas
+  prêt : la norme bouge après lui, et on s'en aperçoit au pire moment — celui où
+  il faut publier vite.** À faire : repasser les autres visuels « en réserve »
+  au contrôle AVANT d'en avoir besoin.
+  ✅ Envoyé au patron avec son texte (`texte-reprise.txt`) : geste n°1 de la
+  procédure de reprise, c'est lui qui publie à la main (sa consigne du 12/08).
+
+  🩹 **ET LE PREMIER COMMENTAIRE DU BULLETIN RÉPÉTAIT LA FAUTE DU 26/08, EN PLUS
+  DOUX** : dimanche soir, le post annonçait « QUAND ÇA REPREND : C'EST PRÉVU
+  MARDI » et le commentaire, trois lignes plus bas, disait encore « la reprise
+  dès qu'elle est décidée » — le même envoi ne se souvenait pas de ce qu'il
+  venait de dire. Tout ce qui parle de la reprise passe désormais par
+  `service.reouverture()`. Il portait aussi une apostrophe droite dans `qu\'elle`
+  — **échappée, donc invisible à mon détecteur qui cherchait une lettre avant
+  l'apostrophe. Une faute qu'un contrôle ne peut pas voir est une faute qui
+  reste.**
+
+  📅 **REPROGRAMMÉ** : mardi midi, la Routine décide en LISANT la page (si le
+  post de reprise du patron est sorti, elle ne publie rien de plus ; sinon elle
+  sort « TU PARS VOIR QUELQU'UN »). « TU L'AS DÉJÀ », jamais publié, passe au
+  mercredi 02/09.
+
 - **30/08/2026 (⬛ LA BARRE A REFUSÉ UN VISUEL DÉJÀ PROGRAMMÉ, ET ELLE AVAIT
   RAISON)** — journée où le contrôle a servi pour de vrai, deux fois, dans les
   deux sens opposés.

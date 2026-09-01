@@ -200,6 +200,15 @@ Et trois règles de composition :
    avancer l'île » — **rabaissant sa distinction d'un niveau régional à un
    niveau local, sur un visuel censé lui rendre hommage.** Le patron l'a vu en
    une seconde. Depuis : quand l'image parle, on la cite.
+   *Recommencé le 01/09*, sur la même association et en quatre jours : le carton
+   de fin de la vidéo présentait le lauréat comme « **Comité** Young Leader
+   Mohéli 2026 » alors que son écharpe dit « YOUNG LEADER · MOHÉLI · 2026 ».
+   Le patron : « c'est le vrai Young Leader. »
+   📌 **DEUX FOIS LA MÊME FAUTE, C'EST UN RÉFLEXE À CORRIGER, PAS UN ACCIDENT :**
+   quand un visuel nomme une personne, son titre ne s'écrit pas de mémoire ni par
+   déduction — **il se relit sur l'image, ou il se demande.** Une organisation et
+   une personne ne portent jamais le même nom : le logo cite l'organisation, la
+   ligne de crédit cite la personne.
 7. un visuel **non regardé à l'œil** après rendu. Nos contrôles savent dire
    « le fichier est là » ; ils ne savent pas dire « l'image est juste ».
 

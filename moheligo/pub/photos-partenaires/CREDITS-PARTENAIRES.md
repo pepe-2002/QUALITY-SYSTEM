@@ -33,12 +33,20 @@
 > jour de la réouverture — sa décision du 26/08 : « on la garde pour le jour de
 > la réouverture, comme ça ça fait le boom. »
 >
-> ❓ **UNE QUESTION QUI RESTE, ET QUI PORTE SUR UNE PERSONNE RÉELLE** : l'écharpe
-> qu'il porte dit « YOUNG LEADER · MOHÉLI · 2026 », et le texte du post le cite
-> exactement (règle § 7.6). Mais le carton de fin, que j'ai fabriqué, le présente
-> comme « Comité Young Leader Mohéli 2026 ». **Lauréat ou membre du comité ?**
-> Les deux ne se disent pas pareil, et se tromper sur le titre de quelqu'un est
-> une erreur de fait. À faire confirmer par le patron, et à corriger ici.
+> ✅ **TRANCHÉ LE 01/09/2026 : IL EST LE LAURÉAT.** Le patron, mot pour mot :
+> **« c'est le vrai Young Leader »**. Donc :
+> **El Farouk Saindou — Young Leader Mohéli 2026.** C'est ce que dit son écharpe
+> à l'image, et c'est ce qu'on écrit partout.
+>
+> 🚩 **ET J'AVAIS ÉCRIT LE CONTRAIRE SUR LE CARTON DE FIN DE LA VIDÉO** :
+> « Comité Young Leader Mohéli 2026 ». C'est mot pour mot la faute du 29/08
+> (« Young Leader Mohéli » là où l'écharpe disait « OCÉAN INDIEN ») : **rabaisser
+> le titre de quelqu'un sur le visuel censé le mettre en avant**, deux fois en
+> quatre jours, sur la même association. Corrigé dans
+> `pub/flyers/carte-fin-video.html`, et la vidéo a été refaite.
+> ⚠️ Le logo reste celui du Comité : c'est l'ORGANISATION qui décerne, et un
+> partenaire se cite avec son logo. Ce qui était faux, c'était de donner le nom
+> de l'organisation à LA PERSONNE.
 
 ---
 

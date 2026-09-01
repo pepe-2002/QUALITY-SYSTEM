@@ -19,10 +19,22 @@
 
      ✅ CE QUE CE VISUEL AFFIRME, ET C’EST TOUT : que beaucoup de Mohéliens
      partent étudier ou travailler, et qu’on réserve depuis son téléphone.
-     Aucune affirmation sur la personne photographiée — ni son nom, ni ses
-     études, ni aucune appartenance. Elle est le VISAGE de la traversée, pas
-     un cas nommé. C’est aussi ce qui protège sa vie privée : ce qu’il fait
-     dans la vie ne regarde pas une page Facebook.
+     Il porte le nom de la personne — **Danialy Attoumane**, donné par le patron
+     le 01/09 — et RIEN D’AUTRE sur elle : ni ses études, ni aucune
+     appartenance. Un crédit, pas une biographie. Ce qu’il fait dans la vie ne
+     regarde pas une page Facebook, et un visage peut être le visage d’une idée
+     sans être un cas nommé.
+
+     📱 L’ÉCRAN DE L’APPLI, demandé le 01/09 : « mets aussi un écran de l’appli
+     pour faire original, mais toujours l’émotion. » C’est exactement le § 1 de
+     la norme — un seul univers, deux moments. Le portrait ouvre (l’émotion),
+     la carte de réservation livre (le produit), sans changer de lumière ni de
+     calme. On n’a pris QUE le bloc « Réserver une traversée » : un écran entier
+     à cette taille ne se lit pas, et ce qui ne se lit pas ne prouve rien.
+     ⚠️ La date affichée est calculée à « aujourd’hui + 7 jours » et se
+     REGÉNÈRE avant chaque publication (`demo/ecrans/capture.js`). Un post reste
+     sur la page pour toujours : une date passée y ferait croire que le service
+     est mort (norme § 7.3).
 
      ⚠️ CE QUI RESTE À RÉGLER AVANT PUBLICATION — et ça ne dépend pas de moi :
      son ACCORD. Norme § 7.2 : jamais l’image d’une personne sans son accord
@@ -71,7 +83,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
   color:#5C6E8B; margin-top:5px; }
 
-.sur { position:absolute; left:76px; top:498px; z-index:5; font-size:13px;
+.sur { position:absolute; left:76px; top:392px; z-index:5; font-size:13px;
   font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
 /* 🚩 « TES ÉTUDES LÀ-BAS. TA FAMILLE ICI. » A ÉTÉ ABANDONNÉ, ET C’EST `lignes.js`
@@ -88,7 +100,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    ✅ « TU PARS. TU REVIENS. » : quatre mots, deux lignes vérifiées au rendu, et
    c’est la même famille que notre meilleure ligne (« on ne visite pas Mohéli,
    on y revient », 9/10 en relecture extérieure). */
-.acc { position:absolute; left:76px; top:536px; width:400px; z-index:5;
+.acc { position:absolute; left:76px; top:430px; width:400px; z-index:5;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:56px; line-height:1.04;
   letter-spacing:-2px; color:#fff; }
 .acc span { display:block;
@@ -96,24 +108,41 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
 
-.dit { position:absolute; left:76px; top:712px; width:392px; z-index:5;
+.dit { position:absolute; left:76px; top:606px; width:392px; z-index:5;
   font-size:21px; line-height:1.52; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
-.trait { position:absolute; left:76px; top:872px; width:82px; height:5px;
+.trait { position:absolute; left:76px; top:766px; width:82px; height:5px;
   border-radius:3px; background:#F6BC1C; z-index:5; }
 
-.cta { position:absolute; left:76px; top:918px; z-index:5;
+.cta { position:absolute; left:76px; top:812px; z-index:5;
   background:#F6BC1C; border-radius:16px; padding:17px 24px; display:inline-block;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
   color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
   box-shadow:0 18px 40px rgba(150,100,4,.42); }
 
-.web { position:absolute; left:76px; top:1024px; z-index:5;
+.web { position:absolute; left:76px; top:900px; z-index:5;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:28px;
   color:#fff; letter-spacing:-1.1px; }
 .web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
   font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+
+/* 📱 LA CARTE DE L’APPLI — le moment PRODUIT. Elle est posée dans la colonne
+   de gauche, sous l’appel à l’action : on donne d’abord envie, puis on montre
+   que c’est faisable. L’ombre la décolle du marine sans l’encadrer d’un trait,
+   qui ferait « capture d’écran collée ». */
+.appli { position:absolute; left:76px; top:978px; width:360px; z-index:5;
+  border-radius:18px; overflow:hidden;
+  box-shadow:0 26px 56px rgba(4,12,40,.5); }
+.appli img { width:100%; display:block; }
+
+/* 🚩 LE CRÉDIT EST EN HAUT À DROITE, ET C’EST UNE CORRECTION. Il était en bas
+   à droite, posé sur son pantalon : gris clair sur gris moyen, illisible. Un
+   crédit qu’on ne peut pas lire ne crédite personne.
+   Ici il est sur le marine nu, au-dessus de sa tête — la seule grande zone
+   vide du visuel, et le contraste y est franc. */
+.credit { position:absolute; right:76px; top:214px; z-index:5; text-align:right;
+  font-size:11.5px; font-weight:700; letter-spacing:2.4px; color:#8FA8CC; }
 
 .vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:7; }
 </style>
@@ -137,6 +166,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="trait"></div>
   <div class="cta">RÉSERVE TA TRAVERSÉE</div>
   <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+
+  <div class="appli"><img src="ecran-reserver.png" alt=""></div>
+  <div class="credit">AVEC DANIALY ATTOUMANE</div>
 
   <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
     <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>

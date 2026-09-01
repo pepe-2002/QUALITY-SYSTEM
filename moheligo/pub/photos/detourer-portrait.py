@@ -92,8 +92,41 @@ ys, xs = np.where(s > 0)
 print('sujet : x %d..%d, y %d..%d — %.1f %% de l’image' %
       (xs.min(), xs.max(), ys.min(), ys.max(), s.mean() / 2.55))
 
-alpha = cv2.GaussianBlur(s, (0, 0), 2.0).astype(np.float32) / 255.
+# ── 🚩 LES CHEVEUX SE DÉTOURENT EN DOUCEUR, PAS AU COUTEAU ──────────────────
+# Le patron, deux fois : « regarde les cheveux », puis « la coiffure est mal
+# faite ». Le contour était juste de FORME mais net comme du papier découpé —
+# or des cheveux crépus n'ont pas de bord net, c'est ce qui les trahit.
+# 📌 Un masque binaire ne peut pas décrire des cheveux. Il faut de l'alpha
+# PARTIEL, et pour l'obtenir on se sert de la seule chose qui les distingue
+# vraiment ici : ils sont beaucoup plus sombres que tout ce qui les entoure.
+# Mesuré : cheveux 27 · bord des cheveux 52 · bokeh 86 · tronc 100.
+# Entre 25 et 85, la clarté donne donc directement l'opacité.
+# ⚠️ APPLIQUÉ SEULEMENT DANS UN ANNEAU AUTOUR DU CRÂNE, et seulement au-dessus
+# des oreilles (y < 1080). Sur tout le corps, la même règle mangerait le visage
+# — la peau est claire, elle deviendrait transparente.
+alpha = s.astype(np.float32) / 255.
+ZONE = 1080
+anneau = (cv2.dilate(s, np.ones((31, 31), np.uint8)) > 0) & \
+         (cv2.erode(s, np.ones((9, 9), np.uint8)) == 0)
+anneau[ZONE:, :] = False
+V = im.max(2).astype(np.float32)
+doux = np.clip((85.0 - V) / 60.0, 0, 1)
+# ⚠️ LES FEUILLES SOMBRES SONT SOMBRES ELLES AUSSI. Une feuille dans l'ombre a
+# la même clarté que les cheveux : la règle lui donnait de l'opacité, et une
+# tache verte restait accrochée en haut à gauche du crâne. On la retire par la
+# teinte — les cheveux sont neutres, le feuillage est vert (mesuré : 20-90).
+tt = cv2.cvtColor(im, cv2.COLOR_BGR2HSV)
+doux[(tt[..., 0] >= 20) & (tt[..., 0] <= 90) & (tt[..., 1] > 25)] = 0
+# ⚠️ ET LA ZONE NE S'ARRÊTE PAS D'UN COUP. Couper net à y=1080 laissait une
+# arête là où le traitement cessait. On fond l'influence sur les 80 px du bas.
+yy = np.arange(H, dtype=np.float32)[:, None]
+poids = np.clip((ZONE - yy) / 80.0, 0, 1) * np.ones((1, L), np.float32)
+alpha[anneau] = (poids * doux + (1 - poids) * alpha)[anneau]
+print('anneau des cheveux : %d px, dont %d en opacite partielle'
+      % (anneau.sum(), ((alpha > .05) & (alpha < .95) & anneau).sum()))
+alpha = cv2.GaussianBlur(alpha, (0, 0), 1.2)
 c = np.clip(im.astype(np.float32) * alpha[..., None] + MARINE * (1 - alpha[..., None]), 0, 255)
+cv2.imwrite('alpha-doux.png', (alpha * 255).astype(np.uint8))
 cv2.imwrite('sur-marine.png', c.astype(np.uint8))
 cv2.imwrite('alpha.png', s)
 cv2.imwrite('zoom-epaule.png', cv2.resize(c[1050:1450, 1050:1450].astype(np.uint8), (500, 500)))

@@ -205,10 +205,44 @@ def publications_recentes(jours=7):
         # Donc on filtre NOUS-MÊMES sur la date, et on ne fait plus confiance à
         # un paramètre qu'on n'a pas vérifié.
         recentes = [p for p in donnees if p.get('created_time', '') >= depuis]
-        return [{'quand': p.get('created_time', '')[:16].replace('T', ' à '),
+        return [{'quand': _heure_comores(p.get('created_time', '')),
                  'texte': (p.get('message') or '').strip()}
                 for p in recentes]
     return None
+
+
+def _heure_comores(created_time):
+    """L'heure d'une publication, AUX COMORES — pas celle du serveur de Facebook.
+
+    🚩 CORRIGÉ LE 01/09/2026, et ça touchait deux choses d'un coup.
+    On écrivait `created_time[:16]`, ce qui garde « 2026-09-01T16:27 » et jette
+    le « +0000 » : l'heure affichée était donc de l'UTC.
+
+    1. LE RAPPORT MENTAIT SANS SE TROMPER D'UN CHIFFRE. Son en-tête annonce
+       « relevé à 19h27, heure des Comores » et son tableau, juste dessous,
+       datait le même bulletin de 16h27. Lu de bonne foi, il disait que le
+       bulletin du soir part en plein après-midi et que l'annonce de reprise
+       est sortie à 4 h du matin. 📌 Deux fuseaux dans un même tableau, ce n'est
+       pas une imprécision : c'est un rapport faux.
+
+    2. ET LE GARDE-FOU ANTI-DOUBLON COMPARAIT DES POMMES ET DES POIRES.
+       `deja_publie()` calcule « aujourd'hui » en heure des Comores (UTC+3) puis
+       le compare à `quand[:10]`, qui était en UTC. Entre 00 h et 03 h aux
+       Comores, les deux dates diffèrent — le garde-fou ne voyait plus la
+       publication du jour et aurait laissé passer un doublon. Fenêtre étroite,
+       mais PAS théorique : le 28/08, un `cron` en retard a justement publié le
+       bulletin à 3 h 38 du matin, heure des Comores.
+
+    ⚠️ On ne convertit QUE pour l'affichage et la comparaison de dates. Le tri et
+    le filtre des 7 jours continuent de travailler sur le `created_time` brut.
+    """
+    try:
+        t = datetime.fromisoformat(created_time)
+    except (TypeError, ValueError):
+        return (created_time or '')[:16].replace('T', ' à ')
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=timezone.utc)
+    return t.astimezone(timezone(timedelta(hours=3))).strftime('%Y-%m-%d à %H:%M')
 
 
 def decouper(chemin):

@@ -1,19 +1,40 @@
-<!-- LUNDI — « RIEN À INSTALLER ». Sans date.
-     Pourquoi un visuel de plus alors que le mode d'emploi existe : le matin (si
-     le patron l'arme) publie les trois gestes. Midi ne doit donc PAS répéter la
-     même chose — il prend l'objection la plus fréquente de ceux qui n'achètent
+<!-- LUNDI — « TU N’INSTALLES RIEN ». Sans date.
+
+     SENTIMENT : LE SOULAGEMENT
+
+     🚩 02/09/2026 — CE VISUEL SORTAIT CASSÉ DEPUIS DES SEMAINES, ET PERSONNE
+     NE POUVAIT LE VOIR. Son titre était « Rien à installer. C’est juste une
+     page. » : deux `<span>`, donc deux lignes DÉCLARÉES — mais RENDU à 92 px
+     dans une colonne de 928 px, il en faisait TROIS. La troisième débordait de
+     son cadre et tombait pile sur `.sous`, en position absolue, qui ne bouge
+     pas d’un pixel pour lui faire de la place. Résultat imprimé sur la page
+     Facebook, tous les lundis : le mot « page. » barré par une phrase.
+     📌 `exigence.py` lit le CODE et comptait deux lignes — il disait vrai.
+     `lignes.js` mesure le RENDU et voyait trois lignes — sans rien en conclure,
+     parce qu’il examine chaque bloc SÉPARÉMENT.
+     ⛔ **LE DÉFAUT N’ÉTAIT DANS AUCUN BLOC : IL ÉTAIT ENTRE DEUX BLOCS.** D’où
+     `collision.js`, qui ne regarde plus des éléments mais des RELATIONS.
+
+     ✅ Le titre a donc rétréci, pas la colonne : « TU N’INSTALLES / RIEN. »
+     Deux lignes vérifiées au rendu, et il s’adresse enfin au lecteur (norme
+     § 2) — l’ancien titre parlait du produit, pas de lui.
+
+     LUNDI — « RIEN À INSTALLER ». Sans date.
+     Pourquoi un visuel de plus alors que le mode d’emploi existe : le matin (si
+     le patron l’arme) publie les trois gestes. Midi ne doit donc PAS répéter la
+     même chose — il prend l’objection la plus fréquente de ceux qui n’achètent
      pas en ligne : « il faut installer une application, mon téléphone est
      plein ». Une seule idée, comme toujours.
-     L'objet regardé : la BARRE D'ADRESSE. Elle prouve le message au lieu de
-     l'affirmer — c'est une page, rien d'autre.
-     ⚠️ Ce qu'on n'écrit pas : « ça marche sur tous les téléphones ». Je ne l'ai
-     pas vérifié. On dit ce qu'on sait : ça s'ouvre dans le navigateur.
+     L’objet regardé : la BARRE D’ADRESSE. Elle prouve le message au lieu de
+     l’affirmer — c’est une page, rien d’autre.
+     ⚠️ Ce qu’on n’écrit pas : « ça marche sur tous les téléphones ». Je ne l’ai
+     pas vérifié. On dit ce qu’on sait : ça s’ouvre dans le navigateur.
      Rendu : node render.js flyer28-rien-installer-fb.html flyer-rien-installer-facebook.png 1080 1350 2 -->
 <meta charset="utf-8">
 <style>
-@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
-@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
-@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format(’woff2’); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format(’woff2’); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format(’woff2’); }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
@@ -43,7 +64,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:23px; font-weight:500; color:#BDD0EE; }
 .sous b { color:#fff; font-weight:700; }
 
-/* L'OBJET : la barre d'adresse. Elle prouve, elle n'affirme pas. */
+/* L’OBJET : la barre d’adresse. Elle prouve, elle n’affirme pas. */
 .carte { position:absolute; left:76px; top:492px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:22px; padding:30px 32px 32px;
   box-shadow:0 26px 56px rgba(4,12,40,.42); }
@@ -54,8 +75,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .barre .adr { flex:1; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:44px; letter-spacing:-1.6px; color:#0F2A5C; line-height:1; }
 .barre .fleche { flex:0 0 46px; height:46px; border-radius:50%; background:#0F2A5C;
-  display:flex; align-items:center; justify-content:center; color:#F6BC1C;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:22px; }
+  display:flex; align-items:center; justify-content:center; }
+.barre .fleche svg { width:24px; height:24px; display:block; }
 .legende { margin-top:16px; padding-left:8px; font-size:16px; font-weight:700;
   letter-spacing:.2px; color:#8493AD; }
 .trois { display:flex; margin-top:28px; padding-top:26px; border-top:1px solid #DDE6F4; }
@@ -72,9 +93,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .action .qr { flex:0 0 132px; height:132px; background:#fff; border-radius:13px;
   padding:8px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
 .action .qr img { width:100%; height:100%; display:block; }
-.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
+.action .cta { font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
   letter-spacing:.5px; color:#0A1D42; }
-.action .adr2 { margin-top:5px; font-family:'Archivo',sans-serif; font-weight:900;
+.action .adr2 { margin-top:9px; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:50px; letter-spacing:-1.9px; color:#0A1D42; line-height:1; }
 .action .paie { margin-top:9px; font-size:14.5px; font-weight:700; color:#4A3A08; }
 
@@ -96,9 +117,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
   <div class="ligne">RÉSERVER SANS APPLICATION<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
 
-  <div class="acc">Rien à installer.<span>C'est juste une page.</span></div>
-  <div class="sous">Pas d'application à télécharger, pas de place à faire dans le
-    téléphone. <b>Tu écris l'adresse, et c'est ouvert — comme n'importe quel site.</b></div>
+  <div class="acc">Tu n’installes<span>rien.</span></div>
+  <div class="sous">Pas d’application à télécharger, pas de place à faire dans le
+    téléphone. <b>Tu écris l’adresse, et c’est ouvert — comme n’importe quel site.</b></div>
 
   <div class="carte">
     <div class="barre">
@@ -108,15 +129,20 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
               stroke-linecap="round"/>
       </svg>
       <div class="adr">moheligo.com</div>
-      <div class="fleche">→</div>
+      <!-- ⚠️ C’ÉTAIT UN « → » (U+2192), absent de nos woff2 latins : Chromium
+           le remplaçait en silence par une police système. Un caractère
+           substitué ne lève aucune erreur, il change juste le dessin. -->
+      <div class="fleche"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 12h14M13 6l6 6-6 6" stroke="#F6BC1C" stroke-width="3"
+              stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
-    <div class="legende">C'est tout. Ça marche dans le navigateur que tu as déjà.</div>
+    <div class="legende">C’est tout. Ça marche dans le navigateur que tu as déjà.</div>
     <div class="trois">
-      <div><b>Aucune place prise</b><p>Rien ne s'installe, rien ne reste dans ton
+      <div><b>Aucune place prise</b><p>Rien ne s’installe, rien ne reste dans ton
         téléphone.</p></div>
       <div><b>Ton billet, lui, reste</b><p>Une fois payé, il est dans le téléphone,
         même sans réseau.</p></div>
-      <div><b>Rien à donner d'abord</b><p>Tu regardes les traversées et les prix
+      <div><b>Rien à donner d’abord</b><p>Tu regardes les traversées et les prix
         avant de te connecter.</p></div>
     </div>
   </div>
@@ -124,15 +150,15 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="action">
     <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
     <div>
-      <div class="scanne">SCANNE ET RÉSERVE</div>
+      <div class="cta">SCANNE ET RÉSERVE</div>
       <div class="adr2">moheligo.com</div>
       <div class="paie">MVola ou kartaPay · ta place bloquée 15 minutes</div>
     </div>
   </div>
 
   <div class="pied">
-    <div class="g"><b>Besoin d'aide ? On est là.</b>
-      <p>Première réservation ? Un proche ou un commerçant peut t'accompagner.</p></div>
-    <div class="d">WhatsApp<br>+269 479 43 28<small>QUELQU'UN RÉPOND</small></div>
+    <div class="g"><b>Besoin d’aide ? On est là.</b>
+      <p>Première réservation ? Un proche ou un commerçant peut t’accompagner.</p></div>
+    <div class="d">WhatsApp<br>+269 479 43 28<small>QUELQU’UN RÉPOND</small></div>
   </div>
 </div>

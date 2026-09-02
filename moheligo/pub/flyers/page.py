@@ -40,287 +40,39 @@ CIEL = {0: 'Ciel dégagé', 1: 'Peu nuageux', 2: 'Partiellement nuageux', 3: 'Co
         61: 'Pluie faible', 63: 'Pluie modérée', 65: 'Forte pluie',
         80: 'Averses', 81: 'Averses', 82: 'Fortes averses', 95: 'Orage'}
 
+# 🚩 02/09/2026 — LE TEXTE NE SE RECOPIE PLUS ICI, IL SE LIT À CÔTÉ DU VISUEL.
+# Les visuels récents rangent leur texte dans un `texte-*.txt` portant le même
+# nom qu'eux ; les anciens le gardaient en dur dans ce fichier. Deux conventions
+# pour la même chose, c'est une de trop : le jour où l'on corrige un texte, on
+# en corrige un des deux et l'autre continue de circuler.
+# 📌 La vitrine AFFICHE, elle ne DÉTIENT pas. C'est le `.txt` qui fait foi.
+def _texte(nom):
+    f = pathlib.Path(__file__).parent / nom
+    return f.read_text(encoding='utf-8').strip() if f.exists() else \
+        '⚠️ texte introuvable : %s' % nom
+
+
 # Les flyers de la page, dans l'ordre d'affichage.
 # (fichier PNG, titre, note, fichier texte ou None si le texte est ici)
 FLYERS = [
-    dict(png='flyer-affiche-vraie-facebook.png', titre="L'affiche MOHÉLI",
-         note='Sans date<br>publiable quand vous voulez', texte="""MOHÉLI, À UNE TRAVERSÉE.
-
-Les îlots de Nioumachoua, vus de la plage, un matin sans vent.
-
-Pour y être, il suffit de traverser. Et la traversée se réserve depuis votre
-téléphone, en deux minutes :
-
-• Ouroveni ou Chindini au départ, Hoani ou Fomboni à l'arrivée.
-• Paiement MVola ou kartaPay, billet QR immédiat.
-• L'état de la mer sur 7 jours, consulté avant de partir.
-
-moheligo.com
-
-Photo : Fatima771 (CC BY 3.0, Wikimedia Commons)
-
-#MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
-    dict(png='flyer-telephone-facebook.png', titre='⭐ LE TÉLÉPHONE — écran réel',
-         note="Sans date · l'accueil VRAI de<br>l'application, capturé (pas dessiné)<br>Ouroveni → Hoani<br>aucune personne dessus",
-         texte="""TON GUICHET, DANS TA POCHE.
-
-Choisis ton départ, paie, embarque. Sans passer au port pour chercher une place.
-
-• Tu vois les prix avant même de donner ton nom.
-• Tu paies avec MVola ou kartaPay, ce que tu utilises déjà.
-• Ton billet reste dans le téléphone, même sans réseau.
-
-Rien à installer : ça s'ouvre comme une page.
-
-Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant peut
-le faire avec toi.
-
-Scanne le code ou va sur moheligo.com
-WhatsApp +269 479 43 28 — quelqu'un répond.
-
-#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
-    dict(png='flyer-abonner-facebook.png', titre='⭐ JEUDI — S\'ABONNER',
-         note="Sans date · publie le jeudi<br>la seule demande de la semaine<br>qui n'est pas « réserve »<br>l'objet : les sept soirs",
-         texte="""CHAQUE SOIR, LA MER DE DEMAIN. SUR CETTE PAGE, À 19H30.
-
-Gratuitement, et sans rien demander en échange.
-
-CE QUE TU REÇOIS, SEPT SOIRS SUR SEPT :
-• L'état de la mer — belle, peu agitée, agitée, forte : le mot et le chiffre.
-• La houle du matin, en mètres, entre 5h et 13h.
-• Le vent : sa force et sa direction, pour la fenêtre du matin.
-
-Appuie une fois sur « S'abonner ». Tu sauras chaque soir, avant de quitter la
-maison. Rien à payer, rien à installer, rien à donner — et tu peux te
-désabonner quand tu veux.
-
-Personne d'autre ne publie ça. Nous le faisons parce que partir sans savoir,
-c'est se lever à 4 heures pour rien.
-
-Prévision Open-Meteo Marine. Le bulletin officiel affiché à l'embarquement
-fait foi.
-
-#MoheliGo #Comores #Mohéli #MétéoMer #Traversée"""),
-    dict(png='flyer-diaspora-v2-facebook.png', titre='⭐ VENDREDI — LA DIASPORA',
-         note="Sans date · publie le vendredi<br>jour de paie en Europe<br>l'angle le plus fort du manuel<br>l'objet : les deux côtés de la mer",
-         texte="""TU PAIES D'ICI. ELLE EMBARQUE LÀ-BAS.
-
-Tu es à Marseille, à Mayotte, à Dubaï. Elle n'a rien à avancer, ni à comprendre.
-
-TOI, DE L'AUTRE CÔTÉ :
-• Tu choisis le départ et la date sur moheligo.com.
-• Tu paies avec MVola ou kartaPay, depuis là où tu es.
-• Tu mets SON nom et SON numéro à elle, pas le tien.
-
-ELLE, AUX COMORES :
-• Le billet arrive dans son téléphone, avec son code.
-• Il y reste même sans réseau : c'est lui qu'on scanne à l'embarquement.
-• Elle n'avance rien, et n'a rien à installer.
-
-Un rendez-vous chez le médecin, un enterrement, une rentrée scolaire : elle n'a
-plus à trouver l'argent le matin même.
-
-Réserve pour elle : moheligo.com
-Une question avant de payer ? WhatsApp +269 479 43 28
-
-#MoheliGo #Comores #Mohéli #Diaspora #MVola"""),
-    dict(png='flyer-destination-facebook.png', titre='⭐ SAMEDI — LA DESTINATION',
-         note="Sans date · publie le samedi<br>photo tenue dans la carte claire<br>crédit imprimé sur le visuel<br>CC BY 3.0 — ne jamais l'enlever",
-         texte="""MOHÉLI, À UNE TRAVERSÉE.
-
-Les îlots de Nioumachoua, un matin sans vent. Pour y être, il suffit de traverser.
-
-• Quatre ports : Ouroveni et Chindini au départ, Hoani et Fomboni à l'arrivée.
-• La mer sur 7 jours, publiée chaque soir sur cette page — avant que tu descendes.
-• Ta place prise d'avance, depuis le téléphone, sans aller la chercher au port.
-
-Scanne le code ou va sur moheligo.com
-Paiement MVola ou kartaPay · WhatsApp +269 479 43 28
-
-Photo : Fatima771 — îlots de Nioumachoua, Mohéli (CC BY 3.0, Wikimedia Commons).
-
-#MoheliGo #Mohéli #Nioumachoua #Comores #VisitComoros #Traversée"""),
-    dict(png='flyer-institutionnel-facebook.png', titre='⭐ DIMANCHE — INSTITUTIONNEL',
-         note="Sans date · publie le dimanche<br>registre partenaires, VOUVOIEMENT<br>aucun horaire annoncé (non vérifié)<br>l'objet : le tableau des liaisons",
-         texte="""QUATRE PORTS. UNE LIAISON QUI SE PRÉPARE.
-
-Entre deux îles, il y a une mer. Et, depuis peu, un service qu'on peut consulter,
-réserver et payer à l'avance.
-
-Ouroveni (Grande Comore) → Hoani (Mohéli)
-Chindini (Grande Comore) → Fomboni (Mohéli)
-
-• Billetterie en ligne : paiement MVola ou kartaPay, billet à code délivré
-  immédiatement.
-• État de la mer publié chaque soir pour le lendemain, source citée.
-• Assistance : un numéro WhatsApp tenu par une personne, pas un répondeur.
-
-HÔTELIERS, AGENCES, COMMERÇANTS : nous cherchons des points de vente assistés.
-Vous réservez pour vos clients qui n'achètent pas en ligne. Écrivez-nous, nous
-nous déplaçons.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-Nous ne décidons pas des départs : nous publions la mer et délivrons les billets.
-
-#MoheliGo #Comores #Mohéli #Traversée"""),
-    dict(png='flyer-partenariat-facebook.png', titre='⭐ DIMANCHE — PARTENARIAT YOUNG LEADER',
-         note="Sans date · publie le dimanche<br>une semaine sur deux (avec l'institutionnel)<br>photo Young Leader Mohéli, accord du patron<br>registre partenaires, VOUVOIEMENT<br>preuve sociale locale : des visages d'ici<br>un seul appel, discret, en pied",
-         texte="""CEUX QUI FONT BOUGER L'ÎLE.
-
-MoheliGo est partenaire de Young Leader Mohéli. Sur la photo : le lauréat
-2025-2026 et ses deux challengers.
-
-Pourquoi une compagnie de traversées soutient un concours de jeunes ? Parce
-qu'une île qui bouge a besoin de deux choses en même temps : des jeunes qui
-prennent des responsabilités, et des liaisons sur lesquelles on peut compter.
-Nous nous occupons de la deuxième.
-
-D'ICI. Une entreprise comorienne, pour des traversées comoriennes. Les gens qui
-répondent au téléphone sont d'ici et connaissent les ports.
-
-AVEC EUX. Nous soutenons ceux qui font quelque chose pour Mohéli, pas ceux qui
-en parlent.
-
-POUR VOUS. L'état de la mer publié chaque soir sur cette page, et l'état du
-service — même les jours où il est fermé.
-
-Félicitations aux trois lauréats.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-Photo : Young Leader Mohéli, utilisée avec leur accord.
-
-#MoheliGo #YoungLeaderMoheli #Mohéli #Comores #Jeunesse"""),
-    dict(png='flyer-rien-installer-facebook.png', titre='⭐ LUNDI — RIEN À INSTALLER',
+    dict(png='flyer-rien-installer-facebook.png', titre='⭐ LUNDI — TU N’INSTALLES RIEN',
          note="Sans date · publie le lundi<br>répond à l'objection « mon<br>téléphone est plein »<br>l'objet : la barre d'adresse",
-         texte="""RIEN À INSTALLER. C'EST JUSTE UNE PAGE.
-
-Pas d'application à télécharger, pas de place à faire dans le téléphone. Tu écris
-moheligo.com et c'est ouvert — comme n'importe quel site.
-
-• Aucune place prise : rien ne s'installe, rien ne reste dans ton téléphone.
-• Ton billet, lui, reste : une fois payé, il est dans le téléphone, même sans
-  réseau.
-• Rien à donner d'abord : tu regardes les traversées et les prix avant de te
-  connecter.
-
-Ta place est bloquée 15 minutes le temps de payer, avec MVola ou kartaPay.
-
-Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant peut
-t'accompagner.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
+         texte=_texte('texte-rien-installer.txt')),
+    dict(png='flyer-quelquun-v2-facebook.png', titre='⭐ MARDI — TU PARS VOIR QUELQU’UN',
+         note='Sans date · publie le mardi<br>le registre de la proximité<br>noté 9/10 en relecture extérieure',
+         texte=_texte('texte-quelquun-v2.txt')),
+    dict(png='flyer-tulasdeja-facebook.png', titre='⭐ MERCREDI — TU L’AS DÉJÀ',
+         note='Sans date · publie le mercredi<br>le produit : l’appli en grand<br>⚠️ l’écran porte une DATE :<br>refaire avant chaque sortie',
+         texte=_texte('texte-tulasdeja.txt')),
+    dict(png='flyer-etudes-facebook.png', titre='⭐ VENDREDI — TU PARS. TU REVIENS.',
+         note='Sans date · publie le vendredi<br>ceux qui partent étudier<br>ou travailler, et qui reviennent<br>avec Danialy Attoumane (accord donné)',
+         texte=_texte('texte-etudes.txt')),
+    dict(png='flyer-revenir-facebook.png', titre='⭐ SAMEDI — ON Y REVIENT',
+         note='Sans date · publie le samedi<br>la destination<br>notre meilleure ligne',
+         texte=_texte('texte-revenir.txt')),
     dict(png='flyer-grostemps-facebook.png', titre='⛈️ LES JOURS DE GROSSE MER',
          note="Sans date<br>publié tout seul quand la houle<br>dépasse 2,50 m au matin<br>{etat} et {houle} sont remplacés<br>par les vrais chiffres du jour<br>ZÉRO appel commercial",
-         texte="""AUJOURD'HUI, LA MER EST FORTE. VOILÀ CE QU'ON SAIT.
-
-{etat} ce matin entre nos ports : houle de {houle} m.
-
-PAR CETTE MER, LES VEDETTES PEUVENT NE PAS PARTIR.
-Nous ne décidons pas des départs — nous publions la mer. Avant de descendre au
-port, appelle ou écris : on te dit ce qui est maintenu, et ce qui n'est pas
-encore décidé.
-
-SI TU AS DÉJÀ UN BILLET.
-Changer la date ne coûte rien, sur la même liaison. Et tant que la traversée
-n'est pas partie, tu peux annuler et être remboursé.
-
-CE QUI DÉCIDE, C'EST LA MER ET LE COMMANDANT.
-Le bulletin officiel affiché à l'embarquement fait toujours foi.
-
-Chaque soir à 19h30, on publie la mer du lendemain sur cette page. Gratuitement,
-qu'elle soit belle ou mauvaise. C'est les jours comme aujourd'hui que ça compte.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-Prévision Open-Meteo Marine.
-
-#MoheliGo #Comores #Mohéli #MétéoMer #Sécurité"""),
-    dict(png='flyer-vraiprix-facebook.png', titre='🔥 JEUDI — LE VRAI PRIX DU VOYAGE',
-         note="Sans date · publie le jeudi<br>une semaine sur deux<br>né d'une VENTE PERDUE : « on paie tout<br>ici ? » — non — « ça ne vaut pas la peine »<br>bus 6h30 · vedette : voir le billet<br>⚠️ à refaire si le forfait tout compris arrive",
-         texte="LE BUS PART À 6H30 DE KARTALA. ET VOILÀ TOUT CE QUE TU PAIES EN ROUTE.\n\nPersonne n'aime découvrir un prix au dernier moment, la valise à la main. Alors\non écrit tout — même ce qui ne va pas dans notre poche.\n\n1. TA TRAVERSÉE.\nRéservée et payée à l'avance sur moheligo.com, par MVola ou kartaPay. Le prix\ns'affiche avant même que tu donnes ton nom.\n\n2. LE BUS : DÉPART 6H30, 1 000 FC.\nLe bus part de Kartala, à Moroni, à 6h30. C'est là que se retrouvent les\nvoyageurs et les commandants, et les bus sont déjà réservés par eux. Si tu as un\ncolis : 500 FC par colis.\n\n⚠️ Retiens bien 6h30 : c'est l'heure du BUS. L'heure inscrite sur ton billet,\nelle, est celle de la vedette.\n\n3. LE PORT : 1 000 FC.\nÀ régler sur place, comme pour tout le monde.\n\nC'est tout. Rien d'autre ne t'attend en route.\n\nLe détail complet est dans l'application, partie « info pratique ». Et si une\nquestion te reste, écris-nous avant de partir : quelqu'un répond.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Moroni #Traversée"),
-    dict(png='flyer-quelquun-facebook.png', titre="🔥 MERCREDI — Y A-T-IL QUELQU'UN ?",
-         note="Sans date · publie le mercredi<br>une semaine sur deux<br>né d'une vraie cliente : elle a appelé<br>AVANT de payer pour être sûre<br>qu'un humain existait<br>le blocage nº1, et il n'est pas technique",
-         texte="TU VEUX ÊTRE SÛR QU'IL Y A QUELQU'UN DERRIÈRE ? C'EST NORMAL. ALORS APPELLE AVANT DE PAYER.\n\nPayer en ligne quelqu'un qu'on ne connaît pas, ça se réfléchit. On ne va pas te\ndire « fais-nous confiance » : on va te donner de quoi vérifier.\n\nÉCRIS OU APPELLE, MAINTENANT.\nWhatsApp +269 479 43 28. Quelqu'un répond — pas un robot, pas un répondeur. Pose\ntoutes tes questions avant de sortir un franc. Ça ne nous dérange pas : c'est le\ntravail.\n\nREGARDE TON BILLET.\nLe nom du commandant y est écrit. Tu sais qui pilote avant de monter à bord.\n\nET SI LA TRAVERSÉE NE PART PAS.\nChanger la date est gratuit, et tu es remboursé tant que la traversée n'est pas\npartie. Ton argent n'est jamais coincé chez nous.\n\nUNE ENTREPRISE COMORIENNE, AVEC DES GENS DEDANS.\nOn préfère répondre à dix questions plutôt que d'encaisser un doute.\n\nmoheligo.com — WhatsApp +269 479 43 28\n\n#MoheliGo #Comores #Mohéli #Traversée #MVola"),
-    dict(png='flyer-garantie-facebook.png', titre='🆕 MARDI — ET SI ÇA NE PART PAS ?',
-         note="Sans date · publie le mardi<br>une semaine sur deux<br>répond à l'objection nº1 :<br>« je perds mon argent ? »<br>rien d'inventé : c'est ce qu'on<br>annonce déjà les jours de mer forte",
-         texte="""ET SI LA VEDETTE NE PART PAS ? TU NE PERDS RIEN.
-
-C'est la question qu'on nous pose le plus. Voilà la réponse, une fois pour
-toutes — et elle est valable tous les jours, pas seulement quand la mer est
-mauvaise.
-
-TU CHANGES LA DATE.
-Gratuitement, sur la même liaison. Un mot sur WhatsApp suffit.
-
-OU TU ANNULES.
-Tant que la traversée n'est pas partie, tu es remboursé. Ton argent ne reste pas
-bloqué chez nous.
-
-ET SURTOUT, TU SAIS AVANT.
-Chaque soir, on publie la mer du lendemain sur cette page. Et quand le service
-s'arrête, on le dit aussi — tu l'as vu la semaine dernière.
-
-NOUS NE GARANTISSONS PAS LA MER. NOUS GARANTISSONS TON ARGENT.
-C'est la seule promesse qu'on peut tenir à chaque fois, alors on la tient.
-
-Ta place : moheligo.com
-Une question avant de payer ? WhatsApp +269 479 43 28
-
-#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
-    dict(png='flyer-premierefois-facebook.png', titre='🆕 LUNDI — LA PREMIÈRE FOIS EN LIGNE',
-         note="Sans date · publie le lundi<br>une semaine sur deux<br>pour qui n'a jamais payé sur internet<br>rattache le geste à MVola,<br>qu'il fait déjà<br>on n'écrit jamais « c'est simple »",
-         texte="""TU N'AS JAMAIS PAYÉ SUR INTERNET ? C'EST LE MÊME GESTE QU'ENVOYER DU MVOLA.
-
-Si tu sais envoyer de l'argent à quelqu'un, tu sais réserver ta traversée. Il n'y
-a rien de nouveau à apprendre.
-
-1. TU REGARDES.
-Les départs, les places qui restent et les prix — sans donner ton nom, sans rien
-créer, sans rien installer.
-
-2. TU PAIES.
-Avec MVola ou kartaPay, comme quand tu envoies de l'argent. Ta place est bloquée
-15 minutes, le temps de payer tranquillement.
-
-3. TU REÇOIS TON BILLET.
-Avec son code, tout de suite. Il reste dans ton téléphone même sans réseau —
-c'est lui qu'on scanne à l'embarquement.
-
-SI TU BLOQUES, QUELQU'UN RÉPOND.
-WhatsApp +269 479 43 28 : une personne, pas un répondeur. Et si tu préfères,
-un proche ou un commerçant peut le faire avec toi la première fois.
-
-moheligo.com
-
-#MoheliGo #Comores #Mohéli #MVola #Traversée"""),
-    dict(png='flyer-ports-facebook.png', titre='🆕 SAMEDI — LES DEUX PORTS',
-         note="Sans date · publie le samedi<br>une semaine sur deux<br>lève un blocage pratique :<br>« je pars d'où, moi ? »<br>aucun horaire, aucune durée<br>(non vérifiés)",
-         texte="""DEUX PORTS AU DÉPART DE LA GRANDE COMORE. CHOISIS LE TIEN.
-
-Selon l'endroit d'où tu pars, le port le plus proche n'est pas le même. Les deux
-liaisons sont sur moheligo.com, avec les départs du jour.
-
-OUROVENI → HOANI
-Le nord de Mohéli. C'est la liaison dont nous publions la mer chaque soir.
-
-CHINDINI → FOMBONI
-Le chef-lieu de Mohéli, au sud de l'île.
-
-DANS LES DEUX CAS, C'EST PAREIL :
-• Tu vois les places et le prix avant de réserver, sans donner ton nom.
-• Tu paies par MVola ou kartaPay.
-• Ton billet arrive avec son code, et reste dans le téléphone sans réseau.
-
-TU NE SAIS PAS LEQUEL TE CONVIENT ?
-Écris-nous en disant d'où tu pars : on te dit lequel est le plus proche.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-#MoheliGo #Comores #Mohéli #Ouroveni #Chindini #Hoani #Fomboni"""),
+         texte=_texte('texte-grostemps.txt')),
     dict(png='flyer-reprise-facebook.png', titre='🟢 LA REPRISE — À PUBLIER À LA MAIN',
          note="⚠️ <b>PAS dans le robot</b> — c'est toi qui le publies<br>le jour où les vedettes repartent vraiment<br>aucune date dans l'image : il resservira<br>le seul visuel d'avis avec un appel complet<br>QR vérifié vers moheligo.com",
          texte="""LA HOULE EST RETOMBÉE. ON REPART.
@@ -376,169 +128,9 @@ temps que nous.
 moheligo.com — WhatsApp +269 479 43 28
 
 #MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer #Sécurité"""),
-    dict(png='flyer-modedemploi-v2-facebook.png', titre="⭐ MODE D'EMPLOI — V2",
-         note="Sans date · celui qui publie<br>QR vérifié vers moheligo.com<br>lisible en 3 secondes :<br>promesse, 1-2-3, QR, adresse<br>les six corrections du patron",
-         texte="""EN TROIS GESTES, TA PLACE EST RÉSERVÉE.
-
-Depuis ton téléphone, sans passer au port pour chercher une place.
-
-1. TU CHOISIS
-Départ, arrivée, date. Tu vois les horaires et les prix sans rien donner.
-
-2. TU RÉSERVES
-Ton nom et ton numéro. Ça prend 30 secondes.
-
-3. TU PAIES, TU EMBARQUES
-MVola ou kartaPay, depuis ton téléphone. Ton billet arrive avec son code, et il
-reste dans le téléphone même sans réseau.
-
-Besoin d'aide ? On est là. Première réservation ? Un proche ou un commerçant
-peut t'accompagner — la deuxième fois, tu le feras seul.
-
-Scanne le code ou va sur moheligo.com
-WhatsApp +269 479 43 28 — quelqu'un répond.
-
-#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
-    dict(png='flyer-modedemploi-facebook.png', titre="Mode d'emploi — V1 (test terrain)",
-         note="Sans date · gardée pour l'impression<br>notée 8,7/10 par le patron<br>remplacée par la V2 pour publier<br>textes plus longs, pas de QR",
-         texte="""EN TROIS GESTES, TA PLACE EST PRISE.
-
-Si tu n'as jamais réservé sur un site, lis ça une fois. Après, tu sauras.
-
-1. TU CHOISIS.
-Départ, arrivée, date — Ouroveni, Chindini, Hoani, Fomboni. Tu vois les
-traversées, les places et les prix sans rien donner. Ni nom, ni numéro.
-
-2. TU RÉSERVES.
-C'est seulement ici qu'on te demande ton nom et ton numéro : trente secondes.
-Ta place est bloquée quinze minutes, le temps de payer tranquillement.
-Personne ne te la prend pendant ce temps-là.
-
-3. TU PAIES, TU EMBARQUES.
-MVola ou kartaPay, depuis ton téléphone — ce que tu utilises déjà. Ton billet
-arrive avec son code, et il reste dans le téléphone même sans réseau. C'est lui
-que le commandant scanne.
-
-Rien à installer : ça s'ouvre comme une page.
-
-Et la première fois, tu n'es pas obligé de le faire seul. Demande à un proche,
-à un boutiquier, à ton hôtelier. Il n'y a aucune honte à ça — la deuxième fois,
-tu le feras seul en trois minutes.
-
-moheligo.com — une question avant de commencer ? WhatsApp +269 479 43 28,
-quelqu'un répond, et peut le faire avec toi.
-
-#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
-    dict(png='flyer-prix-facebook.png', titre='⭐ MERCREDI — LES PRIX',
-         note="Sans date<br>publiable tous les mercredis<br>le billet est l'objet qu'on regarde<br>tous les chiffres viennent du site",
-         texte="""LE PRIX, TU LE CONNAIS AVANT DE PAYER.
-
-Adulte : environ 14 500 FC pour une personne, un trajet. Enfant : −30 à −50 %.
-Le prix exact de chaque départ est écrit dans l'application, en direct, AVANT que
-tu paies. Pas de négociation, pas de surprise au port.
-
-Ce qui est déjà compris dans ce prix :
-
-• Ta place est bloquée 15 minutes, le temps de payer tranquillement. Personne ne
-  te la prend pendant ce temps-là.
-• Changer la date de ton billet ne coûte rien, sur la même liaison.
-• Tu annules avant le départ : ton argent revient, moins les frais de transaction.
-
-Tu paies avec MVola ou kartaPay, depuis ton téléphone. Rien de nouveau à
-apprendre. Et si quelqu'un de ta famille est à l'étranger, il peut payer pour toi
-depuis là-bas : tu reçois ton billet ici, tu n'avances rien.
-
-Regarde le prix de ton départ : moheligo.com
-Une question avant de payer ? WhatsApp +269 479 43 28
-
-#MoheliGo #Comores #Mohéli #Traversée #MVola"""),
-    dict(png='flyer-signature-facebook.png', titre='⭐ LE MODÈLE DE SIGNATURE',
-         note='Les quatre influences réunies<br>le logo Royal Air, la couleur et<br>l\'émotion Coca-Cola, le vide<br>d\'Apple, la brillance de Yas',
-         texte="""On se voit de l'autre côté.
-
-MoheliGo — traversées maritimes des Comores.
-Ouroveni · Chindini · Hoani · Fomboni
-
-Réservation en deux minutes : moheligo.com"""),
-    dict(png='flyer-chiffre-facebook.png', titre='⭐ CARTE BLANCHE — le chiffre',
-         note='Mon manuel appliqué à la lettre<br>aplat franc, un fait, zéro décor<br>DATÉ : à regénérer chaque jour',
-         texte="""DEMAIN MATIN, LA MER SERA À 0,9 M.
-
-Mer peu agitée entre Ouroveni et Hoani. Traversée normale, un peu de mouvement.
-Vent 17 km/h de sud-est, période de houle 9,0 secondes.
-
-Personne d'autre ne publie ce chiffre. Nous le faisons chaque soir, gratuitement,
-parce que partir sans savoir, c'est se lever à 4 heures pour rien.
-
-La mer des 7 prochains jours — et votre place — sur moheligo.com
-
-Prévision Open-Meteo Marine. Le bulletin officiel affiché dans l'application
-fait foi avant l'embarquement.
-
-#MoheliGo #Comores #Mohéli #MétéoMer #Traversée"""),
-    dict(png='flyer-couleur-facebook.png', titre='Le « Coca-Cola »',
-         note='Sans date<br>une couleur, une émotion', texte="""On se voit de l'autre côté.
-
-MoheliGo — traversées maritimes des Comores.
-moheligo.com"""),
-    dict(png='flyer-conglomerat-facebook.png', titre='Le « grand conglomérat »',
-         note='Sans date<br>registre Apple / institutionnel', texte="""Entre deux îles, il y a une mer. Et un service.
-
-MoheliGo — traversées maritimes des Comores.
-moheligo.com"""),
-    dict(png='flyer-aerien-facebook.png', titre='Le flyer « composition »',
-         note='Sans date<br>le plus moderne', texte="""TRAVERSEZ VERS MOHÉLI, SEREINEMENT.
-
-Votre place est prise avant même d'arriver au port, et votre billet est déjà
-dans votre poche.
-
-1. Vous choisissez votre départ sur moheligo.com
-2. Vous payez par MVola ou kartaPay
-3. Vous embarquez, billet QR en main
-
-À partir de 15 000 FC la traversée.
-Ouroveni et Chindini vers Hoani et Fomboni.
-
-Et avant de partir, l'état de la mer et les places restantes sont sur le site :
-on ne prend plus la mer à l'aveugle.
-
-moheligo.com
-WhatsApp +269 479 43 28
-
-#MoheliGo #Mohéli #Comores #Traversée #BilletQR"""),
     dict(png='flyer-soir-facebook.png', titre='Le bulletin du soir',
          note='Annonce demain matin<br>bon pour ce soir seulement', texte='@texte-du-jour.txt'),
-    dict(png='flyer-diaspora-facebook.png', titre='Pour la diaspora',
-         note='Sans date<br>plutôt le week-end', texte="""TU PAIES ICI. IL EMBARQUE.
-
-Tu es en France, à Mayotte ou dans le Golfe, et ta famille doit traverser
-vers Mohéli ?
-
-Depuis ton téléphone, sur moheligo.com :
-
-• Tu choisis le port, la date et la place.
-• Tu paies par MVola ou kartaPay.
-• Ton proche reçoit son billet QR sur son téléphone. Il n'avance rien.
-
-À partir de 15 000 FC la traversée.
-
-moheligo.com — la place est prise avant même que tu raccroches.
-
-#MoheliGo #DiasporaComorienne #Comores #Mohéli #Mayotte"""),
-    dict(png='flyer-promo-brillant-facebook.png', titre='Le promo',
-         note='Sans date<br>le plus accrocheur', texte="""TA TRAVERSÉE EN 2 MINUTES.
-
-Plus besoin d'aller au port pour savoir s'il y a une place.
-Tu ouvres moheligo.com, tu choisis ton départ, tu paies par MVola.
-Ton billet QR arrive tout de suite dans ton téléphone.
-
-À partir de 15 000 FC le trajet.
-Ouroveni et Chindini vers Hoani et Fomboni.
-
-Réserve maintenant : moheligo.com
-Une question ? WhatsApp +269 479 43 28
-
-#MoheliGo #Mohéli #Comores #Traversée"""),
+    
 ]
 
 

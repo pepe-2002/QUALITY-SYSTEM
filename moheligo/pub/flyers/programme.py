@@ -213,7 +213,19 @@ def main():
             return
         visuel, texte, quoi = prevu
     else:
-        visuel, texte, quoi = calendrier.du_jour(jour)
+        # 🚩 02/09/2026 — MIDI PEUT AUSSI N'AVOIR RIEN À DIRE. Après le grand
+        # nettoyage (40 visuels hors norme supprimés), deux jours de la semaine
+        # n'ont plus de visuel. Comme pour le matin, un trou n'est pas une
+        # erreur : sortir en échec ferait clignoter le workflow deux jours sur
+        # sept, et un voyant rouge qu'on apprend à ignorer ne sert plus à rien
+        # le jour où il compte vraiment.
+        prevu = calendrier.du_jour(jour)
+        if prevu is None:
+            print('Aucun visuel au programme ce midi (%s) — rien à publier.'
+                  ' La bibliothèque est en cours de remise aux normes.'
+                  % calendrier.JOURS[jour.weekday()])
+            return
+        visuel, texte, quoi = prevu
 
     # ---- le garde-fou de la mer -------------------------------------------
     # Le patron, 11/08/2026 : « en mauvais temps les vedettes ne partent pas ».

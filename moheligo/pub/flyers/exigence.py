@@ -34,8 +34,17 @@ SUPERLATIFS = ['le meilleur', 'la meilleure', 'le plus rapide', 'unique en',
 # ── § 4 : les formules qui ne demandent rien ────────────────────────────────
 FAUX_APPELS = ['en savoir plus', 'cliquez ici', 'clique ici', 'découvrez',
                'contactez-nous', "n'hésitez pas", 'nous contacter']
+# ⚠️ CETTE LISTE EST FERMÉE, DONC ELLE SERA TOUJOURS INCOMPLÈTE — et c'est un
+# choix, pas un oubli : on ne sait pas reconnaître un impératif français par
+# programme sans conjugueur, alors qu'une liste dit exactement ce qu'elle
+# accepte. Le prix à payer est qu'elle doit GRANDIR quand un verbe légitime se
+# présente.
+# 📌 02/09/2026 — « scanne » ajouté. Le contrôle refusait « SCANNE ET RÉSERVE »,
+# posé à côté d'un QR code : c'est pourtant l'impératif exact du geste demandé.
+# La règle avait tort, pas le visuel — comme le 30/08 avec les « 6 mots
+# maximum ». On corrige celui qui a tort, on ne contourne jamais.
 VRAIS_VERBES = ['réserve', 'prends', 'choisis', 'paie', 'écris', 'appelle',
-                'embarque', 'traverse', 'rejoins']
+                'embarque', 'traverse', 'rejoins', 'scanne']
 SENTIMENTS = ['LE SOULAGEMENT', 'LA PROXIMITÉ', 'LA FIERTÉ', 'LA CONFIANCE']
 
 FINE = ' '          # espace fine insécable
@@ -144,10 +153,32 @@ def controler(chemin):
         # exigeante : c'est une règle mal écrite. La vraie contrainte est ce que
         # l'œil saisit d'un coup, donc elle se compte PAR LIGNE. Les 32 signes
         # par ligne restent la limite qui mord vraiment.
+        # 🚩 02/09/2026 — LA FOURCHETTE PASSE DE « ≤ 6 » À « 2 À 5 ».
+        # Le patron : « les écritures doivent être vraiment style Apple, deux à
+        # cinq mots mais très impactant, et inspirer le respect de la marque. »
+        # Ce n'est pas un resserrement cosmétique : à six mots on explique
+        # encore, à quatre on affirme. « Think different. » « Privacy. That's
+        # iPhone. » — personne n'y finit une phrase, on y pose une idée.
+        # ⚠️ LE PLAFOND SE COMPTE PAR LIGNE, LE PLANCHER SUR LE TITRE ENTIER —
+        # et j'ai écrit l'inverse au premier jet, ce qui a immédiatement refusé
+        # « TU L'AS / DÉJÀ. » (publié le jour même) et « TU PARS VOIR /
+        # QUELQU'UN. » (noté 9/10 dehors), au motif que leur seconde ligne ne
+        # fait qu'un mot.
+        # 📌 UNE LIGNE D'UN SEUL MOT N'EST PAS UNE ÉTIQUETTE : C'EST UNE
+        # CADENCE. C'est même le geste exact qu'on cherche — « Bigger than /
+        # bigger », « Privacy. / That's iPhone. » Le mot isolé porte l'accent
+        # parce que le regard s'y arrête. Ce qu'il faut interdire, c'est un
+        # TITRE d'un seul mot (« MOHÉLI. » ne dit rien), pas une ligne courte
+        # dans un titre qui, lui, a un sujet et un verbe.
+        # ✅ Comptée PAR LIGNE, comme depuis le 30/08 : « ON NE VISITE PAS
+        # MOHÉLI. / ON Y REVIENT. » fait 5 et 3, et reste notre meilleure ligne.
         for l in lignes:
-            if len(l.split()) > 6:
-                refuse('2', f'ligne de titre de {len(l.split())} mots '
-                            f'(maximum 6 par ligne) : « {l} »')
+            n = len(l.split())
+            if n > 5:
+                refuse('2', f'ligne de titre de {n} mots (maximum 5) : « {l} »')
+        if len(plat.split()) < 2:
+            refuse('2', f'titre d’un seul mot — c’est une étiquette, pas une '
+                        f'accroche : « {plat} »')
         for l in lignes:
             if len(l) > 32:
                 refuse('2', f'ligne de titre de {len(l)} signes (maximum 32) : « {l} »')

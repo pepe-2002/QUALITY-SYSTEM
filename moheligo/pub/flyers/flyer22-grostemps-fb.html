@@ -1,36 +1,54 @@
 <!-- LES JOURS DE GROSSE MER — le visuel qui ne vend rien.
+
+     SENTIMENT : LA CONFIANCE
+
+     🚩 02/09/2026 — CE VISUEL A FAILLI PARTIR AU NETTOYAGE, ET ÇA AURAIT ÉTÉ
+     UNE VRAIE PANNE. J’avais protégé les fichiers que les scripts citaient par
+     leur nom de FICHIER HTML ; or `programme.py` ne connaît que le nom du PNG
+     (`GROS_TEMPS = ’flyer-grostemps-facebook.png’`). Ma recherche a donc rendu
+     un feu vert pour un fichier bel et bien vivant.
+     📌 **ON NE CHERCHE PAS LES RÉFÉRENCES À UN FICHIER : ON CHERCHE LES
+     RÉFÉRENCES À CE QU’IL PRODUIT.** Un contrôle qui interroge le mauvais
+     artefact répond « personne ne s’en sert » avec le même aplomb qu’une
+     réponse juste.
+
+     ✅ Le titre passe de « Aujourd’hui, la mer est forte. » à « LA MER DÉCIDE. /
+     ON TE LE DIT. » — quatre mots et quatre mots. L’ancien décrivait la météo ;
+     le nouveau dit ce qu’on FAIT pour le lecteur, et c’est exactement la
+     promesse qu’on tient tous les jours. Il ne promet toujours aucun départ ni
+     aucune annulation : la mer décide, nous on informe.
      Le patron, 11/08/2026 : « le départ tkt pas, mais en mauvais temps les
      vedettes ne partent pas. »
 
      POURQUOI CE VISUEL EXISTE : les jours de mer forte, une publicité enjouée
-     n'est pas seulement inutile, elle est fausse — elle invite à descendre au
+     n’est pas seulement inutile, elle est fausse — elle invite à descendre au
      port un jour où la vedette peut ne pas partir. `programme.py` consulte
-     `mer.py` avant de publier : au niveau 3 de l'échelle de Douglas (houle
+     `mer.py` avant de publier : au niveau 3 de l’échelle de Douglas (houle
      ≥ 2,50 m), il remplace le message commercial par celui-ci.
 
-     ⚠️ CE QU'ON N'ÉCRIT PAS : « les vedettes ne partent pas ». On ne connaît pas
-     le seuil exact d'annulation de chaque compagnie, donc on écrit « peuvent ne
+     ⚠️ CE QU’ON N’ÉCRIT PAS : « les vedettes ne partent pas ». On ne connaît pas
+     le seuil exact d’annulation de chaque compagnie, donc on écrit « peuvent ne
      pas partir » et on renvoie vers ceux qui savent. Informer, pas se tromper
      à voix haute (§ 11 du manuel).
 
      ⚠️ ZÉRO APPEL COMMERCIAL sur ce visuel. Pas de « réserve », pas de prix.
-     C'est le message : le jour où on ne peut rien promettre, on ne demande rien.
-     C'est le levier RÉCIPROCITÉ (§ 3) dans sa forme la plus forte, et c'est ce
+     C’est le message : le jour où on ne peut rien promettre, on ne demande rien.
+     C’est le levier RÉCIPROCITÉ (§ 3) dans sa forme la plus forte, et c’est ce
      qui rendra crédibles toutes les publications des autres jours.
 
-     Le chiffre exact du jour n'est PAS dans l'image (elle est réutilisable) :
+     Le chiffre exact du jour n’est PAS dans l’image (elle est réutilisable) :
      il est dans le texte de publication, injecté par programme.py.
      Rendu : node render.js flyer22-grostemps-fb.html flyer-grostemps-facebook.png 1080 1350 2 -->
 <meta charset="utf-8">
 <style>
-@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
-@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
-@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
-@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format(’woff2’); }
+@font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format(’woff2’); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format(’woff2’); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format(’woff2’); }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
 
-/* un marine plus profond que d'habitude : le registre du jour n'est pas le même */
+/* un marine plus profond que d’habitude : le registre du jour n’est pas le même */
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0A1D42; }
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 42%, rgba(255,255,255,.055) 50%, rgba(255,255,255,0) 58%); }
@@ -62,7 +80,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:27px; line-height:1.44; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
-/* l'avis : une carte claire avec un bandeau d'or. Un avis, pas une réclame. */
+/* l’avis : une carte claire avec un bandeau d’or. Un avis, pas une réclame. */
 .avis { position:absolute; left:76px; top:646px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:24px; overflow:hidden;
   box-shadow:0 30px 64px rgba(3,10,32,.5); }
@@ -84,6 +102,18 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .don b { color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:22px; letter-spacing:-.4px; }
 
+/* 🚩 L'APPEL À L'ACTION MANQUAIT, ET SON ABSENCE ÉTAIT UN CONTRESENS.
+   Ce visuel est le seul qu'on publie un jour où l'on ne vend rien — d'où, sans
+   doute, l'idée qu'il n'avait pas d'action à demander. C'est faux : le jour de
+   grosse mer est justement celui où le lecteur DOIT faire quelque chose avant
+   de descendre au port avec sa valise. Ne rien lui demander, c'est le laisser
+   partir sans savoir.
+   📌 Un visuel qui ne vend pas a quand même un geste à demander. */
+.cta { position:absolute; left:76px; bottom:236px; z-index:3;
+  background:#F6BC1C; border-radius:16px; padding:17px 26px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
 .pied { position:absolute; left:76px; right:76px; bottom:58px; z-index:3;
   display:flex; align-items:flex-end; justify-content:space-between; }
 .pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
@@ -104,28 +134,30 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
   <div class="ligne">AVIS DE MER<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
 
-  <div class="acc">Aujourd'hui,<span>la mer est forte.</span></div>
+  <div class="acc">La mer décide.<span>On te le dit.</span></div>
 
-  <div class="dit"><b>On te dit ce qu'on sait</b>, et ce qu'on ne sait pas encore —
+  <div class="dit"><b>On te dit ce qu’on sait</b>, et ce qu’on ne sait pas encore —
     avant que tu descendes au port.</div>
 
   <div class="avis">
-    <div class="bande">CE QU'IL FAUT SAVOIR AVANT DE PARTIR</div>
+    <div class="bande">CE QU’IL FAUT SAVOIR AVANT DE PARTIR</div>
     <div class="corps">
       <p>Par cette mer, les vedettes peuvent ne pas partir.</p>
       <ul>
         <li><b>Avant de descendre</b><span>Appelle ou écris : on te dit ce qui est
-          maintenu, et ce qui ne l'est pas encore décidé.</span></li>
+          maintenu, et ce qui ne l’est pas encore décidé.</span></li>
         <li><b>Si tu as un billet</b><span>Changer la date ne coûte rien. Et tant que
-          la traversée n'est pas partie, tu peux annuler et être remboursé.</span></li>
+          la traversée n’est pas partie, tu peux annuler et être remboursé.</span></li>
         <li><b>Ce qui décide</b><span>La mer, et le commandant. Le bulletin officiel
-          affiché à l'embarquement fait toujours foi.</span></li>
+          affiché à l’embarquement fait toujours foi.</span></li>
       </ul>
     </div>
   </div>
 
+  <div class="cta">APPELLE AVANT DE DESCENDRE</div>
+
   <div class="don"><b>Chaque soir à 19h30, la mer du lendemain sur cette page.</b>
-    Gratuitement, qu'elle soit belle ou mauvaise — c'est les jours comme aujourd'hui
+    Gratuitement, qu’elle soit belle ou mauvaise — c’est les jours comme aujourd’hui
     que ça compte.</div>
 
   <div class="pied">

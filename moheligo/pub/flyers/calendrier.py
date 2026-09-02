@@ -2,195 +2,136 @@
 """Le programme de publication de la semaine MoheliGo.
 
 Le patron (11/08/2026) : « pourquoi le bulletin du soir seulement ? c'est toi le
-directeur marketing et commercial, tu vas tout gérer les pubs. » Donc voici le
-calendrier complet, celui du plan publicitaire (`dossier/PLAN-PUBLICITAIRE.md`) :
+directeur marketing et commercial, tu vas tout gérer les pubs. »
 
     tous les soirs   le bulletin mer          (daté, fabriqué le jour même)
     lundi            comment ça marche
-    mardi            l'île, registre émotion
-    mercredi         les prix
-    jeudi            s'abonner à la page
-    vendredi         la diaspora              (jour de paie en Europe)
+    mardi            la proximité
+    mercredi         le produit
+    jeudi            — (à écrire)
+    vendredi         partir et revenir
     samedi           la destination
-    dimanche         l'institutionnel
+    dimanche         — (à écrire)
 
-⚠️ **Une seule source de vérité** : les visuels et les textes viennent de
-`page.py` (listes `FLYERS` et `TEXTES`), la même chose que ce que le patron voit
-sur sa page. Rien n'est recopié ici — sinon les deux finiraient par se
-contredire.
+🚩 RÉÉCRIT LE 02/09/2026, APRÈS LE GRAND NETTOYAGE.
+Le patron : « supprime tous les flyers qui ne sont pas aux normes, les anciens
+flyers », puis « les écritures doivent être vraiment style Apple, deux à cinq
+mots mais très impactant ». Quarante visuels sont partis le même jour ; il en
+reste sept, et ce fichier ne connaît plus qu'eux.
 
-⚠️ **L'usure est le vrai risque.** Sept publications par semaine tirées de
-quatre visuels, ça se voit au bout de quinze jours. D'où deux choses : chaque
-jour a **plusieurs variantes** et on tourne selon le numéro de semaine ; et il
-faut continuer à produire des visuels neufs. Un calendrier automatique ne
-remplace pas une bibliothèque qui grandit.
+⛔ CE QUI A CHANGÉ DANS LA MÉCANIQUE, ET C'EST LE PLUS IMPORTANT : avant, un jour
+SANS visuel était impossible — chaque jour avait forcément sa case. Après le
+nettoyage, deux jours n'ont plus rien. L'ancien code serait allé chercher un
+fichier supprimé et aurait planté au moment de publier, c'est-à-dire à midi, le
+seul moment où personne ne regarde le journal.
+📌 **UN CALENDRIER QUI NE SAIT PAS DIRE « JE N'AI RIEN AUJOURD'HUI » MENT UN JOUR
+SUR SEPT.** `du_jour()` rend donc `None`, exactement comme `du_matin()` le fait
+depuis toujours, et `programme.py` se tait proprement.
+
+⚠️ **Le texte du post vit à côté du visuel, dans un `texte-*.txt`.** C'est la
+convention des visuels récents et elle gagne : le fichier porte le même nom que
+l'image, on voit d'un coup d'œil ce qui va avec quoi, et rien n'est recopié.
+`page.py` reste la vitrine du patron, plus la source.
+
+⚠️ **L'usure reste le vrai risque**, et elle est PIRE qu'avant : cinq visuels
+pour sept jours. Deux jours vides valent mieux qu'un visuel hors norme — mais
+c'est un état de chantier, pas une cible. La bibliothèque doit regrandir, DANS
+le système cette fois.
 """
 import datetime
 import pathlib
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-import page                                   # noqa: E402  (FLYERS, TEXTES)
 
+ICI = pathlib.Path(__file__).parent
 JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 
-# --- les briques disponibles, retrouvées dans page.py -----------------------
-VISUEL = {f['png']: f['texte'] for f in page.FLYERS}
-TEXTE = {t['titre']: t['texte'] for t in page.TEXTES}
-
-AFFICHE = 'flyer-affiche-vraie-facebook.png'
-DIASPORA = 'flyer-diaspora-facebook.png'
-PROMO = 'flyer-promo-brillant-facebook.png'
-PRIX = 'flyer-prix-facebook.png'         # le billet : mercredi, jour des prix
-EMPLOI = 'flyer-modedemploi-v2-facebook.png'   # la démonstration du matin (V2)
-EMPLOI_V1 = 'flyer-modedemploi-facebook.png'   # V1, gardée pour l'impression papier
-# --- la série du 12/08/2026 : un visuel par jour, tous dans le même système ---
-# Le patron : « fais tous les flyers jusqu'à mardi, mets-les dans le robot, la
-# limite de la semaine sera bientôt atteinte. » Donc la semaine complète est
-# désormais couverte par des visuels de la même famille (coin blanc, aplat
-# marine, carte claire, bandeau d'or), sans dépendre de moi.
-ABONNER = 'flyer-abonner-facebook.png'          # jeudi
-DIASPORA_V2 = 'flyer-diaspora-v2-facebook.png'  # vendredi
-DESTINATION = 'flyer-destination-facebook.png'  # samedi
-INSTIT = 'flyer-institutionnel-facebook.png'    # dimanche
-PARTENARIAT = 'flyer-partenariat-facebook.png'  # dimanche, l'autre semaine
-RIEN = 'flyer-rien-installer-facebook.png'      # lundi
-SIGNATURE = 'flyer-signature-facebook.png'      # mardi (déjà validé par le patron)
-# --- la série du 18/08/2026, au lendemain de la reprise ----------------------
-# Le patron : « prépare les flyers de la semaine. » La semaine était couverte,
-# mais par EXACTEMENT les mêmes visuels que la précédente : les abonnés les
-# avaient déjà vus. Trois angles neufs, choisis pour ce qu'ils débloquent, pas
-# pour faire nombre — et placés en PREMIÈRE variante pour qu'ils sortent cette
-# semaine-ci (la rotation suit le numéro de semaine ISO, 34 % 2 = 0).
-GARANTIE = 'flyer-garantie-facebook.png'        # mardi : « et si ça ne part pas ? »
-# 18/08/2026, le soir : deux des trois premières clientes ont APPELÉ avant de
-# payer « pour être sûres qu'il y avait quelqu'un derrière ». Le blocage nº1
-# n'est pas technique, il est humain — d'où ce visuel, placé le mercredi, le
-# jour où l'on parle d'argent et donc où le doute est le plus vif.
-QUELQUUN = 'flyer-quelquun-facebook.png'        # mercredi : « il y a quelqu'un ? »
-# 18/08/2026 : une vente perdue, mot pour mot — « est-ce qu'on paie tous ces
-# frais ici ? » / non / « ça ne vaut pas la peine alors ». Le montant n'était pas
-# le problème : payer trois fois sans connaître le total, si.
-VRAIPRIX = 'flyer-vraiprix-facebook.png'        # jeudi : ce que coûte le voyage entier
-PREMIERE = 'flyer-premierefois-facebook.png'    # lundi : jamais payé en ligne
-PORTS = 'flyer-ports-facebook.png'              # samedi : quel port de départ
-# visuels présents dans le dossier mais pas sur la page du patron
-DUOTONE = 'flyer-affiche-duotone-facebook.png'
-LUMINEUSE = 'flyer-affiche-lumineuse-facebook.png'
-CORPORATE = 'flyer-corporate-facebook.png'
-NUIT = 'flyer-nuit-facebook.png'
-
-T_APPLI = "Pour faire utiliser l'application"
-T_ABO = "Pour faire s'abonner à la page"
-T_INSTIT = 'Texte institutionnel — « grand conglomérat »'
-T_COURT = 'Version très courte, même registre'
-T_AFFICHE = "Variante courte pour l'affiche"
-
-# --- le programme : jour de la semaine -> variantes (visuel, texte) ---------
-# On tourne d'une variante à l'autre selon le numéro de semaine ISO.
-# ⚠️ UNE SEULE VARIANTE PAR JOUR, ET C'EST VOULU (12/08/2026).
-# La rotation par numéro de semaine existait pour lutter contre l'usure, mais
-# elle tirait une semaine sur deux dans l'ANCIENNE bibliothèque — des visuels
-# d'avant le système actuel (pas de coin blanc, pas de carte claire, pas de QR).
-# Publier un visuel hors système une semaine sur deux abîme la marque plus que
-# l'usure ne la fatigue : la régularité EST l'actif (§ 1 du manuel).
-# La deuxième variante revient au fur et à mesure que la bibliothèque grandit
-# DANS le système. Premier retour le 12/08/2026 : le dimanche alterne
-# institutionnel et partenariat Young Leader — deux visuels de la même famille,
-# même registre (partenaires, vouvoiement), donc l'alternance repose la page sans
-# abîmer la marque. C'est la condition, et la seule : jamais un visuel d'avant le
-# système.
-# 🕐 COMMENT LIRE CE DICTIONNAIRE, ET NE PLUS SE TROMPER (24/08/2026) :
-# le visuel publié est `variantes[numéro de semaine ISO % 2]`. Autrement dit
-# **le PREMIER de la liste sort les semaines PAIRES, le second les IMPAIRES.**
-# Je m'étais trompé en croyant que « premier = maintenant » : les cinq visuels
-# nés des vraies objections clients seraient sortis une semaine trop tard.
-# ⚠️ NE PAS RAISONNER : lancer `python3 calendrier.py`, il affiche le numéro de
-# semaine et ce qui part réellement.
+# --- les sept jours : (visuel, texte du post, ce qu'on y raconte) ------------
+# `None` = rien de prévu ce jour-là. Ce n'est pas une panne, c'est un trou connu
+# dans la bibliothèque, et il est écrit ici plutôt que découvert à midi.
 SEMAINE = {
-    0: [(RIEN, VISUEL[RIEN]),                  # lundi
-        (PREMIERE, VISUEL[PREMIERE])],
-    1: [(SIGNATURE, VISUEL[SIGNATURE]),        # mardi
-        (GARANTIE, VISUEL[GARANTIE])],
-    # ⚠️ 23/08/2026 — LE FLYER « PRIX » EST RETIRÉ DE LA ROTATION.
-    # Nos billets sont à 14 500 + 500 de frais, quand les commandants placent
-    # leurs clients à 10 000-12 500 en direct sur le quai. Tant que cet écart
-    # existe, afficher notre prix en gros chiffres, c'est inviter à une
-    # comparaison qu'on perd. Le remettre le jour où l'écart est réglé : il
-    # suffit de rétablir la paire ci-dessous.
-    2: [(QUELQUUN, VISUEL[QUELQUUN])],          # mercredi : la confiance
-    3: [(ABONNER, VISUEL[ABONNER]),            # jeudi
-        (VRAIPRIX, VISUEL[VRAIPRIX])],
-    4: [(DIASPORA_V2, VISUEL[DIASPORA_V2])],    # vendredi : la diaspora
-    5: [(DESTINATION, VISUEL[DESTINATION]),    # samedi
-        (PORTS, VISUEL[PORTS])],
-    6: [(INSTIT, VISUEL[INSTIT]),               # dimanche : l'institutionnel
-        (PARTENARIAT, VISUEL[PARTENARIAT])],    #   et, l'autre semaine, le partenariat
+    0: ('flyer-rien-installer-facebook.png', 'texte-rien-installer.txt',
+        'comment ça marche'),
+    1: ('flyer-quelquun-v2-facebook.png', 'texte-quelquun-v2.txt',
+        'la proximité'),
+    2: ('flyer-tulasdeja-facebook.png', 'texte-tulasdeja.txt',
+        'le produit'),
+    3: None,                                    # jeudi — à écrire
+    4: ('flyer-etudes-facebook.png', 'texte-etudes.txt',
+        'partir et revenir'),
+    5: ('flyer-revenir-facebook.png', 'texte-revenir.txt',
+        'la destination'),
+    6: None,                                    # dimanche — à écrire
 }
 
-# --- LE MATIN : la démonstration, et rien d'autre --------------------------
-# Le patron (11/08/2026) : « on peut pas ajouter un flyer ou vidéo de
-# démonstration le matin ? » Oui — le matin est le bon moment : c'est là qu'on
-# décide de descendre au port. Mais PAS tous les jours.
-#
-# Pourquoi pas tous les jours, écrit noir sur blanc pour ne pas y revenir :
-# publier trois fois par jour sur une page jeune ne multiplie pas la portée, ça
-# la divise entre les publications, et ça fatigue les abonnés — or un
-# désabonnement se récupère beaucoup plus difficilement qu'une portée faible.
-# Donc on commence à DEUX matins par semaine, on mesure dans le rapport du
-# dimanche, et on décide avec les chiffres (§ 8 et § 16 du manuel).
-#
-# Le matin ne parle jamais du prix ni de l'île : il parle du GESTE. C'est un
-# déclencheur « facilitateur » (§ 13.1 du manuel), destiné à celui qui a envie
-# mais qui est bloqué. Une seule idée, un seul appel.
-MATIN = {
-    0: [(EMPLOI, VISUEL[EMPLOI])],           # lundi : on commence la semaine
-    3: [(EMPLOI, VISUEL[EMPLOI])],           # jeudi : avant le week-end
-}
+# --- LE MATIN : plus rien, et il faut le dire ------------------------------
+# La démonstration du matin (« EN TROIS GESTES, TA PLACE EST RÉSERVÉE ») est
+# partie au nettoyage du 02/09 : son titre faisait sept mots, et son dernier mot
+# s'imprimait SOUS le paragraphe — le même défaut de collision que le lundi.
+# Elle reviendra quand elle sera refaite au standard. En attendant, `du_matin()`
+# rend `None` tous les jours, ce que `programme.py` sait déjà traiter.
+MATIN = {}
+
+
+def _lire(nom):
+    """Le texte du post, lu à côté du visuel. None si le fichier manque."""
+    f = ICI / nom
+    return f.read_text(encoding='utf-8').strip() if f.exists() else None
+
+
+def _valide(entree, jour, moment):
+    """(visuel, texte, description) — ou None si quoi que ce soit manque.
+
+    🚩 ON VÉRIFIE QUE LES DEUX FICHIERS EXISTENT VRAIMENT, et pas seulement que
+    la case du tableau est remplie. Le 02/09, quarante visuels ont été supprimés
+    alors que le calendrier les nommait encore : il annonçait sept publications
+    par semaine et six d'entre elles n'avaient plus d'image. Un tableau qui cite
+    un fichier absent est un tableau qui a l'air juste jusqu'au jour J.
+    """
+    if entree is None:
+        return None
+    visuel, fichier, quoi = entree
+    texte = _lire(fichier)
+    if texte is None or not (ICI / visuel).exists():
+        manque = visuel if not (ICI / visuel).exists() else fichier
+        print('⚠️  %s %s : « %s » est au programme mais %s est introuvable —'
+              ' rien ne sera publié.' % (JOURS[jour.weekday()], moment, quoi,
+                                         manque), file=sys.stderr)
+        return None
+    return visuel, texte, '%s — %s' % (JOURS[jour.weekday()], quoi)
+
+
+def du_jour(jour=None):
+    """(visuel, texte, description) pour la publication de midi, ou None."""
+    jour = jour or datetime.date.today()
+    return _valide(SEMAINE.get(jour.weekday()), jour, 'midi')
 
 
 def du_matin(jour=None):
     """(visuel, texte, description) pour le matin, ou None si rien n'est prévu."""
     jour = jour or datetime.date.today()
-    i = jour.weekday()
-    if i not in MATIN:
-        return None
-    variantes = MATIN[i]
-    visuel, texte = variantes[jour.isocalendar()[1] % len(variantes)]
-    return visuel, texte, '%s matin — la démonstration' % JOURS[i]
-
-
-# Ce que le calendrier annonce, pour l'afficher sans publier.
-INTENTION = ['comment ça marche', "l'île ou la garantie", 'la confiance',
-             's'"'"'abonner ou le vrai prix',
-             'la diaspora', 'la destination ou les ports',
-             # le dimanche alterne : le nom du visuel dit lequel des deux part
-             "l'institutionnel ou le partenariat"]
-
-
-def du_jour(jour=None):
-    """(visuel, texte, description) pour la publication de midi de ce jour."""
-    jour = jour or datetime.date.today()
-    i = jour.weekday()
-    variantes = SEMAINE[i]
-    choix = variantes[jour.isocalendar()[1] % len(variantes)]
-    visuel, texte = choix
-    return visuel, texte, '%s — %s' % (JOURS[i], INTENTION[i])
+    return _valide(MATIN.get(jour.weekday()), jour, 'matin')
 
 
 if __name__ == '__main__':
     aujourdhui = datetime.date.today()
-    print('Programme de la semaine (variante de la semaine ISO %d) :\n'
-          % aujourdhui.isocalendar()[1])
+    print('Programme de la semaine :\n')
+    vides = 0
     for n in range(7):
         j = aujourdhui + datetime.timedelta(days=n - aujourdhui.weekday())
-        visuel, texte, quoi = du_jour(j)
-        print('%-30s %-42s %s' % (quoi, visuel, texte.split('\n')[0][:44]))
-    print('\nLes matins prévus (démonstration, 7h30) :\n')
-    for n in range(7):
-        j = aujourdhui + datetime.timedelta(days=n - aujourdhui.weekday())
-        m = du_matin(j)
-        if m:
-            print('  %-12s %-42s %s' % (JOURS[j.weekday()], m[0],
-                                        m[1].splitlines()[0][:44]))
+        prevu = du_jour(j)
+        if prevu is None:
+            vides += 1
+            print('%-12s —  rien au programme' % JOURS[j.weekday()])
+            continue
+        visuel, texte, quoi = prevu
+        print('%-12s %-40s %s' % (JOURS[j.weekday()], visuel,
+                                  texte.split('\n')[0][:44]))
+    print('\nLes matins prévus : %s' % ('aucun — la démonstration est à refaire'
+                                        if not MATIN else ''))
     print('\n+ le bulletin mer, tous les soirs (fabriqué le jour même).')
+    if vides:
+        print('\n⚠️  %d jour(s) sans visuel. Deux jours muets valent mieux'
+              " qu'un visuel hors norme, mais c'est un chantier, pas une cible."
+              % vides)

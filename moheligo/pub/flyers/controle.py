@@ -230,8 +230,11 @@ def main():
 
     # --- ce que le robot n'a pas le droit de publier tout seul ---------------
     print('\nLes visuels réservés à la main (le robot ne doit pas y toucher) :')
-    programmes = {v for variantes in calendrier.SEMAINE.values() for v, _ in variantes}
-    programmes |= {v for variantes in calendrier.MATIN.values() for v, _ in variantes}
+    # 02/09/2026 — le calendrier ne range plus des listes de variantes mais une
+    # seule entrée par jour, et cette entrée peut être `None` (jour sans visuel
+    # depuis le grand nettoyage). On saute donc les cases vides.
+    programmes = {e[0] for e in calendrier.SEMAINE.values() if e}
+    programmes |= {e[0] for e in calendrier.MATIN.values() if e}
     for nom, pourquoi in MANUELS.items():
         visuel_ok(nom, 'à la main')
         if nom in programmes:

@@ -61,8 +61,34 @@ est la même information, avec une posture.
 
 ## 2. LA PHRASE
 
+> 🍎 **LA RÈGLE D'ÉCRITURE, POSÉE PAR LE PATRON LE 02/09/2026** — elle prime sur
+> tout le reste de cette section : « les écritures doivent être vraiment style
+> Apple, deux à cinq mots mais très impactant, et inspirer le respect de la
+> marque. Tout doit être vraiment vérifié, strict et soigné, même les textes et
+> les photos. »
+>
+> Ce que ça change concrètement, et pourquoi ce n'est pas cosmétique :
+> **à six mots on explique encore, à quatre on affirme.** « Think different. »
+> « Bigger than bigger. » « Privacy. That's iPhone. » Personne n'y finit une
+> phrase — on y pose une idée, et on laisse le lecteur la terminer. Un titre qui
+> explique demande la permission ; un titre qui affirme inspire le respect.
+> C'est exactement ce que le patron appelle « inspirer le respect de la marque ».
+
 **Le titre**
-- **6 mots maximum**, **32 signes maximum par ligne**, **2 lignes maximum**.
+- **2 à 5 mots PAR LIGNE**, **32 signes maximum par ligne**, **2 lignes maximum**.
+  - Le plafond se compte **par ligne**, parce que c'est ce que l'œil saisit d'un
+    coup (règle du 30/08). « ON NE VISITE PAS MOHÉLI. / ON Y REVIENT. » fait 5
+    et 3 : elle passe, et elle reste notre meilleure ligne.
+  - Le plancher se compte **sur le titre entier**. ⚠️ Une ligne d'UN SEUL MOT
+    n'est pas une faute, c'est une **cadence** — « TU L'AS / **DÉJÀ.** », « TU
+    PARS VOIR / **QUELQU'UN.** ». Le mot isolé porte l'accent parce que le
+    regard s'y arrête ; c'est le geste Apple lui-même. Ce qui est interdit,
+    c'est un titre entier d'un seul mot : « MOHÉLI. » n'est pas une accroche,
+    c'est une étiquette.
+  - 📌 J'ai écrit l'inverse au premier jet (plancher par ligne) et le contrôle a
+    immédiatement refusé les deux visuels les mieux notés de toute la
+    bibliothèque. **Une règle qui refuse ce qu'on a fait de mieux n'est pas
+    exigeante, elle est mal écrite** — troisième fois que cette leçon revient.
 - Il parle du **LECTEUR**, pas du produit. Test binaire : il contient un
   *tu / ton / ta / tes*, un verbe à l'impératif, ou il nomme une situation vécue.
   ⛔ « L'ère de la digitalisation » — échoue : sujet = une abstraction.
@@ -157,6 +183,32 @@ Et trois règles de composition :
 - **L'espacement des lettres se règle en CSS, jamais en tapant des espaces.**
   Écrire `T R A V E R S É E S` puis appliquer `letter-spacing` cumule les deux :
   le `S` final est passé sous la diagonale du coin, en août.
+- **Aucun bloc de texte ne doit en toucher un autre.**
+  🤖 Mesuré par `node collision.js <flyer.html>` ou `--tous`, ajouté le 02/09.
+  ⛔ **NÉ D'UN VISUEL QUI SORTAIT CASSÉ TOUS LES LUNDIS DEPUIS DES SEMAINES** :
+  le titre « Rien à installer. C'est juste une page. » déclarait deux lignes,
+  en rendait TROIS, et son dernier mot — « page. » — s'imprimait **sous** le
+  paragraphe. Même défaut sur la démonstration du jeudi matin (« réservée. »).
+  📌 **AUCUN DE NOS DEUX CONTRÔLES NE POUVAIT LE VOIR, ET POUR DEUX RAISONS
+  DIFFÉRENTES.** `exigence.py` lit le CODE : il comptait deux lignes, et il
+  disait vrai. `lignes.js` mesure le RENDU : il voyait bien trois lignes, et
+  n'en concluait rien, parce qu'il examine chaque bloc **séparément**.
+  ⛔ **LE DÉFAUT N'ÉTAIT DANS AUCUN BLOC : IL ÉTAIT ENTRE DEUX BLOCS.** Un
+  contrôle qui n'examine que des éléments un par un ne trouvera jamais un défaut
+  de RELATION, aussi rigoureux soit-il sur chacun. C'est la troisième famille de
+  contrôle, et elle manquait : le code, le rendu, **et le rapport entre les
+  choses**.
+  ⚠️ Deux pièges appris en le calibrant, tous deux des FAUX POSITIFS qui
+  accusaient nos meilleurs visuels :
+  · **une boîte de ligne est plus haute que son encre** d'environ un quart de
+    cadratin. Un recouvrement se juge donc en fraction du plus grand corps
+    (seuil : 22 %), jamais en pixels absolus ;
+  · **un texte incliné ne se mesure pas avec un rectangle droit.** Sur la
+    pastille de prix, tournée de quelques degrés, les cadres alignés sur les
+    axes se chevauchent forcément alors que rien ne se touche. L'outil détecte
+    la rotation et **dit qu'il ne sait pas** plutôt que de conclure.
+  📌 Un contrôle qui ne sait pas mesurer doit le DIRE. Un faux positif coûte
+  plus cher qu'un silence : il apprend à ignorer l'alarme.
 
 ---
 

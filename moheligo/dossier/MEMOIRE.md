@@ -370,6 +370,77 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🧹 LE GRAND NETTOYAGE — 40 visuels supprimés, et la règle
+  d'écriture change)** — le patron : « supprime tous les flyers qui ne sont pas
+  aux normes, les anciens flyers », puis « les écritures doivent être vraiment
+  style Apple, deux à cinq mots mais très impactant et inspirer le respect de la
+  marque ; tout doit être vraiment vérifié, strict et soigné, même les textes et
+  les photos. »
+
+  🚩 **CE QUI A DÉCLENCHÉ TOUT ÇA : LE FLYER DU LUNDI SORTAIT CASSÉ.** En
+  préparant la revue des visuels de la semaine, j'ai vu que « Rien à installer.
+  C'est juste une page. » imprimait son dernier mot — « page. » — **SOUS** son
+  propre paragraphe. Idem sur la démonstration du jeudi matin (« réservée. »).
+  Deux visuels publiés depuis des semaines, illisibles, et **aucun de nos deux
+  contrôles ne pouvait le voir** : `exigence.py` lit le code et comptait deux
+  lignes (il disait vrai) ; `lignes.js` mesure le rendu et en voyait trois, sans
+  rien en conclure, parce qu'il regarde chaque bloc SÉPARÉMENT.
+  📌 **LE DÉFAUT N'ÉTAIT DANS AUCUN BLOC : IL ÉTAIT ENTRE DEUX BLOCS.** D'où
+  `collision.js` — la troisième famille de contrôle qui manquait : le code, le
+  rendu, **et le rapport entre les choses**.
+  ⚠️ Deux faux positifs corrigés en le calibrant, tous deux accusant nos
+  MEILLEURS visuels : une boîte de ligne est plus haute que son encre (seuil en
+  fraction du corps, pas en pixels) ; et un texte incliné ne se mesure pas avec
+  un rectangle droit (la pastille de prix est tournée — l'outil dit désormais
+  « je ne sais pas » au lieu de conclure).
+
+  🍎 **LA NOUVELLE RÈGLE D'ÉCRITURE : 2 à 5 mots PAR LIGNE.** Le plafond se
+  compte par ligne, le plancher sur le titre entier. J'ai écrit l'inverse au
+  premier jet et le contrôle a aussitôt refusé « TU L'AS / **DÉJÀ.** » (publié
+  le jour même) et « TU PARS VOIR / **QUELQU'UN.** » (9/10 dehors), au motif que
+  leur seconde ligne fait un mot. **Une ligne d'un seul mot est une CADENCE, pas
+  une étiquette** — c'est le geste Apple lui-même.
+  📌 Troisième fois que cette leçon revient : **une règle qui refuse ce qu'on a
+  fait de mieux n'est pas exigeante, elle est mal écrite.**
+
+  🗑️ **CE QUI EST PARTI** : 40 fichiers HTML + 38 PNG. Il reste **12 sources,
+  dont 8 conformes**. Tout est dans l'historique git, rien n'est perdu.
+
+  ⛔ **UNE ERREUR RÉELLE PENDANT LA SUPPRESSION, ET ELLE VAUT UNE RÈGLE.** J'ai
+  protégé les fichiers « vivants » en cherchant les références aux noms de
+  fichiers **HTML**. Or `programme.py` ne connaît que le nom du **PNG**
+  (`GROS_TEMPS = 'flyer-grostemps-facebook.png'`). Ma recherche a donc donné un
+  feu vert pour l'avis de grosse mer, qui est un outil de service publié à
+  chaque coup de vent. Rattrapé et restauré dans la minute.
+  📌 **ON NE CHERCHE PAS LES RÉFÉRENCES À UN FICHIER, ON CHERCHE LES RÉFÉRENCES
+  À CE QU'IL PRODUIT.** Un contrôle qui interroge le mauvais artefact répond
+  « personne ne s'en sert » avec le même aplomb qu'une réponse juste.
+
+  🔧 **CE QUI A ÉTÉ REMIS D'APLOMB DERRIÈRE** :
+  · `calendrier.py` réécrit — 5 visuels pour 7 jours, et surtout `du_jour()` sait
+    désormais rendre `None`. Avant, un jour sans visuel était impossible ; après
+    le nettoyage il y en a deux, et l'ancien code serait allé chercher un fichier
+    supprimé **à midi**, le seul moment où personne ne lit le journal.
+    📌 Un calendrier qui ne sait pas dire « je n'ai rien aujourd'hui » ment un
+    jour sur sept. Il vérifie aussi que les fichiers EXISTENT, pas seulement que
+    la case est remplie.
+  · `programme.py` se tait proprement les jours vides ; `controle.py` suit la
+    nouvelle forme du calendrier.
+  · `page.py` : 19 entrées mortes retirées, les 4 meilleurs visuels enfin
+    ajoutés, et **les textes ne sont plus recopiés — ils sont lus dans les
+    `texte-*.txt`**. Deux conventions pour la même chose, c'est une de trop : le
+    jour où l'on corrige un texte, on en corrige un des deux et l'autre continue
+    de circuler. Découvert en changeant le titre du visuel de grosse mer : la
+    vitrine annonçait encore l'ancien.
+  · `exigence.py` : « scanne » ajouté aux verbes d'action — le contrôle refusait
+    « SCANNE ET RÉSERVE » posé à côté d'un QR code. La règle avait tort.
+
+  🔴 **CE QUI RESTE OUVERT** : jeudi et dimanche n'ont plus de visuel, et la
+  démonstration du matin non plus (son titre faisait 7 mots et elle avait la
+  collision). Deux jours muets valent mieux qu'un visuel hors norme, **mais
+  c'est un chantier, pas une cible.** Le bulletin du soir (`flyer8-soir`) reste
+  hors norme et doit être repris — il est publié tous les soirs.
+
 - **02/09/2026 (soir — 🚩 LE FILET ÉTAIT UNE DÉCORATION, et je m'en aperçois
   en vérifiant autre chose)** — bulletin publié à **19h27**, vérifié depuis la
   page : `2026-09-02 à 19:27 — LA MER DE DEMAIN, CE SOIR.` Mer de demain (03/09)

@@ -370,6 +370,41 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🏁 LA FAMILLE EST À 5,0/5 — les neuf visuels hors bulletin)** —
+  les quatre derniers convertis : lundi, mer forte, suspension, reprise. Ils
+  étaient à 0-1/5, les plus loin de tous.
+
+  📷 **LES PHOTOS SONT CHOISIES POUR CE QU'ELLES DISENT, PAS POUR DÉCORER** :
+  · suspension → des **barques tirées sur le sable**. « On reste à quai »,
+    montré au lieu d'être affirmé ;
+  · reprise → une **anse ouverte, la mer plate**. « La mer est calme, on repart » ;
+  · mer forte → une plage de **sable sombre**, sans éclat ;
+  · lundi → la mangrove, calme et neutre.
+  📌 **UNE PHOTO QUI CONTREDIT LE MESSAGE COÛTE PLUS CHER QUE PAS DE PHOTO DU
+  TOUT.** On ne pose pas une plage radieuse sur un avis de mer forte.
+
+  ⛔ **CE QUI LES SÉPARAIT DES AUTRES N'ÉTAIT PAS LA PHOTO, C'ÉTAIT LA LARGE
+  BARRE DORÉE.** Sur le lundi et la reprise, l'appel à l'action vivait DANS un
+  bloc pleine largeur avec le QR, l'adresse et le moyen de paiement — quatre
+  choses ensemble. Donc ni sur la verticale de gauche, ni en pied partagé.
+  📌 **Un bloc qui rassemble tout ne met rien en avant.** La barre a disparu :
+  l'appel reprend sa place à gauche, l'adresse la sienne à droite.
+
+  ✂️ **ET IL A FALLU COUPER, comme sur le bulletin** : les trois colonnes du
+  lundi redisaient le corps de texte ; la 3e ligne des cartes de service redisait
+  la promesse du bulletin du soir ; les blocs « don » redisaient l'appel. Tout
+  est parti. Une seule information par visuel, et la place gagnée sert la photo.
+
+  ⚠️ **UN DÉFAUT NÉ DU CHANGEMENT LUI-MÊME** : la ligne des quatre ports, en gris
+  clair, se lisait sur le marine et a disparu sur une photo lumineuse. Corrigé
+  par un voile en haut et un gris plus franc.
+  📌 **Changer un fond, c'est changer la lisibilité de TOUT ce qui est posé
+  dessus** — on ne déplace jamais une photo sans relire ce qui la recouvre.
+
+  ✅ **État final : famille 5,0/5 sur neuf, barre 10 conformes sur 10, zéro
+  collision.**
+  🔴 Reste : le dimanche sans visuel, et la démonstration du matin à refaire.
+
 - **02/09/2026 (👨‍👩‍👧 LA FAMILLE PASSE DE 1,7 À 3,0/5 — les cinq visuels
   commerciaux sont à 5/5)** — le patron : « continue les 7 autres, mais je
   trouve que la barre est collée aux mots ; en bas ça fait joli sur ce flyer,

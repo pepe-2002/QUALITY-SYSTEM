@@ -56,6 +56,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 /* le bleu de tous les jours : la marque a repris ses couleurs */
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+/* 🚩 02/09/2026 — ENTRÉE DANS LA FAMILLE (`famille.js`). Le visuel était à
+   0/5 : aucune photo, et son appel à l'action vivait DANS une large barre
+   dorée — donc ni sur la verticale de gauche, ni en pied partagé.
+   📷 LA PHOTO DIT CE QUE LE TITRE DIT : une anse ouverte, la mer plate. « La
+   mer est calme, on repart », montré au lieu d'être affirmé. */
+.photo { position:absolute; top:0; left:0; width:1080px; height:420px; z-index:1;
+  overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 46%;
+  display:block; }
+.voile { position:absolute; left:0; top:0; width:1080px; height:220px; z-index:2;
+  background:linear-gradient(180deg, rgba(10,29,66,.78) 0%, rgba(10,29,66,0) 100%); }
+.fondu { position:absolute; left:0; top:250px; width:1080px; height:170px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.46) 100%); }
+.couture { position:absolute; left:0; top:346px; width:1080px; height:86px; z-index:3; }
+
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
 
@@ -72,9 +87,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 .ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
   font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
-  color:rgba(255,255,255,.6); }
+  color:rgba(255,255,255,.94); }
 
-.sur { position:absolute; left:76px; top:212px; z-index:3; font-size:14px;
+.sur { position:absolute; left:76px; top:502px; z-index:3; font-size:14px;
   font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
 /* ⚠️ MESURÉ, PAS ESTIMÉ. La règle « 0,47 × la taille par caractère » donnait 82px
@@ -82,7 +97,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    pas dans les 920 px : elle passe à la ligne et recouvre le bloc suivant. À 78px
    elle mesure 876px. La règle sert à viser ; c'est `verifier.js` qui tranche.
    Ne pas remonter cette taille sans remesurer. */
-.acc { position:absolute; left:76px; top:250px; width:920px; z-index:3;
+.acc { position:absolute; left:76px; top:540px; width:920px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:78px; line-height:.98;
   letter-spacing:-3.2px; color:#fff; }
 .acc span { display:block;
@@ -90,12 +105,12 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
 
-.dit { position:absolute; left:76px; top:428px; width:880px; z-index:3;
+.dit { position:absolute; left:76px; top:730px; width:880px; z-index:3;
   font-size:26px; line-height:1.44; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
 /* la carte claire : l'objet regardé, comme tous les jours de la semaine */
-.carte { position:absolute; left:76px; top:560px; width:928px; z-index:3;
+.carte { position:absolute; left:76px; top:826px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:24px; overflow:hidden;
   box-shadow:0 30px 64px rgba(4,12,40,.44); }
 .carte .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
@@ -112,18 +127,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:23px; letter-spacing:-.5px; color:#0F2A5C; margin-bottom:3px; }
 
 /* le bandeau d'or : le seul jour de la semaine où on demande vraiment */
-.action { position:absolute; left:76px; top:1046px; width:928px; z-index:3;
-  display:flex; align-items:center; gap:26px;
-  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
-  border-radius:22px; padding:18px 28px; box-shadow:0 24px 52px rgba(4,12,40,.44); }
-.action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
-  padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
-.action .qr img { width:100%; height:100%; display:block; }
-.action .cta { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
-  letter-spacing:.5px; color:#0A1D42; }
-.action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
-  font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
-.action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }
+/* 🚩 LA LARGE BARRE DORÉE A DISPARU. Elle contenait le QR, l'appel, l'adresse
+   et le moyen de paiement — quatre choses dans un même bloc, occupant toute la
+   largeur. C'était la silhouette qui séparait ce visuel de tous les autres.
+   📌 Un bloc qui rassemble tout ne met rien en avant. L'appel à l'action reprend
+   sa place à gauche, l'adresse la sienne à droite, comme partout ailleurs. */
+.cta { position:absolute; left:76px; top:1188px; z-index:3;
+  background:#F6BC1C; border-radius:16px; padding:18px 26px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.web { position:absolute; right:76px; top:1208px; z-index:3; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
+  letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:10.5px; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 
 .pied { position:absolute; left:76px; right:76px; bottom:56px; z-index:3;
   border-top:2px solid rgba(246,188,28,.5); padding-top:18px;
@@ -136,6 +154,13 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 </style>
 
 <div class="page">
+  <div class="photo"><img src="photo-anse-ouverte.png" alt=""></div>
+  <div class="voile"></div>
+  <div class="fondu"></div>
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
   <div class="eclat"></div>
 
   <div class="coin">
@@ -160,25 +185,11 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
         <li><em>2</em><span><b>Prends ta place</b>MVola ou kartaPay, et ton billet
           arrive tout de suite avec son code. Il reste dans le téléphone même sans
           réseau.</span></li>
-        <li><em>3</em><span><b>Tu avais déjà un billet ?</b>Il reste valable. Et si la
-          date ne te va plus, la changer ne coûte rien — écris-nous.</span></li>
       </ul>
     </div>
   </div>
 
-  <div class="action">
-    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
-    <div>
-      <div class="cta">RÉSERVE TA TRAVERSÉE</div>
-      <div class="adr">moheligo.com</div>
-      <div class="wa">MVola ou kartaPay · WhatsApp +269 479 43 28</div>
-    </div>
-  </div>
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>MVOLA OU KARTAPAY · +269 479 43 28</small>moheligo.com</div>
 
-  <div class="pied">
-    <span><b>Et chaque soir, la mer du lendemain sur cette page.</b><br>
-      Comme pendant la fermeture — belle ou mauvaise, on la publie.</span>
-    <span class="d">Nous ne décidons pas des départs : nous publions la mer et
-      délivrons les billets. Le bulletin officiel affiché à l’embarquement fait foi.</span>
-  </div>
 </div>

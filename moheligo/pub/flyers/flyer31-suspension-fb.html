@@ -54,6 +54,28 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 /* le marine profond des jours d’avis, comme flyer22 : le registre n’est pas commercial */
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0A1D42; }
+/* 🚩 02/09/2026 — ENTRÉE DANS LA FAMILLE. Le patron : « tous les flyers hors
+   bulletin doivent se ressembler ». Ce visuel était à 1/5 : aucune photo, et
+   son adresse au pied ne partageait pas la ligne avec l'appel à l'action.
+   📷 LA PHOTO N'EST PAS DÉCORATIVE, ELLE DIT CE QUE LE TITRE DIT : des barques
+   tirées sur le sable. « On reste à quai », montré au lieu d'être affirmé.
+   📌 Une photo qui contredit le message coûte plus cher que pas de photo du
+   tout — on ne met pas une plage ensoleillée sur un avis de mer forte. */
+.photo { position:absolute; top:0; left:0; width:1080px; height:460px; z-index:1;
+  overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 62%;
+  display:block; }
+/* ⚠️ UN VOILE EN HAUT, ET C'EST LA PHOTO QUI L'A RENDU NÉCESSAIRE. La ligne des
+   quatre ports est en gris clair : sur l'ancien fond marine elle se lisait, sur
+   une plage ensoleillée elle a disparu. 📌 Changer un fond, c'est changer la
+   lisibilité de TOUT ce qui est posé dessus — on ne déplace jamais une photo
+   sans relire ce qui la recouvre. */
+.voile { position:absolute; left:0; top:0; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(10,29,66,.78) 0%, rgba(10,29,66,0) 100%); }
+.fondu { position:absolute; left:0; top:280px; width:1080px; height:180px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.46) 100%); }
+.couture { position:absolute; left:0; top:386px; width:1080px; height:86px; z-index:3; }
+
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 42%, rgba(255,255,255,.055) 50%, rgba(255,255,255,0) 58%); }
 
@@ -70,15 +92,15 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 .ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
   font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
-  color:rgba(255,255,255,.6); }
+  color:rgba(255,255,255,.94); }
 
-.sur { position:absolute; left:76px; top:214px; z-index:3; font-size:14px;
+.sur { position:absolute; left:76px; top:542px; z-index:3; font-size:14px;
   font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
 /* Archivo 900 ≈ 0,47 × la taille par caractère : à 84px, 920px tiennent 23
    caractères. « jusqu’à nouvel ordre. » en fait 21. Ne pas rallonger sans
    redescendre la taille, sinon la ligne passe par-dessus le bloc suivant. */
-.acc { position:absolute; left:76px; top:252px; width:920px; z-index:3;
+.acc { position:absolute; left:76px; top:580px; width:920px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:84px; line-height:.98;
   letter-spacing:-3.2px; color:#fff; }
 .acc span { display:block;
@@ -86,12 +108,12 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.36)); }
 
-.dit { position:absolute; left:76px; top:444px; width:860px; z-index:3;
+.dit { position:absolute; left:76px; top:770px; width:860px; z-index:3;
   font-size:27px; line-height:1.44; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
 /* l’avis : une carte claire à bandeau d’or. Un avis de service, pas une réclame. */
-.avis { position:absolute; left:76px; top:624px; width:928px; z-index:3;
+.avis { position:absolute; left:76px; top:876px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:24px; overflow:hidden;
   box-shadow:0 30px 64px rgba(3,10,32,.5); }
 .avis .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
@@ -110,7 +132,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    impasse. Le jour où l’on annonce qu’on ne part pas, le lecteur a justement un
    geste à faire — se faire prévenir de la reprise plutôt que descendre au port
    tous les matins pour voir. */
-.cta { position:absolute; left:76px; bottom:238px; z-index:3;
+.cta { position:absolute; left:76px; top:1204px; z-index:3;
   background:#F6BC1C; border-radius:16px; padding:17px 26px; display:inline-block;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
   color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
@@ -121,6 +143,11 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .don b { color:#F6BC1C; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:22px; letter-spacing:-.4px; }
 
+.web { position:absolute; right:76px; top:1224px; z-index:3; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
+  letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:10.5px; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 .pied { position:absolute; left:76px; right:76px; bottom:58px; z-index:3;
   display:flex; align-items:flex-end; justify-content:space-between; }
 .pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
@@ -132,6 +159,13 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 </style>
 
 <div class="page">
+  <div class="photo"><img src="photo-barques-quai.png" alt=""></div>
+  <div class="voile"></div>
+  <div class="fondu"></div>
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
   <div class="eclat"></div>
 
   <div class="coin">
@@ -162,20 +196,10 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
         <li><b>Quand ça reprend</b><span>On ne le sait pas encore — ce n’est pas
           nous qui décidons, c’est la mer. Écris-nous, on te dit ce qu’on sait
           le jour même.</span></li>
-        <li><b>D’ici là</b><span>Chaque soir, la mer du lendemain sur cette page.
-          Tu verras le calme revenir en même temps que nous.</span></li>
       </ul>
     </div>
   </div>
 
   <div class="cta">ÉCRIS-NOUS POUR ÊTRE PRÉVENU</div>
-
-  <div class="don"><b>On préfère te le dire que te laisser descendre au port pour rien.</b>
-    C’est aussi ça, réserver chez nous : quand ça ne va pas, on te prévient.</div>
-
-  <div class="pied">
-    <div class="site">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
-    <div class="fin">Nous ne décidons pas des départs : nous publions l’état du
-      service et la mer, tous les jours.</div>
-  </div>
+  <div class="web"><small>WHATSAPP +269 479 43 28</small>moheligo.com</div>
 </div>

@@ -50,6 +50,27 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 /* un marine plus profond que d’habitude : le registre du jour n’est pas le même */
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0A1D42; }
+/* 🚩 02/09/2026 — ENTRÉE DANS LA FAMILLE (voir `famille.js`). Le patron :
+   « tous les flyers hors bulletin doivent se ressembler. » Ce visuel était à
+   1/5 : aucune photo, et son adresse ne partageait pas la ligne du pied avec
+   l'appel à l'action.
+   📷 LA PHOTO EST CHOISIE POUR CE QU'ELLE DIT, PAS POUR DÉCORER : une plage de sable sombre, un jour sans éclat. Le titre parle
+   d'une mer qui décide ; l'image ne promet aucun beau temps.
+   📌 Une photo qui contredit le message coûte plus cher que pas de photo du
+   tout. On ne pose pas une plage radieuse sur un avis de mer forte. */
+.photo { position:absolute; top:0; left:0; width:1080px; height:460px; z-index:1;
+  overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 58%;
+  display:block; }
+/* Un voile en haut : la ligne des quatre ports est en gris clair, elle
+   disparaissait sur une photo lumineuse. Changer un fond, c'est changer la
+   lisibilité de tout ce qui est posé dessus. */
+.voile { position:absolute; left:0; top:0; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(10,29,66,.78) 0%, rgba(10,29,66,0) 100%); }
+.fondu { position:absolute; left:0; top:280px; width:1080px; height:180px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.46) 100%); }
+.couture { position:absolute; left:0; top:386px; width:1080px; height:86px; z-index:3; }
+
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 42%, rgba(255,255,255,.055) 50%, rgba(255,255,255,0) 58%); }
 
@@ -66,9 +87,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 .ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
   font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
-  color:rgba(255,255,255,.6); }
+  color:rgba(255,255,255,.94); }
 
-.acc { position:absolute; left:76px; top:250px; width:920px; z-index:3;
+.acc { position:absolute; left:76px; top:580px; width:920px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.98;
   letter-spacing:-3.6px; color:#fff; }
 .acc span { display:block;
@@ -76,12 +97,12 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.36)); }
 
-.dit { position:absolute; left:76px; top:470px; width:840px; z-index:3;
+.dit { position:absolute; left:76px; top:790px; width:840px; z-index:3;
   font-size:27px; line-height:1.44; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
 /* l’avis : une carte claire avec un bandeau d’or. Un avis, pas une réclame. */
-.avis { position:absolute; left:76px; top:646px; width:928px; z-index:3;
+.avis { position:absolute; left:76px; top:886px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:24px; overflow:hidden;
   box-shadow:0 30px 64px rgba(3,10,32,.5); }
 .avis .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
@@ -109,11 +130,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    de descendre au port avec sa valise. Ne rien lui demander, c'est le laisser
    partir sans savoir.
    📌 Un visuel qui ne vend pas a quand même un geste à demander. */
-.cta { position:absolute; left:76px; bottom:236px; z-index:3;
+.cta { position:absolute; left:76px; top:1204px; z-index:3;
   background:#F6BC1C; border-radius:16px; padding:17px 26px; display:inline-block;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
   color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
   box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.web { position:absolute; right:76px; top:1224px; z-index:3; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
+  letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:10.5px; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+/* La mention de source : tout en bas, discrète. C'est une obligation de
+   crédit, pas une information de la page — elle ne doit jamais peser autant
+   qu'une phrase qu'on a écrite. */
+.fin { position:absolute; right:76px; bottom:30px; max-width:520px; text-align:right;
+  z-index:3; font-size:11px; line-height:1.5; color:rgba(255,255,255,.42); }
 .pied { position:absolute; left:76px; right:76px; bottom:58px; z-index:3;
   display:flex; align-items:flex-end; justify-content:space-between; }
 .pied .site { font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
@@ -125,6 +156,13 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 </style>
 
 <div class="page">
+  <div class="photo"><img src="photo-sable-sombre.png" alt=""></div>
+  <div class="voile"></div>
+  <div class="fondu"></div>
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
   <div class="eclat"></div>
 
   <div class="coin">
@@ -148,21 +186,12 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
           maintenu, et ce qui ne l’est pas encore décidé.</span></li>
         <li><b>Si tu as un billet</b><span>Changer la date ne coûte rien. Et tant que
           la traversée n’est pas partie, tu peux annuler et être remboursé.</span></li>
-        <li><b>Ce qui décide</b><span>La mer, et le commandant. Le bulletin officiel
-          affiché à l’embarquement fait toujours foi.</span></li>
       </ul>
     </div>
   </div>
 
   <div class="cta">APPELLE AVANT DE DESCENDRE</div>
-
-  <div class="don"><b>Chaque soir à 19h30, la mer du lendemain sur cette page.</b>
-    Gratuitement, qu’elle soit belle ou mauvaise — c’est les jours comme aujourd’hui
-    que ça compte.</div>
-
-  <div class="pied">
-    <div class="site">moheligo.com<small>WHATSAPP +269 479 43 28</small></div>
-    <div class="fin">Prévision Open-Meteo Marine. Nous ne décidons pas des départs :
-      nous publions la mer.</div>
-  </div>
+  <div class="web"><small>WHATSAPP +269 479 43 28</small>moheligo.com</div>
+  <div class="fin">Prévision Open-Meteo Marine. Nous ne décidons pas des départs :
+    nous publions la mer.</div>
 </div>

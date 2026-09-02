@@ -38,6 +38,21 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+/* 🚩 02/09/2026 — ENTRÉE DANS LA FAMILLE (`famille.js`). Le visuel était à
+   0/5, le plus loin de tous : aucune photo, et son appel à l'action vivait DANS
+   une large barre dorée avec le QR, l'adresse et le moyen de paiement — donc ni
+   sur la verticale de gauche, ni en pied partagé.
+   📌 Un bloc qui rassemble tout ne met rien en avant. */
+.photo { position:absolute; top:0; left:0; width:1080px; height:420px; z-index:1;
+  overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 52%;
+  display:block; }
+.voile { position:absolute; left:0; top:0; width:1080px; height:220px; z-index:2;
+  background:linear-gradient(180deg, rgba(10,29,66,.78) 0%, rgba(10,29,66,0) 100%); }
+.fondu { position:absolute; left:0; top:250px; width:1080px; height:170px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.46) 100%); }
+.couture { position:absolute; left:0; top:346px; width:1080px; height:86px; z-index:3; }
+
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 40%, rgba(255,255,255,.085) 50%, rgba(255,255,255,0) 60%); }
 .coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
@@ -51,7 +66,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   color:#5C6E8B; margin-top:4px; }
 .ligne { position:absolute; top:56px; right:76px; z-index:4; text-align:right;
   font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
-  color:rgba(255,255,255,.56); }
+  color:rgba(255,255,255,.94); }
 
 /* 🍎 top:206 -> 224 — LA ZONE DE RESPIRATION DU LOGO (Apple, Identity
    Guidelines p. 10) : « The minimum clear space around the signature is equal
@@ -62,19 +77,19 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    règle en « hauteur du trait d’union » — dans les deux cas la zone est une
    FRACTION DU LOGO, jamais un nombre de pixels : elle reste juste à toutes les
    tailles sans que personne ait à la recalculer. */
-.acc { position:absolute; left:76px; top:224px; width:928px; z-index:3;
+.acc { position:absolute; left:76px; top:540px; width:928px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.97;
   letter-spacing:-3.6px; color:#fff; }
 .acc span { display:block;
   background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
-.sous { position:absolute; left:76px; top:412px; width:888px; z-index:3;
+.sous { position:absolute; left:76px; top:730px; width:888px; z-index:3;
   font-size:23px; font-weight:500; color:#BDD0EE; }
 .sous b { color:#fff; font-weight:700; }
 
 /* L’OBJET : la barre d’adresse. Elle prouve, elle n’affirme pas. */
-.carte { position:absolute; left:76px; top:492px; width:928px; z-index:3;
+.carte { position:absolute; left:76px; top:812px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:22px; padding:30px 32px 32px;
   box-shadow:0 26px 56px rgba(4,12,40,.42); }
 .barre { display:flex; align-items:center; gap:16px; background:#fff;
@@ -95,10 +110,17 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:26px; letter-spacing:-.8px; color:#0F2A5C; }
 .trois p { margin-top:7px; font-size:16.5px; line-height:1.34; color:#48597B; }
 
-.action { position:absolute; left:76px; top:952px; width:928px; z-index:3;
-  display:flex; align-items:center; gap:28px;
-  background:linear-gradient(100deg,#FFD86B 0%,#F6BC1C 100%);
-  border-radius:22px; padding:20px 30px; box-shadow:0 24px 52px rgba(4,12,40,.44); }
+.cta { position:absolute; left:76px; top:1188px; z-index:3;
+  background:#F6BC1C; border-radius:16px; padding:18px 26px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+.web { position:absolute; right:76px; top:1208px; z-index:3; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
+  letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-weight:700;
+  font-size:10.5px; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+.action { display:none; }
 .action .qr { flex:0 0 132px; height:132px; background:#fff; border-radius:13px;
   padding:8px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
 .action .qr img { width:100%; height:100%; display:block; }
@@ -121,6 +143,13 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:11.5px; letter-spacing:1.8px; color:rgba(255,255,255,.56); margin-top:7px; }
 </style>
 <div class="page">
+  <div class="photo"><img src="photo-anse-moheli.png" alt=""></div>
+  <div class="voile"></div>
+  <div class="fondu"></div>
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
   <div class="eclat"></div>
   <div class="coin"><img src="logo-emblem.png" alt="">
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
@@ -146,28 +175,10 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
               stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
     <div class="legende">C’est tout. Ça marche dans le navigateur que tu as déjà.</div>
-    <div class="trois">
-      <div><b>Aucune place prise</b><p>Rien ne s’installe, rien ne reste dans ton
-        téléphone.</p></div>
-      <div><b>Ton billet, lui, reste</b><p>Une fois payé, il est dans le téléphone,
-        même sans réseau.</p></div>
-      <div><b>Rien à donner d’abord</b><p>Tu regardes les traversées et les prix
-        avant de te connecter.</p></div>
     </div>
   </div>
 
-  <div class="action">
-    <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
-    <div>
-      <div class="cta">RÉSERVE TA TRAVERSÉE</div>
-      <div class="adr2">moheligo.com</div>
-      <div class="paie">MVola ou kartaPay · ta place bloquée 15 minutes</div>
-    </div>
-  </div>
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>MVOLA OU KARTAPAY · +269 479 43 28</small>moheligo.com</div>
 
-  <div class="pied">
-    <div class="g"><b>Besoin d’aide ? On est là.</b>
-      <p>Première réservation ? Un proche ou un commerçant peut t’accompagner.</p></div>
-    <div class="d">WhatsApp<br>+269 479 43 28<small>QUELQU’UN RÉPOND</small></div>
-  </div>
 </div>

@@ -35,6 +35,25 @@
  *   5. LE PIED PARTAGÉ : appel à l'action à gauche, adresse à droite, sur la
  *      même ligne d'horizon.
  *
+ * 🔀 DEUX FORMES, ET C'EST UNE DÉCISION, PAS UN RENONCEMENT (02/09, le soir).
+ * En voulant tout ramener au bandeau, je me suis heurté à deux visuels dont le
+ * sujet est VERTICAL : le téléphone du mercredi et le portrait du vendredi. Un
+ * bandeau horizontal les couperait au milieu — on perdrait l'écran dans un cas,
+ * le visage dans l'autre. Les forcer aurait donné une famille uniforme et deux
+ * visuels ratés.
+ * 📌 **UNE FAMILLE N'EST PAS FAITE DE VISUELS IDENTIQUES, ELLE EST FAITE DE
+ * VISUELS QUI PARTAGENT LES MÊMES CONSTANTES.** Ce qu'on reconnaît chez des
+ * frères, ce n'est pas qu'ils soient superposables — c'est ce qui ne change
+ * jamais d'un visage à l'autre.
+ *
+ * TROIS CONSTANTES, OBLIGATOIRES DANS LES DEUX FORMES :
+ *   · la vague d'or, qui fait un travail (coudre la photo, ou asseoir la page) ;
+ *   · une seule verticale à gauche, à 76 px ;
+ *   · le pied partagé : appel à gauche, adresse à droite.
+ * PUIS DEUX POINTS SELON LA FORME :
+ *   BANDEAU — photo pleine largeur en haut, titre dessous.
+ *   SUJET   — un sujet vertical sur un côté, titre dans la colonne libre.
+ *
  * ⚠️ CE PROGRAMME NE REFUSE PAS, IL DÉCRIT. Un visuel peut sortir de la
  * grammaire pour une bonne raison (l'écran de l'appli du mercredi est un objet
  * vertical, il ne rentre pas dans un bandeau). Ce qu'on ne veut pas, c'est en
@@ -90,7 +109,18 @@ async function examiner(nav, fichier) {
       if (rempli) vague = { h: Math.round(b.top), b: Math.round(b.bottom) };
     }
 
-    return { bandeau, vague, sur: boite('.sur'), acc: boite('.acc'),
+    // --- le sujet vertical : une image haute sur un côté --------------------
+    let sujet = null;
+    for (const img of document.querySelectorAll('img')) {
+      const b = img.getBoundingClientRect();
+      if (b.height < 700 || b.width > 1000) continue;
+      if (!sujet || b.height > sujet.b - sujet.h) {
+        sujet = { g: Math.round(b.left), d: Math.round(b.right),
+                  h: Math.round(b.top), b: Math.round(b.bottom) };
+      }
+    }
+
+    return { bandeau, sujet, vague, sur: boite('.sur'), acc: boite('.acc'),
              dit: boite('.dit'), cta: boite('.cta'), web: boite('.web') };
   }, { MARGE, TOL });
 
@@ -101,24 +131,20 @@ async function examiner(nav, fichier) {
 function juger(r) {
   const points = [];
   const ok = (b, quoi, detail) => points.push({ b, quoi, detail });
+  // La forme se DÉDUIT du visuel, elle ne se déclare pas : un fichier qui se
+  // décrit lui-même finit toujours par se décrire faux.
+  const forme = r.bandeau ? 'BANDEAU' : r.sujet ? 'SUJET' : 'AUCUNE';
 
-  ok(!!r.bandeau, 'photo en bandeau haut',
-     r.bandeau ? `du bord au ${r.bandeau.b} px` : 'aucune photo pleine largeur en haut');
-
-  if (r.vague && r.bandeau) {
+  // ── les trois constantes, obligatoires dans les deux formes ──────────────
+  if (r.vague && forme === 'BANDEAU') {
     const ecart = Math.abs(r.vague.b - r.bandeau.b);
-    ok(ecart <= 60, 'vague d’or en couture',
-       `vague à ${r.vague.b}, photo à ${r.bandeau.b} — ${ecart} px d’écart`);
+    ok(ecart <= 60, 'la vague fait un travail',
+       `couture : vague à ${r.vague.b}, photo à ${r.bandeau.b} — ${ecart} px`);
+  } else if (r.vague && forme === 'SUJET') {
+    ok(r.vague.b >= 1330, 'la vague fait un travail',
+       `assise de page : vague jusqu’à ${r.vague.b}`);
   } else {
-    ok(false, 'vague d’or en couture',
-       r.vague ? 'vague présente mais pas de photo à coudre' : 'aucune vague d’or');
-  }
-
-  if (r.acc && r.bandeau) {
-    ok(r.acc.h >= r.bandeau.b - 10, 'titre SOUS la photo',
-       `titre à ${r.acc.h}, photo finit à ${r.bandeau.b}`);
-  } else {
-    ok(false, 'titre SOUS la photo', r.acc ? 'pas de photo' : 'pas de titre');
+    ok(false, 'la vague fait un travail', 'aucune vague d’or');
   }
 
   const alignes = ['sur', 'acc', 'dit', 'cta'].filter((k) => r[k]);
@@ -126,6 +152,22 @@ function juger(r) {
   ok(faux.length === 0, 'une seule verticale à gauche',
      faux.length ? `hors marge : ${faux.map((k) => `.${k}=${r[k].g}`).join(', ')}`
                  : `${alignes.length} blocs alignés sur ${MARGE} px`);
+
+  // ── puis les deux points de la forme ────────────────────────────────────
+  if (forme === 'BANDEAU') {
+    ok(true, 'forme BANDEAU — photo pleine largeur en haut',
+       `du bord au ${r.bandeau.b} px`);
+    ok(!!r.acc && r.acc.h >= r.bandeau.b - 10, 'titre sous la photo',
+       r.acc ? `titre à ${r.acc.h}, photo finit à ${r.bandeau.b}` : 'pas de titre');
+  } else if (forme === 'SUJET') {
+    ok(true, 'forme SUJET — sujet vertical sur un côté',
+       `${r.sujet.d - r.sujet.g} × ${r.sujet.b - r.sujet.h} px, à droite de ${r.sujet.g}`);
+    ok(!!r.acc && r.acc.d <= r.sujet.g + 40, 'titre dans la colonne libre',
+       r.acc ? `titre finit à ${r.acc.d}, sujet commence à ${r.sujet.g}` : 'pas de titre');
+  } else {
+    ok(false, 'une forme reconnaissable', 'ni bandeau photo, ni sujet vertical');
+    ok(false, 'titre placé selon la forme', 'pas de forme');
+  }
 
   if (r.cta && r.web) {
     const dr = Math.abs(1080 - r.web.d - MARGE);

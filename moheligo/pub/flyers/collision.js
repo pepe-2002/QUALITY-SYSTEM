@@ -177,6 +177,47 @@ async function examiner(nav, fichier) {
       }
     }
 
+    // --- la zone de respiration SOUS LA VAGUE -----------------------------
+    // 🌊 02/09/2026, le patron : « la barre est collée aux mots en bas ». Il
+    // avait raison, et c'était pire que collé : sur le visuel du samedi le
+    // surtitre passait 52 px À L'INTÉRIEUR de la vague.
+    // 📌 La vague est une COUTURE, pas un surlignage. Une couture sépare deux
+    // mondes ; si le texte commence dedans, elle n'a rien séparé du tout.
+    // Le gabarit validé (`flyer48`) laisse 70 px sous une vague de 86, soit
+    // quatre cinquièmes de sa hauteur. On en fait la règle — exprimée en
+    // PROPORTION DE LA VAGUE, comme la zone du logo l'est en proportion de
+    // l'emblème : elle restera juste si la vague change de taille.
+    const souffle = [];
+    let vague = null;
+    for (const s of document.querySelectorAll('svg')) {
+      const b = s.getBoundingClientRect();
+      if (b.width < 1000) continue;
+      const dore = [...s.querySelectorAll('path')]
+        .some((q) => (q.getAttribute('fill') || '').toUpperCase().includes('F6BC1C'));
+      if (dore) vague = b;
+    }
+    if (vague && vague.bottom < 1200) {          // une vague en pied ne coud rien
+      const requis = vague.height * 0.8;
+      let premier = null;
+      for (const P of porteurs) {
+        for (const r of P.rects) {
+          if (r.top >= vague.top - 4 && (!premier || r.top < premier.top)) {
+            premier = { top: r.top, nom: P.nom, texte: P.texte };
+          }
+        }
+      }
+      if (premier) {
+        const ecart = premier.top - vague.bottom;
+        if (ecart < requis) {
+          souffle.push({ nom: premier.nom, texte: premier.texte,
+            dit: ecart < 0
+              ? `commence ${Math.round(-ecart)} px À L'INTÉRIEUR de la vague`
+              : `commence à ${Math.round(ecart)} px sous la vague — il en faut ` +
+                `${Math.round(requis)} (quatre cinquièmes de sa hauteur)` });
+        }
+      }
+    }
+
     const collisions = [], frolements = [], penches = [];
     for (let i = 0; i < porteurs.length; i++) {
       for (let j = i + 1; j < porteurs.length; j++) {
@@ -229,7 +270,7 @@ async function examiner(nav, fichier) {
         }
       }
     }
-    return { collisions, frolements, penches, respire };
+    return { collisions, frolements, penches, respire, souffle };
   }, { COLLE, FROLE });
 
   await page.close();
@@ -250,7 +291,7 @@ async function examiner(nav, fichier) {
   const nav = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
   let fautifs = 0;
   for (const f of fichiers) {
-    const { collisions, frolements, penches, respire } = await examiner(nav, f);
+    const { collisions, frolements, penches, respire, souffle } = await examiner(nav, f);
     if (collisions.length) {
       fautifs++;
       console.log(`\n❌ COLLISION — ${f}   (${collisions.length})`);
@@ -275,6 +316,14 @@ async function examiner(nav, fichier) {
       for (const r of respire) {
         console.log(`   ${r.nom ? r.nom + ' ' : ''}${r.dit}`);
         if (r.texte) console.log(`      « ${r.texte} »`);
+      }
+    }
+    if (souffle.length) {
+      fautifs++;
+      console.log(`\n🌊 LA VAGUE ÉTOUFFE LE TEXTE — ${f}`);
+      for (const s of souffle) {
+        console.log(`   ${s.nom} ${s.dit}`);
+        console.log(`      « ${s.texte} »`);
       }
     }
     if (penches.length && !tous) {

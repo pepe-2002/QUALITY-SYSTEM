@@ -169,12 +169,37 @@ et l'autre au milieu, se ressemblent moins que deux affiches de couleurs
 différentes bâties pareil. **L'œil reconnaît une DISPOSITION avant une teinte**
 — c'est pour ça qu'on identifie une page de journal à dix mètres sans lire un mot.
 
-**La grammaire, en cinq points mesurés** (elle vient de `flyer48`) :
-1. **une photo en bandeau haut**, pleine largeur, collée au bord ;
-2. **la vague d'or en couture** à la frontière photo / marine (± 60 px) ;
-3. **le titre SOUS la photo**, jamais dessus ;
-4. **une seule verticale à gauche** — surtitre, titre, corps et appel tous à 76 px ;
-5. **le pied partagé** : appel à l'action à gauche, adresse à droite.
+**TROIS CONSTANTES, obligatoires partout** :
+1. **la vague d'or, qui FAIT UN TRAVAIL** — elle coud la photo au marine, ou
+   elle assoit la page. Jamais un liseré décoratif ;
+2. **une seule verticale à gauche** — surtitre, titre, corps et appel à 76 px ;
+3. **le pied partagé** : appel à l'action à gauche, adresse à droite.
+
+**PUIS DEUX FORMES ADMISES, et c'est une décision, pas un renoncement :**
+· **BANDEAU** — photo pleine largeur en haut, titre dessous.
+· **SUJET** — un sujet vertical sur un côté, titre dans la colonne libre.
+
+⛔ **POURQUOI DEUX FORMES.** En voulant tout ramener au bandeau, je me suis
+heurté à deux visuels dont le sujet est VERTICAL : le téléphone du mercredi et
+le portrait du vendredi. Un bandeau horizontal les coupe au milieu — on perd
+l'écran dans un cas, le visage dans l'autre. Les forcer aurait donné une famille
+uniforme et deux visuels ratés.
+📌 **UNE FAMILLE N'EST PAS FAITE DE VISUELS IDENTIQUES : ELLE EST FAITE DE
+VISUELS QUI PARTAGENT LES MÊMES CONSTANTES.** Ce qu'on reconnaît chez des
+frères, ce n'est pas qu'ils soient superposables — c'est ce qui ne change jamais
+d'un visage à l'autre.
+
+🌊 **LA VAGUE NE TOUCHE JAMAIS LE TEXTE.** Le patron, 02/09 : « la barre est
+collée aux mots ». Il avait raison, et c'était pire : sur le visuel du samedi le
+surtitre passait **52 px À L'INTÉRIEUR** de la vague.
+📌 **Une couture sépare deux mondes ; si le texte commence dedans, elle n'a rien
+séparé du tout.** Le gabarit laisse 70 px sous une vague de 86 — la règle est
+donc **quatre cinquièmes de la hauteur de la vague**, exprimée en proportion
+comme la zone du logo. 🤖 Mesurée par `collision.js`.
+✅ **Et c'est cette règle qui répond à sa remarque sur la position.** La vague
+marque le bord de la photo : une grande photo la met en bas, une plus courte la
+met à mi-hauteur. **La variation qu'il aime vient toute seule de la photo**, sans
+qu'on ait à choisir au cas par cas — donc sans casser la famille.
 
 📐 **LE LOGO : +8 %** (emblème 68 → 74 px, nom 29 → 31, sous-titre 9,5 → 10,3).
 ⚠️ Et la zone de respiration a grandi avec lui **toute seule**, parce qu'elle

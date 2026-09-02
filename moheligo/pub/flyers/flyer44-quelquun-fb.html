@@ -47,8 +47,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 /* LA MER PLEIN CADRE. L’horizon est haut : ce qui domine, c’est l’étendue —
    c’est elle qui porte le sentiment, pas le bateau. */
-.photo { position:absolute; inset:0; overflow:hidden; }
-.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 12%; display:block; }
+/* 🚩 02/09/2026 — LA PHOTO PASSE DE FOND À BANDEAU. Elle couvrait toute la
+   page et le texte flottait dessus dans un dégradé. C'était joli et ce n'était
+   pas notre grammaire : `famille.js` donnait 3/5, et surtout ce visuel n'avait
+   pas la même silhouette que ses voisins. Le patron : « tous les flyers hors
+   bulletin doivent se ressembler. »
+   📌 La photo parle, PUIS les mots parlent. Un texte posé sur une image demande
+   à l'image de se taire pour être lisible — d'où le dégradé qui l'écrasait. */
+.photo { position:absolute; top:0; left:0; width:1080px; height:700px;
+  overflow:hidden; }
+/* ⚠️ 14 %, ET LES TROIS VALEURS ONT ÉTÉ RENDUES POUR CHOISIR. En passant de
+   fond de page à bandeau, le cadrage d'origine (12 %) a perdu la vedette —
+   c'est-à-dire le SUJET. À 8 % elle passe derrière le coin blanc, à 20 % elle
+   frôle le bord haut. 📌 Changer la hauteur d'une photo change son sujet : un
+   recadrage n'est jamais une opération neutre, il faut le REGARDER. */
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 14%; display:block; }
 
 /* Le marine monte DANS la mer. SIX arrêts et non quatre — sur remarque
    extérieure : « on pourrait affiner la transition pour qu’elle soit plus
@@ -56,10 +69,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    vers 55 % ; à six, la mer se referme sans qu’on voie où.
    ⚠️ Il reste TOTAL à 69 %, avant le titre : un titre posé sur un dégradé en
    cours de route perd son contraste ligne après ligne. */
-.fondu { position:absolute; inset:0; z-index:2;
-  background:linear-gradient(180deg, rgba(15,42,92,0) 22%, rgba(15,42,92,.14) 34%,
-             rgba(15,42,92,.40) 45%, rgba(15,42,92,.72) 54%,
-             rgba(15,42,92,.93) 62%, #0F2A5C 69%); }
+.fondu { position:absolute; left:0; top:470px; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.42) 100%); }
 
 .coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
   clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
@@ -74,11 +85,11 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
   color:#5C6E8B; margin-top:5px; }
 
-.sur { position:absolute; left:76px; top:812px; z-index:5; font-size:13px;
+.sur { position:absolute; left:76px; top:782px; z-index:5; font-size:13px;
   font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
 /* 72 px : « QUELQU’UN. » (10 signes) tient dans 928 px avec de l’air. */
-.acc { position:absolute; left:76px; top:850px; width:928px; z-index:5;
+.acc { position:absolute; left:76px; top:820px; width:928px; z-index:5;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:72px; line-height:1.0;
   letter-spacing:-2.8px; color:#fff; }
 .acc span { display:block;
@@ -88,25 +99,25 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 /* LE PRODUIT, dans le même calme que l’émotion. Deux phrases, 13 mots.
    Ce n’est pas une notice — c’est la suite de la même voix. */
-.dit { position:absolute; left:76px; top:1024px; width:600px; z-index:5;
+.dit { position:absolute; left:76px; top:1000px; width:600px; z-index:5;
   font-size:24px; line-height:1.5; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
-.trait { position:absolute; left:76px; top:1122px; width:82px; height:5px;
+.trait { position:absolute; left:76px; top:1104px; width:82px; height:5px;
   border-radius:3px; background:#F6BC1C; z-index:5; }
 
-.pied { position:absolute; left:76px; top:1166px; z-index:5;
-  display:flex; align-items:center; gap:26px; }
-.cta { background:#F6BC1C; border-radius:16px; padding:17px 26px;
+.cta { position:absolute; left:76px; top:1166px; z-index:5; display:inline-block;
+  background:#F6BC1C; border-radius:16px; padding:17px 26px;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:25px;
   color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
   box-shadow:0 18px 40px rgba(150,100,4,.42); }
-.ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+.web { position:absolute; right:76px; top:1186px; z-index:5; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px;
   color:#fff; letter-spacing:-1.1px; }
-.ou small { display:block; font-family:'Inter',sans-serif; font-size:11px;
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
   font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 
-.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:4; }
+.couture { position:absolute; left:0; top:626px; width:1080px; height:86px; z-index:4; }
 </style>
 
 <div class="page">
@@ -125,12 +136,10 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <b>Ta place se prend depuis ton téléphone.</b></div>
 
   <div class="trait"></div>
-  <div class="pied">
-    <div class="cta">RÉSERVE TA TRAVERSÉE</div>
-    <div class="ou"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
-  </div>
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
 
-  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
     <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
   </svg>
 </div>

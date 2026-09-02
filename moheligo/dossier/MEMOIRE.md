@@ -370,6 +370,45 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (👨‍👩‍👧 LA FAMILLE PASSE DE 1,7 À 3,0/5 — les cinq visuels
+  commerciaux sont à 5/5)** — le patron : « continue les 7 autres, mais je
+  trouve que la barre est collée aux mots ; en bas ça fait joli sur ce flyer,
+  sur d'autres au milieu — cherche une solution toi. »
+
+  ⛔ **IL AVAIT RAISON, ET C'ÉTAIT PIRE QUE « COLLÉ » : sur le samedi, le
+  surtitre passait 52 px À L'INTÉRIEUR de la vague.** Ma conversion de la veille
+  était bâclée — j'avais déplacé la vague sans vérifier ce qu'il y avait
+  dessous. 📌 Une couture sépare deux mondes ; si le texte commence dedans, elle
+  n'a rien séparé du tout.
+
+  ✅ **LA SOLUTION À SA REMARQUE SUR LA POSITION, ET ELLE EST UNE SEULE RÈGLE :**
+  la vague marque toujours le bord de la photo, et le texte commence toujours à
+  quatre cinquièmes de la hauteur de la vague en dessous (70 px). Du coup une
+  grande photo met la vague en bas, une photo plus courte la met à mi-hauteur —
+  **la variation qu'il aime vient toute seule de la photo**, sans choisir au cas
+  par cas, donc sans casser la famille. Mesurée par `collision.js`.
+
+  🔀 **DEUX FORMES ADMISES, et c'est une décision.** En voulant tout ramener au
+  bandeau je me suis heurté à deux visuels dont le sujet est VERTICAL — le
+  téléphone du mercredi, le portrait du vendredi. Un bandeau les coupe au
+  milieu : on perd l'écran dans un cas, le visage dans l'autre. Les forcer aurait
+  donné une famille uniforme et deux visuels ratés.
+  📌 **UNE FAMILLE N'EST PAS FAITE DE VISUELS IDENTIQUES, ELLE EST FAITE DE
+  VISUELS QUI PARTAGENT LES MÊMES CONSTANTES.** Trois constantes obligatoires
+  (la vague qui travaille, la verticale à 76, le pied partagé), puis deux formes.
+
+  ✅ **CE QUI EST FAIT** : mardi, mercredi, jeudi, vendredi, samedi → **5/5**.
+  · mardi : la photo passe de fond de page à bandeau, et son recadrage a été
+    REGARDÉ — le passage à 700 px avait perdu la vedette, c'est-à-dire le sujet.
+    📌 Changer la hauteur d'une photo change son sujet ; un recadrage n'est
+    jamais neutre.
+  · mercredi et vendredi : l'adresse passe à droite. Même contenu, mais la
+    silhouette est ce qu'on reconnaît de loin, avant de lire.
+  🔴 **CE QUI RESTE** : lundi et les trois visuels de service (mer forte,
+  suspension, reprise) sont à 0-1/5 — ils **n'ont aucune photo**, et leur bloc
+  d'action est une barre dorée large au lieu d'un pied partagé. Ce sont les
+  quatre plus gros chantiers, pas les plus petits.
+
 - **02/09/2026 (👨‍👩‍👧 LA FAMILLE, LE LOGO +8 %, ET LE PREMIUM)** — trois consignes
   du patron dans la même heure : « tous les flyers hors bulletin doivent se
   ressembler, être reconnaissables », « augmente un peu le logo, 5 à 10 % »,

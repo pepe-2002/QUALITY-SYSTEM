@@ -370,6 +370,41 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (midi — « TU L'AS DÉJÀ » EST ENFIN SORTI, avec deux jours de
+  retard, et le patron a tranché entre deux flyers)** — publié à **12h15**,
+  vérifié dans le rapport lu DEPUIS LA PAGE : `2026-09-02 à 12:15 — TU L'AS
+  DÉJÀ.` L'étape « Publier un visuel choisi » a duré 10 s (elle en dure ~3
+  quand le garde-fou refuse un doublon). Page : **44 abonnés, 17 publications
+  sur 7 jours.**
+
+  📅 **L'écran de l'appli a été REGÉNÉRÉ avant la publication** (`refaire.py`,
+  date affichée 09/09/2026). C'est une contrainte permanente de ce visuel, pas
+  une étape de confort : le champ DATE est calculé à « aujourd'hui + 7 jours »
+  et un post reste sur la page pour toujours. Publier la version d'hier
+  afficherait tôt ou tard une date passée, c'est-à-dire un service mort
+  (norme § 7.3). **Tout visuel qui contient une date porte une dette : il faut
+  le refaire à chaque sortie, ou ne pas y mettre de date.**
+
+  ✅ Contrôles passés avant l'envoi : `exigence.py` CONFORME, `lignes.js`
+  0 ligne veuve, et les quatre vérifications à l'œil de la consigne — date dans
+  le futur, aucun visage, pas de trait vertical clair au bord gauche (saut max
+  8 sur 260 px à mi-hauteur), haut de la photo fondu dans le marine (30 de
+  saut, contre 99 avant `.haut-fondu`).
+
+  🎯 **AVEC OU SANS L'ÉCRAN DE L'APPLI — le patron a demandé lequel « résonne
+  comme un expert ». Réponse donnée : SANS** (`flyer47b`), pour trois raisons
+  qui valent pour tous les prochains visuels :
+  1. norme § 6 — une seule chose nette par visuel ; le portrait et la carte se
+     disputaient le regard ;
+  2. à 360 px la carte ne se lit pas : elle **fait semblant de prouver**, alors
+     que « TU L'AS DÉJÀ » montre l'appli en grand et le prouve vraiment ;
+  3. la version avec écran porte une date, donc la dette ci-dessus ; la version
+     émotion est vraie dans six mois.
+  📌 **La bonne réponse à « mets tout dans une image » est presque toujours une
+  SÉQUENCE** : l'émotion un jour, le produit le lendemain (§ 1, un seul
+  univers, deux moments). Repère : notre visuel le mieux noté de l'extérieur
+  (9/10) ne contenait aucune capture d'écran.
+
 - **01/09/2026 (midi — 🚩 DEUX ROUTINES CONTRADICTOIRES, ET C'EST MOI QUI AI
   CRÉÉ LA CONTRADICTION)** — les deux Routines de 12h05 ont sonné à 35 secondes
   d'intervalle. La Routine du jour disait « regarde la page avant de décider » ;

@@ -149,6 +149,75 @@ ce paragraphe inutile.
 
 ---
 
+## 1 quater. LA FAMILLE — tous les visuels se ressemblent
+
+> Commande du patron, 02/09/2026 : « tous les flyers excepté ceux du bulletin
+> doivent avoir des points communs et se ressembler, genre être
+> reconnaissables. » Et : « augmente un peu le logo, 5 à 10 % ».
+
+🤖 `node famille.js --tous` — il note chaque visuel **sur 5** et dit ce qui
+manque. Il ne refuse pas : un visuel peut sortir de la grammaire pour une bonne
+raison, ce qu'on ne veut pas c'est en sortir **sans s'en apercevoir**.
+
+⛔ **MESURE DU JOUR OÙ LA RÈGLE EST POSÉE : 1,7/5 de moyenne sur neuf visuels.**
+Trois structures différentes, et le titre changeait de hauteur d'un visuel à
+l'autre — en haut, au milieu, sous la photo. Côte à côte, on ne voyait pas une
+marque : trois marques qui partagent une couleur.
+📌 **LA COULEUR ET LA POLICE NE FONT PAS UNE FAMILLE, LA STRUCTURE LA FAIT.**
+Deux affiches du même bleu avec la même police, dont l'une pose son titre en haut
+et l'autre au milieu, se ressemblent moins que deux affiches de couleurs
+différentes bâties pareil. **L'œil reconnaît une DISPOSITION avant une teinte**
+— c'est pour ça qu'on identifie une page de journal à dix mètres sans lire un mot.
+
+**La grammaire, en cinq points mesurés** (elle vient de `flyer48`) :
+1. **une photo en bandeau haut**, pleine largeur, collée au bord ;
+2. **la vague d'or en couture** à la frontière photo / marine (± 60 px) ;
+3. **le titre SOUS la photo**, jamais dessus ;
+4. **une seule verticale à gauche** — surtitre, titre, corps et appel tous à 76 px ;
+5. **le pied partagé** : appel à l'action à gauche, adresse à droite.
+
+📐 **LE LOGO : +8 %** (emblème 68 → 74 px, nom 29 → 31, sous-titre 9,5 → 10,3).
+⚠️ Et la zone de respiration a grandi avec lui **toute seule**, parce qu'elle
+vaut la moitié de la hauteur de l'emblème (§ 5 bis). C'est exactement ce qu'on
+avait copié à Apple : une règle exprimée en proportion n'a jamais besoin d'être
+recalculée.
+
+---
+
+## 1 quinquies. LE PREMIUM
+
+> Commande du patron, 02/09/2026 : « tous les mots et toutes les phrases doivent
+> être premium. Je veux du premium partout. »
+
+⚠️ **UNE LISTE NOIRE DE MOTS N'AURAIT PAS SUFFI** : nos textes n'en contenaient
+presque aucun, et ils n'étaient pas premium pour autant. Ce qui les trahissait
+tenait en trois gestes — et ce sont ces gestes qu'`exigence.py` refuse.
+
+1. **S'ATTÉNUER.** « un peu de mouvement », « juste », « simplement ». Une marque
+   qui relativise sa propre information invite à ne pas la croire.
+2. **SE JUSTIFIER.** « c'est pour ça qu'on publie », « c'est à ça que sert cette
+   page ». Expliquer son propre dispositif, c'est demander la permission
+   d'exister. On énonce, on ne plaide pas.
+3. **SE COMPARER AU TOUT-VENANT.** « c'est ouvert, comme n'importe quel site ».
+   Se rendre ordinaire pour rassurer, c'est renoncer à valoir plus cher.
+
+📌 **LE PREMIUM N'EST PAS UN VOCABULAIRE, C'EST UNE POSTURE : ON AFFIRME, ON NE
+SE DÉFEND PAS.**
+
+**Et deux fautes de cohérence trouvées dans la même passe :**
+- ⛔ **LES CONSEILS DE MER VOUVOYAIENT.** « prévoyez », « vérifiez », « attendez »
+  étaient les SEULES phrases de toute la marque à vouvoyer. Personne ne l'avait
+  vu parce qu'elles ne sortent qu'un jour de mer forte.
+  📌 **Une marque qui change de personne change d'identité** — et un défaut qui
+  ne se montre que dans un cas rare ne se trouve jamais en regardant le cas
+  ordinaire. Il faut aller le chercher dans la table.
+- **UN SEUL APPEL À L'ACTION COMMERCIAL** : « RÉSERVE TA TRAVERSÉE », sur les
+  sept visuels commerciaux. « SCANNE ET RÉSERVE » et « PRENDS TA PLACE » disaient
+  la même chose de deux façons de plus. Les visuels de service gardent le leur —
+  on ne peut pas « réserver sa traversée » un jour où rien ne part.
+
+---
+
 ## 2. LA PHRASE
 
 > 🍎 **LA RÈGLE D'ÉCRITURE, POSÉE PAR LE PATRON LE 02/09/2026** — elle prime sur

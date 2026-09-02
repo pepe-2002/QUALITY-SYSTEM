@@ -42,12 +42,24 @@ MOIS = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet',
 JOURS = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
 
 # échelle de Douglas, simplifiée aux cinq degrés utiles à une traversée
+# 🚩 RÉÉCRITS LE 02/09/2026 — LE PATRON : « TOUS LES MOTS DOIVENT ÊTRE PREMIUM ».
+# Deux défauts, et le second est le vrai :
+# · l'atténuation (« un peu de mouvement », « ça bouge ») — une marque qui
+#   relativise sa propre information invite à ne pas la croire ;
+# · ⛔ LE VOUVOIEMENT. « prévoyez », « vérifiez », « attendez » : ces trois
+#   phrases étaient les SEULES de toute la marque à vouvoyer. Partout ailleurs
+#   on dit « tu » — dans les titres, les corps, les appels à l'action. Le
+#   bulletin change donc de personne au milieu de la page, et personne ne
+#   l'avait vu parce que ces phrases ne sortent qu'un jour de mer forte.
+# 📌 UNE MARQUE QUI CHANGE DE PERSONNE CHANGE D'IDENTITÉ. Et un défaut qui ne
+# se montre que dans un cas rare est un défaut qu'on ne trouve jamais en
+# regardant le cas ordinaire — il faut aller le chercher dans la table.
 DOUGLAS = [
-    (0.50, 'MER BELLE',      'Conditions idéales pour traverser.'),
-    (1.25, 'MER PEU AGITÉE', 'Traversée normale, un peu de mouvement.'),
-    (2.50, 'MER AGITÉE',     'Ça bouge : prévoyez, et suivez les consignes du commandant.'),
-    (4.00, 'MER FORTE',      'Conditions dures : vérifiez le maintien des départs.'),
-    (99.0, 'MER TRÈS FORTE', 'Traversée déconseillée : attendez le bulletin officiel.'),
+    (0.50, 'MER BELLE',      'Rien ne devrait te gêner.'),
+    (1.25, 'MER PEU AGITÉE', 'La mer remue. La traversée reste normale.'),
+    (2.50, 'MER AGITÉE',     'Ça remue. Suis les consignes du commandant.'),
+    (4.00, 'MER FORTE',      'Conditions dures. Vérifie que ton départ est maintenu.'),
+    (99.0, 'MER TRÈS FORTE', 'Attends le bulletin officiel avant de descendre.'),
 ]
 LABELS = ['BELLE', 'PEU AGITÉE', 'AGITÉE', 'FORTE', 'TRÈS FORTE']
 ROSE = ['nord', 'nord-est', 'est', 'sud-est', 'sud', 'sud-ouest', 'ouest', 'nord-ouest']

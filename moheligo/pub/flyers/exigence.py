@@ -47,6 +47,36 @@ VRAIS_VERBES = ['réserve', 'prends', 'choisis', 'paie', 'écris', 'appelle',
                 'embarque', 'traverse', 'rejoins', 'scanne']
 SENTIMENTS = ['LE SOULAGEMENT', 'LA PROXIMITÉ', 'LA FIERTÉ', 'LA CONFIANCE']
 
+# 💎 CE QUI N'EST PAS PREMIUM — posé par le patron le 02/09/2026 : « tous les
+# mots et toutes les phrases doivent être premium, je veux du premium partout ».
+# Une liste noire de mots n'aurait pas suffi : nos textes n'en contenaient
+# presque aucun, et ils n'étaient pas premium pour autant. Ce qui les trahissait
+# tenait en trois gestes, et ce sont eux qu'on interdit ici.
+#
+# 1. S'ATTÉNUER. « un peu », « juste », « simple ». Une marque qui relativise sa
+#    propre information invite à ne pas la croire.
+# 2. SE JUSTIFIER. « c'est pour ça qu'on publie », « c'est à ça que sert cette
+#    page ». Expliquer son propre dispositif, c'est demander la permission
+#    d'exister. On énonce, on ne plaide pas.
+# 3. SE COMPARER AU TOUT-VENANT. « comme n'importe quel site ». Se rendre
+#    ordinaire pour rassurer, c'est renoncer à valoir plus cher.
+# 📌 LE PREMIUM N'EST PAS UN VOCABULAIRE, C'EST UNE POSTURE : on affirme, on ne
+# se défend pas.
+PAS_PREMIUM = [
+    (r'\bun peu\b', 'atténuation'),
+    (r'\bjuste\b(?! ?\w*prix)', 'atténuation'),
+    (r'\bsimplement\b', 'atténuation'),
+    (r'\bvraiment\b', 'atténuation'),
+    (r'\bplutôt\b', 'atténuation'),
+    (r"c[’']est pour ça qu", 'justification'),
+    (r"c[’']est à ça que sert", 'justification'),
+    (r"comme n[’']importe quel", 'comparaison au tout-venant'),
+    (r'\bpas cher\b', 'petit prix'),
+    (r'\bpromo\b', 'petit prix'),
+    (r'\ben fait\b', 'remplissage'),
+    (r'\bdu coup\b', 'remplissage'),
+]
+
 FINE = ' '          # espace fine insécable
 INSEC = ' '         # espace insécable
 
@@ -232,6 +262,14 @@ def controler(chemin):
             refuse('4', f'l’appel ne commence pas par un verbe d’action : « {texte} »')
     if 'moheligo.com' not in vis.lower():
         refuse('4', 'aucune adresse où agir — un verbe sans adresse est un vœu')
+
+    # ── § 2 bis LE PREMIUM ───────────────────────────────────────────────────
+    for motif, famille in PAS_PREMIUM:
+        m = re.search(motif, vis, re.I)
+        if m:
+            refuse('2', f'« {m.group(0)} » — {famille}. Le premium n’est pas un '
+                        f'vocabulaire, c’est une posture : on affirme, on ne se '
+                        f'défend pas.')
 
     # ── § 3 LE SENTIMENT DÉCLARÉ ─────────────────────────────────────────────
     dec = [s for s in SENTIMENTS if s in ent]

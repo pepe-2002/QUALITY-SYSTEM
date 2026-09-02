@@ -35,7 +35,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
 
 /* LA PHOTO — cadrée sur l'enfant (42 % du haut : la tête et la goyave tiennent). */
-.photo { position:absolute; top:0; left:0; width:1080px; height:838px; overflow:hidden; }
+.photo { position:absolute; top:0; left:0; width:1080px; height:840px; overflow:hidden; }
 .photo img { width:100%; height:100%; object-fit:cover; object-position:50% 42%; display:block; }
 /* le marine remonte DANS la photo : sans ce fondu, la coupure se voit comme un collage */
 .fondu { position:absolute; left:0; top:558px; width:1080px; height:300px; z-index:2;
@@ -44,16 +44,16 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
 .coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
   clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
-  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  display:flex; align-items:center; gap:16px; padding:18px 0 28px 40px;
   box-shadow:0 20px 48px rgba(4,12,40,.4); }
-.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
-.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+.coin img { width:74px; height:74px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
   letter-spacing:-.9px; line-height:1; display:block; }
 .coin b i { color:#F6BC1C; font-style:normal; }
 /* ⚠️ L'espacement se règle ICI, PAS en écrivant « T R A V E R S É E S » dans le
    texte : les deux se cumulent, et le « S » final passait sous la diagonale du
    coin. Même défaut qu'en août sur l'en-tête du bulletin. */
-.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+.coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
   color:#5C6E8B; margin-top:5px; }
 
 .sur { position:absolute; left:76px; top:800px; z-index:5; font-size:14px;
@@ -80,22 +80,37 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    donnait une adresse (moheligo.com) sans jamais donner de VERBE. Une adresse
    dit où aller ; elle ne dit pas quoi faire, ni pourquoi maintenant.
    La pastille dorée porte l'action, l'adresse reste dessous en second. */
-.pied { position:absolute; left:76px; top:1176px; z-index:5;
-  display:flex; align-items:center; gap:26px; }
-.pied .cta { background:#F6BC1C; border-radius:16px; padding:19px 30px;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:29px;
+/* Le pied est PARTAGÉ, comme sur tous les visuels de la famille : l'appel à
+   l'action à gauche sur la marge de 76, l'adresse à droite sur la même marge.
+   Avant, les deux étaient collés à gauche l'un contre l'autre — même contenu,
+   mais une silhouette différente de celle des autres visuels, et c'est la
+   silhouette qu'on reconnaît de loin. */
+.cta { position:absolute; left:76px; top:1176px; z-index:5;
+  background:#F6BC1C; border-radius:16px; padding:18px 26px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
   color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
   box-shadow:0 18px 40px rgba(150,100,4,.42); }
-.pied .ou { font-family:'Archivo',sans-serif; font-weight:900; font-size:34px;
+.web { position:absolute; right:76px; top:1196px; z-index:5; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px;
   color:#fff; letter-spacing:-1.1px; }
-.pied .ou small { display:block; font-family:'Inter',sans-serif; font-size:12px;
-  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:5px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 
-/* LA VAGUE DORÉE — signature de la marque, en bas de chaque visuel */
-.vague { position:absolute; left:0; bottom:0; width:1080px; height:74px; z-index:4; }
+/* 🏆 LA VAGUE PASSE DU PIED DE PAGE À LA COUTURE — 02/09/2026.
+   Le patron : « tous les flyers hors bulletin doivent se ressembler, être
+   reconnaissables. » Mesuré avec `famille.js`, ce visuel était à 3/5 : sa vague
+   était en bas, à 512 px de la frontière photo/marine, donc elle ne cousait
+   rien. Elle bordait la page comme un liseré.
+   📌 La vague est notre seule forme propriétaire : elle doit FAIRE UN TRAVAIL,
+   pas décorer un bord. Ici elle tient la page en deux, comme sur `flyer48`. */
+.couture { position:absolute; left:0; top:766px; width:1080px; height:86px; z-index:4; }
 </style>
 
 <div class="page">
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
   <div class="photo"><img src="../photos/moheli-enfant-goyave.jpg" alt=""></div>
   <div class="fondu"></div>
 
@@ -111,12 +126,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     une goyave cueillie en rentrant. <b>Rien de tout ça n’est mis en scène.</b></div>
 
   <div class="trait"></div>
-  <div class="pied">
-    <div class="cta">RÉSERVE TA TRAVERSÉE</div>
-    <div class="ou"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
-  </div>
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
 
-  <svg class="vague" viewBox="0 0 1080 74" preserveAspectRatio="none">
-    <path d="M0,34 C170,4 330,64 540,40 C750,16 910,58 1080,30 L1080,74 L0,74 Z" fill="#F6BC1C"/>
-  </svg>
+
 </div>

@@ -270,7 +270,7 @@ def conseil_bulletin(conseil_normal):
     """
     if ouvert():
         return conseil_normal
-    return 'Service suspendu : aucun départ prévu. On publie la mer quand même.'
+    return 'Service suspendu. Aucun départ. On publie la mer quand même.'
 
 
 def cta_bulletin():

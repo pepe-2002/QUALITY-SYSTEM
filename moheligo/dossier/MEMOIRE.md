@@ -370,6 +370,51 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (👨‍👩‍👧 LA FAMILLE, LE LOGO +8 %, ET LE PREMIUM)** — trois consignes
+  du patron dans la même heure : « tous les flyers hors bulletin doivent se
+  ressembler, être reconnaissables », « augmente un peu le logo, 5 à 10 % »,
+  « tous les mots doivent être premium ».
+
+  ⛔ **LA FAMILLE ÉTAIT À 1,7/5.** `famille.js` (neuf visuels, cinq points de
+  structure) : trois dispositions différentes, et le titre changeait de hauteur
+  d'un visuel à l'autre. Côte à côte on ne voyait pas une marque, on voyait trois
+  marques qui partagent une couleur.
+  📌 **LA COULEUR ET LA POLICE NE FONT PAS UNE FAMILLE, LA STRUCTURE LA FAIT.**
+  L'œil reconnaît une DISPOSITION avant une teinte — on identifie une page de
+  journal à dix mètres sans lire un mot.
+  ✅ Le samedi converti : sa vague quitte le pied de page pour devenir la
+  couture, et son pied devient partagé (appel à gauche, adresse à droite). **Deux
+  visuels à 5/5**, moyenne remontée à 1,9. Le reste est à faire.
+
+  📐 **LOGO +8 %** (emblème 68 → 74) sur les douze fichiers. ⚠️ Et la zone de
+  respiration a grandi **toute seule**, parce qu'on l'avait exprimée en fraction
+  de l'emblème et non en pixels — la règle copiée à Apple ce matin a payé le
+  soir même.
+
+  💎 **LE PREMIUM : une liste noire de mots n'aurait rien trouvé.** Nos textes
+  n'en contenaient presque aucun. Ce qui les trahissait, c'étaient trois gestes :
+  s'atténuer (« un peu de mouvement »), **se justifier** (« c'est pour ça qu'on
+  publie », « c'est à ça que sert cette page »), et **se comparer au tout-venant**
+  (« c'est ouvert, comme n'importe quel site »).
+  📌 **Le premium n'est pas un vocabulaire, c'est une posture : on affirme, on ne
+  se défend pas.** Les trois sont maintenant refusés par `exigence.py`.
+
+  ⛔ **ET LA FAUTE LA PLUS GRAVE DE LA JOURNÉE, TROUVÉE EN CHERCHANT AUTRE
+  CHOSE : LES CONSEILS DE MER VOUVOYAIENT.** « prévoyez », « vérifiez »,
+  « attendez » étaient les SEULES phrases de toute la marque à vouvoyer — au
+  milieu d'un bulletin qui dit « ta mer ». Personne ne l'avait vu parce qu'elles
+  ne sortent qu'un jour de mer forte.
+  📌 **Une marque qui change de personne change d'identité.** Et un défaut qui ne
+  se montre que dans un cas rare ne se trouve jamais en regardant le cas
+  ordinaire : il faut aller le chercher dans la table.
+
+  ✅ **UN SEUL APPEL À L'ACTION COMMERCIAL** : « RÉSERVE TA TRAVERSÉE » sur les
+  sept visuels commerciaux (« SCANNE ET RÉSERVE » et « PRENDS TA PLACE » disaient
+  la même chose de deux façons de plus). Les visuels de service gardent le leur.
+  ✅ **10 conformes sur 10** à la barre, zéro collision.
+  🔴 Reste : sept visuels à faire entrer dans la famille, le dimanche, et la
+  démonstration du matin.
+
 - **02/09/2026 (🔬 « TU PEUX LES RENDRE CLAIRES, ESSAYE » — et l'outil évident
   n'était pas le bon)** — `affiner.py` : débruitage AVANT l'agrandissement, puis
   **rétroprojection itérative**, puis un accentuage faible guidé par les

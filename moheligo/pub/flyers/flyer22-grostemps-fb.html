@@ -41,6 +41,7 @@
      Rendu : node render.js flyer22-grostemps-fb.html flyer-grostemps-facebook.png 1080 1350 2 -->
 <meta charset="utf-8">
 <style>
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
 @font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format(’woff2’); }
 @font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format(’woff2’); }
 @font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format(’woff2’); }
@@ -58,7 +59,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    d'une mer qui décide ; l'image ne promet aucun beau temps.
    📌 Une photo qui contredit le message coûte plus cher que pas de photo du
    tout. On ne pose pas une plage radieuse sur un avis de mer forte. */
-.photo { position:absolute; top:0; left:0; width:1080px; height:460px; z-index:1;
+/* ✂️ 02/09/2026 — LE BLOC DENSE DU BAS EST SUPPRIMÉ. Le patron : « il y a des
+   flyers avec beaucoup d'info en bas ; laisse la photo et supprime le bas avec
+   beaucoup d'info, fais notre style premium. »
+   ⛔ CE VISUEL ÉTAIT OCCUPÉ À 42 %% DE SA SURFACE (`respiration.js`), contre
+   16 % pour nos meilleurs. La grande carte blanche à liste était un héritage
+   d'avant la photo : quand le visuel n'avait rien à regarder, il fallait bien
+   remplir. Depuis qu'il porte une photo, cette carte ne comble plus un vide —
+   elle en prend la place.
+   📌 **ON N'AJOUTE PAS UNE IMAGE À UNE PAGE PLEINE : ON REMPLACE CE QUI LA
+   REMPLISSAIT.** Sinon on additionne deux façons de tenir la page, et la page
+   devient plus lourde qu'avant.
+   ✅ Le détail pratique n'est pas perdu : il vit dans le TEXTE DU POST, qui a
+   la place de l'expliquer. Le visuel dit une chose et une seule ; le texte
+   développe. C'est la répartition normale entre les deux. */
+.photo { position:absolute; top:0; left:0; width:1080px; height:700px; z-index:1;
   overflow:hidden; }
 .photo img { width:100%; height:100%; object-fit:cover; object-position:50% 58%;
   display:block; }
@@ -67,9 +82,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    lisibilité de tout ce qui est posé dessus. */
 .voile { position:absolute; left:0; top:0; width:1080px; height:230px; z-index:2;
   background:linear-gradient(180deg, rgba(10,29,66,.78) 0%, rgba(10,29,66,0) 100%); }
-.fondu { position:absolute; left:0; top:280px; width:1080px; height:180px; z-index:2;
+.fondu { position:absolute; left:0; top:520px; width:1080px; height:180px; z-index:2;
   background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.46) 100%); }
-.couture { position:absolute; left:0; top:386px; width:1080px; height:86px; z-index:3; }
+.couture { position:absolute; left:0; top:626px; width:1080px; height:86px; z-index:3; }
 
 .eclat { position:absolute; inset:0; background:linear-gradient(116deg,
   rgba(255,255,255,0) 42%, rgba(255,255,255,.055) 50%, rgba(255,255,255,0) 58%); }
@@ -89,33 +104,16 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
   color:rgba(255,255,255,.94); }
 
-.acc { position:absolute; left:76px; top:580px; width:920px; z-index:3;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.98;
-  letter-spacing:-3.6px; color:#fff; }
-.acc span { display:block;
-  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 8px 22px rgba(150,100,4,.36)); }
+.acc { position:absolute; left:76px; top:820px; width:920px; z-index:3;
+  font-family:'Cormorant',serif; font-weight:400; font-size:88px; line-height:1.1;
+  letter-spacing:5.0px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
 
-.dit { position:absolute; left:76px; top:790px; width:840px; z-index:3;
+.dit { position:absolute; left:76px; top:1058px; width:840px; z-index:3;
   font-size:27px; line-height:1.44; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
 /* l’avis : une carte claire avec un bandeau d’or. Un avis, pas une réclame. */
-.avis { position:absolute; left:76px; top:886px; width:928px; z-index:3;
-  background:#F6F9FF; border-radius:24px; overflow:hidden;
-  box-shadow:0 30px 64px rgba(3,10,32,.5); }
-.avis .bande { background:#F6BC1C; padding:16px 44px; font-family:'Archivo',sans-serif;
-  font-weight:900; font-size:21px; letter-spacing:1.4px; color:#0A1D42; }
-.avis .corps { padding:26px 44px 26px; }
-.avis .corps > p { font-family:'Archivo',sans-serif; font-weight:900; font-size:37px;
-  line-height:1.14; letter-spacing:-1.2px; color:#0F2A5C; }
-.avis ul { margin-top:20px; list-style:none; }
-.avis li { display:flex; gap:18px; padding:12px 0; font-size:20.5px; line-height:1.38;
-  color:#43567A; border-top:1px solid #DDE6F4; }
-.avis li:first-child { border-top:0; padding-top:4px; }
-.avis li b { flex:0 0 210px; font-family:'Archivo',sans-serif; font-weight:900;
-  font-size:21px; letter-spacing:-.4px; color:#0F2A5C; }
 
 .don { position:absolute; left:76px; right:76px; bottom:142px; z-index:3;
   border-top:2px solid rgba(246,188,28,.6); padding-top:22px;
@@ -130,14 +128,14 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
    de descendre au port avec sa valise. Ne rien lui demander, c'est le laisser
    partir sans savoir.
    📌 Un visuel qui ne vend pas a quand même un geste à demander. */
-.cta { position:absolute; left:76px; top:1204px; z-index:3;
+.cta { position:absolute; left:76px; top:1180px; z-index:3;
   background:#F6BC1C; border-radius:16px; padding:17px 26px; display:inline-block;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:23px;
-  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
-  box-shadow:0 18px 40px rgba(150,100,4,.42); }
-.web { position:absolute; right:76px; top:1224px; z-index:3; text-align:right;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px; color:#fff;
-  letter-spacing:-1.1px; }
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
+.web { position:absolute; right:76px; top:1198px; z-index:3; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px; color:#fff;
+  letter-spacing:.2px; }
 .web small { display:block; font-family:'Inter',sans-serif; font-weight:700;
   font-size:10.5px; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 /* La mention de source : tout en bas, discrète. C'est une obligation de
@@ -174,21 +172,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 
   <div class="acc">LA MER DÉCIDE.<span>ON TE LE DIT.</span></div>
 
-  <div class="dit"><b>On te dit ce qu’on sait</b>, et ce qu’on ne sait pas encore —
-    avant que tu descendes au port.</div>
-
-  <div class="avis">
-    <div class="bande">CE QU’IL FAUT SAVOIR AVANT DE PARTIR</div>
-    <div class="corps">
-      <p>Par cette mer, les vedettes peuvent ne pas partir.</p>
-      <ul>
-        <li><b>Avant de descendre</b><span>Appelle ou écris : on te dit ce qui est
-          maintenu, et ce qui ne l’est pas encore décidé.</span></li>
-        <li><b>Si tu as un billet</b><span>Changer la date ne coûte rien. Et tant que
-          la traversée n’est pas partie, tu peux annuler et être remboursé.</span></li>
-      </ul>
-    </div>
-  </div>
+  <div class="dit">Ce qu’on sait, et ce qu’on ne sait pas encore.
+    <b>Avant que tu descendes au port.</b></div>
 
   <div class="cta">APPELLE AVANT DE DESCENDRE</div>
   <div class="web"><small>WHATSAPP +269 479 43 28</small>moheligo.com</div>

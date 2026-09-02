@@ -45,6 +45,7 @@
 <meta charset="utf-8">
 <style>
 @font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
 @font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
 @font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -89,29 +90,52 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .sur { position:absolute; left:76px; top:742px; z-index:5; font-size:13px;
   font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
 
-/* Deux lignes, quatre mots puis deux. La seconde est dorée : c’est là que le
-   regard se pose, donc c’est là qu’on met la promesse. */
-.acc { position:absolute; left:76px; top:782px; width:928px; z-index:5;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.98;
-  letter-spacing:-3.4px; color:#fff; }
-.acc span { display:block;
-  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+/* 💎 LA TYPOGRAPHIE DU TITRE CHANGE — 02/09/2026, sur une relecture extérieure
+   transmise par le patron : « le style reste très digital / Instagram ; ça n'a
+   pas le raffinement d'une marque type Air France ou d'une compagnie maritime
+   haut de gamme — polices plus élégantes, compositions plus aérées. »
+   ⛔ ELLE AVAIT RAISON, ET LA CAUSE ÉTAIT PRÉCISE : Archivo 900 est une
+   grotesque très grasse, avec un interlettrage NÉGATIF (-3,4 px) pour serrer
+   les mots. C'est le geste des réseaux sociaux — on compresse pour occuper. Le
+   luxe fait l'inverse : il ESPACE. Une marque qui n'a rien à prouver n'a pas
+   besoin de remplir la ligne.
+   ✅ Cormorant Garamond 400, en capitales, +5 px d'interlettrage. On garde la
+   règle des capitales (Coca-Cola § 2.35, adoptée ce matin) et on change la
+   voix qui les prononce.
+   📌 **LE PREMIUM SE JOUE PLUS SOUVENT SUR L'ESPACE ENTRE LES LETTRES QUE SUR
+   LE DESSIN DES LETTRES.**
+   ⚠️ Et le dégradé doré à quatre arrêts + ombre portée est parti. Sur une
+   grotesque grasse il faisait un effet ; sous une serif délicate il faisait un
+   déguisement. Or de la charte, plat. **Le luxe se retire, il n'ajoute pas.** */
+.acc { position:absolute; left:76px; top:770px; width:928px; z-index:5;
+  font-family:'Cormorant',serif; font-weight:400; font-size:88px; line-height:1.1;
+  letter-spacing:5px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
 
-.dit { position:absolute; left:76px; top:990px; width:640px; z-index:5;
+.dit { position:absolute; left:76px; top:1008px; width:640px; z-index:5;
   font-size:22px; line-height:1.5; color:#CFDDF3; }
 .dit b { color:#fff; font-weight:700; }
 
+/* 💎 L'APPEL À L'ACTION S'ACCORDE AU TITRE — 02/09/2026. Une fois le titre
+   passé en serif espacée, le bouton est devenu la chose la plus bruyante de la
+   page : Archivo 900 très gras, interlettrage NÉGATIF, ombre portée de 40 px.
+   Il criait plus fort que le titre.
+   ⚠️ MAIS ON NE LE FAIT PAS DISPARAÎTRE, et c'est une contrainte de notre
+   marché : une partie de nos lecteurs n'a jamais acheté en ligne (manuel § 5).
+   Un appel trop discret est élégant et ne convertit personne.
+   ✅ La pastille dorée reste — c'est elle qui dit « ceci se clique » — mais son
+   texte passe en Inter 700 espacé et l'ombre s'allège. Même fonction, moins de
+   voix. */
 .cta { position:absolute; left:76px; top:1120px; z-index:5;
-  background:#F6BC1C; border-radius:16px; padding:18px 26px; display:inline-block;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
-  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
-  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+  background:#F6BC1C; border-radius:14px; padding:19px 30px; display:inline-block;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
 
-.web { position:absolute; right:76px; top:1140px; z-index:5; text-align:right;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px;
-  color:#fff; letter-spacing:-1.1px; }
+/* L'adresse aussi : Archivo 900 serré la faisait concurrencer le titre. */
+.web { position:absolute; right:76px; top:1138px; z-index:5; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px;
+  color:#fff; letter-spacing:.2px; }
 .web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
   font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
 </style>

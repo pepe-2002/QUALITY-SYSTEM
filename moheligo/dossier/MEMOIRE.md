@@ -370,6 +370,51 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (💎 LE PASSAGE AU PREMIUM — typographie, air, et deux échecs de
+  mes propres contrôles)** — relecture extérieure transmise par le patron : « le
+  style reste très digital / Instagram, ça n'a pas le raffinement d'Air France
+  ou d'une compagnie maritime haut de gamme ». Puis : « il y a des flyers avec
+  beaucoup d'info en bas ; laisse la photo, supprime le bas, fais notre style
+  premium. »
+
+  🔤 **LA TYPOGRAPHIE — et la cause était mesurable.** Archivo 900 est une
+  grotesque très grasse posée avec un interlettrage **négatif** (−3,4 px) : le
+  geste des réseaux sociaux, où l'on compresse pour occuper. Passage à
+  **Cormorant Garamond 400, capitales, interlettrage positif**. Quatre serifs
+  ont été téléchargées et comparées à l'œil avant de choisir.
+  📌 **LE LUXE ESPACE — le premium se joue plus souvent sur l'espace ENTRE les
+  lettres que sur le dessin des lettres.** Une marque qui n'a rien à prouver n'a
+  pas besoin de remplir la ligne.
+  ✅ On garde la règle des capitales et on change la voix qui les prononce. Le
+  dégradé doré et l'ombre portée sont partis : **le luxe se retire, il n'ajoute
+  pas.** L'appel à l'action reste une pastille pleine — nos lecteurs qui n'ont
+  jamais acheté en ligne ont besoin de l'affordance.
+
+  📐 **`respiration.js`** — « plus aéré » n'est pas une exigence tant qu'on ne
+  sait pas le compter. Trois visuels de service étaient à **39-42 %** d'occupation
+  contre 16 % pour nos meilleurs. Cartes blanches supprimées, photos agrandies :
+  **42 % → 20 %**, moyenne de la bibliothèque à 21,8 %.
+  📌 **ON N'AJOUTE PAS UNE IMAGE À UNE PAGE PLEINE : ON REMPLACE CE QUI LA
+  REMPLISSAIT.** Ces cartes étaient un héritage d'avant la photo — quand il n'y
+  avait rien à regarder, il fallait bien remplir.
+
+  ⛔ **DEUX ÉCHECS DE MES PROPRES CONTRÔLES, LE MÊME JOUR :**
+  1. En changeant de police, **six visuels** ont vu leur corps de texte
+     chevaucher le titre — jusqu'à 14 px — sans que `collision.js` bronche. Son
+     seuil (22 % du corps) était étalonné sur une grotesque grasse, dont l'encre
+     remplit la boîte de ligne ; une serif y laisse beaucoup plus de blanc.
+     📌 **Un seuil étalonné sur une police ne vaut plus rien quand on change de
+     police.** Nouveau contrôle : « l'air sous le titre », au moins la moitié du
+     corps.
+  2. En corrigeant ça, j'ai descendu les corps de 58 px **sans regarder ce qu'il
+     y avait en dessous** — cinq visuels se sont mis à chevaucher leur appel à
+     l'action. C'est mot pour mot l'erreur du matin avec la vague.
+     📌 **Déplacer un bloc, c'est déplacer sa relation avec DEUX voisins, pas un.**
+
+  ✅ **État : 10 conformes sur 10, famille 5,0/5, occupation moyenne 21,8 %,
+  zéro collision.** Poussé sur git. **Rien n'est publié sur Facebook** — le
+  patron veut voir avant.
+
 - **02/09/2026 (🏁 LA FAMILLE EST À 5,0/5 — les neuf visuels hors bulletin)** —
   les quatre derniers convertis : lundi, mer forte, suspension, reprise. Ils
   étaient à 0-1/5, les plus loin de tous.

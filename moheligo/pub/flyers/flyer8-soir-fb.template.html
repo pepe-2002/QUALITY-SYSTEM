@@ -76,6 +76,7 @@
      Rendu : node render.js flyer8-soir-fb.html flyer-soir-facebook.png 1080 1350 2 -->
 <meta charset="utf-8">
 <style>
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
 @font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
 @font-face { font-family:'Archivo'; font-weight:700; src:url(fonts/Archivo-700-latin.woff2) format('woff2'); }
 @font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
@@ -103,17 +104,14 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-weight:700; letter-spacing:3px; color:#F6BC1C; }
 
 .acc { position:absolute; left:76px; top:246px; width:928px; z-index:3;
-  font-family:'Archivo',sans-serif; font-weight:900; font-size:86px; line-height:.97;
-  letter-spacing:-3.2px; color:#fff; }
-.acc span { display:block;
-  background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
-.sous { position:absolute; left:76px; top:420px; width:880px; z-index:3;
+  font-family:'Cormorant',serif; font-weight:400; font-size:76px; line-height:1.1;
+  letter-spacing:4.3px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
+.sous { position:absolute; left:76px; top:450px; width:880px; z-index:3;
   font-size:22px; line-height:1.4; font-weight:500; color:#CBD9EF; }
 
 /* L'OBJET : la donnée. Elle est à nous, elle est vraie, elle est unique. */
-.carte { position:absolute; left:76px; top:492px; width:928px; z-index:3;
+.carte { position:absolute; left:76px; top:516px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:22px; padding:26px 32px 28px;
   box-shadow:0 26px 56px rgba(4,12,40,.42); }
 .tete { display:flex; align-items:baseline; justify-content:space-between;
@@ -167,8 +165,8 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
   padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
 .action .qr img { width:100%; height:100%; display:block; }
-.action .cta { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
-  letter-spacing:.5px; color:#0A1D42; }
+.action .cta { font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  letter-spacing:2.4px; color:#0A1D42; }
 .action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
 .action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }

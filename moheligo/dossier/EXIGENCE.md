@@ -243,6 +243,65 @@ SE DÉFEND PAS.**
 
 ---
 
+## 1 sexies. LE PREMIUM VISUEL — la typographie et l'air
+
+> Relecture extérieure transmise par le patron, 02/09/2026 : « le style reste
+> très digital / Instagram. Ça n'a pas le raffinement d'une marque type Air
+> France ou d'une compagnie maritime haut de gamme : polices plus élégantes,
+> compositions plus aérées, moins de blocs texte denses. Un vrai positionnement
+> premium aurait encore plus d'espace blanc. »
+
+**1. LA TYPOGRAPHIE DU TITRE : Cormorant Garamond 400, capitales, interlettrage
+POSITIF (≈ 5,7 % du corps).**
+⛔ Ce qui faisait « réseau social » était identifiable et mesurable : Archivo 900
+est une grotesque très grasse, posée avec un interlettrage **négatif** (−3,4 px)
+pour serrer les mots. C'est le geste des réseaux : on compresse pour occuper.
+📌 **LE LUXE FAIT L'INVERSE : IL ESPACE. Une marque qui n'a rien à prouver n'a
+pas besoin de remplir la ligne.** Le premium se joue plus souvent sur l'espace
+ENTRE les lettres que sur le dessin des lettres.
+✅ On garde la règle des capitales (Coca-Cola § 2.35) et on change la voix qui
+les prononce. Le dégradé doré à quatre arrêts et l'ombre portée sont supprimés :
+sur une grotesque grasse c'était un effet, sous une serif c'était un déguisement.
+**Le luxe se retire, il n'ajoute pas.**
+⚠️ L'appel à l'action, lui, RESTE une pastille dorée pleine. Une partie de nos
+lecteurs n'a jamais acheté en ligne (manuel § 5) : un appel trop discret est
+élégant et ne convertit personne. Son texte passe en Inter 700 espacé — même
+fonction, moins de voix.
+
+**2. LE TAUX D'OCCUPATION.** 🤖 `node respiration.js --tous`
+« Plus aéré » n'est pas une exigence tant qu'on ne sait pas le compter.
+    ≤ 22 %   aéré          le registre premium
+    ≤ 32 %   acceptable    un visuel de service
+    > 32 %   bavard        on lit avant de regarder
+📌 On ne compte ni la photo ni l'aplat : **une grande photo REPOSE, un bloc de
+texte FATIGUE.** Le luxe ne se mesure pas en pixels blancs, il se mesure en
+**nombre de choses à lire** (au-delà de six blocs, l'œil ne hiérarchise plus).
+⛔ Mesure du jour : trois visuels de service à **39-42 %**, contre 16 % pour nos
+meilleurs. Leurs grandes cartes blanches à listes étaient un héritage d'avant la
+photo — quand le visuel n'avait rien à regarder, il fallait bien remplir.
+📌 **ON N'AJOUTE PAS UNE IMAGE À UNE PAGE PLEINE : ON REMPLACE CE QUI LA
+REMPLISSAIT.** Sinon on additionne deux façons de tenir la page. Cartes
+supprimées, photos agrandies : 42 % → 20 %. Le détail pratique vit dans le TEXTE
+du post, qui a la place de l'expliquer.
+
+**3. L'AIR SOUS LE TITRE : au moins la moitié de son corps.** 🤖 `collision.js`
+⛔ Née d'un échec de nos propres contrôles : en passant les titres à Cormorant,
+**six visuels** se sont retrouvés avec un corps de texte chevauchant le titre — 
+jusqu'à 14 px — sans que la collision se déclenche. Le seuil (22 % du corps)
+avait été étalonné sur une grotesque grasse, dont l'encre remplit presque toute
+la boîte de ligne ; une serif délicate y laisse beaucoup plus de blanc.
+📌 **UN SEUIL ÉTALONNÉ SUR UNE POLICE NE VAUT PLUS RIEN QUAND ON CHANGE DE
+POLICE.** On ne mesure donc plus « est-ce que ça se touche ? » mais « y a-t-il
+de l'air ? ».
+
+**4. ⚠️ ET LA MÊME FAUTE, DEUX FOIS DANS LA MÊME JOURNÉE :** j'ai descendu les
+corps de texte de 58 px sans regarder ce qu'il y avait EN DESSOUS — cinq visuels
+se sont mis à chevaucher leur appel à l'action. C'est mot pour mot l'erreur
+commise le matin en déplaçant la vague.
+📌 **DÉPLACER UN BLOC, C'EST DÉPLACER SA RELATION AVEC DEUX VOISINS, PAS UN.**
+
+---
+
 ## 2. LA PHRASE
 
 > 🍎 **LA RÈGLE D'ÉCRITURE, POSÉE PAR LE PATRON LE 02/09/2026** — elle prime sur

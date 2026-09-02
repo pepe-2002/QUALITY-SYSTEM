@@ -218,6 +218,35 @@ async function examiner(nav, fichier) {
       }
     }
 
+    // --- l'air sous le titre ------------------------------------------
+    // 🚩 02/09/2026 — AJOUTÉ APRÈS UN ÉCHEC DE CE PROGRAMME LUI-MÊME. En passant
+    // les titres d'Archivo 900 à Cormorant Garamond, SIX visuels se sont
+    // retrouvés avec un corps de texte qui chevauchait le titre — jusqu'à 14 px
+    // — et le contrôle de collision n'a rien dit.
+    // ⛔ POURQUOI : le seuil de recouvrement vaut 22 % du plus grand corps, et il
+    // avait été étalonné sur une GROTESQUE TRÈS GRASSE, dont l'encre remplit
+    // presque toute la boîte de ligne. Une serif délicate laisse beaucoup plus
+    // de blanc dans la même boîte : deux boîtes peuvent se croiser de 14 px sans
+    // qu'une seule lettre se touche — donc le seuil ne se déclenche pas — et
+    // pourtant le titre et le texte sont visuellement collés.
+    // 📌 **UN SEUIL ÉTALONNÉ SUR UNE POLICE NE VAUT PLUS RIEN QUAND ON CHANGE DE
+    // POLICE.** (Même famille d'erreur que le seuil de netteté relu à une autre
+    // échelle, le matin même.)
+    // ✅ On ne mesure donc plus « est-ce que ça se touche ? » mais « y a-t-il de
+    // l'air ? » : sous un titre, il faut au moins la MOITIÉ de son corps.
+    const airs = [];
+    const titre = document.querySelector('.acc');
+    const suite = document.querySelector('.dit, .sous');
+    if (titre && suite) {
+      const a = titre.getBoundingClientRect(), b = suite.getBoundingClientRect();
+      const corps = parseFloat(getComputedStyle(titre).fontSize) || 80;
+      const requis = corps * 0.45;
+      if (b.top > a.top && b.top - a.bottom < requis) {
+        airs.push({ ecart: Math.round(b.top - a.bottom), requis: Math.round(requis),
+                    corps: Math.round(corps) });
+      }
+    }
+
     const collisions = [], frolements = [], penches = [];
     for (let i = 0; i < porteurs.length; i++) {
       for (let j = i + 1; j < porteurs.length; j++) {
@@ -270,7 +299,7 @@ async function examiner(nav, fichier) {
         }
       }
     }
-    return { collisions, frolements, penches, respire, souffle };
+    return { collisions, frolements, penches, respire, souffle, airs };
   }, { COLLE, FROLE });
 
   await page.close();
@@ -291,7 +320,7 @@ async function examiner(nav, fichier) {
   const nav = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
   let fautifs = 0;
   for (const f of fichiers) {
-    const { collisions, frolements, penches, respire, souffle } = await examiner(nav, f);
+    const { collisions, frolements, penches, respire, souffle, airs } = await examiner(nav, f);
     if (collisions.length) {
       fautifs++;
       console.log(`\n❌ COLLISION — ${f}   (${collisions.length})`);
@@ -316,6 +345,14 @@ async function examiner(nav, fichier) {
       for (const r of respire) {
         console.log(`   ${r.nom ? r.nom + ' ' : ''}${r.dit}`);
         if (r.texte) console.log(`      « ${r.texte} »`);
+      }
+    }
+    if (airs.length) {
+      fautifs++;
+      for (const a of airs) {
+        console.log(`\n📏 PAS D'AIR SOUS LE TITRE — ${f}`);
+        console.log(`   ${a.ecart} px entre le titre et le texte, il en faut ` +
+          `${a.requis} (la moitié du corps de ${a.corps} px)`);
       }
     }
     if (souffle.length) {

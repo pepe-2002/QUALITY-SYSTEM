@@ -212,11 +212,83 @@ Et trois règles de composition :
 
 ---
 
+## 5 bis. CE QU'ON A REPRIS AUX CHARTES INTERNATIONALES
+
+> Commande du patron, 02/09/2026 : « va regarder les règles d'Apple ou
+> Coca-Cola, même si c'est très strict on les suit au détail près. Je veux une
+> com de niveau international. **Mais garde nos règles.** »
+
+Lues dans les **documents officiels**, pas dans des résumés de blog :
+[Apple Identity Guidelines](https://www.apple.com/legal/sales-support/certification/docs/logo_guidelines.pdf)
+(56 pages) et **Coca-Cola Brand Identity and Design Standards v1.0** (146 pages).
+Quatre règles seulement ont été reprises — celles qui sont **chiffrées et donc
+vérifiables par une machine**. Le reste est du droit de marque qui ne nous
+concerne pas.
+
+**1. La zone de respiration du logo = une FRACTION DU LOGO, jamais des pixels.**
+> Apple, p. 10 : « *The minimum clear space around the signature is equal to
+> one-half the height of the Apple logo […] Do not allow photos, typography, or
+> other graphic elements to enter the minimum clear space area.* »
+> Coca-Cola : la zone vaut la « **hyphen height** » — la hauteur du trait
+> d'union entre « Coca » et « Cola ».
+
+📌 **C'est le vrai coup de génie, et il est copiable tel quel** : dans les deux
+chartes la zone n'est pas un nombre, c'est une proportion du logo lui-même. Elle
+grandit et rétrécit avec lui, donc elle reste juste à toutes les tailles et
+personne n'a jamais à la recalculer.
+✅ Chez nous : emblème **68 px** → zone de **34 px**, et **rien** n'y entre.
+🤖 Mesuré par `collision.js`. Il a trouvé l'infraction sur le flyer du lundi (7 px)
+et sur le bulletin du soir (16 px), tous deux publiés depuis des semaines.
+
+**2. Taille minimale du logo à l'écran : 35 px** (Apple, p. 11 — 8 mm en
+impression, mesurés sur la hauteur du logo). On ne descend jamais en dessous.
+🤖 `collision.js`.
+
+**3. Un seul traitement de titre pour toute la marque — LES CAPITALES.**
+> Coca-Cola, § 2.35 : « *Do not use any font other than Gotham Bold as the
+> primary headline font* » + « *don't use lowercase-only typography for long
+> headlines or sentences.* »
+> Apple, p. 12 : « *Do not change the font or alter the spacing between
+> letters.* »
+
+⛔ **MESURÉ LE JOUR MÊME, ET LE RÉSULTAT FAIT MAL** : nos **cinq meilleurs**
+visuels étaient en capitales à 100 %, dont celui noté 9/10 en relecture
+extérieure. Les six autres étaient en minuscules — **y compris les deux que je
+venais de réparer le matin même.** J'ai fabriqué l'incohérence en croyant
+corriger.
+📌 **ON NE JUGE PAS UN VISUEL TOUT SEUL : ON LE JUGE À CÔTÉ DES AUTRES.** Un
+visuel peut passer tous les contrôles et abîmer quand même la marque, parce que
+le défaut n'est pas dedans — il est dans l'écart avec ses voisins. C'est la même
+leçon que la collision, d'un cran plus haut : après le code et le rendu, **la
+cohérence de la collection**.
+🤖 `exigence.py` § 2 : au moins 90 % de capitales dans `.acc`.
+
+**4. Le logo n'est jamais seul, jamais recoloré, jamais sur un fond chargé.**
+> Apple, p. 9-10 : signature en noir OU blanc uniquement, « *never place […] on
+> a visually cluttered or patterned background* », et « *never use the Apple
+> logo alone* ».
+
+✅ Notre coin blanc fait déjà exactement ça : fond blanc plein, emblème +
+« MoheliGo » toujours ensemble. C'était juste avant de le lire — on le garde,
+et maintenant on sait **pourquoi** c'est juste.
+
+⚠️ **CE QU'ON N'A PAS REPRIS, ET POURQUOI.** Apple interdit de poser du texte
+sur une photo produit et de placer une photo sur un fond chargé (p. 30). Chez
+nous le texte sur photo est la mise en page même — mais Apple parle de SES
+photos produit dans les communications de SES revendeurs, un problème de droit
+de marque, pas de lisibilité. **Une règle ne se copie pas parce qu'elle vient
+d'une grande marque : elle se copie quand la raison qui l'a fait naître existe
+aussi chez nous.** Le patron a dit « garde nos règles » — c'est ce filtre-là.
+
+---
+
 ## 6. LE DESSIN
 
 | Ce qui est fixe | Valeur | Vérifié par |
 |---|---|---|
 | marge de gauche | **76 px** | `exigence.py` |
+| zone de respiration du logo | **½ de la hauteur de l'emblème** (34 px) | `collision.js` |
+| taille mini de l'emblème à l'écran | **35 px** | `collision.js` |
 | coin blanc en biais | **404 × 172**, `polygon(0 0, 100% 0, 78% 100%, 0 100%)` | `exigence.py` |
 | vague dorée | **74 px**, **un seul tracé** | `mesure-marque.py` |
 | part d'or dans le visuel | **8 – 15 %** | `mesure-marque.py` |

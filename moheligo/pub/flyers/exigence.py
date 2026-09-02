@@ -179,6 +179,31 @@ def controler(chemin):
         if len(plat.split()) < 2:
             refuse('2', f'titre d’un seul mot — c’est une étiquette, pas une '
                         f'accroche : « {plat} »')
+
+        # 🚩 UN SEUL TRAITEMENT DE TITRE POUR TOUTE LA MARQUE — 02/09/2026.
+        # Le patron : « va regarder les règles d'Apple ou Coca-Cola, même si
+        # c'est très strict on les suit au détail près ». Les deux disent la
+        # même chose, et c'est la règle la plus dure des deux chartes :
+        # · Coca-Cola, Design Standards § 2.35 : « Do not use any font other
+        #   than Gotham Bold as the primary headline font » + « don't use
+        #   lowercase-only typography for long headlines or sentences » ;
+        # · Apple, Identity Guidelines p. 12 : « Do not change the font or
+        #   alter the spacing between letters. »
+        # Ce n'est pas une question de goût : une marque doit avoir l'air
+        # d'avoir été faite par UNE SEULE MAIN. Deux traitements de titre dans
+        # la même bibliothèque, et le lecteur voit deux entreprises.
+        # ⛔ MESURÉ LE JOUR MÊME : nos CINQ meilleurs visuels sont en capitales
+        # à 100 % — dont celui noté 9/10 dehors. Les autres étaient en
+        # minuscules… **y compris les deux que je venais de réparer le matin.**
+        # J'ai donc fabriqué l'incohérence en croyant corriger.
+        # 📌 On ne juge pas un visuel tout seul : on le juge À CÔTÉ DES AUTRES.
+        lettres = [c for c in plat if c.isalpha()]
+        if lettres:
+            caps = sum(c.isupper() for c in lettres) / len(lettres)
+            if caps < 0.9:
+                refuse('2', f'titre en minuscules ({caps*100:.0f} % de '
+                            f'capitales) — la marque n’a qu’un seul traitement '
+                            f'de titre, et c’est LES CAPITALES : « {plat} »')
         for l in lignes:
             if len(l) > 32:
                 refuse('2', f'ligne de titre de {len(l)} signes (maximum 32) : « {l} »')

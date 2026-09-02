@@ -49,6 +49,26 @@
  * 📌 Un contrôle qui refuse ce qu’on a fait de mieux n’est pas exigeant, il est
  * mal écrit — la même leçon que le 30/08 sur la règle des « 6 mots maximum ».
  *
+ * ══════════════════════════════════════════════════════════════════════════
+ * 🍎 LA ZONE DE RESPIRATION DU LOGO — ajoutée le 02/09/2026.
+ * Le patron : « va regarder les règles d’Apple ou Coca-Cola, même si c’est très
+ * strict on les suit au détail près ». Les deux chartes officielles disent la
+ * même chose, et surtout elles la CHIFFRENT :
+ *   · Apple, Identity Guidelines p. 10 — « The minimum clear space around the
+ *     signature is equal to one-half the height of the Apple logo […] Do not
+ *     allow photos, typography, or other graphic elements to enter the minimum
+ *     clear space area. »
+ *   · Coca-Cola, Design Standards — la zone vaut la « hyphen height », la
+ *     hauteur du trait d’union entre « Coca » et « Cola ».
+ * 📌 LE VRAI COUP DE GÉNIE EST LÀ, ET IL EST COPIABLE : dans les deux cas la
+ * zone n’est PAS un nombre de pixels, c’est UNE FRACTION DU LOGO LUI-MÊME. Elle
+ * grandit et rétrécit avec lui, donc elle reste juste à toutes les tailles et
+ * personne n’a à la recalculer.
+ * ✅ Chez nous : l’emblème fait 68 px, la zone vaut donc **34 px**, et aucun
+ * texte ne doit y entrer. Apple impose aussi une taille minimale à l’écran de
+ * 35 px sur la hauteur du logo : on ne descend jamais en dessous.
+ * ══════════════════════════════════════════════════════════════════════════
+ *
  * Sortie : 0 si rien, 1 s’il y a au moins une collision (le frôlement n’échoue
  * pas). Comme `lignes.js`, il ne modifie jamais la page qu’il mesure.
  */
@@ -128,6 +148,35 @@ async function examiner(nav, fichier) {
       return { x, y };
     };
 
+    // --- la zone de respiration du logo (Apple p. 10 / Coca-Cola) ----------
+    const respire = [];
+    const emblème = document.querySelector('.coin img');
+    const signature = document.querySelector('.coin');
+    if (emblème && signature) {
+      const e = emblème.getBoundingClientRect();
+      const s = signature.getBoundingClientRect();
+      const zone = e.height / 2;            // Apple : la moitié du logo
+      if (e.height < 35) {
+        respire.push({ quoi: 'taille', dit: `emblème de ${Math.round(e.height)} px` +
+          ` — Apple impose 35 px minimum à l’écran` });
+      }
+      const large = { left: s.left - zone, right: s.right + zone,
+                      top: s.top - zone, bottom: s.bottom + zone };
+      for (const P of porteurs) {
+        if (signature.contains(P.el)) continue;      // le texte DE la signature
+        for (const r of P.rects) {
+          const x = Math.min(large.right, r.right) - Math.max(large.left, r.left);
+          const y = Math.min(large.bottom, r.bottom) - Math.max(large.top, r.top);
+          if (x > 1 && y > 1) {
+            respire.push({ quoi: 'intrusion', nom: P.nom, texte: P.texte,
+              dit: `entre de ${Math.round(Math.min(x, y))} px dans la zone de ` +
+                   `respiration (${Math.round(zone)} px = la moitié de l’emblème)` });
+            break;
+          }
+        }
+      }
+    }
+
     const collisions = [], frolements = [], penches = [];
     for (let i = 0; i < porteurs.length; i++) {
       for (let j = i + 1; j < porteurs.length; j++) {
@@ -180,7 +229,7 @@ async function examiner(nav, fichier) {
         }
       }
     }
-    return { collisions, frolements, penches };
+    return { collisions, frolements, penches, respire };
   }, { COLLE, FROLE });
 
   await page.close();
@@ -201,7 +250,7 @@ async function examiner(nav, fichier) {
   const nav = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
   let fautifs = 0;
   for (const f of fichiers) {
-    const { collisions, frolements, penches } = await examiner(nav, f);
+    const { collisions, frolements, penches, respire } = await examiner(nav, f);
     if (collisions.length) {
       fautifs++;
       console.log(`\n❌ COLLISION — ${f}   (${collisions.length})`);
@@ -219,6 +268,14 @@ async function examiner(nav, fichier) {
       }
     } else if (!tous) {
       console.log(`\n✅ AUCUNE COLLISION — ${f}`);
+    }
+    if (respire.length) {
+      fautifs++;
+      console.log(`\n🍎 ZONE DE RESPIRATION DU LOGO — ${f}   (${respire.length})`);
+      for (const r of respire) {
+        console.log(`   ${r.nom ? r.nom + ' ' : ''}${r.dit}`);
+        if (r.texte) console.log(`      « ${r.texte} »`);
+      }
     }
     if (penches.length && !tous) {
       console.log(`   ℹ️  non mesurable (texte incliné) : ${penches.join(', ')}` +

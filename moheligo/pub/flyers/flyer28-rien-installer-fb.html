@@ -53,7 +53,16 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   font-size:11.5px; font-weight:700; letter-spacing:2.3px; line-height:1.7;
   color:rgba(255,255,255,.56); }
 
-.acc { position:absolute; left:76px; top:206px; width:928px; z-index:3;
+/* 🍎 top:206 -> 224 — LA ZONE DE RESPIRATION DU LOGO (Apple, Identity
+   Guidelines p. 10) : « The minimum clear space around the signature is equal
+   to one-half the height of the Apple logo […] Do not allow photos, typography,
+   or other graphic elements to enter the minimum clear space area. »
+   Notre emblème fait 68 px, la zone vaut donc 34 px sous un coin de 172 px :
+   rien avant 206 px, et le titre y entrait de 7 px. Coca-Cola exprime la même
+   règle en « hauteur du trait d’union » — dans les deux cas la zone est une
+   FRACTION DU LOGO, jamais un nombre de pixels : elle reste juste à toutes les
+   tailles sans que personne ait à la recalculer. */
+.acc { position:absolute; left:76px; top:224px; width:928px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.97;
   letter-spacing:-3.6px; color:#fff; }
 .acc span { display:block;
@@ -117,7 +126,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
   <div class="ligne">RÉSERVER SANS APPLICATION<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
 
-  <div class="acc">Tu n’installes<span>rien.</span></div>
+  <div class="acc">TU N’INSTALLES<span>RIEN.</span></div>
   <div class="sous">Pas d’application à télécharger, pas de place à faire dans le
     téléphone. <b>Tu écris l’adresse, et c’est ouvert — comme n’importe quel site.</b></div>
 

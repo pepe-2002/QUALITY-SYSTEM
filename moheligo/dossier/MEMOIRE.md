@@ -370,6 +370,64 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🌍 LES CHARTES D'APPLE ET DE COCA-COLA, LUES DANS LE TEXTE)** —
+  le patron : « va regarder les règles d'Apple ou Coca-Cola, même si c'est très
+  strict on les suit au détail près. Je veux une com de niveau international,
+  pas ce qu'on fait. **Mais garde nos règles.** »
+
+  📄 Lues dans les **documents officiels** : Apple Identity Guidelines (56 pages,
+  PDF sur apple.com/legal) et Coca-Cola Brand Identity and Design Standards v1.0
+  (146 pages). Pas des résumés de blog — les deux PDF ont été téléchargés et
+  dépouillés. **Quatre règles reprises**, celles qui sont chiffrées et donc
+  vérifiables par une machine. Détail et citations : `EXIGENCE.md` § 5 bis.
+
+  🍎 **LA PLUS BELLE, ET ELLE EST COPIABLE TELLE QUELLE** : la zone de
+  respiration autour du logo n'est **jamais un nombre de pixels**, c'est une
+  FRACTION DU LOGO. Apple : « one-half the height of the Apple logo ».
+  Coca-Cola : la hauteur du trait d'union entre « Coca » et « Cola ». Du coup
+  elle reste juste à toutes les tailles et personne n'a à la recalculer.
+  ✅ Chez nous : emblème 68 px → zone de 34 px. `collision.js` la mesure, et il
+  a trouvé l'infraction **sur le flyer du lundi (7 px) et sur le bulletin du
+  soir (16 px)**, publiés depuis des semaines.
+
+  ⛔ **LA DÉCOUVERTE QUI FAIT LE PLUS MAL : LA CASSE DES TITRES.** Coca-Cola
+  § 2.35 interdit les titres en minuscules, Apple interdit de changer le
+  traitement typographique. J'ai mesuré toute la bibliothèque : nos **cinq
+  meilleurs** visuels étaient en CAPITALES à 100 %, dont celui noté 9/10
+  dehors. Les six autres en minuscules — **y compris les deux que je venais de
+  réparer le matin même.** J'ai fabriqué l'incohérence en croyant corriger.
+  📌 **ON NE JUGE PAS UN VISUEL TOUT SEUL : ON LE JUGE À CÔTÉ DES AUTRES.** Un
+  visuel peut passer tous les contrôles et abîmer la marque quand même, parce
+  que le défaut n'est pas dedans — il est dans l'ÉCART avec ses voisins. C'est
+  la troisième marche : après le code (`exigence.py`) et le rendu (`lignes.js`),
+  puis le rapport entre blocs (`collision.js`), voici **la cohérence de la
+  collection**.
+
+  ✅ **CE QUI A ÉTÉ FAIT** : les 4 titres en minuscules passent en capitales, et
+  toute la bibliothèque lit maintenant d'une seule main. Deux titres ont dû être
+  raccourcis au passage — les capitales sont plus larges, et « LA HOULE EST
+  RETOMBÉE. ON REPART. » est passé à trois lignes rendues avec collision.
+  `collision.js` l'a attrapé ; `exigence.py` ne pouvait pas (il compte les
+  lignes déclarées). Devenu « **LA MER EST CALME. / ON REPART.** »
+  · avis de mer forte : « **LA MER DÉCIDE. / ON TE LE DIT.** » + appel à l'action
+  · avis de suspension : « **AUJOURD'HUI, / ON RESTE À QUAI.** » + appel à
+    l'action. L'ancien (« PAS DE TRAVERSÉE JUSQU'À NOUVEL ORDRE ») décrivait un
+    règlement ; le nouveau met quelqu'un dedans.
+  · lundi : « **TU N'INSTALLES / RIEN.** », titre redescendu de 206 à 224 px pour
+    sortir de la zone de respiration.
+  📌 Et à chaque changement de titre, **le texte du post a suivi** — c'est le
+  piège du matin qui se répète : le visuel dit une chose, la vitrine en annonçait
+  une autre. `texte-suspension.txt` et `texte-grostemps.txt` sont sortis de
+  `page.py` pour que le `.txt` reste la seule source.
+
+  ⚠️ **CE QU'ON N'A PAS REPRIS** : Apple interdit le texte sur une photo produit
+  (p. 30). Chez nous, le texte sur photo EST la mise en page. Mais Apple parle
+  de SES photos produit chez SES revendeurs — c'est du droit de marque, pas de
+  la lisibilité. **Une règle ne se copie pas parce qu'elle vient d'une grande
+  marque : elle se copie quand la raison qui l'a fait naître existe aussi chez
+  nous.** C'est exactement ce que le patron voulait dire par « garde nos
+  règles ».
+
 - **02/09/2026 (🧹 LE GRAND NETTOYAGE — 40 visuels supprimés, et la règle
   d'écriture change)** — le patron : « supprime tous les flyers qui ne sont pas
   aux normes, les anciens flyers », puis « les écritures doivent être vraiment

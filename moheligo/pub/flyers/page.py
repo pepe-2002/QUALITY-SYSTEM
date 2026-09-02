@@ -75,59 +75,10 @@ FLYERS = [
          texte=_texte('texte-grostemps.txt')),
     dict(png='flyer-reprise-facebook.png', titre='🟢 LA REPRISE — À PUBLIER À LA MAIN',
          note="⚠️ <b>PAS dans le robot</b> — c'est toi qui le publies<br>le jour où les vedettes repartent vraiment<br>aucune date dans l'image : il resservira<br>le seul visuel d'avis avec un appel complet<br>QR vérifié vers moheligo.com",
-         texte="""LA HOULE EST RETOMBÉE. ON REPART.
-
-Les traversées reprennent aujourd’hui entre nos ports.
-
-Tu l’as su le jour où ça s’est arrêté. Tu le sais le jour où ça repart — c’est à
-ça que sert cette page.
-
-CE QUE TU FAIS MAINTENANT, DANS L’ORDRE.
-1. Regarde les départs du jour sur moheligo.com : les horaires, les places qui
-   restent et les prix, sans avoir à donner ton nom.
-2. Prends ta place : MVola ou kartaPay, et ton billet arrive tout de suite avec
-   son code. Il reste dans le téléphone même sans réseau.
-3. Tu avais déjà un billet ? Il reste valable. Et si la date ne te va plus, la
-   changer ne coûte rien — écris-nous, on s’en occupe.
-
-MERCI D’AVOIR ATTENDU.
-On ne décide pas des départs, on décide seulement de te dire les choses au
-moment où on les sait. C’est ce qu’on a fait pendant la fermeture, et c’est ce
-qu’on fera la prochaine fois.
-
-Et chaque soir, la mer du lendemain sur cette page. Belle ou mauvaise.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-Le bulletin officiel affiché à l’embarquement fait toujours foi.
-
-#MoheliGo #Comores #Mohéli #Traversée #Ouroveni #Hoani"""),
+         texte=_texte('texte-reprise.txt')),
     dict(png='flyer-suspension-facebook.png', titre='⛔ SERVICE SUSPENDU',
          note="Sans date · réutilisable<br>publié à la place de la pub<br>tant que service.py dit fermé<br>{depuis} et {raison} sont remplacés<br>« peut-être mardi », jamais promis<br>ZÉRO appel commercial",
-         texte="""AVIS AUX VOYAGEURS : PAS DE TRAVERSÉE JUSQU'À NOUVEL ORDRE.
-
-La mer est agitée. Depuis le {depuis}, les vedettes ne sortent pas et le service
-est suspendu jusqu'à nouvel ordre. Tu le sais avant de descendre au port : c'est
-pour ça qu'on publie tous les jours.
-
-NE DESCENDS PAS AU PORT POUR RIEN.
-Tant que cet avis est en ligne, il n'y a pas de départ. C'est aussi pour ça
-qu'on publie tous les jours : pour t'éviter le trajet et l'attente.
-
-SI TU AS DÉJÀ UN BILLET, TU NE PERDS RIEN.
-Changer la date est gratuit, sur la même liaison. Et tant que la traversée n'est
-pas partie, tu peux annuler et être remboursé. Écris-nous, on s'en occupe.
-
-{reprise}
-
-D'ICI LÀ, LA MER CHAQUE SOIR.
-À 19h30 sur cette page, la houle et le vent du lendemain entre nos ports.
-Gratuitement, qu'elle soit belle ou mauvaise. Tu verras le calme revenir en même
-temps que nous.
-
-moheligo.com — WhatsApp +269 479 43 28
-
-#MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer #Sécurité"""),
+         texte=_texte('texte-suspension.txt')),
     dict(png='flyer-soir-facebook.png', titre='Le bulletin du soir',
          note='Annonce demain matin<br>bon pour ce soir seulement', texte='@texte-du-jour.txt'),
     

@@ -101,6 +101,54 @@ Gardée pour l'instant, à supprimer d'un mot.
 
 ---
 
+## 1 ter. LA PHOTO, ET LE TEST DU LOGO CACHÉ
+
+> Commande du patron, 02/09/2026 : « nos flyers **hors bulletin** doivent
+> contenir une photo. Sois très original et clair mais très simple, et
+> **directement reconnaissable sans logo**. Ça doit être du 10/10 : on doit
+> comprendre que MoheliGo n'est pas une petite boîte mais un grand parmi les
+> grands du monde. »
+
+**1. Une photo sur tout visuel sauf le bulletin du soir.** Le bulletin est
+l'exception, et c'est cohérent : son objet regardé est la DONNÉE, pas une image.
+
+**2. LE TEST DU LOGO CACHÉ — la question qu'on ne s'était jamais posée.**
+On masque le coin blanc et l'adresse du site. **Reconnaît-on encore que c'est
+nous ?** Jusqu'au 02/09 la réponse était « on reconnaît le coin blanc »,
+c'est-à-dire le logo. Donc : non.
+⛔ **UN VISUEL QUI A BESOIN DE SA SIGNATURE POUR ÊTRE IDENTIFIÉ N'A PAS
+D'IDENTITÉ, IL A UNE ÉTIQUETTE.**
+
+**3. CE QUI RÉPOND : LA VAGUE D'OR, DEVENUE COUTURE.** Elle était en bas de
+page, 74 px, décorative. Dans `flyer48` elle devient la ligne qui sépare la mer
+des mots — elle tient la page en deux.
+📌 **UNE MARQUE SE RECONNAÎT À UNE FORME QUI FAIT UN TRAVAIL, PAS À UNE FORME
+QUI DÉCORE.** Coca-Cola ne se reconnaît pas au rouge mais au ruban, qui
+structure la boîte ; Apple pas au gris mais au vide autour de l'objet. La
+couleur se copie, une police s'achète — cette découpe-là est à nous.
+🤖 Le test se fait à la main : masquer le coin et l'adresse, regarder.
+
+**4. QUELLE PHOTO PEUT ALLER OÙ.** Nos sources sont à 720 px, nos visuels à
+2160 : tout est agrandi 3×. `photos/preparer-photo.py <fichier>` donne le
+verdict, et il mesure le **détail fin** — ce qu'un agrandissement ne saura pas
+inventer.
+    < 3,0  → plein cadre        mer, ciel, horizon, plage au loin
+    < 6,0  → demi-page          paysage, végétation lointaine
+    ≥ 6,0  → vignette seulement feuillage proche, sable en gros plan
+⛔ **LA PHOTO LA PLUS FLOUE EST CELLE QUI S'AGRANDIT LE MIEUX**, parce qu'elle
+n'a rien à perdre : la mer et le ciel sont des dégradés, il n'y a presque rien à
+inventer entre deux pixels. C'est contre-intuitif et c'est vérifié.
+⚠️ Et l'indicateur évident se trompait : la « netteté » (variance du laplacien)
+perdait **97,8 %** sur la photo nette et **97,7 %** sur la floue — deux chiffres
+identiques pour le bon et le mauvais cas. 📌 **Un pourcentage identique dans les
+deux cas n'est pas un résultat, c'est un avertissement : on mesure la mauvaise
+chose.**
+🔴 **La vraie solution reste de demander l'original.** 720 px est la signature
+d'un renvoi WhatsApp ; l'original du téléphone fait 3 000 à 4 000 px et rend tout
+ce paragraphe inutile.
+
+---
+
 ## 2. LA PHRASE
 
 > 🍎 **LA RÈGLE D'ÉCRITURE, POSÉE PAR LE PATRON LE 02/09/2026** — elle prime sur

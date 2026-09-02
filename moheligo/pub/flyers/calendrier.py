@@ -8,7 +8,7 @@ directeur marketing et commercial, tu vas tout gérer les pubs. »
     lundi            comment ça marche
     mardi            la proximité
     mercredi         le produit
-    jeudi            — (à écrire)
+    jeudi            la proximité de l'île
     vendredi         partir et revenir
     samedi           la destination
     dimanche         — (à écrire)
@@ -32,6 +32,11 @@ depuis toujours, et `programme.py` se tait proprement.
 convention des visuels récents et elle gagne : le fichier porte le même nom que
 l'image, on voit d'un coup d'œil ce qui va avec quoi, et rien n'est recopié.
 `page.py` reste la vitrine du patron, plus la source.
+
+🏆 **LE JEUDI EST LE NOUVEAU GABARIT** (`flyer48`, 02/09) : photo plein cadre,
+vague d'or en COUTURE entre la mer et les mots, titre en deux lignes. Le patron
+a demandé un visuel « directement reconnaissable SANS LOGO » — c'est celui-là qui
+répond, et les prochains le suivent.
 
 ⚠️ **L'usure reste le vrai risque**, et elle est PIRE qu'avant : cinq visuels
 pour sept jours. Deux jours vides valent mieux qu'un visuel hors norme — mais
@@ -57,7 +62,8 @@ SEMAINE = {
         'la proximité'),
     2: ('flyer-tulasdeja-facebook.png', 'texte-tulasdeja.txt',
         'le produit'),
-    3: None,                                    # jeudi — à écrire
+    3: ('flyer-traversee-facebook.png', 'texte-traversee.txt',
+        'la proximité de l’île'),
     4: ('flyer-etudes-facebook.png', 'texte-etudes.txt',
         'partir et revenir'),
     5: ('flyer-revenir-facebook.png', 'texte-revenir.txt',

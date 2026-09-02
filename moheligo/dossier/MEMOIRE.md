@@ -370,6 +370,50 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🏆 LE GABARIT DE RÉFÉRENCE, et le test du logo caché)** — le
+  patron envoie sept photos de plages : « c'est pour les flyers ; nos flyers
+  hors bulletin doivent contenir une photo. Sois très original et clair mais
+  très simple, et **directement reconnaissable sans logo**. Du 10/10 : on doit
+  comprendre que MoheliGo n'est pas une petite boîte mais un grand parmi les
+  grands du monde. »
+
+  ⛔ **SA QUESTION EST LA SEULE QUI COMPTE, ET ON NE SE L'ÉTAIT JAMAIS POSÉE :
+  si on cache le logo, à quoi reconnaît-on que c'est nous ?** Jusqu'ici la
+  réponse était « au coin blanc » — c'est-à-dire au logo. Donc à rien. **Un
+  visuel qui a besoin de sa signature pour être identifié n'a pas d'identité, il
+  a une étiquette.**
+  ✅ **La réponse : la vague d'or.** Elle était en bas de page, 74 px, en
+  décoration. Dans `flyer48` elle devient la COUTURE entre la mer et les mots.
+  📌 **Une marque se reconnaît à une forme qui FAIT UN TRAVAIL, pas à une forme
+  qui décore** — Coca-Cola au ruban qui structure la boîte, Apple au vide autour
+  de l'objet. Test fait pour de vrai : coin et adresse masqués, le visuel reste
+  identifiable. ⚠️ C'est un changement de charte, réversible d'une ligne.
+
+  📷 **LES PHOTOS FONT 720 px, NOS VISUELS 2160.** Agrandissement 3×, ce qui est
+  normalement rédhibitoire. Une seule des sept passe en plein cadre — **et c'est
+  la plus FLOUE des sept.** Contre-intuitif et vérifié : mer, ciel et horizon
+  sont des dégradés, il n'y a presque rien à inventer entre deux pixels. Les six
+  autres ont du feuillage ou du sable en gros plan et deviennent de la bouillie.
+  ⚠️ **L'indicateur évident m'a trompé** : la netteté (variance du laplacien)
+  perdait 97,8 % sur la nette et 97,7 % sur la floue. **Deux chiffres identiques
+  pour le bon cas et le mauvais.** 📌 Un pourcentage identique dans les deux cas
+  n'est pas un résultat, c'est un avertissement : on mesure la mauvaise chose.
+  (Troisième fois — après le carton de fin de la vidéo et le garde-fou du filet.)
+  ✅ `photos/preparer-photo.py` : diagnostic + préparation, et il coupe
+  automatiquement les bandes de capture d'écran. La première photo en portait 4
+  lignes grises en haut — invisibles sur le téléphone, **12 lignes** une fois
+  agrandies. 📌 Un défaut qu'on ne voit pas dans la source se voit dans
+  l'agrandissement.
+  🔴 **La vraie solution est de demander les originaux** : 720 px est la
+  signature d'un renvoi WhatsApp, l'original du téléphone fait 3 000 à 4 000 px.
+  Demandé au patron.
+
+  ✅ `flyer48-traversee-fb.html` — « **TU N'ES QU'À / UNE TRAVERSÉE.** » Photo
+  plein cadre, vague en couture, deux lignes, un appel. Conforme, zéro collision.
+  Placé le **jeudi**, qui était vide. Provenance des photos dans
+  `photos/PHOTOS-PATRON.md` (le dépôt est public).
+  🔴 Reste : **dimanche** sans visuel, et la démonstration du matin à refaire.
+
 - **02/09/2026 (🌙 LE BULLETIN DU SOIR PASSE LA BARRE, et une règle de fond
   arrive : UNE SEULE INFORMATION PAR VISUEL)** — le patron : « maintenant fais
   le bulletin du soir », puis « même les mots, tout doit être nickel et mesuré,

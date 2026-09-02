@@ -1,0 +1,141 @@
+<!-- « TU N’ES QU’À UNE TRAVERSÉE. » — 02/09/2026. Sans date.
+
+     SENTIMENT : LA PROXIMITÉ
+
+     🏆 CE VISUEL EST LE NOUVEAU GABARIT DE RÉFÉRENCE. Le patron : « nos flyers
+     hors bulletin doivent contenir une photo. Sois très original et clair mais
+     très simple, et directement reconnaissable SANS LOGO. Ça doit être du
+     10/10 : on doit comprendre que MoheliGo n’est pas une petite boîte mais un
+     grand parmi les grands du monde. »
+
+     ⛔ LA QUESTION QU’IL POSE EST LA SEULE QUI COMPTE, ET ON NE SE L’ÉTAIT
+     JAMAIS POSÉE : **si on cache le logo, à quoi reconnaît-on que c’est nous ?**
+     Jusqu’ici la réponse était « au coin blanc » — c’est-à-dire au logo. Donc :
+     à rien. Un visuel qui a besoin de sa signature pour être identifié n’a pas
+     d’identité, il a une étiquette.
+
+     ✅ LA RÉPONSE : **LA VAGUE D’OR.** Elle était en bas de page, 74 px, en
+     décoration. Elle devient ici la COUTURE entre la mer et les mots — la ligne
+     qui sépare le monde du texte. C’est le seul élément qu’on ne partage avec
+     personne : la couleur est copiable, une police s’achète, mais cette
+     découpe-là est à nous.
+     📌 **UNE MARQUE SE RECONNAÎT À UNE FORME QUI FAIT UN TRAVAIL, PAS À UNE
+     FORME QUI DÉCORE.** Coca-Cola ne se reconnaît pas au rouge — il se reconnaît
+     au ruban, qui structure la boîte. Apple ne se reconnaît pas au gris, mais au
+     vide autour de l’objet. Notre vague ne bordait rien ; maintenant elle tient
+     la page en deux.
+     ⚠️ C’est un changement de charte, et il est réversible d’une ligne. Si le
+     patron préfère la vague en bas, on la remet — mais alors il faut trouver
+     autre chose pour répondre à « reconnaissable sans logo ».
+
+     📷 LA PHOTO EST À 720 px ET LE VISUEL EN FAIT 2160. Elle est donc agrandie
+     trois fois, ce qui est normalement rédhibitoire. Elle passe pour une raison
+     précise, mesurée dans `../photos/preparer-photo.py` : **c’est la plus FLOUE
+     des sept, et c’est exactement pour ça.** Mer, ciel et horizon sont des
+     dégradés — il n’y a presque rien à inventer entre deux pixels. Les six
+     autres photos ont du feuillage ou du sable en gros plan et deviennent de la
+     bouillie au même agrandissement.
+     ⚠️ Cette photo est une copie compressée (renvoi WhatsApp). **L’original du
+     téléphone rendrait ce raisonnement inutile** — il est demandé.
+
+     🔒 Aucune personne identifiable : plage vide, deux embarcations à l’horizon.
+     Photo fournie par le patron le 02/09/2026 (voir `PHOTOS-PATRON.md`).
+
+     Rendu : node render.js flyer48-traversee-fb.html flyer-traversee-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* LA PHOTO — plein cadre sur le haut. Elle n’est pas un fond : c’est l’objet
+   regardé. Une seule chose nette par visuel (§ 6), et c’est elle. */
+/* ⚠️ 660 px, ET C'EST UN RECADRAGE, PAS UN CHOIX DE PLACE. À 742 px la photo
+   montrait 45 % de sable nu : un grand aplat beige où il ne se passe rien, et
+   sur lequel la vague d'or ne se lisait plus (or clair sur sable clair). En
+   remontant à 660 on garde le ciel, l'horizon, les îlots et la ligne d'écume,
+   et la vague retombe sur le sable MOUILLÉ, qui est sombre.
+   📌 Le sujet d'une photo de plage n'est pas la plage : c'est la ligne où la
+   mer s'arrête. Tout ce qu'on ajoute en dessous est du vide qui dilue. */
+.mer { position:absolute; left:0; top:0; width:1080px; height:660px; z-index:1;
+  overflow:hidden; }
+.mer img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* La photo s’assombrit très légèrement vers le bas, pour que la vague d’or ne
+   soit pas posée sur du sable clair — l’or sur le sable ne se lit pas. */
+.ombre { position:absolute; left:0; top:430px; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.42) 100%); }
+
+/* 🏆 LA COUTURE — l’élément qui fait qu’on nous reconnaît sans lire le nom.
+   Elle est haute (86 px contre 74 en pied de page) parce qu’ici elle porte la
+   page au lieu de la border. Un seul tracé, comme le veut la charte. */
+.couture { position:absolute; left:0; top:586px; width:1080px; height:86px; z-index:3; }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:15px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:68px; height:68px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:29px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:9.5px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:742px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* Deux lignes, quatre mots puis deux. La seconde est dorée : c’est là que le
+   regard se pose, donc c’est là qu’on met la promesse. */
+.acc { position:absolute; left:76px; top:782px; width:928px; z-index:5;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:92px; line-height:.98;
+  letter-spacing:-3.4px; color:#fff; }
+.acc span { display:block;
+  background:linear-gradient(178deg, #FFF3C4 4%, #F6BC1C 34%, #C98A05 62%, #FFDD73 96%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
+
+.dit { position:absolute; left:76px; top:990px; width:640px; z-index:5;
+  font-size:22px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.cta { position:absolute; left:76px; top:1120px; z-index:5;
+  background:#F6BC1C; border-radius:16px; padding:18px 26px; display:inline-block;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:24px;
+  color:#0A1D42; letter-spacing:-.8px; white-space:nowrap;
+  box-shadow:0 18px 40px rgba(150,100,4,.42); }
+
+.web { position:absolute; right:76px; top:1140px; z-index:5; text-align:right;
+  font-family:'Archivo',sans-serif; font-weight:900; font-size:28px;
+  color:#fff; letter-spacing:-1.1px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+</style>
+
+<div class="page">
+  <div class="mer"><img src="photo-mer-moheli.png" alt=""></div>
+  <div class="ombre"></div>
+
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">TU N’ES QU’À<span>UNE TRAVERSÉE.</span></div>
+
+  <div class="dit">Elle est là, en face.
+    <b>Ta place se prend depuis ton téléphone.</b></div>
+
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+</div>

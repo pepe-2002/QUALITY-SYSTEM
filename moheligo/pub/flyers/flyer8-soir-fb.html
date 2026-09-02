@@ -1,4 +1,41 @@
 <!-- LE BULLETIN DU SOIR — V2, dans la famille bleu et blanc (12/08/2026).
+
+     SENTIMENT : LA CONFIANCE
+
+     🚩 02/09/2026 — MIS AUX NORMES EN DERNIER, ALORS QU'IL PUBLIE TOUS LES
+     SOIRS. C'est l'ordre exactement inverse du bon sens, et la raison est
+     instructive : il ne ressemble à aucun autre visuel (pas de photo, une
+     donnée en héros), donc il n'apparaissait jamais quand je regardais « les
+     flyers de la semaine ». 📌 Ce qui tourne tout seul sort du champ de vision.
+     Cinq manquements corrigés d'un coup :
+
+     1. LE TITRE PARLE ENFIN AU LECTEUR. « Demain matin, MER AGITÉE. » était un
+        constat de bulletin météo. Toute notre voix dit « tu » — « TU L'AS
+        DÉJÀ », « TU PARS. TU REVIENS. », « ON NE VISITE PAS MOHÉLI » — et le
+        bulletin était la seule pièce impersonnelle de la marque. C'est la même
+        incohérence que la casse, un cran plus haut.
+        ✅ « DEMAIN MATIN, / TA MER EST … » — la mer devient la sienne.
+        ⚠️ Il a fallu un ETAT_COURT dans `bulletin.py` : ETAT vaut « MER
+        AGITÉE », on aurait lu « TA MER EST MER AGITÉE ». ETAT n'a PAS été
+        changé — il sert au JSON et au texte du post, et tordre son sens pour
+        arranger une mise en page casserait les deux.
+
+     2. LE TITRE PASSE EN CAPITALES, comme toute la marque (Coca-Cola § 2.35).
+
+     3. UN APPEL À L'ACTION, ET DANS LES DEUX ÉTATS DU SERVICE. Le bandeau d'or
+        disait déjà « RÉSERVE POUR DEMAIN » quand c'est ouvert — il lui manquait
+        juste la classe `.cta` pour être vu du contrôle. Fermé, il disait
+        « TRAVERSÉES SUSPENDUES » : un constat, pas un appel. C'est devenu
+        « ÉCRIS-NOUS, ON TE PRÉVIENT » (`service.py`), et l'information
+        « suspendues » descend en troisième ligne. Rien n'est perdu.
+
+     4. LE « ▸ » A DISPARU. U+25B8 est absent de nos woff2 latins : Chromium le
+        remplaçait en silence par une police système. Remplacé par un chevron
+        dessiné en SVG — ce qui est dessiné ne dépend d'aucune police.
+
+     5. LA ZONE DE RESPIRATION DU LOGO (Apple, p. 10 : la moitié de la hauteur
+        de l'emblème, soit 34 px). `.sur` entrait de 16 px sous le coin blanc.
+        Tout le bloc de tête est descendu, `.carte` avec lui.
      Le patron : « je l'ai approuvé parce que je ne savais pas que tu pouvais
      faire d'aussi beaux flyers ; un beau flyer attire l'attention. »
      L'ancien gabarit (photo plein cadre, carte en verre) est conservé sous
@@ -56,21 +93,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   color:rgba(255,255,255,.56); }
 
 /* la date et la fenêtre horaire : une ligne de bulletin, pas un titre */
-.sur { position:absolute; left:76px; top:190px; z-index:3; font-size:14px;
+.sur { position:absolute; left:76px; top:212px; z-index:3; font-size:14px;
   font-weight:700; letter-spacing:3px; color:#F6BC1C; }
 
-.acc { position:absolute; left:76px; top:224px; width:928px; z-index:3;
+.acc { position:absolute; left:76px; top:246px; width:928px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:86px; line-height:.97;
   letter-spacing:-3.2px; color:#fff; }
 .acc span { display:block;
   background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
-.sous { position:absolute; left:76px; top:398px; width:880px; z-index:3;
+.sous { position:absolute; left:76px; top:420px; width:880px; z-index:3;
   font-size:22px; line-height:1.4; font-weight:500; color:#CBD9EF; }
 
 /* L'OBJET : la donnée. Elle est à nous, elle est vraie, elle est unique. */
-.carte { position:absolute; left:76px; top:470px; width:928px; z-index:3;
+.carte { position:absolute; left:76px; top:492px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:22px; padding:26px 32px 28px;
   box-shadow:0 26px 56px rgba(4,12,40,.42); }
 .tete { display:flex; align-items:baseline; justify-content:space-between;
@@ -124,11 +161,17 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
   padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
 .action .qr img { width:100%; height:100%; display:block; }
-.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
+.action .cta { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
   letter-spacing:.5px; color:#0A1D42; }
 .action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
 .action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }
+
+/* Le chevron entre les deux ports, dessiné plutôt que tapé : U+25B8 est absent
+   de nos woff2 latins, et un caractère absent ne lève aucune erreur — il change
+   juste le dessin, en silence. Ce qui est tracé ne dépend d'aucune police. */
+.tete .chev { width:.5em; height:.62em; display:inline-block; vertical-align:-.02em;
+  margin:0 .18em; }
 
 .src { position:absolute; left:76px; right:76px; bottom:52px; z-index:3;
   border-top:2px solid rgba(246,188,28,.5); padding-top:16px;
@@ -142,35 +185,33 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div></div>
   <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
 
-  <div class="sur">BULLETIN MER · SAMEDI 29 AOÛT · 6H-10H</div>
-  <div class="acc">Demain matin,<span>MER AGITÉE.</span></div>
-  <div class="sous">Service suspendu : aucun départ prévu. On publie la mer quand même.</div>
+  <div class="sur">BULLETIN MER · JEUDI 3 SEPTEMBRE · 6H-10H</div>
+  <div class="acc">DEMAIN, TA MER :<span>PEU AGITÉE.</span></div>
+  <div class="sous">Traversée normale, un peu de mouvement.</div>
 
   <div class="carte">
-    <div class="tete"><span>SAMEDI 29 AOÛT MATIN · <i>OUROVENI ▸ HOANI</i></span>
-      <span class="quand">Prévision relevée le 29/08 à 02h55</span></div>
+    <div class="tete"><span>JEUDI 3 SEPTEMBRE MATIN · <i>OUROVENI <svg class="chev" viewBox="0 0 8 10" aria-hidden="true"><path d="M1 1l5 4-5 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> HOANI</i></span>
+      <span class="quand">Prévision relevée le 02/09 à 23h05</span></div>
 
     <div class="chiffre">
-      <div class="n">2,5<em>m</em></div>
+      <div class="n">0,9<em>m</em></div>
       <div class="quoi"><b>de houle au matin</b><small>MOYENNE ENTRE 6H ET 10H</small></div>
     </div>
 
-    <div class="jauge"><div class="on"></div><div class="on"></div><div class="on"></div><div class=""></div><div class=""></div></div>
-    <div class="jauge-lab"><span class="">BELLE</span><span class="">PEU AGITÉE</span><span class="on">AGITÉE</span><span class="">FORTE</span><span class="">TRÈS FORTE</span></div>
+    <div class="jauge"><div class="on"></div><div class="on"></div><div class=""></div><div class=""></div><div class=""></div></div>
+    <div class="jauge-lab"><span class="">BELLE</span><span class="on">PEU AGITÉE</span><span class="">AGITÉE</span><span class="">FORTE</span><span class="">TRÈS FORTE</span></div>
 
     <div class="faits">
-      <div><b>19<i>km/h</i></b><small>VENT DE SUD-EST</small></div>
-      <div><b>11,4<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
-      <div><b>2,4–2,5<i>m</i></b><small>MATINÉE 5H-13H</small></div>
+      <div><b>8<i>km/h</i></b><small>VENT DE EST</small></div>
     </div>
 
     <div class="courbe">
-      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 2,4 m à 2,5 m</em></div>
+      <div class="t"><span>HOULE HEURE PAR HEURE</span><em>de 0,9 m à 1,0 m</em></div>
       <svg viewBox="0 0 908 116" preserveAspectRatio="none">
-        <path d="M0.0 69.2 L113.5 63.6 L227.0 58.0 L340.5 52.4 L454.0 46.8 L567.5 46.8 L681.0 46.8 L794.5 46.8 L908.0 46.8 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
-        <path d="M0.0 69.2 L113.5 63.6 L227.0 58.0 L340.5 52.4 L454.0 46.8 L567.5 46.8 L681.0 46.8 L794.5 46.8 L908.0 46.8" stroke="#F0A800" stroke-width="3.4" fill="none"
+        <path d="M0.0 44.0 L113.5 49.6 L227.0 55.2 L340.5 55.2 L454.0 60.8 L567.5 66.4 L681.0 66.4 L794.5 72.0 L908.0 72.0 L908.0 116 L0.0 116 Z" fill="rgba(246,188,28,.16)"/>
+        <path d="M0.0 44.0 L113.5 49.6 L227.0 55.2 L340.5 55.2 L454.0 60.8 L567.5 66.4 L681.0 66.4 L794.5 72.0 L908.0 72.0" stroke="#F0A800" stroke-width="3.4" fill="none"
               stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="0.0" cy="69.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="63.6" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="58.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="52.4" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="46.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="58.0" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="26.0" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="42.5" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 2,4 m</text>
+        <circle cx="0.0" cy="44.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="113.5" cy="49.6" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="340.5" cy="55.2" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="454.0" cy="60.8" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="567.5" cy="66.4" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="681.0" cy="66.4" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="794.5" cy="72.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="908.0" cy="72.0" r="3.8" fill="#0B2149" stroke="#FBC93C" stroke-width="2.4"/><circle cx="227.0" cy="55.2" r="7" fill="#FBC93C" stroke="#0B2149" stroke-width="3"/><rect x="191.0" y="23.200000000000003" width="72" height="23" rx="7" fill="#FBC93C"/><text x="227.0" y="39.7" text-anchor="middle" font-family="Archivo,Inter,sans-serif" font-size="13.5" font-weight="900" fill="#0B2149">7h · 0,9 m</text>
       </svg>
       <div class="heures"><span>5h</span><span>6h</span><span>7h</span><span>8h</span><span>9h</span><span>10h</span><span>11h</span><span>12h</span><span>13h</span></div>
     </div>
@@ -179,9 +220,9 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="action">
     <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
     <div>
-      <div class="scanne">TRAVERSÉES SUSPENDUES</div>
+      <div class="cta">RÉSERVE POUR DEMAIN</div>
       <div class="adr">moheligo.com</div>
-      <div class="wa">La mer chaque soir sur cette page · WhatsApp +269 479 43 28</div>
+      <div class="wa">MVola ou kartaPay · WhatsApp +269 479 43 28</div>
     </div>
   </div>
 
@@ -189,6 +230,6 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <span><b>Source : Open-Meteo Marine</b> — couloir Ouroveni–Hoani. Nous ne
       décidons pas des départs : nous publions la mer.</span>
     <span style="text-align:right;max-width:300px">Le bulletin officiel affiché à
-      l'embarquement fait toujours foi.</span>
+      l’embarquement fait toujours foi.</span>
   </div>
 </div>

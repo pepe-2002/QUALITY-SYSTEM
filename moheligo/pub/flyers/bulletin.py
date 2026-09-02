@@ -172,6 +172,12 @@ def main():
         'OVER': f'BULLETIN MER · {fr_date(cible).upper()} · 6H-10H',
         'TITRE_BULLETIN': f'{fr_date(cible).upper()} MATIN',
         'ETAT': etat,
+        # 02/09/2026 — ETAT vaut « MER AGITÉE » ; l'accroche dit maintenant
+        # « TA MER EST … », donc il lui faut l'état SANS le mot « mer », sinon
+        # on lirait « TA MER EST MER AGITÉE ». On ne touche pas à ETAT : il est
+        # utilisé par le JSON et par le texte du post, et changer son sens pour
+        # arranger une mise en page casserait les deux.
+        'ETAT_COURT': LABELS[niveau],
         'CONSEIL': conseil,
         'HOULE': f'{houle:.1f}'.replace('.', ','),
         'VENT': f'{v:.0f}',

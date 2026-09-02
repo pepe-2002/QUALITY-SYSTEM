@@ -285,8 +285,13 @@ def cta_bulletin():
     if ouvert():
         return ('RÉSERVE POUR DEMAIN', 'moheligo.com',
                 'MVola ou kartaPay · WhatsApp +269 479 43 28')
-    return ('TRAVERSÉES SUSPENDUES', 'moheligo.com',
-            'La mer chaque soir sur cette page · WhatsApp +269 479 43 28')
+    # 02/09/2026 — « TRAVERSÉES SUSPENDUES » était un CONSTAT, pas un appel.
+    # La norme § 4 exige un verbe d'action : un visuel qui n'a rien à vendre a
+    # quand même un geste à demander, et pendant une fermeture ce geste est
+    # évident — se faire prévenir plutôt que descendre au port chaque matin.
+    # L'information « suspendues » n'est pas perdue : elle passe en 3e ligne.
+    return ('ÉCRIS-NOUS, ON TE PRÉVIENT', 'moheligo.com',
+            'Traversées suspendues · la mer chaque soir ici · +269 479 43 28')
 
 
 JOURS = ('lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche')

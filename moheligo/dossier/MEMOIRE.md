@@ -370,6 +370,66 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🌙 LE BULLETIN DU SOIR PASSE LA BARRE, et une règle de fond
+  arrive : UNE SEULE INFORMATION PAR VISUEL)** — le patron : « maintenant fais
+  le bulletin du soir », puis « même les mots, tout doit être nickel et mesuré,
+  on ne doit pas avoir plus d'une information par flyer ».
+
+  🚩 **IL A ÉTÉ MIS AUX NORMES EN DERNIER, ALORS QU'IL PUBLIE TOUS LES SOIRS.**
+  C'est l'ordre exactement inverse du bon sens, et la raison mérite d'être
+  notée : il ne ressemble à aucun autre visuel (pas de photo, une donnée en
+  héros), donc il n'apparaissait jamais quand je regardais « les flyers de la
+  semaine ». 📌 **Ce qui tourne tout seul sort du champ de vision.**
+
+  ✅ **CINQ MANQUEMENTS CORRIGÉS** :
+  1. le titre parle enfin au lecteur — « Demain matin, MER AGITÉE » était un
+     constat de bulletin météo, alors que toute notre voix dit « tu ». Devenu
+     « **DEMAIN, TA MER : / PEU AGITÉE.** » La mer devient la sienne.
+     ⚠️ Il a fallu ajouter `ETAT_COURT` dans `bulletin.py` (ETAT vaut « MER
+     AGITÉE », on aurait lu « TA MER EST MER AGITÉE »). **ETAT n'a pas été
+     touché** : il sert au JSON et au texte du post, et tordre son sens pour
+     arranger une mise en page aurait cassé les deux.
+  2. capitales, comme toute la marque ;
+  3. un appel à l'action **dans les deux états du service** — ouvert il disait
+     déjà « RÉSERVE POUR DEMAIN », il lui manquait la classe ; fermé il disait
+     « TRAVERSÉES SUSPENDUES », un constat. Devenu « ÉCRIS-NOUS, ON TE
+     PRÉVIENT », l'info « suspendues » descendant en 3e ligne ;
+  4. le « ▸ » (U+25B8, hors de nos woff2) remplacé par un chevron **dessiné en
+     SVG** — ce qui est tracé ne dépend d'aucune police ;
+  5. la zone de respiration du logo : `.sur` entrait de 16 px, tout le bloc de
+     tête est descendu de 22 px.
+
+  ⚠️ **UN GABARIT NE SE VÉRIFIE PAS SUR LA VALEUR DU JOUR.** Premier essai de
+  titre : « DEMAIN MATIN, / TA MER EST … ». Trois lignes rendues et une
+  collision — mais seulement sur DEUX des cinq états de mer possibles (« PEU
+  AGITÉE », « TRÈS FORTE »). À 86 px dans 928 px la colonne tient 17 signes, pas
+  22. 📌 **Un gabarit se vérifie sur la PLUS LONGUE des valeurs possibles**,
+  jamais sur celle qui sort aujourd'hui.
+
+  🎯 **LA RÈGLE NEUVE — UNE SEULE INFORMATION PAR VISUEL** (`EXIGENCE.md` § 1
+  bis). Elle est plus dure que « une seule chose nette » du § 6, parce qu'elle
+  porte sur le FOND : une seule chose à retenir en sortant.
+  **On ne compte pas les blocs, on compte les FAITS DISTINCTS.** Le bulletin
+  disait la houle TROIS FOIS — gros chiffre, amplitude, courbe — plus une
+  « période de houle » en secondes.
+  · période supprimée : **un chiffre qu'on ne sait pas lire n'informe pas, il
+    impressionne.** Ce n'est pas la même chose et ce n'est pas notre métier ;
+  · amplitude supprimée : doublon exact ;
+  · vent gardé : seul fait vraiment distinct.
+  📌 Trois fois le même fait n'est pas de la profondeur, c'est de la répétition,
+  et chaque répétition vole du regard au verdict.
+  ⚠️ **Cacher n'est pas jeter** : PERIODE et AMPLI restent calculés et écrits
+  dans `bulletin.json`. Décision de mise en page, donc réversible.
+  🔴 Reste au patron : la courbe heure par heure est la 3e expression du même
+  fait. Gardée pour l'instant, à supprimer d'un mot.
+
+  🐛 **Et une faute de méthode à moi** : j'ai lancé `bulletin.py >/dev/null 2>&1`
+  et conclu que mon changement n'avait pas pris. Il avait pris ; c'est
+  Open-Meteo qui refusait de répondre dans ma session (le vrai bulletin de
+  19h27, lui, était bien passé). **J'avais masqué l'erreur qui expliquait tout.**
+  📌 On ne fait jamais taire la sortie d'erreur d'une commande dont on cherche
+  justement à comprendre le résultat.
+
 - **02/09/2026 (🚩 LE VENDREDI PUBLIAIT LA VARIANTE QUE LE PATRON N'AVAIT PAS
   CHOISIE)** — le patron : « celui du vendredi, enlève l'application, laisse
   juste le texte ». Or c'était **déjà** sa décision de ce midi (« entre le flyer

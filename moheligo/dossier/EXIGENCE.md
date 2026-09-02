@@ -59,6 +59,48 @@ est la même information, avec une posture.
 
 ---
 
+## 1 bis. UNE SEULE INFORMATION PAR VISUEL
+
+> Commande du patron, 02/09/2026 : « même les mots, tout doit être nickel et
+> mesuré. **On ne doit pas avoir plus d'une information par flyer.** »
+
+Le § 6 disait déjà « une seule chose nette ». Cette règle-ci est plus dure et
+elle porte sur le FOND, pas sur le dessin : ce n'est pas « un seul point de
+fixation », c'est **une seule chose à retenir en sortant**.
+
+**Comment on compte, et c'est là que ça devient utile :** on ne compte pas les
+blocs, on compte les FAITS DISTINCTS. Un chiffre, sa jauge et sa légende ne font
+qu'une information s'ils disent tous la même chose. En revanche, **le même fait
+répété sous trois formes fait trois informations** — parce que le lecteur, lui,
+croit qu'on lui en donne trois, et il partage son attention en trois.
+
+⛔ **LE CAS QUI A SERVI DE TEST : LE BULLETIN DU SOIR, 02/09/2026.** Il disait la
+houle **trois fois** — en gros chiffre (0,9 m), en amplitude (0,9–1,0 m), puis en
+courbe heure par heure. Plus une « période de houle » en secondes.
+· *période de houle* → **supprimée**. C'est un chiffre de météorologue. Aucun
+  voyageur ne sait quoi en faire, et **un chiffre qu'on ne sait pas lire
+  n'informe pas : il impressionne.** Ce n'est pas la même chose, et ce n'est pas
+  notre métier.
+· *amplitude* → **supprimée**, doublon exact du gros chiffre.
+· *vent* → **gardé** : seul fait réellement distinct de la houle, et il change la
+  traversée pour de bon.
+📌 **TROIS FOIS LE MÊME FAIT N'EST PAS DE LA PROFONDEUR, C'EST DE LA
+RÉPÉTITION** — et chaque répétition vole du regard au verdict, qui est la seule
+chose à retenir.
+
+⚠️ **La donnée supprimée de l'affichage n'est pas supprimée du système.**
+`PERIODE`, `AMPLI` et `AMPLI_LAB` restent calculés par `bulletin.py` et écrits
+dans `bulletin.json`. On pourra les réafficher sans rien recalculer. **Cacher
+n'est pas jeter** : c'est une décision de mise en page, elle doit rester
+réversible.
+
+🔴 **Ce qui reste en question, et c'est au patron :** la courbe heure par heure
+est la troisième expression du même fait. Elle répond quand même à une question
+que le chiffre seul ne couvre pas — « est-ce que ça change dans la matinée ? ».
+Gardée pour l'instant, à supprimer d'un mot.
+
+---
+
 ## 2. LA PHRASE
 
 > 🍎 **LA RÈGLE D'ÉCRITURE, POSÉE PAR LE PATRON LE 02/09/2026** — elle prime sur

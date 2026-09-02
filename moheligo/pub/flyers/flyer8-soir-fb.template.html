@@ -1,4 +1,47 @@
 <!-- LE BULLETIN DU SOIR — V2, dans la famille bleu et blanc (12/08/2026).
+
+     SENTIMENT : LA CONFIANCE
+
+     🚩 02/09/2026 — MIS AUX NORMES EN DERNIER, ALORS QU'IL PUBLIE TOUS LES
+     SOIRS. C'est l'ordre exactement inverse du bon sens, et la raison est
+     instructive : il ne ressemble à aucun autre visuel (pas de photo, une
+     donnée en héros), donc il n'apparaissait jamais quand je regardais « les
+     flyers de la semaine ». 📌 Ce qui tourne tout seul sort du champ de vision.
+     Cinq manquements corrigés d'un coup :
+
+     1. LE TITRE PARLE ENFIN AU LECTEUR. « Demain matin, MER AGITÉE. » était un
+        constat de bulletin météo. Toute notre voix dit « tu » — « TU L'AS
+        DÉJÀ », « TU PARS. TU REVIENS. », « ON NE VISITE PAS MOHÉLI » — et le
+        bulletin était la seule pièce impersonnelle de la marque. C'est la même
+        incohérence que la casse, un cran plus haut.
+        ✅ « DEMAIN, TA MER : / … » — la mer devient la sienne.
+        ⚠️ Premier essai « DEMAIN MATIN, / TA MER EST … » : trois lignes rendues
+        et une collision, sur DEUX des cinq états de mer (« PEU AGITÉE », « TRÈS
+        FORTE »). À 86 px dans 928 px, la colonne tient 17 signes par ligne, pas
+        22. 📌 Un gabarit ne se vérifie pas sur la valeur du jour : il se vérifie
+        sur la PLUS LONGUE des valeurs possibles. C'est le titre qui a rétréci,
+        jamais la colonne.
+        ⚠️ Il a fallu un ETAT_COURT dans `bulletin.py` : ETAT vaut « MER
+        AGITÉE », on aurait lu « TA MER EST MER AGITÉE ». ETAT n'a PAS été
+        changé — il sert au JSON et au texte du post, et tordre son sens pour
+        arranger une mise en page casserait les deux.
+
+     2. LE TITRE PASSE EN CAPITALES, comme toute la marque (Coca-Cola § 2.35).
+
+     3. UN APPEL À L'ACTION, ET DANS LES DEUX ÉTATS DU SERVICE. Le bandeau d'or
+        disait déjà « RÉSERVE POUR DEMAIN » quand c'est ouvert — il lui manquait
+        juste la classe `.cta` pour être vu du contrôle. Fermé, il disait
+        « TRAVERSÉES SUSPENDUES » : un constat, pas un appel. C'est devenu
+        « ÉCRIS-NOUS, ON TE PRÉVIENT » (`service.py`), et l'information
+        « suspendues » descend en troisième ligne. Rien n'est perdu.
+
+     4. LE « ▸ » A DISPARU. U+25B8 est absent de nos woff2 latins : Chromium le
+        remplaçait en silence par une police système. Remplacé par un chevron
+        dessiné en SVG — ce qui est dessiné ne dépend d'aucune police.
+
+     5. LA ZONE DE RESPIRATION DU LOGO (Apple, p. 10 : la moitié de la hauteur
+        de l'emblème, soit 34 px). `.sur` entrait de 16 px sous le coin blanc.
+        Tout le bloc de tête est descendu, `.carte` avec lui.
      Le patron : « je l'ai approuvé parce que je ne savais pas que tu pouvais
      faire d'aussi beaux flyers ; un beau flyer attire l'attention. »
      L'ancien gabarit (photo plein cadre, carte en verre) est conservé sous
@@ -56,21 +99,21 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   color:rgba(255,255,255,.56); }
 
 /* la date et la fenêtre horaire : une ligne de bulletin, pas un titre */
-.sur { position:absolute; left:76px; top:190px; z-index:3; font-size:14px;
+.sur { position:absolute; left:76px; top:212px; z-index:3; font-size:14px;
   font-weight:700; letter-spacing:3px; color:#F6BC1C; }
 
-.acc { position:absolute; left:76px; top:224px; width:928px; z-index:3;
+.acc { position:absolute; left:76px; top:246px; width:928px; z-index:3;
   font-family:'Archivo',sans-serif; font-weight:900; font-size:86px; line-height:.97;
   letter-spacing:-3.2px; color:#fff; }
 .acc span { display:block;
   background:linear-gradient(178deg,#FFF3C4 4%,#F6BC1C 34%,#C98A05 62%,#FFDD73 96%);
   -webkit-background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 8px 22px rgba(150,100,4,.38)); }
-.sous { position:absolute; left:76px; top:398px; width:880px; z-index:3;
+.sous { position:absolute; left:76px; top:420px; width:880px; z-index:3;
   font-size:22px; line-height:1.4; font-weight:500; color:#CBD9EF; }
 
 /* L'OBJET : la donnée. Elle est à nous, elle est vraie, elle est unique. */
-.carte { position:absolute; left:76px; top:470px; width:928px; z-index:3;
+.carte { position:absolute; left:76px; top:492px; width:928px; z-index:3;
   background:#F6F9FF; border-radius:22px; padding:26px 32px 28px;
   box-shadow:0 26px 56px rgba(4,12,40,.42); }
 .tete { display:flex; align-items:baseline; justify-content:space-between;
@@ -124,11 +167,17 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
 .action .qr { flex:0 0 116px; height:116px; background:#fff; border-radius:12px;
   padding:7px; box-shadow:0 6px 18px rgba(80,55,0,.28); }
 .action .qr img { width:100%; height:100%; display:block; }
-.action .scanne { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
+.action .cta { font-family:'Archivo',sans-serif; font-weight:900; font-size:22px;
   letter-spacing:.5px; color:#0A1D42; }
 .action .adr { margin-top:4px; font-family:'Archivo',sans-serif; font-weight:900;
   font-size:46px; letter-spacing:-1.7px; color:#0A1D42; line-height:1; }
 .action .wa { margin-top:7px; font-size:14px; font-weight:700; color:#4A3A08; }
+
+/* Le chevron entre les deux ports, dessiné plutôt que tapé : U+25B8 est absent
+   de nos woff2 latins, et un caractère absent ne lève aucune erreur — il change
+   juste le dessin, en silence. Ce qui est tracé ne dépend d'aucune police. */
+.tete .chev { width:.5em; height:.62em; display:inline-block; vertical-align:-.02em;
+  margin:0 .18em; }
 
 .src { position:absolute; left:76px; right:76px; bottom:52px; z-index:3;
   border-top:2px solid rgba(246,188,28,.5); padding-top:16px;
@@ -143,11 +192,11 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="ligne">OUROVENI · HOANI<br>CHINDINI · FOMBONI</div>
 
   <div class="sur">{{OVER}}</div>
-  <div class="acc">Demain matin,<span>{{ETAT}}.</span></div>
+  <div class="acc">DEMAIN, TA MER :<span>{{ETAT_COURT}}.</span></div>
   <div class="sous">{{CONSEIL}}</div>
 
   <div class="carte">
-    <div class="tete"><span>{{TITRE_BULLETIN}} · <i>OUROVENI ▸ HOANI</i></span>
+    <div class="tete"><span>{{TITRE_BULLETIN}} · <i>OUROVENI <svg class="chev" viewBox="0 0 8 10" aria-hidden="true"><path d="M1 1l5 4-5 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> HOANI</i></span>
       <span class="quand">Prévision relevée {{MAJ}}</span></div>
 
     <div class="chiffre">
@@ -158,10 +207,25 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <div class="jauge">{{GAUGE}}</div>
     <div class="jauge-lab">{{GAUGE_LAB}}</div>
 
+    <!-- 🚩 DEUX DES TROIS CHIFFRES SONT PARTIS LE 02/09/2026, et ce n'est pas
+         une question de place. Le patron : « on ne doit pas avoir plus d'une
+         information par flyer ». En comptant honnêtement, ce bulletin disait
+         LA MÊME CHOSE TROIS FOIS : la houle en gros chiffre (0,9 m), puis en
+         amplitude (0,9–1,0 m), puis en courbe. Trois fois le même fait n'est
+         pas de la profondeur, c'est de la répétition — et chaque répétition
+         vole du regard au verdict, qui est la seule chose à retenir.
+         · PÉRIODE DE HOULE (7,1 s) : supprimé. C'est un chiffre de
+           météorologue. Aucun voyageur ne sait ce qu'il doit en faire, et un
+           chiffre qu'on ne sait pas lire n'informe pas — il impressionne, ce
+           qui n'est pas la même chose et n'est pas notre métier.
+         · AMPLITUDE (0,9–1,0 m) : supprimé, doublon exact du gros chiffre.
+         · VENT : gardé. C'est le seul fait VRAIMENT distinct de la houle, et
+           il change la traversée pour de bon.
+         ⚠️ PERIODE, AMPLI et AMPLI_LAB restent calculés dans `bulletin.py` et
+         écrits dans `bulletin.json` : la donnée ne disparaît pas, elle cesse
+         seulement d'être affichée. On pourra la remettre sans rien recalculer. -->
     <div class="faits">
       <div><b>{{VENT}}<i>km/h</i></b><small>VENT DE {{DIRV}}</small></div>
-      <div><b>{{PERIODE}}<i>s</i></b><small>PÉRIODE DE HOULE</small></div>
-      <div><b>{{AMPLI}}</b><small>{{AMPLI_LAB}}</small></div>
     </div>
 
     <div class="courbe">
@@ -179,7 +243,7 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
   <div class="action">
     <div class="qr"><img src="qr-moheligo.png" alt="QR vers moheligo.com"></div>
     <div>
-      <div class="scanne">{{CTA_TITRE}}</div>
+      <div class="cta">{{CTA_TITRE}}</div>
       <div class="adr">{{CTA_ADR}}</div>
       <div class="wa">{{CTA_WA}}</div>
     </div>
@@ -189,6 +253,6 @@ body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font
     <span><b>Source : Open-Meteo Marine</b> — couloir Ouroveni–Hoani. Nous ne
       décidons pas des départs : nous publions la mer.</span>
     <span style="text-align:right;max-width:300px">Le bulletin officiel affiché à
-      l'embarquement fait toujours foi.</span>
+      l’embarquement fait toujours foi.</span>
   </div>
 </div>

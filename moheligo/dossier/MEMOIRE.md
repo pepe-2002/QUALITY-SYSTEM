@@ -370,6 +370,57 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (soir — 🚩 LE FILET ÉTAIT UNE DÉCORATION, et je m'en aperçois
+  en vérifiant autre chose)** — bulletin publié à **19h27**, vérifié depuis la
+  page : `2026-09-02 à 19:27 — LA MER DE DEMAIN, CE SOIR.` Mer de demain (03/09)
+  **peu agitée, houle 0,91 m, vent 11 km/h est.** Page : **45 abonnés.**
+
+  ⛔ **CE QUE J'AI TROUVÉ EN VÉRIFIANT UNE QUESTION ANNEXE.** Je croyais le
+  `schedule:` GitHub muet depuis le 27/08 ; **il ne l'était pas.** Les trois
+  crons du 01/09 ont bien été livrés :
+  · 19h20 → arrivé **22h26** (3 h 06 de retard)
+  · 20h00 → arrivé **22h39** (2 h 39)
+  · 20h40 → arrivé **23h08** (2 h 28)
+  Les trois ont tourné entièrement, et les trois ont été arrêtés par le
+  garde-fou d'heure : étape « Publier » = `skipped`, trois fois.
+
+  Le garde-fou a donc parfaitement marché. **Le filet, lui, n'a jamais servi à
+  rien** : si la session avait été morte ce soir-là — le cas exact pour lequel
+  il existe — la page serait restée muette malgré trois déclenchements réussis.
+  📌 **UN DISPOSITIF DE SECOURS QUI NE SE DÉCLENCHE JAMAIS DANS SA FENÊTRE
+  N'EST PAS UN SECOURS, C'EST UNE DÉCORATION QUI RASSURE** — et c'est pire
+  qu'une absence, parce qu'on arrête de chercher une vraie solution.
+  📌 Et la raison pour laquelle je ne l'avais pas vu : **un garde-fou qui
+  refuse tout est indiscernable d'un garde-fou qui marche, tant qu'on ne
+  regarde que ses refus.** Je mesurais « le cron a-t-il été bloqué ? » ; la
+  bonne question était « le filet a-t-il, une seule fois, servi à quelque
+  chose ? »
+
+  ✅ **DEUX CORRECTIONS, QUI VONT ENSEMBLE :**
+  1. **La fenêtre devient 19h45 → 23h00** (au lieu de 18h00 → 22h00), comptée
+     en minutes et non en heures pleines. Elle commence **après** le battement
+     de 19h25 pour que le filet ne prenne jamais la place du rendez-vous
+     quotidien ; elle finit à 23h00 parce que la vraie question n'est pas
+     « est-ce l'heure idéale ? » mais « vaut-il mieux ça, ou une page muette ? ».
+     Avec cette seule borne, deux des trois crons d'hier auraient publié.
+  2. **Dix crons semés de 08h15 à 19h00 UTC** au lieu de trois groupés. Les
+     retards mesurés vont de ~20 min à 8 h 43 et sont imprévisibles : aucun
+     horaire unique ne peut tomber juste, donc on couvre les trois régimes de
+     retard observés (0-1 h, 2-4 h, 7-10 h). Les surnuméraires ne coûtent rien
+     — hors fenêtre ils se taisent, dans la fenêtre `deja_publie()` les refuse
+     en ~3 s.
+
+  🔴 **RESTE À DÉCIDER PAR LE PATRON — le flyer de midi n'a AUCUN filet.**
+  `publication-du-jour.yml` n'a plus de `schedule:` du tout depuis le 28/08 :
+  il dépend à 100 % du battement, donc de la session. C'est exactement ce qui a
+  coûté le silence du 31/08. Je ne l'arme pas de moi-même, et pour une raison
+  de fond : le soir, le cron sait quoi publier (le bulletin de la mer est
+  calculé). À midi, **les exceptions vivent dans ma consigne, pas dans le
+  robot** — un cron publierait le flyer du calendrier en ignorant « ce
+  mercredi, sors TU L'AS DÉJÀ ». Armer midi demande d'abord de sortir les
+  exceptions de ma tête et de les écrire dans un fichier que le robot lit.
+  📌 **On n'automatise pas un jugement tant qu'il n'est pas écrit quelque part.**
+
 - **02/09/2026 (midi — « TU L'AS DÉJÀ » EST ENFIN SORTI, avec deux jours de
   retard, et le patron a tranché entre deux flyers)** — publié à **12h15**,
   vérifié dans le rapport lu DEPUIS LA PAGE : `2026-09-02 à 12:15 — TU L'AS

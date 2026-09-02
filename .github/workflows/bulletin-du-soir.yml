@@ -32,14 +32,62 @@
 #
 # ➡️ LA SYNTHÈSE : on ne choisit pas entre les deux pannes, on supprime le DÉGÂT
 #    de la seconde solution. Le `cron` est réarmé, MAIS le travail refuse de
-#    publier hors de la fenêtre du soir (18h00-22h00, heure des Comores). Un cron
-#    livré à 3h38 fabrique alors le flyer, le dépose sur la branche, et **ne
-#    publie pas**. Trois horaires plutôt qu'un, pour qu'un retard modéré tombe
-#    quand même dans la fenêtre.
+#    publier hors de la fenêtre du soir. Un cron livré à 3h38 fabrique alors le
+#    flyer, le dépose sur la branche, et **ne publie pas**.
 # 📌 LA RÈGLE GÉNÉRALE : quand un outil est peu fiable sur QUAND il agit, on ne
 #    le supprime pas et on ne lui fait pas confiance — on lui interdit d'agir au
 #    mauvais moment. Le battement, lui, n'est jamais bridé : il arrive à l'heure
 #    par construction, et il porte l'ordre FORCER quand il faut passer outre.
+#
+# ══════════════════════════════════════════════════════════════════════════
+# 🚩 02/09/2026 — LE FILET ÉTAIT ARMÉ ET IL N'A JAMAIS PU ATTRAPER QUOI QUE
+#    CE SOIT. C'est mesuré, pas supposé.
+#
+#    Les trois `cron` du 01/09 ONT été livrés — contrairement à ce que j'avais
+#    conclu le soir même. Voici à quelle heure, aux Comores :
+#      · cron 19h20  →  livré 22h26   (3 h 06 de retard)
+#      · cron 20h00  →  livré 22h39   (2 h 39 de retard)
+#      · cron 20h40  →  livré 23h08   (2 h 28 de retard)
+#    Les trois ont tourné jusqu'au bout, et les trois ont été arrêtés par le
+#    garde-fou : « Publier sur la page Facebook » = skipped, trois fois.
+#
+#    Le garde-fou a donc parfaitement fait son travail. Le FILET, lui, n'a
+#    servi à rien : si la session avait été morte ce soir-là — le cas même
+#    pour lequel il existe — la page serait restée muette malgré trois
+#    déclenchements réussis.
+#
+# ⛔ **UN DISPOSITIF DE SECOURS QUI NE SE DÉCLENCHE JAMAIS DANS SA FENÊTRE
+#    N'EST PAS UN SECOURS : C'EST UNE DÉCORATION QUI RASSURE.** Et c'est pire
+#    qu'une absence, parce qu'on cesse de chercher une vraie solution.
+#
+# ✅ DEUX CORRECTIONS, ET ELLES VONT ENSEMBLE :
+#
+#    1. LA FENÊTRE COMMENCE APRÈS LE BATTEMENT, ET FINIT PLUS TARD :
+#       **19h45 → 23h00** au lieu de 18h00 → 22h00.
+#       · Elle COMMENCE à 19h45 pour que le filet n'entre jamais en
+#         concurrence avec le battement de 19h25 : un cron ponctuel qui
+#         publierait à 19h00 déplacerait le rendez-vous quotidien, et le
+#         battement se ferait ensuite refuser comme doublon. Le filet rattrape
+#         ce que le battement a laissé tomber, il ne lui prend pas sa place.
+#       · Elle FINIT à 23h00 parce qu'un bulletin à 22h30 se lit encore, et
+#         que la vraie question n'est pas « est-ce l'heure idéale ? » mais
+#         « vaut-il mieux ça, ou une page muette ? ». Avec cette seule borne,
+#         deux des trois crons du 01/09 auraient publié.
+#
+#    2. ON ÉLARGIT LE FILET DANS LE TEMPS, PAS DANS LE NOMBRE D'ESSAIS À LA
+#       MÊME HEURE. Les retards mesurés vont de ~20 min à 8 h 43 et sont
+#       imprévisibles ; aucun horaire unique ne peut donc tomber juste. On
+#       sème les `cron` sur toute la journée pour qu'un retard QUELCONQUE en
+#       fasse atterrir au moins un dans la fenêtre du soir (voir ci-dessous).
+#       Les surnuméraires ne coûtent rien : hors fenêtre ils se taisent, et
+#       dans la fenêtre `publier_fb.deja_publie()` refuse le doublon en ~3 s.
+#
+# 📌 LA LEÇON, PLUS LARGE QUE CE FICHIER : **un garde-fou qui refuse tout est
+#    indiscernable d'un garde-fou qui marche, tant qu'on ne regarde que ses
+#    refus.** Ce qu'il fallait mesurer n'était pas « le cron a-t-il été
+#    bloqué ? » mais « le filet a-t-il déjà, une seule fois, servi à quelque
+#    chose ? ». Trouvé le 02/09 en vérifiant une question annexe.
+# ══════════════════════════════════════════════════════════════════════════
 
 name: Bulletin du soir
 
@@ -48,14 +96,37 @@ on:
     branches: [main]
     paths: ['moheligo/pub/flyers/battement-soir.txt']
 
-  # ⏰ Heures des Comores = UTC+3. 16:20 UTC = 19h20 ; 17:00 = 20h00 ; 17:40 = 20h40.
-  # Le premier arrivé publie, les suivants se font refuser comme doublons par
-  # `publier_fb.deja_publie()` (~3 s, sans effet). C'est exactement ce qu'on veut :
-  # trois chances, une seule publication.
+  # ⏰ Heures des Comores = UTC+3, sans changement d'heure dans l'année.
+  # LA FENÊTRE QUI PUBLIE : 19h45 → 23h00 aux Comores, soit **16:45 → 20:00 UTC**.
+  #
+  # Ces horaires ne sont PAS des heures de publication : ce sont des heures de
+  # DÉPART. Ce qui compte est l'heure d'ARRIVÉE, et le retard de GitHub est
+  # imprévisible (mesuré : ~20 min, 2 h 28, 3 h 06, 8 h 25, 8 h 43, et quatre
+  # jours sans aucune livraison). On sème donc large pour qu'un retard
+  # quelconque en fasse atterrir un dans la fenêtre :
+  #
+  #   · départs 16:45 / 17:30 / 18:15 / 19:00 UTC → tombent juste si GitHub est
+  #     à l'heure ou presque (retard 0 à ~1 h) ;
+  #   · départs 14:00 / 15:00 / 16:00 UTC        → couvrent un retard de ~2 à 4 h,
+  #     celui mesuré le 01/09 ;
+  #   · départs 08:15 / 09:15 / 10:15 UTC        → couvrent un retard de ~7 à 10 h,
+  #     celui mesuré le 27/08.
+  #
+  # Tout ce qui arrive hors fenêtre fabrique le flyer, le dépose sur la branche
+  # `bulletin-du-jour` — donc le lien du patron reste à jour — et se tait.
+  # Tout ce qui arrive dans la fenêtre après une publication déjà faite se fait
+  # refuser en ~3 s par `publier_fb.deja_publie()`. Le doublon reste impossible.
   schedule:
-    - cron: '20 16 * * *'
-    - cron: '0 17 * * *'
-    - cron: '40 17 * * *'
+    - cron: '15 8 * * *'
+    - cron: '15 9 * * *'
+    - cron: '15 10 * * *'
+    - cron: '0 14 * * *'
+    - cron: '0 15 * * *'
+    - cron: '0 16 * * *'
+    - cron: '45 16 * * *'
+    - cron: '30 17 * * *'
+    - cron: '15 18 * * *'
+    - cron: '0 19 * * *'
 
   workflow_dispatch:           # bouton « Run workflow » dans l'onglet Actions
     inputs:
@@ -184,6 +255,12 @@ jobs:
       # arrivent quand quelqu'un l'a décidé, pas quand une file d'attente se
       # vide. Le 27/08, un cron livré à 00h37 a publié le bulletin à 3h38 du
       # matin ; avec cette étape, il aurait fabriqué le flyer et s'est tu.
+      #
+      # ⏱️ LA FENÊTRE SE COMPTE EN MINUTES, PAS EN HEURES PLEINES, et sa borne
+      # basse est 19h45 — vingt minutes APRÈS le battement de 19h25. Une borne
+      # à l'heure pleine (« H >= 19 ») laisserait un cron publier à 19h02 et
+      # déplacerait le rendez-vous quotidien de tout le monde. Le filet passe
+      # derrière le battement, jamais devant.
       - name: Sommes-nous dans la fenêtre du soir ?
         id: fenetre
         run: |
@@ -193,13 +270,18 @@ jobs:
             exit 0
           fi
           # Heure des Comores = UTC+3, sans changement d'heure dans l'année.
-          H=$(TZ=Indian/Comoro date +%H)
-          echo "Il est ${H}h aux Comores (déclenchement par l'horloge GitHub)."
-          if [ "$H" -ge 18 ] && [ "$H" -lt 22 ]; then
+          MAINTENANT=$(TZ=Indian/Comoro date '+%H:%M')
+          MINUTES=$(( 10#$(TZ=Indian/Comoro date +%H) * 60 + 10#$(TZ=Indian/Comoro date +%M) ))
+          DEBUT=$(( 19 * 60 + 45 ))
+          FIN=$(( 23 * 60 ))
+          echo "Il est ${MAINTENANT} aux Comores (déclenchement par l'horloge GitHub)."
+          echo "Fenêtre du filet : 19h45 → 23h00."
+          if [ "$MINUTES" -ge "$DEBUT" ] && [ "$MINUTES" -lt "$FIN" ]; then
+            echo "Dans la fenêtre : ce cron a le droit de publier (et sera refusé comme doublon si le battement est déjà passé)."
             echo "ok=oui" >> "$GITHUB_OUTPUT"
           else
             echo "ok=non" >> "$GITHUB_OUTPUT"
-            echo "::notice::Hors de la fenêtre du soir (18h-22h aux Comores) : le flyer est fabriqué et déposé, mais RIEN n'est publié. Un rendez-vous livré en retard ne doit pas publier quand personne ne regarde."
+            echo "::notice::${MAINTENANT} aux Comores, hors de la fenêtre du filet (19h45-23h00) : le flyer est fabriqué et déposé sur la branche bulletin-du-jour, mais RIEN n'est publié. Avant 19h45 le battement a la priorité ; après 23h00 plus personne ne regarde."
           fi
 
       - name: Publier sur la page Facebook

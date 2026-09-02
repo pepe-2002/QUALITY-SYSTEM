@@ -370,6 +370,27 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🚩 LE VENDREDI PUBLIAIT LA VARIANTE QUE LE PATRON N'AVAIT PAS
+  CHOISIE)** — le patron : « celui du vendredi, enlève l'application, laisse
+  juste le texte ». Or c'était **déjà** sa décision de ce midi (« entre le flyer
+  avec l'écran de l'App et sans écran… » → réponse : sans écran), et le
+  calendrier pointait bien sur `flyer47b`, la version sans écran.
+
+  ⛔ **LE CHOIX N'ÉTAIT PAS PERDU DANS UNE DISCUSSION : IL ÉTAIT PERDU DANS UN
+  CHEMIN DE FICHIER.** La ligne « Rendu » de `flyer47b` avait été copiée depuis
+  `flyer47` et jamais corrigée : **les deux variantes déclaraient produire le
+  même `flyer-etudes-facebook.png`.** Le dernier rendu écrasait l'autre, et
+  c'était celui AVEC l'écran. Le calendrier était juste, la décision était
+  juste, et c'est le fichier de sortie qui a tranché à leur place.
+  📌 **DEUX SOURCES QUI ÉCRIVENT DANS LE MÊME FICHIER, C'EST UNE SOURCE DE
+  TROP.** Une décision ne tient que si la mécanique ne peut pas la contredire.
+  ✅ Recherche faite sur toute la bibliothèque : un seul autre cas, le bulletin
+  du soir (gabarit → fichier rempli → PNG), et celui-là est légitime, c'est la
+  même chaîne.
+  ✅ `flyer47` (avec écran) supprimé — on ne garde pas la variante écartée à côté
+  de celle qu'on publie, elle finit par sortir. `flyer47b` est désormais seul
+  propriétaire de sa sortie.
+
 - **02/09/2026 (🌍 LES CHARTES D'APPLE ET DE COCA-COLA, LUES DANS LE TEXTE)** —
   le patron : « va regarder les règles d'Apple ou Coca-Cola, même si c'est très
   strict on les suit au détail près. Je veux une com de niveau international,

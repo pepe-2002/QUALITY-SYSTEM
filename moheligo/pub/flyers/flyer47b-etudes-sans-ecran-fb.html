@@ -47,7 +47,18 @@
      Le détourage les retire. `../photos/detourer-portrait.py` — reproductible,
      et les six défauts trouvés à l’œil y sont documentés un par un.
 
-     Rendu : node render.js flyer47-etudes-fb.html flyer-etudes-facebook.png 1080 1350 2 -->
+     🚩 02/09/2026 — CE FICHIER PRODUISAIT LE PNG DE QUELQU’UN D’AUTRE.
+     Sa ligne « Rendu » avait été copiée depuis `flyer47` et jamais corrigée :
+     les DEUX variantes déclaraient écrire `flyer-etudes-facebook.png`. Le
+     dernier rendu gagnait, et c’était celui AVEC l’écran — donc le vendredi
+     publiait la version que le patron n’avait pas choisie, alors que le
+     calendrier pointait bien sur celle-ci.
+     📌 **DEUX SOURCES QUI ÉCRIVENT DANS LE MÊME FICHIER, C’EST UNE SOURCE DE
+     TROP.** Le choix n’était pas perdu dans une discussion : il était perdu
+     dans un chemin de fichier. `flyer47` a donc été supprimé — on ne garde pas
+     la variante écartée à côté de celle qu’on publie, elle finit par sortir.
+
+     Rendu : node render.js flyer47b-etudes-sans-ecran-fb.html flyer-etudes-facebook.png 1080 1350 2 -->
 <meta charset="utf-8">
 <style>
 @font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }

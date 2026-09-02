@@ -41,18 +41,29 @@ Et de toute façon : **on demande toujours l'original.** Ces sept-là sont des
 copies compressées (signature d'un renvoi WhatsApp). L'original du téléphone
 ferait 3000 à 4000 px et cette page entière deviendrait inutile.
 
-🔧 CE QUE FAIT LE PROGRAMME : Lanczos (le meilleur des interpolateurs classiques
-pour agrandir), puis un masque flou LÉGER. Léger, parce qu'accentuer fort sur une
-image agrandie ne rend pas le détail perdu : ça dessine des liserés blancs autour
-des contours, et un liseré se voit beaucoup plus qu'un flou.
+🔧 CE QUE FAIT LE PROGRAMME : il coupe les bandes de capture d'écran, cadre sans
+déformer, puis délègue l'agrandissement à `affiner.py` — débruitage, puis
+**rétroprojection itérative**, puis un accentuage faible guidé par les contours.
+📊 Mesuré sur les sept photos à taille de sortie identique : l'acutance des
+contours **double**, et sur les plus compressées le bruit **baisse** en même
+temps. Voir `affiner.py` pour le détail, et surtout pour la surprise : c'est la
+rétroprojection qui fait le travail, pas l'accentuage.
+
+⚠️ LE SEUIL DE DIAGNOSTIC CI-DESSOUS SE LIT SUR LA SOURCE, JAMAIS SUR LE
+RÉSULTAT. Je m'y suis fait prendre : appliqué à l'image déjà agrandie, il annonce
+des « détails fins » deux fois plus bas et donc des verdicts flatteurs — alors
+que la seule chose qui a changé, c'est le nombre de pixels.
+📌 Un seuil calibré à une échelle ne veut plus rien dire à une autre.
 """
+import pathlib
 import sys
 
 import cv2
 import numpy as np
 
-# Accentuage volontairement modéré : au-delà, on fabrique des halos.
-RAYON, FORCE = 2.4, 0.42
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+import affiner                                   # noqa: E402
+
 
 
 def sans_bandes(im, seuil=4.0):
@@ -91,7 +102,12 @@ def preparer(source, largeur, hauteur):
     # visuel amateur, et ça se voit surtout sur un horizon : la mer penche.
     echelle = max(largeur / w, hauteur / h)
     nw, nh = int(round(w * echelle)), int(round(h * echelle))
-    g = cv2.resize(im, (nw, nh), interpolation=cv2.INTER_LANCZOS4)
+    # 02/09/2026 — l'agrandissement passe par `affiner.py` et non plus par un
+    # simple Lanczos. Mesuré sur les sept photos, à taille de sortie IDENTIQUE :
+    # l'acutance des contours DOUBLE, et sur les photos les plus compressées le
+    # bruit BAISSE en même temps. Ce n'est pas du maquillage : la
+    # rétroprojection recolle le résultat aux pixels réellement mesurés.
+    g, _ = affiner.affiner(im, nw, nh)
 
     # On coupe au centre horizontalement, mais on garde le HAUT verticalement :
     # sur une photo de plage, le ciel et l'horizon sont en haut, et c'est cette
@@ -100,8 +116,10 @@ def preparer(source, largeur, hauteur):
     x = (nw - largeur) // 2
     g = g[0:hauteur, x:x + largeur]
 
-    flou = cv2.GaussianBlur(g, (0, 0), RAYON)
-    return cv2.addWeighted(g, 1 + FORCE, flou, -FORCE, 0)
+    # Plus d'accentuage ici : `affiner` en applique déjà un, guidé par les
+    # contours. En empiler un second, aveugle celui-là, redonnerait exactement
+    # le grain qu'on vient d'éviter.
+    return g
 
 
 def diagnostic(source):

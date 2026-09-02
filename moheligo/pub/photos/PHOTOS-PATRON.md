@@ -33,6 +33,42 @@ inventer entre deux pixels. Les six autres ont du feuillage ou du sable en gros
 plan — agrandies trois fois, elles deviennent une bouillie plastique. Le
 raisonnement complet et la mesure sont dans `preparer-photo.py`.
 
+### 🔧 02/09 (le soir) — « tu peux les rendre claires si tu veux, essaye »
+
+Fait, et ça marche mieux que prévu. `affiner.py` remplace le simple
+agrandissement par une chaîne en trois temps : débruitage **avant** d'agrandir,
+puis **rétroprojection itérative**, puis un accentuage faible guidé par les
+contours.
+
+Mesuré sur les sept, **à taille de sortie identique** (c'est la seule
+comparaison qui veut dire quelque chose) :
+
+| Photo | acutance Lanczos | acutance chaîne | bruit avant → après |
+|---|---|---|---|
+| `ff2f2c99` | 81 | **105** | 0,15 → 0,30 |
+| `351bb23e` | 126 | **224** | 0,77 → **0,57** |
+| `a8e67ba2` | 174 | **330** | 0,07 → 0,28 |
+| `f8e49809` | 161 | **320** | 0,19 → 0,33 |
+| `35a48775` | 173 | **336** | 0,18 → 0,29 |
+| `687575d6` | 226 | **433** | 0,65 → **0,41** |
+| `86669324` | 168 | **329** | 1,66 → 1,72 |
+
+**L'acutance double partout**, et sur les deux photos les plus compressées le
+bruit **baisse** en même temps. Vérifié à l'œil : sur la colline boisée, on
+distingue les palmes là où Lanczos donnait une purée verte.
+
+⛔ **ET UNE ERREUR DE MESURE QUE J'AI FAITE, PARCE QU'ELLE PEUT SE REFAIRE :**
+j'ai d'abord relancé le diagnostic « détail fin » sur les images DÉJÀ AGRANDIES,
+et il annonçait des scores deux fois meilleurs — donc des verdicts flatteurs.
+C'était faux : le détail fin se compte par pixel, et tripler les pixels le
+divise mécaniquement. La seule chose qui avait changé, c'était l'échelle.
+📌 **UN SEUIL CALIBRÉ À UNE ÉCHELLE NE VEUT PLUS RIEN DIRE À UNE AUTRE.** Le
+diagnostic se lit sur la SOURCE, jamais sur le résultat.
+✅ Les verdicts du tableau plus haut restent donc valables tels quels. Ce que la
+chaîne change, c'est la QUALITÉ à l'intérieur de chaque catégorie — une photo
+« demi-page » reste demi-page, mais sa demi-page est nettement meilleure.
+Chaque promotion se décide à l'œil, sur le visuel fini, pas sur un chiffre.
+
 ### 🔴 Ce qu'il faut demander, et pourquoi c'est la vraie solution
 
 Ces sept fichiers sont des **copies compressées** — 720 px, c'est la signature

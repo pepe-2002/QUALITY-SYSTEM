@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02/09/2026 (🔬 « TU PEUX LES RENDRE CLAIRES, ESSAYE » — et l'outil évident
+  n'était pas le bon)** — `affiner.py` : débruitage AVANT l'agrandissement, puis
+  **rétroprojection itérative**, puis un accentuage faible guidé par les
+  contours. Mesuré sur les sept photos à taille de sortie identique :
+  **l'acutance des contours DOUBLE**, et sur les deux plus compressées le bruit
+  **baisse** en même temps. Vérifié à l'œil.
+
+  ⛔ **LE RÉSULTAT A CONTREDIT MON INTUITION, ET C'EST LE PLUS UTILE.** Sur la
+  photo la plus difficile :
+  · Lanczos seul → acutance 226, bruit 0,65
+  · **rétroprojection SEULE → 388, bruit 0,40**
+  · + accentuage 0,30 → 433
+  · + accentuage 0,85 → 504, mais **granuleux à l'œil**
+  L'accentuage — l'outil qui porte le nom du problème — apporte le moins. La
+  rétroprojection seule gagne +72 % AVEC MOINS DE BRUIT, parce qu'elle
+  n'invente rien : elle impose que le résultat, réduit à 720 px, redonne
+  l'original. C'est une contrainte de fidélité, pas un maquillage.
+  📌 **L'OUTIL QUI PORTE LE NOM DU PROBLÈME N'EST PRESQUE JAMAIS CELUI QUI LE
+  RÉSOUT.**
+  📌 Et à 0,85 les chiffres montaient encore alors que l'image devenait laide :
+  **le chiffre ne décide pas seul.**
+
+  ⛔ **UNE ERREUR DE MESURE, RATTRAPÉE AVANT DE LA RAPPORTER.** J'ai d'abord
+  relancé le diagnostic « détail fin » sur les images DÉJÀ AGRANDIES : il
+  annonçait des scores deux fois meilleurs, et j'ai failli annoncer que quatre
+  photos passaient d'une catégorie à l'autre. C'était faux — le détail fin se
+  compte par pixel, tripler les pixels le divise mécaniquement. Seule l'échelle
+  avait changé.
+  📌 **UN SEUIL CALIBRÉ À UNE ÉCHELLE NE VEUT PLUS RIEN DIRE À UNE AUTRE.**
+  Deuxième fois dans la journée qu'un indicateur donne une réponse fausse avec
+  aplomb (après les 97,8 % / 97,7 %). Les deux fois, ce qui a sauvé, c'est
+  d'avoir regardé l'image.
+
 - **02/09/2026 (🏆 LE GABARIT DE RÉFÉRENCE, et le test du logo caché)** — le
   patron envoie sept photos de plages : « c'est pour les flyers ; nos flyers
   hors bulletin doivent contenir une photo. Sois très original et clair mais

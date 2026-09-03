@@ -11,7 +11,7 @@ directeur marketing et commercial, tu vas tout gérer les pubs. »
     jeudi            la proximité de l'île
     vendredi         partir et revenir
     samedi           la destination
-    dimanche         — (à écrire)
+    dimanche         la fierté
 
 🚩 RÉÉCRIT LE 02/09/2026, APRÈS LE GRAND NETTOYAGE.
 Le patron : « supprime tous les flyers qui ne sont pas aux normes, les anciens
@@ -68,7 +68,8 @@ SEMAINE = {
         'partir et revenir'),
     5: ('flyer-revenir-facebook.png', 'texte-revenir.txt',
         'la destination'),
-    6: None,                                    # dimanche — à écrire
+    6: ('flyer-chez-nous-facebook.png', 'texte-chez-nous.txt',
+        'la fierté'),
 }
 
 # --- LE MATIN : plus rien, et il faut le dire ------------------------------

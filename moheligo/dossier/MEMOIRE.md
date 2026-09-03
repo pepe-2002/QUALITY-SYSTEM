@@ -370,6 +370,53 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **03/09/2026 (🏆 LA SEMAINE EST COMPLÈTE — et LA FIERTÉ était à zéro)** —
+  relecture extérieure transmise par le patron : « certains posts sont encore un
+  peu chargés en texte ; on pourrait renforcer l'aspect **fierté** et
+  **modernité** de Mohéli. »
+
+  ⛔ **J'AI COMPTÉ AVANT DE RÉPONDRE, ET LE RÉSULTAT ÉTAIT SANS APPEL.** La norme
+  prévoit quatre sentiments depuis le 29/08 ; voici ce que la bibliothèque jouait
+  réellement :
+      LE SOULAGEMENT  ██···  2
+      LA PROXIMITÉ    ████·  4
+      **LA FIERTÉ     ·····  0**
+      LA CONFIANCE    ████·  4
+  **Nous avions un clavier de quatre touches et nous n'en jouions que trois.**
+  La critique ne portait donc pas sur un défaut d'exécution : elle portait sur
+  une corde qu'on n'avait jamais tendue.
+  📌 **UNE PALETTE DÉCLARÉE NE SERT À RIEN SI PERSONNE NE COMPTE CE QU'ON EN
+  UTILISE.** Le sentiment était noté dans chaque en-tête depuis cinq jours — nul
+  ne les avait additionnés, alors que ça prend dix lignes de code.
+
+  ✅ **`flyer49` — « ON A FAIT ÇA / CHEZ NOUS. »** Premier visuel de FIERTÉ, et
+  il comble le dernier trou du calendrier : **le dimanche**. La semaine est
+  complète, sept jours sur sept, sans exception.
+  · ce qu'il affirme est vérifiable mot pour mot : entreprise comorienne,
+    commandants et ports comoriens, réservation en ligne ;
+  · **aucun superlatif, aucun « premier », aucun « leader »** — la fierté n'a pas
+    besoin de se comparer, sinon ce n'est plus de la fierté mais de la
+    revendication ;
+  · **la modernité n'est pas dite, elle est montrée** par le geste demandé.
+    📌 Une marque qui doit annoncer qu'elle est moderne ne l'est déjà plus.
+
+  🐛 **ET LE CONTRÔLE A REFUSÉ CE VISUEL — À TORT.** Son en-tête cite les quatre
+  sentiments (le tableau ci-dessus), et `exigence.py` les cherchait n'importe où
+  dans le commentaire : « 4 sentiments déclarés ». Il n'en DÉCLARAIT qu'un, il en
+  MENTIONNAIT quatre.
+  📌 **DÉCLARER ET MENTIONNER NE SONT PAS LA MÊME CHOSE.** Un contrôle qui
+  confond les deux punit précisément les fichiers qui documentent le mieux ce
+  qu'ils font — il décourage donc le comportement qu'on veut. Corrigé : on lit la
+  ligne `SENTIMENT :`, et elle seule.
+
+  📐 **La densité** : le lundi, dernier visuel au-dessus de la barre, perd la
+  légende de sa carte — elle redisait le corps de texte juste au-dessus.
+  **28,6 % → 26,7 %.** Moyenne de la bibliothèque : **21,4 %**.
+
+  ✅ **État : 11 conformes sur 11, famille 5,0/5 sur 10 visuels, zéro collision,
+  sept jours sur sept.** 🔴 Reste : la démonstration du matin à refaire, et le
+  bulletin du soir qui assume ses 57 % (c'est un bulletin de données).
+
 - **02/09/2026 (💎 LE PASSAGE AU PREMIUM — typographie, air, et deux échecs de
   mes propres contrôles)** — relecture extérieure transmise par le patron : « le
   style reste très digital / Instagram, ça n'a pas le raffinement d'Air France

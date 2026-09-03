@@ -1,0 +1,110 @@
+<!-- DIMANCHE — « ON A FAIT ÇA CHEZ NOUS. » — 03/09/2026. Sans date.
+
+     SENTIMENT : LA FIERTÉ
+
+     🚩 IL COMBLE LE DERNIER TROU DU CALENDRIER, ET IL RÉPOND À UNE MESURE.
+     Relecture extérieure transmise par le patron : « on pourrait renforcer un
+     peu plus l'aspect fierté et modernité de Mohéli. » J'ai compté ce que nos
+     visuels déclarent réellement — la norme prévoit quatre sentiments :
+         LE SOULAGEMENT  ██···  2
+         LA PROXIMITÉ    ████·  4
+         LA FIERTÉ       ·····  0     ← jamais joué
+         LA CONFIANCE    ████·  4
+     ⛔ **NOUS AVIONS UN CLAVIER DE QUATRE TOUCHES ET NOUS N'EN JOUIONS QUE
+     TROIS.** La critique ne portait donc pas sur un défaut d'exécution : elle
+     portait sur une corde qu'on n'avait jamais tendue. C'est le premier visuel
+     de FIERTÉ de la bibliothèque.
+     📌 **UNE PALETTE DÉCLARÉE NE SERT À RIEN SI PERSONNE NE COMPTE CE QU'ON EN
+     UTILISE.** Le sentiment était noté dans chaque en-tête depuis le 29/08 —
+     mais nul ne les avait additionnés, alors que ça prend dix lignes.
+
+     ✅ CE QU'IL AFFIRME, ET IL EST VÉRIFIABLE MOT POUR MOT : MoheliGo est une
+     entreprise comorienne, les commandants et les ports sont comoriens, et la
+     traversée se réserve en ligne. Aucun superlatif, aucun « premier », aucun
+     « leader » — la fierté n'a pas besoin de se comparer, sinon ce n'est plus
+     de la fierté, c'est de la revendication.
+     ⚠️ La MODERNITÉ n'est pas dite, elle est montrée par le geste qu'on demande :
+     réserver en ligne. Une marque qui doit annoncer qu'elle est moderne ne l'est
+     déjà plus.
+
+     Rendu : node render.js flyer49-chez-nous-fb.html flyer-chez-nous-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+.photo { position:absolute; top:0; left:0; width:1080px; height:620px; z-index:1; overflow:hidden; }
+.photo img { width:100%; height:100%; object-fit:cover; object-position:50% 28%; display:block; }
+.voile { position:absolute; left:0; top:0; width:1080px; height:220px; z-index:2;
+  background:linear-gradient(180deg, rgba(10,29,66,.72) 0%, rgba(10,29,66,0) 100%); }
+.fondu { position:absolute; left:0; top:450px; width:1080px; height:170px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.46) 100%); }
+.couture { position:absolute; left:0; top:546px; width:1080px; height:86px; z-index:3; }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:16px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:74px; height:74px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+.ligne { position:absolute; top:66px; right:76px; z-index:4; text-align:right;
+  font-size:12px; font-weight:700; letter-spacing:2.6px; line-height:1.7;
+  color:rgba(255,255,255,.94); }
+
+.sur { position:absolute; left:76px; top:702px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+.acc { position:absolute; left:76px; top:740px; width:928px; z-index:5;
+  font-family:'Cormorant',serif; font-weight:400; font-size:88px; line-height:1.1;
+  letter-spacing:5.0px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
+
+.dit { position:absolute; left:76px; top:1000px; width:660px; z-index:5;
+  font-size:22px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.cta { position:absolute; left:76px; top:1130px; z-index:5;
+  background:#F6BC1C; border-radius:14px; padding:19px 30px; display:inline-block;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
+.web { position:absolute; right:76px; top:1148px; z-index:5; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px;
+  color:#fff; letter-spacing:.2px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+</style>
+
+<div class="page">
+  <div class="photo"><img src="photo-ile-moheli.png" alt=""></div>
+  <div class="voile"></div>
+  <div class="fondu"></div>
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+  <div class="ligne">UNE ENTREPRISE COMORIENNE<br>OUROVENI · CHINDINI · HOANI · FOMBONI</div>
+
+  <div class="sur">MOHÉLI · GRANDE COMORE</div>
+  <div class="acc">ON A FAIT ÇA<span>CHEZ NOUS.</span></div>
+
+  <div class="dit">Des commandants d’ici, des ports d’ici.
+    <b>Et une traversée qui se réserve en ligne.</b></div>
+
+  <div class="cta">RÉSERVE TA TRAVERSÉE</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+</div>

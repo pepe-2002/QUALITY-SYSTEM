@@ -272,7 +272,19 @@ def controler(chemin):
                         f'défend pas.')
 
     # ── § 3 LE SENTIMENT DÉCLARÉ ─────────────────────────────────────────────
-    dec = [s for s in SENTIMENTS if s in ent]
+    # 🚩 03/09/2026 — ON LIT LA LIGNE DE DÉCLARATION, PAS TOUT L'EN-TÊTE.
+    # Le contrôle cherchait les quatre noms n'importe où dans le commentaire de
+    # tête. Un visuel dont l'en-tête EXPLIQUE la palette — en citant les quatre
+    # sentiments et le nombre de fois qu'on les joue — se faisait donc refuser
+    # pour « 4 sentiments déclarés ». Il n'en déclarait qu'un : il en MENTIONNAIT
+    # quatre.
+    # 📌 **DÉCLARER ET MENTIONNER NE SONT PAS LA MÊME CHOSE.** Un contrôle qui
+    # confond les deux punit précisément les fichiers qui documentent le mieux ce
+    # qu'ils font — donc il décourage exactement le comportement qu'on veut.
+    # La norme dit « déclaré dans l'en-tête » : la déclaration est la ligne
+    # `SENTIMENT : X`, et c'est elle seule qu'on lit.
+    ligne = re.search(r'SENTIMENT\s*:\s*(.+)', ent)
+    dec = [s for s in SENTIMENTS if s in ligne.group(1)] if ligne else []
     if not dec:
         refuse('3', 'aucun SENTIMENT déclaré dans l’en-tête '
                     f'(un parmi : {", ".join(SENTIMENTS)})')

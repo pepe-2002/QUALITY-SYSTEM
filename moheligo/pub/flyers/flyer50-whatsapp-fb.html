@@ -1,0 +1,151 @@
+<!-- « TA PLACE, EN UN MESSAGE. » — 03/09/2026. AVIS, pas publicité.
+
+     SENTIMENT : LA CONFIANCE
+
+     🔴 POURQUOI CE VISUEL EXISTE. Le patron, 03/09/2026 : « on a un souci aux
+     Comores, MVola ne marche pas, tout son service ne marche pas, et c’est le
+     service qu’on utilise pour le paiement. Fais un flyer mais les gens peuvent
+     réserver sur WhatsApp. »
+
+     ⛔ CE QUE LA PANNE COUPE VRAIMENT, VÉRIFIÉ DANS `index.html` ET PAS SUPPOSÉ :
+     nos DEUX chemins de paiement passent par MVola. Le paiement en ligne
+     (kartaPay, ligne 1865) et le « paiement manuel de secours » (ligne 2186,
+     transfert MVola + référence + capture). Le secours de notre secours était
+     donc le même réseau que le principal.
+     📌 **UN CHEMIN DE SECOURS QUI PARTAGE UNE DÉPENDANCE AVEC LE CHEMIN NORMAL
+     N’EST PAS UN SECOURS, C’EST UNE COPIE.** On l’avait écrit « secours » et on
+     a cru la question réglée. Aujourd’hui les deux tombent ensemble, et le seul
+     chemin qui reste debout est celui qu’on n’avait pas prévu : la conversation.
+     🔴 À DEMANDER AU PATRON (poste C, manuel § 12.2 ter — commercial et
+     encaissement sont à lui) : Holo passe-t-il encore par kartaPay ? Et
+     comment on encaisse pendant la panne ? Tant qu’il n’a pas tranché, **ce
+     visuel ne promet AUCUN moyen de paiement** — il ouvre une conversation, et
+     c’est tout ce qu’il peut promettre sans mentir.
+
+     ✅ CE QU’ON DIT, ET DANS QUEL ORDRE. Trois slots, une seule information.
+       · le surtitre NOMME LE REGISTRE — « AVIS AUX VOYAGEURS ». C’est la
+         formule des compagnies maritimes et aériennes, et c’est la bonne : un
+         avis n’a pas à se déguiser en publicité. Il datera ce visuel tout seul
+         le jour où la panne sera finie, ce qui est exactement ce qu’on veut
+         d’un visuel qui ne doit PAS resservir (le piège de `flyer31`).
+       · le titre PORTE L’INFORMATION UNIQUE — on réserve par message.
+       · le corps DIT LA CAUSE UNE FOIS, et rassure sur le reste.
+     ⚠️ MVola est nommé UNE SEULE FOIS, dans le corps. La version d’essai le
+     mettait aussi en surtitre : le lecteur lisait alors deux fois une panne et
+     une fois une solution. **On nomme la panne pour qu’on ne croie pas que
+     c’est NOTRE site qui est cassé** — le vague, ici, nous accuserait.
+
+     ⚠️ LE NUMÉRO EST DANS LA PASTILLE, ET C’EST UN CHOIX CONTRE LE GOÛT. Une
+     marque de luxe n’imprime pas son numéro sur son affiche. Mais ce visuel-là
+     sera RENVOYÉ SUR WHATSAPP, sorti de son texte de publication — et un avis
+     dont on ne peut pas agir depuis la capture d’écran ne sert à rien. Le titre
+     porte le message, la pastille porte l’adresse : § 4 exige les deux.
+     📌 En international (+269) parce que WhatsApp n’accepte que cette forme, et
+     que la diaspora est notre deuxième public.
+
+     📷 LA PHOTO EST À NOUS, ET ELLE FAIT 2560 × 1920 — la première du dépôt qui
+     n’a besoin d’AUCUN agrandissement (nos visuels sortent à 2160). Tout le
+     raisonnement de `../photos/affiner.py` sur les copies WhatsApp à 720 px ne
+     s’applique pas ici : on descend, on ne monte pas.
+     ✅ Et le sujet dit exactement ce que le texte dit : **une vedette qui
+     traverse.** La mer est ouverte, le bateau part — c’est le paiement qui est
+     tombé, pas le service. Une plage vide aurait laissé croire l’inverse.
+     🔒 Aucune personne identifiable : pleine mer, une vedette à l’horizon.
+
+     Rendu : node render.js flyer50-whatsapp-fb.html flyer-whatsapp-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* LA PHOTO — bandeau haut, 660 px, comme le gabarit `flyer48`. La famille se
+   fait par la STRUCTURE, pas par la teinte : même hauteur, même couture, même
+   verticale à 76 px (voir `famille.js`).
+   ⚠️ `object-position: center 20%` n’est pas un réglage esthétique : l’horizon
+   est dans le HAUT de cette photo (17 % de sa hauteur). Centré, on cadrait
+   1 080 px d’eau sans horizon ni vedette — donc sans sujet. À 20 % l’horizon
+   tombe à ~105 px et la vedette se pose dessus, dégagée du coin blanc (qui
+   s’arrête à 404 px, la vedette est à 46 % de la largeur). */
+.mer { position:absolute; left:0; top:0; width:1080px; height:660px; z-index:1;
+  overflow:hidden; }
+.mer img { width:100%; height:100%; object-fit:cover; object-position:center 20%;
+  display:block; }
+
+/* La photo s’assombrit vers le bas : l’or de la couture ne se lit pas sur une
+   mer claire au soleil. */
+.ombre { position:absolute; left:0; top:430px; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.42) 100%); }
+
+/* 🏆 LA COUTURE — l’élément qui nous rend reconnaissables sans le logo. 86 px,
+   à la frontière photo / marine, exactement comme le gabarit. */
+.couture { position:absolute; left:0; top:586px; width:1080px; height:86px; z-index:3; }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:16px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:74px; height:74px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:742px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* 💎 Cormorant Garamond 400, capitales, interlettrage POSITIF — la typographie
+   de la marque depuis le 02/09. Le luxe espace, il ne serre pas. */
+.acc { position:absolute; left:76px; top:770px; width:928px; z-index:5;
+  font-family:'Cormorant',serif; font-weight:400; font-size:88px; line-height:1.1;
+  letter-spacing:5px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
+
+.dit { position:absolute; left:76px; top:1008px; width:660px; z-index:5;
+  font-size:22px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+/* La pastille dorée dit « ceci s’utilise ». Inter 700 espacé, ombre légère :
+   même fonction que sur le gabarit, moins de voix que le titre. */
+.cta { position:absolute; left:76px; top:1120px; z-index:5;
+  background:#F6BC1C; border-radius:14px; padding:19px 30px; display:inline-block;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
+
+.web { position:absolute; right:76px; top:1138px; z-index:5; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px;
+  color:#fff; letter-spacing:.2px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+</style>
+
+<div class="page">
+  <div class="mer"><img src="../photos/vedette-mer.jpg" alt=""></div>
+  <div class="ombre"></div>
+
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">AVIS AUX VOYAGEURS</div>
+  <div class="acc">TA PLACE,<span>EN UN MESSAGE.</span></div>
+
+  <div class="dit">MVola est hors service dans tout le pays.
+    <b>Les vedettes partent, et on prend ta place à la main.</b></div>
+
+  <div class="cta">ÉCRIS-NOUS AU +269 479 43 28</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+</div>

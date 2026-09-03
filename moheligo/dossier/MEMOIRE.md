@@ -370,6 +370,54 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **03/09/2026 (🔴 MVOLA EST TOMBÉ — ET NOS DEUX CHEMINS DE PAIEMENT AVEC LUI)**
+  — le patron, en fin de journée : « on a un souci aux Comores, MVola ne marche
+  pas, tout son service ne marche pas, et c'est le service qu'on utilise pour le
+  paiement. Fais un flyer mais les gens peuvent réserver sur WhatsApp. »
+
+  ⛔ **CE QUE LA PANNE COUPE, VÉRIFIÉ DANS `index.html` ET PAS SUPPOSÉ.** Le site
+  annonce deux moyens de payer, et j'ai lu les deux avant d'écrire une ligne :
+  le paiement en ligne kartaPay (ligne 1865) **et** le « paiement manuel de
+  secours » (ligne 2186 : transfert MVola, référence du message, capture
+  d'écran). Les deux passent par MVola.
+  📌 **UN CHEMIN DE SECOURS QUI PARTAGE UNE DÉPENDANCE AVEC LE CHEMIN NORMAL
+  N'EST PAS UN SECOURS, C'EST UNE COPIE.** Il portait le mot « secours » dans son
+  propre commentaire, et ce mot nous a fait croire la question réglée pendant un
+  mois. Aujourd'hui les deux tombent à la même seconde, et le seul chemin encore
+  debout est celui qu'on n'avait pas prévu : **la conversation**.
+  👉 À retenir pour le jour où on écrira un vrai secours : il ne se juge pas sur
+  son nom, il se juge sur ce qu'il ne partage avec rien.
+
+  ✅ **`flyer50-whatsapp-fb.html` → `flyer-whatsapp-facebook.png`**, avec
+  `texte-whatsapp.txt`. Gabarit `flyer48` respecté au pixel : bandeau photo
+  660 px, couture d'or, verticale à 76 px, pied partagé.
+      · surtitre  **AVIS AUX VOYAGEURS** — le registre des compagnies maritimes.
+        Un avis n'a pas à se déguiser en publicité, et cette formule **date le
+        visuel toute seule** : il ne resservira pas par erreur.
+      · titre     **TA PLACE, / EN UN MESSAGE.** (4 mots, capitales, Cormorant)
+      · corps     MVola nommé **une seule fois** — le vague nous aurait accusés
+        à sa place, le lecteur aurait cru que c'est notre site qui est cassé.
+      · pastille  le numéro **+269 479 43 28**, contre le goût d'une marque de
+        luxe : ce visuel sera renvoyé sur WhatsApp, sorti de son texte, et un
+        avis sur lequel on ne peut pas agir depuis la capture ne sert à rien.
+  📷 Photo `../photos/vedette-mer.jpg` — **2560 × 1920, la première du dépôt qui
+  n'a besoin d'aucun agrandissement** (on sort à 2160 : on descend, on ne monte
+  pas). Et son sujet dit ce que le texte dit — une vedette qui traverse. Une
+  plage vide aurait laissé croire que le service est arrêté.
+  🤖 Les quatre contrôles : **12/12 conformes**, zéro collision, **famille
+  5,0/5**, **occupation 18,8 %** (le plus aéré de la bibliothèque après le
+  jeudi). Moyenne de la bibliothèque : 21,2 %.
+
+  🔴 **CE QUE JE N'AI PAS ÉCRIT, ET POURQUOI.** Le visuel ne promet **aucun
+  moyen de paiement**. Encaissement et commercial sont au patron (poste C,
+  manuel § 12.2 ter), et deux questions restent ouvertes : **Holo passe-t-il
+  encore par kartaPay ?** et **comment on encaisse pendant la panne** (espèces à
+  l'embarquement ? place tenue sans paiement ? remboursements, qui repassent eux
+  aussi par MVola ?). Tant qu'il n'a pas tranché, le visuel ouvre une
+  conversation — c'est tout ce qu'il peut promettre sans mentir.
+  📌 **UNE PANNE EST LE PIRE MOMENT POUR INVENTER UNE PROMESSE**, parce que c'est
+  le moment où elle sera lue le plus attentivement.
+
 - **03/09/2026 (✅ VALIDÉ, ET UNE BOMBE À RETARDEMENT DÉSAMORCÉE DANS LA
   ROUTINE)** — le patron : « je valide ». La bibliothèque part donc en
   publication normale : **sept jours sur sept, sans exception**, par le battement

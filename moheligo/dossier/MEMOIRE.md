@@ -370,6 +370,28 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **03/09/2026 (✅ VALIDÉ, ET UNE BOMBE À RETARDEMENT DÉSAMORCÉE DANS LA
+  ROUTINE)** — le patron : « je valide ». La bibliothèque part donc en
+  publication normale : **sept jours sur sept, sans exception**, par le battement
+  de midi (12h05) et celui du soir (19h25).
+
+  ⚠️ **CE QUE J'AI TROUVÉ EN VÉRIFIANT LES ROUTINES AVANT DE DIRE OUI.** La
+  consigne de midi portait encore l'exception du 02/09 (périmée), et surtout
+  elle ne mentionnait la regénération de l'écran de l'appli QUE dans cette
+  exception. Or **le visuel du mercredi affiche une date calculée à
+  « aujourd'hui + 7 jours »** : le mercredi suivant, la marche normale l'aurait
+  publié avec la date de la semaine d'avant.
+  📌 **UNE INSTRUCTION ÉCRITE POUR UN CAS PARTICULIER MEURT AVEC CE CAS.** La
+  règle de la date n'appartenait pas au 02/09 — elle appartient au visuel, donc
+  à tous les mercredis. Elle est maintenant en tête de la consigne, avec sa
+  raison.
+  ✅ La consigne porte aussi les quatre contrôles (`exigence`, `collision`,
+  `famille`, `respiration`) et **l'état de référence chiffré du 03/09** : 11/11
+  conformes, zéro collision, famille 5,0/5, occupation 21,4 %. Un chiffre qui
+  bouge sans qu'on ait rien changé devient une alerte au lieu de passer inaperçu.
+  📌 Une consigne qui dit « vérifie » sans dire « ce que tu dois trouver » ne
+  permet pas de repérer une dérive.
+
 - **03/09/2026 (🏆 LA SEMAINE EST COMPLÈTE — et LA FIERTÉ était à zéro)** —
   relecture extérieure transmise par le patron : « certains posts sont encore un
   peu chargés en texte ; on pourrait renforcer l'aspect **fierté** et

@@ -418,6 +418,30 @@ recharger ce sujet ici, ce n'est pas du marketing.
   📌 **UNE PANNE EST LE PIRE MOMENT POUR INVENTER UNE PROMESSE**, parce que c'est
   le moment où elle sera lue le plus attentivement.
 
+  ✅ **PUBLIÉ LE 03/09 À 20h41**, sur ordre du patron (« publié maintenant sur
+  Facebook car c'est urgent »). Lancé à la main par `workflow_dispatch` avec
+  `visuel = flyer-whatsapp-facebook.png` et `texte = texte-whatsapp.txt`
+  (exécution 33785961922, étape « Publier un visuel choisi » : **7 s** — la
+  signature d'une vraie publication). Vérifié dans le rapport lu **depuis la
+  page** : `| 2026-09-03 à 20:41 | TA PLACE, EN UN MESSAGE. |`, 17 publications
+  sur 7 jours. Trois publications dans la journée — 12h09, 19h29, 20h41.
+
+  🔴 **ET LA VRAIE BOMBE EST POUR DEMAIN MIDI, TROUVÉE APRÈS COUP.** Sept de nos
+  textes de publication contiennent la phrase « **tu paies par MVola ou
+  kartaPay** » : `texte-etudes.txt` (vendredi), `texte-chez-nous.txt`
+  (dimanche), `texte-traversee.txt`, `texte-du-jour.txt`, `texte-reprise.txt`,
+  `texte-digitalisation.txt`. **Le robot de midi publiera donc demain à 12h05 un
+  post qui dit de payer par MVola, seize heures après notre avis disant que
+  MVola est mort.**
+  📌 **UN AVIS NE CORRIGE PAS LES TEXTES QUI CONTINUENT DE TOURNER À CÔTÉ.** On a
+  construit `service.py` exactement contre cette faute — une promesse qu'on ne
+  peut pas tenir — mais il ne connaît qu'un seul type de panne : la mer. La
+  panne de PAIEMENT n'a pas d'interrupteur, donc rien ne l'arrête.
+  👉 Proposé au patron le soir même, en attente de sa réponse : un état
+  `PANNE_PAIEMENT` dans `service.py`, sur le modèle de `mention_fermeture()`,
+  qui **retire la phrase MVola** des textes du jour et y colle la ligne WhatsApp
+  tant qu'il est levé. Un seul endroit à basculer, comme pour la mer.
+
 - **03/09/2026 (✅ VALIDÉ, ET UNE BOMBE À RETARDEMENT DÉSAMORCÉE DANS LA
   ROUTINE)** — le patron : « je valide ». La bibliothèque part donc en
   publication normale : **sept jours sur sept, sans exception**, par le battement

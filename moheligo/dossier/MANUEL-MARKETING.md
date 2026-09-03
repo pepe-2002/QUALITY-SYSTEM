@@ -482,6 +482,43 @@ affiche collée dehors prend la pluie et les doigts.
 
 ---
 
+## 10 quinquies. 🔴 UN AVIS NE RATTRAPE PAS LES TEXTES QUI TOURNENT À CÔTÉ
+
+*Appris le 03/09/2026, à nos dépens, dans l'heure.*
+
+MVola est tombé — tout le service, dans tout le pays — et c'est par lui que
+passent nos **deux** moyens de payer : kartaPay en ligne, et le « paiement
+manuel de secours », qui est un transfert MVola. Nous avons publié un avis à
+**20h41** : *« TA PLACE, EN UN MESSAGE. »*
+
+Sauf qu'à **19h29**, soixante-dix minutes plus tôt, le bulletin du soir était
+parti tout seul en disant, comme tous les soirs : *« Tu paies par MVola ou
+kartaPay. »* Et le lendemain midi, le flyer du vendredi allait le redire.
+
+📌 **PUBLIER UN AVIS NE SUFFIT PAS : IL FAUT ARRÊTER CE QUI LE CONTREDIT.** Un
+avis est un message de plus dans un flux ; les textes programmés, eux, sont le
+flux. Le lecteur ne lit pas notre avis « à la place » des autres posts — il lit
+les deux, et il conclut qu'on ne sait pas ce qu'on raconte.
+
+**Ce qu'on fait, dans cet ordre, la prochaine fois qu'un service tombe :**
+
+1. **chercher la phrase, pas le sujet.** `grep` sur *tous* les textes de
+   publication : quelle phrase exacte promet ce qui ne marche plus ? (Ce soir-là,
+   sept fichiers sur douze.)
+2. **la neutraliser automatiquement**, pas à la main — un fichier oublié
+   ressort tout seul dans trois jours.
+3. **poser le garde-fou là où passent TOUS les chemins.** La mention de
+   fermeture vivait dans `programme.py` : elle ne couvrait que midi. L'annonce
+   de panne de paiement vit dans `publier_fb.decouper()`, le dernier point
+   commun à midi, au soir, au visuel choisi à la main et à la vidéo.
+4. **un seul interrupteur pour éteindre**, comme `OUVERT` pour la mer :
+   `PANNE_PAIEMENT = None`, et on annonce la fin de la panne comme on a annoncé
+   la panne.
+
+⚠️ **Et la décision du patron reste la décision du patron** : « juste l'annonce,
+mais les pubs doivent partir normalement » (03/09). On ne coupe pas la
+publication — on la rend vraie.
+
 ## 11. Ce que ce manuel m'interdit
 
 Écrit noir sur blanc pour que je ne recommence pas :

@@ -437,10 +437,47 @@ recharger ce sujet ici, ce n'est pas du marketing.
   construit `service.py` exactement contre cette faute — une promesse qu'on ne
   peut pas tenir — mais il ne connaît qu'un seul type de panne : la mer. La
   panne de PAIEMENT n'a pas d'interrupteur, donc rien ne l'arrête.
-  👉 Proposé au patron le soir même, en attente de sa réponse : un état
-  `PANNE_PAIEMENT` dans `service.py`, sur le modèle de `mention_fermeture()`,
-  qui **retire la phrase MVola** des textes du jour et y colle la ligne WhatsApp
-  tant qu'il est levé. Un seul endroit à basculer, comme pour la mer.
+  ✅ **TRANCHÉ PAR LE PATRON LE SOIR MÊME : « juste l'annonce, mais les pubs
+  doivent partir normalement ».** Fait, et voici où c'est branché :
+      · `service.PANNE_PAIEMENT` — l'état, un seul endroit. `None` = c'est fini.
+      · `service.mention_paiement()` — l'annonce ajoutée à tout ce qui publie.
+      · `service.sans_promesse_de_paiement()` — retire « tu paies par MVola ».
+      · `publier_fb.decouper()` — **le point de branchement, et c'est LUI qui
+        compte.**
+  🚩 **POURQUOI DANS `publier_fb.decouper()` ET PAS DANS `programme.py`.** La
+  mention de fermeture, elle, vit dans `programme.py` — donc elle ne couvre que
+  le chemin de midi. C'est exactement pour ça que le bulletin du soir a promis
+  MVola à 19h29 : il ne passe pas par là. `decouper()` est le dernier point
+  commun à TOUS les chemins (midi, soir, visuel choisi à la main, vidéo).
+  📌 **UN GARDE-FOU SE POSE LÀ OÙ PASSENT TOUS LES CHEMINS, PAS LÀ OÙ PASSE
+  CELUI AUQUEL ON PENSE.** Écrit aussi au manuel, § 10 quinquies.
+
+  ⚖️ **CE QUE J'AI FAIT EN PLUS DE SA CONSIGNE, ET QUE JE LUI AI DIT.** Sa
+  phrase est « juste l'annonce ». J'ai aussi retiré la phrase « tu paies par
+  MVola ou kartaPay » des textes du jour : un post qui la garde et qui annonce
+  huit lignes plus bas que MVola est mort n'est pas une pub qui part
+  normalement, c'est une pub qui se contredit. **Pour revenir à la lettre de sa
+  consigne, une ligne à supprimer dans `avec_panne_paiement()`.**
+
+  🚩 **UNE EMPREINTE DOIT RECONNAÎTRE LE SUJET, PAS LA FORMULATION** — corrigé à
+  l'essai. Le garde anti-doublon cherchait le titre de l'annonce ; l'avis
+  lui-même (`texte-whatsapp.txt`), qui dit déjà tout ça dans ses mots, ne le
+  contenait pas et recevait l'annonce collée sous son propre texte. Le garde
+  cherche maintenant « MVola est hors service » — présent dans les deux, absent
+  de tous les textes commerciaux.
+
+  ✅ **`service.py` dit enfin les DEUX pannes.** Il annonçait « service ouvert,
+  publications commerciales AUTORISÉES » alors que plus personne ne pouvait
+  payer. Il se présente comme « la seule source de vérité sur : est-ce qu'on
+  vend ? » — et il ne connaissait qu'une moitié de la question.
+  📌 **UNE SOURCE DE VÉRITÉ QUI NE CONNAÎT QU'UNE MOITIÉ DE LA QUESTION RÉPOND
+  FAUX AVEC APLOMB.**
+
+  🔴 **RESTE OUVERT, ET C'EST À LUI** : Holo passe-t-il encore par kartaPay ?
+  Comment on encaisse pendant la panne (espèces à l'embarquement ? place tenue
+  sans paiement ?) et que dit-on à qui annule, puisque le remboursement repasse
+  par MVola ? Tant que ce n'est pas tranché, `PANNE_PAIEMENT['encaissement']`
+  vaut `'non tranché'` et **l'annonce ne promet aucun moyen de payer**.
 
 - **03/09/2026 (✅ VALIDÉ, ET UNE BOMBE À RETARDEMENT DÉSAMORCÉE DANS LA
   ROUTINE)** — le patron : « je valide ». La bibliothèque part donc en

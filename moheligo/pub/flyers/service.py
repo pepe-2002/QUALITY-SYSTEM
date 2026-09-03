@@ -62,6 +62,7 @@ personne ne sait que c'est reparti.
 
 import argparse
 import datetime
+import re
 
 # --- l'état du service ------------------------------------------------------
 # 🟢 ROUVERT LE MARDI 01/09/2026. Le patron, mot pour mot : « les traversées sont
@@ -181,22 +182,135 @@ date ne te va plus, la changer ne coûte rien.
 """ + quand)
 
 
-def avec_mention(texte):
-    """Ajoute la mention de fermeture à un texte commercial, avant les mots-dièse.
+def _avant_les_hashtags(texte, mention):
+    """Glisse un paragraphe juste avant la ligne de mots-dièse.
 
-    Placée AVANT les hashtags et le rappel de source : au-dessus, elle serait lue
+    Placé AVANT les hashtags et le rappel de source : au-dessus, il serait lu
     comme une mauvaise nouvelle avant même l'offre ; en toute fin, sous les
-    hashtags, personne ne la lit. Juste avant, elle est vue par ceux qui lisent
+    hashtags, personne ne le lit. Juste avant, il est vu par ceux qui lisent
     jusqu'au bout — ceux qui, justement, s'apprêtaient à réserver.
     """
-    if not texte or ouvert():
-        return texte
-    mention = mention_fermeture()
     lignes = texte.rstrip().split('\n')
     for i, l in enumerate(lignes):
         if l.startswith('#'):
             return '\n'.join(lignes[:i] + [mention, ''] + lignes[i:]) + '\n'
     return texte.rstrip() + '\n\n' + mention + '\n'
+
+
+def avec_mention(texte):
+    """Ajoute la mention de fermeture à un texte commercial, avant les mots-dièse."""
+    if not texte or ouvert():
+        return texte
+    return _avant_les_hashtags(texte, mention_fermeture())
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 🔴 LA DEUXIÈME PANNE — celle du PAIEMENT. 03/09/2026.
+#
+# Le patron, le 03/09 au soir : « on a un souci aux Comores, MVola ne marche
+# pas, tout son service ne marche pas, et c'est le service qu'on utilise pour le
+# paiement. » Puis, sur la marche à suivre : « juste l'annonce, mais les pubs
+# doivent partir normalement. »
+#
+# ⛔ POURQUOI CE FICHIER DEVAIT APPRENDRE UN DEUXIÈME TYPE DE PANNE, ET POURQUOI
+# JE NE L'AVAIS PAS VU EN ÉCRIVANT L'AVIS. Nous avons publié l'avis MVola à
+# 20h41. Soixante-dix minutes plus tôt, à 19h29, le bulletin du soir était parti
+# avec sa ligne habituelle : « • Tu paies par MVola ou kartaPay ». Le lendemain
+# midi, le flyer du vendredi aurait dit la même chose. **L'avis ne corrigeait
+# rien : il s'ajoutait à des textes qui continuaient de promettre le contraire.**
+# 📌 **UN AVIS NE RATTRAPE PAS LES TEXTES QUI TOURNENT À CÔTÉ DE LUI.** Tout ce
+# fichier existe contre les promesses intenables, mais il ne connaissait qu'une
+# seule panne — la mer. Une panne qu'un programme ne sait pas nommer est une
+# panne qu'il publiera par-dessus.
+#
+# ⚖️ CE QUE JE FAIS EN PLUS DE L'ANNONCE, ET QUE LE PATRON N'A PAS DEMANDÉ :
+# `sans_promesse_de_paiement()` retire la phrase « tu paies par MVola » des
+# textes du jour. Sa consigne est « juste l'annonce » — mais un post qui dit
+# « paie par MVola » et, huit lignes plus bas, « MVola est hors service », n'est
+# pas une pub qui part normalement : c'est une pub qui se contredit toute seule.
+# ⚠️ POUR REVENIR À LA LETTRE DE SA CONSIGNE : supprimer l'appel à
+# `sans_promesse_de_paiement()` dans `avec_panne_paiement()`. L'annonce, elle,
+# reste.
+#
+# 📌 QUAND MVOLA REVIENT : `PANNE_PAIEMENT = None`, committer, pousser sur
+# `main`. Un seul endroit, exactement comme `OUVERT` pour la mer. Et le dire sur
+# la page — on a annoncé la panne, on doit annoncer la fin.
+PANNE_PAIEMENT = dict(
+    depuis='2026-09-03',
+    # Le mot du patron, sans l'arrondir — même règle que `FERMETURE['annonce']`.
+    annonce='mvola ne marche pas, tout son service ne marche pas',
+    # 🔴 CE QU'ON NE SAIT PAS ENCORE, ET QUI EST À LUI (poste C, § 12.2 ter) :
+    # Holo passe-t-il encore par kartaPay ? Comment on encaisse d'ici là ?
+    # Tant que ce n'est pas tranché, l'annonce ne promet AUCUN moyen de payer —
+    # elle ouvre une conversation, et c'est tout ce qu'elle peut tenir.
+    encaissement='non tranché',
+)
+
+MARQUE_PANNE = 'LE PAIEMENT EN LIGNE EST INTERROMPU'
+
+# 🚩 L'EMPREINTE N'EST PAS LE TITRE DE L'ANNONCE, ET J'AI DÛ LE CORRIGER À
+# L'ESSAI. J'avais pris `MARQUE_PANNE` comme empreinte : `texte-whatsapp.txt`
+# — l'avis lui-même, qui dit déjà tout ça dans ses mots — ne la contient pas, et
+# recevait donc l'annonce collée sous son propre texte.
+# 📌 **UNE EMPREINTE DOIT RECONNAÎTRE LE SUJET, PAS LA FORMULATION.** Ces cinq
+# mots-là sont dans l'annonce ET dans l'avis, et dans aucun texte commercial.
+DEJA_DIT = 'MVola est hors service'
+
+# ⚠️ LES DEUX FORMES SONT NÉCESSAIRES, ET LA DEUXIÈME N'EST PAS UN DOUBLON.
+# Six textes portent la phrase complète (« Tu paies par MVola ou kartaPay »),
+# parfois coupée par un retour à la ligne — d'où le `\s+` partout plutôt que des
+# espaces. Mais `texte-reprise.txt` écrit « Prends ta place : MVola ou
+# kartaPay, et ton billet arrive » : pas de verbe « paies », donc la première
+# forme le rate. Relevé sur les sept fichiers, pas deviné.
+_PAIEMENT_PROMIS = [
+    (re.compile(r'[Tt]u\s+paies\s+par\s+MVola\s*(?:,|ou)?\s*(?:avec\s+)?kartaPay'),
+     'Tu prends ta place'),
+    (re.compile(r'\s*:?\s*MVola\s+ou\s+kartaPay'), ''),
+]
+
+
+def paiement_en_panne():
+    """Le paiement en ligne est-il tombé ? (la seule source : PANNE_PAIEMENT)"""
+    return bool(PANNE_PAIEMENT)
+
+
+def mention_paiement():
+    """L'annonce ajoutée à CHAQUE publication tant que MVola est hors service.
+
+    ✍️ Apostrophes typographiques ’ et non ' (norme § 5) : ce paragraphe part
+    sur tout ce qu'on publie, c'est le passage le plus lu de la période.
+    """
+    return ("""⚠️ %s : MVola est hors service.
+Les vedettes partent normalement — c’est le paiement qui est tombé, pas la
+traversée. Écris-nous sur WhatsApp au +269 479 43 28 : on prend ta place à la
+main, le temps que ça revienne.""" % MARQUE_PANNE)
+
+
+def sans_promesse_de_paiement(texte):
+    """Retire des textes du jour la phrase qui promet un paiement impossible."""
+    if not texte or not paiement_en_panne():
+        return texte
+    for motif, remplacement in _PAIEMENT_PROMIS:
+        texte = motif.sub(remplacement, texte)
+    return texte
+
+
+def avec_panne_paiement(texte):
+    """Le texte tel qu'il doit partir pendant la panne de paiement.
+
+    ⚠️ Appelée dans `publier_fb.decouper()`, c'est-à-dire au RAS DU FIL — le
+    dernier endroit par lequel passe tout texte publié, quel que soit le chemin
+    (calendrier de midi, bulletin du soir, visuel choisi à la main, vidéo).
+    📌 La mention de fermeture, elle, vit dans `programme.py` : elle ne couvre
+    donc que le chemin de midi. C'est la leçon de ce soir — le bulletin du soir
+    a promis MVola soixante-dix minutes avant qu'on annonce sa panne. **On place
+    un garde-fou là où passent TOUS les chemins, pas là où passe celui auquel on
+    pense.**
+    """
+    if not texte or not paiement_en_panne() or DEJA_DIT in texte:
+        return texte
+    return _avant_les_hashtags(sans_promesse_de_paiement(texte),
+                               mention_paiement())
 
 
 def jour_de_fermeture(jour=None):
@@ -425,6 +539,23 @@ def main():
         print('→ à la place : l\'avis de service suspendu (une fois par jour).')
         print('→ le bulletin mer continue : informer n\'est pas vendre,')
         print('   mais son appel « réserve » est remplacé par l\'avis.')
+
+    # 🚩 LE PAIEMENT A SON PROPRE ÉTAT, ET IL DOIT SE VOIR ICI. Ce fichier est
+    # « la seule source de vérité sur : est-ce qu'on vend ? ». Le 03/09 il
+    # répondait « service ouvert, publications autorisées » alors que plus
+    # personne ne pouvait payer. Une source de vérité qui ne connaît qu'une
+    # moitié de la question répond faux avec aplomb.
+    if paiement_en_panne():
+        print()
+        print('🔴 PAIEMENT EN LIGNE HORS SERVICE depuis le %s.'
+              % PANNE_PAIEMENT['depuis'])
+        print('   Le patron : « %s »' % PANNE_PAIEMENT['annonce'])
+        print('→ les pubs partent NORMALEMENT (sa consigne du 03/09),')
+        print('   avec l\'annonce WhatsApp ajoutée à tout ce qui se publie')
+        print('   (`publier_fb.decouper`, donc midi, soir, visuel choisi, vidéo).')
+        print('→ la phrase « tu paies par MVola » est retirée des textes du jour.')
+        print('→ encaissement pendant la panne : %s.' % PANNE_PAIEMENT['encaissement'])
+        print('→ quand MVola revient : PANNE_PAIEMENT = None, et on le dit sur la page.')
 
 
 if __name__ == '__main__':

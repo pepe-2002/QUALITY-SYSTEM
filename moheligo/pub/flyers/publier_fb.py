@@ -246,12 +246,28 @@ def _heure_comores(created_time):
 
 
 def decouper(chemin):
-    """Le texte du post, et le premier commentaire s'il y en a un."""
+    """Le texte du post, et le premier commentaire s'il y en a un.
+
+    🚩 03/09/2026 — C'EST ICI QUE PASSE LA PANNE DE PAIEMENT, ET C'EST VOULU.
+    Cette fonction est le dernier endroit commun à TOUS les chemins : le flyer
+    de midi (`programme.py`), le bulletin du soir, un visuel choisi à la main,
+    la vidéo. La mention de fermeture, elle, est posée dans `programme.py` —
+    donc elle ne couvre que midi.
+    ⛔ CE QUE ÇA A COÛTÉ CE SOIR : le bulletin du soir est parti à 19h29 en
+    disant « tu paies par MVola ou kartaPay », et notre avis annonçant la panne
+    de MVola est parti à 20h41. Soixante-dix minutes d'écart, deux chemins
+    différents, aucun garde-fou commun.
+    📌 **UN GARDE-FOU SE POSE LÀ OÙ PASSENT TOUS LES CHEMINS, PAS LÀ OÙ PASSE
+    CELUI AUQUEL ON PENSE.**
+    ⚠️ `avec_panne_paiement()` ne touche à rien quand `PANNE_PAIEMENT` est
+    `None` : hors panne, cette ligne est un passe-plat.
+    """
+    import service                       # local : `publier_fb` sert aussi seul
     brut = pathlib.Path(chemin).read_text()
     if '--- premier commentaire ---' in brut:
         post, commentaire = brut.split('--- premier commentaire ---', 1)
-        return post.strip(), commentaire.strip()
-    return brut.strip(), ''
+        return service.avec_panne_paiement(post.strip()), commentaire.strip()
+    return service.avec_panne_paiement(brut.strip()), ''
 
 
 LIMITE = 3.5 * 1024 * 1024        # Facebook refuse au-delà d'environ 4 Mo

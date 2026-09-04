@@ -55,12 +55,12 @@ diffuser dans le groupe WhatsApp du personnel (jamais sur les réseaux publics) 
 
 | Film | Public | Durée |
 |---|---|---|
-| `RoyalAir-accueil-agence.mp4` | comptoirs de vente et réservation | 6 min 14 |
-| `RoyalAir-accueil-escale.mp4` | agents d'escale HAH · AJN · NWA | 6 min 41 |
+| `RoyalAir-accueil-agence.mp4` | comptoirs de vente et réservation | 6 min 53 |
+| `RoyalAir-accueil-escale.mp4` | agents d'escale HAH · AJN · NWA | 7 min 20 |
 
 Les deux sont **dits par une voix off française**, sur une nappe musicale qui
 s'efface pendant la parole, et restent entièrement lisibles sans le son. Chacun
-existe aussi en version allégée `-whatsapp.mp4` (720 × 1280, ~6,5 Mo), et
+existe aussi en version allégée `-whatsapp.mp4` (720 × 1280, ~7 Mo), et
 s'accompagne d'une **fiche à afficher** au comptoir et du **relevé de la voix
 off**. Tout est refabriqué par `python3 sensibilisation/film.py tout` à partir
 d'une source unique, `sensibilisation/scenarios.py` — voir

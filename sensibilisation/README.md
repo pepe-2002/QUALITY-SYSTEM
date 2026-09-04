@@ -7,8 +7,8 @@ générique — une vidéo qui sort du groupe emporte sa règle avec elle.
 
 | Film | Pour qui | Durée | À envoyer sur WhatsApp |
 |---|---|---|---|
-| **L'accueil en agence** | comptoirs de vente, réservation | 6 min 14 | `RoyalAir-accueil-agence-whatsapp.mp4` |
-| **L'accueil en escale** | agents d'escale HAH · AJN · NWA | 6 min 41 | `RoyalAir-accueil-escale-whatsapp.mp4` |
+| **L'accueil en agence** | comptoirs de vente, réservation | 6 min 53 | `RoyalAir-accueil-agence-whatsapp.mp4` |
+| **L'accueil en escale** | agents d'escale HAH · AJN · NWA | 7 min 20 | `RoyalAir-accueil-escale-whatsapp.mp4` |
 
 Les deux films sont **dits par une voix off française**, sur une nappe musicale
 qui s'efface pendant la parole. Ils restent entièrement lisibles **sans le
@@ -23,12 +23,16 @@ Chaque film existe en **deux fichiers** :
   recompresse tout ce qu'on lui donne : mieux vaut lui remettre un fichier déjà
   léger et bien encodé qu'un gros fichier qu'il abîmera lui-même.
 
-⏱️ **Sur la durée.** Sans voix, les films faisaient 4 min 51 et 4 min 56. La
-voix off les porte à 6 min 14 et 6 min 41 : une phrase dite prend plus de temps
-qu'une phrase lue, et on ne comprime pas une voix sans que cela s'entende.
-Pour revenir sous cinq minutes il faut retirer du contenu, pas accélérer la
-narration — deux chapitres par film suffiraient. C'est un arbitrage à trancher,
-pas un réglage.
+⏱️ **Sur la durée — arbitrage tranché par le patron le 04/09/2026.** Sans voix,
+les films faisaient 4 min 51 et 4 min 56 ; la voix off les porte à **6 min 53**
+et **7 min 20**, respirations comprises.
+
+> « même si la vidéo fait 10 min, si la voix paraît naturelle, calme, et que
+> les gens ont envie d'écouter, c'est ce qui gagne »
+
+La durée n'est donc plus une contrainte de ce projet, et les silences sont
+calculés dans ce sens. Ne pas « optimiser » la longueur d'un film en accélérant
+la narration : ce serait défaire la décision.
 
 À côté des films, deux documents par sujet, **générés depuis le même
 scénario** :
@@ -113,11 +117,14 @@ Elle est fabriquée par `voix.py`, en quatre temps :
 
    | signe | silence |
    |---|---|
-   | virgule | 0,26 s |
-   | point-virgule | 0,32 s |
-   | deux-points | 0,38 s |
-   | point | 0,50 s |
-   | point d'interrogation | 0,58 s |
+   | virgule | 0,30 s |
+   | point-virgule | 0,38 s |
+   | deux-points | 0,46 s |
+   | point | 0,62 s |
+   | point d'interrogation | 0,72 s |
+
+   Et **1 seconde entre deux points d'une liste** : le temps de faire le lien
+   entre ce qu'on vient d'entendre et ce qu'on vient de lire.
 
    ⚠️ **Et pourquoi ça ne hache pas la phrase.** Recoller des morceaux, c'est
    risquer que chacun se termine comme une phrase : intonation qui retombe,
@@ -187,6 +194,47 @@ Pourquoi 140 et non les 150 de la norme : ces 145-160 sont l'allure d'une voix
 qui raconte à quelqu'un qui **écoute**. Ici la voix parle à quelqu'un qui **lit
 en même temps** — chaque phrase double une ligne affichée. C'est la lecture qui
 commande le rythme, pas la parole.
+
+### Le débit est égalisé
+
+**À allure constante, la synthèse ne parle pas à vitesse constante.** Mesuré sur
+nos propres phrases, en phonèmes par seconde : 10,5 sur « Dites plutôt », 14,3
+sur « Saluer le premier », 13,6 sur « Le passager ne verra jamais le commandant
+de bord… ». Près de 30 % d'écart.
+
+C'est ce que le patron entendait : « si la phrase est longue on a l'impression
+que la voix accélère ». Une phrase longue tenue à 14 phonèmes/seconde court
+quatre secondes sans respirer — elle n'accélère pas vraiment, elle ne s'arrête
+jamais, et cela s'entend pareil.
+
+Chaque fragment est donc **mesuré après avoir été dit**, et **redit plus
+lentement** s'il dépasse `DEBIT` (12,6 phonèmes/seconde, le bas de ce qui a été
+mesuré, l'allure des passages calmes). Une seule correction suffit : la durée
+d'un modèle VITS suit l'échelle de façon quasi linéaire. Après égalisation,
+plus aucun fragment ne dépasse 12,8 — la voix ne file plus jamais.
+
+Ce qui est déjà plus lent que la cible est laissé tel quel : on ne presse
+jamais, on ne fait que ralentir.
+
+### Vérifier une prononciation sans écouter
+
+```bash
+python3 voix.py --phonemes "Sur le LET 410, chaque kilo compte."
+```
+
+affiche le texte réécrit pour la bouche **et les sons que la synthèse
+fabriquera**. C'est ce qui a permis de trouver le défaut du LET 410 signalé par
+le patron (« il dit leté 410 ») :
+
+| écrit | sons | entendu |
+|---|---|---|
+| `LET` | `lˈɛt` | « lette » — le sigle lu comme un mot |
+| `L-E-T` | `ˈɛlˈətˈe` | « leté » — les lettres, mais **collées** |
+| `L E T` | `ˈɛl ˈə tˈe` | « èl — eu — té » ✅ |
+
+**Le trait d'union ne sépare pas, l'espace si.** Tous les sigles du tableau
+`SIGLES` sont donc écrits avec des espaces. Trois caractères qui décidaient de
+la crédibilité de tout le film.
 
 ### Le ton
 

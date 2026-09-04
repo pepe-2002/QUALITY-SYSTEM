@@ -3,7 +3,8 @@
 """
 LA VOIX OFF DES FILMS — écrite, prononcée, puis travaillée comme en studio.
 
-    python3 voix.py --essai        → un extrait avec les trois voix, à comparer
+    python3 voix.py --essai              → un extrait des trois voix, à comparer
+    python3 voix.py --phonemes "LET 410"  → vérifier une prononciation SANS écouter
     (sinon, `film.py` l'appelle tout seul)
 
 CE QUE FAIT CE FICHIER, DANS L'ORDRE
@@ -14,10 +15,17 @@ CE QUE FAIT CE FICHIER, DANS L'ORDRE
      monde saute, et c'est celle qui trahit le travail bâclé : une synthèse à
      qui l'on donne « 5 h 30 », « 3 kg » ou « GRD-PROC-001 » dit « cinq h
      trente », « trois kg » et « gerdeproc zéro zéro un ».
-  3. Il synthétise (Piper, modèle neuronal français, tourne hors ligne).
-  4. Il POLIT — et c'est là que « synthèse vocale » devient « voix off » :
+  3. Il DÉCOUPE sur la ponctuation et pose les silences lui-même (`decouper`).
+     Sans cela, les virgules sont avalées : 0,08 s au lieu d'une respiration.
+  4. Il synthétise chaque morceau, MESURE son débit, et redit ceux qui filent
+     (`DEBIT`). Sans cela, la voix accélère sur les phrases longues.
+  5. Il POLIT — et c'est là que « synthèse vocale » devient « voix off » :
      coupe des graves, réduction de souffle, creux à 250 Hz, présence à
      3,2 kHz, dé-essage, compression, et normalisation à −16 LUFS.
+
+Les points 3 et 4 ne sont pas des raffinements : ce sont les deux défauts que
+le patron a entendus et nommés, et ils viennent tous deux de la même cause —
+une synthèse laissée seule décide du rythme, et elle décide mal.
 
 📌 POURQUOI UNE VOIX DE SYNTHÈSE ET PAS UN COMÉDIEN
 Un comédien français facturerait plus que le film entier, et pour deux films
@@ -85,6 +93,29 @@ ALLURE = 1.15
 # sans pouvoir écouter, ne ferait que remplacer un défaut par un autre.
 SOUFFLE = 0.667
 VARIATION = 0.8
+
+# LE DÉBIT VISÉ, en phonèmes par seconde, et c'est le réglage qui compte le plus.
+#
+# 🗣️ Le patron, 04/09/2026 : « si la phrase est longue on a l'impression que la
+# voix accélère, ne l'accélère pas ».
+#
+# 📌 CE QU'IL AVAIT ENTENDU, ET QUE LA MESURE CONFIRME
+# À allure constante, la synthèse ne parle PAS à vitesse constante. Mesuré sur
+# nos propres phrases, en phonèmes par seconde :
+#     « Dites plutôt. » ................................... 13,2
+#     « Saluer le premier. » .............................. 15,3
+#     « Le corps parle avant la bouche. » ................. 15,4
+#     « Le passager ne verra jamais le commandant … » ..... 15,2
+#     « Personne âgée, femme enceinte, mobilité … » ....... 12,9
+# Près de 20 % d'écart. Une phrase longue tenue à 15 phonèmes/seconde court
+# quatre secondes sans respirer : ce n'est pas qu'elle accélère vraiment, c'est
+# qu'elle ne s'arrête jamais — et cela s'entend comme une accélération.
+#
+# On mesure donc CHAQUE fragment après l'avoir dit, et on redit ceux qui filent,
+# en ralentissant d'autant. Toute la narration se tient alors au même débit.
+DEBIT = 12.6            # le bas de ce qu'on a mesuré : l'allure des passages calmes
+ECART_TOLERE = 1.03     # en dessous de 3 % d'écart, on ne refait pas : inaudible
+RALENTI_MAX = 2.2       # garde-fou : jamais au-delà, on entendrait le procédé
 
 
 # ════════════════════════════════════════════ 1. écrire ce qui doit être dit
@@ -164,14 +195,23 @@ def en_lettres(n):
     return tete if r == 0 else tete + " " + en_lettres(r)
 
 
-# Les sigles maison. Certains se lisent lettre par lettre, d'autres se
-# prononcent comme un mot — et deux se disent en clair parce qu'un agent qui
-# entend « P M R » pour la première fois ne sait pas de quoi on parle.
+# Les sigles maison, épelés lettre par lettre.
+#
+# ⚠️ DES ESPACES, PAS DES TRAITS D'UNION — le patron, 04/09/2026 : « il dit
+# leté 410 ». Vérifié sur les phonèmes que la synthèse fabrique :
+#     "LET"    → lˈɛt              elle lit le sigle comme un mot : « lette »
+#     "L-E-T"  → ˈɛlˈətˈe          les lettres, mais COLLÉES : « leté »
+#     "L E T"  → ˈɛl ˈə tˈe        les trois lettres détachées : « èl - eu - té »
+# Le trait d'union ne sépare pas, l'espace si. Trois caractères qui décidaient
+# de la crédibilité de tout le film.
+#
+# Contrôler une modification de ce tableau :
+#     python3 voix.py --phonemes "L E T quatre cent dix"
 SIGLES = {
-    "ANACM": "A-N-A-C-M", "OACI": "O-A-C-I", "SGS": "S-G-S", "PMR": "P-M-R",
-    "GOM": "G-O-M", "PIR": "P-I-R", "MANEX": "manex", "AOC": "A-O-C",
-    "LET": "L-E-T", "HAH": "H-A-H", "AJN": "A-J-N", "NWA": "N-W-A",
-    "UM": "U-M", "ISO": "isso", "WhatsApp": "watsapp", "MEL": "M-E-L",
+    "ANACM": "A N A C M", "OACI": "O A C I", "SGS": "S G S", "PMR": "P M R",
+    "GOM": "G O M", "PIR": "P I R", "MANEX": "manex", "AOC": "A O C",
+    "LET": "L E T", "HAH": "H A H", "AJN": "A J N", "NWA": "N W A",
+    "UM": "U M", "ISO": "isso", "WhatsApp": "watsapp", "MEL": "M E L",
 }
 
 
@@ -190,7 +230,7 @@ def prononcer(txt):
 
     # les références de procédure : « GRD-PROC-001 » → « G-R-D proc zéro zéro un »
     def _proc(m):
-        lettres = "-".join(m.group(1))
+        lettres = " ".join(m.group(1))
         chiffres = " ".join(en_lettres(c) for c in m.group(2))
         return "%s proc, %s" % (lettres, chiffres)
     t = re.sub(r"\b([A-Z]{3})-PROC-(\d{3})\b", _proc, t)
@@ -245,7 +285,10 @@ def prononcer(txt):
 #                      avalée, et c'est exactement ce que le patron entendait.
 # D'où ce qui suit : on découpe la phrase à chaque signe, on synthétise les
 # morceaux séparément, et on pose SOI-MÊME le silence.
-SILENCE = {",": 0.26, ";": 0.32, ":": 0.38, ".": 0.50, "?": 0.58, "!": 0.52, "": 0.34}
+# 🗣️ ALLONGÉS LE 04/09/2026 : « laisse la voix souffler […] même si la vidéo
+# fait 10 min, si la voix paraît naturelle et calme et que les gens ont envie
+# d'écouter, c'est ce qui gagne ». La durée n'est donc plus une contrainte.
+SILENCE = {",": 0.30, ";": 0.38, ":": 0.46, ".": 0.62, "?": 0.72, "!": 0.66, "": 0.40}
 
 # ⚠️ ET POURQUOI ÇA NE HACHE PAS LA PHRASE
 # Découper une phrase et la recoller, c'est risquer que chaque morceau se
@@ -271,6 +314,14 @@ def decouper(txt):
     if morceaux:                       # rien à attendre après le dernier mot
         morceaux[-1] = (morceaux[-1][0], 0.0)
     return morceaux
+
+
+def _phonemes(moteur, texte):
+    """Le nombre de sons réels d'un fragment — la seule mesure honnête de sa
+    longueur. Compter les lettres surestime les mots à muettes (« beaucoup »
+    = 8 lettres, 4 sons) ; compter les mots ignore leur taille."""
+    signes = set(" .,;:!?ˈˌ")
+    return sum(1 for p in "".join(sum(moteur.phonemize(texte), [])) if p not in signes)
 
 
 def _serrer(x, te, seuil=0.015, marge=0.025):
@@ -327,23 +378,55 @@ def dire(texte, sortie, voix=VOIX, allure=ALLURE):
 
     from piper import SynthesisConfig
     moteur = _moteur(voix)
-    reglage = SynthesisConfig(length_scale=allure, noise_scale=SOUFFLE,
-                              noise_w_scale=VARIATION, normalize_audio=True)
 
-    pistes, te = [], None
-    for m, pause in morceaux:
-        bouts = []
+    def prononcer_morceau(m, echelle):
+        bouts, te = [], None
+        reglage = SynthesisConfig(length_scale=echelle, noise_scale=SOUFFLE,
+                                  noise_w_scale=VARIATION, normalize_audio=True)
         for bout in moteur.synthesize(m, syn_config=reglage):
             te = bout.sample_rate
             bouts.append(np.frombuffer(bout.audio_int16_bytes, dtype=np.int16))
         if not bouts:
-            continue
+            return None, None
         x = np.concatenate(bouts).astype(np.float32) / 32768
-        pistes.append(_serrer(x, te))
+        return _serrer(x, te), te
+
+    pistes, te = [], None
+    for m, pause in morceaux:
+        x, te_m = prononcer_morceau(m, allure)
+        if x is None:
+            continue
+        te = te_m
+
+        # ▸ L'ÉGALISATION DU DÉBIT. On mesure ce qu'on vient de dire ; si ça
+        #   file plus vite que DEBIT, on le redit en ralentissant d'autant.
+        #   La durée d'un modèle VITS suit l'échelle de façon quasi linéaire :
+        #   une seule correction suffit, on ne boucle pas.
+        n = _phonemes(moteur, m)
+        if n:
+            debit = n / (x.size / te)
+            if debit > DEBIT * ECART_TOLERE:
+                echelle = min(RALENTI_MAX, allure * debit / DEBIT)
+                y, te_y = prononcer_morceau(m, echelle)
+                if y is not None:
+                    x, te = y, te_y
+
+        pistes.append(x)
         if pause:
             pistes.append(np.zeros(int(pause * te), dtype=np.float32))
 
     tout = np.concatenate(pistes)
+
+    # 🔎 CONTRÔLE. Les silences ont bien été posés ? Cette vérification existe
+    # parce qu'une réécriture les avait supprimés sans rien casser : le son
+    # sortait, la voix était juste, et seule la durée du film — plus courte
+    # qu'avant alors qu'on venait d'allonger les pauses — trahissait la perte.
+    # Un défaut muet est un défaut qui part en production.
+    attendu = sum(p for _, p in morceaux)
+    if attendu and tout.size / te < attendu:
+        raise RuntimeError("les silences de ponctuation n'ont pas été posés "
+                           "(%.2f s attendus, %.2f s en tout)" % (attendu, tout.size / te))
+
     with wave.open(sortie, "wb") as w:
         w.setnchannels(1)
         w.setsampwidth(2)
@@ -444,8 +527,15 @@ if __name__ == "__main__":
     p.add_argument("--essai", action="store_true",
                    help="fabrique l'extrait de comparaison des trois voix")
     p.add_argument("--dire", help="prononce un texte et affiche sa version parlée")
+    p.add_argument("--phonemes", help="affiche les sons que la synthèse fabriquera "
+                                      "— le seul moyen de vérifier un sigle sans écouter")
     a = p.parse_args()
-    if a.dire:
+    if a.phonemes:
+        t = prononcer(a.phonemes)
+        print("écrit    :", a.phonemes)
+        print("prononcé :", t)
+        print("sons     :", "".join(sum(_moteur(VOIX).phonemize(t), [])))
+    elif a.dire:
         print(prononcer(a.dire))
     elif a.essai:
         essai()

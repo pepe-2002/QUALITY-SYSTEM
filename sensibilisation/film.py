@@ -74,10 +74,19 @@ L, H = 1080, 1920
 MARGE = 84
 IPS = 25
 
-# Le silence qui suit chaque phrase de la voix off. Sans lui, la phrase
-# suivante démarre sur la fin de la précédente : le film paraît pressé, et
-# l'agent n'a pas le temps de faire le lien avec ce qu'il vient de lire.
-RESPIRATION = 0.45
+# Le silence qui suit chaque phrase de la voix off.
+#
+# 🗣️ PORTÉ DE 0,45 À 1,0 s LE 04/09/2026 : « si tu passes de 1 à 2, laisse la
+# voix souffler […] même si la vidéo fait 10 min, si la voix paraît naturelle
+# et calme et que les gens ont envie d'écouter, c'est ce qui gagne. »
+#
+# C'est le temps entre la fin d'un point et l'apparition du suivant. À 0,45 s
+# le point suivant tombait pendant qu'on digérait encore le précédent. À 1 s,
+# on a le temps de faire le lien entre ce qu'on vient d'entendre et ce qu'on
+# vient de lire — et c'est tout l'intérêt d'un film de sensibilisation.
+# La durée du film n'est plus une contrainte : elle a été explicitement
+# déclassée au profit du calme.
+RESPIRATION = 1.0
 
 
 def police(nom, taille):
@@ -609,7 +618,10 @@ def monter(scenario, nom, avec_voix=True):
             if k in sons:
                 # ▸ la voix ne démarre pas avec l'image : elle attend la fin du
                 #   fondu d'entrée. Sinon le premier mot tombe sur un écran noir.
-                paroles.append((t + (0.45 if k == 0 else 0.12), sons[k][0]))
+                # un temps après l'apparition de l'image avant que la voix
+                # parte : à l'ouverture d'une scène, le fondu d'entrée ; à
+                # l'intérieur, le temps de poser l'œil sur la ligne nouvelle.
+                paroles.append((t + (0.60 if k == 0 else 0.25), sons[k][0]))
             t += d
         mp4 = os.path.join(dossier, "scene%03d.mp4" % i)
         total += scene_en_video(imgs, mp4)

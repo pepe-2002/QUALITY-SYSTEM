@@ -40,7 +40,7 @@ les heures, les nombres et les sigles y sont réécrits pour la bouche.
 | 30 | Baisser la voix d'un ton. C'est la seule technique qui fonctionne à tous les coups : l'autre baisse la sienne pour vous entendre. | Baisser la voix d'un ton. C'est la seule technique qui fonctionne à tous les coups: l'autre baisse la sienne pour vous entendre. |
 | 31 | Les passagers qu'on accompagne. | Les passagers qu'on accompagne. |
 | 32 | L'assistance se propose. Elle ne se mendie pas. Personne âgée, femme enceinte, mobilité réduite : proposer sans attendre qu'on demande. | L'assistance se propose. Elle ne se mendie pas. Personne âgée, femme enceinte, mobilité réduite: proposer sans attendre qu'on demande. |
-| 33 | Assistance PMR : elle se note à la réservation et s'annonce à l'escale. Pas le jour du vol. | Assistance P-M-R: elle se note à la réservation et s'annonce à l'escale. Pas le jour du vol. |
+| 33 | Assistance PMR : elle se note à la réservation et s'annonce à l'escale. Pas le jour du vol. | Assistance P M R: elle se note à la réservation et s'annonce à l'escale. Pas le jour du vol. |
 | 34 | Enfant non accompagné : dossier complet vérifié au comptoir, pas à l'aéroport. | Enfant non accompagné: dossier complet vérifié au comptoir, pas à l'aéroport. |
 | 35 | Passager qui ne lit pas : lire pour lui, à voix basse, sans le mettre mal à l'aise. | Passager qui ne lit pas: lire pour lui, à voix basse, sans le mettre mal à l'aise. |
 | 36 | La situation. Un homme demande si son frère est bien sur le vol de demain. Il donne le nom, la date, il connaît tout le dossier. Vous confirmez ? | La situation. Un homme demande si son frère est bien sur le vol de demain. Il donne le nom, la date, il connaît tout le dossier. Vous confirmez? |
@@ -58,8 +58,8 @@ les heures, les nombres et les sigles y sont réécrits pour la bouche.
 | 48 | Ce qui n'est pas écrit n'existe pas. | Ce qui n'est pas écrit n'existe pas. |
 | 49 | Une réclamation est une information gratuite. Toute réclamation se note et remonte au Département Qualité le jour même. | Une réclamation est une information gratuite. Toute réclamation se note et remonte au Département Qualité le jour même. |
 | 50 | Signaler n'est jamais reproché. Ne pas signaler, si. | Signaler n'est jamais reproché. Ne pas signaler, si. |
-| 51 | Ce qui n'est pas écrit n'existe pas pour l'audit ANACM. | Ce qui n'est pas écrit n'existe pas pour l'audit A-N-A-C-M. |
-| 52 | Référence : QUA-PROC-002 — non-conformités et actions correctives. | Référence: Q-U-A proc, zéro zéro deux, non-conformités et actions correctives. |
+| 51 | Ce qui n'est pas écrit n'existe pas pour l'audit ANACM. | Ce qui n'est pas écrit n'existe pas pour l'audit A N A C M. |
+| 52 | Référence : QUA-PROC-002 — non-conformités et actions correctives. | Référence: Q U A proc, zéro zéro deux, non-conformités et actions correctives. |
 | 53 | Cinq réflexes à garder. Un. Saluer le premier. | Cinq réflexes à garder. Un. Saluer le premier. |
 | 54 | Deux. Écouter jusqu'au bout. | Deux. Écouter jusqu'au bout. |
 | 55 | Trois. Ne dire que ce qui est vérifié. | Trois. Ne dire que ce qui est vérifié. |

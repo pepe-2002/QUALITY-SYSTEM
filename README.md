@@ -58,6 +58,12 @@ diffuser dans le groupe WhatsApp du personnel (jamais sur les réseaux publics) 
 | `RoyalAir-accueil-agence.mp4` | comptoirs de vente et réservation | 6 min 53 |
 | `RoyalAir-accueil-escale.mp4` | agents d'escale HAH · AJN · NWA | 7 min 20 |
 
+Chaque film est accompagné d'une **évaluation de 10 questions en PDF**
+(`RoyalAir-examen-agence.pdf`, `RoyalAir-examen-escale.pdf`) et d'un **corrigé
+réservé au correcteur** (`RoyalAir-examen-corrige.pdf`) : remplie et signée,
+l'évaluation va au dossier de formation et devient une preuve de sensibilisation
+opposable en audit.
+
 Les deux sont **dits par une voix off française**, sur une nappe musicale qui
 s'efface pendant la parole, et restent entièrement lisibles sans le son. Chacun
 existe aussi en version allégée `-whatsapp.mp4` (720 × 1280, ~7 Mo), et

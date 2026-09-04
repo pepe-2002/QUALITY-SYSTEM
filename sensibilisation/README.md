@@ -45,6 +45,55 @@ scénario** :
   relit pour corriger la narration — et le conducteur si l'on réenregistre un
   jour avec une vraie voix.
 
+## Les évaluations (PDF)
+
+Trois documents, générés par `examen.py` depuis `questions.py` :
+
+| Document | Réf. | Pour qui |
+|---|---|---|
+| `RoyalAir-examen-agence.pdf` | QUA-EVAL-001 | l'agent, après le film 1 |
+| `RoyalAir-examen-escale.pdf` | QUA-EVAL-002 | l'agent, après le film 2 |
+| `RoyalAir-examen-corrige.pdf` | QUA-EVAL-003 | **le correcteur uniquement** |
+
+Dix questions à choix multiple par film, une seule bonne réponse, **seuil
+d'acquisition 8/10**. Chaque sujet porte son bloc d'identification (nom,
+fonction, escale, date, signature de l'agent, visa du responsable) : rempli, il
+va au dossier de formation et devient une preuve de sensibilisation opposable
+en audit.
+
+**On n'évalue pas la mémoire, on évalue le réflexe.** Chaque question est une
+situation avec une décision à prendre, pas une définition à réciter. Et les
+mauvaises réponses ne sont pas des remplissages : chacune est une erreur qu'on
+voit réellement au comptoir ou en salle.
+
+Le corrigé donne, pour chaque question, **la raison de la réponse et le renvoi
+vers le passage du film**. Un correcteur qui ne peut qu'annoncer « c'est faux »
+ne corrige rien : une mauvaise réponse doit pouvoir se rattraper en revoyant
+trente secondes de film, pas le film entier. Il ajoute la règle de reprise
+immédiate sur les questions de sûreté et de données passager, quelle que soit
+la note d'ensemble.
+
+```bash
+python3 examen.py        # refait les trois PDF
+```
+
+### Deux choix de fabrication
+
+**De vrais PDF, pas des images.** Le texte reste du texte : sélectionnable,
+cherchable (retrouver « PMR » dans un dossier d'évaluations), et net à
+l'impression. Composés en HTML puis imprimés par Chromium, avec les polices du
+film embarquées — sans quoi deux tirages du même examen n'auraient pas la même
+tête.
+
+**La pagination est automatique.** Première tentative : des pages de hauteur
+fixe avec un nombre de questions décidé à l'avance. À la première question un
+peu longue, la page débordait — et le débordement s'imprimait **sous l'en-tête
+de la page suivante**. Un défaut invisible dans le code, visible seulement en
+regardant le PDF. Maintenant le document coule, et l'en-tête et le pied sont
+dans le `<thead>` et le `<tfoot>` d'un tableau : c'est la seule construction que
+Chromium répète sur chaque page imprimée (les éléments en position fixe, non —
+vérifié). Ajouter une question ne peut plus rien casser.
+
 ---
 
 ## Pourquoi ces films ont été fabriqués et non trouvés
@@ -303,6 +352,8 @@ python3 -m piper.download_voices fr_FR-tom-medium
 | la mise en page, les couleurs, les types de cartes | `film.py` |
 | la musique | `musique.py` |
 | la voix, son allure, sa prononciation | `voix.py` |
+| une question d'examen, le barème | **`questions.py`** |
+| la mise en page des PDF | `examen.py` |
 | les fiches et la voix off | rien — `python3 texte.py` les régénère |
 
 ⚠️ **Ne jamais retoucher un `.mp4`.** On corrigerait la copie au lieu de la

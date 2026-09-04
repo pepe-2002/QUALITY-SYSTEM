@@ -40,17 +40,51 @@ import subprocess
 ICI = os.path.dirname(os.path.abspath(__file__))
 MODELES = os.path.join(ICI, ".travail", "voix")
 
-# fr_FR-tom : voix masculine, 44,1 kHz — la seule des quatre voix françaises
-# disponibles à être échantillonnée à 44,1 kHz. Sur un haut-parleur de
-# téléphone, c'est ce qui s'entend le plus.
-VOIX = "fr_FR-tom-medium"
+# 🗣️ LE CHOIX DU PATRON, 04/09/2026 : la deuxième voix de COMPARER-LES-VOIX.mp4,
+# c'est-à-dire fr_FR-siwis. « voix numéro 2 mais c un peu trop rapide ».
+# Ne pas changer sans le lui redemander : une voix, c'est la sienne, pas un
+# réglage technique. L'ordre de l'extrait de comparaison ci-dessous est celui
+# sur lequel il s'est prononcé — le modifier rendrait sa réponse illisible.
+VOIX = "fr_FR-siwis-medium"
 VOIX_COMPARAISON = ["fr_FR-tom-medium", "fr_FR-siwis-medium", "fr_FR-upmc-medium"]
 
-# 1.0 = la vitesse d'origine du modèle, qui traîne : mesurée, elle donne 128
-# mots par minute. Une voix off d'entreprise se tient entre 145 et 160 — en
-# dessous on décroche, au-dessus on n'a plus le temps de lire l'écran.
-# 0.90 nous met à ~150 mots/minute, et raccourcit le film de près d'une minute.
-ALLURE = 0.90
+# L'allure : plus le nombre est grand, plus la voix est posée.
+#
+# 🗣️ RÉGLÉE PAR L'OREILLE DU PATRON, 04/09/2026 : « un peu trop rapide ».
+# Mesure faite après coup sur un vrai passage du film, en mots par minute :
+#     0,90 → 165     ← ce qu'il a entendu
+#     1,00 → 149
+#     1,15 → 140     ← retenu
+#     1,25 → 130
+#     1,35 → 119     (là, ça traîne)
+#
+# ⚠️ ET LA LEÇON, QUI VAUT POUR LA PROCHAINE FOIS : l'allure n'est PAS une
+# propriété du réglage, elle dépend de la voix. Le même 0,90 donnait 140 mots
+# par minute avec la voix « tom » et 165 avec « siwis ». Changer de voix sans
+# remesurer, c'est changer le débit sans s'en apercevoir. Toute nouvelle voix
+# se recalibre sur un passage réel, jamais sur une phrase d'essai — les
+# silences entre phrases comptent dans le rythme perçu.
+#
+# 📌 POURQUOI 140 ET NON LES 150 DE LA NORME
+# Les 145-160 mots/minute sont l'allure d'une voix qui raconte à quelqu'un qui
+# écoute. Ici la voix parle à quelqu'un qui LIT en même temps : chaque phrase
+# double une ligne affichée. Il faut le temps de faire les deux, et c'est la
+# lecture qui commande, pas la parole.
+ALLURE = 1.15
+
+# LE TON. Deux réglages du modèle, laissés à leur valeur d'origine.
+#   SOUFFLE (noise_scale, 0.667) — la part d'aléa dans la voix. En baissant,
+#     on obtient une voix plus lisse ; trop bas, elle devient plate et sonne
+#     « machine ».
+#   VARIATION (noise_w, 0.8) — la variabilité de la durée des sons, c'est-à-dire
+#     le naturel du débit. En baissant, chaque syllabe dure pareil : très
+#     régulier, et très artificiel.
+# ⚠️ On ne les a PAS bougés. Le naturel qui manquait ne venait pas du timbre
+# mais du phrasé — la voix ne respirait pas aux virgules. C'est corrigé par le
+# découpage plus bas, à la source du problème. Toucher au timbre par-dessus,
+# sans pouvoir écouter, ne ferait que remplacer un défaut par un autre.
+SOUFFLE = 0.667
+VARIATION = 0.8
 
 
 # ════════════════════════════════════════════ 1. écrire ce qui doit être dit
@@ -76,7 +110,10 @@ def a_dire(scene, n):
     if t == "duo":
         mauvais, bon = scene["paires"][n - 1]
         debut = (scene["titre"] + " ") if n == 1 else ""
-        return "%sNe dites pas : %s Dites : %s" % (debut, mauvais, bon)
+        # ⚠️ le point après la mauvaise phrase n'est pas cosmétique : sans lui,
+        # « ... jamais l'inverse Dites : ... » est lu d'un seul souffle.
+        return "%sNe dites pas : %s Dites plutôt : %s" % (debut, mauvais.rstrip(". ") + ".",
+                                                          bon)
     if t == "cloture":
         rang = ["Un.", "Deux.", "Trois.", "Quatre.", "Cinq.",
                 "Six.", "Sept.", "Huit.", "Neuf.", "Dix."][n - 1]
@@ -183,29 +220,135 @@ def prononcer(txt):
 
     # une virgule vaut une respiration : deux-points et points-virgules en font
     # de meilleures que leur signe d'origine, que la synthèse ignore
-    t = t.replace(" :", ",").replace(" ;", ",")
+    # ⚠️ NE PAS transformer « : » et « ; » en virgules. C'était le cas au début,
+    # quand la synthèse ignorait tout sauf le point et la virgule. Maintenant
+    # que les silences sont posés à la main, le deux-points vaut une pause plus
+    # longue que la virgule — et c'est lui qui annonce : « Ne dites pas : … ».
+    # Le rabattre sur une virgule, c'est perdre exactement l'effet recherché.
 
     # ménage : les remplacements ci-dessus laissent des « , , » et des espaces
     # avant la ponctuation. La synthèse marque une pause à chaque virgule —
     # deux virgules d'affilée font un trou dans la phrase.
-    t = re.sub(r"\s+([,.])", r"\1", t)
+    t = re.sub(r"\s+([,.;:!?])", r"\1", t)
     t = re.sub(r"(,\s*){2,}", ", ", t)
     t = re.sub(r",\s*\.", ".", t)
     t = re.sub(r"\s+", " ", t).strip()
     return t
 
 
-# ═══════════════════════════════════════════════════ 3. synthétiser et polir
+# ══════════════════════════════════ 3. découper la phrase sur sa ponctuation
+# Les silences, en secondes, selon le signe qui ferme le morceau.
+# Ce ne sont pas des valeurs de goût : elles remplacent ce que la synthèse ne
+# fait pas d'elle-même. MESURE FAITE SUR NOTRE VOIX, le 04/09/2026 :
+#   · un point ....... la synthèse marque 0,50 à 0,65 s. C'est bien, on garde.
+#   · une virgule .... elle marque 0,08 s. Autant dire rien : la virgule est
+#                      avalée, et c'est exactement ce que le patron entendait.
+# D'où ce qui suit : on découpe la phrase à chaque signe, on synthétise les
+# morceaux séparément, et on pose SOI-MÊME le silence.
+SILENCE = {",": 0.26, ";": 0.32, ":": 0.38, ".": 0.50, "?": 0.58, "!": 0.52, "": 0.34}
+
+# ⚠️ ET POURQUOI ÇA NE HACHE PAS LA PHRASE
+# Découper une phrase et la recoller, c'est risquer que chaque morceau se
+# termine comme une phrase — intonation qui retombe, lecture en escalier.
+# On garde donc le signe de ponctuation À LA FIN du morceau qu'on synthétise.
+# Vérifié à la mesure, sur le même fragment « Comptoir propre » :
+#     fini par une virgule → la voix tient à 150 Hz  (la phrase continue)
+#     fini par un point ... → la voix retombe à 138 Hz (la phrase est finie)
+# Le morceau qui se termine par une virgule garde donc sa suspension. C'est ce
+# qui permet de coller les morceaux sans que cela s'entende.
+COUPURES = re.compile(r"[^,;:.!?]+[,;:.!?]?")
+
+
+def decouper(txt):
+    """Découpe un texte en morceaux prononçables, avec le silence qui suit."""
+    morceaux = []
+    for brut in COUPURES.findall(txt):
+        m = brut.strip()
+        if not m or not any(c.isalnum() for c in m):
+            continue
+        fin = m[-1] if m[-1] in SILENCE else ""
+        morceaux.append((m, SILENCE[fin]))
+    if morceaux:                       # rien à attendre après le dernier mot
+        morceaux[-1] = (morceaux[-1][0], 0.0)
+    return morceaux
+
+
+def _serrer(x, te, seuil=0.015, marge=0.025):
+    """Enlève le silence que la synthèse laisse en tête et en queue de chaque
+    morceau. Sans ce serrage, le silence qu'on ajoute s'empile sur celui qui
+    est déjà là et la pause dure le double de ce qu'on a demandé."""
+    import numpy as np
+    fort = np.abs(x) > seuil * (np.abs(x).max() + 1e-9)
+    if not fort.any():
+        return x
+    i, j = np.argmax(fort), len(fort) - np.argmax(fort[::-1])
+    m = int(marge * te)
+    return x[max(0, i - m):min(x.size, j + m)]
+
+
+# ═══════════════════════════════════════════════════ 4. synthétiser et polir
 def modele(nom):
     return os.path.join(MODELES, nom + ".onnx")
 
 
+_CHARGE = {}
+
+
+def _moteur(nom):
+    """Charge le modèle UNE FOIS et le garde.
+
+    ⚠️ POURQUOI CE N'EST PAS UN DÉTAIL. La première version appelait la
+    synthèse en ligne de commande, un processus par texte. C'était tenable tant
+    qu'il y avait un texte par image (~90 par film). Depuis qu'on découpe à la
+    ponctuation, il y a cinq à six morceaux par image, soit plus de cinq cents
+    appels par film — et chacun rechargeait 63 Mo de modèle. Le montage serait
+    passé de quarante minutes à plusieurs heures pour un résultat identique.
+    Le modèle est donc chargé en mémoire, une fois, et réutilisé."""
+    from piper import PiperVoice
+    if nom not in _CHARGE:
+        _CHARGE[nom] = PiperVoice.load(modele(nom))
+    return _CHARGE[nom]
+
+
 def dire(texte, sortie, voix=VOIX, allure=ALLURE):
-    """Synthèse brute. Sortie : un wav non traité."""
-    subprocess.run(["python3", "-m", "piper", "-m", modele(voix),
-                    "-f", sortie, "--length-scale", str(allure),
-                    "--sentence-silence", "0.28"],
-                   input=texte, text=True, check=True, capture_output=True)
+    """Synthèse brute d'un texte, morceau par morceau.
+
+    C'est ici que la ponctuation devient audible : chaque morceau est
+    synthétisé seul, serré, puis posé sur une piste avec le silence que son
+    signe de ponctuation commande. Le résultat n'est pas « une voix lue plus
+    lentement » — c'est une voix qui respire aux bons endroits, ce qui n'est
+    pas la même chose et s'entend tout de suite."""
+    import numpy as np
+    import wave
+
+    morceaux = decouper(texte)
+    if not morceaux:
+        return None
+
+    from piper import SynthesisConfig
+    moteur = _moteur(voix)
+    reglage = SynthesisConfig(length_scale=allure, noise_scale=SOUFFLE,
+                              noise_w_scale=VARIATION, normalize_audio=True)
+
+    pistes, te = [], None
+    for m, pause in morceaux:
+        bouts = []
+        for bout in moteur.synthesize(m, syn_config=reglage):
+            te = bout.sample_rate
+            bouts.append(np.frombuffer(bout.audio_int16_bytes, dtype=np.int16))
+        if not bouts:
+            continue
+        x = np.concatenate(bouts).astype(np.float32) / 32768
+        pistes.append(_serrer(x, te))
+        if pause:
+            pistes.append(np.zeros(int(pause * te), dtype=np.float32))
+
+    tout = np.concatenate(pistes)
+    with wave.open(sortie, "wb") as w:
+        w.setnchannels(1)
+        w.setsampwidth(2)
+        w.setframerate(te)
+        w.writeframes((tout * 32767).astype(np.int16).tobytes())
     return sortie
 
 

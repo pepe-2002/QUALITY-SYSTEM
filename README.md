@@ -55,8 +55,8 @@ diffuser dans le groupe WhatsApp du personnel (jamais sur les réseaux publics) 
 
 | Film | Public | Durée |
 |---|---|---|
-| `RoyalAir-accueil-agence.mp4` | comptoirs de vente et réservation | 6 min 05 |
-| `RoyalAir-accueil-escale.mp4` | agents d'escale HAH · AJN · NWA | 6 min 24 |
+| `RoyalAir-accueil-agence.mp4` | comptoirs de vente et réservation | 6 min 14 |
+| `RoyalAir-accueil-escale.mp4` | agents d'escale HAH · AJN · NWA | 6 min 41 |
 
 Les deux sont **dits par une voix off française**, sur une nappe musicale qui
 s'efface pendant la parole, et restent entièrement lisibles sans le son. Chacun

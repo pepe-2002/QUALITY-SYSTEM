@@ -7,8 +7,8 @@ générique — une vidéo qui sort du groupe emporte sa règle avec elle.
 
 | Film | Pour qui | Durée | À envoyer sur WhatsApp |
 |---|---|---|---|
-| **L'accueil en agence** | comptoirs de vente, réservation | 6 min 05 | `RoyalAir-accueil-agence-whatsapp.mp4` |
-| **L'accueil en escale** | agents d'escale HAH · AJN · NWA | 6 min 24 | `RoyalAir-accueil-escale-whatsapp.mp4` |
+| **L'accueil en agence** | comptoirs de vente, réservation | 6 min 14 | `RoyalAir-accueil-agence-whatsapp.mp4` |
+| **L'accueil en escale** | agents d'escale HAH · AJN · NWA | 6 min 41 | `RoyalAir-accueil-escale-whatsapp.mp4` |
 
 Les deux films sont **dits par une voix off française**, sur une nappe musicale
 qui s'efface pendant la parole. Ils restent entièrement lisibles **sans le
@@ -24,7 +24,7 @@ Chaque film existe en **deux fichiers** :
   léger et bien encodé qu'un gros fichier qu'il abîmera lui-même.
 
 ⏱️ **Sur la durée.** Sans voix, les films faisaient 4 min 51 et 4 min 56. La
-voix off les porte à 6 min 05 et 6 min 24 : une phrase dite prend plus de temps
+voix off les porte à 6 min 14 et 6 min 41 : une phrase dite prend plus de temps
 qu'une phrase lue, et on ne comprime pas une voix sans que cela s'entende.
 Pour revenir sous cinq minutes il faut retirer du contenu, pas accélérer la
 narration — deux chapitres par film suffiraient. C'est un arbitrage à trancher,
@@ -99,9 +99,41 @@ Elle est fabriquée par `voix.py`, en quatre temps :
    celle qui trahit le travail bâclé. Une synthèse à qui l'on donne le texte
    affiché tel quel dit « cinq h trente », « trois kg », « gerdeproc zéro zéro
    un » et épelle les mots écrits en capitales. `prononcer()` réécrit les
-   heures, les nombres, les unités, les sigles et les références de procédure.
-3. **Synthétiser** — modèle neuronal français, hors ligne, sans compte ni clé.
-4. **Polir**, et c'est là que « synthèse vocale » devient « voix off » : coupe
+   heures, les nombres, les unités, les sigles et les références de procédure —
+   **en gardant la ponctuation intacte**, deux-points compris : c'est elle qui
+   commande le phrasé à l'étape suivante.
+3. **Découper sur la ponctuation, et poser les silences soi-même.** C'est ce qui
+   fait la différence entre une voix qui débite et une voix qui parle.
+
+   Mesuré sur notre voix : un **point** est bien marqué par la synthèse (0,50 à
+   0,65 s de silence), mais une **virgule** ne donne que **0,08 s** — autant
+   dire rien. La virgule est avalée, et c'est exactement ce que le patron
+   entendait. Le texte est donc découpé à chaque signe, chaque morceau est
+   synthétisé séparément, et le silence est posé à la main :
+
+   | signe | silence |
+   |---|---|
+   | virgule | 0,26 s |
+   | point-virgule | 0,32 s |
+   | deux-points | 0,38 s |
+   | point | 0,50 s |
+   | point d'interrogation | 0,58 s |
+
+   ⚠️ **Et pourquoi ça ne hache pas la phrase.** Recoller des morceaux, c'est
+   risquer que chacun se termine comme une phrase : intonation qui retombe,
+   lecture en escalier. On garde donc le signe de ponctuation **à la fin** du
+   morceau synthétisé. Vérifié à la mesure, sur le même fragment
+   « Comptoir propre » : terminé par une **virgule**, la voix se tient à
+   150 Hz — la phrase est en suspens ; terminée par un **point**, elle retombe
+   à 138 Hz — la phrase est finie. Le morceau à virgule garde donc sa
+   suspension, et les raccords ne s'entendent pas.
+
+4. **Synthétiser** — modèle neuronal français, hors ligne, sans compte ni clé.
+   Le modèle est chargé **une seule fois** en mémoire : depuis le découpage il
+   y a plus de cinq cents morceaux par film, et les relancer un par un en
+   ligne de commande rechargeait 63 Mo à chaque fois — plusieurs heures de
+   montage pour un résultat identique. Chargé une fois : 0,2 s par morceau.
+5. **Polir**, et c'est là que « synthèse vocale » devient « voix off » : coupe
    des graves à 85 Hz, réduction du souffle, −2,5 dB à 260 Hz (le côté
    « boîte »), +3 dB à 3,2 kHz (la bande de l'intelligibilité, celle qui fait
    qu'on comprend dans un couloir), dé-essage, compression, et normalisation à
@@ -116,7 +148,16 @@ La nappe musicale descend de 7 dB pendant qu'on parle et remonte après. Elle
 était déjà creusée de 6 dB dans la bande de la parole ; ne pas masquer ne suffit
 pas, c'est ce **mouvement** qui donne à un film son air fini.
 
-### Changer de voix
+### La voix retenue
+
+**`fr_FR-siwis`, allure 1,15** — choisie à l'oreille par le patron le
+04/09/2026, sur l'extrait `COMPARER-LES-VOIX.mp4` (la deuxième des trois), puis
+ralentie à sa demande : la première version « était un peu trop rapide ».
+
+Ces deux réglages sont une décision, pas un paramètre technique. Ne pas les
+changer sans redemander.
+
+### Changer de voix — et l'erreur à ne pas refaire
 
 Trois voix françaises sont installées. Pour les entendre sur un même passage :
 
@@ -125,9 +166,36 @@ python3 voix.py --essai        # → COMPARER-LES-VOIX.mp4
 ```
 
 Puis changer `VOIX` en tête de `voix.py` et relancer `python3 film.py tout`.
-`ALLURE` règle le débit : 0,90 nous met à environ 150 mots par minute, l'allure
-d'une voix off d'entreprise. En dessous de 145 on décroche, au-dessus de 160 on
-n'a plus le temps de lire l'écran.
+
+⚠️ **L'allure n'est pas une propriété du réglage : elle dépend de la voix.** Le
+même `ALLURE = 0,90` donnait 140 mots par minute avec la voix « tom » et 165
+avec « siwis » — d'où le « trop rapide ». Toute nouvelle voix se **recalibre**,
+sur un passage réel du film et non sur une phrase d'essai : les silences entre
+phrases comptent dans le rythme perçu.
+
+Mesuré sur siwis, sur un vrai passage :
+
+| allure | mots / minute | |
+|---|---|---|
+| 0,90 | 165 | trop rapide |
+| 1,00 | 149 | la norme des voix off |
+| **1,15** | **140** | **retenu** |
+| 1,25 | 130 | |
+| 1,35 | 119 | ça traîne |
+
+Pourquoi 140 et non les 150 de la norme : ces 145-160 sont l'allure d'une voix
+qui raconte à quelqu'un qui **écoute**. Ici la voix parle à quelqu'un qui **lit
+en même temps** — chaque phrase double une ligne affichée. C'est la lecture qui
+commande le rythme, pas la parole.
+
+### Le ton
+
+Deux réglages du modèle commandent le timbre — `SOUFFLE` (la part d'aléa dans
+la voix) et `VARIATION` (le naturel du débit). **Ils sont laissés à leur valeur
+d'origine.** Le naturel qui manquait ne venait pas du timbre mais du phrasé :
+la voix ne respirait pas aux virgules. C'est corrigé à la source, par le
+découpage. Toucher au timbre par-dessus n'aurait fait que remplacer un défaut
+par un autre.
 
 ### Ce que ce n'est pas
 

@@ -28,7 +28,7 @@ sys.path.insert(0, ICI)
 import scenarios  # noqa: E402
 
 
-def duree_scene(sc):
+def duree_scene(sc):  # noqa: F811  (conservée : la fiche s'en sert)
     if sc["type"] in ("liste", "cloture"):
         n = len(sc["points"])
         return sc["par_point"] * n + sc.get("tenue", 1.6 if sc["type"] == "liste" else 2.4)
@@ -42,44 +42,42 @@ def minutage(t):
 
 
 def voix_off(film):
-    """Le texte à dire, avec le repère de temps de chaque scène.
+    """Le texte RÉELLEMENT dit par la voix off, image par image.
 
-    Il ne redit pas ce qui est écrit à l'écran — une voix qui lit les
-    sous-titres endort. Elle enchaîne, elle nomme, elle laisse lire."""
+    Ce n'est plus une proposition de texte : depuis que le film a une voix,
+    c'est le relevé de ce qu'elle dit, tiré de la même fonction qui la
+    fabrique (`voix.a_dire`). Deux usages :
+      · relire et corriger la narration avant diffusion — une phrase se
+        corrige dans `scenarios.py`, jamais ici ;
+      · servir de conducteur si le patron veut réenregistrer avec sa propre
+        voix : les colonnes donnent l'ordre et la version prononçable, celle
+        que la synthèse reçoit après réécriture des heures et des sigles.
+    """
+    import voix as vx
     lignes = ["# Voix off — %s" % film["titre"], "",
-              "Texte à lire si l'on veut poser une voix sur le film. Les repères de",
-              "temps sont ceux du montage : à chaque scène, la voix a exactement la",
-              "durée indiquée, silences compris.", "",
-              "**Ton** : posé, sans emphase. C'est un collègue qui parle à des collègues,",
-              "pas une publicité. On ne lit pas le texte affiché — on le prolonge.", "",
-              "| Temps | Durée | À dire |", "|---|---|---|"]
-    t = 0.0
+              "Ce que dit la voix, dans l'ordre, image par image. **Généré depuis**",
+              "`scenarios.py` **par** `texte.py` — corriger le scénario, pas ce fichier.", "",
+              "La colonne « prononcé » est le texte tel qu'il est remis à la synthèse :",
+              "les heures, les nombres et les sigles y sont réécrits pour la bouche.", "",
+              "| # | À l'écran | Prononcé |", "|---|---|---|"]
+    rang = 0
     for sc in film["scenes"]:
-        d = duree_scene(sc)
-        dit = ""
-        if sc["type"] == "ouverture":
-            dit = "Royal Air, département qualité. %s." % sc["titre"]
-        elif sc["type"] == "situation":
-            dit = "%s … %s" % (sc["texte"], sc["question"])
-        elif sc["type"] == "chapitre":
-            dit = "%s." % sc["titre"]
-        elif sc["type"] == "regle":
-            dit = "%s %s" % (sc["texte"], sc.get("appui", ""))
-        elif sc["type"] == "liste":
-            dit = "%s *(laisser lire les %d points)*" % (sc["titre"], len(sc["points"]))
+        if sc["type"] in ("liste", "cloture"):
+            n = len(sc["points"])
         elif sc["type"] == "duo":
-            dit = "%s *(laisser lire)*" % sc["titre"]
-        elif sc["type"] == "cloture":
-            dit = "Cinq réflexes à garder. *(laisser lire)*"
-        elif sc["type"] == "fin":
-            dit = ("Ce film est interne. Il reste dans le groupe du personnel. "
-                   "Merci de votre attention.")
-        lignes.append("| %s | %.1f s | %s |" % (minutage(t), d, dit.strip().replace("\n", " ")))
-        t += d
-    lignes += ["", "**Durée totale : %s.**" % minutage(t), "",
-               "Une fois enregistrée, la voix se nettoie et se mixe avec la nappe ;",
-               "la nappe est déjà creusée dans la bande de la parole (`musique.py`),",
-               "il n'y a donc rien à baisser au montage."]
+            n = len(sc["paires"])
+        else:
+            n = 1
+        for i in range(1, n + 1):
+            rang += 1
+            dit = vx.a_dire(sc, i)
+            lignes.append("| %d | %s | %s |" % (rang, dit.replace("|", "/"),
+                                                vx.prononcer(dit).replace("|", "/")))
+    lignes += ["", "**%d phrases.** Voix : `%s`, allure %.2f, traitée à −16 LUFS."
+               % (rang, vx.VOIX, vx.ALLURE), "",
+               "Pour changer de voix : `VOIX` dans `voix.py`, puis `python3 film.py tout`.",
+               "Pour entendre les trois voix disponibles sur un même passage :",
+               "`python3 voix.py --essai`."]
     return "\n".join(lignes) + "\n"
 
 

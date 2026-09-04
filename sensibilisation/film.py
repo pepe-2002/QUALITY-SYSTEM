@@ -6,6 +6,7 @@ LE MOTEUR DES FILMS DE SENSIBILISATION ROYAL AIR.
     python3 film.py agence      → RoyalAir-accueil-agence.mp4  (+ version légère)
     python3 film.py escale      → RoyalAir-accueil-escale.mp4  (+ version légère)
     python3 film.py tout
+    python3 film.py agence --muet     → la même chose sans voix off
 
 Ce fichier ne contient AUCUN texte du film : tout le contenu est dans
 `scenarios.py`. Ici, il n'y a que la fabrication de l'image et le montage.
@@ -18,13 +19,15 @@ quelqu'un d'autre, avec ses règles et son logo. On ne peut ni y coller le nôtr
 notre GOM et nos procédures. Des cartes fabriquées ici n'appartiennent qu'à
 Royal Air : elles citent nos références, nos escales, notre flotte.
 
-📌 POURQUOI DU TEXTE À L'ÉCRAN ET PAS UNE VOIX
-Le film est destiné au groupe WhatsApp. Sur WhatsApp, une vidéo démarre sans le
-son : la majorité des agents la regarderont muette, dans un couloir ou dans un
-bus. Tout ce qui compte est donc écrit, en grand, à l'écran. La nappe musicale
-est là pour ceux qui ont le son, jamais pour porter l'information.
-Les textes de voix off sont fournis à côté (`voix-off-*.md`) : si le patron veut
-un jour poser sa voix, le film n'a pas à être refait, il suffit de la mixer.
+📌 UNE VOIX OFF, ET TOUT ÉCRIT QUAND MÊME
+Le film est destiné au groupe WhatsApp, où une vidéo démarre SANS LE SON : une
+partie des agents la regardera muette, dans un couloir ou dans un bus. Tout ce
+qui compte est donc écrit en grand à l'écran — et dit par la voix off pour les
+autres. Le film doit fonctionner entièrement dans les deux cas ; aucune
+information n'existe seulement à l'oreille, aucune seulement à l'œil.
+La voix est fabriquée par `voix.py`, et c'est ELLE qui commande la durée des
+images : chacune dure au moins le temps de sa phrase. On n'accélère jamais une
+voix pour la faire rentrer dans un montage — cela s'entend toujours.
 
 FORMAT : 1080 × 1920 (vertical plein écran de téléphone), 25 im/s, H.264.
 Deux fichiers par film — le complet, et un allégé sous la limite WhatsApp.
@@ -70,6 +73,11 @@ _LOGO = None
 L, H = 1080, 1920
 MARGE = 84
 IPS = 25
+
+# Le silence qui suit chaque phrase de la voix off. Sans lui, la phrase
+# suivante démarre sur la fin de la précédente : le film paraît pressé, et
+# l'agent n'a pas le temps de faire le lien avec ce qu'il vient de lire.
+RESPIRATION = 0.45
 
 
 def police(nom, taille):
@@ -474,7 +482,8 @@ def images_de(scene, dossier, index, avancement):
     def poser(img, duree, n=0):
         f = os.path.join(dossier, "s%03d_%02d.png" % (index, n))
         img.save(f)
-        sorties.append((f, duree))
+        # le rang de l'image dans sa scène sert à retrouver la phrase à dire
+        sorties.append((f, duree, max(1, n)))
 
     if t == "ouverture":
         poser(c_ouverture(scene["titre"], scene["sous_titre"], scene["mention"], avancement),
@@ -495,22 +504,51 @@ def images_de(scene, dossier, index, avancement):
         for i in range(1, len(pts) + 1):
             poser(c_liste(scene["titre"], pts, scene["chapitre"], i, m, avancement),
                   scene["par_point"], i)
-        sorties[-1] = (sorties[-1][0], sorties[-1][1] + scene.get("tenue", 1.6))
+        sorties[-1] = (sorties[-1][0], sorties[-1][1] + scene.get("tenue", 1.6), sorties[-1][2])
     elif t == "duo":
         pr = scene["paires"]
         for i in range(1, len(pr) + 1):
             poser(c_duo(scene["titre"], pr, scene["chapitre"], i, avancement),
                   scene["par_point"], i)
-        sorties[-1] = (sorties[-1][0], sorties[-1][1] + scene.get("tenue", 1.6))
+        sorties[-1] = (sorties[-1][0], sorties[-1][1] + scene.get("tenue", 1.6), sorties[-1][2])
     elif t == "cloture":
         pts = scene["points"]
         for i in range(1, len(pts) + 1):
             poser(c_cloture(scene["titre"], pts, scene.get("reference", ""), i, avancement),
                   scene["par_point"], i)
-        sorties[-1] = (sorties[-1][0], sorties[-1][1] + scene.get("tenue", 2.4))
+        sorties[-1] = (sorties[-1][0], sorties[-1][1] + scene.get("tenue", 2.4), sorties[-1][2])
     else:
         raise ValueError("type de scène inconnu : " + t)
     return sorties
+
+
+def caler_sur_la_voix(scene, images, dossier, index, avec_voix):
+    """Rend à chaque image la durée qu'il lui faut : celle qui laisse LIRE, ou
+    celle qui laisse DIRE si la phrase est plus longue.
+
+    📌 C'EST LA VOIX QUI COMMANDE, PAS L'INVERSE
+    L'erreur classique est d'enregistrer une voix puis de la faire rentrer au
+    chausse-pied dans un montage déjà fait : on accélère, on coupe des
+    respirations, et cela s'entend. Ici c'est le montage qui s'adapte. Une
+    image dure au moins le temps de sa phrase, plus une demi-seconde de
+    silence — sans ce silence, la phrase suivante commence sur la fin de la
+    précédente et tout devient précipité.
+    Conséquence assumée : le film s'allonge. C'est le prix d'une voix qui
+    respire, et il vaut mieux que six minutes bien dites."""
+    if not avec_voix:
+        return [(f, d) for f, d, _ in images], {}
+
+    import voix as vx
+    sons, ajustees = {}, []
+    for f, d, n in images:
+        texte = vx.a_dire(scene, n)
+        wav = os.path.join(dossier, "v%03d_%02d.wav" % (index, n))
+        _, dv = vx.fabriquer(texte, wav)
+        if dv:
+            d = max(d, dv + RESPIRATION)
+            sons[len(ajustees)] = (wav, dv)
+        ajustees.append((f, d))
+    return ajustees, sons
 
 
 def scene_en_video(images, sortie):
@@ -553,7 +591,7 @@ def scene_en_video(images, sortie):
     return sum(d for _, d in images)
 
 
-def monter(scenario, nom):
+def monter(scenario, nom, avec_voix=True):
     dossier = os.path.join(TRAVAIL, nom)
     os.makedirs(dossier, exist_ok=True)
     for f in os.listdir(dossier):
@@ -561,13 +599,24 @@ def monter(scenario, nom):
 
     scenes, total = [], 0.0
     n_scenes = len(scenario["scenes"])
+    paroles = []                       # (instant de départ, fichier wav)
     for i, sc in enumerate(scenario["scenes"]):
-        imgs = images_de(sc, dossier, i, (i + 1) / n_scenes)
+        brutes = images_de(sc, dossier, i, (i + 1) / n_scenes)
+        imgs, sons = caler_sur_la_voix(sc, brutes, dossier, i, avec_voix)
+        # l'instant où chaque phrase commence, dans le film entier
+        t = total
+        for k, (_, d) in enumerate(imgs):
+            if k in sons:
+                # ▸ la voix ne démarre pas avec l'image : elle attend la fin du
+                #   fondu d'entrée. Sinon le premier mot tombe sur un écran noir.
+                paroles.append((t + (0.45 if k == 0 else 0.12), sons[k][0]))
+            t += d
         mp4 = os.path.join(dossier, "scene%03d.mp4" % i)
         total += scene_en_video(imgs, mp4)
         scenes.append(mp4)
-        print("   scène %2d/%2d  %-10s %5.1f s" % (i + 1, len(scenario["scenes"]),
-                                                   sc["type"], sum(d for _, d in imgs)))
+        print("   scène %2d/%2d  %-10s %5.1f s%s" % (i + 1, len(scenario["scenes"]),
+                                                     sc["type"], sum(d for _, d in imgs),
+                                                     "  (%d dites)" % len(sons) if sons else ""))
 
     liste = os.path.join(dossier, "montage.txt")
     with open(liste, "w") as f:
@@ -578,8 +627,9 @@ def monter(scenario, nom):
                     "-i", liste, "-c", "copy", muet], check=True)
 
     import musique
-    son = os.path.join(dossier, "nappe.wav")
-    musique.composer(total + 1.0, son)
+    nappe = os.path.join(dossier, "nappe.wav")
+    musique.composer(total + 1.0, nappe)
+    son = melanger(nappe, paroles, total, dossier) if paroles else nappe
 
     complet = os.path.join(ICI, scenario["fichier"] + ".mp4")
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", muet, "-i", son,
@@ -612,16 +662,88 @@ def monter(scenario, nom):
     return complet, leger
 
 
+def melanger(nappe, paroles, total, dossier):
+    """Pose chaque phrase à son instant sur la nappe, et baisse la nappe pendant
+    qu'on parle.
+
+    📌 POURQUOI ON BAISSE LA MUSIQUE ALORS QU'ELLE EST DÉJÀ CREUSÉE
+    `musique.py` retire déjà 6 dB dans la bande de la parole, ce qui suffit à
+    ne pas masquer la voix. Mais ne pas masquer n'est pas assez : une musique
+    au même niveau pendant toute la phrase fatigue, parce que l'oreille doit
+    faire le tri en continu. On la descend donc encore de 7 dB pendant qu'on
+    parle, et on la laisse remonter après — c'est ce mouvement, et non le
+    niveau moyen, qui donne à un film son air « fini ».
+    L'abaissement suit un lissage de 0,3 s : sans lui, on entendrait la musique
+    sauter à chaque phrase.
+    """
+    import numpy as np
+    import wave
+
+    def lire(f):
+        with wave.open(f, "rb") as w:
+            n, larg, canaux = w.getnframes(), w.getsampwidth(), w.getnchannels()
+            x = np.frombuffer(w.readframes(n), dtype=np.int16).astype(np.float32) / 32768
+            te = w.getframerate()
+        if canaux == 2:
+            x = x.reshape(-1, 2).mean(axis=1)
+        return x, te
+
+    fond_son, te = lire(nappe)
+    n = int(total * te) + te
+    if fond_son.size < n:
+        fond_son = np.pad(fond_son, (0, n - fond_son.size))
+    fond_son = fond_son[:n]
+
+    voix_piste = np.zeros(n, dtype=np.float32)
+    for depart, wav in paroles:
+        x, te_v = lire(wav)
+        assert te_v == te, "la voix et la nappe doivent être au même taux"
+        i = int(depart * te)
+        j = min(n, i + x.size)
+        voix_piste[i:j] += x[:j - i]
+
+    # l'enveloppe de la parole : où ça parle, et à quel point
+    env = np.abs(voix_piste)
+    # ⚠️ Moyenne glissante par somme cumulée, PAS par convolution : sur six
+    # minutes à 48 kHz, une convolution avec une fenêtre de 0,3 s fait 2,6·10¹¹
+    # multiplications — plusieurs heures. La somme cumulée fait le même calcul
+    # en une seule passe.
+    fenetre = int(0.30 * te)
+    cum = np.concatenate(([0.0], np.cumsum(env, dtype=np.float64)))
+    demi = fenetre // 2
+    debut = np.clip(np.arange(env.size) - demi, 0, env.size)
+    fin_f = np.clip(np.arange(env.size) + demi, 0, env.size)
+    env = ((cum[fin_f] - cum[debut]) / np.maximum(1, fin_f - debut)).astype(np.float32)
+    env = np.clip(env / (np.percentile(env[env > 0], 70) + 1e-9), 0, 1) if env.any() else env
+    abaissement = 1 - 0.55 * env            # −7 dB au plus fort de la parole
+
+    melange = fond_son * abaissement * 0.85 + voix_piste * 0.92
+    crete = np.max(np.abs(melange))
+    if crete > 0.97:
+        melange *= 0.97 / crete
+
+    sortie = os.path.join(dossier, "melange.wav")
+    stereo = np.stack([melange, melange], axis=1)
+    with wave.open(sortie, "wb") as w:
+        w.setnchannels(2)
+        w.setsampwidth(2)
+        w.setframerate(te)
+        w.writeframes((stereo * 32767).astype(np.int16).tobytes())
+    return sortie
+
+
 def main():
     sys.path.insert(0, ICI)
     import scenarios
-    quoi = (sys.argv[1] if len(sys.argv) > 1 else "tout").lower()
+    args = [a.lower() for a in sys.argv[1:]]
+    avec_voix = "--muet" not in args
+    quoi = next((a for a in args if not a.startswith("--")), "tout")
     choix = {"agence": [scenarios.AGENCE], "escale": [scenarios.ESCALE],
              "tout": [scenarios.AGENCE, scenarios.ESCALE]}[quoi]
     os.makedirs(TRAVAIL, exist_ok=True)
     for sc in choix:
-        print("\n▶ %s" % sc["titre"])
-        monter(sc, sc["fichier"])
+        print("\n▶ %s%s" % (sc["titre"], "" if avec_voix else "  (sans voix off)"))
+        monter(sc, sc["fichier"], avec_voix)
 
 
 if __name__ == "__main__":

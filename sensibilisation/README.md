@@ -7,17 +7,28 @@ générique — une vidéo qui sort du groupe emporte sa règle avec elle.
 
 | Film | Pour qui | Durée | À envoyer sur WhatsApp |
 |---|---|---|---|
-| **L'accueil en agence** | comptoirs de vente, réservation | 4 min 51 | `RoyalAir-accueil-agence-whatsapp.mp4` |
-| **L'accueil en escale** | agents d'escale HAH · AJN · NWA | 4 min 56 | `RoyalAir-accueil-escale-whatsapp.mp4` |
+| **L'accueil en agence** | comptoirs de vente, réservation | 6 min 05 | `RoyalAir-accueil-agence-whatsapp.mp4` |
+| **L'accueil en escale** | agents d'escale HAH · AJN · NWA | 6 min 24 | `RoyalAir-accueil-escale-whatsapp.mp4` |
+
+Les deux films sont **dits par une voix off française**, sur une nappe musicale
+qui s'efface pendant la parole. Ils restent entièrement lisibles **sans le
+son** : rien n'existe seulement à l'oreille.
 
 Chaque film existe en **deux fichiers** :
 
 - `RoyalAir-accueil-*.mp4` — 1080 × 1920, la version d'archive et de projection
   (réunion, formation, salle de briefing) ;
 - `RoyalAir-accueil-*-whatsapp.mp4` — 720 × 1280, **environ 3 Mo**. C'est
-  celui qu'on envoie. WhatsApp recompresse tout ce qu'on lui donne : mieux vaut
-  lui remettre un fichier déjà léger et bien encodé qu'un gros fichier qu'il
-  abîmera lui-même.
+  celui qu'on envoie, **environ 6,5 Mo** — sous la limite de WhatsApp. WhatsApp
+  recompresse tout ce qu'on lui donne : mieux vaut lui remettre un fichier déjà
+  léger et bien encodé qu'un gros fichier qu'il abîmera lui-même.
+
+⏱️ **Sur la durée.** Sans voix, les films faisaient 4 min 51 et 4 min 56. La
+voix off les porte à 6 min 05 et 6 min 24 : une phrase dite prend plus de temps
+qu'une phrase lue, et on ne comprime pas une voix sans que cela s'entende.
+Pour revenir sous cinq minutes il faut retirer du contenu, pas accélérer la
+narration — deux chapitres par film suffiraient. C'est un arbitrage à trancher,
+pas un réglage.
 
 À côté des films, deux documents par sujet, **générés depuis le même
 scénario** :
@@ -25,8 +36,10 @@ scénario** :
 - `fiche-agence.md` / `fiche-escale.md` — tout le contenu en une page, à
   imprimer et à afficher au comptoir. Un film se regarde une fois, une fiche
   punaisée se relit ;
-- `voix-off-agence.md` / `voix-off-escale.md` — le texte à lire, minuté sur le
-  montage, si l'on veut poser une voix plus tard.
+- `voix-off-agence.md` / `voix-off-escale.md` — le relevé de tout ce que dit la
+  voix, image par image, avec la version prononçable en regard. C'est ce qu'on
+  relit pour corriger la narration — et le conducteur si l'on réenregistre un
+  jour avec une vraie voix.
 
 ---
 
@@ -75,6 +88,57 @@ démarre sans le son.** La plupart des agents la regarderont muette, dans un
 couloir. Donc **tout ce qui compte est écrit en grand à l'écran**, et la
 musique ne porte jamais d'information.
 
+## La voix off
+
+Elle est fabriquée par `voix.py`, en quatre temps :
+
+1. **Écrire ce qui doit être dit** — une phrase par image du film, tirée du même
+   scénario que l'image. La voix arrive donc exactement quand la ligne apparaît,
+   sans aucun calage à la main.
+2. **Le réécrire pour la bouche.** C'est l'étape que tout le monde saute, et
+   celle qui trahit le travail bâclé. Une synthèse à qui l'on donne le texte
+   affiché tel quel dit « cinq h trente », « trois kg », « gerdeproc zéro zéro
+   un » et épelle les mots écrits en capitales. `prononcer()` réécrit les
+   heures, les nombres, les unités, les sigles et les références de procédure.
+3. **Synthétiser** — modèle neuronal français, hors ligne, sans compte ni clé.
+4. **Polir**, et c'est là que « synthèse vocale » devient « voix off » : coupe
+   des graves à 85 Hz, réduction du souffle, −2,5 dB à 260 Hz (le côté
+   « boîte »), +3 dB à 3,2 kHz (la bande de l'intelligibilité, celle qui fait
+   qu'on comprend dans un couloir), dé-essage, compression, et normalisation à
+   −16 LUFS.
+
+**C'est la voix qui commande le montage, pas l'inverse.** Chaque image dure au
+moins le temps de sa phrase, plus une respiration. On n'accélère jamais une voix
+pour la faire entrer dans un montage déjà fait : cela s'entend toujours. Le
+film s'allonge donc — c'est le prix d'une narration qui respire.
+
+La nappe musicale descend de 7 dB pendant qu'on parle et remonte après. Elle
+était déjà creusée de 6 dB dans la bande de la parole ; ne pas masquer ne suffit
+pas, c'est ce **mouvement** qui donne à un film son air fini.
+
+### Changer de voix
+
+Trois voix françaises sont installées. Pour les entendre sur un même passage :
+
+```bash
+python3 voix.py --essai        # → COMPARER-LES-VOIX.mp4
+```
+
+Puis changer `VOIX` en tête de `voix.py` et relancer `python3 film.py tout`.
+`ALLURE` règle le débit : 0,90 nous met à environ 150 mots par minute, l'allure
+d'une voix off d'entreprise. En dessous de 145 on décroche, au-dessus de 160 on
+n'a plus le temps de lire l'écran.
+
+### Ce que ce n'est pas
+
+Ce n'est pas un comédien. Sur les phrases longues, cela s'entend. Le texte a
+donc été écrit court et en phrases simples — ce qu'il faut de toute façon pour
+une consigne. Un comédien coûterait plus que le film entier et devrait être
+rappelé à chaque révision du GOM ; ici, on corrige une phrase du scénario et
+tout se refait. Le jour où l'on veut une vraie voix, elle se substitue sans
+rien changer d'autre : le montage cale déjà chaque image sur la durée du
+fichier son qu'on lui donne.
+
 ## L'identité
 
 Les couleurs et le logo ne sont pas approchés : ils sont **relevés au pixel sur
@@ -101,12 +165,19 @@ papier à en-tête, redessinée au vecteur.
 
 ```bash
 cd sensibilisation
-python3 film.py tout          # les deux films  (~9 min de calcul)
+python3 film.py tout          # les deux films, voix comprise (~35 min de calcul)
 python3 film.py agence        # un seul
-python3 texte.py              # les fiches et les textes de voix off
+python3 film.py agence --muet # sans voix off
+python3 texte.py              # les fiches et le relevé de la voix off
+python3 voix.py --essai       # comparer les trois voix disponibles
 ```
 
-Il faut `ffmpeg`, `python3-pil` et `numpy`.
+Il faut `ffmpeg`, `python3-pil`, `numpy` et `piper-tts`. Les modèles de voix se
+téléchargent une fois dans `.travail/voix/` :
+
+```bash
+python3 -m piper.download_voices fr_FR-tom-medium
+```
 
 ### Où corriger quoi
 
@@ -115,6 +186,7 @@ Il faut `ffmpeg`, `python3-pil` et `numpy`.
 | une phrase, un point, une durée, l'ordre des chapitres | **`scenarios.py`** |
 | la mise en page, les couleurs, les types de cartes | `film.py` |
 | la musique | `musique.py` |
+| la voix, son allure, sa prononciation | `voix.py` |
 | les fiches et la voix off | rien — `python3 texte.py` les régénère |
 
 ⚠️ **Ne jamais retoucher un `.mp4`.** On corrigerait la copie au lieu de la

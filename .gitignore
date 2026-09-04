@@ -35,3 +35,8 @@ moheligo/pub/photos/modele-*.jpg
 # identifiables au second plan, qui n'ont rien demande. Seule la version
 # detouree — qui les retire — entre dans le depot public.
 moheligo/pub/photos/portrait-young-leader-source.jpg
+
+# les images et clips intermédiaires des films de sensibilisation Royal Air :
+# refabriqués en une commande par `sensibilisation/film.py`, ils n'ont rien à
+# faire dans le dépôt (plusieurs centaines de Mo)
+sensibilisation/.travail/

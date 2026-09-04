@@ -48,6 +48,22 @@ Chaque rôle ne voit que les modules et droits qui lui sont nécessaires.
 Plus : tableau de bord KPI, notifications d'échéances automatiques, recherche instantanée globale,
 rapports avec export Excel (CSV) et PDF (impression), journal système, mode sombre, responsive.
 
+## Sensibilisation du personnel — les films (`sensibilisation/`)
+
+Deux films internes du Département Qualité sur **l'accueil des passagers**, à
+diffuser dans le groupe WhatsApp du personnel (jamais sur les réseaux publics) :
+
+| Film | Public | Durée |
+|---|---|---|
+| `RoyalAir-accueil-agence.mp4` | comptoirs de vente et réservation | 4 min 51 |
+| `RoyalAir-accueil-escale.mp4` | agents d'escale HAH · AJN · NWA | 4 min 56 |
+
+Chacun existe aussi en version allégée `-whatsapp.mp4` (720 × 1280, ~5 Mo), et
+s'accompagne d'une **fiche à afficher** au comptoir et d'un **texte de voix off**
+minuté. Tout est refabriqué par `python3 sensibilisation/film.py tout` à partir
+d'une source unique, `sensibilisation/scenarios.py` — voir
+[`sensibilisation/README.md`](sensibilisation/README.md).
+
 ## Workflow documentaire (conforme DOC-PROC-001)
 
 Brouillon → En révision → **Approuvé** (signature électronique) → Archivé.

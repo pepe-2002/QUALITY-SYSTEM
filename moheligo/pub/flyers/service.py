@@ -63,6 +63,7 @@ personne ne sait que c'est reparti.
 import argparse
 import datetime
 import re
+import sys
 
 # --- l'état du service ------------------------------------------------------
 # 🟢 ROUVERT LE MARDI 01/09/2026. Le patron, mot pour mot : « les traversées sont
@@ -175,11 +176,57 @@ def mention_fermeture(jour=None):
                      'on la publiera dès qu’elle est décidée.')
     # 📌 La nouvelle a son propre paragraphe. Collée en fin de phrase, elle se
     # lisait comme une précision de plus ; seule, elle se voit.
-    return ("""⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS (mer agitée).
+    return ("""%s (mer agitée).""" % MARQUE_FERMETURE + """
 Tu peux prendre ta place pour les jours qui viennent — elle t’attend, et si la
 date ne te va plus, la changer ne coûte rien.
 
 """ + quand)
+
+
+# 🚩 05/09/2026 — LA PREMIÈRE LIGNE DE LA MENTION EST DEVENUE UNE CONSTANTE, ET
+# CE N'EST PAS DE LA COQUETTERIE. Deux fichiers de texte (`texte-revenir.txt`,
+# celui du SAMEDI, et `texte-digitalisation.txt`) contenaient ce paragraphe
+# **figé en dur** : quelqu'un avait recopié le texte FABRIQUÉ dans le fichier
+# SOURCE. Résultat, quatre jours après la réouverture, le visuel du samedi
+# s'apprêtait à annoncer que les départs étaient suspendus — et deux lignes plus
+# bas, notre annonce MVola disait « les vedettes partent normalement ».
+# 📌 **UNE SORTIE DE PROGRAMME RECOPIÉE DANS SA PROPRE SOURCE NE SE PÉRIME
+# JAMAIS TOUTE SEULE.** Le mécanisme, lui, savait très bien qu'on était ouvert :
+# `avec_mention()` ne rendait plus rien. C'est la copie qui parlait, et une copie
+# ne relit pas l'état du service. Exactement l'interdit de `CLAUDE.md` : ce qui
+# est généré reste à côté du programme, jamais dans les sources.
+MARQUE_FERMETURE = '⚠️ EN CE MOMENT, LES DÉPARTS SONT SUSPENDUS'
+
+
+def sans_mention_perimee(texte):
+    """Retire une mention de fermeture FIGÉE dans un fichier alors qu'on est ouvert.
+
+    ⚠️ Elle RETIRE et elle CRIE — elle ne se contente ni de l'un ni de l'autre.
+    Refuser de publier punirait le patron pour une faute de fichier, un jour où
+    la page doit sortir. Corriger en silence laisserait la faute dans la source,
+    prête à ressortir au prochain tour. Donc : le post part juste, et le journal
+    porte la trace de ce qu'il faut réparer.
+    """
+    if not texte or not ouvert() or MARQUE_FERMETURE not in texte:
+        return texte
+    print('⚠️  MENTION DE FERMETURE FIGÉE dans le texte alors que le service est'
+          ' OUVERT — retirée avant publication.\n'
+          '    Corrige le FICHIER SOURCE (`texte-*.txt`), pas la copie : une'
+          ' sortie recopiée dans sa source ne se périme jamais toute seule.',
+          file=sys.stderr)
+    return re.sub(re.escape(MARQUE_FERMETURE) + r'.*?(\n\s*\n|\Z)', '', texte,
+                  flags=re.S)
+
+
+def a_jour(texte):
+    """Le texte tel qu'il doit partir AUJOURD'HUI, quel que soit son âge.
+
+    Deux corrections, et elles vont dans les deux sens : on ENLÈVE ce qui n'est
+    plus vrai (une fermeture terminée), on AJOUTE ce qui l'est devenu (la panne
+    de paiement). Appelée depuis `publier_fb.decouper()`, le seul point commun à
+    tous les chemins de publication.
+    """
+    return avec_panne_paiement(sans_mention_perimee(texte))
 
 
 def _avant_les_hashtags(texte, mention):

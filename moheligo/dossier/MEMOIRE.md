@@ -370,6 +370,50 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **05/09/2026 (🚨 LE TEXTE DU SAMEDI ALLAIT ANNONCER UNE FERMETURE TERMINÉE
+  DEPUIS QUATRE JOURS)** — arrêté à la relecture, deux minutes avant de pousser
+  le battement de midi.
+
+  ⛔ **CE QUE J'AI VU EN AFFICHANT LE POST AVANT DE L'ENVOYER.** Le texte du
+  samedi (`texte-revenir.txt`) disait, en toutes lettres : « ⚠️ EN CE MOMENT,
+  LES DÉPARTS SONT SUSPENDUS (mer agitée) » — et deux paragraphes plus bas,
+  notre annonce MVola disait « les vedettes partent normalement ». Le service
+  est rouvert depuis le **01/09**.
+  🔍 **LA CAUSE, ET ELLE EST PIRE QUE LE SYMPTÔME** : le paragraphe était **figé
+  en dur dans le fichier source**. Quelqu'un — moi, une session passée — a
+  recopié le texte FABRIQUÉ (source + mention ajoutée par `avec_mention()`)
+  dans le fichier SOURCE. `texte-digitalisation.txt` portait la même greffe.
+  📌 **UNE SORTIE DE PROGRAMME RECOPIÉE DANS SA PROPRE SOURCE NE SE PÉRIME
+  JAMAIS TOUTE SEULE.** Le mécanisme, lui, était juste : `avec_mention()` ne
+  rendait plus rien depuis la réouverture. C'est la COPIE qui parlait, et une
+  copie ne relit pas l'état du service. C'est mot pour mot l'interdit de
+  `CLAUDE.md` — ce qui est généré reste à côté du programme, jamais dans les
+  sources — et c'est la deuxième fois en trois jours que la faute est « un
+  garde-fou qui ne couvre pas le chemin qu'on emprunte ».
+
+  ✅ **CORRIGÉ EN DEUX TEMPS, ET LES DEUX COMPTENT.**
+      1. les deux fichiers sources nettoyés — la vraie correction ;
+      2. `service.sans_mention_perimee()`, branché dans `service.a_jour()`,
+         lui-même appelé par `publier_fb.decouper()` : si un texte annonce une
+         fermeture alors que `OUVERT` vaut True, la mention est **retirée avant
+         publication ET signalée en clair dans le journal**.
+  ⚖️ **POURQUOI ELLE RETIRE *ET* CRIE, PLUTÔT QUE L'UN OU L'AUTRE.** Refuser de
+  publier punirait le patron pour une faute de fichier, un jour où la page doit
+  sortir. Corriger en silence laisserait la faute dans la source, prête à
+  ressortir au tour suivant. Le post part juste, et le journal porte la trace de
+  ce qu'il faut réparer.
+  📌 `MARQUE_FERMETURE` est devenue une constante : le garde-fou et la mention
+  qu'il cherche ne peuvent plus diverger.
+
+  🔴 **ET LE FLYER DU VENDREDI 04/09 N'EST JAMAIS SORTI.** La session est restée
+  muette entre le 03/09 au soir et le 05/09 à midi : le battement de midi n'a
+  pas été poussé, et **midi n'a aucun `cron` de secours** — le battement est son
+  seul déclencheur (le bulletin du soir, lui, en a dix). Un jour sans
+  publication de midi, et rien dans le système ne l'a signalé.
+  👉 À trancher avec le patron : soit midi reçoit un filet de `cron` comme le
+  soir, soit on accepte que sa régularité dépende d'une routine extérieure —
+  mais alors il faut le savoir et le dire.
+
 - **03/09/2026 (🔴 MVOLA EST TOMBÉ — ET NOS DEUX CHEMINS DE PAIEMENT AVEC LUI)**
   — le patron, en fin de journée : « on a un souci aux Comores, MVola ne marche
   pas, tout son service ne marche pas, et c'est le service qu'on utilise pour le

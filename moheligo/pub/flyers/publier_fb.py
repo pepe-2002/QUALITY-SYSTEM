@@ -259,15 +259,20 @@ def decouper(chemin):
     différents, aucun garde-fou commun.
     📌 **UN GARDE-FOU SE POSE LÀ OÙ PASSENT TOUS LES CHEMINS, PAS LÀ OÙ PASSE
     CELUI AUQUEL ON PENSE.**
-    ⚠️ `avec_panne_paiement()` ne touche à rien quand `PANNE_PAIEMENT` est
-    `None` : hors panne, cette ligne est un passe-plat.
+    ⚠️ `a_jour()` ne touche à rien quand il n'y a rien à corriger : hors panne
+    et sans mention périmée, cette ligne est un passe-plat.
+    🚩 05/09 — elle enlève AUSSI une mention de fermeture figée en dur dans un
+    `texte-*.txt`. Deux fichiers en portaient une, quatre jours après la
+    réouverture. Le mécanisme savait qu'on était ouvert ; c'est la COPIE qui
+    parlait. **Une sortie de programme recopiée dans sa source ne se périme
+    jamais toute seule.**
     """
     import service                       # local : `publier_fb` sert aussi seul
     brut = pathlib.Path(chemin).read_text()
     if '--- premier commentaire ---' in brut:
         post, commentaire = brut.split('--- premier commentaire ---', 1)
-        return service.avec_panne_paiement(post.strip()), commentaire.strip()
-    return service.avec_panne_paiement(brut.strip()), ''
+        return service.a_jour(post.strip()), commentaire.strip()
+    return service.a_jour(brut.strip()), ''
 
 
 LIMITE = 3.5 * 1024 * 1024        # Facebook refuse au-delà d'environ 4 Mo

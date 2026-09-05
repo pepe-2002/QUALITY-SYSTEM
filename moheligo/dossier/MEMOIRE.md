@@ -414,6 +414,22 @@ recharger ce sujet ici, ce n'est pas du marketing.
   soir, soit on accepte que sa régularité dépende d'une routine extérieure —
   mais alors il faut le savoir et le dire.
 
+  🏆 **ET LE FILET DU SOIR A ATTRAPÉ SA PREMIÈRE PRISE.** Le bulletin du 04/09
+  est bien sorti — **à 20h29**, sans battement, par l'un des dix `cron` étalés
+  posés le 03/09. C'est la première fois depuis leur écriture qu'ils servent à
+  quelque chose, et ils ont servi exactement au cas prévu : la routine se tait,
+  le rendez-vous tient quand même. Une heure de retard sur 19h25, à l'intérieur
+  de la fenêtre — c'est le prix du filet, et il est dérisoire.
+  📌 **LA DIFFÉRENCE ENTRE MIDI ET LE SOIR CE JOUR-LÀ, C'EST EXACTEMENT LE
+  FILET.** Même panne, même silence, deux résultats : le soir a publié, midi
+  n'existe pas. On n'a plus à débattre du filet de midi en théorie — on a la
+  mesure.
+
+  ✅ **PUBLIÉ AUJOURD'HUI À 12h10** : « ON NE VISITE PAS MOHÉLI. ON Y REVIENT. »
+  (étape « Publier » : 7 s). Vérifié dans le rapport lu depuis la page, avec
+  l'annonce MVola en pied de post et **sans** la fausse mention de fermeture.
+  Page à 46 abonnés.
+
 - **03/09/2026 (🔴 MVOLA EST TOMBÉ — ET NOS DEUX CHEMINS DE PAIEMENT AVEC LUI)**
   — le patron, en fin de journée : « on a un souci aux Comores, MVola ne marche
   pas, tout son service ne marche pas, et c'est le service qu'on utilise pour le

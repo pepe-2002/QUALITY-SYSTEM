@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-07",
+  "etat": "MER PEU AGITÉE",
+  "houle_m": 1.17,
+  "periode_s": 9.6,
+  "vent_kmh": 6,
+  "vent_direction": "sud",
+  "courbe_5h_13h": [
+    1.18,
+    1.18,
+    1.18,
+    1.16,
+    1.16,
+    1.16,
+    1.16,
+    1.16,
+    1.16
+  ],
+  "releve": "le 06/09 à 23h22",
+  "source": "Open-Meteo Marine + Forecast"
+}

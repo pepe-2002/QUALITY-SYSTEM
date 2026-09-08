@@ -72,27 +72,49 @@ un soir sur trois ne crée aucune habitude. Soit on tient le rythme (7 soirs sur
 
 C'est la base. Rien de payant ne fonctionne sans ça.
 
-**Semaine type**, heures de pointe comoriennes (12h-14h et 19h-22h) :
+🚩 **CE TABLEAU A ÉTÉ REFAIT LE 08/09/2026, PARCE QU'IL MENTAIT.** Il annonçait
+encore `v1-demo.mp4`, `flyer-affiche-vraie`, `flyer-promo-brillant` et
+`flyer-diaspora` — **quatre supports supprimés le 02/09 au grand nettoyage**, et
+des heures de publication (19h30-21h) qui ne sont plus les nôtres depuis que
+midi existe. Un plan qui nomme des fichiers effacés n'est pas un plan, c'est un
+souvenir.
+📌 **LA SOURCE DE VÉRITÉ DU CALENDRIER EST `pub/flyers/calendrier.py`, PAS CE
+DOCUMENT.** Ce tableau en est un reflet daté, à revérifier avec
+`python3 calendrier.py` avant de s'en servir. Quand les deux se contredisent,
+c'est le programme qui a raison — il publie, le document non.
 
-| Jour | 19h30 – 21h | Support |
+**Semaine type au 08/09/2026** — deux rendez-vous fixes par jour :
+
+| Jour | 12h05, le visuel | Ce qu'il raconte |
 |---|---|---|
-| Tous les soirs | **Bulletin mer de demain** | `flyer-soir-facebook.png` (régénéré) |
-| Lundi | Comment ça marche en 3 étapes | `v1-demo.mp4` |
-| Mardi | Affiche émotion, l'île | `flyer-affiche-vraie-facebook.png` |
-| Mercredi | Prix + ports desservis | `flyer-promo-brillant-facebook.png` |
-| Jeudi | Preuve : un vrai billet QR, un témoignage | à produire (voir §7) |
-| **Vendredi** | **Diaspora : payer pour un proche** | `flyer-diaspora-facebook.png` |
-| Samedi | Destination, tourisme | `v5-destination.mp4` |
-| Dimanche | Institutionnel, l'infrastructure | texte « Entre deux îles… » |
+| **Tous les soirs 19h25** | **bulletin mer de demain** | la mer, fabriquée le jour même |
+| Lundi | `flyer-rien-installer` — TU N'INSTALLES RIEN. | comment ça marche |
+| Mardi | `flyer-quelquun-v2` — TU PARS VOIR QUELQU'UN. | la proximité |
+| Mercredi | `flyer-tulasdeja` — TU L'AS DÉJÀ. | le produit ⚠️ date à regénérer |
+| Jeudi | `flyer-traversee` — TU N'ES QU'À UNE TRAVERSÉE. | la proximité de l'île |
+| Vendredi | `flyer-etudes` — TU PARS. TU REVIENS. | partir et revenir |
+| Samedi | `flyer-revenir` — ON NE VISITE PAS MOHÉLI. ON Y REVIENT. | la destination |
+| Dimanche | `flyer-chez-nous` — ON A FAIT ÇA CHEZ NOUS. | la fierté |
+
+⚠️ **SEPT VISUELS POUR SEPT JOURS : chacun repasse tous les sept jours, à la
+minute près.** C'est le vrai risque de la bibliothèque actuelle, et il grandit à
+chaque tour. Deux jours vides valaient mieux qu'un visuel hors norme (décision
+du 02/09) — mais l'objectif reste dix à douze visuels, pour que la répétition
+cesse d'être un métronome.
 
 Règles d'exécution :
-- **Le lien va dans le premier commentaire**, pas dans le post.
+- ⛔ **« Le lien dans le premier commentaire » N'A JAMAIS FONCTIONNÉ.** La
+  permission `pages_manage_engagement` manque depuis le 11/08 : **aucun premier
+  commentaire n'a jamais été publié**. La règle est bonne, le moyen n'existe pas
+  — à régler au renouvellement du jeton (~10/10/2026). D'ici là, l'adresse est
+  DANS le post, et c'est assumé.
 - **Statut WhatsApp chaque soir** avec le bulletin : aux Comores, WhatsApp
   touche plus de monde que le fil Facebook. C'est gratuit et c'est le canal le
   plus sous-exploité qu'on ait.
 - **Répondre en moins de 10 minutes** entre 12h-14h et 19h-22h. Un message sans
   réponse le soir est une réservation perdue. C'est le levier de conversion le
-  moins cher de tout ce plan.
+  moins cher de tout ce plan. ⚠️ **Et pendant la panne MVola, c'est LE canal de
+  vente** : l'annonce dit d'écrire, donc quelqu'un doit répondre.
 - Une seule idée par publication. Jamais deux appels à l'action.
 
 ### Étage 2 — Terrain : là où se prend vraiment la décision (coût : impression)
@@ -204,6 +226,96 @@ dépenser plus le mois suivant.
 
 **Le seul engagement qui compte dans cette liste : le bulletin, tous les
 soirs.** Le reste peut glisser d'un jour. Pas lui.
+
+---
+
+## 8 bis. 📅 LA SEMAINE DU 9 AU 15 SEPTEMBRE 2026
+
+Demandée par le patron le 08/09 au soir.
+
+🔴 **RÉÉCRITE UNE HEURE PLUS TARD, ET C'EST LA LEÇON DE LA SEMAINE.** Je venais
+de finir ce plan quand le patron a écrit : « les liaisons sont suspendues
+jusqu'à nouvel ordre ». La version d'avant décrivait une semaine de vente
+normale. **Un plan écrit et rangé sans être relu au moment de servir est un plan
+faux** — c'est la quatrième fois en sept jours que la faute est la même famille
+(la copie qui survit à la source).
+
+**Deux pannes en même temps, et il faut les tenir séparées :**
+
+| | Depuis | État | Ce que ça coupe |
+|---|---|---|---|
+| **Les traversées** | 09/09 | 🔴 suspendues, aucune date | on ne peut pas partir |
+| **Le paiement MVola** | 03/09 | 🔴 hors service | on ne peut pas payer en ligne |
+
+📌 **CE QUI RESTE DEBOUT QUAND LES DEUX TOMBENT : LE RENDEZ-VOUS.** C'est
+précisément la semaine où le bulletin du soir vaut le plus cher — il est le seul
+endroit du pays où l'on dit la vérité tous les jours, y compris les jours où
+l'on ne vend rien. Une page qui ne parle que quand elle vend est une page qu'on
+n'ouvre plus.
+
+### Ce qui part tout seul, sans que personne n'y touche
+
+Quatorze publications : sept flyers à 12h05, sept bulletins à 19h25. Depuis le
+08/09 les deux ont un filet de `cron` — le rendez-vous ne dépend plus d'une
+seule mécanique. **C'est l'engagement, et le seul qui ne glisse pas.**
+
+Chaque post porte maintenant **deux mentions**, ajoutées automatiquement et à
+deux endroits différents du code :
+- la **fermeture** (`service.avec_mention`, dans `programme.py`) — on réserve
+  pour plus tard, on ne descend pas au port ;
+- la **panne de paiement** (`service.a_jour`, dans `publier_fb.decouper`) — on
+  prend la place à la main sur WhatsApp.
+
+⚠️ **À surveiller à la première publication** : deux avertissements dans le même
+post, c'est beaucoup. Si ça alourdit trop, la fermeture prime — c'est elle qui
+empêche quelqu'un de descendre au port pour rien.
+
+### Les rendez-vous à surveiller, jour par jour
+
+| Quand | Quoi | Pourquoi ça compte |
+|---|---|---|
+| **mer. 09, midi** | regénérer la date de `flyer43` avant de publier | une date passée sur un visuel fait croire que le service est mort (norme § 7.3) — et cette semaine, il l'est à moitié |
+| **chaque soir** | la houle | à **2,50 m** l'avis de mer forte remplace la pub, tout seul. 1,94 m annoncé pour le 09 : le seuil est à portée |
+| **le jour où ça repart** | 1) le patron publie le visuel de reprise À LA MAIN, 2) `OUVERT = True`, 3) la vidéo Young Leader | dans cet ordre. Faire le 2 sans le 1, c'est revendre sans avoir annoncé |
+| **le jour où MVola revient** | `PANNE_PAIEMENT = None` + l'annoncer sur la page | on a annoncé la panne, on doit annoncer la fin. Une panne dont on ne dit pas qu'elle est finie continue de coûter |
+
+### Ce que je produis cette semaine, sans rien demander
+
+1. **Trois nouveaux visuels** pour passer de 7 à 10 et casser le métronome des
+   sept jours. Registres qui manquent : LE SOULAGEMENT n'est joué que deux fois,
+   et la panne MVola nous donne un sujet que personne d'autre ne traite.
+2. **La démonstration du matin**, refaite au standard (`MATIN = {}` depuis le
+   02/09 — son ancienne version avait un titre de sept mots et une collision).
+3. **Le relevé du dimanche**, dès que les chiffres arrivent.
+
+### Ce qui dépend de toi, et qui bloque le reste
+
+| Décision | Depuis | Ce qui est bloqué sans elle |
+|---|---|---|
+| **Holo passe-t-il encore par kartaPay ?** | 03/09 | une route de paiement peut-être vivante qu'on n'annonce nulle part |
+| **Comment on encaisse pendant la panne** (espèces à l'embarquement ? place tenue sans paiement ? les remboursements, qui repassent par MVola) | 03/09 | l'annonce ouvre une conversation sans pouvoir la conclure |
+| **Les trois chiffres** (réservations payées, visites, abandon au paiement) | 18/08 | **tout l'étage payant.** On ne dépense pas un franc avant de connaître l'abandon au paiement (§ 6) |
+| **La raison de la fermeture** | 09/09 | `FERMETURE['raison']` est vide, donc l'avis ne l'explique pas. Une fermeture expliquée rassure, une muette inquiète — mais je n'invente pas une cause |
+| **Publie-t-on l'avis de suspension ?** | 09/09 | `flyer-suspension-facebook.png`, comme le 12/08. Il remplace la pub du jour et prévient franchement |
+
+📌 **CE QUE JE NE PROMETS PAS CETTE SEMAINE : des ventes.** Les traversées sont
+suspendues et le paiement en ligne est à terre — juger la semaine aux
+réservations n'aurait aucun sens. Elle se juge sur deux choses :
+
+1. **le rendez-vous tenu quatorze fois sur quatorze**, y compris — surtout — les
+   jours sans départ ;
+2. **le nombre de gens qui écrivent sur WhatsApp.** C'est le seul chiffre de
+   conversion qui existe quand ni le port ni le paiement ne fonctionnent, et
+   personne ne le compte aujourd'hui.
+
+⚖️ **ET LA VRAIE QUESTION DE LA SEMAINE, QUI N'EST PAS PUBLICITAIRE.** Trois
+fermetures en un mois (12→18/08, 26/08→01/09, 09/09→?) : sur trente jours, le
+service a été fermé plus d'un tiers du temps. **Ce n'est plus un accident de
+saison, c'est le produit.** Vendre « réserve ta traversée » à quelqu'un qui a vu
+trois suspensions en un mois, c'est vendre contre son expérience. Il y a
+probablement autre chose à vendre — savoir AVANT de descendre au port, changer
+sa date gratuitement — mais c'est une décision de produit, donc la tienne
+(§ 12.2 ter). À poser quand la mer sera retombée, pas dans l'urgence.
 
 ---
 

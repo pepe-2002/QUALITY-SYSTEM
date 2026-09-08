@@ -370,6 +370,59 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **08/09/2026 (📅 LE PLAN DE LA SEMAINE — et un plan qui nommait des fichiers
+  effacés)** — le patron : « publié, plan pour la semaine ». Écrit dans
+  `PLAN-PUBLICITAIRE.md` § 8 bis (semaine du 9 au 15/09).
+
+  ⛔ **EN ALLANT LE RÉDIGER, J'AI TROUVÉ QUE NOTRE PROPRE PLAN MENTAIT.** Le
+  tableau de la « semaine type » (§ 4, étage 1) annonçait encore `v1-demo.mp4`,
+  `flyer-affiche-vraie`, `flyer-promo-brillant` et `flyer-diaspora` — **quatre
+  supports supprimés le 02/09 au grand nettoyage** — et des heures (19h30-21h)
+  périmées depuis que midi existe.
+  📌 **UN DOCUMENT DE RÉFÉRENCE NE SE PÉRIME PAS AVEC BRUIT : IL CONTINUE D'AVOIR
+  L'AIR JUSTE.** C'est la troisième fois en une semaine que la faute est la même
+  famille — la copie qui survit à la source (les textes de fermeture figés le
+  05/09, l'avis MVola qui ne rattrapait pas les textes le 03/09). ✅ Le tableau
+  est refait d'après `calendrier.py`, avec écrit noir sur blanc que **la source
+  de vérité est le programme, pas le document**.
+  ✅ Corrigé aussi : la règle « le lien va dans le premier commentaire » y était
+  donnée comme acquise. Elle n'a **jamais fonctionné une seule fois** —
+  `pages_manage_engagement` manque depuis le 11/08. La règle est bonne, le moyen
+  n'existe pas : c'est maintenant écrit à côté d'elle.
+
+  📌 **CE QUE LA SEMAINE PROMET, ET CE QU'ELLE NE PROMET PAS.** Quatorze
+  publications automatiques (7 flyers + 7 bulletins), les deux avec filet depuis
+  aujourd'hui. **Aucune promesse de ventes** : avec le paiement en ligne à
+  terre, la semaine se juge sur le rendez-vous tenu et sur **le nombre de gens
+  qui écrivent sur WhatsApp** — le seul chiffre de conversion qui existe pendant
+  une panne de paiement, et que personne ne compte aujourd'hui.
+  🎯 Ce que je produis sans rien demander : **trois visuels** (pour passer de 7 à
+  10 et casser le métronome des sept jours) et **la démonstration du matin**,
+  refaite au standard.
+
+  🔴 **PUIS, UNE HEURE APRÈS, TOUT A CHANGÉ : « LES LIAISONS SONT SUSPENDUES
+  JUSQU'À NOUVEL ORDRE »** (le patron, 09/09 à 00h09 aux Comores). `OUVERT =
+  False` poussé immédiatement — avant le prochain `cron` de midi, qui aurait
+  vendu une traversée qui n'existe pas. **Le filet posé le matin même rendait
+  l'urgence réelle : un système plus fiable pardonne moins les retards.**
+  📌 **DEUX CASES LAISSÉES VIDES EXPRÈS, ET C'EST LE CŒUR DU MÉTIER.**
+      · `reouverture_possible = None` — son mot est « jusqu'à nouvel ordre ».
+      · `raison = None` — **il n'a pas dit pourquoi.** La mer montait (1,94 m
+        annoncé pour le 09, le double de la veille) : compléter par « mer
+        agitée », comme les deux fois précédentes, était très tentant.
+  ⛔ **UNE RAISON PLAUSIBLE N'EST PAS UNE RAISON DONNÉE.** Si la cause est une
+  avarie ou une décision administrative, on aurait publié une explication fausse
+  sur TOUTES nos publications, tous les jours de la fermeture. `(mer agitée)`
+  était écrit en dur dans `mention_fermeture()` : la parenthèse est devenue
+  facultative, et la phrase se referme proprement sans elle.
+
+  ⚖️ **TROISIÈME FERMETURE EN UN MOIS** (12→18/08, 26/08→01/09, 09/09→?) : sur
+  trente jours, le service a été fermé plus d'un tiers du temps. **Ce n'est plus
+  un accident de saison, c'est le produit.** Vendre « réserve ta traversée » à
+  quelqu'un qui a vu trois suspensions en un mois, c'est vendre contre son
+  expérience. Question de produit, donc la sienne (§ 12.2 ter) — posée dans le
+  plan, à trancher quand la mer sera retombée, pas dans l'urgence.
+
 - **08/09/2026 (🕐 MIDI A ENFIN SON FILET — trois jours perdus pour l'obtenir)**
   — relevé sur la page, pas déduit : entre le 04 et le 08/09, **trois
   publications de midi n'ont jamais existé** (04, 06, 07). Les trois mêmes

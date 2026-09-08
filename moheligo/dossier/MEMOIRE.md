@@ -370,6 +370,37 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **08/09/2026 (🕐 MIDI A ENFIN SON FILET — trois jours perdus pour l'obtenir)**
+  — relevé sur la page, pas déduit : entre le 04 et le 08/09, **trois
+  publications de midi n'ont jamais existé** (04, 06, 07). Les trois mêmes
+  soirs, le bulletin est sorti tout seul : **20h29, 19h47, 21h39**, par le filet
+  de `cron` posé le 03/09.
+  📌 **MÊME PANNE, MÊME SILENCE, DEUX RÉSULTATS — ET LA SEULE DIFFÉRENCE ÉTAIT
+  LE FILET.** Le battement (une routine hors de GitHub) est un déclencheur
+  fiable quand il tourne, et rigoureusement rien quand il ne tourne pas. Le soir
+  avait une deuxième jambe, midi n'en avait aucune.
+
+  ✅ **`publication-du-jour.yml` reçoit les mêmes dix `cron` étalés**, plus
+  l'étape « Sommes-nous dans la fenêtre de midi ? » — **12h20 → 16h00** aux
+  Comores. Elle commence APRÈS l'heure du battement pour qu'il garde la
+  priorité, et s'arrête à 16h : passé cette heure, une pub de « midi » n'en est
+  plus une. Hors fenêtre, rien ne part et le journal le dit ; dans la fenêtre
+  après un battement déjà passé, `deja_publie()` refuse en ~3 s. **Le doublon
+  reste impossible.**
+  ⚠️ **Pour le désarmer : supprimer le bloc `schedule` du fichier.** Le
+  battement continue de marcher seul.
+  ⚖️ **CE N'EST PAS UNE DÉCISION NOUVELLE, ET C'EST POURQUOI JE NE L'AI PAS
+  ATTENDUE.** Le patron a validé le 03/09 « sept jours sur sept, aucune
+  exception ». Le filet ne décide rien — il fait tenir ce qui est déjà décidé.
+  Proposé le 05/09, sans réponse ; deux jours de plus, deux publications de plus
+  perdues. **Une décision déjà prise n'a pas besoin d'être reprise, elle a
+  besoin d'un mécanisme.**
+
+  ✅ **Publié aujourd'hui à 12h08** : « TU PARS VOIR QUELQU'UN. » (étape
+  « Publier » : 6 s). Page à **47 abonnés**. Les quatre contrôles inchangés :
+  12/12 conformes, une seule collision connue (le gabarit inutilisé), famille
+  5,0/5, occupation moyenne 21,2 %.
+
 - **05/09/2026 (🚨 LE TEXTE DU SAMEDI ALLAIT ANNONCER UNE FERMETURE TERMINÉE
   DEPUIS QUATRE JOURS)** — arrêté à la relecture, deux minutes avant de pousser
   le battement de midi.

@@ -31,6 +31,28 @@ on:
     branches: [main]
     paths: ['moheligo/pub/flyers/battement.txt']
 
+  # ⏰ LE FILET — 08/09/2026. Heures des Comores = UTC+3, sans changement d'heure.
+  # Ce sont des heures de DÉPART, pas d'arrivée : le retard de GitHub est
+  # imprévisible (mesuré sur le bulletin : ~20 min, 2 h 28, 3 h 06, 8 h 25,
+  # 8 h 43, et quatre jours sans aucune livraison). On sème donc large pour
+  # qu'un retard quelconque en fasse atterrir un dans la fenêtre 09:20-13:00 UTC
+  # (12h20-16h00 aux Comores) :
+  #   · 09:20 / 10:00 / 11:00 / 12:00 UTC → GitHub à l'heure ou presque ;
+  #   · 06:30 / 07:30 / 08:30 UTC         → un retard de 2 à 4 h ;
+  #   · 01:00 / 02:00 / 03:00 UTC         → un retard de 7 à 10 h.
+  # Le garde-fou d'heure est l'étape « Sommes-nous dans la fenêtre de midi ? ».
+  schedule:
+    - cron: '0 1 * * *'
+    - cron: '0 2 * * *'
+    - cron: '0 3 * * *'
+    - cron: '30 6 * * *'
+    - cron: '30 7 * * *'
+    - cron: '30 8 * * *'
+    - cron: '20 9 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 11 * * *'
+    - cron: '0 12 * * *'
+
   workflow_dispatch:
     inputs:
       publier_sur_facebook:
@@ -252,8 +274,49 @@ jobs:
           test -f "$TEXTE"  || { echo "::error::texte introuvable : $TEXTE";  exit 1; }
           python3 publier_fb.py --publier --image "$VISUEL" --texte "$TEXTE"
 
+      # 🕐 LE FILET DE MIDI — ajouté le 08/09/2026, après trois jours perdus.
+      # Mesuré, pas supposé : du 04 au 08/09, le battement de midi n'a pas été
+      # poussé les 04, 06 et 07 — trois publications de midi PERDUES. Les trois
+      # mêmes soirs, le bulletin est sorti tout seul (20h29, 19h47, 21h39) par
+      # son filet de `cron`. Même panne, même silence, deux résultats.
+      # 📌 **LA DIFFÉRENCE ENTRE LES DEUX, C'ÉTAIT EXACTEMENT LE FILET.**
+      # ⚖️ Ce n'est pas une décision nouvelle : le patron a validé le 03/09
+      # « sept jours sur sept, aucune exception ». Le filet ne décide rien, il
+      # fait tenir ce qui est déjà décidé.
+      #
+      # LA FENÊTRE QUI PUBLIE : 12h20 → 16h00 aux Comores, soit 09:20 → 13:00 UTC.
+      # Elle commence APRÈS l'heure du battement (12h05) pour que le battement
+      # garde la priorité, et s'arrête à 16h : passé cette heure, une pub de
+      # « midi » n'a plus de sens et le bulletin du soir arrive.
+      # Un cron qui arrive hors fenêtre ne publie rien et le dit. Un cron qui
+      # arrive dans la fenêtre après le battement se fait refuser en ~3 s par
+      # `publier_fb.deja_publie()`. Le doublon reste impossible.
+      # ⚠️ POUR LE DÉSARMER : supprimer le bloc `schedule` en tête de ce fichier.
+      # Le battement, lui, continue de marcher seul.
+      - name: Sommes-nous dans la fenêtre de midi ?
+        id: fenetre
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "Déclenché par ${{ github.event_name }} — pas de bridage horaire."
+            echo "ok=oui" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          MAINTENANT=$(TZ=Indian/Comoro date '+%H:%M')
+          MINUTES=$(( 10#$(TZ=Indian/Comoro date +%H) * 60 + 10#$(TZ=Indian/Comoro date +%M) ))
+          DEBUT=$(( 12 * 60 + 20 ))
+          FIN=$(( 16 * 60 ))
+          echo "Il est ${MAINTENANT} aux Comores (déclenchement par l'horloge GitHub)."
+          echo "Fenêtre du filet : 12h20 → 16h00."
+          if [ "$MINUTES" -ge "$DEBUT" ] && [ "$MINUTES" -lt "$FIN" ]; then
+            echo "Dans la fenêtre : ce cron a le droit de publier (et sera refusé comme doublon si le battement est déjà passé)."
+            echo "ok=oui" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=non" >> "$GITHUB_OUTPUT"
+            echo "::notice::${MAINTENANT} aux Comores, hors de la fenêtre du filet (12h20-16h00) : RIEN n'est publié. Avant 12h20 le battement a la priorité ; après 16h00 une publication de midi n'en est plus une."
+          fi
+
       - name: Publier
-        if: inputs.visuel == '' && (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise && !inputs.video_young_leader && !inputs.rapport_seulement
+        if: inputs.visuel == '' && (vars.PUBLIER_FB == 'oui' || inputs.publier_sur_facebook) && !inputs.avis_de_suspension && !inputs.reprise && !inputs.video_young_leader && !inputs.rapport_seulement && steps.fenetre.outputs.ok == 'oui'
         working-directory: moheligo/pub/flyers
         env:
           FB_PAGE_ID: ${{ vars.FB_PAGE_ID }}

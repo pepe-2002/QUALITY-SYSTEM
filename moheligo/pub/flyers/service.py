@@ -86,30 +86,38 @@ import sys
 # agitée). Deuxième épisode en quinze jours — c'est la saison, et c'est
 # exactement pourquoi le bulletin du soir vaut plus que n'importe quelle
 # publicité : il est le seul endroit où l'on dit la vérité tous les jours.
-OUVERT = True
+# 🔴 FERMÉ LE 09/09/2026. Le patron, dans la nuit du 8 au 9 (00h09 aux Comores) :
+# « les liaisons sont suspendues jusqu'à nouvel ordre ».
+# ⚠️ TROISIÈME FERMETURE EN UN MOIS (12→18/08, 26/08→01/09, 09/09→?). Ce n'est
+# plus un accident de saison, c'est le rythme du métier — et ça change ce que
+# vaut le bulletin du soir : c'est le seul endroit où l'on dit la vérité tous
+# les jours, y compris les jours où l'on ne vend rien.
+OUVERT = False
 
 FERMETURE = dict(
-    depuis='2026-08-26',
-    jusqu_au='2026-09-01',     # rouvert ce jour-là, confirmé par le patron
+    depuis='2026-09-09',
+    jusqu_au=None,             # elle dure : il n'a annoncé aucune reprise
     # Ce que le patron a dit, mot pour mot, sans l'arrondir :
-    annonce="les liaisons maritimes sont fermées, la mer est agitée",
-    # ✅ RENSEIGNÉ LE 30/08/2026 À 19H30. Le patron, mot pour mot :
-    # « la réouverture des traversées est prévue Mardi ».
-    # 📌 SON MOT EST « PRÉVUE », PAS « POSSIBLE » — et on ne bouge ni dans un
-    # sens ni dans l'autre. Le 12/08 il avait dit « ouverture POSSIBLE mardi »
-    # et le texte disait « peut-être mardi » : c'était juste. Aujourd'hui il dit
-    # « prévue », donc le texte dit « c'est prévu ». Arrondir vers le haut ferait
-    # une promesse qu'il n'a pas faite ; arrondir vers le bas effacerait la seule
-    # bonne nouvelle qu'on ait à donner depuis cinq jours.
-    # ⚠️ CE QUI NE CHANGE PAS POUR AUTANT : `OUVERT` reste False. Une reprise
-    # PRÉVUE n'est pas une reprise CONSTATÉE, et c'est la vedette qui part —
-    # pas le calendrier — qui rouvre le service. La marche à suivre du jour J
-    # est en tête de ce fichier, en trois gestes et dans cet ordre.
-    reouverture_possible='2026-09-01',
+    annonce="les liaisons sont suspendues jusqu’à nouvel ordre",
+    # 🔴 AUCUNE DATE, ET C'EST SON MOT QUI LE DIT : « JUSQU'À NOUVEL ORDRE ».
+    # 📌 On reprend son mot, ni plus fort ni plus faible. Le 12/08 il disait
+    # « ouverture POSSIBLE mardi » → le texte disait « peut-être mardi ». Le
+    # 30/08, « la réouverture est PRÉVUE mardi » → « c'est prévu mardi ».
+    # Aujourd'hui il ne dit rien : le texte ne dit rien non plus, et renvoie à
+    # l'annonce de reprise. **Une date inventée qui ne tient pas fait plus de mal
+    # que pas de date du tout.**
+    reouverture_possible=None,
+    # ⚠️ LA RAISON EST INCONNUE, ET ELLE RESTE VIDE — 09/09/2026.
     # Une fermeture expliquée rassure (« ils savent ce qu'ils font »), une
-    # fermeture muette inquiète (« ils ont un problème »). Et c'est vérifiable
-    # par n'importe qui depuis la plage — donc c'est un bon argument.
-    raison='mer agitée',
+    # fermeture muette inquiète (« ils ont un problème ») : la tentation de
+    # compléter était donc réelle, d'autant que la mer montait (1,94 m annoncé
+    # pour le 09, le double de la veille).
+    # ⛔ MAIS UNE RAISON PLAUSIBLE N'EST PAS UNE RAISON DONNÉE. Il n'a pas dit
+    # pourquoi. Si la cause est une avarie ou une décision administrative, écrire
+    # « mer agitée » nous ferait publier une explication fausse sur TOUTES nos
+    # publications. `mention_fermeture()` sait se passer de raison.
+    # 👉 À demander au patron : la raison, et elle rentre ici en un mot.
+    raison=None,
 )
 
 # Le visuel de l'avis public, et son texte, vivent avec les autres (page.py).
@@ -176,7 +184,18 @@ def mention_fermeture(jour=None):
                      'on la publiera dès qu’elle est décidée.')
     # 📌 La nouvelle a son propre paragraphe. Collée en fin de phrase, elle se
     # lisait comme une précision de plus ; seule, elle se voit.
-    return ("""%s (mer agitée).""" % MARQUE_FERMETURE + """
+    # 🚩 09/09/2026 — LA RAISON DEVIENT FACULTATIVE, ET C'EST UNE RÈGLE, PAS UN
+    # DÉTAIL. « (mer agitée) » était écrit en dur. Le patron a fermé le 09/09 en
+    # disant seulement « les liaisons sont suspendues jusqu'à nouvel ordre » —
+    # sans dire pourquoi. La mer montait (1,94 m annoncé), c'était donc TRÈS
+    # tentant de compléter tout seul.
+    # ⛔ **UNE RAISON PLAUSIBLE N'EST PAS UNE RAISON DONNÉE.** Si la vraie cause
+    # est une avarie, une décision administrative ou autre chose, on aura publié
+    # une explication fausse sur toutes nos publications — et c'est exactement
+    # ce que la règle en tête de ce fichier interdit : on reprend son mot, ni
+    # plus fort ni plus faible. Sans `raison`, la phrase se referme proprement.
+    cause = ' (%s)' % FERMETURE['raison'] if FERMETURE.get('raison') else ''
+    return ("""%s%s.""" % (MARQUE_FERMETURE, cause) + """
 Tu peux prendre ta place pour les jours qui viennent — elle t’attend, et si la
 date ne te va plus, la changer ne coûte rien.
 

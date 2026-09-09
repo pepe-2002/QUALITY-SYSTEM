@@ -418,6 +418,18 @@ recharger ce sujet ici, ce n'est pas du marketing.
   pouvait voir le croisement toute seule. **Une mention qui parle d'un état
   voisin doit lire cet état, sinon elle le périme en silence.**
 
+  ⛔ **5. LE SOIR, LA MÊME PROMESSE DE REMBOURSEMENT, DANS DEUX AUTRES
+  FICHIERS.** En relisant le bulletin avant de pousser le battement : « le
+  remboursement est possible tant que la traversée n'est pas partie » —
+  `bulletin.py` et `service.texte_du_point()` en avaient chacun leur copie. La
+  phrase existait donc **trois fois**, et je n'en avais corrigé qu'une à midi.
+  ✅ Les trois passent maintenant par `service.phrase_remboursement()`.
+  📌 **CORRIGER UNE PHRASE À L'ENDROIT OÙ ON L'A VUE NE CORRIGE QUE CET
+  ENDROIT.** Le réflexe juste n'est pas « je répare ce texte », c'est **`grep` de
+  la phrase dans tout le dépôt, puis une seule source**. Cinquième instance de
+  la même famille en une semaine, et la première où le remède était à portée de
+  main depuis six heures.
+
 - **08/09/2026 (📅 LE PLAN DE LA SEMAINE — et un plan qui nommait des fichiers
   effacés)** — le patron : « publié, plan pour la semaine ». Écrit dans
   `PLAN-PUBLICITAIRE.md` § 8 bis (semaine du 9 au 15/09).

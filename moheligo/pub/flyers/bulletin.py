@@ -243,8 +243,7 @@ mer chaque soir, pour que tu voies le calme revenir en même temps que nous.
 
 """ + service.paragraphe_reprise() + """
 
-Si tu as un billet : changer la date est gratuit, et le remboursement est
-possible tant que la traversée n’est pas partie. Écris-nous sur WhatsApp.
+Si tu as un billet : changer la date est gratuit. """ + service.phrase_remboursement() + """
 
 moheligo.com — WhatsApp +269 479 43 28"""
 

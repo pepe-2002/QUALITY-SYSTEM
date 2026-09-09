@@ -437,8 +437,7 @@ Tant que cet avis est en ligne, il n’y a pas de vedette. Le jour où ça repar
 le liras ici — avant de partir de chez toi.
 
 SI TU AS UN BILLET, TU NE PERDS RIEN.
-Il reste valable. Changer la date est gratuit, et le remboursement est possible
-tant que la traversée n’est pas partie. Écris-nous, on s’en occupe.
+Il reste valable. Changer la date est gratuit. %s
 
 Et ce soir, comme chaque soir, la mer de demain sur cette page. C’est comme ça
 que tu verras le calme revenir, en même temps que nous.
@@ -448,7 +447,8 @@ moheligo.com — WhatsApp +269 479 43 28
 Prévision Open-Meteo Marine. Nous ne décidons pas des départs : nous publions la
 mer et l’état du service.
 
-#MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer""" % (n, mer)
+#MoheliGo #Comores #Mohéli #AvisAuxVoyageurs #MétéoMer""" % (
+        n, mer, phrase_remboursement())
 
 
 def ouvert(jour=None):

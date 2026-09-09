@@ -74,9 +74,20 @@ def avis_de_suspension():
     """(visuel, texte) de l'avis de service suspendu, daté depuis service.py."""
     modele = next(f['texte'] for f in page.FLYERS if f['png'] == service.VISUEL_AVIS)
     d = datetime.date.fromisoformat(service.FERMETURE['depuis'])
+    # 🚩 09/09/2026 — LA CAUSE EST UNE PHRASE ENTIÈRE, OU RIEN DU TOUT.
+    # Avant : `raison=... or 'la mer'`, et le texte ouvrait sur « La mer est
+    # agitée. » écrit en dur. Deux façons d'affirmer une cause qu'on ne connaît
+    # pas toujours — le 09/09 le patron a fermé sans dire pourquoi.
+    # 📌 **UN REPLI QUI INVENTE N'EST PAS UN REPLI.** `or 'la mer'` avait l'air
+    # prudent : il fabriquait quand même une explication. Maintenant, pas de
+    # raison = pas de phrase, et le paragraphe se referme tout seul.
+    raison = service.FERMETURE.get('raison')
     return service.VISUEL_AVIS, modele.format(
         depuis='%d %s' % (d.day, MOIS[d.month - 1]),
-        raison=service.FERMETURE.get('raison') or 'la mer',
+        cause='%s%s. ' % (raison[0].upper(), raison[1:]) if raison else '',
+        # ⚠️ L'annulation dépend de l'état du PAIEMENT, pas de celui du service :
+        # le remboursement repasse par MVola (voir service.phrase_remboursement).
+        remboursement=service.phrase_remboursement(),
         # ⚠️ jamais écrit en dur : une date de reprise ne sort que si le patron
         # en a donné une (service.paragraphe_reprise)
         reprise=service.paragraphe_reprise())

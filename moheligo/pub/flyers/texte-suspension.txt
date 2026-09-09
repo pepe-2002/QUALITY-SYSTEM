@@ -1,16 +1,14 @@
 AUJOURD’HUI, ON RESTE À QUAI.
 
-La mer est agitée. Depuis le {depuis}, les vedettes ne sortent pas et le service
-est suspendu jusqu'à nouvel ordre. Tu le sais avant de descendre au port : c'est
-pour ça qu'on publie tous les jours.
+{cause}Depuis le {depuis}, les vedettes ne sortent pas et le service est
+suspendu jusqu'à nouvel ordre. Tu l'apprends ici avant de descendre au port.
 
 NE DESCENDS PAS AU PORT POUR RIEN.
-Tant que cet avis est en ligne, il n'y a pas de départ. C'est aussi pour ça
-qu'on publie tous les jours : pour t'éviter le trajet et l'attente.
+Tant que cet avis est en ligne, il n'y a pas de départ. On publie tous les jours
+pour t'éviter le trajet et l'attente.
 
 SI TU AS DÉJÀ UN BILLET, TU NE PERDS RIEN.
-Changer la date est gratuit, sur la même liaison. Et tant que la traversée n'est
-pas partie, tu peux annuler et être remboursé. Écris-nous, on s'en occupe.
+Changer la date est gratuit, sur la même liaison. {remboursement}
 
 {reprise}
 

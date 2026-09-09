@@ -346,6 +346,23 @@ def mention_paiement():
     ✍️ Apostrophes typographiques ’ et non ' (norme § 5) : ce paragraphe part
     sur tout ce qu'on publie, c'est le passage le plus lu de la période.
     """
+    # 🚨 09/09/2026 — CETTE ANNONCE DISAIT « LES VEDETTES PARTENT NORMALEMENT »,
+    # ET C'EST DEVENU FAUX EN UNE NUIT. Écrite le 03/09, elle était juste : seul
+    # le paiement était tombé. Le 09/09 le patron suspend les liaisons, et
+    # l'annonce a continué à affirmer le contraire — collée, en plus, SOUS l'avis
+    # de suspension qui disait « on reste à quai ». Le même post se contredisait
+    # à quinze lignes d'écart.
+    # 📌 **DEUX PANNES SIMULTANÉES NE S'ADDITIONNENT PAS, ELLES SE CROISENT.**
+    # Chaque mention était juste sur SON état et aveugle à l'autre. Une mention
+    # qui parle d'un état voisin doit lire cet état, sinon elle le périme.
+    # ⚠️ Et pendant la fermeture elle se raccourcit : la place se prend pour les
+    # jours à venir (c'est la mention de fermeture qui le dit), l'annonce n'a
+    # plus qu'à expliquer par où passer.
+    if not ouvert():
+        return ("""⚠️ %s : MVola est hors service.
+Pour retenir une place sur les jours à venir, écris-nous sur WhatsApp au
++269 479 43 28 : on la prend à la main, le temps que MVola revienne."""
+                % MARQUE_PANNE)
     return ("""⚠️ %s : MVola est hors service.
 Les vedettes partent normalement — c’est le paiement qui est tombé, pas la
 traversée. Écris-nous sur WhatsApp au +269 479 43 28 : on prend ta place à la
@@ -504,10 +521,44 @@ def paragraphe_reprise():
         titre = 'QUAND ÇA REPREND : C’EST PRÉVU %s.' % jour.upper()
     else:
         titre = 'QUAND ÇA REPREND : ON NE LE SAIT PAS ENCORE.'
+    # 🚩 09/09/2026 — « C'EST LA MER QUI DÉCIDE » NE SORT QUE SI C'EST LA MER.
+    # Cette phrase de prudence était écrite en dur. Elle a toujours été vraie —
+    # les deux fermetures précédentes venaient de la houle — mais elle DÉSIGNE
+    # UNE CAUSE, et le 09/09 le patron a fermé sans en donner. Une phrase de
+    # prudence qui invente une cause n'est plus prudente.
+    # 📌 Sans raison connue, on garde ce qui reste vrai dans tous les cas : nous
+    # ne décidons pas des départs.
+    prudence = ('c’est la mer qui décide, et nous ne décidons pas\ndes départs'
+                if FERMETURE.get('raison') else
+                'nous ne décidons pas des départs')
     return (titre + '\n'
-            'Ce n’est pas une date promise — c’est la mer qui décide, et nous ne '
-            'décidons pas\ndes départs. Le jour où ça rouvre, tu le liras ici en '
-            'premier.')
+            'Ce n’est pas une date promise — %s.\nLe jour où ça rouvre, tu le '
+            'liras ici en premier.' % prudence)
+
+
+def phrase_remboursement():
+    """Ce qu'on promet sur l'annulation — et qui dépend de l'état du PAIEMENT.
+
+    🚨 09/09/2026 — TROUVÉ EN RELISANT L'AVIS DE SUSPENSION AVANT DE LE PUBLIER.
+    Le texte disait, sans condition : « tant que la traversée n'est pas partie,
+    tu peux annuler et être remboursé ». Or **le remboursement repasse par
+    MVola**, qui est hors service depuis le 03/09. Le même post aurait promis un
+    remboursement immédiat et annoncé, huit lignes plus bas, que le paiement en
+    ligne est mort.
+    📌 **DEUX PANNES SIMULTANÉES NE S'ADDITIONNENT PAS, ELLES SE CROISENT.** La
+    fermeture pousse les gens à annuler ; la panne de paiement empêche de les
+    rembourser. Aucune des deux mentions, prise seule, ne voyait ce croisement —
+    il fallait qu'une phrase connaisse LES DEUX états.
+    ⚠️ On ne retire pas le droit d'annuler : il reste entier. On dit seulement
+    que l'argent attendra, et on le dit AVANT qu'on nous le demande.
+    """
+    if not paiement_en_panne():
+        return ('Et tant que la traversée n’est pas partie, tu peux annuler et '
+                'être\nremboursé. Écris-nous, on s’en occupe.')
+    return ('Tu peux aussi annuler,\nton droit reste entier — mais le '
+            'remboursement passe par MVola, qui est hors\nservice : il partira '
+            'dès que MVola revient. Écris-nous, on note ton annulation\ntout de '
+            'suite.')
 
 
 def commentaire_bulletin():

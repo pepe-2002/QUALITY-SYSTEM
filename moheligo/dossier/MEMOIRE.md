@@ -370,6 +370,54 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **09/09/2026 (🚨 QUATRE MENSONGES ARRÊTÉS AVANT MIDI — le jour où les deux
+  pannes se sont croisées)** — premier jour de la fermeture. Le visuel du
+  mercredi était impubliable et l'avis de suspension mentait : rien n'est parti
+  avant d'être refait.
+
+  ⛔ **1. LE VISUEL DU MERCREDI NE POUVAIT PAS ÊTRE RÉGÉNÉRÉ.** `refaire.py` lit
+  la photo d'origine du patron dans `/root/.claude/uploads/…` — **un dépôt de
+  session, effacé avec le conteneur précédent**. La chaîne complète (capture de
+  l'appli, mise en scène, agrandissement) est dans le dépôt ; **sa matière
+  première n'y est pas.**
+  📌 **UN PROGRAMME REPRODUCTIBLE QUI LIT UN FICHIER HORS DU DÉPÔT N'EST PAS
+  REPRODUCTIBLE.** Il l'a été tant que la session durait, ce qui donnait l'air
+  d'un outil fini. L'écran affiche `09/09/2026`, c'est-à-dire AUJOURD'HUI — une
+  recherche de traversée pour un jour sans départ. **Non publié.**
+  👉 À demander au patron : renvoyer la photo du téléphone, et elle rentre cette
+  fois DANS le dépôt.
+
+  ⛔ **2. L'AVIS DE SUSPENSION AFFIRMAIT UNE CAUSE QU'IL N'A PAS DONNÉE.** Le
+  visuel gravait « MER AGITÉE » en surtitre, le texte ouvrait sur « La mer est
+  agitée », `paragraphe_reprise()` ajoutait « c'est la mer qui décide », et
+  `programme.py` avait un repli `raison or 'la mer'`. **Quatre endroits, tous
+  écrits en dur, tous vrais les deux fois précédentes.**
+  📌 **UN REPLI QUI INVENTE N'EST PAS UN REPLI** — `or 'la mer'` avait l'air
+  prudent et fabriquait quand même une explication.
+  📌 **UN VISUEL QU'ON REPUBLIE NE DOIT PORTER QUE CE QUI NE CHANGE PAS.** Les
+  vedettes ne sortent pas : vrai à chaque fermeture. La cause : jamais deux fois
+  la même. Elle vit désormais dans le texte, fabriqué le jour même, et disparaît
+  quand on ne la connaît pas.
+
+  ⛔ **3. L'AVIS PROMETTAIT UN REMBOURSEMENT QUE MVOLA NE PEUT PAS FAIRE.**
+  « Tu peux annuler et être remboursé » — or le remboursement repasse par MVola,
+  hors service depuis six jours. Le même post l'aurait promis puis annoncé
+  l'inverse huit lignes plus bas. ✅ `service.phrase_remboursement()` : le droit
+  d'annuler reste entier, **et on dit que l'argent attendra, avant qu'on nous le
+  demande.**
+
+  ⛔ **4. L'ANNONCE MVOLA DISAIT ENCORE « LES VEDETTES PARTENT NORMALEMENT ».**
+  Écrite le 03/09, elle était juste : seul le paiement était tombé. Six jours
+  plus tard elle se retrouvait collée SOUS l'avis qui dit « on reste à quai ».
+  ✅ Elle lit maintenant `ouvert()` et se raccourcit pendant la fermeture.
+
+  📌 **LA LEÇON DU JOUR, ET ELLE VAUT PLUS QUE LES QUATRE CORRECTIONS : DEUX
+  PANNES SIMULTANÉES NE S'ADDITIONNENT PAS, ELLES SE CROISENT.** La fermeture
+  pousse les gens à annuler ; la panne de paiement empêche de les rembourser.
+  Chaque mention était juste sur SON état et aveugle à l'autre — aucune ne
+  pouvait voir le croisement toute seule. **Une mention qui parle d'un état
+  voisin doit lire cet état, sinon elle le périme en silence.**
+
 - **08/09/2026 (📅 LE PLAN DE LA SEMAINE — et un plan qui nommait des fichiers
   effacés)** — le patron : « publié, plan pour la semaine ». Écrit dans
   `PLAN-PUBLICITAIRE.md` § 8 bis (semaine du 9 au 15/09).

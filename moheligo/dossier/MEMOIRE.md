@@ -370,6 +370,41 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **09/09/2026, le soir (⛔ LE VISUEL QUE J'AVAIS ÉCARTÉ EST SORTI QUAND MÊME —
+  et c'est ma faute, pas celle du robot)** — découvert en lisant le rapport du
+  bulletin du soir. La page porte :
+
+      | 2026-09-09 à 19:29 | LA MER DE DEMAIN, CE SOIR. |
+      | 2026-09-09 à 14:36 | TU L’AS DÉJÀ.              |  ← celui que j'avais retenu
+
+  À midi j'avais constaté que ce visuel était impubliable (écran d'appli daté du
+  09/09, jour sans départ), je ne l'avais pas publié, et je l'avais écrit au
+  patron. **À 14h36, le filet de `cron` posé la veille l'a publié** — exécution
+  34346403667, fenêtre franchie, étape « Publier » 9 s. Le post portait bien la
+  mention de fermeture (`programme.py` la force quand le service est clos), donc
+  il ne trompe personne sur les départs ; **mais son image montre une recherche
+  de traversée pour un jour où il n'y en a pas.**
+
+  📌 **MA DÉCISION DE NE PAS PUBLIER N'EXISTAIT QUE DANS MA TÊTE.** Le système ne
+  connaissait qu'une chose : « rien n'est parti à midi ». Il ne pouvait pas
+  distinguer « personne n'a poussé le battement » de « on a examiné ce visuel et
+  on l'a écarté ». **Un jugement qui ne s'écrit nulle part n'est pas une
+  décision, c'est une intention — et une intention ne survit pas à la première
+  automatisation.**
+  ⚖️ **C'est le prix exact du filet, payé le lendemain de sa pose** : un système
+  plus fiable exécute aussi plus fidèlement ce qu'on a oublié de lui dire. Je ne
+  le retire pas pour autant — trois publications perdues en cinq jours ont été
+  mesurées avant lui. Ce qui manquait, c'est le frein.
+
+  ✅ **`calendrier.RETENUS`** : un visuel qui y figure ne part par AUCUN chemin —
+  battement, `cron`, rattrapage — et la raison est lisible par le prochain qui
+  passe. Vérifié : `du_jour()` rend `None` le mercredi, `programme.py` se tait
+  proprement. On l'en retire le jour où le défaut est réparé, pas avant.
+
+  👉 **À décider par le patron** : on laisse le post de 14h36 en ligne (il porte
+  la mention de fermeture) ou on le supprime ? Supprimer est irréversible et se
+  voit ; je ne le fais pas sans son mot.
+
 - **09/09/2026 (🚨 QUATRE MENSONGES ARRÊTÉS AVANT MIDI — le jour où les deux
   pannes se sont croisées)** — premier jour de la fermeture. Le visuel du
   mercredi était impubliable et l'avis de suspension mentait : rien n'est parti

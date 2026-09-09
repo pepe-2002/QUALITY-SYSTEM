@@ -72,6 +72,39 @@ SEMAINE = {
         'la fierté'),
 }
 
+# --- 🔴 LES VISUELS RETENUS : la décision de NE PAS publier, écrite -----------
+# 09/09/2026, et c'est une faute à moi qui a écrit cette section.
+#
+# Ce matin j'ai constaté que le visuel du mercredi était impubliable : l'écran de
+# l'appli y affiche une date calculée à la fabrication, et elle valait le
+# 09/09/2026 — c'est-à-dire AUJOURD'HUI, premier jour de la fermeture. Une
+# recherche de traversée pour un jour sans départ. Je ne l'ai donc pas publié à
+# midi, et je l'ai écrit au patron.
+#
+# ⛔ IL EST SORTI QUAND MÊME, À 14h36, PUBLIÉ PAR LE FILET DE `cron` QUE J'AVAIS
+# POSÉ LA VEILLE. Le filet a fait exactement ce pour quoi il est fait : voir
+# qu'aucune publication de midi n'était partie, et rattraper.
+# 📌 **MA DÉCISION DE NE PAS PUBLIER N'EXISTAIT QUE DANS MA TÊTE.** Le système,
+# lui, ne connaissait qu'une seule information : « rien n'est parti à midi ».
+# Il ne pouvait pas distinguer « personne n'a poussé le battement » de « on a
+# examiné ce visuel et on l'a écarté ». **Un jugement qui ne s'écrit nulle part
+# n'est pas une décision : c'est une intention, et une intention ne survit pas à
+# la première automatisation.**
+# ⚖️ Et c'est le prix exact du filet, payé le lendemain de sa pose : un système
+# plus fiable exécute aussi plus fidèlement ce qu'on a oublié de lui dire.
+#
+# ✅ D'où ce tableau. Un visuel qui y figure ne part par AUCUN chemin — ni
+# battement, ni `cron`, ni rattrapage — et la raison est lisible par le prochain
+# qui passe. On le retire d'ici le jour où le défaut est réparé, pas avant.
+RETENUS = {
+    'flyer-tulasdeja-facebook.png':
+        'l’écran de l’appli affiche une date calculée à la fabrication, et elle '
+        'est dépassée. Elle ne peut pas être regénérée : `refaire.py` lit la '
+        'photo d’origine du patron dans un dossier de session effacé avec le '
+        'conteneur. 👉 redemander la photo au patron, et la ranger DANS le dépôt.',
+}
+
+
 # --- LE MATIN : plus rien, et il faut le dire ------------------------------
 # La démonstration du matin (« EN TROIS GESTES, TA PLACE EST RÉSERVÉE ») est
 # partie au nettoyage du 02/09 : son titre faisait sept mots, et son dernier mot
@@ -99,6 +132,13 @@ def _valide(entree, jour, moment):
     if entree is None:
         return None
     visuel, fichier, quoi = entree
+    # 🔴 LE VISUEL EST-IL RETENU ? Ce contrôle passe AVANT tous les autres :
+    # un visuel écarté n'a pas à être publiable même si ses fichiers existent.
+    if visuel in RETENUS:
+        print('⛔ %s %s : « %s » est RETENU et ne sera pas publié.\n   %s'
+              % (JOURS[jour.weekday()], moment, quoi, RETENUS[visuel]),
+              file=sys.stderr)
+        return None
     texte = _lire(fichier)
     if texte is None or not (ICI / visuel).exists():
         manque = visuel if not (ICI / visuel).exists() else fichier

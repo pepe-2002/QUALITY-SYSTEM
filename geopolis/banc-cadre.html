@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc d'essai — GÉOPOLIS dans un cadre auto-dimensionné</title>
+<!--
+  Reproduit les conditions d'une page publiée : le jeu est affiché dans un
+  cadre dont l'hôte règle la hauteur sur le contenu du document interne.
+  C'est cet environnement — et non un navigateur ordinaire — qui a révélé que
+  le jeu, entièrement en position fixe, ne mesurait « rien » et restait bloqué
+  à 400 pixels de haut, liste des nations hors champ.
+
+  Servir le dossier puis ouvrir ce fichier, de préférence en gabarit mobile :
+      python3 -m http.server 8899
+      http://localhost:8899/banc-cadre.html
+-->
+<style>
+  html,body{margin:0;background:#faf9f5}
+  iframe{width:100%;border:0;display:block}
+</style>
+<iframe id="f" src="geopolis-un-fichier.html" height="400"></iframe>
+<script>
+  const f = document.getElementById('f');
+  setInterval(() => {
+    try {
+      const d = f.contentDocument;
+      f.style.height = Math.max(d.documentElement.scrollHeight, d.body ? d.body.scrollHeight : 0) + 'px';
+    } catch (e) {}
+  }, 150);
+</script>

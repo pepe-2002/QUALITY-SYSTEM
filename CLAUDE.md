@@ -1,11 +1,15 @@
 # Dépôt QUALITY-SYSTEM — briefing de session
 
-Ce dépôt contient **deux projets distincts** :
+Ce dépôt contient **trois projets distincts** :
 
 1. **RA-QDMS** (racine) — plateforme de gestion documentaire qualité de Royal Air
    (conformité ANACM/OACI/ISO 9001, flotte LET 410). Voir `README.md`.
 2. **MoheliGo** (`moheligo/`) — site de réservation des traversées maritimes des
    Comores (Grande Comore ↔ Mohéli), déployé en production sur **https://moheligo.com**.
+3. **Tour de Moroni** (`tour-de-moroni/`) — cross inclusif de 10 km à Moroni, le
+   premier dimanche de décembre. Projet culturel et sportif en recherche de
+   financement. **Avant d'y toucher : lire `tour-de-moroni/dossier/README.md`
+   puis `tour-de-moroni/dossier/MEMOIRE.md`.**
 
 ## Rôle confié par le propriétaire (pepe-2002 / Nayam)
 

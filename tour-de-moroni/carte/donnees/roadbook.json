@@ -1,0 +1,92 @@
+[
+ {
+  "rue": "Rue de la Corniche شارع الكرنيش",
+  "m": 56,
+  "depuis_km": 0.0
+ },
+ {
+  "rue": "Mvouvou-djou",
+  "m": 298,
+  "depuis_km": 0.06
+ },
+ {
+  "rue": "voie sans nom (secondary)",
+  "m": 244,
+  "depuis_km": 0.37
+ },
+ {
+  "rue": "Rue Itsambuni شارع إتسمبوني",
+  "m": 1017,
+  "depuis_km": 0.63
+ },
+ {
+  "rue": "Boulevard de la République Poulaire de China شارع جمهورية الصين الشعبية",
+  "m": 716,
+  "depuis_km": 1.64
+ },
+ {
+  "rue": "Avenue du Président Ali Soilihi",
+  "m": 569,
+  "depuis_km": 2.39
+ },
+ {
+  "rue": "Boulevard Karthala شارع القرطالة",
+  "m": 1407,
+  "depuis_km": 2.96
+ },
+ {
+  "rue": "voie sans nom (tertiary)",
+  "m": 776,
+  "depuis_km": 4.37
+ },
+ {
+  "rue": "voie sans nom (secondary)",
+  "m": 100,
+  "depuis_km": 5.14
+ },
+ {
+  "rue": "Boulevard Karthala شارع القرطالة",
+  "m": 197,
+  "depuis_km": 5.25
+ },
+ {
+  "rue": "Avenue de la Place de l'Indépendance",
+  "m": 330,
+  "depuis_km": 5.48
+ },
+ {
+  "rue": "Rue de la Corniche شارع الكرنيش",
+  "m": 272,
+  "depuis_km": 5.82
+ },
+ {
+  "rue": "Avenue de la Place de l'Indépendance",
+  "m": 183,
+  "depuis_km": 6.09
+ },
+ {
+  "rue": "voie sans nom (tertiary)",
+  "m": 1413,
+  "depuis_km": 6.28
+ },
+ {
+  "rue": "Rue de l'Union Africaine",
+  "m": 183,
+  "depuis_km": 7.7
+ },
+ {
+  "rue": "voie sans nom (residential)",
+  "m": 388,
+  "depuis_km": 7.89
+ },
+ {
+  "rue": "Route de l'Alliance Française طريق أليانس فرانسيز",
+  "m": 225,
+  "depuis_km": 8.27
+ },
+ {
+  "rue": "Rue de la Corniche شارع الكرنيش",
+  "m": 1524,
+  "depuis_km": 8.5
+ }
+]

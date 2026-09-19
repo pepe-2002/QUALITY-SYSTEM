@@ -22,6 +22,7 @@ l'Indépendance, **le premier dimanche de décembre**. Première édition :
 
 | Ce que je vais faire | Ce que je lis d'abord |
 |---|---|
+| **Envoyer le dossier à quelqu'un** | `../Dossier-Tour-de-Moroni.pdf` — le PDF complet, refabriqué par `python3 ../fabriquer_dossier_pdf.py` après toute modification |
 | **Présenter le projet** (partenaire, institution, presse) | `PROJET.md` en entier, puis `PARTENAIRES.md` § 5 (le pitch en trois longueurs) |
 | **Aller voir un sponsor** | `PARTENAIRES.md` — niveaux, contreparties, liste de cibles, courrier type. Puis `BUDGET.md` § 3 pour savoir ce qui est déjà couvert |
 | **Parler chiffres, engager une dépense** | `BUDGET.md` — et vérifier le point d'arrêt en cours (§ 6) |
@@ -53,6 +54,7 @@ corrige la copie au lieu de la source, et les deux finissent par se contredire.
 
 | Fichier | Où | Pourquoi pas ici |
 |---|---|---|
+| `Dossier-Tour-de-Moroni.pdf` | `../` | assemblé par `fabriquer_dossier_pdf.py` à partir des quatre documents ci-dessus et de la carte |
 | `carte-tour-de-moroni.svg` | `../carte/` | dessiné par `carte.py` |
 | `parcours.geojson` | `../carte/` | calculé par `calculer_parcours.py` |
 | `donnees/points_blocage.csv`, `roadbook.json`, `parcours_calcule.json` | `../carte/donnees/` | recalculés à chaque changement de parcours |

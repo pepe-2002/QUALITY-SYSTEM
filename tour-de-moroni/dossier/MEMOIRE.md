@@ -51,6 +51,7 @@
 | Tracé numérique (Google Earth, QGIS, GPS) | `carte/parcours.geojson` | `carte/calculer_parcours.py` |
 | Liste des 53 points de blocage, avec GPS | `carte/donnees/points_blocage.csv` | `carte/calculer_parcours.py` |
 | Données OSM + altitudes | `carte/donnees/` | `carte/extraire_osm.py` |
+| **Dossier PDF à envoyer (25 pages)** | `Dossier-Tour-de-Moroni.pdf` | `fabriquer_dossier_pdf.py` |
 
 **Ce qui est généré par un programme reste à côté du programme** — sinon on
 corrige la copie au lieu de la source.
@@ -101,6 +102,11 @@ en décembre à choisir, et des recherches sur les projets comparables.
 Livré : les cinq documents du dossier, la carte A3 générée depuis les données
 OpenStreetMap, le tracé GeoJSON, la liste des 53 points de blocage, et trois
 scripts qui permettent de tout recalculer si le parcours change.
+Ajouté le même jour, à la demande du patron : le **dossier PDF téléchargeable**
+(25 pages — couverture, les quatre documents, la carte en pleine page paysage),
+fabriqué par `fabriquer_dossier_pdf.py`. Le PDF se refabrique, il ne se corrige
+pas à la main. `MEMOIRE.md` en est volontairement exclu : c'est le journal
+interne, il ne sort pas du dossier de travail.
 Signalé au patron : **J-77, c'est court** pour une première édition avec
 sponsors et import de matériel — d'où les deux points d'arrêt et le repli
 « Tour d'essai ». La décision lui revient.

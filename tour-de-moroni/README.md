@@ -14,10 +14,22 @@ dimanche de décembre.** Première édition : dimanche 6 décembre 2026.
 👉 **`dossier/README.md`** — l'index : il dit quoi lire avant quoi.
 👉 **`dossier/MEMOIRE.md`** — l'état du projet et toutes les décisions prises.
 
-| Dossier | Contenu |
+| Fichier ou dossier | Contenu |
 |---|---|
+| **`Dossier-Tour-de-Moroni.pdf`** | 📄 **le dossier complet à télécharger et à envoyer** — 25 pages : couverture, projet, parcours, budget, partenariats et la carte en pleine page |
 | `dossier/` | Les cinq documents de référence : projet, parcours, budget, partenaires, mémoire |
 | `carte/` | La carte du parcours, le tracé GeoJSON, et les trois scripts qui les fabriquent |
+| `fabriquer_dossier_pdf.py` | Le programme qui assemble le PDF à partir des documents et de la carte |
+
+## Refabriquer le PDF après une modification
+
+```bash
+python3 fabriquer_dossier_pdf.py     # réécrit Dossier-Tour-de-Moroni.pdf
+```
+
+Le PDF est **fabriqué**, jamais corrigé à la main : on modifie les fichiers de
+`dossier/`, puis on relance. Le journal interne (`dossier/MEMOIRE.md`) n'y entre
+pas — il reste dans le dossier de travail.
 
 ## La carte
 

@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-27",
+  "etat": "MER AGITÉE",
+  "houle_m": 1.3,
+  "periode_s": 7.6,
+  "vent_kmh": 26,
+  "vent_direction": "nord-est",
+  "courbe_5h_13h": [
+    1.32,
+    1.3,
+    1.3,
+    1.3,
+    1.3,
+    1.3,
+    1.32,
+    1.32,
+    1.34
+  ],
+  "releve": "le 26/09 à 19h27",
+  "source": "Open-Meteo Marine + Forecast"
+}

@@ -370,6 +370,53 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **28/09/2026 (📻 TROIS SEMAINES DE ROUTINE, ET UNE CONSIGNE QUI MENT TOUS LES
+  JOURS)** — bilan de la période du 09 au 28/09, pendant laquelle le service est
+  resté fermé et MVola hors service.
+
+  ✅ **LES DEUX RENDEZ-VOUS ONT TENU, SANS EXCEPTION.** Relevé sur la page :
+  midi à 12h07-12h08, le soir à 19h26-19h27, tous les jours. Page passée de
+  **45 à 48 abonnés** pendant une fermeture totale — la régularité seule tient
+  l'audience quand il n'y a rien à vendre.
+
+  🏆 **LES DEUX GARDE-FOUS POSÉS DANS L'URGENCE ONT SERVI, ET ON LES A VUS
+  TRAVAILLER :**
+      · le **filet de midi** (08/09) a rattrapé le 17/09 — battement manqué,
+        un `cron` a publié à 14h53 ;
+      · le frein **`RETENUS`** (09/09) a tenu les mercredis 16 et 23/09 : le
+        visuel à la date périmée n'est pas sorti, et le journal a dit pourquoi.
+  📌 **UN GARDE-FOU NE SE JUGE PAS LE JOUR OÙ ON L'ÉCRIT, MAIS LE JOUR OÙ IL
+  ARRÊTE QUELQUE CHOSE.** Les deux ont maintenant leur preuve.
+
+  🔴 **LA MER EST CALME DEPUIS LE 10/09, ET LE SERVICE EST TOUJOURS FERMÉ.**
+  Houle annoncée chaque soir : 1,94 m (09/09) → 1,78 → 1,43 → 0,91 → 0,81 →
+  1,00 → 1,15 → 0,89 → 1,09 m. Le seuil de mer forte est à 2,50 m : on en est
+  loin depuis dix-huit jours.
+  ⚠️ Le patron a fermé « jusqu'à nouvel ordre » **sans donner de cause**, et on
+  n'en a inventé aucune — l'avis reste muet là-dessus, c'était la bonne décision.
+  Mais dix-huit jours de suspension par mer belle ne se lisent plus comme une
+  fermeture de saison. **Posé au patron le 25/09, sans réponse à ce jour.**
+
+  ⛔ **ET LA CONSIGNE DE MIDI M'ANNONCE « SERVICE OUVERT » TOUS LES JOURS DEPUIS
+  LE 09/09.** Elle a été écrite avant la fermeture. Elle ne m'a jamais induit en
+  erreur — `service.py` fait foi et je le relis à chaque battement — mais c'est
+  très exactement la faute qu'on a corrigée quatre fois ce mois-ci : **une copie
+  qui survit à sa source.**
+  🚧 **LA CORRECTION EST BLOQUÉE, ET IL FAUT LE SAVOIR :** le texte de la
+  Routine ne se change que par le connecteur `Claude_Code_Remote`, qui se
+  déconnecte systématiquement entre le moment où je charge l'outil et celui où
+  je l'appelle — cinq tentatives du 24 au 28/09, aucune n'a abouti.
+  📌 **UNE CORRECTION QUI DÉPEND D'UN OUTIL INSTABLE N'EST PAS UNE CORRECTION
+  TANT QU'ELLE N'EST PAS PASSÉE.** Elle est donc écrite ICI, où elle survit à la
+  session. Ce que la consigne devrait dire, à la place de l'état figé :
+      « LIRE `python3 service.py` AVANT TOUT : c'est lui qui dit si le service
+        est ouvert ET si le paiement fonctionne. Ne jamais se fier à un état
+        écrit dans cette consigne. »
+  👉 Et le bloc « MERCREDI » de la consigne est périmé lui aussi : le visuel du
+  mercredi est dans `calendrier.RETENUS`, il ne part plus ; la regénération
+  décrite est impossible tant que la photo d'origine n'est pas revenue.
+
+
 - **09/09/2026, le soir (⛔ LE VISUEL QUE J'AVAIS ÉCARTÉ EST SORTI QUAND MÊME —
   et c'est ma faute, pas celle du robot)** — découvert en lisant le rapport du
   bulletin du soir. La page porte :

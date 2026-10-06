@@ -35,3 +35,13 @@ moheligo/pub/photos/modele-*.jpg
 # identifiables au second plan, qui n'ont rien demande. Seule la version
 # detouree — qui les retire — entre dans le depot public.
 moheligo/pub/photos/portrait-young-leader-source.jpg
+
+# 🏭 06/10/2026 — LA VITRINE DU PATRON EST FABRIQUÉE, PAS ÉCRITE.
+# `page-flyers.html` sort de `page.py`, qui recopie les visuels en base64 et va
+# chercher les textes dans les `texte-*.txt`. Quatre mégaoctets entièrement
+# dérivés : rien dedans n'existe ailleurs.
+# 📌 Règle du dépôt : ce qu'un programme fabrique ne se range pas à côté de ce
+# qu'on écrit — sinon on finit par corriger la COPIE au lieu de la SOURCE, et
+# la source continue de produire la faute.
+# 👉 Pour la régénérer : `python3 page.py` depuis `moheligo/pub/flyers/`.
+moheligo/pub/flyers/page-flyers.html

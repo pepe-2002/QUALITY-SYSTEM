@@ -1,0 +1,131 @@
+<!-- « TU SAIS LA VEILLE AU SOIR. » — 06/10/2026. Sans date.
+
+     SENTIMENT : LE SOULAGEMENT
+
+     🧭 PREMIER D'UNE FAMILLE DE TROIS, ET LA RAISON COMPTE PLUS QUE LE VISUEL.
+     Au 06/10 la bibliothèque tient onze visuels hors bulletin, et **SEPT
+     FINISSENT PAR « RÉSERVE TA TRAVERSÉE »**. Or on est fermés depuis le
+     09/09 — vingt-sept jours. Pendant tout ce temps, chaque midi, le robot
+     publie une image qui dit « réserve » sous un texte qui dit « on reste à
+     quai ». Le paragraphe de fermeture s'ajoute au TEXTE (`avec_mention`) ;
+     il n'a jamais rien pu faire contre l'IMAGE.
+     📌 **UNE BIBLIOTHÈQUE QUI NE SAIT DIRE QUE « ACHÈTE » N'A RIEN À DIRE LE
+     JOUR OÙ ELLE NE VEND PAS** — et ce jour-là dure un mois sur trois chez
+     nous (trois fermetures en un mois : 12→18/08, 26/08→01/09, 09/09→?).
+     ✅ Ces trois-là sont donc construits pour tenir dans les DEUX états : leur
+     promesse est vraie fermé comme ouvert. Le bulletin paraît tous les soirs,
+     le changement de date reste gratuit, les commandants restent d'ici. Rien à
+     retirer le jour de la reprise, rien à cacher pendant la suspension.
+
+     🎯 CE QU'IL VEND : le bulletin du soir, c'est-à-dire la seule chose qu'on
+     donne. C'est notre meilleur produit et il n'était sur aucun visuel — on
+     le publiait sans jamais dire qu'il existe.
+
+     ⛔ LE TITRE A ÉTÉ ÉCRIT TROIS FOIS. « LA MER, CHAQUE SOIR. » ne parle pas
+     au lecteur (refusé § 2, à raison : c'est un horaire, pas une phrase).
+     « ON TE DIT LA MER. » marche, mais le flyer 22 dit déjà « LA MER DÉCIDE.
+     ON TE LE DIT. » — deux visuels, une seule idée.
+     ✅ « TU SAIS LA VEILLE AU SOIR. » déplace l'accent de NOUS (on te dit) vers
+     TOI (tu sais), et dit le seul chiffre qui compte au lecteur : la veille.
+     📌 Un bénéfice se formule au présent du lecteur, pas au futur du vendeur.
+
+     📷 `../photos/ilot.jpg`, photo du patron. 810 × 1080, donc agrandie 2,7 fois
+     à la sortie — moins que le flyer 48 (×3) et pour la même raison : le
+     recadrage ne garde QUE le ciel, les nuages et l'îlot, c'est-à-dire des
+     dégradés. Le sable en gros plan, qui est la partie qui se délite, est
+     entièrement coupé par `object-position: center 12%`.
+     ✅ Et le ciel chargé n'est pas un défaut ici, c'est le sujet : ce visuel
+     parle de météo. Une mer plate l'aurait rendu muet.
+     🔒 Aucune personne, aucun bateau identifiable : plage vide, îlot, nuages.
+
+     Rendu : node render.js flyer51-la-veille-fb.html flyer-la-veille-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* LA PHOTO — plein cadre sur le haut, 660 px, gabarit du flyer 48. */
+.mer { position:absolute; left:0; top:0; width:1080px; height:660px; z-index:1;
+  overflow:hidden; }
+/* ⚠️ `center 26%` ET NON `center 12%`, ET C'EST UNE CORRECTION FAITE À L'ŒIL
+   APRÈS RENDU. À 12 % le cadrage ne gardait que le ciel et le sommet de
+   l'îlot : **un visuel sur la mer de demain où la mer n'apparaissait pas.**
+   Les quatre contrôles l'avaient accepté — aucun ne sait regarder ce que la
+   photo montre.
+   📌 Un cadrage qui coupe le sujet reste un cadrage valide pour une machine.
+   C'est exactement la part du travail que `exigence.py` annonce ne pas
+   savoir faire (règle 7.5), et il faut donc la faire. */
+.mer img { width:100%; height:100%; object-fit:cover; object-position:center 26%;
+  display:block; }
+
+.ombre { position:absolute; left:0; top:430px; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.42) 100%); }
+
+/* 🏆 LA COUTURE — l'élément qui fait qu'on nous reconnaît sans lire le nom. */
+.couture { position:absolute; left:0; top:586px; width:1080px; height:86px; z-index:3; }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:16px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:74px; height:74px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:742px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+.acc { position:absolute; left:76px; top:770px; width:928px; z-index:5;
+  font-family:'Cormorant',serif; font-weight:400; font-size:88px; line-height:1.1;
+  letter-spacing:5px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
+
+.dit { position:absolute; left:76px; top:1008px; width:640px; z-index:5;
+  font-size:22px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.cta { position:absolute; left:76px; top:1120px; z-index:5;
+  background:#F6BC1C; border-radius:14px; padding:19px 30px; display:inline-block;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
+
+.web { position:absolute; right:76px; top:1138px; z-index:5; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px;
+  color:#fff; letter-spacing:.2px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+</style>
+
+<div class="page">
+  <div class="mer"><img src="../photos/ilot.jpg" alt=""></div>
+  <div class="ombre"></div>
+
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">LA MER DE DEMAIN · TOUS LES SOIRS</div>
+  <div class="acc">TU SAIS<span>LA VEILLE AU SOIR.</span></div>
+
+  <div class="dit">À 19h30, la houle et le vent du lendemain entre nos ports.
+    <b>Gratuitement, qu’elle soit belle ou mauvaise.</b></div>
+
+  <div class="cta">REJOINS-NOUS À 19H30</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+</div>

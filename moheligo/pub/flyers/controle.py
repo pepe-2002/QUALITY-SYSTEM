@@ -233,7 +233,11 @@ def main():
     # 02/09/2026 — le calendrier ne range plus des listes de variantes mais une
     # seule entrée par jour, et cette entrée peut être `None` (jour sans visuel
     # depuis le grand nettoyage). On saute donc les cases vides.
+    # 06/10/2026 — `QUINZAINE` s'ajoute : la semaine paire a ses propres cases,
+    # et un visuel réservé à la main qui s'y glisserait serait aussi grave qu'un
+    # visuel réservé à la main dans `SEMAINE`. On lit les trois tables.
     programmes = {e[0] for e in calendrier.SEMAINE.values() if e}
+    programmes |= {e[0] for e in calendrier.QUINZAINE.values() if e}
     programmes |= {e[0] for e in calendrier.MATIN.values() if e}
     for nom, pourquoi in MANUELS.items():
         visuel_ok(nom, 'à la main')

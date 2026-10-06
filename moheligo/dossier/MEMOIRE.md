@@ -370,6 +370,97 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **06/10/2026 (🧭 TROIS VISUELS QUI TIENNENT QUAND ON NE VEND PAS — et la
+  mesure qui les a commandés)** — demande du patron : « fait d'autres flyer et
+  pousse ». Trois visuels produits, poussés sur `main`, mis au calendrier.
+
+  ⛔ **LE CONSTAT QUI A DÉCIDÉ DU SUJET, ET IL EST GÊNANT.** Avant de dessiner,
+  j'ai compté ce que la bibliothèque sait dire : **onze visuels hors bulletin,
+  SEPT qui finissent par « RÉSERVE TA TRAVERSÉE »**. Or le service est fermé
+  depuis le 09/09 — vingt-sept jours. Chaque midi, le robot publiait donc une
+  image qui dit « réserve » sous un texte qui dit « on reste à quai ». Le
+  paragraphe de fermeture s'ajoute au TEXTE (`avec_mention`, corrigé le 03/09) ;
+  il n'a jamais rien pu faire contre l'IMAGE.
+  📌 **UNE BIBLIOTHÈQUE QUI NE SAIT DIRE QUE « ACHÈTE » N'A RIEN À DIRE LE JOUR
+  OÙ ELLE NE VEND PAS** — et ce jour-là dure un mois sur trois chez nous (trois
+  fermetures depuis août : 12→18/08, 26/08→01/09, 09/09→?). Ce n'est pas un
+  accident à traverser, c'est un état à habiller.
+  ✅ Les trois nouveaux sont donc construits pour tenir dans les DEUX états :
+  leur promesse est vraie fermé comme ouvert. Rien à retirer le jour de la
+  reprise, rien à cacher pendant la suspension.
+
+  **CE QUI EST FAIT :**
+      · `flyer51-la-veille` → `flyer-la-veille-facebook.png` — LE SOULAGEMENT.
+        « TU SAIS LA VEILLE AU SOIR. » Il vend le **bulletin du soir**,
+        c'est-à-dire la seule chose qu'on donne. Notre meilleur produit, et il
+        n'était sur **aucun visuel** : on le publiait tous les soirs sans jamais
+        dire qu'il existe. Photo `photos/ilot.jpg` (patron).
+      · `flyer52-ta-date` → `flyer-ta-date-facebook.png` — LE SOULAGEMENT.
+        « TA DATE CHANGE, PAS TON BILLET. » Répond à la question que se pose
+        aujourd'hui toute personne ayant payé avant le 09/09 — « et mon
+        argent ? » — qui n'existait jusqu'ici qu'au paragraphe 3 d'un texte de
+        post. Photo `photos/horizon.jpg` (patron).
+      · `flyer53-cette-mer` → `flyer-cette-mer-facebook.png` — LA FIERTÉ, le
+        registre le plus maigre (1 visuel sur 11). « ON CONNAÎT CETTE MER. »
+        Des commandants d'ici — et **ils savent dire non**. Seul visuel de
+        fierté qui GAGNE pendant une suspension : il dit que c'est une
+        décision, pas une panne. Photo `photos-cc/chindini.jpg`, David Stanley,
+        CC BY 2.0, **crédit imprimé sur le visuel**.
+  📌 **LA FIERTÉ LA PLUS CRÉDIBLE N'EST PAS CELLE DE CE QU'ON FAIT, C'EST CELLE
+  DE CE QU'ON REFUSE DE FAIRE** : c'est la seule qui coûte quelque chose à celui
+  qui la revendique, donc la seule qu'on ne peut pas imiter.
+
+  🔁 **LE MERCREDI REPARLE, APRÈS QUATRE SEMAINES DE SILENCE.** Sa case nommait
+  encore `flyer-tulasdeja`, retenu depuis le 09/09 (date figée dans l'écran de
+  l'appli, photo d'origine perdue avec le conteneur). Le frein `RETENUS` faisait
+  son travail — mais la case, elle, avait toujours l'air remplie.
+  📌 **UN VISUEL RETENU N'EST PAS UNE CASE REMPLIE : C'EST UN TROU QUI PORTE UN
+  NOM.** Tant qu'il reste au calendrier, le trou ressemble à un programme et
+  personne ne cherche à le boucher. Le mercredi prend `flyer-ta-date`.
+  ⚠️ `flyer-tulasdeja` **reste dans `RETENUS`** : il n'est pas réparé, il est
+  seulement déprogrammé. La photo d'origine est toujours à redemander au patron.
+
+  🔁 **ET LE CALENDRIER PASSE À LA QUINZAINE** (`calendrier.QUINZAINE`). Avec une
+  seule table, un lecteur qui suit la page voit le même visuel le même jour,
+  toutes les semaines ; au bout d'un mois il ne le voit plus, il le reconnaît.
+  📌 **LA RÉPÉTITION NE FATIGUE PAS PARCE QU'ELLE REVIENT : ELLE FATIGUE PARCE
+  QU'ELLE REVIENT AU MÊME ENDROIT.** Les semaines ISO paires prennent
+  `cette-mer` le jeudi et `la-veille` le samedi ; les impaires gardent la
+  semaine normale. Avec repli : si la case de quinzaine échoue, on essaie
+  l'autre avant d'abandonner — **une rotation ne doit jamais rendre le système
+  plus fragile que la liste qu'elle remplace.**
+  ⚠️ Ce n'est PAS le retour des « listes de variantes » supprimées le 02/09 :
+  une variante, c'était deux versions du même message et on ne savait jamais
+  laquelle était partie. Ici chaque case nomme un message différent et la
+  semaine ISO dit laquelle — la question « qu'est-ce qui est parti jeudi
+  dernier ? » se recalcule, sans journal.
+
+  ⛔ **DEUX LEÇONS PAYÉES PENDANT LA FABRICATION :**
+      · **Les quatre contrôles ont validé un visuel sur la mer où la mer
+        n'apparaissait pas.** Le premier cadrage de `flyer51` ne gardait que le
+        ciel et le sommet de l'îlot. `exigence`, `collision`, `famille`,
+        `respiration` : tous verts. 📌 **Un cadrage qui coupe le sujet reste un
+        cadrage valide pour une machine.** C'est exactement la part que
+        `exigence.py` annonce ne pas savoir faire (règle 7.5) — donc celle qu'il
+        faut faire soi-même, à l'œil, après chaque rendu.
+      · **Un enfant se tenait dans les quinze derniers pixels de
+        `chindini.jpg`.** Vu seulement en zoomant à pleine résolution sur le
+        bord droit. Consigne du patron du 06/08 : aucune personne sur les
+        visuels, sans appréciation à porter. Recadré de 8 % à droite
+        (`width:108%` + `overflow:hidden`), vérifié sur le rendu final.
+        📌 **Une photo libre de droits n'est pas une photo libre de personnes**
+        — la licence règle l'auteur, pas les gens qui sont dedans.
+
+  📷 **ET LE STOCK DE PHOTOS EST À SEC.** Sept photos du patron, cinq déjà
+  employées ; `rochers.jpg` écarté (un bidon rouillé dans l'eau), `mer-bateau.jpg`
+  écarté (c'est la même scène que `vedette-mer.jpg`, à quelques secondes près —
+  il se lirait comme une réimpression du flyer 50), `plage-vedettes.jpg` écarté
+  (une trentaine de personnes sur la plage). Côté libre, `ile-aerienne` et
+  `moheli-beach` sont en CC BY-**SA** : partage à l'identique, donc à éviter en
+  publicité. **Il reste de quoi faire UN visuel, peut-être deux.**
+  👉 À demander au patron : des photos. Vedettes à quai, le port de Hoani,
+  l'embarquement, la mer depuis le pont. Sans personne au premier plan.
+
 - **28/09/2026 (📻 TROIS SEMAINES DE ROUTINE, ET UNE CONSIGNE QUI MENT TOUS LES
   JOURS)** — bilan de la période du 09 au 28/09, pendant laquelle le service est
   resté fermé et MVola hors service.

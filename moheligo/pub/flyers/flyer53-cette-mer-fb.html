@@ -1,0 +1,129 @@
+<!-- « ON CONNAÎT CETTE MER. » — 06/10/2026. Sans date.
+
+     SENTIMENT : LA FIERTÉ
+
+     🧭 TROISIÈME DE LA FAMILLE DES TROIS QUI TIENNENT FERMÉS (raisonnement
+     complet dans l'en-tête du flyer 51). Et c'est le registre le plus maigre de
+     la bibliothèque : LA FIERTÉ n'était jouée qu'une fois sur onze visuels,
+     contre quatre pour LA PROXIMITÉ et quatre pour LA CONFIANCE.
+
+     🎯 CE QU'IL VEND : la compétence, et il la prouve par le refus. Le flyer 49
+     dit déjà « ON A FAIT ÇA CHEZ NOUS » — des commandants d'ici, des ports
+     d'ici. Celui-ci dit ce que ça change le jour où ça compte : des gens qui
+     ont appris ce bras de mer savent aussi quand ne pas le traverser.
+     📌 **LA FIERTÉ LA PLUS CRÉDIBLE N'EST PAS CELLE DE CE QU'ON FAIT, C'EST
+     CELLE DE CE QU'ON REFUSE DE FAIRE.** C'est la seule qui coûte quelque chose
+     à celui qui la revendique, donc la seule qu'on ne peut pas imiter.
+     ✅ Et c'est le seul visuel de fierté qui GAGNE pendant une suspension :
+     vingt-sept jours à quai, il dit que c'est une décision, pas une panne.
+
+     📷 `../photos-cc/chindini.jpg` — plage de Chindini, pointe sud de la Grande
+     Comore, c'est-à-dire la côte d'où l'on regarde Mohéli. Le lieu n'est pas
+     décoratif : c'est le bras de mer dont parle le titre.
+     David Stanley, **CC BY 2.0** — attribution seule, aucun partage à
+     l'identique, donc utilisable en publicité (voir `../photos-cc/CREDITS.md`).
+     Le crédit est **imprimé sur le visuel**, comme sur l'affiche du 06/08.
+
+     🔒 LA PHOTO EST RECADRÉE DE 8 % À DROITE, ET CE N'EST PAS UN CHOIX DE
+     CADRE : un enfant en rouge se tient dans les quinze derniers pixels de
+     l'original, sous les arbres. Consigne du patron du 06/08/2026, sans
+     exception et sans appréciation à porter : **aucune personne sur les
+     visuels**. `width:108%` + `object-position:0% 30%` le coupe ; la licence
+     CC BY autorise le recadrage (ce n'est pas une licence ND).
+     ⚠️ À VÉRIFIER À L'ŒIL APRÈS CHAQUE RENDU : un recadrage qui dépend d'un
+     pourcentage de CSS est un recadrage qui peut se défaire tout seul si
+     quelqu'un touche à `.mer`. La moitié gauche a été inspectée à pleine
+     résolution : lagon, lave, sable, aucune personne.
+
+     Rendu : node render.js flyer53-cette-mer-fb.html flyer-cette-mer-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+/* ⚠️ `overflow:hidden` N'EST PAS DÉCORATIF ICI : c'est lui qui coupe les 8 %
+   de droite où se trouve une personne. Ne pas le retirer. */
+.mer { position:absolute; left:0; top:0; width:1080px; height:660px; z-index:1;
+  overflow:hidden; }
+.mer img { width:108%; height:100%; object-fit:cover; object-position:0% 30%;
+  display:block; }
+
+.ombre { position:absolute; left:0; top:430px; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.42) 100%); }
+
+.couture { position:absolute; left:0; top:586px; width:1080px; height:86px; z-index:3; }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:16px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:74px; height:74px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:742px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* 📄 LE CRÉDIT PHOTO — obligation légale de la licence CC BY 2.0, et il se
+   place comme une légende : même ligne de base que le surtitre, aligné à
+   droite sur la marge de 76 px. Il ne concurrence rien parce qu'il n'essaie
+   pas d'être discret au point d'être illisible — une attribution qu'on cache
+   est une attribution qu'on n'a pas faite. */
+.credit { position:absolute; right:76px; top:744px; z-index:5; text-align:right;
+  font-size:9.5px; font-weight:700; letter-spacing:1.6px; color:#6E86A8; }
+
+.acc { position:absolute; left:76px; top:770px; width:928px; z-index:5;
+  font-family:'Cormorant',serif; font-weight:400; font-size:88px; line-height:1.1;
+  letter-spacing:5px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
+
+.dit { position:absolute; left:76px; top:1008px; width:640px; z-index:5;
+  font-size:22px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.cta { position:absolute; left:76px; top:1120px; z-index:5;
+  background:#F6BC1C; border-radius:14px; padding:19px 30px; display:inline-block;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
+
+.web { position:absolute; right:76px; top:1138px; z-index:5; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px;
+  color:#fff; letter-spacing:.2px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+</style>
+
+<div class="page">
+  <div class="mer"><img src="../photos-cc/chindini.jpg" alt=""></div>
+  <div class="ombre"></div>
+
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">GRANDE COMORE · MOHÉLI</div>
+  <div class="credit">PHOTO DAVID STANLEY — CHINDINI, CC BY 2.0</div>
+  <div class="acc">ON CONNAÎT<span>CETTE MER.</span></div>
+
+  <div class="dit">Des commandants d’ici, qui ont appris ce bras de mer ici.
+    <b>Quand ils disent qu’on ne sort pas, on ne sort pas.</b></div>
+
+  <div class="cta">ÉCRIS-NOUS AVANT DE PARTIR</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+</div>

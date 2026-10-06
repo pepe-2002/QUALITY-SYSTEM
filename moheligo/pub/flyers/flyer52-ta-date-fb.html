@@ -1,0 +1,122 @@
+<!-- « TA DATE CHANGE, PAS TON BILLET. » — 06/10/2026. Sans date.
+
+     SENTIMENT : LE SOULAGEMENT
+
+     🧭 DEUXIÈME DE LA FAMILLE DES TROIS QUI TIENNENT FERMÉS (voir l'en-tête du
+     flyer 51 pour le raisonnement complet) : sa promesse est vraie dans les
+     deux états du service.
+
+     🎯 CE QU'IL VEND : rien. Il répond à la question que se pose, aujourd'hui,
+     toute personne qui a payé une traversée avant le 09/09 — « et mon argent ? »
+     Vingt-sept jours de suspension, et cette réponse n'existait que dans le
+     paragraphe 3 d'un texte de post que peu de gens lisent en entier.
+     📌 **LA QUESTION QUI INQUIÈTE LE PLUS MÉRITE L'ENDROIT LE PLUS VISIBLE.**
+     On l'avait écrite à l'endroit le plus discret.
+
+     ⛔ CE QUE LE VISUEL NE DIT PAS, ET C'EST VOLONTAIRE : le remboursement.
+     La phrase exacte sur ce point est fabriquée par `service.phrase_remboursement()`
+     et elle CHANGE selon l'état de MVola — tant que le paiement est en panne,
+     promettre un remboursement serait promettre un virement qu'on ne peut pas
+     exécuter. Un visuel se republie des mois durant sans qu'on le relise :
+     il ne porte donc que ce qui ne change pas.
+     📌 **UN VISUEL PORTE CE QUI EST STABLE ; LE TEXTE PORTE CE QUI EST DATÉ.**
+     C'est la leçon du 09/09, quand « MER AGITÉE » s'était figé dans l'image de
+     suspension alors que le patron n'avait jamais donné de cause.
+
+     📷 `../photos/horizon.jpg`, photo du patron. 1080 × 810, agrandie 2 fois à
+     la sortie — le plus petit agrandissement de la bibliothèque après le
+     flyer 50. Mer, ciel, îlots : des dégradés, rien à inventer entre deux
+     pixels. `object-position: center 26%` coupe le sable sec du bas, qui est
+     la seule zone à grain fin et la seule où traîne un débris.
+     ✅ L'image dit le calme, et c'est exactement le sentiment : ton billet ne
+     bouge pas.
+     🔒 Aucune personne : plage vide, îlots de Nioumachoua à l'horizon.
+
+     Rendu : node render.js flyer52-ta-date-fb.html flyer-ta-date-facebook.png 1080 1350 2 -->
+<meta charset="utf-8">
+<style>
+@font-face { font-family:'Archivo'; font-weight:900; src:url(fonts/Archivo-900-latin.woff2) format('woff2'); }
+@font-face { font-family:'Cormorant'; font-weight:400; src:url(fonts/Cormorant-400-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:500; src:url(fonts/Inter-500-latin.woff2) format('woff2'); }
+@font-face { font-family:'Inter'; font-weight:700; src:url(fonts/Inter-700-latin.woff2) format('woff2'); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { width:1080px; height:1350px; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+.page { position:relative; width:1080px; height:1350px; overflow:hidden; background:#0F2A5C; }
+
+.mer { position:absolute; left:0; top:0; width:1080px; height:660px; z-index:1;
+  overflow:hidden; }
+/* ⚠️ `center 18%` après rendu : à 26 % le sable sec occupait le tiers bas du
+   bandeau — un aplat beige où il ne se passe rien, exactement le défaut
+   corrigé sur le flyer 48. On remonte sur la ligne d'écume, qui est le sujet. */
+.mer img { width:100%; height:100%; object-fit:cover; object-position:center 18%;
+  display:block; }
+
+.ombre { position:absolute; left:0; top:430px; width:1080px; height:230px; z-index:2;
+  background:linear-gradient(180deg, rgba(15,42,92,0) 0%, rgba(15,42,92,.42) 100%); }
+
+.couture { position:absolute; left:0; top:586px; width:1080px; height:86px; z-index:3; }
+
+.coin { position:absolute; top:0; left:0; width:404px; height:172px; background:#fff;
+  clip-path:polygon(0 0, 100% 0, 78% 100%, 0 100%); z-index:6;
+  display:flex; align-items:center; gap:16px; padding:18px 0 28px 40px;
+  box-shadow:0 20px 48px rgba(4,12,40,.4); }
+.coin img { width:74px; height:74px; border-radius:16px; display:block; object-fit:contain; }
+.coin b { font-family:'Archivo',sans-serif; font-weight:900; font-size:31px; color:#0F2A5C;
+  letter-spacing:-.9px; line-height:1; display:block; }
+.coin b i { color:#F6BC1C; font-style:normal; }
+.coin small { display:block; font-size:10.3px; font-weight:700; letter-spacing:3.4px;
+  color:#5C6E8B; margin-top:5px; }
+
+.sur { position:absolute; left:76px; top:742px; z-index:5; font-size:13px;
+  font-weight:700; letter-spacing:3.4px; color:#F6BC1C; }
+
+/* ⚠️ LE TITRE DESCEND D'UN CRAN DE CORPS — 82 px au lieu de 88. Les deux lignes
+   font 15 signes chacune, soit les plus longues de la bibliothèque à ce poste
+   (le flyer 48 en a 11 et 15). À 88 px la seconde ligne mordait sur la marge
+   droite de 76 px. On ne réduit pas la marge : c'est elle qui fait la famille. */
+.acc { position:absolute; left:76px; top:770px; width:928px; z-index:5;
+  font-family:'Cormorant',serif; font-weight:400; font-size:82px; line-height:1.1;
+  letter-spacing:5px; color:#fff; }
+.acc span { display:block; color:#F6BC1C; }
+
+.dit { position:absolute; left:76px; top:1008px; width:640px; z-index:5;
+  font-size:22px; line-height:1.5; color:#CFDDF3; }
+.dit b { color:#fff; font-weight:700; }
+
+.cta { position:absolute; left:76px; top:1120px; z-index:5;
+  background:#F6BC1C; border-radius:14px; padding:19px 30px; display:inline-block;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:19px;
+  color:#0A1D42; letter-spacing:2.4px; white-space:nowrap;
+  box-shadow:0 10px 24px rgba(150,100,4,.24); }
+
+.web { position:absolute; right:76px; top:1138px; z-index:5; text-align:right;
+  font-family:'Inter',sans-serif; font-weight:700; font-size:25px;
+  color:#fff; letter-spacing:.2px; }
+.web small { display:block; font-family:'Inter',sans-serif; font-size:10.5px;
+  font-weight:700; letter-spacing:2.4px; color:#8FA8CC; margin-bottom:4px; }
+</style>
+
+<div class="page">
+  <div class="mer"><img src="../photos/horizon.jpg" alt=""></div>
+  <div class="ombre"></div>
+
+  <svg class="couture" viewBox="0 0 1080 86" preserveAspectRatio="none">
+    <path d="M0,30 C170,0 330,60 540,36 C750,12 910,54 1080,26 L1080,86 L0,86 Z"
+          fill="#F6BC1C"/>
+  </svg>
+
+  <div class="coin">
+    <img src="logo-emblem.png" alt="">
+    <div><b>Moheli<i>Go</i></b><small>TRAVERSÉES MARITIMES</small></div>
+  </div>
+
+  <div class="sur">SI TU AS DÉJÀ UN BILLET</div>
+  <div class="acc">TA DATE CHANGE,<span>PAS TON BILLET.</span></div>
+
+  <div class="dit">Changer la date est gratuit, sur la même liaison.
+    <b>Ton billet et son code QR restent valables.</b></div>
+
+  <div class="cta">ÉCRIS-NOUS SUR WHATSAPP</div>
+  <div class="web"><small>TRAVERSÉES MARITIMES DES COMORES</small>moheligo.com</div>
+</div>

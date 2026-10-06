@@ -7,10 +7,10 @@ directeur marketing et commercial, tu vas tout gérer les pubs. »
     tous les soirs   le bulletin mer          (daté, fabriqué le jour même)
     lundi            comment ça marche
     mardi            la proximité
-    mercredi         le produit
-    jeudi            la proximité de l'île
+    mercredi         le produit — ton billet ne bouge pas
+    jeudi            la proximité de l'île    │ semaine paire : la fierté du métier
     vendredi         partir et revenir
-    samedi           la destination
+    samedi           la destination           │ semaine paire : le bulletin du soir
     dimanche         la fierté
 
 🚩 RÉÉCRIT LE 02/09/2026, APRÈS LE GRAND NETTOYAGE.
@@ -60,8 +60,15 @@ SEMAINE = {
         'comment ça marche'),
     1: ('flyer-quelquun-v2-facebook.png', 'texte-quelquun-v2.txt',
         'la proximité'),
-    2: ('flyer-tulasdeja-facebook.png', 'texte-tulasdeja.txt',
-        'le produit'),
+    # 🔁 06/10/2026 — LE MERCREDI REPARLE. Il était muet depuis le 09/09 :
+    # son visuel est dans `RETENUS` ci-dessous et ne peut pas en sortir tant
+    # que la photo d'origine n'est pas revenue. Quatre mercredis silencieux,
+    # et la case continuait pourtant de nommer un fichier impubliable.
+    # 📌 **UN VISUEL RETENU N'EST PAS UNE CASE REMPLIE : C'EST UN TROU QUI
+    # PORTE UN NOM.** Tant qu'il reste au calendrier, le trou ressemble à un
+    # programme et personne ne cherche à le boucher.
+    2: ('flyer-ta-date-facebook.png', 'texte-ta-date.txt',
+        'le produit — ton billet ne bouge pas'),
     3: ('flyer-traversee-facebook.png', 'texte-traversee.txt',
         'la proximité de l’île'),
     4: ('flyer-etudes-facebook.png', 'texte-etudes.txt',
@@ -70,6 +77,29 @@ SEMAINE = {
         'la destination'),
     6: ('flyer-chez-nous-facebook.png', 'texte-chez-nous.txt',
         'la fierté'),
+}
+
+# --- 🔁 LA SEMAINE PAIRE : casser le métronome de sept jours -----------------
+# 06/10/2026. Avec une seule table, un lecteur qui suit la page voit le MÊME
+# visuel le même jour, toutes les semaines. Au bout d'un mois il ne le voit
+# plus — il le reconnaît, ce qui n'est pas la même chose.
+# 📌 **LA RÉPÉTITION NE FATIGUE PAS PARCE QU'ELLE REVIENT : ELLE FATIGUE PARCE
+# QU'ELLE REVIENT AU MÊME ENDROIT.** Une marque se répète (c'est même tout son
+# travail), mais elle se répète à contretemps.
+#
+# ⚠️ CE N'EST PAS LE RETOUR DES « LISTES DE VARIANTES » supprimées le 02/09.
+# Une variante, c'était deux versions du MÊME message, et on ne savait jamais
+# laquelle était partie. Ici chaque case nomme un message DIFFÉRENT, et la
+# semaine ISO dit laquelle — donc la question « qu'est-ce qui est parti jeudi
+# dernier ? » a une réponse qu'on peut recalculer, sans journal.
+#
+# Les semaines ISO PAIRES prennent ces cases-là ; les impaires gardent
+# `SEMAINE`. Un jour absent d'ici ne change jamais.
+QUINZAINE = {
+    3: ('flyer-cette-mer-facebook.png', 'texte-cette-mer.txt',
+        'la fierté du métier'),
+    5: ('flyer-la-veille-facebook.png', 'texte-la-veille.txt',
+        'le bulletin du soir'),
 }
 
 # --- 🔴 LES VISUELS RETENUS : la décision de NE PAS publier, écrite -----------
@@ -150,9 +180,29 @@ def _valide(entree, jour, moment):
 
 
 def du_jour(jour=None):
-    """(visuel, texte, description) pour la publication de midi, ou None."""
+    """(visuel, texte, description) pour la publication de midi, ou None.
+
+    🔁 Deux tables, choisies par la parité de la semaine ISO (voir `QUINZAINE`).
+    ⚠️ ET UN REPLI, QUI EST LA PARTIE QUI COMPTE : si la case de quinzaine est
+    retenue ou si un de ses fichiers manque, on essaie celle de la semaine
+    normale avant d'abandonner. Sans ce repli, ajouter une alternance AUGMENTE
+    le nombre de midis muets — un jour qui avait une chance d'être publié en
+    aurait eu deux d'échouer.
+    📌 Une mécanique de rotation ne doit jamais rendre le système plus fragile
+    que la liste qu'elle remplace.
+    """
     jour = jour or datetime.date.today()
-    return _valide(SEMAINE.get(jour.weekday()), jour, 'midi')
+    paire = jour.isocalendar()[1] % 2 == 0
+    cases = [QUINZAINE.get(jour.weekday()), SEMAINE.get(jour.weekday())]
+    if not paire:
+        cases.reverse()
+    for case in cases:
+        if case is None:
+            continue
+        prevu = _valide(case, jour, 'midi')
+        if prevu is not None:
+            return prevu
+    return None
 
 
 def du_matin(jour=None):
@@ -163,18 +213,23 @@ def du_matin(jour=None):
 
 if __name__ == '__main__':
     aujourdhui = datetime.date.today()
-    print('Programme de la semaine :\n')
     vides = 0
-    for n in range(7):
-        j = aujourdhui + datetime.timedelta(days=n - aujourdhui.weekday())
-        prevu = du_jour(j)
-        if prevu is None:
-            vides += 1
-            print('%-12s —  rien au programme' % JOURS[j.weekday()])
-            continue
-        visuel, texte, quoi = prevu
-        print('%-12s %-40s %s' % (JOURS[j.weekday()], visuel,
-                                  texte.split('\n')[0][:44]))
+    for decalage, titre in ((0, 'Cette semaine'), (7, 'La semaine suivante')):
+        base = aujourdhui + datetime.timedelta(days=decalage)
+        print('%s (semaine ISO %d, %s) :\n'
+              % (titre, base.isocalendar()[1],
+                 'paire' if base.isocalendar()[1] % 2 == 0 else 'impaire'))
+        for n in range(7):
+            j = base + datetime.timedelta(days=n - base.weekday())
+            prevu = du_jour(j)
+            if prevu is None:
+                vides += 1
+                print('%-12s —  rien au programme' % JOURS[j.weekday()])
+                continue
+            visuel, texte, quoi = prevu
+            print('%-12s %-40s %s' % (JOURS[j.weekday()], visuel,
+                                      texte.split('\n')[0][:44]))
+        print()
     print('\nLes matins prévus : %s' % ('aucun — la démonstration est à refaire'
                                         if not MATIN else ''))
     print('\n+ le bulletin mer, tous les soirs (fabriqué le jour même).')

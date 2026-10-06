@@ -519,6 +519,54 @@ les deux, et il conclut qu'on ne sait pas ce qu'on raconte.
 mais les pubs doivent partir normalement » (03/09). On ne coupe pas la
 publication — on la rend vraie.
 
+## 10 sexies. 🧭 UNE BIBLIOTHÈQUE DOIT SAVOIR PARLER LES JOURS OÙ L'ON NE VEND PAS
+
+Constat du 06/10/2026, en comptant avant de dessiner : **onze visuels hors
+bulletin, sept qui finissent par « RÉSERVE TA TRAVERSÉE »**. Service fermé
+depuis vingt-sept jours. Donc, chaque midi, une image qui dit « réserve » sous
+un texte qui dit « on reste à quai ».
+
+Le § 10 quinquies avait réglé le texte : la mention de fermeture s'ajoute à
+toutes les publications. **Elle n'a jamais rien pu faire contre l'image.**
+
+📌 **UNE BIBLIOTHÈQUE QUI NE SAIT DIRE QUE « ACHÈTE » N'A RIEN À DIRE LE JOUR OÙ
+ELLE NE VEND PAS.** Et ce jour-là n'est pas rare chez nous : trois fermetures
+entre le 12/08 et le 09/10, soit environ un mois sur trois. Ce n'est pas un
+accident à traverser en silence, c'est un **état à habiller**.
+
+**LA RÈGLE :** une bibliothèque se compose en deux familles.
+
+| | ce qu'elle promet | quand elle peut sortir |
+|---|---|---|
+| **les visuels de vente** | un départ, une place, un paiement | service ouvert seulement |
+| **les visuels qui tiennent fermés** | un service rendu, une garantie, une compétence | **toujours** |
+
+Un visuel appartient à la seconde famille si, et seulement si, **sa promesse
+reste vraie un jour de suspension**. Test en une phrase : *relire l'accroche en
+imaginant qu'aucune vedette ne part aujourd'hui — est-ce qu'elle ment ?*
+
+Les trois premiers de cette famille (06/10) et ce qu'ils promettent :
+- le **bulletin du soir** — on le publie tous les soirs, ouverts ou fermés ;
+- le **changement de date gratuit** — il vaut surtout quand rien ne part ;
+- la **compétence des commandants** — elle se prouve par le refus de sortir.
+
+📌 **LA FIERTÉ LA PLUS CRÉDIBLE N'EST PAS CELLE DE CE QU'ON FAIT, C'EST CELLE DE
+CE QU'ON REFUSE DE FAIRE.** C'est la seule qui coûte quelque chose à celui qui
+la revendique, donc la seule qu'un concurrent ne peut pas recopier.
+
+⚠️ **ET DEUX PIÈGES DE FABRICATION, PAYÉS LE JOUR MÊME :**
+
+1. **Les contrôles automatiques ont validé un visuel sur la mer où la mer
+   n'apparaissait pas.** Le cadrage ne gardait que le ciel. Les quatre
+   programmes étaient verts. 📌 *Un cadrage qui coupe le sujet reste un cadrage
+   valide pour une machine.* `exigence.py` le dit lui-même (règle 7.5) : il ne
+   sait pas juger si l'image est juste. **Donc on regarde le rendu, toujours,
+   après chaque passage.**
+2. **Une photo libre de droits n'est pas une photo libre de personnes.** Un
+   enfant se tenait dans les quinze derniers pixels d'une photo CC BY. La
+   licence règle l'auteur, pas les gens qui sont dedans. On inspecte les BORDS
+   à pleine résolution, pas la vignette.
+
 ## 11. Ce que ce manuel m'interdit
 
 Écrit noir sur blanc pour que je ne recommence pas :

@@ -328,11 +328,71 @@ DEJA_DIT = 'MVola est hors service'
 # espaces. Mais `texte-reprise.txt` écrit « Prends ta place : MVola ou
 # kartaPay, et ton billet arrive » : pas de verbe « paies », donc la première
 # forme le rate. Relevé sur les sept fichiers, pas deviné.
+#
+# 🔴 13/10/2026 — DEUX FORMES NE SUFFISAIENT PAS, ET ÇA A DURÉ SIX SEMAINES.
+# Le relevé du 03/09 avait listé les fichiers qui nomment MVola. Il a donc
+# manqué ceux qui promettent le paiement SANS LE NOMMER :
+#   · `texte-quelquun-v2.txt` — « tu choisis ton port, tu paies, ton billet
+#     arrive » (le mardi) ;
+#   · `texte-tulasdeja.txt`   — « Tu paies. Ton billet arrive » (retenu depuis
+#     le 09/09, donc jamais sorti — mais la faute était la même).
+# Résultat : six mardis de suite, le corps du post a dit « tu paies » pendant
+# que l'annonce collée dessous disait « le paiement en ligne est interrompu ».
+# Le même envoi se contredisait à cinq lignes d'écart — exactement la faute du
+# 26/08 sur le premier commentaire, refaite ailleurs.
+# 📌 **UN FILTRE ÉCRIT SUR UN RELEVÉ NE COUVRE QUE CE QUE LE RELEVÉ A VU.**
+# J'avais cherché « MVola » dans les textes, pas la PROMESSE de payer. On
+# cherche désormais le geste (« tu paies »), pas le nom du prestataire.
+# ⚠️ Et c'est pourquoi `promesse_restante()` existe plus bas : une liste fermée
+# sera toujours en retard d'une formulation. Ce qui rattrape une liste fermée,
+# ce n'est pas une liste plus longue, c'est un contrôle qui gueule quand il
+# reste quelque chose.
 _PAIEMENT_PROMIS = [
     (re.compile(r'[Tt]u\s+paies\s+par\s+MVola\s*(?:,|ou)?\s*(?:avec\s+)?kartaPay'),
      'Tu prends ta place'),
     (re.compile(r'\s*:?\s*MVola\s+ou\s+kartaPay'), ''),
+    # « …ton port, tu paies, ton billet arrive… » → on retire le maillon, pas
+    # la phrase : la liste des gestes reste lisible sans lui.
+    (re.compile(r',\s*tu\s+paies\s*,'), ','),
+    # « Tu paies. Ton billet arrive… » → la phrase entière part.
+    (re.compile(r'[Tt]u\s+paies\.\s*'), ''),
 ]
+
+# Ce qui, après filtrage, ne devrait plus jamais rester pendant la panne.
+# ⚠️ ON CHERCHE LE GESTE PROMIS AU LECTEUR, PAS LE MOT « PAIEMENT ». Le premier
+# jet cherchait aussi « paiement en ligne » et signalait `texte-whatsapp.txt` —
+# qui est l'AVIS DE PANNE, et qui dit précisément que le paiement en ligne ne
+# peut PAS aboutir.
+# 📌 Une sentinelle qui ne distingue pas « tu paies » de « tu ne peux pas
+# payer » signale le texte le plus juste du dossier. Et une sentinelle qui crie
+# à tort, on finit par ne plus la lire — c'est le seul vrai moyen de la tuer.
+# La promesse, c'est le verbe à la deuxième personne : lui seul s'adresse au
+# lecteur et lui dit qu'il va pouvoir.
+_PROMESSE_RESTANTE = re.compile(
+    r'\b(?:tu|vous)\s+(?:paies|payez|règles|réglez)\b', re.I)
+
+
+def promesse_restante(texte):
+    """Le bout de promesse de paiement qui a survécu au filtre, ou None.
+
+    🚨 LE GARDE-FOU DU GARDE-FOU. `_PAIEMENT_PROMIS` est une liste fermée : elle
+    attrape les formulations qu'on a VUES, et rien d'autre. Elle a laissé passer
+    « tu paies » tout court pendant six semaines sans que rien ne le signale —
+    un filtre muet qui rate sa cible ressemble trait pour trait à un filtre qui
+    fonctionne.
+    📌 **CE QUI RATTRAPE UNE LISTE FERMÉE N'EST PAS UNE LISTE PLUS LONGUE, C'EST
+    UN CONTRÔLE QUI PARLE QUAND IL RESTE QUELQUE CHOSE.** La prochaine
+    formulation inconnue ne sera pas filtrée non plus — mais elle sera VUE, et
+    au pire elle sera vue dans le journal de l'exécution, pas six semaines plus
+    tard en relisant un texte par hasard.
+    ⚠️ La mention de panne qu'on ajoute nous-mêmes contient « LE PAIEMENT EN
+    LIGNE EST INTERROMPU » : on ne la compte pas comme une promesse.
+    """
+    if not texte:
+        return None
+    sans_la_notre = texte.replace(MARQUE_PANNE, '')
+    m = _PROMESSE_RESTANTE.search(sans_la_notre)
+    return m.group(0) if m else None
 
 
 def paiement_en_panne():
@@ -392,6 +452,17 @@ def avec_panne_paiement(texte):
     """
     if not texte or not paiement_en_panne() or DEJA_DIT in texte:
         return texte
+    # 🔴 ON CRIE AVANT DE PUBLIER. Si une promesse de paiement a survécu au
+    # filtre, le post va se contredire tout seul : le corps dira « tu paies »
+    # et l'annonce collée dessous dira que le paiement est interrompu. On ne
+    # peut pas refuser ici — ce serait éteindre la page entière pour une
+    # phrase — mais la ligne part dans le journal de l'exécution, visible le
+    # jour même au lieu de six semaines plus tard.
+    reste = promesse_restante(sans_promesse_de_paiement(texte))
+    if reste:
+        print('🔴 PROMESSE DE PAIEMENT NON FILTRÉE : « %s ». Le post va se '
+              'contredire — corrige `_PAIEMENT_PROMIS` dans service.py, pas '
+              'le texte.' % reste, file=sys.stderr)
     return _avant_les_hashtags(sans_promesse_de_paiement(texte),
                                mention_paiement())
 

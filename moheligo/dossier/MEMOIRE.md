@@ -370,6 +370,49 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **13/10/2026 (🔴 SIX MARDIS À SE CONTREDIRE TOUT SEUL)** — trouvé au contrôle
+  d'avant-publication de midi, et la publication a attendu la correction.
+
+  **CE QUI SE PASSAIT.** Le filtre `_PAIEMENT_PROMIS` (posé le 03/09, premier
+  jour de la panne MVola) retire les promesses de paiement de tout ce qui se
+  publie. Il connaissait deux formes, toutes deux **nommant MVola**. Or deux
+  textes promettent de payer SANS NOMMER LE PRESTATAIRE :
+      · `texte-quelquun-v2.txt` — « tu choisis ton port, **tu paies**, ton
+        billet arrive » → le visuel du **mardi** ;
+      · `texte-tulasdeja.txt` — « **Tu paies.** Ton billet arrive » → retenu
+        depuis le 09/09, donc jamais sorti, même faute néanmoins.
+  Résultat : **six mardis de suite** (08, 15, 22, 29/09 et 06/10), le corps du
+  post disait « tu paies » pendant que l'annonce collée cinq lignes plus bas
+  disait « LE PAIEMENT EN LIGNE EST INTERROMPU ». Le même envoi se contredisait.
+
+  ⛔ **LA CAUSE N'EST PAS LE FILTRE, C'EST COMMENT JE L'AI ÉCRIT.** Le 03/09
+  j'ai relevé les fichiers contenant « MVola » et j'ai écrit un filtre sur ce
+  relevé. 📌 **UN FILTRE ÉCRIT SUR UN RELEVÉ NE COUVRE QUE CE QUE LE RELEVÉ A
+  VU.** Je cherchais le nom du prestataire ; ce qu'il fallait chercher, c'est le
+  **geste promis au lecteur**.
+
+  ✅ **DEUX CORRECTIONS, ET LA SECONDE COMPTE PLUS QUE LA PREMIÈRE :**
+  1. deux motifs de plus dans `_PAIEMENT_PROMIS`, qui attrapent « tu paies »
+     seul — le maillon part, la phrase reste lisible ;
+  2. `service.promesse_restante()` : après filtrage, s'il reste un « tu paies »
+     ou « vous payez », une ligne rouge part dans le journal de l'exécution.
+  📌 **CE QUI RATTRAPE UNE LISTE FERMÉE N'EST PAS UNE LISTE PLUS LONGUE, C'EST
+  UN CONTRÔLE QUI PARLE QUAND IL RESTE QUELQUE CHOSE.** La prochaine formulation
+  inconnue ne sera pas filtrée non plus — mais elle sera vue **le jour même**,
+  dans le journal, au lieu de six semaines plus tard par hasard.
+  ⚠️ Un filtre muet qui rate sa cible ressemble trait pour trait à un filtre qui
+  marche. C'est exactement pour ça qu'il a tenu six semaines.
+
+  ⚠️ **ET LA SENTINELLE A CRIÉ À TORT AU PREMIER JET** : elle cherchait aussi
+  « paiement en ligne », et signalait donc `texte-whatsapp.txt` — l'avis de
+  panne lui-même, qui dit que le paiement ne peut PAS aboutir. 📌 Une
+  sentinelle qui ne distingue pas « tu paies » de « tu ne peux pas payer »
+  dénonce le texte le plus juste du dossier — et une sentinelle qui crie à
+  tort, on cesse de la lire. Resserrée sur le verbe à la deuxième personne.
+
+  👉 Les douze autres `texte-*.txt` ont été repassés : aucun ne porte plus de
+  promesse de paiement après filtrage.
+
 - **06/10/2026 (🧭 TROIS VISUELS QUI TIENNENT QUAND ON NE VEND PAS — et la
   mesure qui les a commandés)** — demande du patron : « fait d'autres flyer et
   pousse ». Trois visuels produits, poussés sur `main`, mis au calendrier.

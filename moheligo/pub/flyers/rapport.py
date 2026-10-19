@@ -49,16 +49,32 @@ def lire(nom, defaut):
 
 
 def lire_la_page(jours):
-    """Les publications réellement parties, demandées à Facebook. None si refusé."""
+    """(publications, raison_du_refus). Les deux peuvent être None.
+
+    🔴 19/10/2026 — ELLE RENVOIE MAINTENANT LA RAISON, ET C'EST LE POINT.
+    Elle rendait `None` tout court quand Facebook refusait. Le rapport
+    basculait alors sur le journal local, qui est vidé à chaque exécution, et
+    titrait « le rythme n'est pas tenu : 1 publication en 7 jours » — alors que
+    quinze étaient parties. C'est exactement le chiffre faux que
+    `publications_recentes` avait été écrite pour tuer le 18/08 : le repli
+    recrée la panne que le correctif avait supprimée.
+    📌 **UN CORRECTIF QUI RETOMBE SUR L'ÉTAT QU'IL CORRIGEAIT N'EST PAS UN
+    CORRECTIF, C'EST UN SURSIS.** Tant qu'il marche on ne voit rien ; le jour où
+    il lâche, on revient au point de départ sans être prévenu.
+    """
     if not (os.environ.get('FB_PAGE_ID', '').strip()
             and os.environ.get('FB_PAGE_TOKEN', '').strip()):
-        return None
+        return None, 'FB_PAGE_ID ou FB_PAGE_TOKEN absent de l’environnement'
     sys.path.insert(0, str(ICI))
     import publier_fb
     try:
-        return publier_fb.publications_recentes(jours)
-    except SystemExit:          # un rapport ne doit jamais échouer pour ça
-        return None
+        pubs = publier_fb.publications_recentes(jours)
+    except SystemExit as e:     # un rapport ne doit jamais échouer pour ça
+        return None, str(e).strip().split('\n')[0]
+    if pubs is None:
+        return None, (publier_fb.DERNIER_REFUS
+                      or 'Facebook n’a rendu aucune donnée, sans message')
+    return pubs, None
 
 
 def abonnes():
@@ -99,10 +115,14 @@ def main():
     # Désormais la source de vérité est la PAGE elle-même ; le journal local ne
     # sert plus que de secours, et on dit quand on s'en sert.
     source = 'la page Facebook'
-    publications = lire_la_page(a.jours)
+    publications, refus = lire_la_page(a.jours)
     if publications is None:
+        print('🔴 LECTURE DE LA PAGE REFUSÉE : %s\n'
+              '   Le compte de publications sera INCOMPLET et aucun verdict de '
+              'rythme ne sera rendu.' % refus, file=sys.stderr)
         source = ('le journal local — ⚠️ **incomplet** : il est effacé à chaque '
-                  'exécution, le vrai compte est sur la page')
+                  'exécution, le vrai compte est sur la page.\n'
+                  '**Facebook a refusé la lecture de la page : %s**' % refus)
         publications = [{'quand': p['quand'].replace('T', ' à ')[:16],
                          'texte': p.get('accroche', ''),
                          'visuel': p.get('visuel', '')}
@@ -113,7 +133,23 @@ def main():
     abo = abonnes()
 
     # --- la décision d'abord, comme l'exige le manuel
-    if not journal:
+    # 🔴 19/10/2026 — ON NE JUGE PAS LE RYTHME SUR UN COMPTE QU'ON SAIT FAUX.
+    # Le 19/10 le rapport a titré « le rythme n'est pas tenu : 1 publication en
+    # 7 jours » parce que la lecture de la page avait été refusée et qu'il avait
+    # compté le journal local, vidé à chaque exécution. Quinze publications
+    # étaient parties.
+    # 📌 **UN TABLEAU DE BORD QUI NE SAIT PAS DIRE « JE N'AI PAS PU MESURER »
+    # FINIT PAR DIRE AUTRE CHOSE, ET CE SERA FAUX.** Il avait pourtant toute
+    # l'information : il savait qu'il s'était rabattu, il a quand même conclu.
+    # L'absence de mesure est une information ; l'inventer n'en est pas une.
+    if refus:
+        decision = ('**Je n’ai pas pu compter ce qui est parti.** Facebook a '
+                    'refusé la lecture de la page : %s. Le tableau ci-dessous '
+                    'vient du journal local, qui est vidé à chaque exécution — '
+                    'il ne prouve rien, ni dans un sens ni dans l’autre. '
+                    '👉 Vérifie la page directement, et refais un jeton avec '
+                    '`pages_read_engagement`.' % refus)
+    elif not journal:
         decision = ('**Rien n\'a été publié sur la période.** Tant que la page ne '
                     'reçoit rien, aucun chiffre ne peut bouger : c\'est le seul '
                     'point à régler avant tout le reste.')

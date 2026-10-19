@@ -370,6 +370,51 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **19/10/2026 (🔴 LE RAPPORT A REFAIT LA FAUTE DU 18/08, PAR SON REPLI)** —
+  trouvé en lisant le journal de la publication de midi.
+
+  **CE QUI S'EST PASSÉ.** La publication est partie normalement (« TU
+  N'INSTALLES RIEN. », 12h08, identifiant `…122127400737374081`). Mais le
+  rapport, lui, a titré : **« Le rythme n'est pas tenu : 1 publication en 7
+  jours »**. Quinze étaient parties. Facebook a refusé la lecture de la page,
+  `rapport.py` est retombé sur `journal-publications.json` — le fichier vidé à
+  chaque exécution — et a conclu dessus.
+
+  ⛔ **C'EST EXACTEMENT LA PANNE DU 18/08**, celle qui avait fait dire au patron
+  « les pubs ne partent pas automatiquement » alors qu'elles partaient. Elle
+  avait été corrigée en allant lire la PAGE au lieu du journal. Le correctif
+  tient toujours — mais son **repli** ramène l'ancien état, en silence.
+  📌 **UN CORRECTIF QUI RETOMBE SUR L'ÉTAT QU'IL CORRIGEAIT N'EST PAS UN
+  CORRECTIF, C'EST UN SURSIS.** Tant qu'il marche on ne voit rien ; le jour où
+  il lâche, on revient au point de départ sans être prévenu.
+
+  ⛔ **ET LA RAISON DU REFUS ÉTAIT DÉTRUITE À L'ENDROIT MÊME DU REFUS.**
+  `publier_fb.curl(..., strict=False)` renvoyait `{}` : le message de Facebook
+  était dans la variable, sur la ligne juste avant, et mourait là. Il a fallu
+  lire le code pour comprendre pourquoi le rapport avait basculé.
+  📌 **UN REPLI QUI NE DIT PAS POURQUOI IL S'EST DÉCLENCHÉ RESSEMBLE TRAIT POUR
+  TRAIT À UN CHEMIN NORMAL.** Un appel facultatif a le droit d'échouer sans tout
+  arrêter ; il n'a pas le droit d'échouer sans laisser de trace. C'est la même
+  leçon que la sentinelle de paiement du 13/10, à six jours d'écart et dans un
+  autre fichier — donc ce n'est pas un accident, c'est une habitude à corriger.
+
+  ✅ **TROIS CORRECTIONS :**
+  1. `curl` garde le refus dans `publier_fb.DERNIER_REFUS` et l'écrit sur la
+     sortie d'erreur ;
+  2. `rapport.lire_la_page()` rend `(publications, raison)` et la raison
+     apparaît **dans le rapport**, pas seulement dans les journaux ;
+  3. **le rapport ne rend plus de verdict de rythme quand il sait son compte
+     faux.** Il écrit « je n'ai pas pu compter », et dit quoi vérifier.
+  📌 **UN TABLEAU DE BORD QUI NE SAIT PAS DIRE « JE N'AI PAS PU MESURER » FINIT
+  PAR DIRE AUTRE CHOSE, ET CE SERA FAUX.** Il avait toute l'information pour se
+  taire : il savait qu'il s'était rabattu, et il a conclu quand même.
+
+  🔴 **LA CAUSE DU REFUS RESTE INCONNUE À CETTE HEURE.** La publication et la
+  lecture des abonnés ont fonctionné dans la même exécution ; seule la lecture
+  du fil a été refusée. Probablement `pages_read_engagement` — la permission
+  qu'on sait manquante par ailleurs pour le premier commentaire. **La prochaine
+  exécution l'écrira en clair**, c'est tout l'objet du correctif.
+
 - **13/10/2026 (🔴 SIX MARDIS À SE CONTREDIRE TOUT SEUL)** — trouvé au contrôle
   d'avant-publication de midi, et la publication a attendu la correction.
 

@@ -41,6 +41,11 @@ API = os.environ.get('FB_API_VERSION', 'v26.0')
 BASE = f'https://graph.facebook.com/{API}'
 CACERT = '/root/.ccr/ca-bundle.crt'               # proxy de session ; absent sur GitHub
 
+# Le dernier refus de Facebook sur un appel FACULTATIF (`strict=False`), gardé
+# pour que l'appelant puisse expliquer son repli au lieu de le subir en silence.
+# Lu par `rapport.py`. Voir le commentaire dans `curl`.
+DERNIER_REFUS = None
+
 
 def curl(url, methode='GET', formulaires=(), jeton=None, strict=True):
     """Appel Graph API. Le jeton passe par l'entrée standard, jamais par argv."""
@@ -64,6 +69,22 @@ def curl(url, methode='GET', formulaires=(), jeton=None, strict=True):
     if isinstance(rep, dict) and 'error' in rep:
         e = rep['error']
         if not strict:                      # appel facultatif : on renvoie vide
+            # 🔴 19/10/2026 — ON GARDE LA RAISON AU LIEU DE LA JETER.
+            # Cette ligne renvoyait `{}` tout court. Le message de Facebook
+            # existait ici, à l'endroit exact du refus, et mourait ici.
+            # Ce matin le rapport a basculé sur le journal local et titré
+            # « le rythme n'est pas tenu : 1 publication en 7 jours » — faux,
+            # quinze étaient parties — sans que rien ne dise POURQUOI il avait
+            # basculé. Il a fallu lire le code pour comprendre.
+            # 📌 **UN REPLI QUI NE DIT PAS POURQUOI IL S'EST DÉCLENCHÉ RESSEMBLE
+            # TRAIT POUR TRAIT À UN CHEMIN NORMAL.** Un appel facultatif a le
+            # droit d'échouer sans tout arrêter ; il n'a pas le droit d'échouer
+            # sans laisser de trace.
+            global DERNIER_REFUS
+            DERNIER_REFUS = '%s (code %s, type %s)' % (
+                e.get('message', '?'), e.get('code', '?'), e.get('type', '?'))
+            print('⚠️  Facebook refuse (appel facultatif) : %s' % DERNIER_REFUS,
+                  file=sys.stderr)
             return {}
         sys.exit('Facebook refuse : %s (code %s, type %s)\n%s' % (
             e.get('message', '?'), e.get('code', '?'), e.get('type', '?'),

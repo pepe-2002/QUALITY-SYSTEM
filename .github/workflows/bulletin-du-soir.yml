@@ -150,7 +150,22 @@ concurrency:
 
 jobs:
   fabriquer:
-    runs-on: ubuntu-latest
+    # 🔴 24/10/2026 — « ubuntu-latest » A CASSÉ LE BULLETIN DU SOIR, SANS QU'ON
+    # TOUCHE À QUOI QUE CE SOIT. GitHub a basculé ce libellé sur Ubuntu 26.04 ;
+    # Playwright 1.56.1 ne le supporte pas :
+    #     « Playwright does not support chromium on ubuntu26.04-x64 »
+    # L'installation de Chromium échoue, donc le flyer du soir n'est pas
+    # fabriqué, donc rien ne part. Le bulletin du 24/10 est le premier manqué
+    # depuis le 03/09.
+    # 📌 **« LATEST » N'EST PAS UNE VERSION, C'EST UNE PROMESSE DE CHANGEMENT.**
+    # On épingle une version de Playwright au centième près et on la fait
+    # tourner sur un système qui peut changer sous nos pieds d'un jour à
+    # l'autre : la moitié épinglée ne sert à rien si l'autre moitié flotte.
+    # ⚠️ Le prix du verrou est qu'il faudra le lever à la main un jour — mais
+    # ce jour-là on choisira le moment, au lieu de le découvrir un soir à 19h30.
+    # 👉 Pour le lever : passer à une version de Playwright qui supporte la
+    # nouvelle Ubuntu, PUIS seulement changer cette ligne.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 

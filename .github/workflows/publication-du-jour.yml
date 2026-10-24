@@ -117,7 +117,17 @@ concurrency:
 
 jobs:
   publier:
-    runs-on: ubuntu-latest
+    # 📌 24/10/2026 — « LATEST » N'EST PAS UNE VERSION, C'EST UNE PROMESSE DE
+    # CHANGEMENT. Ce soir-là GitHub a basculé `ubuntu-latest` sur Ubuntu 26.04 et
+    # le bulletin du soir est mort dans l'heure (Playwright n'y installe pas
+    # Chromium) — premier soir manqué depuis le 3 septembre, sans qu'une ligne de
+    # notre code ait bougé.
+    # ⚖️ Midi n'a rien vu, parce qu'il publie un PNG déjà fabriqué et n'ouvre
+    # aucun navigateur. On l'épingle quand même : un rituel quotidien ne doit pas
+    # dépendre d'une étiquette que quelqu'un d'autre peut déplacer sans préavis.
+    # Une version retirée, ça s'annonce des mois à l'avance dans les journaux ;
+    # un `latest` qui bouge, ça ne s'annonce pas.
+    runs-on: ubuntu-24.04
     steps:
       # 🪶 ON NE TÉLÉCHARGE QUE CE QU'ON OUVRE.
       # Le patron, 28/08/2026 : « supprime des flyers pour alléger le système ».

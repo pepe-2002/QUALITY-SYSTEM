@@ -370,6 +370,55 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **24/10/2026 (🔴 PREMIER BULLETIN DU SOIR MANQUÉ DEPUIS LE 3 SEPTEMBRE — ET
+  CE N'EST PAS NOUS QUI AVONS CHANGÉ)** —
+
+  **CE QUI S'EST PASSÉ.** À 19h25 le bulletin du soir n'est pas sorti. Le
+  travail s'est arrêté à l'étape « Installer Playwright et Chromium » :
+
+  > `Error: ERROR: Playwright does not support chromium on ubuntu26.04-x64`
+
+  Toutes les étapes suivantes ont été **sautées** (`skipped`) : pas de flyer,
+  pas de publication. Rien dans notre code n'avait bougé depuis la veille, où
+  le bulletin était parti normalement à 19h27.
+
+  ⛔ **LA CAUSE : `runs-on: ubuntu-latest`.** GitHub a basculé cette étiquette
+  sur Ubuntu 26.04 dans la journée. Notre `playwright@1.56.1` ne sait pas
+  installer Chromium sur cette version. Le workflow n'a pas été modifié : c'est
+  le sol sous le workflow qui a été remplacé.
+  📌 **« LATEST » N'EST PAS UNE VERSION, C'EST UNE PROMESSE DE CHANGEMENT.**
+  Écrire `latest` dans un rituel quotidien, c'est accepter qu'un jour choisi par
+  quelqu'un d'autre, le rituel s'arrête. Et il s'arrête **sans prévenir**,
+  puisque de notre côté rien n'a changé — donc on cherche d'abord l'erreur chez
+  nous, là où il n'y en a pas.
+  📌 **LA MOITIÉ DE LA CHAÎNE ÉTAIT DÉJÀ ÉPINGLÉE, L'AUTRE PAS.** On avait pris
+  soin de figer `playwright@1.56.1` — et c'est précisément cette précaution qui
+  a rendu la panne possible : une version figée sur un sol mouvant. **Épingler
+  une moitié d'une paire est plus dangereux que de n'épingler aucune des deux**,
+  parce que ça donne le sentiment d'avoir verrouillé.
+
+  ✅ **CORRECTION.** `.github/workflows/bulletin-du-soir.yml` passe à
+  `runs-on: ubuntu-24.04`, avec le commentaire qui explique pourquoi et comment
+  le lever (monter Playwright d'abord, changer la ligne ensuite — **dans cet
+  ordre**). Battement repoussé sur `main` → exécution `40111691089` : Playwright
+  installé en 22 s, flyer fabriqué, publication en 8 s.
+
+  ✅ **RATTRAPÉ LE SOIR MÊME, VÉRIFIÉ SUR LA PAGE** (pas sur la durée de
+  l'étape, qui n'est qu'un indice) : `| 2026-10-24 à 19:28 | LA MER DE DEMAIN,
+  CE SOIR. |`, 14 publications sur 7 jours, 47 abonnés. Mer du dimanche 25/10 :
+  peu agitée, houle 0,89 m, vent 11 km/h sud-est.
+
+  ⚠️ **LA PUBLICATION DE MIDI N'A RIEN VU.** Elle publie un PNG déjà fabriqué et
+  n'a besoin d'aucun navigateur : elle est passée à 12h07 comme tous les jours.
+  📌 **DEUX RITUELS QUI SE RESSEMBLENT N'ONT PAS LA MÊME SURFACE DE PANNE.**
+  Celui qui fabrique son image dépend d'un navigateur, d'un système et d'une
+  version ; celui qui publie une image dépend de Facebook. Ne jamais conclure de
+  la santé de l'un à la santé de l'autre.
+
+  👉 **À FAIRE :** passer la même épingle en revue sur les autres workflows, et
+  monter Playwright quand une version supportant Ubuntu 26.04 sortira — sinon on
+  reprendra la panne le jour où `ubuntu-24.04` sera retiré.
+
 - **19/10/2026 (🔴 LE RAPPORT A REFAIT LA FAUTE DU 18/08, PAR SON REPLI)** —
   trouvé en lisant le journal de la publication de midi.
 

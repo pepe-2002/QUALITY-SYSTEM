@@ -567,6 +567,37 @@ la revendique, donc la seule qu'un concurrent ne peut pas recopier.
    licence règle l'auteur, pas les gens qui sont dedans. On inspecte les BORDS
    à pleine résolution, pas la vignette.
 
+## 10 septies. ⏰ UN RENDEZ-VOUS EST UN PRODUIT — sa plomberie se conçoit comme lui
+
+Le 24/10/2026 le bulletin du soir n'est pas sorti : premier soir manqué depuis le
+3 septembre. Aucune ligne de notre code n'avait bougé — GitHub avait déplacé
+l'étiquette `ubuntu-latest` sur une version d'Ubuntu où notre outil de rendu ne
+savait plus fabriquer l'image. Le rituel est mort d'un changement décidé
+ailleurs, un samedi soir, sans préavis.
+
+📌 **CE QUE VAUT UN RENDEZ-VOUS QUOTIDIEN, CE N'EST PAS CE QU'IL DIT, C'EST
+QU'IL SOIT LÀ.** Les gens s'abonnent à une habitude, pas à un contenu : un soir
+sur trente où l'on manque, et l'habitude redevient une consultation. Donc le
+soin qu'on met à relire un visuel, il faut le mettre à la machine qui le publie.
+
+Trois règles qui en sortent, et qui valent pour tout rituel qu'on armera ensuite :
+
+1. **Rien de « latest » dans un rituel.** « Latest » n'est pas une version,
+   c'est une promesse de changement. Une version qu'on retire, ça s'annonce des
+   mois à l'avance ; une étiquette qui glisse, ça ne s'annonce pas.
+2. **Épingler une moitié d'une paire est pire que de n'en épingler aucune.** On
+   avait figé l'outil de rendu — et c'est cette précaution qui a rendu la panne
+   possible, l'outil figé se retrouvant sur un sol mouvant. Le danger n'est pas
+   l'oubli, c'est **le sentiment d'avoir verrouillé**.
+3. **Deux rituels qui se ressemblent n'ont pas la même surface de panne.** Midi
+   publie une image déjà faite : il n'a rien vu. Le soir fabrique la sienne : il
+   dépend d'un navigateur, d'un système, d'une version. Ne jamais conclure de la
+   santé de l'un à la santé de l'autre, ni annoncer l'un en se fiant à l'autre.
+
+⚠️ Et la règle d'annonce, inchangée : **on ne dit pas qu'une publication est
+partie avant d'avoir lu le rapport.** Ce soir-là la bonne phrase au patron était
+« le bulletin n'est pas sorti », dite avant toute explication.
+
 ## 11. Ce que ce manuel m'interdit
 
 Écrit noir sur blanc pour que je ne recommence pas :

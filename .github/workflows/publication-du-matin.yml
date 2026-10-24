@@ -49,7 +49,11 @@ concurrency:
 
 jobs:
   publier:
-    runs-on: ubuntu-latest
+    # 📌 24/10/2026 — même épingle que midi et que le soir : `ubuntu-latest` a
+    # basculé sur Ubuntu 26.04 ce jour-là et a tué le bulletin du soir sans
+    # qu'une ligne de notre code ait bougé. Voir le commentaire détaillé dans
+    # `publication-du-jour.yml`.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 

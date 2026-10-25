@@ -427,7 +427,7 @@ recharger ce sujet ici, ce n'est pas du marketing.
   requis) : le flyer de lundi part normalement, l'avis ne se déclenche pas. Ne
   pas appeler ça une tendance sur un jour — la leçon du 21/10.
   ⚠️ `pages_manage_engagement` manque toujours : « Commentaire refusé », donc
-  aucun lien sous le post. 76 jours que ça dure.
+  aucun lien sous le post. 75 jours que ça dure.
 
   ⚠️ **AUTRE CHOSE À SAVOIR, PAS ENCORE RÉGLÉE** : `collision.js` signale
   « 1 visuel en collision sur 17 » — c'est `flyer8-soir-v1.template.html`, l'ancien

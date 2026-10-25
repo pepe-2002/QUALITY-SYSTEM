@@ -182,10 +182,26 @@ def main():
     L.append('\n## Ce que je peux mesurer seul\n')
     L.append(f"- **Abonnés de la page** : {abo if abo is not None else '_non lisible (jeton sans permission de lecture)_'}")
     L.append(f"- **Publications sur la période** : {len(journal)}")
+    # 🔴 25/10/2026 — CETTE LIGNE A ANNONCÉ « DERNIER BULLETIN FABRIQUÉ :
+    # 2026-09-03 » PENDANT CINQUANTE-DEUX JOURS, au rapport de midi, alors qu'un
+    # bulletin partait chaque soir sans exception.
+    # La raison : `bulletin.json` est fabriqué SUR LE SERVEUR par le travail du
+    # soir, copié sur la branche du jour, et jamais committé sur `main`. Le
+    # travail de midi lit donc la copie figée du dépôt. Le soir le chiffre est
+    # juste (c'est la même exécution qui l'a écrit), à midi il est vieux.
+    # 📌 **UN CHIFFRE JUSTE DANS UN RAPPORT ET FAUX DANS L'AUTRE EST UN CHIFFRE
+    # FAUX** : personne ne lit la ligne en se demandant quel robot l'a écrite.
+    # On ne devine pas la date manquante — on dit d'où vient le fichier.
     if bulletin:
-        L.append(f"- **Dernier bulletin fabriqué** : {bulletin.get('date','?')} — "
+        frais = str(bulletin.get('date', '')) >= maintenant.date().isoformat()
+        L.append(f"- **{'Bulletin du soir' if frais else 'Dernier bulletin dans le dépôt'}** : "
+                 f"{bulletin.get('date','?')} — "
                  f"{bulletin.get('etat','?').lower()}, houle {bulletin.get('houle_m','?')} m, "
                  f"vent {bulletin.get('vent_kmh','?')} km/h {bulletin.get('vent_direction','')}")
+        if not frais:
+            L.append('  ⚠️ _Ce n\'est pas le dernier bulletin publié : celui du soir '
+                     'est fabriqué sur le serveur et n\'est pas committé. Pour savoir '
+                     'ce qui est parti hier soir, voir le tableau ci-dessus._')
 
     L.append('\n## 🔴 Les trois chiffres qu\'il me faut, et que je ne peux pas deviner\n')
     L.append('| Chiffre | Où le trouver | Pourquoi il décide |')

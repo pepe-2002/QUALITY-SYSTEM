@@ -299,6 +299,17 @@ courante et la plus chère du métier.
 
 **RÈGLE 8 — Pas de dépense sans mesure. Pas de mesure sans seuil de décision.**
 
+📌 **ET UN CHIFFRE JUSTE DANS UN RAPPORT, FAUX DANS L'AUTRE, EST UN CHIFFRE
+FAUX.** Le 25/10/2026, le rapport de midi annonçait « dernier bulletin fabriqué :
+3 septembre » depuis cinquante-deux jours — pendant qu'un bulletin partait chaque
+soir sans exception. Le même programme, le soir, donnait la bonne date : il
+fabriquait le fichier lui-même. Personne ne lit une ligne de rapport en se
+demandant quel robot l'a écrite. Donc un rapport dit **d'où vient** chaque
+chiffre qu'il affiche, ou il ne l'affiche pas. Troisième fois que la même famille
+de faute se paie (18/08 le compte des publications, 19/10 le verdict de rythme,
+25/10 la date du bulletin) : **un tableau de bord se relit comme une publicité,
+ligne par ligne, en se demandant ce qu'un lecteur pressé va croire.**
+
 ---
 
 ## 9. La bibliothèque (et ce qu'on en garde)

@@ -370,6 +370,66 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **25/10/2026 (🔴 DEUX FAUTES TROUVÉES EN RELISANT AVANT DE PUBLIER, PAS APRÈS)**
+  — routine de midi, dimanche, visuel « ON A FAIT ÇA CHEZ NOUS. ». Les quatre
+  contrôles étaient verts, le visuel était bon. C'est en lisant le **texte tel
+  qu'il allait partir** que les deux fautes sont apparues.
+
+  ⛔ **1. UNE MAJUSCULE AU MILIEU D'UNE PHRASE, POSÉE PAR NOTRE PROPRE FILTRE.**
+
+  > « tu choisis ton départ, **Tu prends ta place**, et ton billet arrive »
+
+  Le remplacement de `_PAIEMENT_PROMIS` était écrit `'Tu prends ta place'` avec
+  une majuscule, parce que l'occurrence relevée le 13/10 ouvrait une phrase. Ici
+  elle était au milieu d'une autre. **Parti tel quel le dimanche 18/10 à 12h07**,
+  et il allait repartir aujourd'hui.
+  📌 **UN REMPLACEMENT ÉCRIT SUR UN EXEMPLE EMPORTE LA POSITION DE CET EXEMPLE.**
+  C'est la faute du 13/10 d'un cran plus bas : ce jour-là la liste ne connaissait
+  que les formulations vues, aujourd'hui le remplacement ne connaissait que la
+  place vue. **Deux fois la même erreur de méthode à douze jours d'écart, dans le
+  même bloc de code** — donc ce n'est pas la liste qui est trop courte, c'est la
+  façon de l'écrire qui est trop confiante.
+  ✅ Le remplacement prend maintenant **la casse de ce qu'il remplace**
+  (`_casse_du_trouve`). Le point joli de la correction : l'auteur du texte avait
+  déjà mis la bonne casse partout — on cessait simplement d'en tenir compte. Les
+  cinq occurrences de la bibliothèque tombent juste du premier coup, puces
+  comprises (`· Tu prends ta place.` garde sa majuscule).
+  ✅ Et `capitale_egaree()`, la sentinelle qui parle si un motif futur est
+  recopié mal accordé. Elle ne cherche **que nos propres chaînes** : « …, MVola
+  est hors service » et « #Moheli » sont légitimes, et une sentinelle qui crie à
+  tort, on finit par ne plus la lire (leçon du 13/10, payée une fois, pas deux).
+
+  ⛔ **2. « DERNIER BULLETIN FABRIQUÉ : 2026-09-03 » — DEPUIS 52 JOURS.** Au
+  rapport de **midi** seulement. `bulletin.json` est fabriqué sur le serveur par
+  le travail du soir, copié sur la branche du jour, et **jamais committé sur
+  `main`** : le soir le chiffre est juste (la même exécution l'a écrit), à midi il
+  est figé au dernier fichier du dépôt.
+  📌 **UN CHIFFRE JUSTE DANS UN RAPPORT ET FAUX DANS L'AUTRE EST UN CHIFFRE
+  FAUX** : personne ne lit une ligne de rapport en se demandant quel robot l'a
+  écrite. Troisième fois que cette famille se paie — 18/08 le compte des
+  publications, 19/10 le verdict de rythme, 25/10 la date du bulletin. Les trois
+  fois, le programme **avait** l'information qui lui aurait permis de se taire.
+  ✅ La ligne dit maintenant d'où vient le fichier : « Bulletin du soir » quand
+  l'exécution en cours l'a écrit, « Dernier bulletin dans le dépôt » + renvoi au
+  tableau des publications sinon. Manuel § 8 complété.
+
+  ✅ **PUBLIÉ ET VÉRIFIÉ SUR LA PAGE** : `| 2026-10-25 à 12:11 | ON A FAIT ÇA
+  CHEZ NOUS. |`, étape « Publier » 6 s, 14 publications sur 7 jours, 47 abonnés.
+  Les trois rituels tournent désormais sur `ubuntu-24.04` — midi a validé
+  l'épingle de la veille (Python 3.12 déjà en cache, aucun ralentissement).
+
+  ⚠️ **AUTRE CHOSE À SAVOIR, PAS ENCORE RÉGLÉE** : `collision.js` signale
+  « 1 visuel en collision sur 17 » — c'est `flyer8-soir-v1.template.html`, l'ancien
+  gabarit du soir, que **plus aucun programme ne lit** (le vivant est
+  `flyer8-soir-fb.template.html`, lu par `bulletin.py` et `controle.py`). Le
+  chiffre de référence du 03/09 (« zéro collision ») est donc faux depuis que la
+  bibliothèque a grandi, et il fait hésiter chaque midi.
+  📌 Un fichier mort qui fait crier un contrôle coûte plus cher qu'il ne rapporte :
+  l'historique git garde l'ancienne version, le dossier n'a pas à la garder aussi.
+  👉 **À trancher à la prochaine session** : supprimer le v1, ou le sortir de la
+  liste balayée par les contrôles. Ne pas y toucher à la va-vite un jour de
+  publication.
+
 - **24/10/2026 (🔴 PREMIER BULLETIN DU SOIR MANQUÉ DEPUIS LE 3 SEPTEMBRE — ET
   CE N'EST PAS NOUS QUI AVONS CHANGÉ)** —
 

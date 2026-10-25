@@ -429,12 +429,58 @@ traversée. Écris-nous sur WhatsApp au +269 479 43 28 : on prend ta place à la
 main, le temps que ça revienne.""" % MARQUE_PANNE)
 
 
+def _casse_du_trouve(remplacement, trouve):
+    """Le remplacement prend la casse de ce qu'il remplace.
+
+    🔴 25/10/2026 — « tu choisis ton départ, **Tu prends ta place**, et ton
+    billet arrive ». Deux dimanches de suite, le texte de la fierté est parti
+    avec une majuscule plantée au milieu d'une phrase. Le remplacement était
+    écrit `'Tu prends ta place'` parce que l'occurrence relevée le 13/10 ouvrait
+    une phrase — et il a été reposé tel quel au milieu d'une autre.
+    📌 **UN REMPLACEMENT ÉCRIT SUR UN EXEMPLE EMPORTE LA POSITION DE CET
+    EXEMPLE.** C'est la même faute que le filtre lui-même, d'un cran plus bas :
+    le 13/10 la liste ne connaissait que les formulations vues, aujourd'hui le
+    remplacement ne connaît que la place vue. Un filtre doit s'accorder à ce
+    qu'il trouve, pas à ce qu'il a trouvé une fois.
+    """
+    if not remplacement or not remplacement[:1].isalpha():
+        return remplacement          # '', ',' : rien à accorder
+    if trouve[:1].isupper():
+        return remplacement[0].upper() + remplacement[1:]
+    return remplacement[0].lower() + remplacement[1:]
+
+
+def capitale_egaree(texte):
+    """Un de NOS remplacements posé en majuscule au milieu d'une phrase, ou None.
+
+    🚨 LA SENTINELLE DE LA RÉPARATION CI-DESSUS, sur le modèle de
+    `promesse_restante()` : l'accord de casse règle les quatre motifs d'
+    aujourd'hui, il ne règle pas le motif qu'on ajoutera demain en recopiant le
+    style des précédents.
+    ⚠️ Elle ne cherche QUE nos propres chaînes, jamais une majuscule quelconque
+    après une virgule — « …, MVola est hors service » et « #Moheli » sont
+    légitimes, et une sentinelle qui crie à tort, on finit par ne plus la lire
+    (leçon du 13/10, payée une fois, pas deux).
+    """
+    if not texte:
+        return None
+    for _motif, remplacement in _PAIEMENT_PROMIS:
+        if not remplacement or not remplacement[:1].isalpha():
+            continue
+        majuscule = remplacement[0].upper() + remplacement[1:]
+        m = re.search(r'[a-zà-ÿ],\s+' + re.escape(majuscule), texte)
+        if m:
+            return m.group(0)
+    return None
+
+
 def sans_promesse_de_paiement(texte):
     """Retire des textes du jour la phrase qui promet un paiement impossible."""
     if not texte or not paiement_en_panne():
         return texte
     for motif, remplacement in _PAIEMENT_PROMIS:
-        texte = motif.sub(remplacement, texte)
+        texte = motif.sub(
+            lambda m, r=remplacement: _casse_du_trouve(r, m.group(0)), texte)
     return texte
 
 
@@ -458,13 +504,18 @@ def avec_panne_paiement(texte):
     # peut pas refuser ici — ce serait éteindre la page entière pour une
     # phrase — mais la ligne part dans le journal de l'exécution, visible le
     # jour même au lieu de six semaines plus tard.
-    reste = promesse_restante(sans_promesse_de_paiement(texte))
+    filtre = sans_promesse_de_paiement(texte)
+    reste = promesse_restante(filtre)
     if reste:
         print('🔴 PROMESSE DE PAIEMENT NON FILTRÉE : « %s ». Le post va se '
               'contredire — corrige `_PAIEMENT_PROMIS` dans service.py, pas '
               'le texte.' % reste, file=sys.stderr)
-    return _avant_les_hashtags(sans_promesse_de_paiement(texte),
-                               mention_paiement())
+    egaree = capitale_egaree(filtre)
+    if egaree:
+        print('🔴 REMPLACEMENT MAL ACCORDÉ : « %s ». Une majuscule au milieu '
+              'd’une phrase — corrige la casse du remplacement dans '
+              '`_PAIEMENT_PROMIS`, pas le texte.' % egaree, file=sys.stderr)
+    return _avant_les_hashtags(filtre, mention_paiement())
 
 
 def jour_de_fermeture(jour=None):

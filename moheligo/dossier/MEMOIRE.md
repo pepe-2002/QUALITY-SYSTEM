@@ -418,6 +418,17 @@ recharger ce sujet ici, ce n'est pas du marketing.
   Les trois rituels tournent désormais sur `ubuntu-24.04` — midi a validé
   l'épingle de la veille (Python 3.12 déjà en cache, aucun ralentissement).
 
+  ✅ **LE SOIR, LES DEUX CORRECTIONS VÉRIFIÉES EN PRODUCTION** : bulletin publié
+  à 19h26 (`…122128362177374081`), 15 publications sur 7 jours, et la ligne du
+  rapport dit bien « **Bulletin du soir** : 2026-10-26 » — le libellé juste, dans
+  l'exécution qui fabrique le fichier. Mer de lundi 26/10 : **agitée**, houle
+  1,48 m, vent 28 km/h nord-est. C'est le premier jour un peu dur depuis
+  longtemps, mais **sous le seuil de l'avis de gros temps** (niveau 2 contre 3
+  requis) : le flyer de lundi part normalement, l'avis ne se déclenche pas. Ne
+  pas appeler ça une tendance sur un jour — la leçon du 21/10.
+  ⚠️ `pages_manage_engagement` manque toujours : « Commentaire refusé », donc
+  aucun lien sous le post. 76 jours que ça dure.
+
   ⚠️ **AUTRE CHOSE À SAVOIR, PAS ENCORE RÉGLÉE** : `collision.js` signale
   « 1 visuel en collision sur 17 » — c'est `flyer8-soir-v1.template.html`, l'ancien
   gabarit du soir, que **plus aucun programme ne lit** (le vivant est

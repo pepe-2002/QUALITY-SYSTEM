@@ -16,6 +16,23 @@
    et je continue au dernier repère connu. C'est arrivé deux fois en une semaine,
    et ça a mis de fausses dates dans les fichiers qui font foi. Une seconde de
    vérification évite de réécrire l'histoire.
+0 bis. 🚨 **LA CONSIGNE DE LA ROUTINE (midi, soir) EST PÉRIMÉE SUR TROIS POINTS.
+   C'est un texte figé, écrit avant la fermeture, que personne ne peut plus
+   corriger de l'intérieur** (le connecteur qui le changerait se déconnecte à
+   chaque tentative — voir MEMOIRE au 27/09). Elle reste utile pour la marche à
+   suivre ; elle ne fait PAS foi sur l'état du système :
+   - elle annonce **« SERVICE OUVERT »** → faux depuis le 09/09. `service.py` fait foi.
+   - elle annonce **« 11 conformes sur 11, zéro collision »** → la bibliothèque a
+     grandi : c'est 15 sur 15, et la seule collision est dans
+     `flyer8-soir-v1.template.html`, un gabarit mort que plus aucun programme ne lit.
+   - elle réclame **la regénération du visuel du mercredi** → ce visuel est dans
+     `calendrier.RETENUS`, il ne part plus, et sa regénération est **impossible**
+     (la photo d'origine du patron a disparu avec un conteneur de session).
+   📌 **UNE CONSIGNE QU'ON NE PEUT PAS CORRIGER DOIT ÊTRE LUE AVEC SA LISTE DE
+   PÉRIMÉS À CÔTÉ.** Cette liste était écrite dans le journal du 27/09 — et le
+   27/10 j'ai quand même annoncé au patron la regénération du mercredi, parce
+   qu'une note enterrée dans une entrée de journal n'atteint pas la session qui en
+   a besoin un mois plus tard. **D'où sa place ici, en haut de l'index.**
 1. **Début de session MoheliGo** → lire `MEMOIRE.md`. C'est l'état du projet et
    tout ce qui a été décidé. **Je n'ai aucun souvenir en dehors de ce fichier.**
 2. **Avant de produire quoi que ce soit** → lire la ligne correspondante du

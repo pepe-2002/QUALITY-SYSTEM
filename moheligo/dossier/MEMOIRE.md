@@ -370,6 +370,26 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26 au 31/10/2026 (six jours de routine sans incident — et une erreur de ma
+  part, la même qu'il y a treize jours)** — douze publications, toutes vérifiées
+  sur la page : TU N'INSTALLES RIEN (26), TU PARS VOIR QUELQU'UN (27), TA DATE
+  CHANGE (28), ON CONNAÎT CETTE MER (29, quinzaine), TU PARS. TU REVIENS (30),
+  TU SAIS LA VEILLE AU SOIR (31, quinzaine), plus les six bulletins du soir.
+  **48 abonnés le 31/10** — le premier mouvement depuis des semaines (47).
+
+  ⛔ **J'AI REDIT « DEMAIN ON PASSE EN SEMAINE IMPAIRE » UN VENDREDI SOIR.**
+  Faux : la semaine ISO tourne **le lundi**, donc samedi 31/10 est encore la
+  semaine 44, paire. Le visuel que j'annonçais était pourtant le bon
+  (« TU SAIS LA VEILLE AU SOIR ») — c'est la semaine **paire** qui le donne le
+  samedi, pas l'impaire. Donc **la prédiction juste, le raisonnement faux**.
+  📌 **UNE PRÉDICTION QUI TOMBE JUSTE NE VALIDE PAS LE RAISONNEMENT QUI L'A
+  PRODUITE** — et c'est ce qui la rend dangereuse : rien sur la page ne
+  contredit la bonne réponse obtenue par un mauvais calcul, donc rien ne
+  signale l'erreur. **C'est la deuxième fois** (déjà le 18/10, un dimanche).
+  👉 La règle, pour ne plus l'écrire de mémoire : `calendrier.du_jour()` et
+  `datetime.date.isocalendar()` décident. **Je ne compte plus les semaines de
+  tête, je les demande au programme avant d'annoncer quoi que ce soit.**
+
 - **25/10/2026 (🔴 DEUX FAUTES TROUVÉES EN RELISANT AVANT DE PUBLIER, PAS APRÈS)**
   — routine de midi, dimanche, visuel « ON A FAIT ÇA CHEZ NOUS. ». Les quatre
   contrôles étaient verts, le visuel était bon. C'est en lisant le **texte tel

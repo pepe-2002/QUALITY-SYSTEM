@@ -370,6 +370,31 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **01/11/2026 (📈 LE PREMIER MOUVEMENT MESURABLE DEPUIS DES SEMAINES : 47 → 50
+  ABONNÉS EN TRENTE-SIX HEURES)** — bloqué à 47 depuis des semaines, le compteur
+  est passé à 48 le 31/10 à midi, 49 le 31/10 au soir, 50 le 01/11 à midi, stable
+  au soir. Deux publications vérifiées aujourd'hui (ON A FAIT ÇA CHEZ NOUS à
+  12h08, bulletin à 19h26). Mer de lundi 02/11 : peu agitée, 0,85 m, vent 8 km/h
+  est.
+
+  🤔 **CE QUE ÇA VAUT, ET CE QUE ÇA NE VAUT PAS.** Le mouvement coïncide avec un
+  **samedi de mer agitée (1,46 m)** et le visuel qui vend le bulletin du soir —
+  c'est-à-dire avec le moment où le bulletin sert réellement à quelque chose.
+  C'est la thèse du manuel (§ 1 : on s'abonne à un service, pas à une publicité),
+  et c'est la première fois qu'un chiffre va dans son sens.
+  ⚠️ **MAIS C'EST TROIS PERSONNES, ET JE N'AI AUCUN MOYEN DE SAVOIR POURQUOI** :
+  le jeton ne donne que le nombre d'abonnés, ni la portée ni les clics. Trois
+  points sur une courbe plate ne font pas une démonstration — noté comme
+  observation à confirmer au prochain coup de vent, pas comme résultat.
+  📌 **LA TENTATION, ICI, C'EST D'EXPLIQUER.** J'ai une belle histoire, elle
+  colle, et c'est exactement pour ça qu'il faut l'écrire comme une hypothèse :
+  la leçon du 21/10 (quatre jours de vent appelés « tendance nette », démentis le
+  cinquième) coûtait moins cher que celle-ci ne coûterait, parce qu'un résultat
+  qu'on croit acquis change ce qu'on décide ensuite.
+
+  🔴 **ONZE SEMAINES SANS LES TROIS CHIFFRES** (demandés depuis le 18/08), et
+  **54 jours de suspension sans raison donnée**. Reposés au patron ce midi.
+
 - **26 au 31/10/2026 (six jours de routine sans incident — et une erreur de ma
   part, la même qu'il y a treize jours)** — douze publications, toutes vérifiées
   sur la page : TU N'INSTALLES RIEN (26), TU PARS VOIR QUELQU'UN (27), TA DATE

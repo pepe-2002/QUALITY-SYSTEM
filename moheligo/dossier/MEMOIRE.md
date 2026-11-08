@@ -370,6 +370,46 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **02 au 08/11/2026 (semaine 45 : quatorze publications, aucune manquée, et le
+  compteur d'abonnés qui continue de monter)** — 47 → 51 abonnés sur la semaine
+  (50 le 01/11, 51 le 06/11 au matin, stable depuis). Les deux rituels ont tenu
+  les sept jours, la quinzaine a tourné dans les deux sens.
+
+  ✅ **TROIS CHOSES VÉRIFIÉES PLUTÔT QUE SUPPOSÉES, ET C'EST L'INTÉRÊT DE LA
+  SEMAINE :**
+  1. **02/11, réveil livré 36 min en retard** (20h01 au lieu de 19h25). Avant de
+     pousser, j'ai relu le garde-fou : le bridage horaire ne vise QUE les
+     `schedule`, pas le battement — et aucun cron n'avait publié ce soir-là.
+     Publié à 20h03. 📌 *Un garde-fou qu'on n'a pas relu est un garde-fou qu'on
+     suppose.*
+  2. **04/11, Pillow cassé dans le conteneur neuf** (`cannot import name
+     _imaging`) : `controle.py` refusait de tourner. Réparé dans un
+     environnement isolé, contrôle relancé, vert — plutôt que publier en sautant
+     un contrôle. 📌 *« Le contrôle plante, c'est l'environnement, tant pis » est
+     exactement la phrase par laquelle un contrôle cesse de tourner pour de bon.*
+     Le robot GitHub installe son propre Pillow : la panne était chez moi seul.
+  3. **05/11, deux exécutions du soir sur le même commit** — le battement et un
+     cron de secours. Vérifiées toutes les deux : le battement a publié (7 s), le
+     cron a été **bloqué** (19h26, avant sa fenêtre de 19h45). Aucun doublon.
+     **Première fois que le filet du 02/09 est vu à l'œuvre en vrai**, et il fait
+     ce pour quoi il a été écrit.
+  ⚠️ **04/11 aussi : GitHub annonçait l'exécution « terminée avec succès » alors
+  que son propre tableau d'étapes la montrait « en attente », sans étapes,
+  pendant plusieurs minutes.** Deux réponses contradictoires de la même source.
+  📌 **QUAND DEUX INDICATEURS DE LA MÊME SOURCE SE CONTREDISENT, AUCUN DES DEUX
+  N'EST LA PREUVE** : j'ai attendu et lu le journal, qui porte le rapport. Même
+  règle que pour la durée de l'étape de publication.
+
+  🔴 **LE POINT DU DIMANCHE, COMPTÉ AU JOUR** (08/11) : raison de la suspension
+  **61 jours**, les trois chiffres **82 jours** (11 semaines), panne MVola
+  **67 jours**, `pages_manage_engagement` **89 jours**.
+  📌 **CE QU'IL FAUT SE DIRE SANS LE MAQUILLER : on entretient une habitude pour
+  un service qu'on ne peut pas vendre.** Le rendez-vous tient, les contrôles sont
+  verts, et ça ne remplace aucune des quatre décisions ci-dessus. J'ai donc
+  proposé au patron de n'en choisir qu'une — la raison de la suspension, ou
+  `pages_manage_engagement` (trois minutes, et ça met enfin un lien cliquable
+  sous quatorze publications par semaine qui n'en ont aucun).
+
 - **01/11/2026 (📈 LE PREMIER MOUVEMENT MESURABLE DEPUIS DES SEMAINES : 47 → 50
   ABONNÉS EN TRENTE-SIX HEURES)** — bloqué à 47 depuis des semaines, le compteur
   est passé à 48 le 31/10 à midi, 49 le 31/10 au soir, 50 le 01/11 à midi, stable

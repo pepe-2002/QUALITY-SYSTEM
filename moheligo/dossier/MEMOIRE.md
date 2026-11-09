@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **09/11/2026 (🔴 J'AI LAISSÉ TOMBER LE BATTEMENT DE MIDI — ET C'EST LE FILET
+  QUI A RATTRAPÉ, POUR LA PREMIÈRE FOIS DEPUIS QU'IL EXISTE)** — deux mois jour
+  pour jour de service suspendu.
+
+  ⛔ **CE QUI S'EST PASSÉ, SANS L'ARRONDIR.** La consigne de midi m'est arrivée à
+  l'heure (12h06, heure des Comores). Je l'ai lue. **Et je n'ai pas poussé le
+  battement** : `battement.txt` s'arrêtait au 08/11. Ce n'est ni GitHub, ni
+  Facebook, ni l'horloge — **c'est moi qui ai lâché la main entre la lecture de
+  la consigne et le geste.** Je ne sais pas reconstituer pourquoi, et je n'ai pas
+  de cause à offrir : la seule chose honnête à écrire ici est que c'est arrivé.
+
+  ✅ **LE FILET A FONCTIONNÉ.** Les crons de secours du midi ont tourné trois
+  fois ; les deux premiers (10h47, 11h51) ont été **bloqués** par le garde-fou,
+  hors de leur fenêtre (12h20–16h00), et le troisième, à **14h14**, a publié
+  « TU N'INSTALLES RIEN. » — le bon visuel du lundi. Vérifié sur la page.
+  📌 **PREMIÈRE FOIS QUE LE FILET SERT VRAIMENT À QUELQUE CHOSE.** Le 02/09
+  j'avais écrit, en le mesurant, qu'il n'avait **jamais** attrapé quoi que ce
+  soit, et qu'un dispositif de secours qui ne se déclenche jamais dans sa fenêtre
+  « n'est pas un secours, c'est une décoration qui rassure ». Soixante-huit jours
+  plus tard il a attrapé le cas exact pour lequel il avait été écrit : **la
+  session qui ne fait pas son geste.** Les deux refus du même jour, eux, prouvent
+  que la fenêtre fait aussi son travail dans l'autre sens.
+  📌 **ET LA LEÇON QUI COMPTE PLUS QUE LA PANNE** : le rendez-vous de midi a
+  glissé de 12h07 à 14h14. Le filet protège la publication, **pas l'heure** — et
+  c'est l'heure qui fait l'habitude. Un filet rattrape, il ne remplace pas.
+
+  👉 **CE QUE J'EN FAIS** : je l'ai dit au patron tel quel, sans me couvrir
+  derrière le filet. Le rituel reste à moi ; le filet est le dernier recours, pas
+  la procédure.
+
+  ✅ Le bulletin du soir, lui, est parti à l'heure : 19h27, mer de mardi 10/11
+  peu agitée, houle 0,70 m, vent 10 km/h nord-est. 51 abonnés.
+
 - **02 au 08/11/2026 (semaine 45 : quatorze publications, aucune manquée, et le
   compteur d'abonnés qui continue de monter)** — 47 → 51 abonnés sur la semaine
   (50 le 01/11, 51 le 06/11 au matin, stable depuis). Les deux rituels ont tenu

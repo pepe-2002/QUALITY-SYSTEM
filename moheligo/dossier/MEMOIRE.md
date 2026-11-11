@@ -370,6 +370,51 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **11/11/2026 (🔴 LE RUNNER NE RÉSOLVAIT PLUS LES DÉPÔTS UBUNTU — BULLETIN
+  FABRIQUÉ ICI ET PUBLIÉ PAR LE CHEMIN MANUEL, 19h52)** — le premier incident où
+  le filet de secours ne pouvait rien.
+
+  ⛔ **CE QUI S'EST PASSÉ.** Deux exécutions du soir d'affilée, bloquées
+  **608 s** chacune sur « Installer Playwright et Chromium », puis en échec :
+
+  > `Temporary failure resolving 'azure.archive.ubuntu.com'`
+  > `E: Unable to fetch some archives` · `Failed to install browsers`
+
+  Panne DNS **chez GitHub**, sur neuf paquets de polices système. Rien de notre
+  côté — la veille la même étape passait en 20 s. (Mon propre `git push` avait
+  aussi échoué en 503 juste avant : même mauvaise soirée réseau, deux endroits
+  différents. Repoussé après attente croissante, comme prévu.)
+
+  ⛔ **ET LE FILET NE POUVAIT RIEN**, contrairement au 09/11. Les crons de
+  secours auraient appelé la même étape et échoué pareil.
+  📌 **UN FILET QUI PARTAGE UNE DÉPENDANCE AVEC CE QU'IL PROTÈGE NE PROTÈGE PAS
+  DE CETTE DÉPENDANCE-LÀ.** Le 09/11 la panne était dans le **déclenchement**
+  (moi) : le filet a rattrapé. Le 11/11 elle était dans la **fabrication** :
+  il n'avait aucune prise. Les deux cas se ressemblent vus de la page — « le
+  bulletin ne sort pas » — et n'ont rien à voir.
+
+  ✅ **CE QUE J'AI FAIT**, après avoir vérifié que le second essai échouait aussi
+  pour la même cause : fabriqué le bulletin **dans mon conteneur**, avec le même
+  `bulletin.py` et le même `render.js`, sur les mêmes données Open-Meteo (relevé
+  du 11/11 à 19h50) ; **regardé le PNG rendu** — typographie, courbe heure par
+  heure, QR, aucun glyphe manquant ; committé flyer + texte + `bulletin.json` ;
+  publié par le chemin manuel `visuel` + `texte` de `publication-du-jour.yml`,
+  qui n'est pas bridé par l'heure. **Sorti à 19h52**, vérifié sur la page.
+  ⚠️ Je n'ai rien inventé : même code, mêmes données, même registre. Le seul
+  changement est la machine qui a fabriqué.
+
+  👉 **LA FRAGILITÉ À TRAITER, ET JE NE L'AI PAS TOUCHÉE CE SOIR.** L'étape
+  utilise `npx playwright install --with-deps chromium` : le `--with-deps` fait
+  un `apt-get install` de polices système **à chaque soir**, donc le rituel
+  quotidien dépend des miroirs Ubuntu tous les jours de l'année. Chromium, lui,
+  vient du CDN de Playwright et n'a pas besoin d'apt.
+  📌 Même famille que le 24/10 (`ubuntu-latest`) : **une dépendance externe que
+  personne chez nous ne contrôle, sur le chemin critique d'un rendez-vous
+  quotidien.** À trancher à froid, pas un soir de panne : soit retirer
+  `--with-deps` après avoir vérifié que le rendu reste identique sans les polices
+  système (le gabarit embarque ses woff2), soit mettre le navigateur en cache.
+  **Ne pas modifier un workflow en pleine panne sans l'avoir essayé.**
+
 - **09/11/2026 (🔴 J'AI LAISSÉ TOMBER LE BATTEMENT DE MIDI — ET C'EST LE FILET
   QUI A RATTRAPÉ, POUR LA PREMIÈRE FOIS DEPUIS QU'IL EXISTE)** — deux mois jour
   pour jour de service suspendu.

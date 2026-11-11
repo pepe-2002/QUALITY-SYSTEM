@@ -91,3 +91,4 @@
 2026-11-09 16:26:57 UTC — battement du soir
 2026-11-10 16:26:00 UTC — battement du soir
 2026-11-11 16:26:32 UTC — battement du soir
+2026-11-11 16:38:01 UTC — battement du soir (reprise, DNS apt en panne au premier essai)

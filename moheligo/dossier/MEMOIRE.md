@@ -370,6 +370,76 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **14/11/2026 (🔴 OPEN-METEO INJOIGNABLE DEPUIS LES RUNNERS — ET MON PLAN DE
+  SECOURS DU 11/11 NE MARCHE PAS, PARCE QU'IL APPELLE LE MÊME FOURNISSEUR)**
+
+  ⛔ **LA PANNE.** Deux exécutions du soir, 19h27 et 19h36, en échec à l'étape
+  « Aller chercher la mer de demain », avec le **même message au mot près** :
+
+  > `Open-Meteo injoignable après 4 essais : curl: (28) Connection timed out after 25002 milliseconds`
+
+  Durée : 121 s les deux fois = 4 × 25 s d'attente + les pauses. Donc ça lâche
+  **dès le premier appel**, celui de l'API marine — le runner n'atteint pas du
+  tout Open-Meteo. Le reste du réseau va bien : la même exécution venait de
+  télécharger 104 Mo de Chromium sans broncher. Ce n'est donc ni GitHub en
+  panne, ni notre code : c'est la route vers ce fournisseur-là, depuis les IP
+  partagées des runners. **Hypothèse à confirmer, pas un fait** : un délai
+  d'attente sec plutôt qu'un `429` ressemble à un filtrage d'IP d'hébergeur,
+  et ce serait alors durable, pas un hoquet.
+
+  ⛔ **ET LE SECOURS DU 11/11 N'A PAS MARCHÉ.** Ce soir-là j'avais fabriqué le
+  bulletin dans mon conteneur. Ce soir, depuis mon conteneur :
+  · `marine-api.open-meteo.com` → **200**, la houle répond ;
+  · `api.open-meteo.com` (le vent) → `{"error":true,"reason":"Daily API request
+  limit exceeded. Please try again tomorrow."}` — le quota journalier de l'IP
+  **partagée** du proxy de session est épuisé, par d'autres que moi.
+  Et le vent n'est pas optionnel : `{{VENT}}` et `{{DIRV}}` sont **sur le
+  flyer**. Pas de vent, pas de bulletin.
+
+  📌 **LA LEÇON, ET ELLE CORRIGE CELLE DU 11/11.** J'avais écrit « un filet qui
+  partage une dépendance avec ce qu'il protège ne protège pas de cette
+  dépendance-là », et j'avais cru que fabriquer ici *était* le filet
+  indépendant. **Il ne l'est que sur le chemin réseau, pas sur la source de
+  données.** Deux pannes différentes (délai d'attente là-bas, quota ici), un
+  seul fournisseur : les deux chemins tombent le même soir pour des raisons
+  qui n'ont rien à voir. ➡️ **UN SECOURS NE SE JUGE PAS À SON CHEMIN, IL SE
+  JUGE À SA SOURCE.**
+
+  ⛔ **MON ERREUR, à côté de la panne.** Pour relancer, j'ai poussé le battement
+  dans `moheligo/pub/battement-soir.txt`. Le chemin surveillé est
+  `moheligo/pub/flyers/battement-soir.txt`. Rien ne s'est déclenché, et j'ai
+  créé un fichier parasite au passage (supprimé dans le commit suivant). Huit
+  minutes perdues, par moi, dans une soirée où chaque essai coûte deux minutes.
+  📌 **UN BATTEMENT NE SE VÉRIFIE PAS À « LE PUSH EST PASSÉ » MAIS À « UNE
+  EXÉCUTION EST PARTIE ».**
+
+  ⚖️ **CE QUE JE N'AI PAS FAIT, ET POURQUOI.**
+  · Changer de fournisseur de vent en pleine panne : non. Un chiffre de vent
+  sur un bulletin de mer touche à la sécurité, et une source jamais vérifiée
+  publiée sous pression est exactement la faute qu'on paye après.
+  · Republier le bulletin de la veille : interdit, c'est écrit dans l'en-tête
+  de `bulletin.py` — le flyer est **daté**.
+  · Mettre un autre visuel à la place à 19h45 : **c'est du B, pas du A.** Le
+  calendrier de publication est à moi (§ 12.2 ter), mais le rendez-vous du soir
+  est une **promesse** — « la mer de demain, ce soir ». En changer le contenu
+  change la promesse. En cas de doute entre A et B, c'est B. Donc : proposé au
+  patron, pas décidé.
+
+  🧰 **DEUX CHOSES À RÉPARER À FROID** (pas ce soir, pas sous pression) :
+  1. `api()` dans `bulletin.py` renvoie le JSON d'erreur d'Open-Meteo sans le
+  lire : le programme meurt ensuite sur `KeyError: 'hourly'`. J'ai découvert le
+  quota **en interrogeant l'API à la main**. Un refus explicite du fournisseur
+  doit s'afficher comme tel. 📌 **UN PROGRAMME QUI NE LIT PAS LE REFUS QU'ON LUI
+  RÉPOND FAIT PASSER UNE RÉPONSE CLAIRE POUR UNE PANNE OBSCURE.**
+  2. La source de données du rituel du soir n'a **aucune redondance**. Le choix
+  (clé commerciale Open-Meteo, ou second fournisseur vérifié à froid et comparé
+  plusieurs jours avant d'être branché) est une dépense : **B**.
+
+  ⏳ **ÉTAT À LA FIN DE MON TOUR.** Rien n'est parti. Les quatre crons de
+  secours dans la fenêtre (19h45, 20h30, 21h15, 22h00) referont l'essai ; ils
+  partagent la panne, mais si la route revient avant 23h00 le bulletin sortira
+  seul. Vérification programmée de mon côté après le dernier.
+
 - **11/11/2026 (🔴 LE RUNNER NE RÉSOLVAIT PLUS LES DÉPÔTS UBUNTU — BULLETIN
   FABRIQUÉ ICI ET PUBLIÉ PAR LE CHEMIN MANUEL, 19h52)** — le premier incident où
   le filet de secours ne pouvait rien.

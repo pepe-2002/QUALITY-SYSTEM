@@ -609,6 +609,34 @@ Trois règles qui en sortent, et qui valent pour tout rituel qu'on armera ensuit
 partie avant d'avoir lu le rapport.** Ce soir-là la bonne phrase au patron était
 « le bulletin n'est pas sorti », dite avant toute explication.
 
+### 10 septies bis. 🧵 UN SECOURS NE SE JUGE PAS À SON CHEMIN, IL SE JUGE À SA SOURCE
+
+Quatrième règle, ajoutée le **14/11/2026**, et elle corrige une erreur de
+raisonnement que j'avais faite trois jours plus tôt.
+
+Le 11/11 la fabrication du soir était morte sur le serveur ; je l'avais refaite
+dans mon conteneur et publiée par le chemin manuel. J'en avais conclu que je
+disposais d'un secours indépendant. Le 14/11 les deux chemins sont tombés **le
+même soir, pour deux raisons différentes** : sur le serveur, le fournisseur de
+prévision ne répondait plus du tout (délai d'attente sec) ; chez moi, le même
+fournisseur refusait de répondre pour quota d'IP partagée épuisé.
+
+📌 **CE QUI AVAIT CHANGÉ ENTRE LES DEUX CHEMINS, C'ÉTAIT LE TUYAU. CE QUI N'AVAIT
+PAS CHANGÉ, C'ÉTAIT LA SOURCE.** Et c'est la source qui décide si le rituel peut
+sortir. Deux pannes sans rapport l'une avec l'autre suffisent à coucher les deux
+chemins quand ils vont chercher la même eau.
+
+➡️ **La question à se poser avant d'appeler quelque chose un secours** : si le
+fournisseur dit non, est-ce que mon secours dit encore oui ? Si la réponse est
+non, ce n'est pas un secours, c'est **le même chemin par une autre porte**.
+
+⚠️ Corollaire, et c'est un interdit : **on ne branche pas une source de
+remplacement pendant la panne.** Une donnée jamais comparée, publiée sous
+pression sur un support qui touche à la sécurité d'une traversée, c'est la faute
+qu'on paye plus tard et plus cher que le soir manqué. Le choix d'une seconde
+source se fait **à froid**, comparé plusieurs jours — et comme il coûte de
+l'argent, c'est du **B** (§ 12.2 ter).
+
 ## 11. Ce que ce manuel m'interdit
 
 Écrit noir sur blanc pour que je ne recommence pas :

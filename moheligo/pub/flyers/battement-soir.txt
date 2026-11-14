@@ -95,3 +95,4 @@
 2026-11-12 16:25:38 UTC — battement du soir
 2026-11-13 16:25:27 UTC — battement du soir
 2026-11-14 16:26:10 UTC — battement du soir
+14/11 19h40 — relance après timeout Open-Meteo sur le runner (run 43615592849)

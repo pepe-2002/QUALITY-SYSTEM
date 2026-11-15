@@ -630,6 +630,18 @@ chemins quand ils vont chercher la même eau.
 fournisseur dit non, est-ce que mon secours dit encore oui ? Si la réponse est
 non, ce n'est pas un secours, c'est **le même chemin par une autre porte**.
 
+✅ **MAIS — et c'est la moitié que j'avais ratée le soir même.** Ce 14/11, le
+bulletin **est** sorti, à 21h58, par un cron de secours, dès que la route vers
+le fournisseur est revenue. J'avais écrit que ces crons « partagent la panne et
+ne protègent donc pas ». C'était vrai de la **cause**, faux de l'**effet** :
+📌 **UN FILET QUI PARTAGE LA DÉPENDANCE NE PROTÈGE PAS DE LA PANNE, MAIS IL
+PROTÈGE DE SA DURÉE.** Il ne sait pas réparer ; il sait réessayer pendant que
+personne ne regarde. Pour une panne qui passe, c'est exactement ce qu'il faut —
+et pour une panne qui reste, il ne sert à rien. ➡️ Donc on garde les deux : des
+réessais serrés dans la fenêtre **pour les pannes qui passent**, et une seconde
+source **pour celles qui restent**. Ce ne sont pas deux versions de la même
+précaution.
+
 ⚠️ Corollaire, et c'est un interdit : **on ne branche pas une source de
 remplacement pendant la panne.** Une donnée jamais comparée, publiée sous
 pression sur un support qui touche à la sécurité d'une traversée, c'est la faute

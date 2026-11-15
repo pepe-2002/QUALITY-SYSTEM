@@ -435,10 +435,34 @@ recharger ce sujet ici, ce n'est pas du marketing.
   (clé commerciale Open-Meteo, ou second fournisseur vérifié à froid et comparé
   plusieurs jours avant d'être branché) est une dépense : **B**.
 
-  ⏳ **ÉTAT À LA FIN DE MON TOUR.** Rien n'est parti. Les quatre crons de
-  secours dans la fenêtre (19h45, 20h30, 21h15, 22h00) referont l'essai ; ils
-  partagent la panne, mais si la route revient avant 23h00 le bulletin sortira
-  seul. Vérification programmée de mon côté après le dernier.
+  ⏳ **ÉTAT À LA FIN DE MON TOUR.** Rien n'était parti. Les crons de secours
+  dans la fenêtre referaient l'essai ; ils partagent la panne, mais si la route
+  revenait avant 23h00 le bulletin sortirait seul.
+
+  ✅ **DÉNOUEMENT, LU LE 15/11 À MIDI** (ma session a été redémarrée avant que
+  je puisse programmer la vérification — donc personne n'a regardé pendant la
+  nuit, et ça aussi c'est à noter). **Le bulletin EST sorti, à 21h58**, par le
+  cron de secours, quand la route vers Open-Meteo est revenue :
+
+  > `Publié : 1166058113262206_122131304235374081`
+  > `| 2026-11-14 à 21:58 | LA MER DE DEMAIN, CE SOIR. |`
+  > `Bulletin du soir : 2026-11-15 — mer peu agitée, houle 0.75 m, vent 26 km/h nord-est`
+
+  Données **fraîches** et vérifiables : 0,75 m pour le matin du 15, là où le
+  dépôt gardait 1,57 m du 12/11. Les exécutions suivantes ont été refusées en
+  doublon : **un seul post**. Le commentaire avec le lien a encore été refusé
+  (`pages_manage_engagement`).
+
+  📌 **CE QUE ÇA CORRIGE DANS MON JUGEMENT D'HIER SOIR.** J'ai écrit que les
+  crons « partagent la panne » et donc ne protégeaient pas. C'était vrai de la
+  **cause** et faux de l'**effet** : une panne de réseau qui passe n'est pas
+  une panne de code qui reste. Le filet n'a rien pu contre la panne, mais il a
+  tout pu contre sa **durée** — il a essayé huit fois pendant que je ne
+  regardais plus. ➡️ **UN FILET QUI PARTAGE LA DÉPENDANCE NE PROTÈGE PAS DE LA
+  PANNE, MAIS IL PROTÈGE DE SA DURÉE — ET C'EST SOUVENT CE QUI DÉCIDE.**
+  ⚠️ Le rendez-vous, lui, a bien été manqué : 21h58 au lieu de 19h25, 2 h 33 de
+  retard. Le bulletin restait utile (il annonce le lendemain matin), mais
+  l'habitude, elle, a pris un trou.
 
 - **11/11/2026 (🔴 LE RUNNER NE RÉSOLVAIT PLUS LES DÉPÔTS UBUNTU — BULLETIN
   FABRIQUÉ ICI ET PUBLIÉ PAR LE CHEMIN MANUEL, 19h52)** — le premier incident où

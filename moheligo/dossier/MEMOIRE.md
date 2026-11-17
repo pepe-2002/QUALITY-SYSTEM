@@ -408,10 +408,17 @@ recharger ce sujet ici, ce n'est pas du marketing.
   données. Les retards viennent du déclenchement, pas du fournisseur. Un
   argument de plus pour ne rien dépenser tant qu'on ne perd que des minutes.
 
-  🟢 **MIDI DU 17/11** : « TU PARS VOIR QUELQU'UN. » parti à 12h07, étape
-  « Publier » 6 s. Cinq contrôles au niveau de référence avant le battement —
-  15/15, 1 collision (toujours le fichier mort `flyer8-soir-v1.template.html`),
+  🟢 **LES DEUX RENDEZ-VOUS DU 17/11 TENUS À L'HEURE, PAR MOI.**
+  · **midi** : « TU PARS VOIR QUELQU'UN. » à **12h07**, étape « Publier » 6 s.
+  Cinq contrôles au niveau de référence **avant** le battement — 15/15,
+  1 collision (toujours le fichier mort `flyer8-soir-v1.template.html`),
   famille 5,0/5, occupation 20,5 %.
+  · **soir** : bulletin à **19h27**, deux minutes après l'heure promise.
+  Fabrication en **3 s** — Open-Meteo répond de nouveau normalement depuis les
+  runners, la panne du 14/11 ne s'est pas reproduite. Prévision du 18/11 :
+  mer peu agitée, houle 1,05 m, vent 26 km/h nord-est. Étiquette « Bulletin du
+  soir » et non « dernier bulletin dans le dépôt » : le garde-fou de provenance
+  posé le 25/10 confirme que le chiffre est frais.
 
   🔴 Toujours sans réponse : le motif de la suspension (`OUVERT = False`,
   **69 jours**), les trois chiffres (**91 jours**), MVola (**75 jours**),

@@ -370,6 +370,53 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **17/11/2026 (✅ LE FILET A TENU QUARANTE-HUIT HEURES SANS MOI — ET LA MESURE
+  EXACTE DE CE QU'IL SAIT FAIRE)**
+
+  Ma session a été coupée du **15/11 vers 12h20 au 17/11 à 12h06**. Quatre
+  rendez-vous sont tombés pendant ce trou, et j'ai retrouvé à mon retour quatre
+  consignes en attente — dont trois périmées. **Je ne les ai pas rejouées** : un
+  battement d'avant-hier ne publie pas la mer d'avant-hier, il publie celle
+  d'aujourd'hui à la mauvaise heure.
+
+  ✅ **CE QUI EST SORTI PENDANT MON ABSENCE**, lu dans le tableau de la page
+  (pas déduit des exécutions) :
+
+  | Rendez-vous | Heure prévue | Heure réelle | Retard |
+  |---|---|---|---|
+  | soir 15/11 | 19h25 | **20h14** | 49 min |
+  | midi 16/11 | 12h05 | **13h55** | 1 h 50 |
+  | soir 16/11 | 19h25 | **21h29** | 2 h 04 |
+  | midi 17/11 | 12h05 | **12h07** (par mon battement) | à l'heure |
+
+  **Rien n'a été manqué. 14 publications en 7 jours = 7 jours × 2, la semaine
+  est pleine.** Aucun trou depuis le 03/09.
+
+  📌 **CE QUE ÇA MESURE, ET C'EST LA CONFIRMATION LA PLUS NETTE QU'ON AIT.** Le
+  09/11 j'avais écrit « un filet rattrape, il ne remplace pas : il protège la
+  publication, pas l'heure ». Deux jours entiers sans personne donnent le
+  chiffre : **le filet garde 100 % des rendez-vous et en perd l'heure, de 49
+  minutes à 2 heures.** Ce n'est pas un détail de confort — le § 10 septies dit
+  que ce qui vaut, dans un rendez-vous quotidien, c'est qu'il soit **là**, et
+  les gens qui regardent à 19h25 ne voient rien à 21h29.
+  ➡️ **LE FILET EST UNE ASSURANCE SUR LE CONTENU, PAS SUR L'HABITUDE.** Donc la
+  valeur de ma présence à l'heure n'est pas « publier » — le robot sait le faire
+  — c'est **publier au moment où le rendez-vous a été promis**.
+
+  🧮 Et le calcul à garder en tête pour la décision B du 15/11 (seconde source
+  de prévision) : sur ces quatre rendez-vous, **aucun** n'a été perdu faute de
+  données. Les retards viennent du déclenchement, pas du fournisseur. Un
+  argument de plus pour ne rien dépenser tant qu'on ne perd que des minutes.
+
+  🟢 **MIDI DU 17/11** : « TU PARS VOIR QUELQU'UN. » parti à 12h07, étape
+  « Publier » 6 s. Cinq contrôles au niveau de référence avant le battement —
+  15/15, 1 collision (toujours le fichier mort `flyer8-soir-v1.template.html`),
+  famille 5,0/5, occupation 20,5 %.
+
+  🔴 Toujours sans réponse : le motif de la suspension (`OUVERT = False`,
+  **69 jours**), les trois chiffres (**91 jours**), MVola (**75 jours**),
+  `pages_manage_engagement` (**98 jours**).
+
 - **14/11/2026 (🔴 OPEN-METEO INJOIGNABLE DEPUIS LES RUNNERS — ET MON PLAN DE
   SECOURS DU 11/11 NE MARCHE PAS, PARCE QU'IL APPELLE LE MÊME FOURNISSEUR)**
 

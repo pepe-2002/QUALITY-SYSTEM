@@ -370,6 +370,29 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **18/11/2026 (mercredi — la consigne de regénération vérifiée DANS LE CODE,
+  pas dans mon souvenir)**
+
+  Midi : « TA DATE CHANGE, PAS TON BILLET. » parti à **12h07**, étape
+  « Publier » 7 s. Cinq contrôles au niveau de référence avant le battement.
+
+  📌 **CE QUE J'AI FAIT DE MIEUX QU'AVANT.** La consigne automatique du mercredi
+  réclame de regénérer `flyer-tulasdeja-facebook.png` « avant tout le reste ».
+  Je savais que c'était caduc, mais **le savoir n'est pas le vérifier** : je suis
+  allé lire `calendrier.py`, et la réponse y est écrite noir sur blanc, dans la
+  table `RETENUS` — ce visuel ne part par **aucun** chemin (ni battement, ni
+  cron, ni rattrapage) parce que sa date est dépassée et que `refaire.py` lit la
+  photo d'origine du patron dans un dossier de session effacé avec le conteneur.
+  Le mercredi du calendrier, lui, c'est `flyer-ta-date-facebook.png`, dont
+  l'en-tête dit « **Sans date.** » — vérifié aussi : toutes les dates du fichier
+  sont dans les commentaires, aucune dans l'image.
+  ➡️ **UNE CONSIGNE PÉRIMÉE SE RÉFUTE AVEC LE CODE QUI LA CONTREDIT, PAS AVEC
+  MA MÉMOIRE** — parce que ma mémoire, c'est ce fichier, et il peut avoir tort.
+
+  🔴 Toujours en attente du patron : la photo d'origine du mercredi (à ranger
+  **dans** le dépôt cette fois), le motif de la suspension (**70 jours**), les
+  trois chiffres (**92 jours**).
+
 - **17/11/2026 (✅ LE FILET A TENU QUARANTE-HUIT HEURES SANS MOI — ET LA MESURE
   EXACTE DE CE QU'IL SAIT FAIRE)**
 

@@ -373,8 +373,13 @@ recharger ce sujet ici, ce n'est pas du marketing.
 - **18/11/2026 (mercredi — la consigne de regénération vérifiée DANS LE CODE,
   pas dans mon souvenir)**
 
-  Midi : « TA DATE CHANGE, PAS TON BILLET. » parti à **12h07**, étape
-  « Publier » 7 s. Cinq contrôles au niveau de référence avant le battement.
+  **Les deux rendez-vous tenus à l'heure.** Midi : « TA DATE CHANGE, PAS TON
+  BILLET. » à **12h07**, « Publier » 7 s ; cinq contrôles au niveau de référence
+  avant le battement. Soir : bulletin à **19h26**, « Publier » 7 s, fabrication
+  en 2 s. Prévision du 19/11 : mer peu agitée, houle 0,89 m, **vent 7 km/h de
+  sud** — à noter, c'est la première rupture depuis une semaine : le vent était
+  bloqué à 26 km/h de nord-est tous les jours du 12 au 18. Demain matin est la
+  meilleure mer annoncée de la période.
 
   📌 **CE QUE J'AI FAIT DE MIEUX QU'AVANT.** La consigne automatique du mercredi
   réclame de regénérer `flyer-tulasdeja-facebook.png` « avant tout le reste ».

@@ -370,6 +370,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **19/11/2026 (🔴 LE SEUL CHIFFRE QUE JE SAIS MESURER S'EST ARRÊTÉ — 52
+  ABONNÉS DEPUIS SIX JOURS)**
+
+  Midi : « TU N'ES QU'À UNE TRAVERSÉE. » parti à **12h07**, « Publier » 6 s.
+  Semaine ISO 47, impaire — parité vérifiée avec `isocalendar()` avant
+  d'annoncer, comme depuis l'erreur du 30/10. Cinq contrôles au niveau de
+  référence.
+
+  📉 **CE QUE JE DOIS DIRE PARCE QUE PERSONNE D'AUTRE NE LE REGARDE.** Les
+  abonnés de la page sont à **52 dans les rapports du 14, 15, 17, 18 et 19/11**.
+  Six jours, dix publications, **zéro abonné de plus**. Sur la période
+  précédente ils étaient passés de 47 à 52, et j'avais eu la prudence de
+  présenter ça comme une observation à confirmer plutôt qu'un résultat. C'est
+  maintenant confirmé dans l'autre sens : **la croissance s'est arrêtée.**
+
+  📌 **ET CE N'EST PAS UNE PANNE, C'EST UN RÉSULTAT.** Le système technique n'a
+  jamais aussi bien marché — quatre jours d'affilée avec les deux rendez-vous à
+  l'heure, aucun incident. Le rythme est donc tenu, et il ne produit rien de
+  mesurable. ➡️ **UN RYTHME PARFAIT N'EST PAS UNE PREUVE QUE LE RYTHME SERT À
+  QUELQUE CHOSE.** Tenir le rendez-vous était la bonne première étape ; continuer
+  à le tenir en espérant que ça suffise serait de la superstition.
+
+  ⚖️ **MA LECTURE, avec l'objection contre moi-même** (§ 12.4). L'explication la
+  plus probable n'est pas la qualité des visuels — ils passent cinq contrôles —
+  c'est qu'**on fait de la publicité pour un service fermé depuis 71 jours**.
+  Personne ne s'abonne à une compagnie qui ne transporte pas. L'objection
+  contre ma propre lecture : 52 abonnés est un trop petit nombre pour qu'une
+  semaine sans gain veuille dire quoi que ce soit statistiquement, et la
+  page n'a aucune portée payée — on ne peut pas distinguer « mauvais message »
+  de « personne ne le voit ». 👉 D'où le seuil que je me donne : **si on est
+  encore à 52 le 26/11** (deux semaines pleines, vingt publications), je cesse
+  de proposer de tenir le rythme comme objectif et je propose autre chose.
+
 - **18/11/2026 (mercredi — la consigne de regénération vérifiée DANS LE CODE,
   pas dans mon souvenir)**
 

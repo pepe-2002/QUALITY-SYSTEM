@@ -376,7 +376,10 @@ recharger ce sujet ici, ce n'est pas du marketing.
   Midi : « TU N'ES QU'À UNE TRAVERSÉE. » parti à **12h07**, « Publier » 6 s.
   Semaine ISO 47, impaire — parité vérifiée avec `isocalendar()` avant
   d'annoncer, comme depuis l'erreur du 30/10. Cinq contrôles au niveau de
-  référence.
+  référence. Soir : bulletin à **19h27**, « Publier » 6 s ; prévision du 20/11,
+  mer peu agitée, houle 1,22 m, **vent 6 km/h sud-est** — deuxième jour de mer
+  calme après une semaine bloquée à 26 km/h de nord-est.
+  **Cinquième jour d'affilée avec les deux rendez-vous à l'heure.**
 
   📉 **CE QUE JE DOIS DIRE PARCE QUE PERSONNE D'AUTRE NE LE REGARDE.** Les
   abonnés de la page sont à **52 dans les rapports du 14, 15, 17, 18 et 19/11**.

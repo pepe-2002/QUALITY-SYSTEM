@@ -370,10 +370,12 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
-- **20/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07**, « Publier » 8 s,
-  cinq contrôles au niveau de référence. **Abonnés : 52**, huitième relevé
-  consécutif — le compteur de la veille (§ 19/11) continue de courir vers le
-  seuil du 26/11.
+- **20/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07** (« Publier » 8 s),
+  cinq contrôles au niveau de référence. Soir : bulletin à **19h27** (6 s),
+  prévision du 21/11 — mer peu agitée, houle 1,1 m, vent 17 km/h nord-est.
+  Sixième jour d'affilée avec les deux rendez-vous à l'heure. **Abonnés : 52**,
+  neuvième relevé consécutif — le compteur de la veille (§ 19/11) continue de
+  courir vers le seuil du 26/11.
   📌 Note de méthode, pour ne pas alourdir ce journal : à partir d'aujourd'hui,
   **un rendez-vous tenu sans incident tient en une ligne.** Ce qui mérite un
   paragraphe, c'est une panne, une erreur de ma part, ou un chiffre qui change.

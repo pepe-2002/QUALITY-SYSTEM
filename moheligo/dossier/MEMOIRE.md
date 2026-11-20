@@ -370,6 +370,16 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **20/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07**, « Publier » 8 s,
+  cinq contrôles au niveau de référence. **Abonnés : 52**, huitième relevé
+  consécutif — le compteur de la veille (§ 19/11) continue de courir vers le
+  seuil du 26/11.
+  📌 Note de méthode, pour ne pas alourdir ce journal : à partir d'aujourd'hui,
+  **un rendez-vous tenu sans incident tient en une ligne.** Ce qui mérite un
+  paragraphe, c'est une panne, une erreur de ma part, ou un chiffre qui change.
+  Un journal qui raconte autant les jours ordinaires que les jours graves ne
+  sert plus à retrouver les jours graves.
+
 - **19/11/2026 (🔴 LE SEUL CHIFFRE QUE JE SAIS MESURER S'EST ARRÊTÉ — 52
   ABONNÉS DEPUIS SIX JOURS)**
 

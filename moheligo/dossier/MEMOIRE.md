@@ -370,6 +370,10 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **21/11/2026** — midi : « ON NE VISITE PAS MOHÉLI. ON Y REVIENT. » à **12h06**
+  (« Publier » 9 s), cinq contrôles au niveau de référence. **Abonnés : 52**,
+  dixième relevé consécutif.
+
 - **20/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07** (« Publier » 8 s),
   cinq contrôles au niveau de référence. Soir : bulletin à **19h27** (6 s),
   prévision du 21/11 — mer peu agitée, houle 1,1 m, vent 17 km/h nord-est.

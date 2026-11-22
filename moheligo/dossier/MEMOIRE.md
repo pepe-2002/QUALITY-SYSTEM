@@ -420,6 +420,22 @@ recharger ce sujet ici, ce n'est pas du marketing.
   📌 **UN CHANGEMENT DE DÉROULEMENT VÉRIFIÉ SUR UNE SEULE BRANCHE N'EST PAS
   VÉRIFIÉ** — et « ça se lit bien » n'est pas une vérification.
 
+  🚨 **ET LA LEÇON LA PLUS DURE DU JOUR, CONTRE MOI.** La consigne automatique
+  de midi annonce comme référence « zéro collision ». Le 28/10 j'ai rangé cette
+  ligne dans la **liste des périmés** du `README.md` du dossier, en expliquant
+  savamment que la seule collision venait d'un gabarit mort. **La consigne avait
+  raison et moi pas.** Pendant près d'un mois j'ai eu, chaque jour, sous les
+  yeux, une alarme juste — et je l'ai annoncée au patron comme « le niveau de
+  référence », avec l'air de quelqu'un qui maîtrise.
+  📌 **CLASSER UNE ALARME PARMI LES PÉRIMÉS, C'EST L'ÉTEINDRE SANS LA RÉPARER.**
+  Une liste de périmés sert à ne pas obéir à une consigne devenue fausse ; elle
+  ne doit jamais servir à faire taire une consigne gênante. ➡️ **La question à se
+  poser avant d'y inscrire une ligne : est-ce que le MONDE a changé, ou est-ce
+  que c'est MOI qui me suis habitué ?** Les trois autres chiffres de la consigne
+  (collision, famille, occupation) sont des **cibles**, pas des constats
+  d'époque : seul « 11 sur 11 » était vraiment périmé, parce que la bibliothèque
+  a grandi. `README.md` § 0 bis corrigé en conséquence.
+
 - **21/11/2026** — midi : « ON NE VISITE PAS MOHÉLI. ON Y REVIENT. » à **12h06**
   (« Publier » 9 s), cinq contrôles au niveau de référence. Soir : bulletin à
   **19h26** (6 s), prévision du 22/11 — mer peu agitée, houle 1,08 m, **vent

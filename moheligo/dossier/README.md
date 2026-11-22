@@ -22,9 +22,21 @@
    chaque tentative — voir MEMOIRE au 27/09). Elle reste utile pour la marche à
    suivre ; elle ne fait PAS foi sur l'état du système :
    - elle annonce **« SERVICE OUVERT »** → faux depuis le 09/09. `service.py` fait foi.
-   - elle annonce **« 11 conformes sur 11, zéro collision »** → la bibliothèque a
-     grandi : c'est 15 sur 15, et la seule collision est dans
-     `flyer8-soir-v1.template.html`, un gabarit mort que plus aucun programme ne lit.
+   - elle annonce **« 11 conformes sur 11 »** → périmé, la bibliothèque a grandi :
+     c'est **15 sur 15**. Les trois autres chiffres (**zéro collision**, famille
+     5,0/5, occupation ~21 %) ne sont PAS périmés : ce sont des cibles, et elles
+     tiennent.
+     🚨 **CORRIGÉ LE 22/11/2026, ET C'EST MOI QUI AVAIS TORT.** Cette ligne
+     rangeait « zéro collision » parmi les périmés, en expliquant que la seule
+     collision venait d'un gabarit mort. La consigne avait raison et moi pas :
+     `collision.js` était le seul des quatre contrôles à balayer les gabarits, et
+     j'annonçais « 1 sur 17 » chaque jour comme un état normal. Réparé — on est
+     revenu à **0 collision sur 15**.
+     📌 **CLASSER UNE ALARME PARMI LES PÉRIMÉS, C'EST L'ÉTEINDRE SANS LA
+     RÉPARER.** Une liste de périmés sert à ne pas obéir à une consigne fausse ;
+     elle ne doit jamais servir à faire taire une consigne gênante. Avant d'y
+     inscrire une ligne, la question est : **est-ce que le monde a changé, ou
+     est-ce que c'est moi qui me suis habitué ?**
    - elle réclame **la regénération du visuel du mercredi** → ce visuel est dans
      `calendrier.RETENUS`, il ne part plus, et sa regénération est **impossible**
      (la photo d'origine du patron a disparu avec un conteneur de session).

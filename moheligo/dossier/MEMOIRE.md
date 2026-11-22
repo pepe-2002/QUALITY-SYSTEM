@@ -373,7 +373,27 @@ recharger ce sujet ici, ce n'est pas du marketing.
 - **22/11/2026 (🧰 LES DEUX RÉPARATIONS « À FROID » PROMISES LE 14/11, FAITES)**
 
   Midi : « ON A FAIT ÇA CHEZ NOUS. » à **12h06** (« Publier » 7 s), cinq
-  contrôles au niveau de référence. **Abonnés : 52**, douzième relevé.
+  contrôles au niveau de référence. Soir : bulletin à **19h27** (7 s), prévision
+  du 23/11 — mer peu agitée, houle 1,03 m, vent 18 km/h nord-est. **Abonnés :
+  52**, treizième relevé.
+
+  ⏱️ **UNE DURÉE QUI SAUTE, ET CE QUE J'EN SAIS EXACTEMENT.** L'étape de
+  fabrication a duré **58 s** ce soir, contre 2 à 4 s les jours précédents — le
+  soir même où j'ai modifié `api()`. Je ne me suis pas contenté de supposer.
+  · **Su** : l'étape a réussi, aucune ligne « Open-Meteo REFUSE » dans le
+  journal, et le bulletin porte les vraies données du 23/11.
+  · **Pas su** : la sortie de cette étape est inatteignable avec l'outil de
+  journal, qui ne rend que la fin — occupée par les étapes suivantes.
+  · **Supposé, et l'arithmétique colle** : 25 s de délai d'attente + 2 s de
+  pause + un second essai réussi, pour chacun des **deux** appels (mer, vent),
+  ≈ 56 s. Donc Open-Meteo a été lent ce soir et **la boucle de réessai a gagné**.
+  · **Écarté par raisonnement, pas par confort** : ma modification n'ajoute ni
+  appel réseau ni pause — elle examine un dictionnaire déjà chargé. Elle ne peut
+  pas coûter 56 s. ⚠️ À surveiller demain quand même : une explication qui colle
+  n'est pas une mesure.
+  📌 Et la vraie nouvelle est ailleurs : **sans cette boucle de réessai, le
+  bulletin de ce soir ne sortait pas.** La fragilité du 14/11 est toujours là,
+  elle a juste été absorbée cette fois.
 
   J'avais noté deux défauts le 14/11 en refusant de les corriger pendant
   l'incident. Dimanche calme, les deux rituels sains, Open-Meteo de nouveau

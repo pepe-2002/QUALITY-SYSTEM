@@ -370,6 +370,56 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **22/11/2026 (🧰 LES DEUX RÉPARATIONS « À FROID » PROMISES LE 14/11, FAITES)**
+
+  Midi : « ON A FAIT ÇA CHEZ NOUS. » à **12h06** (« Publier » 7 s), cinq
+  contrôles au niveau de référence. **Abonnés : 52**, douzième relevé.
+
+  J'avais noté deux défauts le 14/11 en refusant de les corriger pendant
+  l'incident. Dimanche calme, les deux rituels sains, Open-Meteo de nouveau
+  joignable depuis les runners : c'était le « à froid » que j'attendais.
+
+  ✅ **1. `collision.js` ne crie plus au loup.** Il annonçait « 1 visuel en
+  collision sur 17 » depuis des semaines, et c'était TOUJOURS le même fichier :
+  `flyer8-soir-v1.template.html`, un gabarit archivé qu'aucun programme ne lit.
+  📌 **UNE ALARME QUI SONNE TOUJOURS N'EST PLUS UNE ALARME** — je l'annonçais
+  moi-même chaque jour comme « normale », ce qui est exactement la façon dont on
+  cesse de lire un contrôle.
+  ⚖️ **Ce n'est pas un contournement, et la différence est tout le sujet** : on
+  n'écarte pas ce fichier PARCE QU'IL ÉCHOUE, on l'écarte parce qu'il n'est pas
+  **publiable** (un gabarit porte des `{{VALEURS}}` non remplacées ; ce qui sort
+  sur la page, c'est `flyer8-soir-fb.html`, et il reste examiné). Nommé à la
+  main, l'archive est toujours vérifiable — rien n'est devenu invérifiable.
+  🧭 **Et ce n'était pas une règle à inventer** : les trois autres contrôles
+  l'appliquaient déjà — `exigence.py` par son motif `flyer*-fb.html`,
+  `famille.js` par `!/soir/`, `respiration.js` par `!/soir-v1|template/`. Seul
+  `collision.js` balayait tout. J'ai recopié le prédicat de `respiration.js` mot
+  pour mot. ➡️ **Nouveau niveau de référence : 0 collision sur 15** (et 15 est
+  enfin le même corpus que celui d'`exigence.py`).
+  📌 **QUAND TROIS OUTILS SUR QUATRE FONT PAREIL, LE QUATRIÈME N'EST PAS UNE
+  EXCEPTION À RESPECTER, C'EST UN OUBLI À RATTRAPER.**
+
+  ✅ **2. `api()` dans `bulletin.py` lit enfin le refus du fournisseur.**
+  Open-Meteo répond parfois « non » en JSON valide
+  (`{"error":true,"reason":"Daily API request limit exceeded…"}`). Ce JSON se
+  chargeait sans erreur, `api()` le rendait tel quel, et le programme mourait
+  trente lignes plus loin sur `KeyError: 'hourly'`. **Le 14/11 j'ai découvert la
+  vraie cause en interrogeant l'API à la main** : le programme ne l'avait jamais
+  dite. Il sort maintenant tout de suite, avec la phrase du fournisseur, et **ne
+  réessaie pas** un refus de quota (quatre essais de plus ne font que confirmer
+  le non, en 112 s).
+
+  🔬 **COMMENT JE L'AI VÉRIFIÉ, parce que c'est là que j'ai failli mal faire.**
+  J'ai d'abord testé la seule branche d'erreur, puis lancé `bulletin.py` pour de
+  vrai — et le quota de l'IP partagée du proxy était ENCORE épuisé aujourd'hui :
+  démonstration en direct de la correction, mais **chemin normal non testé**. Or
+  j'avais modifié le déroulement de la fonction, et c'est ce chemin-là que le
+  bulletin de ce soir allait emprunter. J'ai donc éprouvé les **trois** branches
+  hors réseau (JSON valide → rendu ; refus → sortie immédiate ; JSON illisible →
+  réessais puis abandon). Les trois passent.
+  📌 **UN CHANGEMENT DE DÉROULEMENT VÉRIFIÉ SUR UNE SEULE BRANCHE N'EST PAS
+  VÉRIFIÉ** — et « ça se lit bien » n'est pas une vérification.
+
 - **21/11/2026** — midi : « ON NE VISITE PAS MOHÉLI. ON Y REVIENT. » à **12h06**
   (« Publier » 9 s), cinq contrôles au niveau de référence. Soir : bulletin à
   **19h26** (6 s), prévision du 22/11 — mer peu agitée, houle 1,08 m, **vent

@@ -75,9 +75,28 @@ def api(url, essais=4):
         out = subprocess.run(cmd + [url], capture_output=True, text=True)
         if out.returncode == 0 and out.stdout.strip():
             try:
-                return json.loads(out.stdout)
+                rep = json.loads(out.stdout)
             except json.JSONDecodeError as e:
                 dernier = str(e)
+            else:
+                # 🔴 22/11/2026 — OPEN-METEO RÉPOND PARFOIS « NON » EN JSON, ET
+                # ON NE LE LISAIT PAS. Le 14/11 il renvoyait
+                #   {"error":true,"reason":"Daily API request limit exceeded..."}
+                # (quota journalier de l'IP partagée du proxy). Ce JSON se
+                # chargeait sans erreur, `api()` le rendait tel quel, et le
+                # programme mourait trente lignes plus loin sur
+                # `KeyError: 'hourly'`. J'ai découvert la vraie cause en
+                # interrogeant l'API À LA MAIN — le programme, lui, ne l'a
+                # jamais dite.
+                # 📌 **UN PROGRAMME QUI NE LIT PAS LE REFUS QU'ON LUI RÉPOND
+                # FAIT PASSER UNE RÉPONSE CLAIRE POUR UNE PANNE OBSCURE.**
+                # ⚖️ Et on ne réessaie PAS un refus de quota : quatre essais de
+                # plus ne font que confirmer le non, en 112 s. On sort tout de
+                # suite, avec la phrase du fournisseur.
+                if isinstance(rep, dict) and rep.get('error'):
+                    sys.exit('Open-Meteo REFUSE la demande : %s'
+                             % rep.get('reason', 'sans raison donnée'))
+                return rep
         else:
             dernier = out.stderr.strip() or 'réponse vide'
         time.sleep(2 * (n + 1))

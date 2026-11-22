@@ -309,9 +309,30 @@ async function examiner(nav, fichier) {
 (async () => {
   const args = process.argv.slice(2);
   const tous = args.includes('--tous');
+  // 📌 22/11/2026 — `--tous` NE BALAIE QUE CE QUI PEUT ÊTRE PUBLIÉ.
+  // Pendant des semaines ce contrôle annonçait « 1 visuel en collision sur 17 »,
+  // et ce visuel était TOUJOURS le même : `flyer8-soir-v1.template.html`, un
+  // gabarit archivé que plus aucun programme ne lit. Un contrôle qui crie au
+  // loup tous les jours sur le même fichier n'alerte plus — il apprend à ne pas
+  // le lire. 📌 **UNE ALARME QUI SONNE TOUJOURS N'EST PLUS UNE ALARME.**
+  // ⚖️ ET CE N'EST PAS UN CONTOURNEMENT : on n'écarte pas un fichier PARCE
+  // QU'IL ÉCHOUE, on l'écarte parce qu'il n'est pas PUBLIABLE. Un gabarit porte
+  // des `{{VALEURS}}` non remplacées : sa mise en page n'est pas celle qui sort.
+  // Celle qui sort, c'est `flyer8-soir-fb.html`, et elle reste examinée.
+  // 🧭 Ce n'était pas une règle à inventer : les trois autres contrôles
+  // l'appliquaient déjà, chacun à sa façon — `exigence.py` par son motif
+  // `flyer*-fb.html`, `famille.js` par `!/soir/`, `respiration.js` par ce
+  // `!/soir-v1|template/` exact, recopié ici mot pour mot pour que deux
+  // contrôles qui mesurent le même corpus le disent dans les mêmes termes.
+  // ➡️ On retombe sur les 15 visuels d'`exigence.py`, et « 1 sur 17 » disparaît.
   const fichiers = tous
-    ? fs.readdirSync('.').filter((f) => /^flyer.*\.html$/.test(f)).sort()
+    ? fs.readdirSync('.')
+        .filter((f) => /^flyer.*\.html$/.test(f) && !/soir-v1|template/.test(f))
+        .sort()
     : args;
+  // ⚠️ Un nom explicite reste examinable à la main : `node collision.js
+  // flyer8-soir-v1.template.html` fonctionne toujours. On n'a rien rendu
+  // invérifiable, on a seulement sorti l'archive du balayage quotidien.
   if (!fichiers.length) {
     console.error('usage : node collision.js <flyer.html> | --tous');
     process.exit(2);

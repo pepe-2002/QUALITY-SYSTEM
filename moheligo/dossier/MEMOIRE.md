@@ -370,6 +370,11 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **23/11/2026** — midi : « TU N'INSTALLES RIEN. » à **12h07** (« Publier » 8 s).
+  Semaine ISO 48, paire. ✅ **La correction de `collision.js` tient un jour plus
+  tard : 0 sur 15.** Les cinq contrôles au nouveau niveau de référence.
+  **Abonnés : 52**, quatorzième relevé — trois jours avant le seuil du 26/11.
+
 - **22/11/2026 (🧰 LES DEUX RÉPARATIONS « À FROID » PROMISES LE 14/11, FAITES)**
 
   Midi : « ON A FAIT ÇA CHEZ NOUS. » à **12h06** (« Publier » 7 s), cinq

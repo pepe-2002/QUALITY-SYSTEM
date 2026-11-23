@@ -373,7 +373,19 @@ recharger ce sujet ici, ce n'est pas du marketing.
 - **23/11/2026** — midi : « TU N'INSTALLES RIEN. » à **12h07** (« Publier » 8 s).
   Semaine ISO 48, paire. ✅ **La correction de `collision.js` tient un jour plus
   tard : 0 sur 15.** Les cinq contrôles au nouveau niveau de référence.
-  **Abonnés : 52**, quatorzième relevé — trois jours avant le seuil du 26/11.
+  Soir : bulletin à **19h27** (8 s), prévision du 24/11 — mer peu agitée, houle
+  1,11 m, vent 23 km/h nord-est. **Abonnés : 52**, quinzième relevé — trois
+  jours avant le seuil du 26/11.
+
+  ✅ **ET LA QUESTION DES 58 SECONDES EST TRANCHÉE — PAR UNE MESURE.** Hier
+  l'étape de fabrication avait sauté à 58 s, le soir même où je modifiais
+  `api()`. J'avais écarté ma modification par raisonnement, en disant que ce
+  n'était pas une mesure. Ce soir : **2 secondes.** Donc c'était bien un
+  Open-Meteo lent une fois, absorbé par la boucle de réessai, et mon changement
+  n'y était pour rien.
+  📌 **UN RAISONNEMENT JUSTE ATTENDAIT QUAND MÊME SA MESURE** — et il ne coûtait
+  qu'un jour de patience. L'inverse (annoncer « ce n'est rien » et passer à
+  autre chose) aurait été vrai aussi, mais pour de mauvaises raisons.
 
 - **22/11/2026 (🧰 LES DEUX RÉPARATIONS « À FROID » PROMISES LE 14/11, FAITES)**
 

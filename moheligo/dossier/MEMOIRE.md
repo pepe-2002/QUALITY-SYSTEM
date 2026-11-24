@@ -370,6 +370,21 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **24/11/2026** — midi : « TU PARS VOIR QUELQU'UN. » à **12h07**, cinq
+  contrôles au niveau de référence. **Abonnés : 52**, seizième relevé.
+
+  ⏱️ **LA « SIGNATURE » DE DURÉE N'EST PAS UNE PREUVE, ET C'EST LA TROISIÈME
+  FOIS.** L'étape « Publier » a duré **5 s** aujourd'hui — en dehors de la
+  fourchette que la consigne donne comme repère (« ~6 à 9 s quand elle publie,
+  ~3 s quand le garde-fou refuse un doublon »). Déjà vu : 5 s et 10 s, les deux
+  ayant publié. Band réelle observée : **5 à 10 s pour une publication**.
+  📌 **UN INDICATEUR N'EST PAS UNE PREUVE, ET UN INDICATEUR DONT ON CONNAÎT LES
+  EXCEPTIONS N'EN EST MÊME PLUS UN BON.** Ce qui fait foi reste le **tableau de
+  la page** dans le rapport, jamais le chronomètre. C'est exactement pour ça que
+  la règle « ne jamais dire c'est parti sans avoir lu le rapport » ne se négocie
+  pas : si je m'étais fié à la durée ce midi, j'aurais annoncé un doublon refusé
+  alors que la publication était bien partie.
+
 - **23/11/2026** — midi : « TU N'INSTALLES RIEN. » à **12h07** (« Publier » 8 s).
   Semaine ISO 48, paire. ✅ **La correction de `collision.js` tient un jour plus
   tard : 0 sur 15.** Les cinq contrôles au nouveau niveau de référence.

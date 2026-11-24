@@ -609,6 +609,17 @@ Trois règles qui en sortent, et qui valent pour tout rituel qu'on armera ensuit
 partie avant d'avoir lu le rapport.** Ce soir-là la bonne phrase au patron était
 « le bulletin n'est pas sorti », dite avant toute explication.
 
+📏 **ET LA DURÉE NE REMPLACE PAS LE RAPPORT — mesuré, pas supposé.** La consigne
+quotidienne donne un repère : l'étape « Publier » dure « ~6 à 9 s quand elle
+publie, ~3 s quand le garde-fou refuse un doublon ». **Trois fois déjà la durée
+est sortie de cette fourchette en ayant publié quand même** : 5 s, 10 s, et
+encore 5 s le 24/11/2026. La bande réellement observée pour une publication est
+**5 à 10 s**, et elle touche presque celle d'un refus.
+📌 **UN INDICATEUR N'EST PAS UNE PREUVE.** Le chronomètre sert à savoir où
+regarder ; ce qui fait foi, c'est le **tableau des publications de la page** dans
+le rapport. Le 24/11, me fier à la durée m'aurait fait annoncer un doublon
+refusé alors que le flyer était bien parti.
+
 ### 10 septies bis. 🧵 UN SECOURS NE SE JUGE PAS À SON CHEMIN, IL SE JUGE À SA SOURCE
 
 Quatrième règle, ajoutée le **14/11/2026**, et elle corrige une erreur de

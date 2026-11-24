@@ -104,3 +104,4 @@
 2026-11-22 16:25 UTC — battement du soir
 2026-11-23 16:25 UTC — battement du soir
 2026-11-24 16:26 UTC — battement du soir
+2026-11-24 16:28 UTC — battement du soir, relance apres curl 92 (HTTP/2 rompu)

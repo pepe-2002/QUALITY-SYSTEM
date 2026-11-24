@@ -385,6 +385,39 @@ recharger ce sujet ici, ce n'est pas du marketing.
   pas : si je m'étais fié à la durée ce midi, j'aurais annoncé un doublon refusé
   alors que la publication était bien partie.
 
+  ⛔ **LE SOIR, UN POINT DE PANNE JAMAIS VU ICI — DU CÔTÉ DE FACEBOOK.** La
+  fabrication a réussi en 2 s (données du 25/11 bonnes), et c'est l'étape
+  **« Publier sur la page Facebook »** qui a échoué après 3 s :
+
+  > `curl a échoué : curl: (92) HTTP/2 stream 1 was not closed cleanly: INTERNAL_ERROR (err 2)`
+
+  Ni jeton, ni permission, ni garde-fou anti-doublon : **le transfert vers
+  Facebook s'est rompu en cours d'envoi de l'image.** Toutes les pannes des
+  dernières semaines venaient d'Open-Meteo ; celle-ci vient de l'autre bout.
+  📌 **UN RITUEL A AUTANT DE POINTS DE PANNE QU'IL A DE DÉPENDANCES — ET ON NE
+  LES DÉCOUVRE PAS DANS L'ORDRE OÙ ON LES A ÉCRITES.**
+
+  ⚖️ **CE QUI ÉTAIT DÉLICAT, ET COMMENT J'AI TRANCHÉ.** Quand un envoi casse au
+  milieu, **on ne sait pas si le serveur a traité la demande**. Le tableau lu
+  1,5 s plus tard n'en montrait rien, mais Facebook peut tarder à lister. Deux
+  risques opposés : ne rien faire et manquer le soir, ou relancer et publier en
+  double — un doublon reste sur la page pour toujours.
+  ➡️ **J'ai relancé un battement normal, SANS `FORCER`.** C'est la seule voie qui
+  ne demande pas que je devine : si le premier envoi avait créé un post, le
+  garde-fou anti-doublon l'aurait refusé. 📌 **QUAND ON NE SAIT PAS, ON NE CHOISIT
+  PAS À LA PLACE DU GARDE-FOU — ON LE LAISSE DÉCIDER.** Forcer, là, aurait été
+  transformer mon ignorance en certitude.
+
+  ✅ **RÉSULTAT : un seul post**, à **19h30** (5 min de retard), et la page le
+  confirme — aucune ligne à 19h2x. L'envoi rompu n'avait donc rien créé.
+  Prévision du 25/11 : mer peu agitée, houle 0,98 m, vent 29 km/h nord-est.
+
+  🔴 **ET UNE BÊTISE DE MA PART, SANS CONSÉQUENCE MAIS À NOTER.** J'avais écrit
+  cette note, puis j'ai lancé un `git reset --hard` **avant de l'avoir
+  committée** : effacée. Je l'ai réécrite. Le réflexe « synchroniser avant
+  d'écrire » est bon ; appliqué APRÈS avoir écrit, il détruit le travail.
+  📌 **ON SYNCHRONISE AVANT D'ÉCRIRE, ON COMMITE AVANT DE SYNCHRONISER.**
+
 - **23/11/2026** — midi : « TU N'INSTALLES RIEN. » à **12h07** (« Publier » 8 s).
   Semaine ISO 48, paire. ✅ **La correction de `collision.js` tient un jour plus
   tard : 0 sur 15.** Les cinq contrôles au nouveau niveau de référence.

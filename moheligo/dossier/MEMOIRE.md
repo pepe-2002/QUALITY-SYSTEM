@@ -376,6 +376,11 @@ recharger ce sujet ici, ce n'est pas du marketing.
   ✅ Confirmation avec une nuit de recul : le tableau de la page ne montre
   **qu'un seul** post hier soir (19h30). Aucun doublon n'est apparu après coup —
   la relance sans `FORCER` était bien la bonne décision.
+  Soir : bulletin à **19h27**, prévision du 26/11 — mer peu agitée, houle
+  1,11 m, vent 23 km/h nord-est. **Abonnés : 52**, dix-neuvième relevé.
+  ⏳ **Le seuil tombe demain. Je prépare la proposition CE SOIR**, pas demain à
+  midi dans l'urgence : un directeur qui annonce un seuil et arrive les mains
+  vides le jour dit n'a pas posé un seuil, il a gagné du temps.
 
 - **24/11/2026** — midi : « TU PARS VOIR QUELQU'UN. » à **12h07**, cinq
   contrôles au niveau de référence. **Abonnés : 52**, seizième relevé.

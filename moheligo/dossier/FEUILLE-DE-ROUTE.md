@@ -176,6 +176,63 @@ brûler de l'argent : 70 % des startups grandissent trop tôt.
 
 ---
 
+## 🚦 25/11/2026 — JE RETIRE MON SEUIL, PARCE QU'IL PORTAIT SUR LE MAUVAIS NOMBRE
+
+Le 19/11 j'ai annoncé au patron un seuil de ma propre initiative : « si on est
+encore à 52 abonnés le 26/11, j'arrête de proposer de tenir le rythme comme
+objectif ». **Je le retire la veille de son échéance, et pas parce qu'il
+m'arrange — parce qu'il est mal construit, et que ce document le disait déjà.**
+
+⛔ **CE QUI ÉTAIT FAUX DANS MON SEUIL.** Le 23/08, mesure donnée par le patron :
+les visites du site sont passées de 5-6 à 25-26 par jour **avec 26 abonnés**, et
+la conclusion écrite ici était « la page seule ne peut pas expliquer ce chiffre :
+ça circule ailleurs ». Autrement dit : **le nombre d'abonnés ne commande pas le
+trafic, et c'est écrit dans ce fichier depuis trois mois.** J'ai quand même posé
+ma décision dessus — parce que c'était le seul chiffre que je savais relever
+seul.
+📌 **METTRE UN SEUIL SUR CE QU'ON SAIT MESURER, PLUTÔT QUE SUR CE QUI DÉCIDE,
+C'EST SE DONNER L'AIR DE PILOTER.** C'est la faute du § 8 du manuel, commise par
+celui qui l'a écrite.
+
+🔴 **ET LE VRAI SEUIL DE L'ÉTAPE 1 N'EST PAS MESURABLE AUJOURD'HUI.** Il demande
+« ≥ 10 réservations d'inconnus en 6 semaines ». **Le service est fermé depuis le
+09/09 — 77 jours.** On ne peut pas réserver. Le seuil ne vaut donc ni 10, ni 1,
+ni 0 : il est **sans objet**, et un seuil sans objet ne se « rate » pas, il
+s'attend.
+
+🎯 **LE GOULOT, LUI, EST DÉJÀ CONNU ET IL N'EST PAS DANS LA PUBLICITÉ.** Tunnel
+du 23/08 : 140 ouvertures, **16 vues de l'écran Traversées (11 %)**, 21 vues de
+la Météo mer. **Neuf visiteurs sur dix ne voient jamais un départ, et notre
+écran météo est plus consulté que nos traversées.** Ironie utile : c'est le
+bulletin du soir — mon rituel — qui amène les gens vers la météo, et la météo ne
+les mène pas à un bateau. ⚠️ Ces chiffres ont **trois mois** : je les donne comme
+le dernier état connu, pas comme l'état actuel. Les rafraîchir demande les trois
+chiffres du dimanche.
+
+➡️ **CE QUE JE PROPOSE, ET CE QUE JE CHANGE DE MON CÔTÉ**
+1. **Le seul seuil qui a un sens maintenant est la réouverture du service.** Je
+   remplace mon seuil d'abonnés par celui-là. Il n'est pas à moi : c'est la
+   direction générale (manuel § 12.2), donc le patron seul.
+2. **Je tiens le rendez-vous deux fois par jour, sans changement.** Il ne coûte
+   rien, et l'habitude est le seul actif qui s'accumule pendant une fermeture.
+3. **J'arrête de présenter les abonnés comme un résultat** dans mes comptes
+   rendus. Je continue de les relever — un stock se note — mais sans en faire
+   une note sur ma copie.
+4. **Le premier chantier du jour de la réouverture est déjà désigné** : faire
+   passer les gens de l'écran météo à un départ. C'est le seul endroit où un
+   gain de 11 % à 20 % double tout le reste sans un franc de publicité.
+5. **Rien à dépenser d'ici là.** Le palier 1 du plan publicitaire (25 000 FC)
+   serait de l'argent jeté : on paierait pour amener du monde devant une porte
+   fermée. Le plan le dit déjà — « dépenser plus avant d'avoir mesuré, c'est
+   acheter du bruit ».
+
+🧾 **PRÊT POUR LE JOUR OÙ ÇA ROUVRE** : `flyer-reprise-facebook.png` existe,
+conforme, et il est **volontairement hors du calendrier** (`calendrier.RETENUS`
+n'est pas son cas : il est marqué « réservé à la main ») — la reprise ne se
+décide pas à 12h07, le patron la publie lui-même.
+
+---
+
 ## Ce que je te dis en une phrase
 
 > **Le produit est fait. Six semaines pour la preuve, quatre mois pour

@@ -370,6 +370,13 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **25/11/2026** — midi : « TA DATE CHANGE, PAS TON BILLET. » à **12h07**, cinq
+  contrôles au niveau de référence (0 collision sur 15). **Abonnés : 52**,
+  dix-huitième relevé — le seuil que je me suis donné tombe **demain**.
+  ✅ Confirmation avec une nuit de recul : le tableau de la page ne montre
+  **qu'un seul** post hier soir (19h30). Aucun doublon n'est apparu après coup —
+  la relance sans `FORCER` était bien la bonne décision.
+
 - **24/11/2026** — midi : « TU PARS VOIR QUELQU'UN. » à **12h07**, cinq
   contrôles au niveau de référence. **Abonnés : 52**, seizième relevé.
 

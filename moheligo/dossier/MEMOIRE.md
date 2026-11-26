@@ -370,6 +370,15 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **26/11/2026** — midi : « ON CONNAÎT CETTE MER. » à **12h07** (« Publier »
+  8 s), cinq contrôles au niveau de référence. Semaine ISO 48, paire, parité
+  vérifiée au calendrier. Abonnés : 52 (relevé, pas une note — voir la décision
+  du 25/11 dans `FEUILLE-DE-ROUTE.md`).
+  ⏳ C'était la date de mon seuil d'abonnés. Il a été **retiré la veille**, avec
+  sa raison écrite : il portait sur un nombre dont ce dépôt savait depuis le
+  23/08 qu'il ne commande pas le trafic. Remplacé par le seul seuil qui ait un
+  sens — la réouverture du service, qui n'est pas à moi.
+
 - **25/11/2026** — midi : « TA DATE CHANGE, PAS TON BILLET. » à **12h07**, cinq
   contrôles au niveau de référence (0 collision sur 15). **Abonnés : 52**,
   dix-huitième relevé — le seuil que je me suis donné tombe **demain**.

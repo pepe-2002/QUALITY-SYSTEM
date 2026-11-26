@@ -374,6 +374,9 @@ recharger ce sujet ici, ce n'est pas du marketing.
   8 s), cinq contrôles au niveau de référence. Semaine ISO 48, paire, parité
   vérifiée au calendrier. Abonnés : 52 (relevé, pas une note — voir la décision
   du 25/11 dans `FEUILLE-DE-ROUTE.md`).
+  Soir : bulletin à **19h27** (« Publier » 8 s), prévision du 27/11 — mer peu
+  agitée, **houle 0,77 m**, vent 17 km/h nord-est : la houle la plus basse de
+  toute la période observée.
   ⏳ C'était la date de mon seuil d'abonnés. Il a été **retiré la veille**, avec
   sa raison écrite : il portait sur un nombre dont ce dépôt savait depuis le
   23/08 qu'il ne commande pas le trafic. Remplacé par le seul seuil qui ait un

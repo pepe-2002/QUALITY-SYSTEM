@@ -370,6 +370,14 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **27/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07**, cinq contrôles
+  au niveau de référence. Abonnés : 52.
+  ⏱️ « Publier » a duré **5 s** en publiant — **quatrième** sortie de la
+  fourchette annoncée (5 s, 10 s, 5 s, 5 s). La règle du 24/11 tient : la durée
+  sert à savoir où regarder, le tableau de la page fait preuve. Je ne la
+  recompte plus comme une anomalie : **5 s est devenu la durée ordinaire**, et
+  c'est la consigne qui est en retard sur la mesure, pas la machine.
+
 - **26/11/2026** — midi : « ON CONNAÎT CETTE MER. » à **12h07** (« Publier »
   8 s), cinq contrôles au niveau de référence. Semaine ISO 48, paire, parité
   vérifiée au calendrier. Abonnés : 52 (relevé, pas une note — voir la décision

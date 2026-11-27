@@ -371,7 +371,9 @@ recharger ce sujet ici, ce n'est pas du marketing.
 ## 6. Journal des sessions
 
 - **27/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07**, cinq contrôles
-  au niveau de référence. Abonnés : 52.
+  au niveau de référence. Soir : bulletin à **19h27**, prévision du 28/11 — mer
+  peu agitée, houle 0,85 m, vent 14 km/h nord-est : deuxième matinée calme de
+  suite. Abonnés : 52.
   ⏱️ « Publier » a duré **5 s** en publiant — **quatrième** sortie de la
   fourchette annoncée (5 s, 10 s, 5 s, 5 s). La règle du 24/11 tient : la durée
   sert à savoir où regarder, le tableau de la page fait preuve. Je ne la

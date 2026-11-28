@@ -370,6 +370,9 @@ recharger ce sujet ici, ce n'est pas du marketing.
 
 ## 6. Journal des sessions
 
+- **28/11/2026** — midi : « TU SAIS LA VEILLE AU SOIR. » à **12h07**, cinq
+  contrôles au niveau de référence. Semaine ISO 48, paire. Abonnés : 52.
+
 - **27/11/2026** — midi : « TU PARS. TU REVIENS. » à **12h07**, cinq contrôles
   au niveau de référence. Soir : bulletin à **19h27**, prévision du 28/11 — mer
   peu agitée, houle 0,85 m, vent 14 km/h nord-est : deuxième matinée calme de
